@@ -4965,16 +4965,6 @@ error Context::pushChanges(
         auto pushProjects = [this](auto &projects, auto &clients, auto api_token, auto toggl_client) {
             error err = noError;
             for (auto &project : projects) {
-                if (!project->CID() && !project->ClientGUID().empty()) {
-                    // Find client id
-                    for (auto &client : clients) {
-                        if (client->GUID().compare(project->ClientGUID()) == 0) {
-                            project->SetCID(client->ID());
-                            break;
-                        }
-                    }
-                }
-
                 HTTPSRequest req = project->PrepareRequest();
                 req.host = urls::API();
                 req.basic_auth_username = api_token;
@@ -5049,6 +5039,37 @@ error Context::pushChanges(
             return noError;
         };
 
+        auto updateEntryProjects = [](auto &projects, auto &time_entries) {
+            for (auto &te : time_entries) {
+                if (!te->PID() && !te->ProjectGUID().empty()) {
+                    // Find project id
+                    for (auto &project : projects) {
+                        if (project->GUID().compare(te->ProjectGUID()) == 0) {
+                            te->SetPID(project->ID());
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return noError;
+        };
+
+        auto updateProjectClients = [](auto &clients, auto &projects) {
+            for (auto &project : projects) {
+                if (!project->CID() && !project->ClientGUID().empty()) {
+                    // Find client id
+                    for (auto &client : clients) {
+                        if (client->GUID().compare(project->ClientGUID()) == 0) {
+                            project->SetCID(client->ID());
+                            break;
+                        }
+                    }
+                }
+            }
+            return noError;
+        };
+
         // TODO get rid of "ensuring" about WIDs
         auto collectPushableModels = [] (auto &list, auto tempWID) {
             std::vector<locked<typename std::remove_reference<decltype(list)>::type::value_type>> result;
@@ -5101,53 +5122,42 @@ error Context::pushChanges(
         if (clients.size() > 0) {
             Poco::Stopwatch client_stopwatch;
             client_stopwatch.start();
-            error err = pushClients(
-                clients,
-                api_token,
-                *toggl_client);
-            if (err != noError &&
-                    err.find(kClientNameAlreadyExists) == std::string::npos) {
+            error err = pushClients(clients, api_token, *toggl_client);
+            if (err != noError && err.find(kClientNameAlreadyExists) == std::string::npos) {
+                return err;
+            }
+            // Update client id on projects if needed
+            err = updateProjectClients(clients, projects);
+            if (err != noError) {
                 return err;
             }
             client_stopwatch.stop();
-            ss << clients.size() << " clients in "
-               << client_stopwatch.elapsed() / 1000 << " ms";
+            ss << clients.size() << " clients in " << client_stopwatch.elapsed() / 1000 << " ms";
         }
 
         // Projects second as time entries may depend on projects
         if (projects.size() > 0) {
             Poco::Stopwatch project_stopwatch;
             project_stopwatch.start();
-            error err = pushProjects(
-                projects,
-                clients,
-                api_token,
-                *toggl_client);
-            if (err != noError &&
-                    err.find(kProjectNameAlready) == std::string::npos) {
+            error err = pushProjects(projects, clients, api_token, *toggl_client);
+            if (err != noError && err.find(kProjectNameAlready) == std::string::npos) {
                 return err;
             }
 
             // Update project id on time entries if needed
-            err = updateEntryProjects(
-                projects,
-                time_entries);
+            err = updateEntryProjects(projects, time_entries);
             if (err != noError) {
                 return err;
             }
             project_stopwatch.stop();
-            ss << " | " << projects.size() << " projects in "
-               << project_stopwatch.elapsed() / 1000 << " ms";
+            ss << " | " << projects.size() << " projects in " << project_stopwatch.elapsed() / 1000 << " ms";
         }
 
         // Time entries last to be sure clients and projects are synced
         if (time_entries.size() > 0) {
             Poco::Stopwatch entry_stopwatch;
             entry_stopwatch.start();
-            error err = pushEntries(
-                time_entries,
-                api_token,
-                *toggl_client);
+            error err = pushEntries(time_entries, api_token, *toggl_client);
             if (err != noError) {
                 // Hide load more button when offline
                 related.User->ConfirmLoadedMore();
@@ -5159,8 +5169,7 @@ error Context::pushChanges(
             }
 
             entry_stopwatch.stop();
-            ss << " | " << time_entries.size() << " time entries in "
-               << entry_stopwatch.elapsed() / 1000 << " ms";
+            ss << " | " << time_entries.size() << " time entries in " << entry_stopwatch.elapsed() / 1000 << " ms";
         }
 
         stopwatch.stop();
@@ -5173,23 +5182,6 @@ error Context::pushChanges(
     } catch(const std::string & ex) {
         return ex;
     }
-    return noError;
-}
-
-error Context::updateEntryProjects(std::vector<locked<Project>> &projects,
-                                   std::vector<locked<TimeEntry>> &time_entries) {
-    for (auto &te : time_entries) {
-        if (!te->PID() && !te->ProjectGUID().empty()) {
-            // Find project id
-            for (auto &project : projects) {
-                if (project->GUID().compare(te->ProjectGUID()) == 0) {
-                    te->SetPID(project->ID());
-                    break;
-                }
-            }
-        }
-    }
-
     return noError;
 }
 

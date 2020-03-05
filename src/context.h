@@ -630,9 +630,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error pushChanges(
         TogglClient *https_client,
         bool *had_something_to_push);
-    error updateEntryProjects(
-        std::vector<locked<Project>> &projects,
-        std::vector<locked<TimeEntry>> &time_entries);
     error signup(
         TogglClient *https_client,
         const std::string &email,
