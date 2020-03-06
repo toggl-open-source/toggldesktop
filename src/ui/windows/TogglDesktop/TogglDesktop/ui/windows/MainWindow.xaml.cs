@@ -22,6 +22,7 @@ using TogglDesktop.Theming;
 using TogglDesktop.Tutorial;
 using TogglDesktop.ViewModels;
 using Control = System.Windows.Controls.Control;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
@@ -537,6 +538,10 @@ namespace TogglDesktop
         {
             this.updateEditPopupLocation();
             this.updateEntriesListWidth();
+            if (editPopup.IsVisible == false && ReferenceEquals(this.activeView, this.timerEntryListView))
+            {
+                this.timerEntryListView.Entries.DeselectCells();
+            }
         }
 
         private void onTaskbarLeftMouseUp(object sender, RoutedEventArgs e)
@@ -921,6 +926,14 @@ namespace TogglDesktop
         public T GetView<T>()
         {
             return (T)this.views.FirstOrDefault(v => v is T);
+        }
+
+        private void OnMainWindowKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                this.closeEditPopup();
+            }
         }
     }
 }

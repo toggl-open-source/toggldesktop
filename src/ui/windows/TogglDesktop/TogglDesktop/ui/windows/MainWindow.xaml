@@ -11,24 +11,20 @@
              mc:Ignorable="d" 
              d:DesignWidth="400"
              Title="Toggl Desktop"
-             Style="{StaticResource Toggl.MainWindow}">
+             Style="{StaticResource Toggl.MainWindow}"
+             KeyDown="OnMainWindowKeyDown">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/DesignUpdate/MahApps.Overrides.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <RoutedUICommand x:Key="EscapeCommand" />
         </ResourceDictionary>
     </Window.Resources>
 
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
     </i:Interaction.Behaviors>
-
-    <Window.CommandBindings>
-        <CommandBinding Command="{StaticResource EscapeCommand}" Executed="onEscapeCommand"/>
-    </Window.CommandBindings>
 
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.New}" />
@@ -43,7 +39,6 @@
         <KeyBinding Key="V" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.NewFromPaste}" />
         <KeyBinding Key="Q" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Quit}" />
         <KeyBinding Key="OemComma" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Preferences}" />
-        <KeyBinding Key="Escape" Command="{StaticResource EscapeCommand}" />
     </Window.InputBindings>
 
     <mah:MetroWindow.RightWindowCommands>
