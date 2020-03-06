@@ -127,6 +127,9 @@ extern void *ctx;
     if (@available(macOS 10.15, *))
     {
         [AppleAuthenticationService shared].delegate = self;
+        self.appleBtn.hidden = NO;
+    } else {
+        self.appleBtn.hidden = YES;
     }
 }
 
