@@ -182,7 +182,7 @@
                           Width="32">
                         <Path Name="ContinueIcon"
                               Canvas.Top="-2"
-                              Canvas.Left="-2"
+                              Canvas.Left="-5"
                               Fill="{TemplateBinding Foreground}"
                               Data="{StaticResource StartButtonGeometry}"/>
                         <!-- Canvas.Top and .Left is to adjust to StartButtonGeometry which is centered for 36x36 size -->
