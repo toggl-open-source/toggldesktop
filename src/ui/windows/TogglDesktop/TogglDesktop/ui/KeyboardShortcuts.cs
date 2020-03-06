@@ -33,7 +33,6 @@ namespace TogglDesktop
                 new CommandBinding(Reports, onReports, canExecuteReports),
                 new CommandBinding(Preferences, onPreferences),
                 new CommandBinding(ToggleManualMode, onToggleManualMode, canExecuteToggleManualMode),
-                new CommandBinding(ClearCache, onClearCache, canExecuteClearCache),
                 new CommandBinding(SendFeedback, onSendFeedback, canExecuteSendFeedback),
                 new CommandBinding(About, onAbout),
                 new CommandBinding(Logout, onLogout, canExecuteLogout),
@@ -211,31 +210,6 @@ namespace TogglDesktop
         private static void onToggleManualMode(object sender, RoutedEventArgs e)
         {
             mainWindow.SetManualMode(!isInManualMode);
-        }
-
-        #endregion
-        #region ClearCache
-
-        public static readonly RoutedUICommand ClearCache =
-            new RoutedUICommand("", "ClearCache", typeof(Window));
-
-        private static void canExecuteClearCache(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = isLoggedIn;
-        }
-
-        private static void onClearCache(object sender, RoutedEventArgs e)
-        {
-            var result = MessageBox.Show(mainWindow,
-                "This will remove your Toggl user data from this PC and log you out of the Toggl Desktop app. " +
-                "Any unsynced data will be lost.\n\nDo you want to continue?", "Clear Cache",
-                MessageBoxButton.OKCancel, "CLEAR CACHE");
-
-            if (result == MessageBoxResult.OK)
-            {
-                Toggl.ClearCache();
-                mainWindow.loadPositions();
-            }
         }
 
         #endregion

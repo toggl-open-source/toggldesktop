@@ -155,8 +155,6 @@ public static partial class Toggl
         public         string EndTimeString;
         public         IntPtr Next;
         public         IntPtr FirstEvent;
-        // Reference to Time entries in this Chunk
-        public         IntPtr Entry;
 
         public override string ToString()
         {
@@ -315,6 +313,8 @@ public static partial class Toggl
         public         bool StopEntryOnShutdownSleep;
         [MarshalAs(UnmanagedType.I1)]
         public         bool ShowTouchBar;
+        public         byte ActiveTab;
+        public         byte ColorTheme;
 
         public override string ToString()
         {
@@ -1029,6 +1029,16 @@ public static partial class Toggl
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_set_time_entry_start_timestamp_with_option(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string guid,
+        Int64 start,
+        [MarshalAs(UnmanagedType.I1)]
+        bool keep_end_time_fixed);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_time_entry_end(
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]
@@ -1215,6 +1225,18 @@ public static partial class Toggl
         IntPtr context,
         [MarshalAs(UnmanagedType.I1)]
         bool show_touch_bar);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_set_settings_active_tab(
+        IntPtr context,
+        byte active_tab);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_set_settings_color_theme(
+        IntPtr context,
+        byte color_theme);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
@@ -1627,6 +1649,10 @@ public static partial class Toggl
         IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern byte toggl_get_active_tab(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_mini_timer_x(
         IntPtr context,
         Int64 value);
@@ -1684,6 +1710,28 @@ public static partial class Toggl
     private static extern void toggl_iam_click(
         IntPtr context,
         UInt64 type);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern string toggl_format_duration_time(
+        IntPtr context,
+        UInt64 timestamp);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void track_collapse_day(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void track_expand_day(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void track_collapse_all_days(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void track_expand_all_days(
+        IntPtr context);
+
 
 
 

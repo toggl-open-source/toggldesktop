@@ -1,0 +1,15 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.tooltip.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <Style TargetType="ToolTip" BasedOn="{StaticResource MahApps.Styles.ToolTip}">
+        <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.PopupBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.DarkGrayBrush}" />
+        <Setter Property="Padding" Value="8 6" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+</ResourceDictionary>

@@ -1,4 +1,5 @@
 using System.Windows;
+using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
 {
@@ -9,49 +10,19 @@ namespace TogglDesktop
             InitializeComponent();
         }
 
-        public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
-            "Description", typeof(string), typeof(TrayToolTipControl), new PropertyMetadata(default(string)));
-
-        public string Description
+        public TimeEntryLabelViewModel TimeEntryLabel
         {
-            get { return (string) GetValue(DescriptionProperty); }
-            set { SetValue(DescriptionProperty, value); }
-        }
-
-        public static readonly DependencyProperty ProjectColorProperty = DependencyProperty.Register(
-            "ProjectColor", typeof(string), typeof(TrayToolTipControl), new PropertyMetadata(default(string)));
-
-        public string ProjectColor
-        {
-            get { return (string) GetValue(ProjectColorProperty); }
-            set { SetValue(ProjectColorProperty, value); }
+            get => timeEntryLabel.ViewModel;
+            set => timeEntryLabel.ViewModel = value;
         }
 
         public static readonly DependencyProperty TotalTodayProperty = DependencyProperty.Register(
             "TotalToday", typeof(string), typeof(TrayToolTipControl), new PropertyMetadata(default(string)));
 
-        public static readonly DependencyProperty ProjectAndTaskProperty = DependencyProperty.Register(
-            "ProjectAndTask", typeof(string), typeof(TrayToolTipControl), new PropertyMetadata(default(string)));
-
-        public string ProjectAndTask
-        {
-            get { return (string) GetValue(ProjectAndTaskProperty); }
-            set { SetValue(ProjectAndTaskProperty, value); }
-        }
-
         public string TotalToday
         {
             get { return (string) GetValue(TotalTodayProperty); }
             set { SetValue(TotalTodayProperty, value); }
-        }
-
-        public static readonly DependencyProperty RunningEntryDurationProperty = DependencyProperty.Register(
-            "RunningEntryDuration", typeof(string), typeof(TrayToolTipControl), new PropertyMetadata("0 h 00 min"));
-
-        public string RunningEntryDuration
-        {
-            get { return (string) GetValue(RunningEntryDurationProperty); }
-            set { SetValue(RunningEntryDurationProperty, value); }
         }
 
         public static readonly DependencyProperty IsTrackingProperty = DependencyProperty.Register(
@@ -63,13 +34,17 @@ namespace TogglDesktop
             set { SetValue(IsTrackingProperty, value); }
         }
 
-        public static readonly DependencyProperty ClientProperty = DependencyProperty.Register(
-            "Client", typeof(string), typeof(TrayToolTipControl), new PropertyMetadata(default(string)));
-
-        public string Client
+        public void SetDuration(string t)
         {
-            get { return (string) GetValue(ClientProperty); }
-            set { SetValue(ClientProperty, value); }
+            durationLabel.Text = t;
+        }
+
+        public void SetDuration(Toggl.TogglTimeEntryView item)
+        {
+            durationLabel.Text =
+                item.Ended > item.Started
+                    ? item.Duration
+                    : Toggl.FormatDurationInSecondsHHMMSS(item.DurationInSeconds);
         }
     }
 }

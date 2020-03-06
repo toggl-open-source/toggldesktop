@@ -85,11 +85,6 @@ void *ctx;
 								 [projectGUID UTF8String]);
 }
 
-- (void)togglEditor
-{
-	toggl_view_time_entry_list(ctx);
-}
-
 - (void)updateTimeEntryWithDescription:(NSString *)descriptionName guid:(NSString *)guid
 {
 	toggl_set_time_entry_description(ctx,
@@ -264,7 +259,7 @@ void *ctx;
 	toggl_view_timeline_current_day(ctx);
 }
 
-- (NSString *)starNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended
+- (NSString *)startNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended
 {
 	char *guid = toggl_start(ctx,
 							 "",
@@ -283,9 +278,23 @@ void *ctx;
 	return GUID;
 }
 
+- (NSString *)createEmptyTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended
+{
+    char *guid = toggl_create_empty_time_entry(ctx, started, ended);
+    NSString *GUID = [NSString stringWithUTF8String:guid];
+
+    free(guid);
+    return GUID;
+}
+
 - (void)startEditorAtGUID:(NSString *)GUID
 {
 	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
+}
+
+- (void)closeEditor
+{
+    toggl_view_time_entry_list(ctx);
 }
 
 - (void)setEditorWindowSize:(CGSize)size

@@ -75,7 +75,6 @@ final class TimelineDashboardViewController: NSViewController {
     private lazy var editorPopover: EditorPopover = {
         let popover = EditorPopover()
         popover.animates = false
-        popover.behavior = .transient
         popover.prepareViewController()
         popover.delegate = self
         return popover
@@ -453,7 +452,7 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval) {
         guard !editorPopover.isShown else { return }
-        guard let guid = DesktopLibraryBridge.shared().starNewTimeEntry(atStarted: started, ended: ended) else { return }
+        guard let guid = DesktopLibraryBridge.shared().createEmptyTimeEntry(atStarted: started, ended: ended) else { return }
         self.showEditorForTimeEntry(with: guid)
     }
 
@@ -545,6 +544,7 @@ extension TimelineDashboardViewController: NSPopoverDelegate {
             return
         }
         selectedGUID = nil
+        DesktopLibraryBridge.shared().closeEditor()
     }
 }
 

@@ -1,0 +1,358 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Typography.xaml" />
+        <ResourceDictionary Source="Icons.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <Style x:Key="Toggl.ButtonFocusVisualStyle">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border BorderThickness="1"
+                            BorderBrush="{DynamicResource Toggl.Button.Accent.PressedBackground}">
+                        <Rectangle SnapsToDevicePixels="True"
+                                   StrokeThickness="1"
+                                   UseLayoutRounding="True">
+                            <Rectangle.Stroke>
+                                <SolidColorBrush Color="{DynamicResource Toggl.SelectionElements.BackgroundColor}" Opacity="0.6" />
+                            </Rectangle.Stroke>
+                        </Rectangle>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Toggl.SecondaryAccentButtonFocusVisualStyle">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border BorderThickness="1"
+                            BorderBrush="{DynamicResource Toggl.Button.Accent.Red.PressedBackground}">
+                        <Rectangle SnapsToDevicePixels="True"
+                                   StrokeThickness="1"
+                                   UseLayoutRounding="True">
+                            <Rectangle.Stroke>
+                                <SolidColorBrush Color="{DynamicResource Toggl.SelectionElements.BackgroundColor}" Opacity="0.6" />
+                            </Rectangle.Stroke>
+                        </Rectangle>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="Toggl.PrimaryButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{DynamicResource Toggl.Button.Primary.Background}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Primary.Background}" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource Toggl.ButtonFocusVisualStyle}" />
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+        <Setter Property="Padding" Value="10 6 10 6" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="Border"
+                            Margin="0"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <Controls:ContentControlEx x:Name="PART_ContentPresenter"
+                                                   Padding="{TemplateBinding Padding}"
+                                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                   Content="{TemplateBinding Content}"
+                                                   ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Controls:ControlsHelper.ContentCharacterCasing)}"
+                                                   ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                   ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                                   RecognizesAccessKey="True"
+                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Primary.MouseOverBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Primary.MouseOverBorder}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Primary.PressedBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Primary.PressedBorder}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+                <Setter Property="Background" Value="{DynamicResource Toggl.LightGrayBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="Toggl.OutlinedButton" BasedOn="{StaticResource Toggl.PrimaryButton}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.SelectionElements.Border}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Outlined.HoverBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Outlined.HoverBorder}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Outlined.PressedBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Outlined.PressedBorder}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="Toggl.AccentButton" BasedOn="{StaticResource Toggl.PrimaryButton}">
+        <Setter Property="Background" Value="{DynamicResource Toggl.AccentBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
+        <Setter Property="Foreground" Value="White" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Accent.MouseOverBorder}" />
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Accent.MouseOverBackground}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Accent.PressedBorder}" />
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Accent.PressedBackground}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="Toggl.SecondaryAccentButton" BasedOn="{StaticResource Toggl.AccentButton}">
+        <Setter Property="Background" Value="{DynamicResource Toggl.SecondaryAccentBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.SecondaryAccentBrush}" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource Toggl.SecondaryAccentButtonFocusVisualStyle}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Accent.Red.MouseOverBorder}" />
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Accent.Red.MouseOverBackground}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Accent.Red.PressedBorder}" />
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Accent.Red.PressedBackground}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="Toggl.CrossButton" BasedOn="{StaticResource Toggl.PrimaryButton}">
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.DarkGrayBrush}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="{TemplateBinding Background}">
+                        <Path Width="24" Height="24"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"
+                              Fill="{TemplateBinding Foreground}" Data="M12 11.417L7.577 7 7 7.576l4.417 4.423L7 16.424l.576.576L12 12.583 16.422 17l.578-.576L12.58 12 17 7.576 16.422 7z"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Outlined.HoverBackground}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Outlined.PressedBackground}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="Toggl.ContinueButton">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Canvas Background="Transparent"
+                          Height="32"
+                          Width="32">
+                        <Path Name="ContinueIcon"
+                              Canvas.Top="-2"
+                              Canvas.Left="-5"
+                              Fill="{TemplateBinding Foreground}"
+                              Data="{StaticResource StartButtonGeometry}"/>
+                        <!-- Canvas.Top and .Left is to adjust to StartButtonGeometry which is centered for 36x36 size -->
+                    </Canvas>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.HoverElementBrush}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="Toggl.CogwheelButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Border Background="{TemplateBinding Background}"
+                            Height="{TemplateBinding Height}"
+                            Width="{TemplateBinding Width}">
+                        <Canvas Height="16" Width="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path Stroke="{DynamicResource Toggl.TitleTextBrush}"
+                                  Data="M8 10.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm.3-10h-.6c-.171 0-.393.16-.448.324l-.613
+1.84-.247.075a5.463 5.463 0 0 0-.975.404l-.228.121-.23-.115-1.505-.752a.543.543 0 0 0-.545.087l-.425.425a.544.544 0 0 0-.087.545l.867
+1.735-.121.228c-.166.31-.301.637-.404.974l-.075.247-.245.081-1.595.533A.543.543 0 0 0 .5  7.7v.6c0 .171.16.393.324.448l1.84.613.075.247c.103.338.238.664.404.975l.121.228-.115.23-.752
+1.505a.543.543 0 0 0 .087.545l.425.425c.12.12.391.164.545.087l1.735-.867.228.121c.311.166.637.301.975.404l.247.076.081.244.532
+1.595a.543.543 0 0 0 .448.324h.6c.171 0 .393-.16.448-.324l.614-1.84.247-.075c.337-.103.663-.238.974-.404l.228-.121.23.115
+1.505.752a.543.543 0 0 0 .545-.087l.425-.425a.544.544 0 0 0 .087-.545l-.867-1.735.121-.228c.166-.31.301-.637.404-.974l.075-.247.245-.081
+ 1.595-.533A.543.543 0 0 0 15.5 8.3v-.6c0-.171-.16-.393-.324-.448l-1.84-.613-.075-.247a5.463 5.463 0 0 0-.404-.975l-.121-.228.115-.23.752-1.505a.543.543
+ 0 0 0-.087-.545l-.425-.425a.544.544 0 0 0-.545-.087l-1.735.867-.228-.121c-.31-.166-.637-.301-.974-.404l-.247-.075-.081-.245L8.748.824A.543.543 0 0 0 8.3.5z" />
+                        </Canvas>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="ToolTip" Value="Menu" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Titlebar.MouseOver}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Titlebar.Pressed}" />
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="Toggl.AddTimeEntryButton" BasedOn="{StaticResource Toggl.AccentButton}">
+        <Setter Property="Height" Value="36" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Padding" Value="10 7 10 10" />
+        <Setter Property="Content">
+            <Setter.Value>
+                <StackPanel Orientation="Horizontal">
+                    <Canvas Width="24" Height="24" Margin="4 -3 4 0">
+                        <Path Fill="White" Data="M12.5 6v5.5H18v1h-5.5V18h-1v-5.5H6v-1h5.5V6h1z" />
+                    </Canvas>
+                    <TextBlock Style="{StaticResource Toggl.BodyText}" Text="Add Time Entry" Foreground="White" />
+                </StackPanel>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ToggleButton" x:Key="Toggl.TimeEntryDayHeaderToggleButton">
+        <Setter Property="ClickMode" Value="Press" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
+        <Setter Property="Controls:TextBoxHelper.ButtonWidth" Value="24"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid x:Name="Root"
+                          Margin="0"
+                          Background="{TemplateBinding Background}"
+                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Controls:ContentControlEx x:Name="PART_ContentPresenter"
+                                                   Padding="{TemplateBinding Padding}"
+                                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                   Content="{TemplateBinding Content}"
+                                                   ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Controls:ControlsHelper.ContentCharacterCasing)}"
+                                                   ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                   ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                                   RecognizesAccessKey="True"
+                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        <Grid x:Name="BtnArrowBackground"
+                              Grid.Column="1"
+                              Margin="4 0 8 0"
+                              Width="{TemplateBinding Controls:TextBoxHelper.ButtonWidth}">
+                            <Path x:Name="BtnArrow"
+                                  Width="11"
+                                  Height="11"
+                                  HorizontalAlignment="Center"
+                                  Data="F0 M 50.72,52.83 L 56,47.39 56.48,48.03 50.72,53.8 44.79,48.03 45.27,47.39 50.72,52.83 z"
+                                  Fill="{DynamicResource Toggl.DarkGrayBrush}"
+                                  IsHitTestVisible="false"
+                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                  Stretch="Uniform" />
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" Value="True">
+                            <Setter TargetName="BtnArrowBackground" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <RotateTransform Angle="180" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Outlined.HoverBackground}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Outlined.PressedBackground}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="ToggleButton" x:Key="Toggl.GroupIcon">
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.TextBox.Border}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border Height="24" Width="24"
+                            BorderThickness="1"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}">
+                        <TextBlock Style="{StaticResource Toggl.CaptionText}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   LineHeight="16"
+                                   Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.GroupIcon.ExpandedBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.GroupIcon.ExpandedBackground}" />
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentPlusOneBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

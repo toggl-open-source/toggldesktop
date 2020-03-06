@@ -203,7 +203,7 @@ final class TimelineData {
         // Start a running TE if the TE is today
         if timeEntry.isToday() {
             let startTime = timeEntry.end + 1
-            guard let guid = DesktopLibraryBridge.shared().starNewTimeEntry(atStarted: 0, ended: 0) else { return }
+            guard let guid = DesktopLibraryBridge.shared().startNewTimeEntry(atStarted: 0, ended: 0) else { return }
 
             // Only set start time if it's not the future
             // Otherwise, the library code gets buggy

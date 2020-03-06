@@ -40,8 +40,6 @@ NS_ASSUME_NONNULL_BEGIN
 							 projectID:(uint64_t)projectID
 						   projectGUID:(NSString *)projectGUID;
 
-- (void)togglEditor;
-
 - (void)updateTimeEntryWithDescription:(NSString *)descriptionName guid:(NSString *)guid;
 
 - (void)updateTimeEntryWithTags:(NSArray<NSString *> *)tags guid:(NSString *)guid;
@@ -84,9 +82,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)timelineGetCurrentDate;
 
-- (NSString *_Nullable)starNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended;
+- (NSString *_Nullable)startNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended;
+
+- (NSString *_Nullable)createEmptyTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended;
 
 - (void)startEditorAtGUID:(NSString *)GUID;
+
+- (void)closeEditor;
 
 - (void)setEditorWindowSize:(CGSize)size;
 

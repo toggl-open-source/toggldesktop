@@ -179,6 +179,12 @@ bool_t toggl_set_settings_active_tab(
     return toggl::noError == app(context)->SetSettingsActiveTab(active_tab);
 }
 
+bool_t toggl_set_settings_color_theme(
+    void *context,
+    const uint8_t color_theme) {
+    return toggl::noError == app(context)->SetSettingsColorTheme(color_theme);
+}
+
 bool_t toggl_set_settings_idle_minutes(
     void *context,
     const uint64_t idle_minutes) {
@@ -639,7 +645,28 @@ char_t *toggl_start(
         tag_list,
         prevent_on_app,
         started,
-        ended);
+        ended,
+        true);
+    if (te) {
+        return copy_string(te->GUID());
+    }
+    return nullptr;
+}
+
+char_t *toggl_create_empty_time_entry(
+                                      void *context,
+                                      const uint64_t started,
+                                      const uint64_t ended) {
+    toggl::TimeEntry *te = app(context)->Start("",
+                                               "",
+                                               0,
+                                               0,
+                                               "",
+                                               "",
+                                               false,
+                                               started,
+                                               ended,
+                                               false);
     if (te) {
         return copy_string(te->GUID());
     }
@@ -1450,6 +1477,34 @@ void toggl_iam_click(void *context,
 }
 
 char_t *toggl_format_duration_time(void *context,
-                          const uint64_t timestamp) {
+                                   const uint64_t timestamp) {
     return copy_string(toggl::Formatter::FormatDurationForDateHeader(timestamp));
+}
+
+void track_collapse_day(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackCollapseDay();
+}
+
+void track_expand_day(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackExpandDay();
+}
+
+void track_collapse_all_days(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackCollapseAllDays();
+}
+
+void track_expand_all_days(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackExpandAllDays();
 }
