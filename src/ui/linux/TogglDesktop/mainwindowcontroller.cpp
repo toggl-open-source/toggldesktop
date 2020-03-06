@@ -530,32 +530,6 @@ void MainWindowController::closeEvent(QCloseEvent *event) {
     QMainWindow::closeEvent(event);
 }
 
-void MainWindowController::showEvent(QShowEvent *event) {
-    QMainWindow::showEvent(event);
-
-    // Avoid 'user already logged in' error from double UI start
-    if (ui_started) {
-        return;
-    }
-    ui_started = true;
-
-    if (!TogglApi::instance->startEvents()) {
-        QMessageBox(
-            QMessageBox::Warning,
-            "Error",
-            "The application could not start. Please inspect the log file.",
-            QMessageBox::Ok|QMessageBox::Cancel).exec();
-        return;
-    }
-    if (script.isEmpty()) {
-        // qDebug() << "no script to run";
-        return;
-    }
-    qDebug() << "will run script: " << script;
-
-    QtConcurrent::run(this, &MainWindowController::runScript);
-}
-
 void MainWindowController::displayUpdate(const QString url) {
     if (aboutDialog->isVisible()
             || url.isEmpty()) {
@@ -567,12 +541,6 @@ void MainWindowController::displayUpdate(const QString url) {
         "A new version of Toggl Desktop is available. Continue with download?",
         QMessageBox::No|QMessageBox::Yes).exec()) {
         QDesktopServices::openUrl(QUrl(url));
-        quitApp();
-    }
-}
-
-void MainWindowController::runScript() {
-    if (TogglApi::instance->runScriptFile(script)) {
         quitApp();
     }
 }

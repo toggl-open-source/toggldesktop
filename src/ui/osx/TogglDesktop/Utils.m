@@ -35,28 +35,6 @@ extern void *ctx;
 
 @implementation Utils
 
-+ (ScriptResult *)runScript:(NSString *)script
-{
-	ScriptResult *result = nil;
-	char *text = 0;
-
-	@try {
-		int64_t err = 0;
-		text = toggl_run_script(ctx, [script UTF8String], &err);
-		result = [[ScriptResult alloc] init];
-		result.err = err;
-		result.text = [NSString stringWithUTF8String:text];
-	}
-	@catch (NSException *e) {
-		NSLog(@"Script exception: %@", e);
-	} @finally {
-		free(text);
-		NSLog(@"Script result: %@", result);
-	}
-
-	return result;
-}
-
 + (void)runClearCommand
 {
 	NSString *location = @"Library/Application Support/TogglDesktop/.Sparkle";

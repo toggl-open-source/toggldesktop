@@ -635,11 +635,6 @@ public static partial class Toggl
         return toggl_format_tracking_time_duration(duration_in_seconds);
     }
 
-    public static string RunScript(string script, ref Int64 err)
-    {
-        return toggl_run_script(ctx, script, ref err);
-    }
-
     public static long AddAutotrackerRule(string term, ulong projectId, ulong taskId)
     {
         return toggl_autotracker_add_rule(ctx, term, projectId, taskId);
