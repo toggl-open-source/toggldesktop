@@ -1,6 +1,18 @@
 {
     "versions": [
         {
+            "version": "7.5.62",
+            "rows": [
+                "Ease of project creation by keyboard",
+                "Select default workspace instead of first workspace",
+                "Create Empty TE without stopping the current running TE in Timeline",
+                "Fix Timeline Editor doesn't update Time Entry data properly",
+                "Fixed Click in duration field results in field overwriting the duration time when TE is stopped"
+            ],
+            "date": "March 6th 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.49",
             "rows": [
                 "Support Resize and Drag and Drop on Timeline Time Entry",
