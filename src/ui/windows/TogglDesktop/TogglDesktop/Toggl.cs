@@ -1131,35 +1131,18 @@ public static partial class Toggl
             toggl_disable_update_check(ctx);
         }
 
-        // Move "old" format app data folder, if it exists
-        var oldpath = Path.Combine(Environment.GetFolderPath(
-            Environment.SpecialFolder.ApplicationData), "Kopsik");
-        var path = ApplicationDir;
-
-        if (Directory.Exists(oldpath) && !Directory.Exists(path))
-        {
-            Directory.Move(oldpath, path);
-        }
-
-        updatePath = Path.Combine(path, "updates");
+        updatePath = Path.Combine(ApplicationDir, "updates");
 
 #if TOGGL_ALLOW_UPDATE_CHECK
         installPendingUpdates();
 #endif
 
         // Configure log, db path
-        Directory.CreateDirectory(path);
+        Directory.CreateDirectory(ApplicationDir);
 
         if (null == DatabasePath)
         {
-            DatabasePath = Path.Combine(path, "toggldesktop.db");
-        }
-
-        // Rename database file, if not done yet
-        var olddatabasepath = Path.Combine(path, "kopsik.db");
-        if (File.Exists(olddatabasepath) && !File.Exists(DatabasePath))
-        {
-            File.Move(olddatabasepath, DatabasePath);
+            DatabasePath = Path.Combine(ApplicationDir, "toggldesktop.db");
         }
 
         if (!toggl_set_db_path(ctx, DatabasePath))
