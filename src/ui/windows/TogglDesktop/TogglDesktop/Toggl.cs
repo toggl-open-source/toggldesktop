@@ -1145,6 +1145,15 @@ public static partial class Toggl
             DatabasePath = Path.Combine(ApplicationDir, "toggldesktop.db");
         }
 
+#if MS_STORE
+        var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        var oldDatabasePath = Path.Combine(localAppData, "TogglDesktop", "toggldesktop.db");
+        if (!File.Exists(DatabasePath) && File.Exists(oldDatabasePath))
+        {
+            File.Move(oldDatabasePath, DatabasePath);
+        }
+#endif
+
         if (!toggl_set_db_path(ctx, DatabasePath))
         {
             throw new System.Exception("Failed to initialize database at " + DatabasePath);
