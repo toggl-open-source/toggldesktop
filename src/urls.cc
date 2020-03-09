@@ -35,7 +35,7 @@ std::string API() {
 
 std::string TimelineUpload() {
     if (use_staging_as_backend) {
-        return "https://toggl.space";
+        return "https://timeline.toggl.space";
     }
     return "https://timeline.toggl.com";
 }
