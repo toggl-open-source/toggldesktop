@@ -40,10 +40,6 @@
 #import <Sparkle/Sparkle.h>
 #endif
 
-#ifndef APP_STORE
-#import "TouchBar+PrivateAPIs.h"
-#endif
-
 @interface AppDelegate ()
 @property (nonatomic, strong) MainWindowController *mainWindowController;
 @property (nonatomic, strong) PreferencesWindowController *preferencesWindowController;
@@ -1776,42 +1772,6 @@ void on_countries(TogglCountryView *first)
         self.mainWindowController.touchBar = nil;
     }
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kTouchBarSettingChanged object:@(settings.showTouchBar)];
-
-#ifndef APP_STORE
-	if (@available(macOS 10.12.2, *))
-	{
-		// Show/Hide
-		if (settings.showTouchBar)
-		{
-			if (self.isAddedTouchBar)
-			{
-				return;
-			}
-
-			// Init if needd
-			if (!self.touchItem)
-			{
-				self.touchItem = [GlobalTouchbarButton makeDefault];
-			}
-
-			DFRSystemModalShowsCloseBoxWhenFrontMost(YES);
-			self.isAddedTouchBar = YES;
-			[NSTouchBarItem addSystemTrayItem:self.touchItem];
-			DFRElementSetControlStripPresenceForIdentifier([GlobalTouchbarButton ID], YES);
-		}
-		else
-		{
-			if (!self.isAddedTouchBar)
-			{
-				return;
-			}
-
-			self.isAddedTouchBar = NO;
-			[NSTouchBarItem removeSystemTrayItem:self.touchItem];
-			DFRElementSetControlStripPresenceForIdentifier([GlobalTouchbarButton ID], NO);
-		}
-	}
-#endif
 }
 
 #pragma mark - In app message

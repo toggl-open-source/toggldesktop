@@ -21,5 +21,4 @@
 #import "BetterFocusAutoCompleteInput.h"
 #import "Settings.h"
 #import "AppDelegate.h"
-#import "TouchBar+PrivateAPIs.h"
 

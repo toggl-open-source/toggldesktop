@@ -21,7 +21,6 @@
 		3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */; };
 		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
 		3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */; };
-		3CB7CFF82222033B00A9C806 /* DFRFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CB7CFD92222033B00A9C806 /* DFRFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CC450E81A31ED540012440B /* NSTextFieldDuration.m */; };
 		3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD30F411F58B02C006FAA0D /* OverlayViewController.m */; };
 		3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CD30F421F58B02C006FAA0D /* OverlayViewController.xib */; };
@@ -880,7 +879,6 @@
 		BA43B30B23F67EE60007DD99 /* libPocoCrypto.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPocoCrypto.60.dylib; sourceTree = "<group>"; };
 		BA43B33A23F680E20007DD99 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
 		BA43B33B23F680E20007DD99 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
-		BA43B34423F681380007DD99 /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = liblua.a; sourceTree = "<group>"; };
 		BA45AAF523FBEED4000C94C0 /* CornerBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerBoxView.swift; sourceTree = "<group>"; };
 		BA4791E822F0478900E24F79 /* NSView+Xib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSView+Xib.swift"; sourceTree = "<group>"; };
 		BA4791E922F0478900E24F79 /* NSView+Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSView+Animation.swift"; sourceTree = "<group>"; };
@@ -899,7 +897,6 @@
 		BA47DEB123966F9C005216AD /* InAppMessageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InAppMessageViewController.xib; sourceTree = "<group>"; };
 		BA47DEB723969EAC005216AD /* InAppMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppMessage.swift; sourceTree = "<group>"; };
 		BA49912D22C0BA14008149D9 /* TimelineDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDateFormatter.swift; sourceTree = "<group>"; };
-		BA4A7D502375527B00A42095 /* TouchBar+PrivateAPIs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TouchBar+PrivateAPIs.h"; path = "test2/TouchBar+PrivateAPIs.h"; sourceTree = SOURCE_ROOT; };
 		BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizablePopover.swift; sourceTree = "<group>"; };
 		BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowLayout.swift; sourceTree = "<group>"; };
 		BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineCollectionView.swift; sourceTree = "<group>"; };
@@ -1044,7 +1041,6 @@
 			files = (
 				BAD858CC228EAE7C00226C71 /* libz.tbd in Frameworks */,
 				74456B9D1A774BAE002A6338 /* TogglDesktopLibrary.dylib in Frameworks */,
-				3CB7CFF82222033B00A9C806 /* DFRFoundation.framework in Frameworks */,
 				743D94281827929C000E6F70 /* Carbon.framework in Frameworks */,
 				743D942618279290000E6F70 /* IOKit.framework in Frameworks */,
 				74AA947818090A8E0000539F /* Security.framework in Frameworks */,
@@ -1825,7 +1821,6 @@
 		BAF3ACCA2341F86300E41B33 /* TouchBar */ = {
 			isa = PBXGroup;
 			children = (
-				BA4A7D502375527B00A42095 /* TouchBar+PrivateAPIs.h */,
 				BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */,
 				BAF3ACD22343325A00E41B33 /* TouchBarService.swift */,
 				BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */,
@@ -2045,7 +2040,6 @@
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
 				BAB0029F2273125C005ECC93 /* DayLabel.xib in Resources */,
 				BA9C2DFE224C823C002AD2A1 /* ColorPickerView.xib in Resources */,
-				747B74881A0AD28200BB3791 /* ConsoleViewController.xib in Resources */,
 				BA43B25423F525F30007DD99 /* TimelineLineView.xib in Resources */,
 				743E584D1A775BB300F17CB0 /* Localizable.strings in Resources */,
 				BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */,
@@ -3034,8 +3028,8 @@
 					"\"Sparkle\"",
 					"-framework",
 					"\"SystemConfiguration\"",
-					"-weak_framework",
-					"\"DFRFoundation\"",
+					"-framework",
+					"\"AuthenticationServices\"",
 				);
 				OTHER_SWIFT_FLAGS = "-DSPARKLE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
@@ -3047,7 +3041,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Other/TogglDesktop-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR) $(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				SYSTEM_HEADER_SEARCH_PATHS = "";
 				WARNING_CFLAGS = "-Wpartial-availability";
 				WRAPPER_EXTENSION = app;
@@ -3127,8 +3121,8 @@
 					"\"Sparkle\"",
 					"-framework",
 					"\"SystemConfiguration\"",
-					"-weak_framework",
-					"\"DFRFoundation\"",
+					"-framework",
+					"\"AuthenticationServices\"",
 				);
 				OTHER_SWIFT_FLAGS = "-DSPARKLE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
@@ -3139,7 +3133,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Other/TogglDesktop-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR) $(SYSTEM_LIBRARY_DIR)/PrivateFrameworks/**";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				SYSTEM_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
