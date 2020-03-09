@@ -27,7 +27,7 @@ bool TimeEntry::operator == (const TimeEntry&) const {
     return false;
 }
 
-void TimeEntry::Fill(toggl::TimeEntry * const model) {
+void TimeEntry::Fill(toggl::locked<toggl::TimeEntry> &model) {
     model->EnsureGUID();
     ID = model->ID();
     DurationInSeconds = model->DurationInSeconds();
@@ -296,7 +296,7 @@ void GUI::DisplayPomodoroBreak(const Poco::Int64 minutes) {
     free(s2);
 }
 
-void GUI::DisplayAutotrackerNotification(Project *const p, Task *const t) {
+void GUI::DisplayAutotrackerNotification(locked<Project> &p, locked<Task> &t) {
     poco_check_ptr(p);
 
     if (p) {
@@ -451,7 +451,7 @@ void GUI::DisplayTimeEntryList(const bool open,
 
 void GUI::DisplayTimeline(
     const bool open,
-    const std::vector<TimelineEvent> list,
+    std::vector<locked<TimelineEvent>> &list,
     const std::vector<view::TimeEntry> &entries_list) {
 
     if (!on_display_timeline_) {
@@ -497,14 +497,12 @@ void GUI::DisplayTimeline(
         // Attach matching events to chunk
         TogglTimelineEventView *first_event = nullptr;
         TogglTimelineEventView *ev = nullptr;
-        for (std::vector<TimelineEvent>::const_iterator it = list.begin();
-                it != list.end(); it++) {
-            const TimelineEvent event = *it;
+        for (auto &event : list) {
 
             // Calculate the start time of the chunk
             // that fits this timeline event
             time_t chunk_start_time =
-                (event.Start() / kTimelineChunkSeconds)
+                (event->Start() / kTimelineChunkSeconds)
                 * kTimelineChunkSeconds;
 
             if (epoch_time != chunk_start_time) {
@@ -518,14 +516,14 @@ void GUI::DisplayTimeline(
             bool item_present = false;
             TogglTimelineEventView *event_app = first_event;
             while (event_app) {
-                if (compare_string(event_app->Filename, to_char_t(event.Filename())) == 0) {
-                    timeline_event_view_update_duration(event_app, event_app->Duration + event.Duration());
+                if (compare_string(event_app->Filename, to_char_t(event->Filename())) == 0) {
+                    timeline_event_view_update_duration(event_app, event_app->Duration + event->Duration());
                     app_present = true;
                     item_present = false;
                     ev = reinterpret_cast<TogglTimelineEventView *>(event_app->Event);
                     while (ev) {
-                        if (compare_string(ev->Title, to_char_t(event.Title())) == 0) {
-                            timeline_event_view_update_duration(ev, ev->Duration + event.Duration());
+                        if (compare_string(ev->Title, to_char_t(event->Title())) == 0) {
+                            timeline_event_view_update_duration(ev, ev->Duration + event->Duration());
                             item_present = true;
                         }
                         ev = reinterpret_cast<TogglTimelineEventView *>(ev->Next);
@@ -542,7 +540,7 @@ void GUI::DisplayTimeline(
 
             if (!app_present) {
                 TogglTimelineEventView *app_event_view = timeline_event_view_init(event);
-                if (event.Duration() > 0) {
+                if (event->Duration() > 0) {
                     app_event_view->Header = true;
                     if (app_event_view->Title) {
                         free(app_event_view->Title);
@@ -763,7 +761,7 @@ void GUI::DisplayMessage(const std::string &title,
 
 void GUI::DisplaySettings(const bool open,
                           const bool record_timeline,
-                          const Settings &settings,
+                          locked<const Settings> &settings,
                           const bool use_proxy,
                           const Proxy &proxy) {
     logger.debug("DisplaySettings");

@@ -256,6 +256,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\third_party\poco\openssl\build\include;$(ProjectDir)..\..\..\..\third_party\jsoncpp\dist;$(ProjectDir)..\..\..\..\third_party\poco\Foundation\include;$(ProjectDir)..\..\..\..\third_party\poco\Util\include;$(ProjectDir)..\..\..\..\third_party\poco\Crypto\include;$(ProjectDir)..\..\..\..\third_party\poco\Net\include;$(ProjectDir)..\..\..\..\third_party\poco\NetSSL_OpenSSL\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\src;$(ProjectDir)..\..\..\..\third_party\lua\src;$(ProjectDir)..\..\..\..\third_party\luafar;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -282,6 +283,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\third_party\poco\openssl;$(ProjectDir)..\..\..\..\third_party\openssl\include;$(ProjectDir)..\..\..\..\third_party\jsoncpp\dist;$(ProjectDir)..\..\..\..\third_party\poco\Foundation\include;$(ProjectDir)..\..\..\..\third_party\poco\Util\include;$(ProjectDir)..\..\..\..\third_party\poco\Crypto\include;$(ProjectDir)..\..\..\..\third_party\poco\Net\include;$(ProjectDir)..\..\..\..\third_party\poco\NetSSL_OpenSSL\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\src;$(ProjectDir)..\..\..\..\third_party\lua\src;$(ProjectDir)..\..\..\..\third_party\luafar;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -308,6 +310,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\third_party\poco\openssl\build\include;$(ProjectDir)..\..\..\..\third_party\jsoncpp\dist;$(ProjectDir)..\..\..\..\third_party\poco\Foundation\include;$(ProjectDir)..\..\..\..\third_party\poco\Util\include;$(ProjectDir)..\..\..\..\third_party\poco\Crypto\include;$(ProjectDir)..\..\..\..\third_party\poco\Net\include;$(ProjectDir)..\..\..\..\third_party\poco\NetSSL_OpenSSL\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\src;$(ProjectDir)..\..\..\..\third_party\lua\src;$(ProjectDir)..\..\..\..\third_party\luafar;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -335,6 +338,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\third_party\poco\openssl;$(ProjectDir)..\..\..\..\third_party\openssl\include;$(ProjectDir)..\..\..\..\third_party\jsoncpp\dist;$(ProjectDir)..\..\..\..\third_party\poco\Foundation\include;$(ProjectDir)..\..\..\..\third_party\poco\Util\include;$(ProjectDir)..\..\..\..\third_party\poco\Crypto\include;$(ProjectDir)..\..\..\..\third_party\poco\Net\include;$(ProjectDir)..\..\..\..\third_party\poco\NetSSL_OpenSSL\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\src;$(ProjectDir)..\..\..\..\third_party\lua\src;$(ProjectDir)..\..\..\..\third_party\luafar;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -361,6 +365,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\third_party\poco\openssl\build\include;$(ProjectDir)..\..\..\..\third_party\jsoncpp\dist;$(ProjectDir)..\..\..\..\third_party\poco\Foundation\include;$(ProjectDir)..\..\..\..\third_party\poco\Util\include;$(ProjectDir)..\..\..\..\third_party\poco\Crypto\include;$(ProjectDir)..\..\..\..\third_party\poco\Net\include;$(ProjectDir)..\..\..\..\third_party\poco\NetSSL_OpenSSL\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\src;$(ProjectDir)..\..\..\..\third_party\lua\src;$(ProjectDir)..\..\..\..\third_party\luafar;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -388,6 +393,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\third_party\poco\openssl\build\include;$(ProjectDir)..\..\..\..\third_party\jsoncpp\dist;$(ProjectDir)..\..\..\..\third_party\poco\Foundation\include;$(ProjectDir)..\..\..\..\third_party\poco\Util\include;$(ProjectDir)..\..\..\..\third_party\poco\Crypto\include;$(ProjectDir)..\..\..\..\third_party\poco\Net\include;$(ProjectDir)..\..\..\..\third_party\poco\NetSSL_OpenSSL\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\src;$(ProjectDir)..\..\..\..\third_party\lua\src;$(ProjectDir)..\..\..\..\third_party\luafar;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -415,6 +421,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\third_party\poco\openssl\build\include;$(ProjectDir)..\..\..\..\third_party\jsoncpp\dist;$(ProjectDir)..\..\..\..\third_party\poco\Foundation\include;$(ProjectDir)..\..\..\..\third_party\poco\Util\include;$(ProjectDir)..\..\..\..\third_party\poco\Crypto\include;$(ProjectDir)..\..\..\..\third_party\poco\Net\include;$(ProjectDir)..\..\..\..\third_party\poco\NetSSL_OpenSSL\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\src;$(ProjectDir)..\..\..\..\third_party\lua\src;$(ProjectDir)..\..\..\..\third_party\luafar;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -442,6 +449,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\third_party\poco\openssl\build\include;$(ProjectDir)..\..\..\..\third_party\jsoncpp\dist;$(ProjectDir)..\..\..\..\third_party\poco\Foundation\include;$(ProjectDir)..\..\..\..\third_party\poco\Util\include;$(ProjectDir)..\..\..\..\third_party\poco\Crypto\include;$(ProjectDir)..\..\..\..\third_party\poco\Net\include;$(ProjectDir)..\..\..\..\third_party\poco\NetSSL_OpenSSL\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\src;$(ProjectDir)..\..\..\..\third_party\lua\src;$(ProjectDir)..\..\..\..\third_party\luafar;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

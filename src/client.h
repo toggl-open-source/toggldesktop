@@ -16,11 +16,12 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Client : public BaseModel {
- public:
-    Client()
-        : BaseModel()
+    Client(ProtectedBase *container)
+        : BaseModel(container)
     , wid_(0)
     , name_("") {}
+ public:
+    friend class ProtectedBase;
 
     const Poco::UInt64 &WID() const {
         return wid_;

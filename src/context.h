@@ -322,7 +322,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error ClearCache();
 
-    TimeEntry *Start(
+    locked<TimeEntry> Start(
         const std::string &description,
         const std::string &duration,
         const Poco::UInt64 task_id,
@@ -334,9 +334,9 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const time_t ended,
         const bool stop_current_running);
 
-    TimeEntry *ContinueLatest(const bool prevent_on_app);
+    locked<TimeEntry> ContinueLatest(const bool prevent_on_app);
 
-    TimeEntry *Continue(
+    locked<TimeEntry> Continue(
         const std::string &GUID);
 
     void OpenTimeEntryList();
@@ -411,18 +411,16 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const Poco::Int64 at,
         const bool split_into_new_entry);
 
-    TimeEntry *DiscardTimeAndContinue(
+    locked<TimeEntry> DiscardTimeAndContinue(
         const std::string &GUID,
         const Poco::Int64 at);
 
-    TimeEntry *RunningTimeEntry();
+    locked<TimeEntry> RunningTimeEntry();
 
     error ToggleTimelineRecording(
         const bool record_timeline);
 
-    bool IsTimelineRecordingEnabled() const {
-        return user_ && user_->RecordTimeline();
-    }
+    bool IsTimelineRecordingEnabled() const;
 
     error SetDefaultProject(
         const Poco::UInt64 pid,
@@ -440,7 +438,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error UpdateChannel(
         std::string *update_channel);
 
-    Project *CreateProject(
+    locked<Project> CreateProject(
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
         const std::string &client_guid,
@@ -448,7 +446,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const bool is_private,
         const std::string &project_color);
 
-    Client *CreateClient(
+    locked<Client> CreateClient(
         const Poco::UInt64 workspace_id,
         const std::string &client_name);
 
@@ -474,9 +472,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error ToSAccept();
 
-    void SetIdleSeconds(const Poco::UInt64 idle_seconds) {
-        idle_.SetIdleSeconds(idle_seconds, user_);
-    }
+    void SetIdleSeconds(const Poco::UInt64 idle_seconds);
 
     void LoadMore();
 
@@ -500,9 +496,9 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     std::string UserEmail();
 
     // Timeline datasource
-    error StartAutotrackerEvent(const TimelineEvent &event) override;
+    error StartAutotrackerEvent(Poco::Int64 start, Poco::Int64 end, const std::string &title) override;
     error CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) override;
-    error StartTimelineEvent(TimelineEvent *event) override;
+    error StartTimelineEvent(Poco::Int64 start, Poco::Int64 end, const std::string &filename, const std::string &title) override;
     error MarkTimelineBatchAsUploaded(
         const std::vector<TimelineEvent> &events) override;
 
@@ -573,7 +569,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     void startPeriodicSync();
 
-    void setUser(User *value, const bool user_logged_in = false);
+    void setUser(locked<User> &value, const bool user_logged_in = false);
 
     void switchWebSocketOff();
     void switchWebSocketOn();
@@ -634,23 +630,20 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error pushChanges(
         TogglClient *https_client,
         bool *had_something_to_push);
-    error pushClients(
-        const std::vector<Client *> &clients,
+    error pushClients(std::vector<locked<Client> > &clients,
         const std::string &api_token,
         const TogglClient &toggl_client);
-    error pushProjects(
-        const std::vector<Project *> &projects,
-        const std::vector<Client *> &clients,
+    error pushProjects(std::vector<locked<Project> > &projects,
+        std::vector<locked<Client> > &clients,
         const std::string &api_token,
         const TogglClient &toggl_client);
-    error pushEntries(
-        const std::map<std::string, BaseModel *> &models,
-        const std::vector<TimeEntry *> &time_entries,
+    error pushEntries(const std::map<std::string, locked<BaseModel> > &models,
+        std::vector<locked<TimeEntry> > &time_entries,
         const std::string &api_token,
         const TogglClient &toggl_client);
     error updateEntryProjects(
-        const std::vector<Project *> &projects,
-        const std::vector<TimeEntry *> &time_entries);
+        std::vector<locked<Project>> &projects,
+        std::vector<locked<TimeEntry>> &time_entries);
     error signup(
         TogglClient *https_client,
         const std::string &email,
@@ -668,10 +661,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
                     std::string *user_data,
                     const Poco::Int64 since);
 
-    bool isTimeEntryLocked(TimeEntry* te);
-    bool isTimeLockedInWorkspace(time_t t, Workspace* ws);
-    bool canChangeStartTimeTo(TimeEntry* te, time_t t);
-    bool canChangeProjectTo(TimeEntry* te, Project* p);
+    bool isTimeEntryLocked(locked<TimeEntry> &te);
+    bool isTimeLockedInWorkspace(time_t t, locked<Workspace> &ws);
+    bool canChangeStartTimeTo(locked<TimeEntry> &te, time_t t);
+    bool canChangeProjectTo(locked<TimeEntry> &te, locked<Project> &p);
 
     error logAndDisplayUserTriedEditingLockedEntry();
 
@@ -679,7 +672,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error pullWorkspacePreferences(TogglClient* https_client);
     error pullWorkspacePreferences(TogglClient* https_client,
-                                   Workspace *workspace, std::string* json);
+                                   locked<Workspace> &workspace, std::string* json);
 
     error pushObmAction();
 
@@ -687,15 +680,12 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     template<typename T>
     void collectPushableModels(
-        const std::vector<T *> &list,
-        std::vector<T *> *result,
-        std::map<std::string, BaseModel *> *models = nullptr) const;
+        ProtectedContainer<T> &list,
+        std::vector<locked<T>> *result,
+        std::map<std::string, locked<BaseModel>> *models = nullptr);
 
     Poco::Mutex db_m_;
     Database *db_;
-
-    Poco::Mutex user_m_;
-    User *user_;
 
     Poco::Mutex ws_client_m_;
     WebSocketClient ws_client_;
@@ -759,13 +749,15 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     static std::string log_path_;
 
-    Settings settings_;
+    ProtectedModel<Settings> settings_ { nullptr, true };
+
+    RelatedData related;
 
     std::set<std::string> autotracker_titles_;
 
     HelpDatabase help_database_;
 
-    TimeEntry *pomodoro_break_entry_;
+    guid pomodoro_break_entry_guid_;
 
     // To cache grouped entries open/close status
     std::map<std::string, bool_t> entry_groups;

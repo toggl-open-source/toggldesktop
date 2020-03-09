@@ -103,17 +103,18 @@ void Analytics::TrackSize(const std::string &client_id,
 
 void Analytics::TrackSettings(const std::string &client_id,
                               const bool record_timeline,
-                              const Settings &settings,
+                              locked<const Settings> &settings,
                               const bool use_proxy,
                               const Proxy &proxy) {
     Poco::LocalDateTime now;
     if (now.year() != settings_sync_date.year()
             || now.month() != settings_sync_date.month()
             || now.day() != settings_sync_date.day()) {
+        Settings s = **settings;
         settings_sync_date = Poco::LocalDateTime();
         start(new GoogleAnalyticsSettingsEvent(
             client_id, "settings", record_timeline,
-            settings, use_proxy, proxy));
+            s, use_proxy, proxy));
     }
 }
 

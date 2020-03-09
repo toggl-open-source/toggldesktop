@@ -9,10 +9,11 @@
 #include <map>
 #include <functional>
 
-#include "timeline_event.h"
 #include "types.h"
+#include "util/memory.h"
 
 #include <Poco/Mutex.h>
+#include <Poco/UTF8String.h>
 #include <functional>
 
 namespace toggl {
@@ -26,9 +27,11 @@ class Tag;
 class Task;
 class TimeEntry;
 class Workspace;
+class User;
 
 namespace view {
 class TimeEntry;
+class Autocomplete;
 };
 
 template<typename T>
@@ -37,52 +40,43 @@ T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list);
 template <typename T>
 T *modelByGUID(const guid GUID, std::vector<T *> const *list);
 
+extern bool CompareClients(const Client *l, const Client *r);
+extern bool CompareProjects(const Project *l, const Project *r);
+
 class TOGGL_INTERNAL_EXPORT RelatedData {
  public:
-    std::vector<Workspace *> Workspaces;
-    std::vector<Client *> Clients;
-    std::vector<Project *> Projects;
-    std::vector<Task *> Tasks;
-    std::vector<Tag *> Tags;
-    std::vector<TimeEntry *> TimeEntries;
-    std::vector<AutotrackerRule *> AutotrackerRules;
-    std::vector<TimelineEvent *> TimelineEvents;
-    std::vector<ObmAction *> ObmActions;
-    std::vector<ObmExperiment *> ObmExperiments;
+    RelatedData();
+
+    ProtectedModel<toggl::User> User;
+    ProtectedContainer<Workspace> Workspaces;
+    ProtectedContainer<Client> Clients;
+    ProtectedContainer<Project> Projects;
+    ProtectedContainer<Task> Tasks;
+    ProtectedContainer<Tag> Tags;
+    ProtectedContainer<TimeEntry> TimeEntries;
+    ProtectedContainer<AutotrackerRule> AutotrackerRules;
+    ProtectedContainer<TimelineEvent> TimelineEvents;
+    ProtectedContainer<ObmAction> ObmActions;
+    ProtectedContainer<ObmExperiment> ObmExperiments;
 
     void Clear();
 
-    Task *TaskByID(const Poco::UInt64 id) const;
-    Client *ClientByID(const Poco::UInt64 id) const;
-    Project *ProjectByID(const Poco::UInt64 id) const;
-    Tag *TagByID(const Poco::UInt64 id) const;
-    Workspace *WorkspaceByID(const Poco::UInt64 id) const;
-    TimeEntry *TimeEntryByID(const Poco::UInt64 id) const;
-
-    void TagList(
-        std::vector<std::string> *result,
-        const Poco::UInt64 wid) const;
-    void WorkspaceList(std::vector<Workspace *> *) const;
-    void ClientList(std::vector<Client *> *) const;
-
-    TimeEntry *TimeEntryByGUID(const guid GUID) const;
-    Tag *TagByGUID(const guid GUID) const;
-    Project *ProjectByGUID(const guid GUID) const;
-    Client *ClientByGUID(const guid GUID) const;
-    TimelineEvent *TimelineEventByGUID(const guid GUID) const;
+    void TagList(std::vector<std::string> *result, const Poco::UInt64 wid) const;
+    std::vector<locked<Workspace>> WorkspaceList();
+    std::vector<locked<Client>> ClientList();
 
     Poco::Int64 NumberOfUnsyncedTimeEntries() const;
 
     // Find the time entry that was stopped most recently
-    TimeEntry *LatestTimeEntry() const;
+    locked<TimeEntry> LatestTimeEntry();
 
     // Collect visible timeline events
-    std::vector<TimelineEvent *> VisibleTimelineEvents() const;
+    std::vector<locked<TimelineEvent>> VisibleTimelineEvents();
 
     // Collect visible time entries
-    std::vector<TimeEntry *> VisibleTimeEntries() const;
+    std::vector<locked<TimeEntry>> VisibleTimeEntries();
 
-    Poco::Int64 TotalDurationForDate(const TimeEntry *match) const;
+    Poco::Int64 TotalDurationForDate(locked<TimeEntry> &match);
 
     // avoid duplicates
     bool HasMatchingAutotrackerRule(const std::string &lowercase_term) const;
@@ -93,17 +87,12 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
     void MinitimerAutocompleteItems(std::vector<view::Autocomplete> *) const;
     void ProjectAutocompleteItems(std::vector<view::Autocomplete> *) const;
 
-    void ProjectLabelAndColorCode(
-        TimeEntry * const te,
-        view::TimeEntry *view) const;
+    void ProjectLabelAndColorCode(locked<TimeEntry> &te, view::TimeEntry *view) const;
 
-    AutotrackerRule *FindAutotrackerRule(const TimelineEvent &event) const;
+    locked<AutotrackerRule> FindAutotrackerRule(locked<TimelineEvent> &event);
 
-    Client *clientByProject(Project *p) const;
-
-    void pushBackTimeEntry(TimeEntry  *timeEntry);
-
-    void forEachTimeEntries(std::function<void(TimeEntry *)> f);
+    locked<Client> clientByProject(locked<Project> &p);
+    locked<const Client> clientByProject(locked<const Project> &p) const;
 
  private:
     Poco::Mutex timeEntries_m_;

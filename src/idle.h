@@ -22,9 +22,9 @@ class TOGGL_INTERNAL_EXPORT Idle {
 
     void SetIdleSeconds(
         const Poco::Int64 idle_seconds,
-        User *current_user);
+        locked<User> &current_user);
 
-    void SetSettings(const Settings &settings) {
+    void SetSettings(ProtectedModel<Settings> *settings) {
         settings_ = settings;
     }
 
@@ -32,7 +32,7 @@ class TOGGL_INTERNAL_EXPORT Idle {
         last_sleep_started_ = time(nullptr);
     }
 
-    void SetWake(User *current_user) {
+    void SetWake(locked<User> &current_user) {
         if (last_sleep_started_) {
             Poco::Int64 slept_seconds = time(nullptr) - last_sleep_started_;
             if (slept_seconds > 0) {
@@ -45,7 +45,7 @@ class TOGGL_INTERNAL_EXPORT Idle {
 
  private:
     void computeIdleState(const Poco::Int64 idle_seconds,
-                          User *current_user);
+                          locked<User> &current_user);
 
     Logger logger { "idle" };
 
@@ -54,7 +54,8 @@ class TOGGL_INTERNAL_EXPORT Idle {
     Poco::Int64 last_idle_started_;
     time_t last_sleep_started_;
 
-    Settings settings_;
+    // TODO this should probably not be a pointer
+    ProtectedModel<Settings> *settings_;
     GUI *ui_;
 };
 

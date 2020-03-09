@@ -14,9 +14,10 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent {
- public:
-    TimelineEvent()
-        : BaseModel()
+public:
+    // public because instances get created all over the place
+    TimelineEvent(ProtectedBase *container)
+        : BaseModel(container)
     , title_("")
     , filename_("")
     , start_time_(0)

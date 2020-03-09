@@ -15,9 +15,8 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
- public:
-    TimeEntry()
-        : BaseModel()
+    TimeEntry(ProtectedBase *container)
+        : BaseModel(container)
     , wid_(0)
     , pid_(0)
     , tid_(0)
@@ -31,6 +30,8 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     , project_guid_("")
     , unsynced_(false)
     , last_start_at_(0) {}
+ public:
+    friend class ProtectedBase;
 
     virtual ~TimeEntry() {}
 

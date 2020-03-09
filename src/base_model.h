@@ -13,17 +13,20 @@
 #include "const.h"
 #include "types.h"
 #include "util/logger.h"
+#include "util/memory.h"
 
 #include <Poco/Types.h>
 
 namespace toggl {
 
+class ProtectedBase;
 class BatchUpdateResult;
 
 class TOGGL_INTERNAL_EXPORT BaseModel {
  public:
-    BaseModel()
-        : local_id_(0)
+    BaseModel(ProtectedBase *container)
+        : container_(container)
+    , local_id_(0)
     , id_(0)
     , guid_("")
     , ui_modified_at_(0)
@@ -36,6 +39,11 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     , unsynced_(false) {}
 
     virtual ~BaseModel() {}
+
+    ProtectedBase *GetContainer();
+    const ProtectedBase *GetContainer() const;
+    RelatedData *GetRelatedData();
+    const RelatedData *GetRelatedData() const;
 
     const Poco::Int64 &LocalID() const {
         return local_id_;
@@ -160,6 +168,8 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
  private:
     std::string batchUpdateRelativeURL() const;
     std::string batchUpdateMethod() const;
+
+    ProtectedBase *container_;
 
     Poco::Int64 local_id_;
     Poco::UInt64 id_;

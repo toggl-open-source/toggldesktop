@@ -11,6 +11,7 @@
 #include <Poco/Timestamp.h>
 
 #include "types.h"
+#include "util/memory.h"
 
 namespace toggl {
 
@@ -29,6 +30,7 @@ class TOGGL_INTERNAL_EXPORT Format {
 class Client;
 class Project;
 class Task;
+class TimeEntry;
 class Workspace;
 
 class TOGGL_INTERNAL_EXPORT TimedEvent {
@@ -47,9 +49,9 @@ class TOGGL_INTERNAL_EXPORT Formatter {
     static std::string TimeOfDayFormat;
     static std::string DurationFormat;
 
-    static std::string JoinTaskName(
-        Task * const,
-        Project * const);
+    // TODO these two are the same, look into making them work the same
+    static std::string JoinTaskName(locked<Task> &t, locked<Project> &p);
+    static std::string JoinTaskName(locked<const Task> &t, locked<const Project> &p);
 
     static std::string FormatDuration(
         const Poco::Int64 value,
@@ -138,8 +140,11 @@ class TOGGL_INTERNAL_EXPORT Formatter {
 };
 
 bool CompareClientByName(
-    Client *a,
-    Client *b);
+    locked<Client> &a,
+    locked<Client> &b);
+bool CompareTimeEntriesByStart(
+    locked<TimeEntry> &a,
+    locked<TimeEntry> &b);
 bool CompareByStart(
     TimedEvent *a,
     TimedEvent *b);
@@ -150,8 +155,8 @@ bool CompareStructuredAutocompleteItems(
     view::Autocomplete a,
     view::Autocomplete b);
 bool CompareWorkspaceByName(
-    Workspace *a,
-    Workspace *b);
+    locked<Workspace> &a,
+    locked<Workspace> &b);
 bool CompareAutotrackerTitles(
     const std::string &a,
     const std::string &b);

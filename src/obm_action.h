@@ -14,12 +14,13 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT ObmAction : public BaseModel {
- public:
-    ObmAction()
-        : BaseModel()
+    ObmAction(ProtectedBase *container)
+        : BaseModel(container)
     , experiment_id_(0)
     , key_("")
     , value_("") {}
+ public:
+    friend class ProtectedBase;
 
     const std::string &Key() const {
         return key_;
@@ -49,13 +50,14 @@ class TOGGL_INTERNAL_EXPORT ObmAction : public BaseModel {
 };
 
 class TOGGL_INTERNAL_EXPORT ObmExperiment : public BaseModel {
- public:
-    ObmExperiment()
-        : BaseModel()
+    ObmExperiment(ProtectedBase *container)
+        : BaseModel(container)
     , included_(false)
     , nr_(0)
     , has_seen_(false)
     , actions_("") {}
+ public:
+   friend class ProtectedBase;
 
     const bool &Included() const {
         return included_;

@@ -63,11 +63,11 @@ class TOGGL_INTERNAL_EXPORT TimelineDatasource {
     virtual ~TimelineDatasource() {}
 
     // A autotracker event has started
-    virtual error StartAutotrackerEvent(const TimelineEvent &event) = 0;
+    virtual error StartAutotrackerEvent(Poco::Int64 start, Poco::Int64 end, const std::string &title) = 0;
 
     // A timeline event is detected, window has changes
     // or there's an idle event.
-    virtual error StartTimelineEvent(TimelineEvent *event) = 0;
+    virtual error StartTimelineEvent(Poco::Int64 start, Poco::Int64 end, const std::string &filename, const std::string &title) = 0;
 
     // Find timeline events for upload,
     virtual error CreateCompressedTimelineBatchForUpload(

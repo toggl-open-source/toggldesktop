@@ -12,16 +12,17 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Workspace : public BaseModel {
- public:
-    Workspace()
-        : BaseModel()
+    Workspace(ProtectedBase *container)
+        : BaseModel(container)
     , name_("")
     , premium_(false)
     , only_admins_may_create_projects_(false)
     , admin_(false)
     , projects_billable_by_default_(false)
     , business_(false)
-    , locked_time_(0) {}
+    , locked_time_(0) {} 
+public:
+   friend class ProtectedBase;
 
     const std::string &Name() const {
         return name_;

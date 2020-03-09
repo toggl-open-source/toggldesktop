@@ -15,9 +15,9 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
- public:
-    Settings()
-        : use_idle_detection(false)
+    Settings(ProtectedBase *container)
+        : BaseModel(container)
+    , use_idle_detection(false)
     , menubar_timer(false)
     , menubar_project(false)
     , dock_icon(false)
@@ -47,6 +47,8 @@ class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
     , stop_entry_on_shutdown_sleep(false)
     , show_touch_bar(true)
     , active_tab(0) {}
+ public:
+    friend class ProtectedBase;
 
     virtual ~Settings() {}
 
@@ -81,7 +83,7 @@ class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
     bool show_touch_bar;
     Poco::UInt8 active_tab;
 
-    bool IsSame(const Settings &other) const;
+    bool IsSame(locked<Settings> &other) const;
 
     // Override BaseModel
 

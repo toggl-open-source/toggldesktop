@@ -15,6 +15,7 @@
 #include "related_data.h"
 #include "types.h"
 #include "workspace.h"
+#include "obm_action.h"
 
 #include <Poco/LocalDateTime.h>
 #include <Poco/Types.h>
@@ -22,9 +23,9 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT User : public BaseModel {
- public:
-    User()
-        : api_token_("")
+    User(ProtectedBase *container)
+        : BaseModel(container)
+    , api_token_("")
     , default_wid_(0)
     , since_(0)
     , fullname_("")
@@ -38,8 +39,10 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     , default_tid_(0)
     , has_loaded_more_(false)
     , collapse_entries_(false) {}
-
+ public:
     ~User();
+
+    friend class ProtectedBase;
 
     error EnableOfflineLogin(
         const std::string &password);
@@ -47,17 +50,17 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     bool HasPremiumWorkspaces() const;
     bool CanAddProjects() const;
 
-    bool CanSeeBillable(
-        const Workspace *ws) const;
+    bool CanSeeBillable(locked<Workspace> &ws) const;
 
     void SetLastTEDate(const std::string &value);
 
-    TimeEntry *RunningTimeEntry() const;
+    locked<TimeEntry> RunningTimeEntry();
+    locked<const TimeEntry> RunningTimeEntry() const;
     bool IsTracking() const {
-        return RunningTimeEntry() != nullptr;
+        return RunningTimeEntry();
     }
 
-    TimeEntry *Start(
+    locked<TimeEntry> Start(
         const std::string &description,
         const std::string &duration,
         const Poco::UInt64 task_id,
@@ -68,20 +71,20 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         const time_t ended,
         const bool stop_current_running);
 
-    TimeEntry *Continue(
+    locked<TimeEntry> Continue(
         const std::string &GUID,
         const bool manual_mode);
 
-    void Stop(std::vector<TimeEntry *> *stopped = nullptr);
+    void Stop();
 
     // Discard time. Return a new time entry if
     // the discarded time was split into a new time entry
-    TimeEntry *DiscardTimeAt(
+    locked<TimeEntry> DiscardTimeAt(
         const std::string &guid,
         const Poco::Int64 at,
         const bool split_into_new_entry);
 
-    Project *CreateProject(
+    locked<Project> CreateProject(
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
         const std::string &client_guid,
@@ -91,13 +94,9 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         const std::string &project_color,
         const bool billable);
 
-    void AddProjectToList(Project *p);
-
-    Client *CreateClient(
+    locked<Client> CreateClient(
         const Poco::UInt64 workspace_id,
         const std::string &client_name);
-
-    void AddClientToList(Client *c);
 
     std::string DateDuration(TimeEntry *te) const;
 
@@ -169,8 +168,6 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     }
     void SetCollapseEntries(const bool value);
 
-    RelatedData related;
-
     // Override BaseModel
     std::string String() const override;
     std::string ModelName() const override;
@@ -198,8 +195,8 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         const std::vector<TimelineEvent> &events);
     void CompressTimeline();
 
-    std::vector<TimelineEvent> CompressedTimelineForUI(const Poco::LocalDateTime *date) const;
-    std::vector<TimelineEvent> CompressedTimelineForUpload(const Poco::LocalDateTime *date = nullptr) const;
+    std::vector<locked<TimelineEvent>> CompressedTimelineForUI(const Poco::LocalDateTime *date);
+    std::vector<locked<TimelineEvent>> CompressedTimelineForUpload(const Poco::LocalDateTime *date = nullptr);
 
     error UpdateJSON(
         std::vector<TimeEntry *> * const,
@@ -212,10 +209,10 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     bool SetTimeEntryID(
         Poco::UInt64 id,
-        TimeEntry* timeEntry);
+        locked<TimeEntry> &timeEntry);
 
     template<typename T>
-    void EnsureWID(T *model) const {
+    void EnsureWID(locked<T> &model) const {
         // Do nothing if TE already has WID assigned
         if (model->WID()) {
             return;
@@ -228,10 +225,9 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         }
 
         // Try to set first WID available
-        std::vector<Workspace *>::const_iterator it =
-            related.Workspaces.begin();
-        if (it != related.Workspaces.end()) {
-            Workspace *ws = *it;
+        auto it = GetRelatedData()->Workspaces.cbegin();
+        if (it != GetRelatedData()->Workspaces.cend()) {
+            locked<const Workspace> ws = *it;
             model->SetWID(ws->ID());
         }
     }
@@ -319,8 +315,8 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     void loadObmExperimentFromJson(Json::Value const &obm);
 
-    std::vector<TimelineEvent> CompressedTimeline(
-        const Poco::LocalDateTime *date = nullptr, bool is_for_upload = true) const;
+    std::vector<locked<TimelineEvent>> CompressedTimeline(
+        const Poco::LocalDateTime *date = nullptr, bool is_for_upload = true);
 
     std::string api_token_;
     Poco::UInt64 default_wid_;
@@ -338,22 +334,20 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     bool has_loaded_more_;
     bool collapse_entries_;
-
-    Poco::Mutex loadTimeEntries_m_;
 };
 
 template<class T>
 void deleteZombies(
-    const std::vector<T> &list,
+    ProtectedContainer<T> &list,
     const std::set<Poco::UInt64> &alive);
 
 template <typename T>
 void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
-                                      std::vector<T *> *list);
+                                      ProtectedContainer<T> &list);
 
 template <typename T>
 void removeProjectFromRelatedModels(const Poco::UInt64 pid,
-                                    std::vector<T *> *list);
+                                    ProtectedContainer<T> &list);
 
 }  // namespace toggl
 
