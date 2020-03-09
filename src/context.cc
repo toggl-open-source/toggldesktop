@@ -4938,9 +4938,17 @@ error Context::pushChanges(
     TogglClient *toggl_client,
     bool *had_something_to_push) {
     try {
-        auto pushModels = [this](auto &models, auto api_token, auto toggl_client) {
+        auto pushModelsInner = [this](auto &models, auto api_token, auto toggl_client) {
+            bool offline = false;
             error err = noError;
             for (auto &model : models) {
+                // Avoid trying to POST when we're offline
+                if (offline) {
+                    // Mark the item as unsynced now
+                    model->SetUnsynced();
+                    continue;
+                }
+
                 HTTPSRequest req = model->PrepareRequest();
                 req.host = urls::API();
                 req.basic_auth_username = api_token;
@@ -4953,44 +4961,9 @@ error Context::pushChanges(
                     if (model->ResolveError(resp.body) == noError) {
                         displayError(save(false));
                     }
-                    continue;
-                }
-
-                err = model->LoadFromJSONString(resp.body, false);
-            }
-
-            return err;
-        };
-
-        auto pushEntries = [this](auto &time_entries, auto api_token, auto toggl_client) {
-            std::string error_message("");
-            bool error_found = false;
-            bool offline = false;
-
-            for (auto &te : time_entries) {
-                // Avoid trying to POST when we're offline
-                if (offline) {
-                    // Mark the time entry as unsynced now
-                    te->SetUnsynced();
-                    continue;
-                }
-
-                HTTPSRequest req = te->PrepareRequest();
-                req.host = urls::API();
-                req.basic_auth_username = api_token;
-                req.basic_auth_password = "api_token";
-
-                HTTPSResponse resp = toggl_client.Request(req);
-
-                if (resp.err != noError) {
-                    // if we're able to solve the error
-                    if (te->ResolveError(resp.body) == noError) {
-                        displayError(save(false));
-                    }
-                    error_found = true;
-                    error_message = resp.err;
+                    err = resp.err;
                     if (resp.status_code == 429) {
-                        error_message = error(kRateLimit);
+                        err = error(kRateLimit);
                     }
                     offline = IsNetworkingError(resp.err);
 
@@ -5000,19 +4973,10 @@ error Context::pushChanges(
                     continue;
                 }
 
-                if (te->NeedsDELETE()) {
-                    // Successfully deleted entry
-                    te->MarkAsDeletedOnServer();
-                    continue;
-                }
-
-                te->LoadFromJSONString(resp.body, true);
+                err = model->LoadFromJSONString(resp.body, false);
             }
 
-            if (error_found) {
-                return error_message;
-            }
-            return noError;
+            return err;
         };
 
         auto updateEntryProjects = [](auto &projects, auto &time_entries) {
@@ -5095,12 +5059,13 @@ error Context::pushChanges(
         ss << "Sync success (";
 
         // dirty, but this will go away anyway
-        auto pushWrapper = [&ss, &pushModels, &api_token, &toggl_client](auto &name, auto &models) {
+        auto pushModels = [&ss, &pushModelsInner, &api_token, &toggl_client](auto &name, auto &models) {
             if (models.size() > 0) {
                 Poco::Stopwatch stopwatch;
                 stopwatch.start();
-                error err = pushModels(models, api_token, *toggl_client);
-                if (err != noError && err.find(kClientNameAlreadyExists) == std::string::npos) {
+                error err = pushModelsInner(models, api_token, *toggl_client);
+                if (err != noError && (err.find(kClientNameAlreadyExists) == std::string::npos ||
+                                       err.find(kProjectNameAlready) == std::string::npos)) {
                     return err;
                 }
                 stopwatch.stop();
@@ -5110,16 +5075,22 @@ error Context::pushChanges(
         };
 
         // Clients first as projects may depend on clients
-        pushWrapper("clients", clients);
+        error err = pushModels("clients", clients);
+        if (err != noError) {
+            return err;
+        }
 
         // Update client id on projects if needed
-        error err = updateProjectClients(clients, projects);
+        err = updateProjectClients(clients, projects);
         if (err != noError) {
             return err;
         }
 
         // Projects second as time entries may depend on projects
-        pushWrapper("projects", projects);
+        err = pushModels("projects", projects);
+        if (err != noError) {
+            return err;
+        }
 
         // Update project id on time entries if needed
         err = updateEntryProjects(projects, time_entries);
@@ -5127,23 +5098,15 @@ error Context::pushChanges(
             return err;
         }
 
-        // Time entries last to be sure clients and projects are synced
-        if (time_entries.size() > 0) {
-            Poco::Stopwatch entry_stopwatch;
-            entry_stopwatch.start();
-            error err = pushEntries(time_entries, api_token, *toggl_client);
-            if (err != noError) {
-                // Hide load more button when offline
-                related.User->ConfirmLoadedMore();
-                // Reload list to show unsynced icons in items
-                UIElements render;
-                render.display_time_entries = true;
-                updateUI(render);
-                return err;
-            }
-
-            entry_stopwatch.stop();
-            ss << " | " << time_entries.size() << " time entries in " << entry_stopwatch.elapsed() / 1000 << " ms";
+        err = pushModels("time entries", time_entries);
+        if (err != noError) {
+            // Hide load more button when offline
+            related.User->ConfirmLoadedMore();
+            // Reload list to show unsynced icons in items
+            UIElements render;
+            render.display_time_entries = true;
+            updateUI(render);
+            return err;
         }
 
         stopwatch.stop();
