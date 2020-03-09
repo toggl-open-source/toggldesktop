@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
 {
     public partial class TimerEntryListView : IMainView
     {
-        private readonly Dictionary<string, TimeEntryCell> cellsByGUID =
-            new Dictionary<string, TimeEntryCell>();
-
-        private string highlightedGUID;
-
         public TimerEntryListView()
         {
             this.InitializeComponent();
@@ -21,10 +20,13 @@ namespace TogglDesktop
             Toggl.OnLogin += this.onLogin;
         }
 
-        public double TimerHeight { get { return this.Timer.Height; } }
+        public Brush TitleBarBrush => this.Timer.Background;
+        public double TimerHeight => this.Timer.Height;
 
         protected override void OnInitialized(EventArgs e)
         {
+            // need to use code behind because binding to child elements won't work
+            // TODO: find a way to express this in XAML
             this.MinHeight = this.Timer.Height;
             this.MinWidth = this.Timer.MinWidth;
 
@@ -49,14 +51,8 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onTimeEntryList, open, list, showLoadMoreButton))
                 return;
 
-            this.Entries.SetLoadMoreButtonVisibility(showLoadMoreButton);
             this.fillTimeEntryList(list);
-
-            if (open)
-            {
-                this.Entries.Focus(false);
-                this.DisableHighlight();
-            }
+            this.Entries.ViewModel.OnTimeEntryList(showLoadMoreButton, list.Count == 0);
         }
 
         private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
@@ -66,92 +62,63 @@ namespace TogglDesktop
 
             using (Performance.Measure("highlighting cell in list"))
             {
-                this.highlightEntry(te.GUID);
-                if (open)
-                {
-                    this.Entries.HighlightKeyboard(te.GUID);
-                }
+                this.Entries.SelectEntry(te.GUID);
             }
         }
-
 
         #endregion
 
         private void fillTimeEntryList(List<Toggl.TogglTimeEntryView> list)
         {
-            var previousCount = this.cellsByGUID.Count;
+            var previousCount = this.Entries.EntriesCount;
             var newCount = list.Count;
-
-            var cells = new List<Tuple<string, TimeEntryCell>>(newCount);
 
             using (Performance.Measure("rendering time entry list, previous count: {0}, new count: {1}", previousCount, newCount))
             {
-                this.cellsByGUID.Clear();
-
-                Action<string, TimeEntryCell> registerCellByGUID = (guid, cell) =>
-                {
-                    this.cellsByGUID.Add(guid, cell);
-                    cells.Add(Tuple.Create(guid, cell));
-                };
-
                 var days = groupByDays(list);
+                var dayHeaderViewModels = this.fillDays(days);
 
-                this.fillDays(days, registerCellByGUID);
-
-                this.Entries.FinishedFillingList();
-                this.Entries.SetTimeEntryCellList(cells);
-                this.refreshHighLight();
+                this.Entries.SetDayHeaderViewModels(dayHeaderViewModels);
             }
-
         }
 
-        private void fillDays(List<List<Toggl.TogglTimeEntryView>> days, Action<string, TimeEntryCell> registerCellByGUID)
+        private DayHeaderViewModel[] fillDays(List<List<Toggl.TogglTimeEntryView>> days)
         {
             var children = this.Entries.Children;
 
-            Dictionary<string, bool> isCollapsed =
-                new Dictionary<string, bool>();
-            var i = 0;
-            // remember which days were collapsed
-            if (children.Count > 0)
-            {
-                for (; i < children.Count; i++)
-                {
-                    var header = (TimeEntryCellDayHeader)children[i];
-                    isCollapsed.Add(header.dateHeader, header.IsCollapsed);
-                }
-            }
+            // remember which days were expanded
+            var isExpandedDictionary = children
+                .Cast<TimeEntryCellDayHeader>()
+                .Select(h => h.ViewModel)
+                .ToDictionary(vm => vm.DateHeader, vm => vm.IsExpanded);
 
             // remove superfluous days
             if (children.Count > days.Count)
             {
-                children.RemoveRange(days.Count, children.Count - days.Count);
+                var daysToRemoveCount = children.Count - days.Count;
+                children.RemoveRange(days.Count, daysToRemoveCount);
             }
-
-            // update existing days
-            i = 0;
-            for (; i < children.Count; i++)
+            else
             {
-                var collapsed = false;
-                var day = days[i];
-                var item = (Toggl.TogglTimeEntryView)day[0];
-
-                isCollapsed.TryGetValue(item.DateHeader, out collapsed);
-
-                var header = (TimeEntryCellDayHeader)children[i];
-                header.Display(day, registerCellByGUID, collapsed);
+                var daysToAddCount = days.Count - children.Count;
+                for (var i = 0; i < daysToAddCount; i++)
+                    children.Add(new TimeEntryCellDayHeader());
             }
 
-            // add additional days
-            for (; i < days.Count; i++)
+            var viewModels = days.Select(day =>
             {
-                var day = days[i];
+                var vm = day[0].ToDayHeaderViewModel();
+                var isExpanded = isExpandedDictionary.GetValueOrDefault(day[0].DateHeader, true);
+                vm.IsExpanded = isExpanded;
+                return vm;
+            }).ToArray();
 
-                var header = new TimeEntryCellDayHeader();
-                header.Display(day, registerCellByGUID, false);
-
-                children.Add(header);
+            for (var i = 0; i < children.Count; i++)
+            {
+                ((TimeEntryCellDayHeader)children[i]).Display(viewModels[i], days[i]);
             }
+
+            return viewModels;
         }
 
         private static List<List<Toggl.TogglTimeEntryView>> groupByDays(List<Toggl.TogglTimeEntryView> list)
@@ -171,28 +138,6 @@ namespace TogglDesktop
             }
 
             return days;
-        }
-
-        private void refreshHighLight()
-        {
-            this.highlightEntry(this.highlightedGUID);
-        }
-
-        private void highlightEntry(string guid)
-        {
-            this.highlightedGUID = guid;
-
-            TimeEntryCell cell = null;
-            if (guid != null)
-                this.cellsByGUID.TryGetValue(guid, out cell);
-
-            this.Entries.HighlightCell(cell);
-        }
-
-        public void DisableHighlight()
-        {
-            this.highlightedGUID = null;
-            this.Entries.DisableHighlight();
         }
 
         public void SetListWidth(double width)
@@ -224,11 +169,18 @@ namespace TogglDesktop
         public void Activate(bool allowAnimation)
         {
             this.IsEnabled = true;
+            var focusTimerAction = new Action(() => { this.Timer.Focus(); });
+            this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, focusTimerAction);
         }
 
         public void Deactivate(bool allowAnimation)
         {
             this.IsEnabled = false;
+        }
+
+        public bool HandlesError(string errorMessage)
+        {
+            return false;
         }
     }
 }

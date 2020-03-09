@@ -169,6 +169,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error SetSettingsActiveTab(const uint8_t active_tab);
 
+    error SetSettingsColorTheme(const uint8_t color_theme);
+
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
     error SetSettingsFocusOnShortcut(const bool focus_on_shortcut);
@@ -210,7 +212,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     bool GetShowTouchBar();
 
     uint8_t GetActiveTab();
-    
+
     void SetWindowMaximized(
         const bool value);
 
@@ -293,7 +295,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error Login(
         const std::string &email,
-        const std::string &password);
+        const std::string &password,
+        const bool isSignup = false);
 
     error AsyncSignup(
         const std::string &email,
@@ -331,7 +334,9 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error Logout();
 
-    error SetLoggedInUserFromJSON(const std::string &json);
+    error SetLoggedInUserFromJSON(
+        const std::string &json,
+        const bool isSignup = false);
 
     error ClearCache();
 
@@ -536,6 +541,14 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
                        const Poco::Int64 height);
 
     void TrackInAppMessage(const Poco::Int64 type);
+
+    void TrackCollapseDay();
+
+    void TrackExpandDay();
+
+    void TrackCollapseAllDays();
+
+    void TrackExpandAllDays();
 
  protected:
     void uiUpdaterActivity();

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
+using ControlzEx;
 
 namespace TogglDesktop
 {
@@ -16,7 +15,6 @@ namespace TogglDesktop
         public IdleNotificationWindow()
         {
             this.InitializeComponent();
-            this.Closing += this.HideWindowOnClosing;
             Toggl.OnIdleNotification += this.onIdleNotification;
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
         }
@@ -31,11 +29,12 @@ namespace TogglDesktop
 
             this.timeText.Text = since;
             this.durationText.Text = duration;
-            this.descriptionText.Text = description;
+            this.descriptionText.Text = string.IsNullOrEmpty(description) ? "No description" : description;
 
             this.Show();
             this.Topmost = true;
             this.Activate();
+            KeyboardNavigationEx.Focus(this.keepTimeButton);
         }
 
         protected override void OnDeactivated(EventArgs e)

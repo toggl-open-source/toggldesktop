@@ -7,8 +7,6 @@
 #include <cstring>
 #include <set>
 
-#include "toggl_api_lua.h"
-
 #include "client.h"
 #include "const.h"
 #include "context.h"
@@ -179,6 +177,12 @@ bool_t toggl_set_settings_active_tab(
     void *context,
     const uint8_t active_tab) {
     return toggl::noError == app(context)->SetSettingsActiveTab(active_tab);
+}
+
+bool_t toggl_set_settings_color_theme(
+    void *context,
+    const uint8_t color_theme) {
+    return toggl::noError == app(context)->SetSettingsColorTheme(color_theme);
 }
 
 bool_t toggl_set_settings_idle_minutes(
@@ -1381,50 +1385,6 @@ bool_t toggl_set_promotion_response(
         promotion_type, promotion_response);
 }
 
-char_t *toggl_run_script(
-    void *context,
-    const char_t* script,
-    int64_t *err) {
-
-    lua_State *L = luaL_newstate();
-    luaL_openlibs(L);
-    toggl_register_lua(context, L);
-    lua_settop(L, 0);
-
-    *err = luaL_loadstring(L, to_string(script).c_str());
-    if (*err) {
-        return copy_string(lua_tostring(L, -1));
-    }
-
-    *err = lua_pcall(L, 0, LUA_MULTRET, 0);
-    if (*err) {
-        return copy_string(lua_tostring(L, -1));
-    }
-
-    int argc = lua_gettop(L);
-
-    std::stringstream ss;
-    ss << argc << " value(s) returned" << std::endl;
-
-    for (int i = 0; i < argc; i++) {
-        if (lua_isstring(L, -1)) {
-            ss << lua_tostring(L, -1);
-        } else if (lua_isnumber(L, -1)) {
-            ss << lua_tointeger(L, -1);
-        } else if (lua_isboolean(L, -1)) {
-            ss << lua_toboolean(L, -1);
-        } else {
-            ss << "ok";
-        }
-        lua_pop(L, -1);
-    }
-    ss << std::endl << std::endl;
-
-    lua_close(L);
-
-    return copy_string(ss.str());
-}
-
 int64_t toggl_autotracker_add_rule(
     void *context,
     const char_t *term,
@@ -1553,6 +1513,34 @@ void toggl_iam_click(void *context,
 }
 
 char_t *toggl_format_duration_time(void *context,
-                          const uint64_t timestamp) {
+                                   const uint64_t timestamp) {
     return copy_string(toggl::Formatter::FormatDurationForDateHeader(timestamp));
+}
+
+void track_collapse_day(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackCollapseDay();
+}
+
+void track_expand_day(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackExpandDay();
+}
+
+void track_collapse_all_days(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackCollapseAllDays();
+}
+
+void track_expand_all_days(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackExpandAllDays();
 }

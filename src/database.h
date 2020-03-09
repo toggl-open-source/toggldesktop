@@ -130,6 +130,8 @@ class TOGGL_INTERNAL_EXPORT Database {
 
     error SetSettingsActiveTab(const uint8_t &active_tab);
 
+    error SetSettingsColorTheme(const uint8_t &color_theme);
+
     error SetSettingsRemindTimes(
         const std::string &remind_starts,
         const std::string &remind_ends);

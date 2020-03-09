@@ -1,54 +1,53 @@
-﻿<Window x:Class="TogglDesktop.EditViewPopup"
+﻿<mah:MetroWindow x:Class="TogglDesktop.EditViewPopup"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
         mc:Ignorable="d"
         d:DesignWidth="400" d:DesignHeight="520"
-        WindowStyle="None" ResizeMode="NoResize"
-        MouseMove="onWindowMouseMove"
-        Background="Transparent"
         ShowInTaskbar="False"
+        ResizeMode="CanResize"
+        BorderThickness="0"
+        ShowTitleBar="False"
+        SaveWindowPosition="False"
+        ShowCloseButton="False"
+        ShowMaxRestoreButton="False"
+        ShowMinButton="False"
+        ShowSystemMenuOnRightClick="False"
+        WindowStyle="None"
+        WindowTransitionsEnabled="False"
+        Background="Transparent"
+        ResizeBorderThickness="0 0 8 0"
         AllowsTransparency="True"
-        UseLayoutRounding="True">
-    
-    <WindowChrome.WindowChrome>
-        <WindowChrome
-            CaptionHeight="0"
-            CornerRadius="0"
-            ResizeBorderThickness="0"
-            GlassFrameThickness="0"
-            UseAeroCaptionButtons="False"
-            />
-    </WindowChrome.WindowChrome>
-
+        UseLayoutRounding="True"
+        SizeToContent="Height">
+    <i:Interaction.Behaviors>
+        <behaviors:CloseWindowOnEscBehavior />
+    </i:Interaction.Behaviors>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/DesignUpdate/MahApps.Overrides.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid ClipToBounds="True" Name="mainGrid" x:FieldModifier="private">
-        <toggl:EditView
-            x:Name="EditView"
-            />
-        <Rectangle
-            x:Name="resizeHandle" x:FieldModifier="private"
-            Fill="Transparent"
-            Width="10" HorizontalAlignment="Right"
-            Margin="0 32"
-            Cursor="SizeWE"
-            IsHitTestVisible="True"
-            MouseLeftButtonDown="onResizeHandleLeftButtonDown"
-            MouseLeftButtonUp="onResizeHandleLeftButtonUp"
-            />
-
         <Rectangle Name="mainFormShadow" x:FieldModifier="private"
-                   HorizontalAlignment="Left" VerticalAlignment="Top"
-                   Width="5" Margin="-5 0 -5 0" Height="300" Fill="Gray">
+                   Margin="8" Fill="Black">
             <Rectangle.Effect>
-                <DropShadowEffect 
-                    BlurRadius="20"
-                    Direction="180"
-                    ShadowDepth="0"
-                    Opacity="0.8"
-                    />
+                <DropShadowEffect
+                    Color="Black"
+                    BlurRadius="8"
+                    Direction="270"
+                    ShadowDepth="2"
+                    Opacity="0.2" />
             </Rectangle.Effect>
         </Rectangle>
+        <toggl:EditView
+            x:Name="EditView" />
     </Grid>
-</Window>
+</mah:MetroWindow>

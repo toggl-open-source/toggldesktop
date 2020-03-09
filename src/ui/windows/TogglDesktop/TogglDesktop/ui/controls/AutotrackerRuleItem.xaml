@@ -3,30 +3,48 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:toggl="clr-namespace:TogglDesktop"
-             mc:Ignorable="d" d:DesignWidth="300" Height="24">
+             mc:Ignorable="d" d:DesignWidth="300" Height="32">
     <Grid>
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{StaticResource Toggl.AccentColor}" Opacity="0.4" />
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="148"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="47"/>
+            <ColumnDefinition Width="32"/>
         </Grid.ColumnDefinitions>
-        <Grid.Background>
-            <SolidColorBrush Color="{Binding BackColor}"/>
-        </Grid.Background>
 
         <TextBlock Name="termText" x:FieldModifier="private"
                    Grid.Column="0"
-                   Style="{StaticResource AutotrackerRulesText}"
-                   Text="slack"/>
+                   Margin="12 7 12 6"
+                   Style="{StaticResource Toggl.BodyText}"
+                   Text="slack"
+                   TextTrimming="CharacterEllipsis"
+                   ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
         <TextBlock Name="projectText" x:FieldModifier="private"
                    Grid.Column="1"
-                   Style="{StaticResource AutotrackerRulesText}"
-                   Text="No project"/>
+                   Margin="12 7 12 6"
+                   Style="{StaticResource Toggl.BodyText}"
+                   Text="No project"
+                   TextTrimming="CharacterEllipsis"
+                   ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
         
-        <Button Grid.Column="2" Width="22" Height="22" HorizontalAlignment="Right" Margin="0 0 2 0"
-                Style="{StaticResource AutotrackerRulesDeleteButton}"
-                Click="onDeleteButtonClick"/>
+        <Button Grid.Column="2" Width="32" Height="32" HorizontalAlignment="Right"
+                Style="{StaticResource Toggl.CrossButton}"
+                Click="onDeleteButtonClick"
+                Focusable="False"
+                IsTabStop="False"/>
 
     </Grid>
 </UserControl>

@@ -7,8 +7,6 @@ export  LDFLAGS="-mmacosx-version-min=10.11"
 export   CFLAGS="$LDFLAGS"
 export CXXFLAGS="$LDFLAGS"
 
-version=${TAG_NAME/v/}
-
 function app_path() {
     echo $(xcodebuild -scheme TogglDesktop -workspace src/ui/osx/TogglDesktop.xcworkspace -configuration Release -showBuildSettings \
                 | grep -w 'BUILT_PRODUCTS_DIR' \
@@ -41,6 +39,7 @@ function plist() {
     # Overwrite built apps plist file
     mv tmp/Info.plist $APP_PATH/Contents/Info.plist
     
+    cat $APP_PATH/Contents/Info.plist
     rmdir tmp
 }
 
@@ -106,7 +105,8 @@ function dmg() {
     npm install --global create-dmg
     brew install graphicsmagick imagemagick
     create-dmg $APP_PATH
-    mv *.dmg TogglDesktop.dmg
+    mv *.dmg $installer
+    pwd
 }
 
 function debuginfo() {
@@ -121,9 +121,34 @@ function debuginfo() {
     tar cvfz $dsym $APP_PATH/../TogglDesktop.app.dSYM
 }
 
+function appcast() {
+    signature=$(./src/ui/osx/Pods/Sparkle/bin/old_dsa_scripts/sign_update $installer ./dsa_priv.pem)
+    filesize=$(cat $installer | wc -c | sed 's/ //g') 
+    functionilesize=(${filesize// / })
+    appUrl=https://github.com/toggl-open-source/toggldesktop/releases/download/v$version/$installer_name
+
+    echo $signature
+    echo $filesize
+    echo $appUrl
+
+    mkdir -p tmp
+    
+    # Generate AppCast
+    # Save to tmp
+    go run dist/osx/appcast.go -platform="darwin" -version=$version -date=$timestamp -appUrl=$appUrl -filesize="${filesize}" -signature=$signature -verbose=true 
+    cat tmp/darwin_dev_appcast.xml
+}
+
+function upload() {
+    # Upload the new version to Github releases
+    PLATFORM="darwin" VERSION=$version INSTALLER_FILENAME=$installer_name INSTALLER=$installer GITHUB_USER="token" GITHUB_TOKEN=${GITHUB_TOKEN} go run dist/upload_to_github.go -platform="darwin" 
+}
+
+function update_release() {
+    ./dist/update_releases.sh osx dev $version
+}
 
 if [[ "$#" -ne 1 ]]; then
-    dependencies
     cocoapods
     app
     plist
@@ -131,6 +156,9 @@ if [[ "$#" -ne 1 ]]; then
     notarize
     debuginfo
     dmg
+    appcast
+    upload
+    update_release
 else
     $1
 fi

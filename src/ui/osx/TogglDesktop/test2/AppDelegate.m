@@ -11,7 +11,6 @@
 #import "AutocompleteItem.h"
 #import "AutotrackerRuleItem.h"
 #import <Bugsnag/Bugsnag.h>
-#import "ConsoleViewController.h"
 #import "DisplayCommand.h"
 #import "FeedbackWindowController.h"
 #import "IdleEvent.h"
@@ -51,7 +50,6 @@
 @property (nonatomic, strong) AboutWindowController *aboutWindowController;
 @property (nonatomic, strong) IdleNotificationWindowController *idleNotificationWindowController;
 @property (nonatomic, strong) FeedbackWindowController *feedbackWindowController;
-@property (nonatomic, strong) ConsoleViewController *consoleWindowController;
 
 // Touch Bar items
 @property (nonatomic, strong) GlobalTouchbarButton *touchItem __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
@@ -80,7 +78,6 @@
 @property (nonatomic, copy) NSString *db_path;
 @property (nonatomic, copy) NSString *log_path;
 @property (nonatomic, copy) NSString *log_level;
-@property (nonatomic, copy) NSString *scriptPath;
 
 // Environment (development, production, etc)
 @property (nonatomic, copy) NSString *environment;
@@ -107,7 +104,6 @@
 @property (strong, nonatomic) SystemService *systemService;
 @property (nonatomic, assign) BOOL manualMode;
 @property (nonatomic, assign) BOOL onTop;
-@property (weak) IBOutlet NSMenuItem *consoleMenuItem;
 
 @end
 
@@ -310,14 +306,6 @@ void *ctx;
 												 name:NSWindowDidDeminiaturizeNotification
 											   object:nil];
 
-	if (self.scriptPath)
-	{
-		[self performSelectorInBackground:@selector(runScript:)
-							   withObject:self.scriptPath];
-	}
-
-	[self hideConsoleMenuIfNeed];
-
 	// Setup Google Service Callback
 	[self registerGoogleEventHandler];
 
@@ -352,25 +340,9 @@ void *ctx;
 	}
 }
 
-- (void)runScript:(NSString *)scriptFile
-{
-	NSString *script = [NSString stringWithContentsOfFile:scriptFile encoding:NSUTF8StringEncoding error:nil];
-	ScriptResult *result = [Utils runScript:script];
-
-	if (result && !result.err)
-	{
-		[[NSApplication sharedApplication] terminate:self];
-	}
-}
-
 - (BOOL)updateCheckEnabled
 {
 	if (![[UnsupportedNotice sharedInstance] validateOSVersion])
-	{
-		return NO;
-	}
-
-	if (self.scriptPath)
 	{
 		return NO;
 	}
@@ -1022,16 +994,6 @@ void *ctx;
 	[self updateStatusItem];
 }
 
-- (IBAction)onConsoleMenuItem:(id)sender
-{
-	if (!self.consoleWindowController)
-	{
-		self.consoleWindowController = [[ConsoleViewController alloc]
-										initWithWindowNibName:@"ConsoleViewController"];
-	}
-	[self.consoleWindowController showWindowAndFocus];
-}
-
 - (void)onNewMenuItem:(id)sender
 {
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandNew
@@ -1221,13 +1183,6 @@ const NSString *appName = @"osx_native_app";
 		{
 			self.log_level = arguments[i + 1];
 			NSLog(@"log level overriden with '%@'", self.log_level);
-			continue;
-		}
-		if (([argument rangeOfString:@"script"].location != NSNotFound) &&
-			([argument rangeOfString:@"path"].location != NSNotFound))
-		{
-			self.scriptPath = arguments[i + 1];
-			NSLog(@"script path '%@'", self.scriptPath);
 			continue;
 		}
 	}
@@ -1782,15 +1737,6 @@ void on_countries(TogglCountryView *first)
 {
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayCountries
 																object:[CountryViewItem loadAll:first]];
-}
-
-- (void)hideConsoleMenuIfNeed
-{
-#if DEBUG
-	[self.consoleMenuItem setHidden:NO];
-#else
-	[self.consoleMenuItem setHidden:YES];
-#endif
 }
 
 #pragma mark - Google Authentication
