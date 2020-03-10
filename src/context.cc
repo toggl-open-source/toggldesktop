@@ -4973,7 +4973,7 @@ error Context::pushChanges(
                     continue;
                 }
 
-                err = model->LoadFromJSONString(resp.body, false);
+                err = model->LoadFromJSONString(resp.body, model->NeedsPOST());
             }
 
             return err;
