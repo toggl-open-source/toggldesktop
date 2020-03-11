@@ -124,6 +124,7 @@ jobs:
         pushd build-tarball
         ../dist/run-tests.sh test=./src/test/TogglAppTest name="App" slack_url=${{ secrets.SLACK_HOOK_URL }} slack_channel="#desktop-bots"
 
+        
   linux-tarball:
     runs-on: ubuntu-16.04
     if: github.event_name == 'release'
