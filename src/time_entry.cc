@@ -195,6 +195,7 @@ void TimeEntry::SetStart(const Poco::Int64 value) {
     if (start_ != value) {
         start_ = value;
         SetDirty();
+        GetContainer()->shift(this);
     }
 }
 

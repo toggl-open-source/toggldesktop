@@ -37,7 +37,7 @@ RelatedData::RelatedData()
     , Projects(this, &CompareProjects)
     , Tasks(this)
     , Tags(this)
-    , TimeEntries(this)
+    , TimeEntries(this, &CompareTimeEntries)
     , AutotrackerRules(this)
     , TimelineEvents(this)
     , ObmActions(this)
@@ -645,6 +645,10 @@ bool CompareProjects(const Project *l, const Project *r) {
         return true;
     }
     return false;
+}
+
+bool CompareTimeEntries(const TimeEntry *a, const TimeEntry *b) {
+    return a->Start() < b->Start();
 }
 
 }   // namespace toggl

@@ -645,8 +645,7 @@ void Context::updateUI(const UIElements &what) {
 
             // Get a sorted list of time entries
             std::vector<locked<TimeEntry>> time_entries = related.VisibleTimeEntries();
-            std::sort(time_entries.begin(), time_entries.end(),
-                      CompareTimeEntriesByStart);
+            //std::sort(time_entries.begin(), time_entries.end(), CompareTimeEntriesByStart);
 
             // Collect the time entries into a list
             std::map<std::string, Poco::Int64> date_durations;
