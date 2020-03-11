@@ -243,7 +243,7 @@ bool ProtectedContainer<T>::remove(const guid &guid) {
     }
     if (!ptr)
         return false;
-    container_.erase(std::find(container_.begin(), container_.end(), ptr));
+    container_.erase(container_.find(ptr));
     guidMap_.erase(guid);
     delete ptr;
     return true;
@@ -253,7 +253,7 @@ template<class T>
 bool ProtectedContainer<T>::shift(void *baseItem) {
     lock_type lock(mutex_);
     auto item = reinterpret_cast<T*>(baseItem);
-    auto it = std::find(container_.begin(), container_.end(), item);
+    auto it = container_.find(item);
     if (it != container_.end()) {
         it = container_.erase(it);
         container_.insert(item);
