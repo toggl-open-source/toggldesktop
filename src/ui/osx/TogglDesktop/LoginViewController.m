@@ -621,6 +621,12 @@ extern void *ctx;
 {
     if (@available(macOS 10.15, *))
     {
+        // Validate all values inserted
+        if (![self validateFormForAction:UserActionAppleSignup])
+        {
+            return;
+        }
+
         self.userAction = UserActionAppleSignup;
         [self setUserSignUp:YES];
         [self showLoaderView:YES];
