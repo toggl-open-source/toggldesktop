@@ -167,6 +167,8 @@ class TOGGL_INTERNAL_EXPORT HTTPSClient {
 
     virtual HTTPSResponse makeHttpRequest(
         HTTPSRequest req) const;
+
+    std::string clientIDForRefererHeader() const;
 };
 
 class TOGGL_INTERNAL_EXPORT SyncStateMonitor {
