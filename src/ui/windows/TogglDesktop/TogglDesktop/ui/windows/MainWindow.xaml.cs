@@ -913,6 +913,10 @@ namespace TogglDesktop
             {
                 Win32.EnableBlurBehind(this.interopHelper.Handle);
             }
+            else
+            {
+                this.SetResourceReference(Window.BackgroundProperty, "Toggl.Background");
+            }
         }
 
         #endregion
