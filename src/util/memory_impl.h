@@ -297,7 +297,7 @@ locked<const T> ProtectedContainer<T>::operator[](size_t position) const {
         auto it = container_.cbegin();
         std::advance(it, position);
         return { mutex_, *it };
-    };
+    }
     return {};
 }
 

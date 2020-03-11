@@ -239,7 +239,7 @@ public:
      * @param comparison - a binary predicate with the signature of bool(const T*, const T*), used to insert items at the right position when creating
      * TODO Using the comparison predicate has O(N) complexity, we'd very likely be much better off storing everything in a std::set
      */
-    ProtectedContainer(RelatedData *parent, std::function<bool(const T* left, const T* right)> comparison = [](const T* l, const T* r){ return l < r; });
+    ProtectedContainer(RelatedData *parent, comparison_function comparison = [](const T* l, const T* r){ return l < r; });
     ProtectedContainer(const ProtectedContainer &o) = delete;
     ~ProtectedContainer();
 
