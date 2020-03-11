@@ -5546,7 +5546,7 @@ error Context::me(
 
         std::stringstream ss;
         ss << "/api/"
-           << kTogglDesktopAPIV8
+           << kAPIV8
            << "/me"
            << "?app_name=" << TogglClient::Config.AppName
            << "&with_related_data=true";

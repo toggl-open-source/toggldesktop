@@ -119,7 +119,7 @@
 #define kAutocompleteItemWorkspace 3
 
 #define kTogglDesktopClientID "toggldesktop.TogglDesktop"
-#define kTogglDesktopAPIV8 "v8"
-#define kTogglDesktopAPIV9 "v9"
+#define kAPIV8 "v8"
+#define kAPIV9 "v9"
 
 #endif  // SRC_CONST_H_
