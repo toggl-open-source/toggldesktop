@@ -904,6 +904,7 @@ namespace TogglDesktop
         {
             this.Loaded -= onMainWindowLoaded;
             this.enableBlurBehindIfSupported();
+            this.ShowOnTop();
         }
 
         private void enableBlurBehindIfSupported()
