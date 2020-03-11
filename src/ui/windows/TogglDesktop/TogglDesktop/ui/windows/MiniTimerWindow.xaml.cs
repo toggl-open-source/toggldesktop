@@ -31,6 +31,8 @@ namespace TogglDesktop
                 .ObserveOnDispatcher()
                 .Subscribe(x => ((Window) x.Sender).SizeToContent = SizeToContent.Height);
 
+            this.timer.MouseCaptured += OnMouseCaptured;
+
             KeyboardShortcuts.RegisterShortcuts(this);
         }
 
@@ -84,7 +86,7 @@ namespace TogglDesktop
             }
         }
 
-        protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+        private void OnMouseCaptured(object sender, MouseButtonEventArgs e)
         {
             this.leftMouseDown = true;
             this.mouseDownPosition = e.GetPosition(this);
