@@ -53,6 +53,7 @@ void Project::SetClientGUID(const std::string &value) {
     if (client_guid_ != value) {
         client_guid_ = value;
         SetDirty();
+        GetContainer()->shift(this);
     }
 }
 
@@ -74,6 +75,7 @@ void Project::SetName(const std::string &value) {
     if (name_ != value) {
         name_ = value;
         SetDirty();
+        GetContainer()->shift(this);
     }
 }
 
@@ -108,6 +110,7 @@ void Project::SetWID(const Poco::UInt64 value) {
     if (wid_ != value) {
         wid_ = value;
         SetDirty();
+        GetContainer()->shift(this);
     }
 }
 
@@ -115,6 +118,7 @@ void Project::SetCID(const Poco::UInt64 value) {
     if (cid_ != value) {
         cid_ = value;
         SetDirty();
+        GetContainer()->shift(this);
     }
 }
 
@@ -122,6 +126,7 @@ void Project::SetClientName(const std::string &value) {
     if (client_name_ != value) {
         client_name_ = value;
         SetDirty();
+        GetContainer()->shift(this);
     }
 }
 

@@ -35,6 +35,7 @@ void Client::SetName(const std::string &value) {
     if (name_ != value) {
         name_ = value;
         SetDirty();
+        GetContainer()->shift(this);
     }
 }
 
@@ -42,6 +43,7 @@ void Client::SetWID(const Poco::UInt64 value) {
     if (wid_ != value) {
         wid_ = value;
         SetDirty();
+        GetContainer()->shift(this);
     }
 }
 
