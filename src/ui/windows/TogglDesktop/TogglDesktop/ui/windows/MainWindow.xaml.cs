@@ -876,6 +876,11 @@ namespace TogglDesktop
 
                 this.activeView = activeView;
                 this.activeView.Activate(hadActiveView);
+                if (hadActiveView)
+                {
+                    Action focusWindowAction = this.ShowOnTop;
+                    this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, focusWindowAction);
+                }
             }
 
             this.closeEditPopup();
