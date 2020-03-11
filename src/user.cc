@@ -65,7 +65,7 @@ locked<Project> User::CreateProject(
 
     // FIXME sorting not implemented yet
     //AddProjectToList(p);
-    GetRelatedData()->Projects.sort();
+    //GetRelatedData()->Projects.sort();
 
     return p;
 }
@@ -127,7 +127,7 @@ locked<Client> User::CreateClient(
 
     // FIXME sorting not implemented yet
     //AddClientToList(c);
-    GetRelatedData()->Clients.sort();
+    //GetRelatedData()->Clients.sort();
 
     return c;
 }
@@ -923,7 +923,7 @@ void User::loadUserClientFromSyncJSON(
     //if (addNew) {
     //    AddClientToList(model);
     //}
-    GetRelatedData()->Clients.sort();
+    //GetRelatedData()->Clients.sort();
 }
 
 void User::loadUserClientFromJSON(
@@ -1003,7 +1003,7 @@ void User::loadUserProjectFromSyncJSON(
     //if (addNew) {
     //    AddProjectToList(model);
     //}
-    GetRelatedData()->Projects.sort();
+    //GetRelatedData()->Projects.sort();
 }
 
 void User::loadUserProjectFromJSON(

@@ -172,9 +172,9 @@ locked<T> ProtectedModel<T>::create(Args&&... args) {
 
 //////// PROTECTEDCONTAINER ////////////////////////////////////////////////////
 template<class T>
-ProtectedContainer<T>::ProtectedContainer(RelatedData *parent, std::function<bool(const T*, const T*)> comparison)
+ProtectedContainer<T>::ProtectedContainer(RelatedData *parent, comparison_function comparison)
     : ProtectedBase(parent)
-    , comparison_(comparison)
+    , container_(comparison)
 {
 
 }
@@ -185,46 +185,41 @@ ProtectedContainer<T>::~ProtectedContainer() {
 }
 
 template<class T>
-typename ProtectedContainer<T>::iterator ProtectedContainer<T>::begin() { return iterator(this, 0); }
+typename ProtectedContainer<T>::iterator ProtectedContainer<T>::begin() { return iterator(this, container_.begin()); }
 
 template<class T>
-typename ProtectedContainer<T>::const_iterator ProtectedContainer<T>::begin() const { return const_iterator(this, 0); }
+typename ProtectedContainer<T>::const_iterator ProtectedContainer<T>::begin() const { return const_iterator(this, container_.begin()); }
 
 template<class T>
-typename ProtectedContainer<T>::const_iterator ProtectedContainer<T>::cbegin() const { return const_iterator(this, 0); }
+typename ProtectedContainer<T>::const_iterator ProtectedContainer<T>::cbegin() const { return const_iterator(this, container_.cbegin()); }
 
 template<class T>
-typename ProtectedContainer<T>::iterator ProtectedContainer<T>::end() { return iterator(this); }
+typename ProtectedContainer<T>::iterator ProtectedContainer<T>::end() { return iterator(this, container_.end()); }
 
 template<class T>
-typename ProtectedContainer<T>::const_iterator ProtectedContainer<T>::end() const { return const_iterator(this); }
+typename ProtectedContainer<T>::const_iterator ProtectedContainer<T>::end() const { return const_iterator(this, container_.end()); }
 
 template<class T>
-typename ProtectedContainer<T>::const_iterator ProtectedContainer<T>::cend() const { return const_iterator(this); }
+typename ProtectedContainer<T>::const_iterator ProtectedContainer<T>::cend() const { return const_iterator(this, container_.cend()); }
 
 template<class T>
-typename ProtectedContainer<T>::iterator ProtectedContainer<T>::erase(ProtectedContainer<T>::iterator position) {
-    if (position == end()) {
-        // TODO warn?
+typename ProtectedContainer<T>::iterator ProtectedContainer<T>::erase(ProtectedContainer<T>::iterator it) {
+    if (it.it == container_.end()) {
         return end();
     }
     lock_type lock(mutex_);
-    T* ptr { nullptr };
-    try {
-        ptr = container_[position.position];
-    }
-    catch (std::out_of_range &) {
-        // TODO warn?
-        return end();
-    }
+
+    // checked if it's not end() at the start
+    T* ptr = *(it.it);
+
     if (!ptr) {
-        // again, warn?
         return end();
     }
-    container_.erase(container_.begin() + position.position);
+
+    it.it = container_.erase(it.it);
     guidMap_.erase(ptr->GUID());
     delete ptr;
-    return position;
+    return it;
 }
 
 template<class T>
@@ -272,25 +267,24 @@ bool ProtectedContainer<T>::contains(const guid &uuid) const {
 }
 
 template<class T>
-void ProtectedContainer<T>::sort() {
-    lock_type lock(mutex_);
-    if (comparison_)
-        std::sort(container_.begin(), container_.end(), comparison_);
-}
-
-template<class T>
 locked<T> ProtectedContainer<T>::operator[](size_t position) {
     lock_type lock(mutex_);
-    if (container_.size() > position)
-        return { mutex_, container_[position] };
+    if (container_.size() > position) {
+        auto it = container_.begin();
+        std::advance(it, position);
+        return { mutex_, *it };
+    }
     return {};
 }
 
 template<class T>
 locked<const T> ProtectedContainer<T>::operator[](size_t position) const {
     lock_type lock(mutex_);
-    if (container_.size() > position)
-        return { mutex_, container_[position] };
+    if (container_.size() > position) {
+        auto it = container_.cbegin();
+        std::advance(it, position);
+        return { mutex_, *it };
+    };
     return {};
 }
 
@@ -423,13 +417,7 @@ template <typename T> template <typename ...Args>
 locked<T> ProtectedContainer<T>::create(Args&&... args) {
     lock_type lock(mutex_);
     T *val = make<T>(this, std::forward<Args>(args)...);
-    if (comparison_) {
-        auto position = std::upper_bound(container_.begin(), container_.end(), val, comparison_);
-        container_.insert(position, val);
-    }
-    else {
-        container_.push_back(val);
-    }
+    container_.insert(val);
     guidMap_[val->GUID()] = val;
     return { mutex_, val };
 }
@@ -437,17 +425,17 @@ locked<T> ProtectedContainer<T>::create(Args&&... args) {
 
 //// iterator ////////
 template<class T>
-ProtectedContainer<T>::iterator::iterator(ProtectedContainer *model, size_t position)
-    : lock(model->mutex_)
-    , model(model)
-    , position(position)
+ProtectedContainer<T>::iterator::iterator(ProtectedContainer *parent, typename container_type::iterator it)
+    : lock(parent->mutex_)
+    , parent(parent)
+    , it(it)
 { }
 
 template<class T>
 ProtectedContainer<T>::iterator::iterator(const iterator &o)
-    : lock(o.model->mutex_)
-    , model(o.model)
-    , position(o.position)
+    : lock(o.parent->mutex_)
+    , parent(o.parent)
+    , it(o.it)
 { }
 
 template<class T>
@@ -456,15 +444,15 @@ ProtectedContainer<T>::iterator::~iterator()
 
 template<class T>
 typename ProtectedContainer<T>::iterator &ProtectedContainer<T>::iterator::operator=(const iterator &o) {
-    lock = lock_type(o.model->mutex_);
-    model = o.model;
-    position = o.position;
+    lock = lock_type(o.parent->mutex_);
+    parent = o.parent;
+    it = o.it;
     return *this;
 }
 
 template<class T>
 bool ProtectedContainer<T>::iterator::operator==(const ProtectedContainer<T>::iterator &o) const {
-    return model == o.model && realPosition() == o.realPosition();
+    return parent == o.parent && it == o.it;
 }
 
 template<class T>
@@ -474,51 +462,44 @@ bool ProtectedContainer<T>::iterator::operator!=(const ProtectedContainer<T>::it
 
 template<class T>
 typename ProtectedContainer<T>::iterator &ProtectedContainer<T>::iterator::operator++() {
-    position++;
+    it++;
     return *this;
 }
 
 template<class T>
 locked<T> ProtectedContainer<T>::iterator::operator*() {
-    if (realPosition() == SIZE_MAX)
+    if (it == parent->container_.end())
         return {};
-    return { model->mutex_, model->container_[position] };
+    return { parent->mutex_, *it };
 }
 
 template<class T>
 T *ProtectedContainer<T>::iterator::operator->() const {
-    if (realPosition() == SIZE_MAX)
-        return {};
-    return model->container_[position];
-}
-
-template<class T>
-size_t ProtectedContainer<T>::iterator::realPosition() const {
-    if (model->size() <= position)
-        return SIZE_MAX;
-    return position;
+    if (it == parent->container_.end())
+        return nullptr;
+    return *it;
 }
 
 //// const_iterator ////////
 template<class T>
-ProtectedContainer<T>::const_iterator::const_iterator(const ProtectedContainer *model, size_t position)
-    : lock(model->mutex_)
-    , model(model)
-    , position(position)
+ProtectedContainer<T>::const_iterator::const_iterator(const ProtectedContainer *parent, typename container_type::const_iterator it)
+    : lock(parent->mutex_)
+    , parent(parent)
+    , it(it)
 { }
 
 template<class T>
 ProtectedContainer<T>::const_iterator::const_iterator(const const_iterator &o)
     : lock(o.model->mutex_)
-    , model(o.model)
-    , position(o.position)
+    , parent(o.parent)
+    , it(o.it)
 { }
 
 template<class T>
 ProtectedContainer<T>::const_iterator::const_iterator(const iterator &o)
     : lock(o.model->mutex_)
-    , model(o.model)
-    , position(o.position)
+    , parent(o.parent)
+    , it(o.it)
 { }
 
 template<class T>
@@ -528,14 +509,14 @@ ProtectedContainer<T>::const_iterator::~const_iterator()
 template<class T>
 typename ProtectedContainer<T>::const_iterator &ProtectedContainer<T>::const_iterator::operator=(const const_iterator &o) {
     lock = lock_type(o.model->mutex_);
-    model = o.model;
-    position = o.position;
+    parent = o.parent;
+    it = o.it;
     return *this;
 }
 
 template<class T>
 bool ProtectedContainer<T>::const_iterator::operator==(const const_iterator &o) const {
-    return model == o.model && realPosition() == o.realPosition();
+    return parent == o.parent && it == o.it;
 }
 
 template<class T>
@@ -545,29 +526,22 @@ bool ProtectedContainer<T>::const_iterator::operator!=(const const_iterator &o) 
 
 template<class T>
 typename ProtectedContainer<T>::const_iterator &ProtectedContainer<T>::const_iterator::operator++() {
-    position++;
+    it++;
     return *this;
 }
 
 template<class T>
 locked<const T> ProtectedContainer<T>::const_iterator::operator*() const {
-    if (realPosition() == SIZE_MAX)
+    if (it == parent->container_.end())
         return {};
-    return { model->mutex_, model->container_[position]};
+    return { parent->mutex_, *it };
 }
 
 template<class T>
 T *ProtectedContainer<T>::const_iterator::operator->() const {
-    if (realPosition() == SIZE_MAX)
-        return {};
-    return model->container_[position];
-}
-
-template<class T>
-size_t ProtectedContainer<T>::const_iterator::realPosition() const {
-    if (model->size() <= position)
-        return SIZE_MAX;
-    return position;
+    if (it == parent->container_.end())
+        return nullptr;
+    return *it;
 }
 
 //////// LOCKMORE //////////////////////////////////////////////////////////////

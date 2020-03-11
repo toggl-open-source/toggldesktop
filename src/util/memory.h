@@ -5,6 +5,7 @@
 
 #include <mutex>
 #include <vector>
+#include <set>
 #include <iostream>
 #include <map>
 #include <tuple>
@@ -178,12 +179,15 @@ class ProtectedContainer : public ProtectedBase {
 public:
     typedef ProtectedContainer<T> type;
     typedef T value_type;
+    typedef std::function<bool(const T*, const T*)> comparison_function;
+    using container_type = std::set<T*, comparison_function>;
+
     class iterator {
     public:
         friend class ProtectedContainer;
         typedef std::forward_iterator_tag iterator_category;
 
-        iterator(ProtectedContainer *model, size_t position = SIZE_MAX);
+        iterator(ProtectedContainer *parent, typename container_type::iterator it);
         iterator(const iterator &o);
         ~iterator();
 
@@ -196,17 +200,16 @@ public:
         T* operator->() const;
 
     private:
-        size_t realPosition() const;
         lock_type lock;
-        ProtectedContainer *model;
-        size_t position;
+        ProtectedContainer *parent;
+        typename container_type::iterator it;
     };
     class const_iterator {
     public:
         friend class ProtectedContainer;
         typedef std::forward_iterator_tag iterator_category;
 
-        const_iterator(const ProtectedContainer *model, size_t position = SIZE_MAX);
+        const_iterator(const ProtectedContainer *parent, typename container_type::const_iterator it);
         const_iterator(const const_iterator &o);
         const_iterator(const iterator &o);
         ~const_iterator();
@@ -220,10 +223,9 @@ public:
         T* operator->() const;
 
     private:
-        size_t realPosition() const;
         lock_type lock;
-        const ProtectedContainer *model;
-        size_t position;
+        const ProtectedContainer *parent;
+        typename container_type::const_iterator it;
     };
     friend class iterator;
     friend class const_iterator;
@@ -234,7 +236,7 @@ public:
      * @param comparison - a binary predicate with the signature of bool(const T*, const T*), used to insert items at the right position when creating
      * TODO Using the comparison predicate has O(N) complexity, we'd very likely be much better off storing everything in a std::set
      */
-    ProtectedContainer(RelatedData *parent, std::function<bool(const T* left, const T* right)> comparison = {});
+    ProtectedContainer(RelatedData *parent, std::function<bool(const T* left, const T* right)> comparison = [](const T* l, const T* r){ return l < r; });
     ProtectedContainer(const ProtectedContainer &o) = delete;
     ~ProtectedContainer();
 
@@ -245,7 +247,7 @@ public:
     const_iterator end() const;
     const_iterator cend() const;
 
-    iterator erase(iterator position);
+    iterator erase(iterator it);
 
     /**
      * @brief clear - Clear the @ref container_
@@ -282,14 +284,10 @@ public:
      */
     bool contains(const guid &uuid) const;
     /**
-     * @brief sort
-     */
-    void sort();
-    /**
      * @brief operator[] - access elements by their position
      * @param position - order in the underlying sequential container
      * @return locked instance of the element at the position
-     * @warning This uses _position_, NOT IDs
+     * @warning This uses _position_, NOT IDs - with set it's very slow
      */
     locked<T> operator[](size_t position);
     locked<const T> operator[](size_t position) const;
@@ -321,9 +319,8 @@ public:
      */
     bool operator==(const ProtectedContainer &o) const;
 private:
-    std::vector<T*> container_;
+    container_type container_;
     mutable std::map<guid, T*> guidMap_; // mutable because byGUID creates a search cache
-    std::function<bool(const T* left, const T* right)> comparison_;
 };
 
 /**
