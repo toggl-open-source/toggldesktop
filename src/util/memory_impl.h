@@ -250,6 +250,19 @@ bool ProtectedContainer<T>::remove(const guid &guid) {
 }
 
 template<class T>
+bool ProtectedContainer<T>::shift(void *baseItem) {
+    lock_type lock(mutex_);
+    auto item = reinterpret_cast<T*>(baseItem);
+    auto it = std::find(container_.begin(), container_.end(), item);
+    if (it != container_.end()) {
+        it = container_.erase(it);
+        container_.insert(item);
+        return true;
+    }
+    return false;
+}
+
+template<class T>
 size_t ProtectedContainer<T>::size() const {
     lock_type lock(mutex_);
     return container_.size();

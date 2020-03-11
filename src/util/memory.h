@@ -93,6 +93,9 @@ public:
      */
     const RelatedData *GetRelatedData() const;
 
+    // TODO figure out if it's possible to do without void*
+    virtual bool shift(void *item) { return false; }
+
     lock_type lock(bool immediately = true);
     /**
      * @brief make_locked - Makes pointer to any type locked by the internal mutex
@@ -267,6 +270,8 @@ public:
      * @return - true if found and deleted
      */
     bool remove(const guid &guid);
+
+    bool shift(void *item) override;
     /**
      * @brief size - Get how many items are contained inside
      * @return - number of items inside the container
@@ -322,6 +327,7 @@ private:
     container_type container_;
     mutable std::map<guid, T*> guidMap_; // mutable because byGUID creates a search cache
 };
+
 
 /**
  * @brief Lock more mutexes

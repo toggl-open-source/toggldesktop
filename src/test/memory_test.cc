@@ -10,8 +10,9 @@ static int modelCounter = 0;
 
 class TestModel {
 public:
-    TestModel(ProtectedBase*, guid uuid, uint64_t id)
-        : uuid_(uuid)
+    TestModel(ProtectedBase* parent, guid uuid, uint64_t id)
+        : parent_(parent)
+        , uuid_(uuid)
         , id_(id)
     {
         modelCounter++;
@@ -28,6 +29,7 @@ public:
     void SetGUID(const guid &guid) {
         if (uuid_ != guid) {
             uuid_ = guid;
+            parent_->shift(this);
         }
     }
     uint64_t ID() const {
@@ -36,8 +38,10 @@ public:
     void SetID(uint64_t id) {
         if (id_ != id) {
             id_ = id;
+            parent_->shift(this);
         }
     }
+    ProtectedBase *parent_;
     guid uuid_;
     uint64_t id_;
 };
