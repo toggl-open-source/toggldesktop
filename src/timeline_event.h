@@ -33,7 +33,7 @@ class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent 
     }
     void SetTitle(const std::string &value);
 
-    const Poco::Int64 &Start() const  override{
+    const Poco::Int64 &Start() const  override {
         return start_time_;
     }
     void SetStart(const Poco::Int64 value);

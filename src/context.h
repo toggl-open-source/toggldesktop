@@ -689,18 +689,18 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         std::string *user_data_json,
         const uint64_t country_id);
     error signupApple(
-                      TogglClient *toggl_client,
-                      const std::string &access_token,
-                      std::string *user_data_json,
-                      const std::string &full_name,
-                      const uint64_t country_id);
+        TogglClient *toggl_client,
+        const std::string &access_token,
+        std::string *user_data_json,
+        const std::string &full_name,
+        const uint64_t country_id);
     error signUpWithProvider(
-                             TogglClient *toggl_client,
-                             const std::string &access_token,
-                             std::string *user_data_json,
-                             const uint64_t country_id,
-                             const std::string &full_name,
-                             const std::string provider);
+        TogglClient *toggl_client,
+        const std::string &access_token,
+        std::string *user_data_json,
+        const uint64_t country_id,
+        const std::string &full_name,
+        const std::string provider);
 
     static error me(TogglClient *https_client,
                     const std::string &email,

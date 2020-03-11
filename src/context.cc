@@ -1005,7 +1005,7 @@ bool Context::isPostponed(
     const Poco::Timestamp value,
     const Poco::Timestamp::TimeDiff throttleMicros) const {
     Poco::Timestamp now;
-    
+
     // if `now` is only slighly smaller than `value` it's probably the same task and not postponed
     // hence perform comparison using epsilon = `kTimeComparisonEpsilonMicroSeconds`
     if (now + kTimeComparisonEpsilonMicroSeconds > value) {
@@ -1490,7 +1490,7 @@ error Context::downloadUpdate() {
         // only windows .exe installers are supported atm
         if (url.find(".exe") == std::string::npos) {
             logger.debug("Update is not compatible with this client,"
-                           " will ignore");
+                         " will ignore");
             return noError;
         }
 
@@ -2399,7 +2399,7 @@ error Context::attemptOfflineLogin(const std::string &email,
     if (user->OfflineData().empty()) {
         delete user;
         logger.debug("Offline data not found in local database for "
-                       + email);
+                     + email);
         return error(kEmailNotFoundCannotLogInOffline);
     }
 
@@ -2550,9 +2550,9 @@ error Context::AsyncGoogleSignup(const std::string &access_token,
 }
 
 error Context::AppleSignup(
-                           const std::string &access_token,
-                           const uint64_t country_id,
-                           const std::string full_name) {
+    const std::string &access_token,
+    const uint64_t country_id,
+    const std::string full_name) {
     TogglClient client(UI());
     std::string json("");
     error err = signupApple(&client, access_token, &json, full_name, country_id);
@@ -2563,9 +2563,9 @@ error Context::AppleSignup(
 }
 
 error Context::AsyncApleSignup(
-                               const std::string &access_token,
-                               const uint64_t country_id,
-                               const std::string full_name) {
+    const std::string &access_token,
+    const uint64_t country_id,
+    const std::string full_name) {
     std::thread backgroundThread([&](std::string access_token, uint64_t country_id, std::string full_name) {
         return this->AppleSignup(access_token, country_id, full_name);
     }, access_token, country_id, full_name);
@@ -3262,8 +3262,8 @@ error Context::SetTimeEntryStart(const std::string GUID,
 }
 
 error Context::SetTimeEntryStartWithOption(const std::string GUID,
-                                 const Poco::Int64 startAt,
-                                 const bool keepEndTimeFixed) {
+        const Poco::Int64 startAt,
+        const bool keepEndTimeFixed) {
     TimeEntry *te = nullptr;
 
     {
@@ -4684,7 +4684,7 @@ error Context::MarkTimelineBatchAsUploaded(
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
             logger.warning("cannot mark timeline events as uploaded, "
-                             "user is already logged out");
+                           "user is already logged out");
             return noError;
         }
         user_->MarkTimelineBatchAsUploaded(events);
@@ -5819,7 +5819,6 @@ error Context::signUpWithProvider(
         poco_check_ptr(toggl_client);
 
         Json::Value user;
-        user["google_access_token"] = access_token;
         user["token"] = access_token;
         user["created_with"] = Formatter::EscapeJSONString(
             HTTPSClient::Config.UserAgent());

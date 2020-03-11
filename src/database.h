@@ -20,10 +20,10 @@
 #include "util/logger.h"
 
 namespace Poco {
-    namespace Data {
-        class Session;
-        class Statement;
-    }
+namespace Data {
+class Session;
+class Statement;
+}
 }
 
 namespace toggl {

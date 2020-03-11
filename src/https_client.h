@@ -17,9 +17,9 @@
 #include <Poco/Timestamp.h>
 
 namespace Poco {
-    namespace Net {
-        class HTMLForm;
-    } // namespace Poco::Net
+namespace Net {
+class HTMLForm;
+} // namespace Poco::Net
 } // namespace Poco
 
 namespace toggl {

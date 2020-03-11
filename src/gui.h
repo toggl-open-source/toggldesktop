@@ -286,7 +286,7 @@ class TOGGL_INTERNAL_EXPORT Settings {
     bool StopEntryOnShutdownSleep;
     bool ShowTouchBar;
     uint8_t ActiveTab;
-    
+
     bool operator == (const Settings& other) const;
 };
 
