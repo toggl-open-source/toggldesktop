@@ -86,24 +86,25 @@ final class LoginSignupTouchBar: NSObject {
         return btn
     }()
 
+    private var isAppleSignInAvailable: Bool {
+        if #available(OSX 10.15, *) {
+            return true
+        }
+        return false
+    }
+
     // MARK: Public
 
     @objc func makeTouchBar(for mode: LoginSignupMode) -> NSTouchBar {
         let touchBar = NSTouchBar()
         touchBar.delegate = self
         touchBar.customizationIdentifier = .loginSignUpTouchBar
-
         switch mode {
         case .login:
-            touchBar.defaultItemIdentifiers = [.loginItem,
-                                               .loginAppleItem,
-                                               .loginGoogleItem]
+            touchBar.defaultItemIdentifiers = isAppleSignInAvailable ? [.loginItem, .loginAppleItem, .loginGoogleItem] : [.loginItem, .loginGoogleItem]
         case .signUp:
-            touchBar.defaultItemIdentifiers = [.signUpItem,
-                                               .signUpAppleItem,
-                                               .signUpGoogleItem]
+            touchBar.defaultItemIdentifiers = isAppleSignInAvailable ? [.signUpItem, .signUpAppleItem, .signUpGoogleItem] : [.signUpItem, .signUpGoogleItem]
         }
-
         return touchBar
     }
 
