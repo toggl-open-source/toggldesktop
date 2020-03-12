@@ -34,6 +34,11 @@ typedef NS_ENUM (NSUInteger, UserAction)
     UserActionAppleSignup,
 };
 
+#define kLoginAppleViewTop 86.0
+#define kLoginContainerHeight 440.0
+#define kSignupAppleViewTop 166.0
+#define kSignupContainerHeight 460.0
+
 @interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, LoginSignupTouchBarDelegate, AppleAuthenticationServiceDelegate>
 @property (weak) IBOutlet NSTextField *email;
 @property (weak) IBOutlet NSSecureTextField *password;
@@ -193,8 +198,8 @@ extern void *ctx;
 	switch (type)
 	{
 		case TabViewTypeLogin :
-            self.appleGoogleGroupViewTop.constant = 86.0;
-            self.containerViewHeight.constant = 440.0;
+            self.appleGoogleGroupViewTop.constant = kLoginAppleViewTop;
+            self.containerViewHeight.constant = kLoginContainerHeight;
             self.signUpGroupView.hidden = YES;
             self.appleBtn.title = @"Log in with Apple";
             self.googleBtn.title = @"Log in with Google";
@@ -206,8 +211,8 @@ extern void *ctx;
 			break;
 
 		case TabViewTypeSingup :
-            self.appleGoogleGroupViewTop.constant = 166.0;
-            self.containerViewHeight.constant = 460.0;
+            self.appleGoogleGroupViewTop.constant = kSignupAppleViewTop;
+            self.containerViewHeight.constant = kSignupContainerHeight;
             self.signUpGroupView.hidden = NO;
             self.appleBtn.title = @"Sign up with Apple";
             self.googleBtn.title = @"Sign up with Google";
