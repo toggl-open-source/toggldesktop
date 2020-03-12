@@ -323,6 +323,7 @@
       <DependentUpon>PomodoroNotification.xaml</DependentUpon>
     </Compile>
     <Compile Include="utilities\LinqExtensions.cs" />
+    <Compile Include="utilities\NsisPackageExtractor.cs" />
     <Compile Include="utilities\StaticObjectPool.cs" />
     <Compile Include="TogglApi.cs" />
     <Compile Include="ui\UIExtensions.cs" />

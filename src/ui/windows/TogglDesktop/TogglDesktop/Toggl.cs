@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using Onova;
+using Onova.Services;
 using TogglDesktop.Diagnostics;
 
 // ReSharper disable InconsistentNaming
@@ -1205,7 +1206,15 @@ public static partial class Toggl
         var files = di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly);
         if (files.Length == 1)
         {
-            var updateManager = new UpdateManager();
+            var updateManager = new UpdateManager(new LocalPackageResolver(updatePath, "TogglDesktopInstaller*.exe"), new NsisPackageExtractor());
+            var updateVersion = Version.Parse("7.5.67");
+            updateManager.PrepareUpdateAsync(updateVersion).Wait();
+            if (updateManager.IsUpdatePrepared(updateVersion))
+            {
+                Utils.DeleteFile(files[0].FullName);
+                updateManager.LaunchUpdater(updateVersion);
+                Environment.Exit(0);
+            }
         }
         // var update = createUpdateAction();
         //
