@@ -68,7 +68,7 @@
   InstallDir "$LOCALAPPDATA\TogglDesktop"
 
   ;Get installation folder from registry if available
-  InstallDirRegKey HKCU "Software\TogglDesktop" ""
+  ;InstallDirRegKey HKCU "Software\TogglDesktop" ""
 
   ;Request application privileges for Windows Vista
   RequestExecutionLevel user
@@ -141,27 +141,29 @@ Section
 
   SetOutPath "$INSTDIR"
 
-  ;Check if Old version of the app is still running and close it
-  DetailPrint "Closing all old TogglDesktop processes"
-  File "NSIS_plugins\KillProc.exe"
-  nsExec::Exec "$INSTDIR\KillProc.exe TogglDesktop"
-  Delete "$INSTDIR\KillProc.exe"
-  StrCmp $0 "-1" wooops
+  ${If} $isUpdater == 0
+    ;Check if Old version of the app is still running and close it
+    DetailPrint "Closing all old TogglDesktop processes"
+    File "NSIS_plugins\KillProc.exe"
+    nsExec::Exec "$INSTDIR\KillProc.exe TogglDesktop"
+    Delete "$INSTDIR\KillProc.exe"
+    StrCmp $0 "-1" wooops
 
-  Goto completed
+    Goto completed
 
-  wooops:
-  DetailPrint "-> Error: Something went wrong :-("
-  Abort
+    wooops:
+    DetailPrint "-> Error: Something went wrong :-("
+    Abort
 
-  completed:
-  DetailPrint "Everything went okay :-D"
-
+    completed:
+    DetailPrint "Everything went okay :-D"
+  ${EndIf}
+  
   ;Rename Bugsnag so we can update
-  Rename $INSTDIR\Bugsnag.dll $INSTDIR\Bugsnag.1.2.dll
+  ;Rename $INSTDIR\Bugsnag.dll $INSTDIR\Bugsnag.1.2.dll
 
   ;Delete the old Bugsnag file on reboot
-  Delete /REBOOTOK $INSTDIR\Bugsnag.1.2.dll
+  ;Delete /REBOOTOK $INSTDIR\Bugsnag.1.2.dll
 
   ;ADD YOUR OWN FILES HERE...
   File "${redist}\*.dll"
@@ -301,9 +303,9 @@ Function .onInstSuccess
     CopyFiles "$PROFILE\AppData\Roaming\Kopsik\kopsik.db" "$INSTDIR\toggldesktop.db"
   ${EndIf}
   
-  ${if} $isUpdater == 1
-    Exec "$INSTDIR\TogglDesktop.exe --updated"
-  ${Endif}
+  ;${if} $isUpdater == 1
+  ;  Exec "$INSTDIR\TogglDesktop.exe --updated"
+  ;${Endif}
 
 FunctionEnd
 
