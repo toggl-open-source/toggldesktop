@@ -34,6 +34,8 @@
         <RoutedUICommand x:Key="HighlightEdit" />
         <RoutedUICommand x:Key="HighlightContinue" />
         <RoutedUICommand x:Key="HighlightDelete" />
+        <RoutedUICommand x:Key="HighlightFirst" />
+        <RoutedUICommand x:Key="HighlightLast" />
         <RoutedUICommand x:Key="FocusTimer" />
         <RoutedUICommand x:Key="ExpandSelectedItem" />
         <RoutedUICommand x:Key="CollapseSelectedItem" />
@@ -44,6 +46,8 @@
     <UserControl.CommandBindings>
         <CommandBinding Command="{StaticResource HighlightDown}" Executed="onHighlightDown"/>
         <CommandBinding Command="{StaticResource HighlightUp}" Executed="onHighlightUp"/>
+        <CommandBinding Command="{StaticResource HighlightFirst}" Executed="onHighlightFirst"/>
+        <CommandBinding Command="{StaticResource HighlightLast}" Executed="onHighlightLast"/>
         <CommandBinding Command="{StaticResource HighlightEdit}" Executed="onHighlightEdit"/>
         <CommandBinding Command="{StaticResource HighlightContinue}" Executed="onHighlightContinue"/>
         <CommandBinding Command="{StaticResource HighlightDelete}" Executed="onHighlightDelete"/>
@@ -57,10 +61,16 @@
     <UserControl.InputBindings>
         <KeyBinding Key="Down" Command="{StaticResource HighlightDown}" />
         <KeyBinding Key="Up" Command="{StaticResource HighlightUp}" />
+        <KeyBinding Key="Tab" Command="{StaticResource HighlightDown}" />
+        <KeyBinding Key="Tab" Modifiers="Shift" Command="{StaticResource HighlightUp}" />
         <KeyBinding Key="Enter" Command="{StaticResource HighlightEdit}" />
         <KeyBinding Key="Space" Command="{StaticResource HighlightContinue}" />
         <KeyBinding Key="Back" Command="{StaticResource HighlightDelete}" />
         <KeyBinding Key="Delete" Command="{StaticResource HighlightDelete}" />
+        <KeyBinding Key="PageUp" Command="{StaticResource HighlightFirst}" />
+        <KeyBinding Key="Up" Modifiers="Control" Command="{StaticResource HighlightFirst}" />
+        <KeyBinding Key="PageDown" Command="{StaticResource HighlightLast}" />
+        <KeyBinding Key="Down" Modifiers="Control" Command="{StaticResource HighlightLast}" />
         <KeyBinding Key="Escape" Command="{StaticResource FocusTimer}" />
         <KeyBinding Key="Right" Command="{StaticResource ExpandSelectedItem}" />
         <KeyBinding Key="Left" Command="{StaticResource CollapseSelectedItem}" />

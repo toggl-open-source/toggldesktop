@@ -31,6 +31,8 @@ namespace TogglDesktop
             this.resetUIState(false, true);
         }
 
+        public event MouseButtonEventHandler MouseCaptured;
+
         private static bool IsMiniTimer => true;
 
         private void setupSecondsTimer()
@@ -216,8 +218,9 @@ namespace TogglDesktop
                     {
                         Toggl.Edit(this.runningTimeEntry.GUID, false, focusedField);
                     }
+
+                    e.Handled = true;
                 }
-                e.Handled = true;
             }
         }
 
@@ -287,6 +290,14 @@ namespace TogglDesktop
         {
             this.manualPanel.ShowOnlyIf(manualMode);
             this.timerPanel.ShowOnlyIf(!manualMode);
+        }
+
+        private void MiniTimer_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!startStopButton.IsMouseOver)
+            {
+                MouseCaptured?.Invoke(sender, e);
+            }
         }
     }
 }
