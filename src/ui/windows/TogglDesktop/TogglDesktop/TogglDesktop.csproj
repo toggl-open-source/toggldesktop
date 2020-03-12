@@ -870,6 +870,9 @@
     <PackageReference Include="NHotkey.Wpf">
       <Version>1.2.1</Version>
     </PackageReference>
+    <PackageReference Include="Onova">
+      <Version>2.5.2</Version>
+    </PackageReference>
     <PackageReference Include="ReactiveUI.Fody">
       <Version>11.1.23</Version>
     </PackageReference>

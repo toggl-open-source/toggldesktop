@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
+using Onova;
 using TogglDesktop.Diagnostics;
 
 // ReSharper disable InconsistentNaming
@@ -1179,11 +1180,12 @@ public static partial class Toggl
     // (updates are disabled in Release_VS configuration to allow for proper debugging)
     private static void installPendingUpdates()
     {
+        var di = new DirectoryInfo(updatePath);
+
         if (Environment.GetCommandLineArgs().Contains("--updated"))
         {
             // --updated means we've just been silently updated and started by the installer
             // so we just clean up the installer files and continue
-            var di = new DirectoryInfo(updatePath);
             foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
             {
                 try
@@ -1200,12 +1202,17 @@ public static partial class Toggl
             return;
         }
 
-        var update = createUpdateAction();
-
-        if (update == null)
-            return;
-
-        update();
+        var files = di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly);
+        if (files.Length == 1)
+        {
+            var updateManager = new UpdateManager();
+        }
+        // var update = createUpdateAction();
+        //
+        // if (update == null)
+        //     return;
+        //
+        // update();
     }
 
     private static Action createUpdateAction()
