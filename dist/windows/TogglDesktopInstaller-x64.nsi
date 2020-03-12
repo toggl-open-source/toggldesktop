@@ -192,25 +192,26 @@ Section
       CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$INSTDIR\TogglDesktop.exe" ""
     ${EndIf}
 
-  ;Add/Remove programs entry
-  !define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\TogglDesktop"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayName" "Toggl Desktop"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayIcon" "$\"$INSTDIR\TogglDesktop.exe$\""
-  WriteRegStr HKCU "${REG_UNINSTALL}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
-  WriteRegStr HKCU "${REG_UNINSTALL}" "Publisher" "Toggl"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "HelpLink" "https://support.toggl.com/desktop-apps"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "URLInfoAbout" "https://www.toggl.com/"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "InstallLocation" "$\"$INSTDIR$\""
-  WriteRegStr HKCU "${REG_UNINSTALL}" "NoModify" 1
-  WriteRegStr HKCU "${REG_UNINSTALL}" "NoRepair" 1
-  WriteRegStr HKCU "${REG_UNINSTALL}" "Comments" "Uninstalls Toggl Desktop"
-
-  ;Create start menu entry
-  createDirectory "$SMPROGRAMS\Toggl"
-  createShortCut "$SMPROGRAMS\Toggl\Toggl Desktop.lnk" "$INSTDIR\TogglDesktop.exe" "" "$INSTDIR\toggl.ico"
-  createShortCut "$SMPROGRAMS\Toggl\Uninstall Toggl Desktop.lnk" "$INSTDIR\uninstall.exe" "" ""
-
+  ${If} $isUpdater == 0
+    ;Add/Remove programs entry
+    !define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\TogglDesktop"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayName" "Toggl Desktop"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayIcon" "$\"$INSTDIR\TogglDesktop.exe$\""
+    WriteRegStr HKCU "${REG_UNINSTALL}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
+    WriteRegStr HKCU "${REG_UNINSTALL}" "Publisher" "Toggl"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "HelpLink" "https://support.toggl.com/desktop-apps"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "URLInfoAbout" "https://www.toggl.com/"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "InstallLocation" "$\"$INSTDIR$\""
+    WriteRegStr HKCU "${REG_UNINSTALL}" "NoModify" 1
+    WriteRegStr HKCU "${REG_UNINSTALL}" "NoRepair" 1
+    WriteRegStr HKCU "${REG_UNINSTALL}" "Comments" "Uninstalls Toggl Desktop"
+  
+    ;Create start menu entry
+    createDirectory "$SMPROGRAMS\Toggl"
+    createShortCut "$SMPROGRAMS\Toggl\Toggl Desktop.lnk" "$INSTDIR\TogglDesktop.exe" "" "$INSTDIR\toggl.ico"
+    createShortCut "$SMPROGRAMS\Toggl\Uninstall Toggl Desktop.lnk" "$INSTDIR\uninstall.exe" "" ""
+  ${EndIf}
 SectionEnd
 
 ;--------------------------------
