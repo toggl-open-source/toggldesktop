@@ -183,7 +183,7 @@ public:
     typedef ProtectedContainer<T> type;
     typedef T value_type;
     typedef std::function<bool(const T*, const T*)> comparison_function;
-    using container_type = std::set<T*, comparison_function>;
+    using container_type = std::multiset<T*, comparison_function>;
 
     class iterator {
     public:

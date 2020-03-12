@@ -225,8 +225,11 @@ typename ProtectedContainer<T>::iterator ProtectedContainer<T>::erase(ProtectedC
 template<class T>
 void ProtectedContainer<T>::clear() {
     lock_type lock(mutex_);
-    for (auto i : container_)
-        delete i;
+    for (auto it = container_.begin(); it != container_.end(); ) {
+        delete *it;
+        it = container_.erase(it);
+    }
+    // should be empty by now anyway
     container_.clear();
     guidMap_.clear();
 }
@@ -243,7 +246,7 @@ bool ProtectedContainer<T>::remove(const guid &guid) {
     }
     if (!ptr)
         return false;
-    container_.erase(container_.find(ptr));
+    container_.erase(std::find(container_.begin(), container_.end(), ptr));
     guidMap_.erase(guid);
     delete ptr;
     return true;
@@ -253,7 +256,7 @@ template<class T>
 bool ProtectedContainer<T>::shift(void *baseItem) {
     lock_type lock(mutex_);
     auto item = reinterpret_cast<T*>(baseItem);
-    auto it = container_.find(item);
+    auto it = std::find(container_.begin(), container_.end(), item);
     if (it != container_.end()) {
         it = container_.erase(it);
         container_.insert(item);
