@@ -1564,6 +1564,23 @@ error Database::loadTasks(
     return last_error("loadTasks");
 }
 
+template <typename T>
+std::string join(const T& v, const std::string& delim) {
+    std::ostringstream s;
+    bool first = true;
+    for (const auto& i : v) {
+        if (first) {
+            first = false;
+        }
+        else {
+            s << delim;
+        }
+        s << i;
+    }
+    return s.str();
+}
+
+
 error Database::loadTags(const Poco::UInt64 &UID,
     ProtectedContainer<Tag> &list) {
 
@@ -1576,9 +1593,9 @@ error Database::loadTags(const Poco::UInt64 &UID,
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
+
         Poco::Data::Statement select(*session_);
-        select <<
-               "SELECT local_id, id, uid, name, wid, guid "
+        select << "SELECT local_id, id, uid, guid, name, wid "
                "FROM tags "
                "WHERE uid = :uid "
                "ORDER BY name",
@@ -1592,23 +1609,7 @@ error Database::loadTags(const Poco::UInt64 &UID,
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                auto model = list.create();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
-                if (rs[1].isEmpty()) {
-                    model->SetID(0);
-                } else {
-                    model->SetID(rs[1].convert<Poco::UInt64>());
-                }
-                model->SetUID(rs[2].convert<Poco::UInt64>());
-                model->SetName(rs[3].convert<std::string>());
-                model->SetWID(rs[4].convert<Poco::UInt64>());
-                if (rs[5].isEmpty()) {
-                    model->SetGUID("");
-                } else {
-                    model->SetGUID(rs[5].convert<std::string>());
-                }
-                model->ClearDirty();
-
+                auto model = list.create(rs);
                 more = rs.moveNext();
             }
         }

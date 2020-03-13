@@ -18,6 +18,7 @@
 
 #include <Poco/Types.h>
 #include <Poco/Data/TypeHandler.h>
+#include <Poco/Data/RecordSet.h>
 
 namespace toggl {
 
@@ -27,18 +28,7 @@ class BatchUpdateResult;
 class TOGGL_INTERNAL_EXPORT BaseModel {
  public:
     BaseModel(ProtectedBase *container)
-        : container_(container)
-    , local_id_(0)
-    , id_(0)
-    , guid_("")
-    , ui_modified_at_(0)
-    , uid_(0)
-    , dirty_(false)
-    , deleted_at_(0)
-    , is_marked_as_deleted_on_server_(false)
-    , updated_at_(0)
-    , validation_error_("")
-    , unsynced_(false) {}
+        : container_(container) {}
 
     virtual ~BaseModel() {}
 
@@ -145,6 +135,23 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
         return 0;
     }
 
+    static std::string DatabaseTable() { return ""; }
+    static std::list<std::string> DatabaseColumns() { return {"local_id", "id", "uid", "guid"}; };
+    static size_t DatabaseColumnCount() { return DatabaseColumns().size(); }
+    BaseModel(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : container_(container)
+    {
+        if (!rs[0].isEmpty())
+            local_id_ = rs[0].convert<decltype(local_id_)>();
+        if (!rs[1].isEmpty())
+            id_ = rs[1].convert<decltype(id_)>();
+        if (!rs[2].isEmpty())
+            uid_ = rs[2].convert<decltype(uid_)>();
+        if (!rs[3].isEmpty())
+            guid_ = rs[3].convert<decltype(guid_)>();
+        ClearDirty();
+    }
+
     virtual HTTPSRequest PrepareRequest();
 
     virtual bool DuplicateResource(const toggl::error &err) const {
@@ -175,28 +182,28 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     std::string batchUpdateRelativeURL() const;
     std::string batchUpdateMethod() const;
 
-    ProtectedBase *container_;
+    ProtectedBase *container_ { nullptr };
 
-    Poco::Int64 local_id_;
-    Poco::UInt64 id_;
-    guid guid_;
-    Poco::Int64 ui_modified_at_;
-    Poco::UInt64 uid_;
-    bool dirty_;
-    Poco::Int64 deleted_at_;
-    bool is_marked_as_deleted_on_server_;
-    Poco::Int64 updated_at_;
+    Poco::Int64 local_id_ { 0 };
+    Poco::UInt64 id_ { 0 };
+    Poco::UInt64 uid_ { 0 };
+    guid guid_ { "" };
+    Poco::Int64 ui_modified_at_ { 0 };
+    Poco::Int64 deleted_at_ { 0 };
+    Poco::Int64 updated_at_ { 0 };
 
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.
-    std::string validation_error_;
+    std::string validation_error_ { "" };
 
+    bool dirty_ { false };
+    bool is_marked_as_deleted_on_server_ { false };
     // Flag is set only when sync fails.
     // Its for viewing purposes only. It should not
     // be used to check if a model needs to be
     // pushed to backend. It only means that some
     // attempt to push failed somewhere.
-    bool unsynced_;
+    bool unsynced_ { false };
 };
 
 }  // namespace toggl
