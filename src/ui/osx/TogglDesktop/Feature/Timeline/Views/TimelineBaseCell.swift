@@ -136,7 +136,7 @@ extension TimelineBaseCell {
 extension TimelineBaseCell {
 
     private func initHoverTrackers() {
-        guard let view = foregroundBox, isHoverable else { return }
+        guard isHoverable else { return }
         trackingArea = NSTrackingArea(rect: view.bounds, options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect, .mouseMoved], owner: self, userInfo: nil)
         view.addTrackingArea(trackingArea!)
     }
@@ -272,7 +272,7 @@ extension TimelineBaseCell {
             if isSmallEntry {
                 return CGRect(x: 0, y: Constants.SideHideSmall, width: foregroundBox.frame.width, height: foregroundBox.frame.height - Constants.SideHideSmall * 2)
             }
-            return NSRect(x: 0, y: Constants.SideHit, width: foregroundBox.frame.width, height: foregroundBox.frame.height - Constants.SideHit * 2)
+            return NSRect(x: 0, y: Constants.SideHit, width: resizeView.frame.width, height: foregroundBox.frame.height - Constants.SideHit * 2)
         }
         return foregroundBox.bounds
     }
@@ -282,7 +282,7 @@ extension TimelineBaseCell {
         if isSmallEntry {
             return NSRect(x: 0, y: foregroundBox.frame.height - Constants.SideHideSmall, width: foregroundBox.frame.width, height: Constants.SideHideSmall)
         }
-        return NSRect(x: 0, y: foregroundBox.frame.height - Constants.SideHit, width: foregroundBox.frame.width, height: Constants.SideHit)
+        return NSRect(x: 0, y: foregroundBox.frame.height - Constants.SideHit, width: resizeView.frame.width, height: Constants.SideHit)
     }
 
     private func suitableBottomResizeRect() -> CGRect {
@@ -290,7 +290,7 @@ extension TimelineBaseCell {
         if isSmallEntry {
             return NSRect(x: 0, y: 0, width: foregroundBox.frame.width, height: Constants.SideHideSmall)
         }
-        return NSRect(x: 0, y: 0, width: foregroundBox.frame.width, height: Constants.SideHit)
+        return NSRect(x: 0, y: 0, width: resizeView.frame.width, height: Constants.SideHit)
     }
 
     private func convertToLocalPoint(for event: NSEvent) -> CGPoint {
@@ -298,5 +298,9 @@ extension TimelineBaseCell {
         let position = event.locationInWindow
         let localPosition = foregroundBox.convert(position, from: nil)
         return localPosition
+    }
+
+    private var resizeView: NSView {
+        return backgroundBox ?? foregroundBox
     }
 }
