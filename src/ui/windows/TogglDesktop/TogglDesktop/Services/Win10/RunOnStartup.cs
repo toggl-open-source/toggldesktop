@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 
-namespace TogglDesktop.Win10
+namespace TogglDesktop.Services.Win10
 {
     public static class RunOnStartup
     {

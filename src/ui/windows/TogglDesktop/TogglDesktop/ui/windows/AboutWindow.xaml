@@ -6,18 +6,21 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
+        xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
+        xmlns:converters="clr-namespace:TogglDesktop.Converters"
         mc:Ignorable="d" 
         Height="460" Width="300"
         Title="About"
         Background="{DynamicResource Toggl.CardBackground}"
         WindowStartupLocation="CenterOwner"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        d:DataContext="{d:DesignInstance viewModels:AboutWindowViewModel, IsDesignTimeCreatable=False}"
         Style="{StaticResource Toggl.ToolWindow}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/DesignUpdate/MahApps.Overrides.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converters:CapitalizeConverter x:Key="CapitalizeConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <i:Interaction.Behaviors>
@@ -37,24 +40,24 @@
             <TextBlock Text="Toggl Desktop" HorizontalAlignment="Center"
                        Style="{StaticResource Toggl.TitleText}"
                        Margin="0 0 0 10"/>
-            <TextBlock Name="versionText" x:FieldModifier="private"
-                       Style="{StaticResource Toggl.CaptionText}"
-                       Text="Version 1.33.7" HorizontalAlignment="Center"
+            <TextBlock Style="{StaticResource Toggl.CaptionText}"
+                       Text="{Binding VersionText, Mode=OneTime}"
+                       HorizontalAlignment="Center"
                        Margin="0 0 0 16"/>
             
-            <TextBlock Name="updateText" x:FieldModifier="private"
-                       Style="{StaticResource Toggl.BaseText}"
+            <TextBlock Style="{StaticResource Toggl.BaseText}"
                        Foreground="{DynamicResource Toggl.AccentBrush}"
-                       Text="Downloading version X&#10;This is a test"
+                       Text="{Binding UpdateStatusText}"
                        HorizontalAlignment="Center"
                        TextAlignment="Center"
                        Margin="0 0 0 8"/>
 
-            <Button Name="restartButton" x:FieldModifier="private"
-                    Width="152"
-                    Click="onRestartButtonClick"
-                    Content="Update &amp; restart" Style="{StaticResource Toggl.AccentButton}"
-                    HorizontalAlignment="Center" />
+            <Button Width="152"
+                    Content="Update &amp; restart"
+                    Style="{StaticResource Toggl.AccentButton}"
+                    HorizontalAlignment="Center"
+                    Command="{Binding UpdateAndRestartCommand}"
+                    Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </StackPanel>
         
         <StackPanel Grid.Row="0" VerticalAlignment="Bottom">
@@ -80,15 +83,20 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
-            <TextBlock Name="releaseChannelLabel" x:FieldModifier="private"
-                       Style="{StaticResource Toggl.CaptionBlackText}"
+            <TextBlock Style="{StaticResource Toggl.CaptionBlackText}"
                        Text="Release channel:"
-                       Margin="8,4,8,32" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <ComboBox Name="releaseChannelComboBox" x:FieldModifier="private"
-                      Margin="8,0,8,28" Height="24" Width="114"
+                       Margin="8,4,8,32" HorizontalAlignment="Left" VerticalAlignment="Center"
+                       Visibility="{Binding IsUpdateCheckEnabled, Converter={StaticResource FalseToHiddenVisibilityConverter}}"/>
+            <ComboBox Margin="8,0,8,28" Height="24" Width="114"
                       ItemsSource="{Binding Channels}"
+                      SelectedItem="{Binding SelectedChannel}"
                       HorizontalAlignment="Right"
-                      SelectionChanged="onReleaseChannelSelectionChanged">
+                      Visibility="{Binding IsUpdateCheckEnabled, Converter={StaticResource FalseToHiddenVisibilityConverter}}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path='', Converter={StaticResource CapitalizeConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
         </StackPanel>
     </Grid>

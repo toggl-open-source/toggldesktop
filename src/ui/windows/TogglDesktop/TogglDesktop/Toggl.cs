@@ -1128,7 +1128,7 @@ public static partial class Toggl
 
         listenToLibEvents();
 
-        if (IsUpdateCheckDisabled())
+        if (Utils.GetIsUpdateCheckDisabledFromRegistry())
         {
             toggl_disable_update_check(ctx);
         }
@@ -1270,17 +1270,11 @@ public static partial class Toggl
 
     public static bool IsUpdateCheckDisabled()
     {
-        // On Windows platform, system admin can disable
-        // automatic update check via registry key.
-        object value = Microsoft.Win32.Registry.GetValue(
-            "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Toggl\\TogglDesktop",
-            "UpdateCheckDisabled",
-            false);
-        if (value == null)
-        {
-            return false;
-        }
-        return Convert.ToBoolean(value);
+#if TOGGL_ALLOW_UPDATE_CHECK
+        return Utils.GetIsUpdateCheckDisabledFromRegistry();
+#else
+        return true;
+#endif
     }
     #endregion
 
@@ -1456,6 +1450,11 @@ public static partial class Toggl
         Clear();
 
         update();
+    }
+
+    public static void PrepareShutdown()
+    {
+        mainWindow.PrepareShutdown(true);
     }
 
     public static void SetManualMode(bool manualMode)

@@ -18,6 +18,7 @@ using NHotkey;
 using NHotkey.Wpf;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.Experiments;
+using TogglDesktop.Services;
 using TogglDesktop.Theming;
 using TogglDesktop.Tutorial;
 using TogglDesktop.ViewModels;
@@ -39,6 +40,8 @@ namespace TogglDesktop
         private readonly WindowInteropHelper interopHelper;
         private readonly IMainView[] views;
         private Window[] childWindows;
+
+        private UpdateService _updateService;
 
         private EditViewPopup editPopup;
         private IdleNotificationWindow idleNotificationWindow;
@@ -182,9 +185,12 @@ namespace TogglDesktop
 
         private void initializeWindows()
         {
+            _updateService = new UpdateService();
+            var aboutWindowViewModel = new AboutWindowViewModel(_updateService);
+
             this.childWindows = new Window[]{
                 this.editPopup = new EditViewPopup(),
-                new AboutWindow(),
+                new AboutWindow(aboutWindowViewModel),
                 new FeedbackWindow(),
                 new PreferencesWindow(),
             };
@@ -263,7 +269,7 @@ namespace TogglDesktop
 
             this.loadPositions();
 
-            this.GetWindow<AboutWindow>().UpdateReleaseChannel();
+            this.GetWindow<AboutWindow>().ViewModel.SelectedChannel = Toggl.UpdateChannel();
 
             this.errorBar.Hide();
             this.statusBar.Hide();
@@ -695,11 +701,11 @@ namespace TogglDesktop
 
             this.PrepareShutdown(exitCode == 0);
 
-            this.Close();
-
             this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
-                Program.Shutdown(exitCode);
+                // TODO: move this to startup if it causes issues here
+                _updateService.UpdateAndQuit(exitCode);
+                // Program.Shutdown(exitCode);
             }));
         }
 
@@ -733,10 +739,7 @@ namespace TogglDesktop
                 Utils.SaveWindowLocation(this, this.editPopup, this.miniTimer);
             }
 
-            if (this.IsVisible)
-            {
-                this.Hide();
-            }
+            this.Close();
         }
 
         private void updateStatusIcons(bool isOnline)

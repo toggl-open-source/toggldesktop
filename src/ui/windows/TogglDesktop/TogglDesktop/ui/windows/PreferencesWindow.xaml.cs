@@ -14,7 +14,7 @@ using TogglDesktop.Theming;
 using TogglDesktop.ViewModels;
 
 #if MS_STORE
-using TogglDesktop.Win10;
+using TogglDesktop.Services.Win10;
 #endif
 namespace TogglDesktop
 {
