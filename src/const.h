@@ -62,6 +62,7 @@
 #define kCannotConnectError "Cannot connect to Toggl"
 #define kCannotSyncInTestEnv "Cannot sync in test env"
 #define kBackendIsDownError "Backend is down"
+#define kBackendIsSendingInvalidDataError "Backend is sending invalid data: ignoring update without an ID"
 #define kBadRequestError "Data that you are sending is not valid/acceptable"
 #define kRequestIsNotPossible "Request is not possible"
 #define kPaymentRequiredError "Requested action allowed only for Non-Free workspaces. Please upgrade!"  // NOLINT

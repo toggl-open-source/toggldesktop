@@ -28,11 +28,46 @@
 #include <Poco/Data/SQLite/SessionImpl.h>
 #include <Poco/Data/SQLite/Utility.h>
 #include <Poco/Data/Statement.h>
+#include <Poco/Data/TypeHandler.h>
 #include <Poco/FileStream.h>
 #include <Poco/Stopwatch.h>
 #include <Poco/StreamCopier.h>
 #include <Poco/UUID.h>
 #include <Poco/UUIDGenerator.h>
+
+template<> class Poco::Data::TypeHandler<class toggl::Client> {
+public:
+    static std::size_t size() {
+        return 6;
+    }
+    static void bind(std::size_t pos, const toggl::Client& obj, AbstractBinder::Ptr pBinder, AbstractBinder::Direction dir) {
+        poco_assert_dbg (!pBinder.isNull());
+        TypeHandler<Poco::Int64>::bind(pos++, obj.local_id_, pBinder, dir);
+        TypeHandler<Poco::UInt64>::bind(pos++, obj.id_, pBinder, dir);
+        TypeHandler<Poco::UInt64>::bind(pos++, obj.uid_, pBinder, dir);
+        TypeHandler<std::string>::bind(pos++, obj.name_, pBinder, dir);
+        TypeHandler<std::string>::bind(pos++, obj.guid_, pBinder, dir);
+        TypeHandler<Poco::UInt64>::bind(pos++, obj.wid_, pBinder, dir);
+    }
+    static void prepare(std::size_t pos, const toggl::Client& obj, AbstractPreparator::Ptr pPrepare) {
+        poco_assert_dbg (!pPrepare.isNull());
+        TypeHandler<Poco::Int64>::prepare(pos++, obj.local_id_, pPrepare);
+        TypeHandler<Poco::UInt64>::prepare(pos++, obj.id_, pPrepare);
+        TypeHandler<Poco::UInt64>::prepare(pos++, obj.uid_, pPrepare);
+        TypeHandler<std::string>::prepare(pos++, obj.name_, pPrepare);
+        TypeHandler<std::string>::prepare(pos++, obj.guid_, pPrepare);
+        TypeHandler<Poco::UInt64>::prepare(pos++, obj.wid_, pPrepare);
+    }
+    static void extract(std::size_t pos, toggl::Client& obj, const toggl::Client& defVal, AbstractExtractor::Ptr pExt) {
+        poco_assert_dbg (!pExt.isNull());
+        TypeHandler<Poco::Int64>::extract(pos++, obj.local_id_, defVal.local_id_, pExt);
+        TypeHandler<Poco::UInt64>::extract(pos++, obj.id_, defVal.id_, pExt);
+        TypeHandler<Poco::UInt64>::extract(pos++, obj.uid_, defVal.uid_, pExt);
+        TypeHandler<std::string>::extract(pos++, obj.name_, defVal.name_, pExt);
+        TypeHandler<std::string>::extract(pos++, obj.guid_, defVal.guid_, pExt);
+        TypeHandler<Poco::UInt64>::extract(pos++, obj.wid_, defVal.wid_, pExt);
+    }
+};
 
 namespace toggl {
 
@@ -1328,17 +1363,24 @@ error Database::loadClients(const Poco::UInt64 &UID,
         Poco::Mutex::ScopedLock lock(session_m_);
 
         Poco::Data::Statement select(*session_);
+        std::list<Client> c;
         select <<
-               "SELECT local_id, id, uid, name, guid, wid "
+               "SELECT *"
                "FROM clients "
                "WHERE uid = :uid "
                "ORDER BY name",
-               useRef(UID);
+               useRef(UID), into(c);
+
+        for (auto &client : c) {
+            std::cerr << "LOADED CLIENT " << client.Name() << "\n";
+            list.insert(std::move(client));
+        }
 
         error err = last_error("loadClients");
         if (err != noError) {
             return err;
         }
+        /*
         Poco::Data::RecordSet rs(select);
         while (!select.done()) {
             select.execute();
@@ -1364,6 +1406,7 @@ error Database::loadClients(const Poco::UInt64 &UID,
                 more = rs.moveNext();
             }
         }
+        */
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {

@@ -163,6 +163,10 @@ const ProtectedBase *BaseModel::GetContainer() const {
     return container_;
 }
 
+void BaseModel::SetContainer(ProtectedBase *container) {
+    container_ = container;
+}
+
 RelatedData *BaseModel::GetRelatedData() {
     return container_ ? container_->GetRelatedData() : nullptr;
 }

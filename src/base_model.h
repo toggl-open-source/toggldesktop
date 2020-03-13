@@ -17,6 +17,7 @@
 #include "https_client.h"
 
 #include <Poco/Types.h>
+#include <Poco/Data/TypeHandler.h>
 
 namespace toggl {
 
@@ -43,6 +44,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
 
     ProtectedBase *GetContainer();
     const ProtectedBase *GetContainer() const;
+    void SetContainer(ProtectedBase *container);
     RelatedData *GetRelatedData();
     const RelatedData *GetRelatedData() const;
 
@@ -169,7 +171,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
 
     bool userCannotAccessWorkspace(const toggl::error &err) const;
 
- private:
+ protected:
     std::string batchUpdateRelativeURL() const;
     std::string batchUpdateMethod() const;
 

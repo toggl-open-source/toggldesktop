@@ -605,6 +605,10 @@ locked<const Client> RelatedData::clientByProject(locked<const Project> &p) cons
 
 }
 
+Logger RelatedData::logger() const {
+    return Logger("RelatedData");
+}
+
 bool CompareClients(const Client *l, const Client *r) {
     if (l->WID() == r->WID()) {
         if (Poco::UTF8::icompare(l->Name(), r->Name()) < 0) {

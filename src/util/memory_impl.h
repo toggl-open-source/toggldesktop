@@ -438,6 +438,14 @@ locked<T> ProtectedContainer<T>::create(Args&&... args) {
     return { mutex_, val };
 }
 
+template <typename T>
+void ProtectedContainer<T>::insert(T&& item) {
+    lock_type lock(mutex_);
+    item.SetContainer(this);
+    container_.insert(new T(std::move(item)));
+
+}
+
 
 //// iterator ////////
 template<class T>

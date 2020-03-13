@@ -265,6 +265,10 @@ public:
     template <typename ...Args>
     locked<T> create(Args&&... args);
     /**
+     *
+     */
+    void insert(T&& item);
+    /**
      * @brief remove - Remove one instance of <typename T>
      * @param guid - guid of the item to delete
      * @return - true if found and deleted

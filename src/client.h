@@ -10,18 +10,21 @@
 #include <json/json.h>  // NOLINT
 
 #include <Poco/Types.h>
+#include <Poco/Data/Extraction.h>
 
 #include "base_model.h"
 
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Client : public BaseModel {
-    Client(ProtectedBase *container)
+    Client(ProtectedBase *container = nullptr)
         : BaseModel(container)
     , wid_(0)
     , name_("") {}
  public:
     friend class ProtectedBase;
+    friend class Poco::Data::TypeHandler<toggl::Client>;
+    friend class Poco::Data::Extraction<std::list<toggl::Client>>;
 
     const Poco::UInt64 &WID() const {
         return wid_;

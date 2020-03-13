@@ -9,12 +9,14 @@
 #include <map>
 #include <functional>
 
+#include "const.h"
 #include "types.h"
+#include "util/logger.h"
 #include "util/memory.h"
 
 #include <Poco/Mutex.h>
 #include <Poco/UTF8String.h>
-#include <functional>
+#include <json/json.h>
 
 namespace toggl {
 
@@ -62,6 +64,40 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
 
     void Clear();
 
+    template<typename T>
+    error LoadModelFromJSON(Poco::UInt64 userID, ProtectedContainer<T> container, const Json::Value &data, std::set<Poco::UInt64> *alive = nullptr) {
+        // alive can be 0, dont assert/check it
+        Poco::UInt64 id = data["id"].asUInt64();
+        if (!id) {
+            logger().error(kBackendIsSendingInvalidDataError);
+            return kBackendIsSendingInvalidDataError;
+        }
+
+        auto model = container.byID(id);
+
+        if (!model) {
+            model = container.byGUID(data["guid"].asString());
+        }
+
+        if (!data["server_deleted_at"].asString().empty()) {
+            if (model) {
+                model->MarkAsDeletedOnServer();
+            }
+            return noError;
+        }
+
+        if (!model) {
+            model = container.create();
+        }
+        if (alive) {
+            alive->insert(id);
+        }
+        model->SetUID(userID);
+        model->LoadFromJSON(data);
+
+        return noError;
+    }
+
     void TagList(std::vector<std::string> *result, const Poco::UInt64 wid) const;
     std::vector<locked<Workspace>> WorkspaceList();
     std::vector<locked<Client>> ClientList();
@@ -94,6 +130,8 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
 
     locked<Client> clientByProject(locked<Project> &p);
     locked<const Client> clientByProject(locked<const Project> &p) const;
+
+    Logger logger() const;
 
  private:
     Poco::Mutex timeEntries_m_;
