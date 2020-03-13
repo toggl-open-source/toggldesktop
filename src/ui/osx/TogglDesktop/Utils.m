@@ -53,7 +53,7 @@ extern void *ctx;
 + (void)setUpdaterChannel:(NSString *)channel
 {
 #ifdef SPARKLE
-	NSString *url = [NSString stringWithFormat:@"https://assets.toggl.com/installers/darwin_%@_appcast.xml", channel];
+	NSString *url = [NSString stringWithFormat:@"https://toggl-open-source.github.io/toggldesktop/assets/releases/darwin_%@_appcast.xml", channel];
 
 	NSAssert([SUUpdater sharedUpdater], @"No updater found");
 	NSLog(@"Setting updater feed URL to %@", url);
