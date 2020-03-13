@@ -1564,23 +1564,6 @@ error Database::loadTasks(
     return last_error("loadTasks");
 }
 
-template <typename T>
-std::string join(const T& v, const std::string& delim) {
-    std::ostringstream s;
-    bool first = true;
-    for (const auto& i : v) {
-        if (first) {
-            first = false;
-        }
-        else {
-            s << delim;
-        }
-        s << i;
-    }
-    return s.str();
-}
-
-
 error Database::loadTags(const Poco::UInt64 &UID,
     ProtectedContainer<Tag> &list) {
 

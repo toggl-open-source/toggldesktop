@@ -35,6 +35,7 @@ include_directories(
 set(LIBRARY_SOURCE_FILES
     util/logger.cc
     util/memory.cc
+    util/string_tools.cpp
 
     base_model.cc
     batch_update_result.cc
