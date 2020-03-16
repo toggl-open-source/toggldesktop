@@ -5,6 +5,7 @@ using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using Onova;
+using Onova.Exceptions;
 using Onova.Services;
 
 namespace TogglDesktop.Services
@@ -38,7 +39,15 @@ namespace TogglDesktop.Services
             var lastPreparedVersion = _updateManager.GetPreparedUpdates().LastOrDefault();
             if (lastPreparedVersion != null)
             {
-                _updateManager.LaunchUpdater(lastPreparedVersion, withRestart);
+                try
+                {
+                    _updateManager.LaunchUpdater(lastPreparedVersion, withRestart);
+                }
+                catch (Exception e)
+                    when (e is UpdaterAlreadyLaunchedException || e is LockFileNotAcquiredException)
+                {
+                    // Ignore race conditions
+                }
             }
         }
         public void Dispose()
@@ -60,7 +69,17 @@ namespace TogglDesktop.Services
             var check = await _updateManager.CheckForUpdatesAsync();
             if (check.CanUpdate)
             {
-                await _updateManager.PrepareUpdateAsync(check.LastVersion);
+                try
+                {
+                    await _updateManager.PrepareUpdateAsync(check.LastVersion);
+                }
+                catch (Exception e)
+                    when (e is UpdaterAlreadyLaunchedException || e is LockFileNotAcquiredException)
+                {
+                    // Ignore race conditions
+                    return false;
+                }
+
                 return true;
             }
 
