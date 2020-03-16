@@ -15,7 +15,7 @@ namespace TogglDesktop.Services
             {
                 var process = new Process();
                 process.StartInfo.FileName = sourceFilePath;
-                process.StartInfo.Arguments = $"/S /U /D={destDirPath}";
+                process.StartInfo.Arguments = $"/S /UN /D={destDirPath}";
                 process.StartInfo.UseShellExecute = false;
                 process.Start();
                 process.WaitForExit();

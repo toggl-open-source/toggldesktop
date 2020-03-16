@@ -50,7 +50,8 @@
 ;Global variables
 
   Var keyLength
-  Var isUpdater
+  Var isOldUpdater
+  Var isNewUpdater
   Var deleteData
   Var CHECKBOX
   Var cmdLineParams
@@ -140,22 +141,24 @@ Section
 
   SetOutPath "$INSTDIR"
 
-  ;Check if Old version of the app is still running and close it
-  DetailPrint "Closing all old TogglDesktop processes"
-  File "NSIS_plugins\KillProc.exe"
-  nsExec::Exec "$INSTDIR\KillProc.exe TogglDesktop"
-  Delete "$INSTDIR\KillProc.exe"
-  StrCmp $0 "-1" wooops
+  ${If} $isNewUpdater == 0
+    ;Check if Old version of the app is still running and close it
+    DetailPrint "Closing all old TogglDesktop processes"
+    File "NSIS_plugins\KillProc.exe"
+    nsExec::Exec "$INSTDIR\KillProc.exe TogglDesktop"
+    Delete "$INSTDIR\KillProc.exe"
+    StrCmp $0 "-1" wooops
 
-  Goto completed
+    Goto completed
 
-  wooops:
-  DetailPrint "-> Error: Something went wrong :-("
-  Abort
+    wooops:
+    DetailPrint "-> Error: Something went wrong :-("
+    Abort
 
-  completed:
-  DetailPrint "Everything went okay :-D"
-
+    completed:
+    DetailPrint "Everything went okay :-D"
+  ${EndIf}
+  
   ;ADD YOUR OWN FILES HERE...
   File "${redist}\*.dll"
   File "${srcdir}\*.dll"
@@ -164,8 +167,11 @@ Section
   File "${srcdir}\TogglDesktop.exe.config"
   File "..\..\src\ui\windows\TogglDesktop\TogglDesktop\Resources\toggl.ico"
 
-  ;Store installation folder
-  WriteRegStr HKCU "Software\TogglDesktop" "" $INSTDIR
+  ${If} $isOldUpdater == 0
+  ${AndIf} $isNewUpdater == 0    
+    ;Store installation folder
+    WriteRegStr HKCU "Software\TogglDesktop" "" $INSTDIR
+  ${EndIf}
 
   ;Create uninstaller
 !ifndef INNER
@@ -178,30 +184,32 @@ Section
   IfFileExists $DESKTOP\TogglDesktop.lnk 0 ShortcutDoesntExist
     CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$INSTDIR\TogglDesktop.exe" ""
     ShortcutDoesntExist:
-    ${If} $isUpdater == 0
-      ;Create desktop shortcut
+    ${If} $isOldUpdater == 0
+    ${AndIf} $isNewUpdater == 0
       CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$INSTDIR\TogglDesktop.exe" ""
     ${EndIf}
 
-  ;Add/Remove programs entry
-  !define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\TogglDesktop"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayName" "Toggl Desktop"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayIcon" "$\"$INSTDIR\TogglDesktop.exe$\""
-  WriteRegStr HKCU "${REG_UNINSTALL}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
-  WriteRegStr HKCU "${REG_UNINSTALL}" "Publisher" "Toggl"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "HelpLink" "https://support.toggl.com/desktop-apps"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "URLInfoAbout" "https://www.toggl.com/"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "InstallLocation" "$\"$INSTDIR$\""
-  WriteRegStr HKCU "${REG_UNINSTALL}" "NoModify" 1
-  WriteRegStr HKCU "${REG_UNINSTALL}" "NoRepair" 1
-  WriteRegStr HKCU "${REG_UNINSTALL}" "Comments" "Uninstalls Toggl Desktop"
+  ${If} $isOldUpdater == 1
+  ${OrIf} $isNewUpdater == 1
+    ;Add/Remove programs entry
+    !define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\TogglDesktop"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayName" "Toggl Desktop"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayIcon" "$\"$INSTDIR\TogglDesktop.exe$\""
+    WriteRegStr HKCU "${REG_UNINSTALL}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
+    WriteRegStr HKCU "${REG_UNINSTALL}" "Publisher" "Toggl"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "HelpLink" "https://support.toggl.com/desktop-apps"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "URLInfoAbout" "https://www.toggl.com/"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "InstallLocation" "$\"$INSTDIR$\""
+    WriteRegStr HKCU "${REG_UNINSTALL}" "NoModify" 1
+    WriteRegStr HKCU "${REG_UNINSTALL}" "NoRepair" 1
+    WriteRegStr HKCU "${REG_UNINSTALL}" "Comments" "Uninstalls Toggl Desktop"
 
-  ;Create start menu entry
-  createDirectory "$SMPROGRAMS\Toggl"
-  createShortCut "$SMPROGRAMS\Toggl\Toggl Desktop.lnk" "$INSTDIR\TogglDesktop.exe" "" "$INSTDIR\toggl.ico"
-  createShortCut "$SMPROGRAMS\Toggl\Uninstall Toggl Desktop.lnk" "$INSTDIR\uninstall.exe" "" ""
-
+    ;Create start menu entry
+    createDirectory "$SMPROGRAMS\Toggl"
+    createShortCut "$SMPROGRAMS\Toggl\Toggl Desktop.lnk" "$INSTDIR\TogglDesktop.exe" "" "$INSTDIR\toggl.ico"
+    createShortCut "$SMPROGRAMS\Toggl\Uninstall Toggl Desktop.lnk" "$INSTDIR\uninstall.exe" "" ""
+  ${EndIf}
 SectionEnd
 
 ;--------------------------------
@@ -262,17 +270,21 @@ FunctionEnd
 Function checkUpdater
 
   Push $R0
-  StrCpy $isUpdater 0
+  StrCpy $isOldUpdater 0
   ${GetOptions} $cmdLineParams '/U' $R0
   IfErrors +3 0
-  StrCpy $isUpdater 1
+  StrCpy $isOldUpdater 1
+  SetSilent silent
+  ${GetOptions} $cmdLineParams "/UN" $R0
+  IfErrors +3 0
+  StrCpy $isNewUpdater 1
   SetSilent silent
 
 FunctionEnd
 
 Function .onInstSuccess
 
-  ${if} $isUpdater == 1
+  ${if} $isOldUpdater == 1
     Exec "$INSTDIR\TogglDesktop.exe --updated"
   ${Endif}
 
