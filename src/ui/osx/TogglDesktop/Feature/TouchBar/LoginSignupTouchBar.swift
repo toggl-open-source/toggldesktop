@@ -87,9 +87,11 @@ final class LoginSignupTouchBar: NSObject {
     }()
 
     private var isAppleSignInAvailable: Bool {
+        #if APP_STORE
         if #available(OSX 10.15, *) {
             return true
         }
+        #endif
         return false
     }
 
