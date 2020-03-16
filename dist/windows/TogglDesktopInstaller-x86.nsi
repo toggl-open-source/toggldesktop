@@ -51,7 +51,6 @@
 
   Var keyLength
   Var isUpdater
-  Var fromOldVersion
   Var deleteData
   Var CHECKBOX
   Var cmdLineParams
@@ -156,12 +155,6 @@ Section
   completed:
   DetailPrint "Everything went okay :-D"
 
-  ;Rename Bugsnag so we can update
-  Rename $INSTDIR\Bugsnag.dll $INSTDIR\Bugsnag.1.2.dll
-
-  ;Delete the old Bugsnag file on reboot
-  Delete /REBOOTOK $INSTDIR\Bugsnag.1.2.dll
-
   ;ADD YOUR OWN FILES HERE...
   File "${redist}\*.dll"
   File "${srcdir}\*.dll"
@@ -261,24 +254,7 @@ Function .onInit
 !endif
 
   ${GetParameters} $cmdLineParams
-  Call checkOldVersion
   Call checkUpdater
-
-FunctionEnd
-
-Function checkOldVersion
-
-  StrCpy $fromOldVersion 0
-
-  ReadRegStr $3 HKLM "SOFTWARE\Toggl\TogglDesktop" "Version"
-  StrLen $keyLength $3
-
-  ${if} $keyLength != 0
-    StrCpy $R3 $3 3
-    StrCmp $R3 "7.1" 0 Newer
-    StrCpy $fromOldVersion 1
-    Newer:
-  ${Endif}
 
 FunctionEnd
 
@@ -294,11 +270,6 @@ Function checkUpdater
 FunctionEnd
 
 Function .onInstSuccess
-
-  ${If} $fromOldVersion == 1
-    ;Copy local database from 7.1 app to newer app location
-    CopyFiles "$PROFILE\AppData\Roaming\Kopsik\kopsik.db" "$INSTDIR\toggldesktop.db"
-  ${EndIf}
   
   ${if} $isUpdater == 1
     Exec "$INSTDIR\TogglDesktop.exe --updated"
