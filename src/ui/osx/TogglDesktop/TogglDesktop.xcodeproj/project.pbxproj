@@ -3026,8 +3026,6 @@
 					"\"Sparkle\"",
 					"-framework",
 					"\"SystemConfiguration\"",
-					"-framework",
-					"\"AuthenticationServices\"",
 				);
 				OTHER_SWIFT_FLAGS = "-DSPARKLE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
@@ -3119,8 +3117,6 @@
 					"\"Sparkle\"",
 					"-framework",
 					"\"SystemConfiguration\"",
-					"-framework",
-					"\"AuthenticationServices\"",
 				);
 				OTHER_SWIFT_FLAGS = "-DSPARKLE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
@@ -3269,6 +3265,33 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"c++\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AppAuth\"",
+					"-framework",
+					"\"AppKit\"",
+					"-framework",
+					"\"Bugsnag\"",
+					"-framework",
+					"\"Carbon\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GTMAppAuth\"",
+					"-framework",
+					"\"GTMSessionFetcher\"",
+					"-framework",
+					"\"MASShortcut\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"AuthenticationServices\"",
+				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_STORE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
 				PRODUCT_MODULE_NAME = TogglDesktop;
@@ -3328,6 +3351,33 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"c++\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AppAuth\"",
+					"-framework",
+					"\"AppKit\"",
+					"-framework",
+					"\"Bugsnag\"",
+					"-framework",
+					"\"Carbon\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GTMAppAuth\"",
+					"-framework",
+					"\"GTMSessionFetcher\"",
+					"-framework",
+					"\"MASShortcut\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"AuthenticationServices\"",
+				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_STORE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
 				PRODUCT_MODULE_NAME = TogglDesktop;
