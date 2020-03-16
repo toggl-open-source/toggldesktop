@@ -44,7 +44,8 @@ namespace TogglDesktop.ViewModels
         private void UpdateAndRestart()
         {
             Toggl.PrepareShutdown();
-            _updateService.UpdateAndRestart();
+            _updateService.Update();
+            Program.Shutdown(0);
         }
 
         private static void SetUpdateChannel(string channel) => Toggl.SetUpdateChannel(channel);

@@ -4,10 +4,12 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.Services;
 
 // ReSharper disable InconsistentNaming
 
@@ -136,9 +138,6 @@ public static partial class Toggl
 
     public delegate void DisplayAutotrackerNotification(
         string projectName, ulong projectId, ulong taskId);
-
-    public delegate void DisplayUpdateDownloadState(
-        string url, DownloadStatus status);
 
     public delegate void DisplayProjectColors(
         string[] colors, ulong count);
@@ -782,7 +781,6 @@ public static partial class Toggl
     public static event DisplayAutotrackerNotification OnAutotrackerNotification = delegate { };
     public static event DisplaySyncState OnDisplaySyncState = delegate { };
     public static event DisplayUnsyncedItems OnDisplayUnsyncedItems = delegate { };
-    public static event DisplayUpdateDownloadState OnDisplayUpdateDownloadState = delegate { };
     public static event DisplayProjectColors OnDisplayProjectColors = delegate { };
     public static event DisplayCountries OnDisplayCountries = delegate { };
     public static event DisplayPromotion OnDisplayPromotion = delegate { };
@@ -790,7 +788,8 @@ public static partial class Toggl
     public static event DisplayPomodoro OnDisplayPomodoro = delegate { };
     public static event DisplayPomodoroBreak OnDisplayPomodoroBreak = delegate { };
     public static event DisplayInAppNotification OnDisplayInAppNotification = delegate { };
-
+    public static readonly BehaviorSubject<UpdateStatus> OnUpdateDownloadStatus
+        = new BehaviorSubject<UpdateStatus>(new UpdateStatus());
     private static void listenToLibEvents()
     {
         toggl_on_show_app(ctx, open =>
@@ -980,7 +979,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnUpdateDownloadState, v: {0}, state: {1}", version, state))
             {
-                OnDisplayUpdateDownloadState(version, (DownloadStatus)state);
+                OnUpdateDownloadStatus.OnNext(new UpdateStatus(Version.Parse(version), (DownloadStatus)state));
             }
         });
 
@@ -1446,8 +1445,6 @@ public static partial class Toggl
         }
 
         mainWindow.PrepareShutdown(true);
-
-        Clear();
 
         update();
     }
