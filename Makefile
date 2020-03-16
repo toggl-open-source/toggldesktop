@@ -40,7 +40,7 @@ xcodebuild_command=xcodebuild \
 xcodebuild_command_release=xcodebuild \
 				  -scheme TogglDesktop \
 				  -workspace src/ui/osx/TogglDesktop.xcworkspace  \
-				  -configuration Release
+				  -configuration Release CODE_SIGNING_IDENTITY="Nghia Tran (GCBSH26WK9)"
 
 ifeq ($(uname), Linux)
 executable=./build/src/ui/linux/TogglDesktop/TogglDesktop
@@ -156,7 +156,7 @@ app_release: lib_release ui_release
 lib:
 	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Debug
 lib_release:
-	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Release build
+	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Release build CODE_SIGNING_IDENTITY="Nghia Tran (GCBSH26WK9)"
 
 ui:
 	$(xcodebuild_command)
