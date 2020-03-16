@@ -701,10 +701,11 @@ namespace TogglDesktop
 
             this.PrepareShutdown(exitCode == 0);
 
+            // TODO: move this to startup if it causes issues here
+            _updateService.Update(withRestart: false);
+
             this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
-                // TODO: move this to startup if it causes issues here
-                _updateService.Update(withRestart: false);
                 Program.Shutdown(exitCode);
             }));
         }

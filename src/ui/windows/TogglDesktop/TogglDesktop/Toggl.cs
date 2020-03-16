@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -1145,7 +1142,7 @@ public static partial class Toggl
         updatePath = Path.Combine(path, "updates");
 
 #if TOGGL_ALLOW_UPDATE_CHECK
-        installPendingUpdates();
+        cleanupUpdateDownloads();
 #endif
 
         // Configure log, db path
@@ -1175,96 +1172,22 @@ public static partial class Toggl
     }
 
     // ReSharper disable once UnusedMember.Local
-    // (updates are disabled in Release_VS configuration to allow for proper debugging)
-    private static void installPendingUpdates()
+    // (updates are disabled in Debug configuration to allow for proper debugging)
+    private static void cleanupUpdateDownloads()
     {
-        if (Environment.GetCommandLineArgs().Contains("--updated"))
-        {
-            // --updated means we've just been silently updated and started by the installer
-            // so we just clean up the installer files and continue
-            var di = new DirectoryInfo(updatePath);
-            foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
-            {
-                try
-                {
-                    Utils.DeleteFile(file.FullName);
-                }
-                catch (Exception e)
-                {
-                    BugsnagService.NotifyBugsnag(e);
-                    Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
-                }
-            }
-
-            return;
-        }
-
-        var update = createUpdateAction();
-
-        if (update == null)
-            return;
-
-        update();
-    }
-
-    private static Action createUpdateAction()
-    {
-        if (!Directory.Exists(updatePath))
-        {
-            return null;
-        }
-
         var di = new DirectoryInfo(updatePath);
-        var files = di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly);
-        if (files.Length > 1)
+        foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
         {
-            Debug("Multiple update installers found. Deleting.");
-            foreach (var file in files)
-            {
-                try
-                {
-                    Utils.DeleteFile(file.FullName);
-                }
-                catch (Exception e)
-                {
-                    BugsnagService.NotifyBugsnag(e);
-                    Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
-                }
-            }
-            return null;
-        }
-
-        if (files.Length < 1)
-        {
-            return null;
-        }
-
-        var installerFullPath = files[0].FullName;
-
-        return () =>
-        {
-            Process process;
             try
             {
-                process = Process.Start(installerFullPath, "/S /U");
+                Utils.DeleteFile(file.FullName);
             }
-            catch (Win32Exception e)
+            catch (Exception e)
             {
                 BugsnagService.NotifyBugsnag(e);
-                Toggl.OnError?.Invoke("Unable to run the installer. Please update manually.", false);
-                return;
+                Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
             }
-
-            if (process != null && !process.HasExited && process.Id != 0)
-            {
-                // Update has started. Quit, installer will restart me.
-                Environment.Exit(0);
-            }
-            else
-            {
-                Toggl.OnError?.Invoke("Unable to run the installer. Please update manually.", false);
-            }
-        };
+        }
     }
 
     public static bool IsUpdateCheckDisabled()
@@ -1434,20 +1357,6 @@ public static partial class Toggl
     #endregion
 
     #region various
-
-    public static void RestartAndUpdate()
-    {
-        var update = createUpdateAction();
-
-        if (update == null)
-        {
-            return;
-        }
-
-        mainWindow.PrepareShutdown(true);
-
-        update();
-    }
 
     public static void PrepareShutdown()
     {

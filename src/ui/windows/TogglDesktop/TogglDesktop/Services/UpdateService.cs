@@ -27,13 +27,11 @@ namespace TogglDesktop.Services
             Toggl.OnUpdateDownloadStatus
                 .Where(x => x.DownloadStatus == Toggl.DownloadStatus.Done)
                 .Subscribe(PrepareUpdate);
-            _updateStatusSubject.Subscribe(x => this.HasPendingUpdate = x.DownloadStatus == Toggl.DownloadStatus.Done);
             UpdateStatus = _updateStatusSubject.AsObservable();
         }
 
         public bool IsUpdateCheckEnabled { get; }
         public IObservable<UpdateStatus> UpdateStatus { get; }
-        public bool HasPendingUpdate { get; private set; }
 
         public void Update(bool withRestart = true)
         {
