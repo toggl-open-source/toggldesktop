@@ -49,6 +49,10 @@ jobs:
         base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPMENT }}" > Bundle_cert_macos_development.p12
         security import ./Bundle_cert_macos_development.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPMENT_PASSWORD }} -T /usr/bin/codesign
 
+        # Mac Developer Certificate v2
+        base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPMENT_v2 }}" > Bundle_cert_macos_development_v2.p12
+        security import ./Bundle_cert_macos_development_v2.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPMENT_PASSWORD_v2 }} -T /usr/bin/codesign
+
         # Application Certificate
         base64 -D <<< "${{ secrets.CERT_MACOS_APPLICATION }}" > Bundle_cert_macos_distribution.p12
         security import ./Bundle_cert_macos_distribution.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_APPLICATION_PASSWORD }} -T /usr/bin/codesign
