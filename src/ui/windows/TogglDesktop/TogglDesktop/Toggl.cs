@@ -28,12 +28,18 @@ public static partial class Toggl
     private static IntPtr ctx = IntPtr.Zero;
 
     private static MainWindow mainWindow;
-    private static string updatePath;
 
     // User can override some parameters when running the app
     public static string ScriptPath;
     public static string DatabasePath;
     public static string LogPath;
+
+    public static readonly string WritableAppDirPath =
+        Path.Combine(
+            Environment.GetFolderPath(
+            Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
+
+    public static readonly string UpdatesPath = Path.Combine(WritableAppDirPath, "updates");
 
 #if TOGGL_PRODUCTION_BUILD
     public static string Env = "production";
@@ -1129,17 +1135,8 @@ public static partial class Toggl
             toggl_disable_update_check(ctx);
         }
 
-        // Move "old" format app data folder, if it exists
-        string oldpath = Path.Combine(Environment.GetFolderPath(
-            Environment.SpecialFolder.ApplicationData), "Kopsik");
         string path = Path.Combine(Environment.GetFolderPath(
             Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
-        if (Directory.Exists(oldpath) && !Directory.Exists(path))
-        {
-            Directory.Move(oldpath, path);
-        }
-
-        updatePath = Path.Combine(path, "updates");
 
 #if TOGGL_ALLOW_UPDATE_CHECK
         cleanupUpdateDownloads();
@@ -1153,19 +1150,12 @@ public static partial class Toggl
             DatabasePath = Path.Combine(path, "toggldesktop.db");
         }
 
-        // Rename database file, if not done yet
-        string olddatabasepath = Path.Combine(path, "kopsik.db");
-        if (File.Exists(olddatabasepath) && !File.Exists(DatabasePath))
-        {
-            File.Move(olddatabasepath, DatabasePath);
-        }
-
         if (!toggl_set_db_path(ctx, DatabasePath))
         {
             throw new System.Exception("Failed to initialize database at " + DatabasePath);
         }
 
-        toggl_set_update_path(ctx, updatePath);
+        toggl_set_update_path(ctx, UpdatesPath);
 
         // Start pumping UI events
         return toggl_ui_start(ctx);
@@ -1175,7 +1165,7 @@ public static partial class Toggl
     // (updates are disabled in Debug configuration to allow for proper debugging)
     private static void cleanupUpdateDownloads()
     {
-        var di = new DirectoryInfo(updatePath);
+        var di = new DirectoryInfo(UpdatesPath);
         foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
         {
             try

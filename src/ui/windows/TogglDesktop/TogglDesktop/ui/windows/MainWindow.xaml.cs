@@ -41,8 +41,6 @@ namespace TogglDesktop
         private readonly IMainView[] views;
         private Window[] childWindows;
 
-        private UpdateService _updateService;
-
         private EditViewPopup editPopup;
         private IdleNotificationWindow idleNotificationWindow;
         private SyncingIndicator syncingIndicator;
@@ -185,8 +183,9 @@ namespace TogglDesktop
 
         private void initializeWindows()
         {
-            _updateService = new UpdateService();
-            var aboutWindowViewModel = new AboutWindowViewModel(_updateService);
+            var aboutWindowViewModel = new AboutWindowViewModel(
+                updateService: new UpdateService(Toggl.IsUpdateCheckDisabled(), Toggl.UpdatesPath),
+                versionText: $"Version {Program.Version()} {Utils.Bitness()}");
 
             this.childWindows = new Window[]{
                 this.editPopup = new EditViewPopup(),
@@ -269,7 +268,7 @@ namespace TogglDesktop
 
             this.loadPositions();
 
-            this.GetWindow<AboutWindow>().ViewModel.SelectedChannel = Toggl.UpdateChannel();
+            this.GetWindow<AboutWindow>().ViewModel.InitUpdateChannel(Toggl.UpdateChannel());
 
             this.errorBar.Hide();
             this.statusBar.Hide();
@@ -702,7 +701,8 @@ namespace TogglDesktop
             this.PrepareShutdown(exitCode == 0);
 
             // TODO: move this to startup if it causes issues here
-            _updateService.Update(withRestart: false);
+
+            this.GetWindow<AboutWindow>().ViewModel.InstallPendingUpdate();
 
             this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {

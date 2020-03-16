@@ -15,11 +15,11 @@ namespace TogglDesktop.Services
         private readonly IUpdateManager _updateManager;
         private IObservable<bool> _prepareUpdateObservable;
         private readonly Subject<UpdateStatus> _updateStatusSubject = new Subject<UpdateStatus>();
-        public UpdateService()
+        public UpdateService(bool isUpdateCheckDisabled, string updatesPath)
         {
-            IsUpdateCheckEnabled = !Toggl.IsUpdateCheckDisabled();
+            IsUpdateCheckEnabled = !isUpdateCheckDisabled;
             _updateManager = new UpdateManager(
-                new LocalPackageResolver("updates", "TogglDesktopInstaller*.exe"),
+                new LocalPackageResolver(updatesPath, "TogglDesktopInstaller*.exe"),
                 new NsisPackageExtractor());
 
             Toggl.OnUpdateDownloadStatus
@@ -34,7 +34,7 @@ namespace TogglDesktop.Services
         public bool IsUpdateCheckEnabled { get; }
         public IObservable<UpdateStatus> UpdateStatus { get; }
 
-        public void Update(bool withRestart = true)
+        public void InstallPendingUpdate(bool withRestart = true)
         {
             var lastPreparedVersion = _updateManager.GetPreparedUpdates().LastOrDefault();
             if (lastPreparedVersion != null)
@@ -60,7 +60,9 @@ namespace TogglDesktop.Services
             if (_prepareUpdateObservable == null)
             {
                 _prepareUpdateObservable = PrepareUpdateAsync().ToObservable();
-                _prepareUpdateObservable.Where(x => x).Subscribe(_ => _updateStatusSubject.OnNext(updateStatus));
+                _prepareUpdateObservable
+                    .Select(x => x ? updateStatus : new UpdateStatus())
+                    .Subscribe(_updateStatusSubject);
             }
         }
 
