@@ -7,6 +7,9 @@
 //
 
 import Foundation
+
+// Apple Sign In is only available in MAS build
+#if APP_STORE
 import AuthenticationServices
 
 @objc protocol AppleAuthenticationServiceDelegate: class {
@@ -112,3 +115,6 @@ extension AppleAuthenticationService: ASAuthorizationControllerPresentationConte
     }
 }
 
+#else
+@objc protocol AppleAuthenticationServiceDelegate {} // Dummy protocol for objc code
+#endif

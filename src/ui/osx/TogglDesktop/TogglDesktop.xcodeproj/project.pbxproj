@@ -353,7 +353,6 @@
 		BAB818E5228D5A17008C2367 /* DescriptionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E4228D5A16008C2367 /* DescriptionDataSource.swift */; };
 		BAB818E9228D5A97008C2367 /* DescriptionContentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E8228D5A97008C2367 /* DescriptionContentCellView.swift */; };
 		BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */; };
-		BAB8CA8A240E3E7E002FF62B /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAB8CA89240E3E7E002FF62B /* AuthenticationServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		BAB8CA8B240E3E86002FF62B /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAB8CA89240E3E7E002FF62B /* AuthenticationServices.framework */; };
 		BAB8CA8E240E3EB6002FF62B /* AppleAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8CA8D240E3EB6002FF62B /* AppleAuthenticationService.swift */; };
 		BAB8CA8F240E3EB6002FF62B /* AppleAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8CA8D240E3EB6002FF62B /* AppleAuthenticationService.swift */; };
@@ -1047,7 +1046,6 @@
 				74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */,
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
-				BAB8CA8A240E3E7E002FF62B /* AuthenticationServices.framework in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
 				622BBF654A6A958692A4633B /* Pods_TogglDesktop.framework in Frameworks */,
 			);

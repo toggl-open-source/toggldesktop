@@ -129,6 +129,7 @@ extern void *ctx;
         self.loginTouchBar.delegate = self;
     }
 
+    #ifdef APP_STORE
     if (@available(macOS 10.15, *))
     {
         [AppleAuthenticationService shared].delegate = self;
@@ -136,6 +137,9 @@ extern void *ctx;
     } else {
         self.appleBtn.hidden = YES;
     }
+    #else
+        self.appleBtn.hidden = YES;
+    #endif
 }
 
 - (void)initCountryAutocomplete {
@@ -624,6 +628,7 @@ extern void *ctx;
 
 - (void)signupAppleBtnOnTap:(id)sender
 {
+    #ifdef APP_STORE
     if (@available(macOS 10.15, *))
     {
         // Validate all values inserted
@@ -637,10 +642,12 @@ extern void *ctx;
         [self showLoaderView:YES];
         [[AppleAuthenticationService shared] requestAuth];
     }
+    #endif
 }
 
 - (void)loginAppleBtnOnTap:(id)sender
 {
+    #ifdef APP_STORE
     if (@available(macOS 10.15, *))
     {
         self.userAction = UserActionAppleLogin;
@@ -648,6 +655,7 @@ extern void *ctx;
         [self showLoaderView:YES];
         [[AppleAuthenticationService shared] requestAuth];
     }
+    #endif
 }
 
 #pragma mark - AppleAuthenticationServiceDelegate

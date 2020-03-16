@@ -306,9 +306,11 @@ void *ctx;
 	[self registerGoogleEventHandler];
 
     // Validate the apple user
+    #ifdef APP_STORE
     if (@available(macOS 10.15, *)) {
         [[AppleAuthenticationService shared] validateCredentialState];
     }
+    #endif
 }
 
 - (void)systemWillPowerOff:(NSNotification *)aNotification
@@ -1042,9 +1044,11 @@ void *ctx;
 - (IBAction)onLogoutMenuItem:(id)sender
 {
     // Reset the apple state
+    #ifdef APP_STORE
     if (@available(macOS 10.15, *)) {
         [[AppleAuthenticationService shared] reset];
     }
+    #endif
 
 	// Reset the sign up state for the Empty View
 	// Because the Time Entry list present last 9 weeks, so it's no way to know that it's new user or old user

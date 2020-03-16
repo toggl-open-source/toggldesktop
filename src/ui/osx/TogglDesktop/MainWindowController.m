@@ -155,9 +155,11 @@ extern void *ctx;
         }
 
         // Reset the apple state
+        #ifdef APP_STORE
         if (@available(macOS 10.15, *)) {
             [[AppleAuthenticationService shared] reset];
         }
+        #endif
 	}
 }
 
