@@ -23,7 +23,9 @@ namespace TogglDesktop.ViewModels
                     .ToPropertyEx(this, x => x.UpdateStatusText);
             }
             UpdateAndRestartCommand = ReactiveCommand.Create(UpdateAndRestart,
-                updateStatus.Select(status => status.DownloadStatus == Toggl.DownloadStatus.Done));
+                updateStatus
+                    .Select(status => status.DownloadStatus == Toggl.DownloadStatus.Done)
+                    .ObserveOnDispatcher());
         }
 
         public string VersionText { get; }
