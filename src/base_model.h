@@ -7,6 +7,7 @@
 #include <vector>
 #include <cstring>
 #include <ctime>
+#include <array>
 
 #include <json/json.h>  // NOLINT
 
@@ -29,6 +30,35 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
  public:
     BaseModel(ProtectedBase *container)
         : container_(container) {}
+
+
+    struct Join { std::string table_; };
+    typedef std::string Table;
+    typedef std::vector<std::string> Columns;
+    typedef std::vector<std::string> OrderBy;
+    struct Query {
+        Table table_ {};
+        Columns columns_ {};
+        Join join_ {};
+        OrderBy order_ {};
+        const Query *parent_ { nullptr };
+
+        std::string ToString() const {
+            std::ostringstream ss;
+            ss << "SELECT "
+                  " FROM " << table_;
+            return ss.str();
+        }
+    };
+protected:
+    inline static const Query query {
+        Table({}),
+        Columns({"local_id", "id", "uid", "guid"}),
+        Join({{}}),
+        OrderBy({}),
+        nullptr
+    };
+public:
 
     virtual ~BaseModel() {}
 

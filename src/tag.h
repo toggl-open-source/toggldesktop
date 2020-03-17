@@ -54,6 +54,14 @@ class TOGGL_INTERNAL_EXPORT Tag : public BaseModel {
         return { "name" };
     }
 
+    inline static const Query query {
+        Table {"tags"},
+        Columns {"name", "wid"},
+        Join { },
+        OrderBy { "name" },
+        &BaseModel::query
+    };
+
  private:
     Poco::UInt64 wid_;
     std::string name_;
