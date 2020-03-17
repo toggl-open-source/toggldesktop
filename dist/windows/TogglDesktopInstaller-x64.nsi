@@ -49,7 +49,6 @@
 ;--------------------------------
 ;Global variables
 
-  Var keyLength
   Var isOldUpdater
   Var isNewUpdater
   Var deleteData
