@@ -135,20 +135,16 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
         return 0;
     }
 
-    static std::string DatabaseTable() { return ""; }
+    static std::string DatabaseTable() { return {}; }
     static std::list<std::string> DatabaseColumns() { return {"local_id", "id", "uid", "guid"}; };
-    static size_t DatabaseColumnCount() { return DatabaseColumns().size(); }
+    static std::string DatabaseJoin() { return {}; }
     BaseModel(ProtectedBase *container, Poco::Data::RecordSet &rs)
         : container_(container)
     {
-        if (!rs[0].isEmpty())
-            local_id_ = rs[0].convert<decltype(local_id_)>();
-        if (!rs[1].isEmpty())
-            id_ = rs[1].convert<decltype(id_)>();
-        if (!rs[2].isEmpty())
-            uid_ = rs[2].convert<decltype(uid_)>();
-        if (!rs[3].isEmpty())
-            guid_ = rs[3].convert<decltype(guid_)>();
+        loadFromDatabase(rs, 0, local_id_);
+        loadFromDatabase(rs, 1, id_, false);
+        loadFromDatabase(rs, 2, uid_);
+        loadFromDatabase(rs, 3, guid_, false);
         ClearDirty();
     }
 
@@ -177,6 +173,22 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     Logger logger() const;
 
     bool userCannotAccessWorkspace(const toggl::error &err) const;
+
+    /**
+     * @brief loadFromDatabase - Loads a value from database, automatically deducing its type
+     * @param rs - Poco RecordSet (database query result)
+     * @param index - Column index to load from
+     * @param member - Reference to a variable to load the value into
+     * @param required - If true (default), any error (null value, wrong conversion) will make the method throw Poco exceptions
+     */
+    template<typename T>
+    bool loadFromDatabase(Poco::Data::RecordSet &rs, size_t index, T &member, bool required = true) {
+        if (!rs[index].isEmpty() || required) {
+            member = rs[index].convert<T>();
+            return true;
+        }
+        return false;
+    }
 
  protected:
     std::string batchUpdateRelativeURL() const;

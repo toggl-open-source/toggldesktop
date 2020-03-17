@@ -16,6 +16,15 @@ class TOGGL_INTERNAL_EXPORT Tag : public BaseModel {
         : BaseModel(container)
     , wid_(0)
     , name_("") {}
+
+    Tag(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : BaseModel(container, rs)
+    {
+        auto parentCount = BaseModel::DatabaseColumns().size();
+        loadFromDatabase(rs, parentCount + 0, name_, false);
+        loadFromDatabase(rs, parentCount + 1, wid_);
+        ClearDirty();
+    }
  public:
     friend class ProtectedBase;
 
@@ -40,14 +49,6 @@ class TOGGL_INTERNAL_EXPORT Tag : public BaseModel {
         std::list<std::string> columns = BaseModel::DatabaseColumns();
         columns.splice(columns.end(), {"name", "wid"});
         return columns;
-    }
-    Tag(ProtectedBase *container, Poco::Data::RecordSet &rs)
-        : BaseModel(container, rs)
-    {
-        if (!rs[4].isEmpty())
-            name_ = rs[4].convert<decltype(name_)>();
-        if (!rs[5].isEmpty())
-            wid_ = rs[5].convert<decltype(wid_)>();
     }
 
  private:
