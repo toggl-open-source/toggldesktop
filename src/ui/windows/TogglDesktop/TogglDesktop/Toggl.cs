@@ -1139,7 +1139,7 @@ public static partial class Toggl
             Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
 
 #if TOGGL_ALLOW_UPDATE_CHECK
-        cleanupUpdateDownloads();
+        installPendingUpdates();
 #endif
 
         // Configure log, db path
@@ -1163,7 +1163,7 @@ public static partial class Toggl
 
     // ReSharper disable once UnusedMember.Local
     // (updates are disabled in Debug configuration to allow for proper debugging)
-    private static void cleanupUpdateDownloads()
+    private static void installPendingUpdates()
     {
         var di = new DirectoryInfo(UpdatesPath);
         foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
@@ -1177,6 +1177,13 @@ public static partial class Toggl
                 BugsnagService.NotifyBugsnag(e);
                 Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
             }
+        }
+
+        var aboutWindowViewModel = mainWindow.GetWindow<AboutWindow>().ViewModel;
+        if (aboutWindowViewModel.InstallPendingUpdate())
+        {
+            // quit, updater will restart the app
+            Environment.Exit(0);
         }
     }
 

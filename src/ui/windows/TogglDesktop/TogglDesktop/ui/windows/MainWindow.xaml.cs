@@ -700,10 +700,6 @@ namespace TogglDesktop
 
             this.PrepareShutdown(exitCode == 0);
 
-            // TODO: move this to startup if it causes issues here
-
-            this.GetWindow<AboutWindow>().ViewModel.InstallPendingUpdate();
-
             this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
                 Program.Shutdown(exitCode);

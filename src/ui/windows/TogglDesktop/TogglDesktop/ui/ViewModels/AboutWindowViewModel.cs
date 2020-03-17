@@ -39,9 +39,9 @@ namespace TogglDesktop.ViewModels
 
         public IReactiveCommand UpdateAndRestartCommand { get; }
 
-        public void InstallPendingUpdate()
+        public bool InstallPendingUpdate()
         {
-            _updateService.InstallPendingUpdate();
+            return _updateService.InstallPendingUpdate();
         }
 
         private void UpdateAndRestart()

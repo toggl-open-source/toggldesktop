@@ -34,7 +34,7 @@ namespace TogglDesktop.Services
         public bool IsUpdateCheckEnabled { get; }
         public IObservable<UpdateStatus> UpdateStatus { get; }
 
-        public void InstallPendingUpdate(bool withRestart = true)
+        public bool InstallPendingUpdate(bool withRestart = true)
         {
             var lastPreparedVersion = _updateManager.GetPreparedUpdates().LastOrDefault();
             if (lastPreparedVersion != null)
@@ -42,6 +42,7 @@ namespace TogglDesktop.Services
                 try
                 {
                     _updateManager.LaunchUpdater(lastPreparedVersion, withRestart);
+                    return true;
                 }
                 catch (Exception e)
                     when (e is UpdaterAlreadyLaunchedException || e is LockFileNotAcquiredException)
@@ -49,6 +50,8 @@ namespace TogglDesktop.Services
                     // Ignore race conditions
                 }
             }
+
+            return false;
         }
         public void Dispose()
         {
