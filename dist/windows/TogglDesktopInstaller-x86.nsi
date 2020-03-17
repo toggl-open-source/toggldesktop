@@ -156,6 +156,9 @@ Section
 
     completed:
     DetailPrint "Everything went okay :-D"
+    
+    ; Delete the main executable to prevent it from being launched while an update is running
+    Delete "$INSTDIR\TogglDesktop.exe"
   ${EndIf}
 
   ;ADD YOUR OWN FILES HERE...
