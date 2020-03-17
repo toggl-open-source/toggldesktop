@@ -1165,6 +1165,7 @@ public static partial class Toggl
     // (updates are disabled in Debug configuration to allow for proper debugging)
     private static void installPendingUpdates()
     {
+        Directory.CreateDirectory(UpdatesPath); // make sure the directory exists
         var di = new DirectoryInfo(UpdatesPath);
         foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
         {
