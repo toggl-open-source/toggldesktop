@@ -182,7 +182,7 @@ Section
 !endif
 
   ;Create Desktop shortcut only when shortcut is not present or at first install
-  IfFileExists $DESKTOP\TogglDesktop.lnk 0
+  IfFileExists $DESKTOP\TogglDesktop.lnk 0 ShortcutDoesntExist
     CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$INSTDIR\TogglDesktop.exe" ""
     ShortcutDoesntExist:
     ${If} $isOldUpdater == 0
