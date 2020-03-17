@@ -17,15 +17,7 @@ class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
  public:
     Project(ProtectedBase *container)
         : BaseModel(container)
-    , wid_(0)
-    , cid_(0)
-    , name_("")
-    , color_("")
-    , active_(false)
-    , private_(false)
-    , billable_(false)
-    , client_guid_("")
-    , client_name_("") {}
+    {}
  public:
     friend class ProtectedBase;
 
@@ -89,21 +81,53 @@ class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
     bool ResourceCannotBeCreated(const toggl::error &err) const override;
     error ResolveError(const toggl::error &err) override;
 
+    static std::string DatabaseTable() {
+        return "projects";
+    }
+    static std::list<std::string> DatabaseColumns() {
+        auto columns = BaseModel::DatabaseColumns();
+        columns.splice(columns.end(), {"name", "wid", "color", "cid", "active", "billable", "client_guid", "clients.name"});
+        return columns;
+    };
+    static std::list<std::string> DatabaseJoin() {
+        return {"clients ON projects.cid = clients.id",
+            "workspaces ON projects.wid = workspaces.id"};
+    }
+    static std::list<std::string> DatabaseOrder() {
+        return {"workspaces.name COLLATE NOCASE ASC",
+            "clients.name COLLATE NOCASE ASC",
+            "projects.name COLLATE NOCASE ASC"};
+    }
+    Project(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : BaseModel(container, rs)
+    {
+        auto offset = BaseModel::DatabaseColumns().size();
+        loadFromDatabase(rs, offset + 0, name_);
+        loadFromDatabase(rs, offset + 1, wid_);
+        loadFromDatabase(rs, offset + 2, color_, false);
+        loadFromDatabase(rs, offset + 3, cid_, false);
+        loadFromDatabase(rs, offset + 4, active_);
+        loadFromDatabase(rs, offset + 5, billable_);
+        loadFromDatabase(rs, offset + 6, client_guid_, false);
+        loadFromDatabase(rs, offset + 7, client_name_, false);
+        ClearDirty();
+    }
+
     static std::vector<std::string> ColorCodes;
 
  private:
     bool clientIsInAnotherWorkspace(const toggl::error &err) const;
     bool onlyAdminsCanChangeProjectVisibility(const toggl::error &err) const;
 
-    Poco::UInt64 wid_;
-    Poco::UInt64 cid_;
-    std::string name_;
-    std::string color_;
-    bool active_;
-    bool private_;
-    bool billable_;
-    std::string client_guid_;
-    std::string client_name_;
+    Poco::UInt64 wid_ { 0 };
+    Poco::UInt64 cid_ { 0 };
+    std::string name_ { "" };
+    std::string color_ { "" };
+    std::string client_guid_ { "" };
+    std::string client_name_ { "" };
+    bool active_ { false };
+    bool private_ { false };
+    bool billable_ { false };
 };
 
 template<typename T, size_t N> T *end(T (&ra)[N]);

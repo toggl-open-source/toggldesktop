@@ -50,6 +50,9 @@ class TOGGL_INTERNAL_EXPORT Tag : public BaseModel {
         columns.splice(columns.end(), {"name", "wid"});
         return columns;
     }
+    static std::list<std::string> DatabaseOrder() {
+        return { "name" };
+    }
 
  private:
     Poco::UInt64 wid_;

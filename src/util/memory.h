@@ -338,6 +338,16 @@ public:
      * @return a list of columns to be queried from the database to construct the contained model
      */
     static std::list<std::string> DatabaseColumns() { return T::DatabaseColumns(); }
+    /**
+     * @brief
+     * @return
+     */
+    static std::list<std::string> DatabaseJoin() { return T::DatabaseJoin(); }
+    /**
+     * @brief
+     * @return
+     */
+    static std::list<std::string> DatabaseOrder() { return T::DatabaseOrder(); }
 private:
     container_type container_;
     mutable std::map<guid, T*> guidMap_; // mutable because byGUID creates a search cache

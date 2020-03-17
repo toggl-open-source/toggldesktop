@@ -1428,23 +1428,29 @@ error Database::loadProjects(const Poco::UInt64 &UID,
 
     try {
         list.clear();
-
         Poco::Mutex::ScopedLock lock(session_m_);
-
         Poco::Data::Statement select(*session_);
-        select <<
-               "SELECT projects.local_id, projects.id, projects.uid, "
-               "projects.name, projects.guid, projects.wid, projects.color, projects.cid, "
-               "projects.active, projects.billable, projects.client_guid, "
-               "clients.name as client_name "
-               "FROM projects "
-               "LEFT JOIN clients on projects.cid = clients.id "
-               "LEFT JOIN workspaces on projects.wid = workspaces.id "
-               "WHERE projects.uid = :uid "
-               "ORDER BY workspaces.name COLLATE NOCASE ASC,"
-               "client_name COLLATE NOCASE ASC,"
-               "projects.name COLLATE NOCASE ASC;",
-               useRef(UID);
+
+        auto table = list.DatabaseTable();
+        auto columnList = list.DatabaseColumns();
+        // in case we're working with more tables, prepend the table to all items
+        for (auto &i : columnList) {
+            if (i.find('.') == std::string::npos)
+                i = table + "." + i;
+        }
+        auto columns = join(columnList, ", ");
+        std::string joins;
+        for (auto i : list.DatabaseJoin()) {
+            joins += " LEFT JOIN " + i;
+        }
+        std::string order;
+        if (!list.DatabaseOrder().empty()) {
+            order = " ORDER BY " + join(list.DatabaseOrder(), ", ");
+        }
+
+        select << "SELECT " << columns << " FROM " << table << joins << " WHERE projects.uid = :uid " << order << ";",
+            useRef(UID);
+
         error err = last_error("loadProjects");
         if (err != noError) {
             return err;
@@ -1454,44 +1460,9 @@ error Database::loadProjects(const Poco::UInt64 &UID,
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                auto model = list.create();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
-                if (rs[1].isEmpty()) {
-                    model->SetID(0);
-                } else {
-                    model->SetID(rs[1].convert<Poco::UInt64>());
-                }
-                model->SetUID(rs[2].convert<Poco::UInt64>());
-                model->SetName(rs[3].convert<std::string>());
-                if (rs[4].isEmpty()) {
-                    model->SetGUID("");
-                } else {
-                    model->SetGUID(rs[4].convert<std::string>());
-                }
-                model->SetWID(rs[5].convert<Poco::UInt64>());
-                if (rs[6].isEmpty()) {
-                    model->SetColor("");
-                } else {
-                    model->SetColor(rs[6].convert<std::string>());
-                }
-                if (rs[7].isEmpty()) {
-                    model->SetCID(0);
-                } else {
-                    model->SetCID(rs[7].convert<Poco::UInt64>());
-                }
-                model->SetActive(rs[8].convert<bool>());
-                model->SetBillable(rs[9].convert<bool>());
-                if (rs[10].isEmpty()) {
-                    model->SetClientGUID("");
-                } else {
-                    model->SetClientGUID(rs[10].convert<std::string>());
-                }
-                if (rs[11].isEmpty()) {
-                    model->SetClientName("");
-                } else {
-                    model->SetClientName(rs[11].convert<std::string>());
-                }
-                model->ClearDirty();
+                auto model = list.create(rs);
+
+                std::cerr << "Created " << model->Name() << std::endl;
 
                 more = rs.moveNext();
             }
@@ -1581,7 +1552,7 @@ error Database::loadTags(const Poco::UInt64 &UID,
         select << "SELECT " << join(list.DatabaseColumns(), ", ") <<
                   " FROM " << list.DatabaseTable() <<
                   " WHERE uid = :uid"
-                  " ORDER BY name",
+                  " ORDER BY " << join(list.DatabaseOrder(), ", "),
                useRef(UID);
         error err = last_error("loadTags");
         if (err != noError) {
