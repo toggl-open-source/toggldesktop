@@ -274,7 +274,8 @@ Function checkUpdater
   IfErrors +3 0
   StrCpy $isOldUpdater 1
   SetSilent silent
-  ${GetOptions} $cmdLineParams "/UN" $R0
+  StrCpy $isNewUpdater 0
+  ${GetOptions} $cmdLineParams "/autoupdate" $R0
   IfErrors +3 0
   StrCpy $isNewUpdater 1
   SetSilent silent
