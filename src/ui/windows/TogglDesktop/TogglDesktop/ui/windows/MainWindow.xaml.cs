@@ -736,6 +736,7 @@ namespace TogglDesktop
                 Utils.SaveWindowLocation(this, this.editPopup, this.miniTimer);
             }
 
+            this.childWindows.ForEach(w => w.Hide());
             this.Close();
         }
 
