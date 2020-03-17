@@ -8,7 +8,7 @@ namespace TogglDesktop.Services
 {
     public class NsisPackageExtractor : IPackageExtractor
     {
-        public async Task ExtractPackageAsync(string sourceFilePath, string destDirPath, IProgress<double>? progress = null,
+        public async Task ExtractPackageAsync(string sourceFilePath, string destDirPath, IProgress<double> progress = null,
             CancellationToken cancellationToken = new CancellationToken())
         {
             await Task.Run(() =>
