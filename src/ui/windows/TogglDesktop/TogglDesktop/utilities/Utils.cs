@@ -44,8 +44,8 @@ public static class Utils
         }
         else
         {
-            mainWindow.Width = 330;
-            mainWindow.Height = 510;
+            mainWindow.Width = 300;
+            mainWindow.Height = 458;
             Toggl.Debug("Failed to retrieve window location and size. Setting the default size.");
         }
 
