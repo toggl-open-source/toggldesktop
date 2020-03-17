@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+#include "util/string_tools.h"
+
 #include "autotracker.h"
 #include "client.h"
 #include "const.h"
@@ -1573,15 +1575,13 @@ error Database::loadTags(const Poco::UInt64 &UID,
 
     try {
         list.clear();
-
         Poco::Mutex::ScopedLock lock(session_m_);
-
-
         Poco::Data::Statement select(*session_);
-        select << "SELECT local_id, id, uid, guid, name, wid "
-               "FROM tags "
-               "WHERE uid = :uid "
-               "ORDER BY name",
+
+        select << "SELECT " << join(list.DatabaseColumns(), ", ") <<
+                  " FROM " << list.DatabaseTable() <<
+                  " WHERE uid = :uid"
+                  " ORDER BY name",
                useRef(UID);
         error err = last_error("loadTags");
         if (err != noError) {

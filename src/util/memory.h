@@ -5,6 +5,7 @@
 
 #include <mutex>
 #include <vector>
+#include <list>
 #include <set>
 #include <iostream>
 #include <map>
@@ -327,6 +328,16 @@ public:
      * @return true if the two instances are same
      */
     bool operator==(const ProtectedContainer &o) const;
+        /**
+     * @brief DatabaseTable
+     * @return name of the database to access to work with this model
+     */
+    static std::string DatabaseTable() { return T::DatabaseTable(); }
+    /**
+     * @brief DatabaseColumns
+     * @return a list of columns to be queried from the database to construct the contained model
+     */
+    static std::list<std::string> DatabaseColumns() { return T::DatabaseColumns(); }
 private:
     container_type container_;
     mutable std::map<guid, T*> guidMap_; // mutable because byGUID creates a search cache

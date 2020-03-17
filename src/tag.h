@@ -43,8 +43,6 @@ class TOGGL_INTERNAL_EXPORT Tag : public BaseModel {
     }
     Tag(ProtectedBase *container, Poco::Data::RecordSet &rs)
         : BaseModel(container, rs)
-        //, name_(rs[BaseModel::DatabaseColumnCount() + 0].convert<decltype(name_)>())
-        //, wid_(rs[BaseModel::DatabaseColumnCount() + 1].convert<decltype(wid_)>())
     {
         if (!rs[4].isEmpty())
             name_ = rs[4].convert<decltype(name_)>();
