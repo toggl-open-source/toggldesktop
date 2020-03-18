@@ -231,6 +231,7 @@ Section "Uninstall"
   Delete "$INSTDIR\TogglDesktop.exe.config"
   Delete "$INSTDIR\toggl.ico"
   RMDir "$INSTDIR\updates"
+  RMDir "$LOCALAPPDATA\Onova\TogglDesktop" ;Remove the prepared updates
 
   ;Delete desktop shortcut
   Delete "$DESKTOP\TogglDesktop.lnk"
