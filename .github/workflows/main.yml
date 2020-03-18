@@ -346,6 +346,8 @@ jobs:
     - name: Add new dev channel release
       shell: bash
       run: |
+        git config user.name "runner"
+        git config user.email "action@github.com"
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/update_releases.sh win dev ${TAG_NAME/v/}
     
