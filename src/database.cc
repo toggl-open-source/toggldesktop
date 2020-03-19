@@ -1431,25 +1431,7 @@ error Database::loadProjects(const Poco::UInt64 &UID,
         Poco::Mutex::ScopedLock lock(session_m_);
         Poco::Data::Statement select(*session_);
 
-        auto table = list.DatabaseTable();
-        auto columnList = list.DatabaseColumns();
-        // in case we're working with more tables, prepend the table to all items
-        for (auto &i : columnList) {
-            if (i.find('.') == std::string::npos)
-                i = table + "." + i;
-        }
-        auto columns = join(columnList, ", ");
-        std::string joins;
-        for (auto i : list.DatabaseJoin()) {
-            joins += " LEFT JOIN " + i;
-        }
-        std::string order;
-        if (!list.DatabaseOrder().empty()) {
-            order = " ORDER BY " + join(list.DatabaseOrder(), ", ");
-        }
-
-        select << "SELECT " << columns << " FROM " << table << joins << " WHERE projects.uid = :uid " << order << ";",
-            useRef(UID);
+        select << Project::query.ToSelect(), useRef(UID);
 
         error err = last_error("loadProjects");
         if (err != noError) {

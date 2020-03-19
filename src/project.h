@@ -94,10 +94,22 @@ class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
             "workspaces ON projects.wid = workspaces.id"};
     }
     static std::list<std::string> DatabaseOrder() {
-        return {"workspaces.name COLLATE NOCASE ASC",
-            "clients.name COLLATE NOCASE ASC",
-            "projects.name COLLATE NOCASE ASC"};
+        return {};
     }
+    inline static const Query query {
+        Table { "projects" },
+        Columns { "name", "wid", "color", "cid", "active", "billable", "client_guid", "clients.name" },
+        Join {
+            "LEFT JOIN clients ON projects.cid = clients.id",
+            "LEFT JOIN workspaces ON projects.wid = workspaces.id"
+        },
+        OrderBy {
+            "workspaces.name COLLATE NOCASE ASC",
+            "clients.name COLLATE NOCASE ASC",
+            "projects.name COLLATE NOCASE ASC"
+        },
+        &BaseModel::query
+    };
     Project(ProtectedBase *container, Poco::Data::RecordSet &rs)
         : BaseModel(container, rs)
     {

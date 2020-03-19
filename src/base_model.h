@@ -31,8 +31,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     BaseModel(ProtectedBase *container)
         : container_(container) {}
 
-
-    struct Join { std::string table_; };
+    typedef std::vector<std::string> Join;
     typedef std::string Table;
     typedef std::vector<std::string> Columns;
     typedef std::vector<std::string> OrderBy;
@@ -43,19 +42,44 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
         OrderBy order_ {};
         const Query *parent_ { nullptr };
 
-        std::string ToString() const {
+        std::string ToSelect(const std::string &by = "uid") const {
             std::ostringstream ss;
-            ss << "SELECT "
-                  " FROM " << table_;
+            ss << "SELECT ";
+            bool firstColumn = true;
+            if (parent_)
+                printColumns(ss, firstColumn, parent_->columns_);
+            printColumns(ss, firstColumn, columns_);
+            ss << " FROM " << table_;
+            for (auto i : join_)
+                ss << " " <<  i;
+            ss << " WHERE " << table_ << "." << by << " = :" << by;
+            if (!order_.empty()) {
+                bool firstOrder = true; // disney ruined star wars :(
+                ss << " ORDER BY ";
+                printColumns(ss, firstOrder, order_);
+            }
+            ss << ";";
             return ss.str();
         }
+
+        template <typename T>
+        void printColumns(std::ostringstream &ss, bool &first, T &list) const {
+            for (auto i : list) {
+                if (!first)
+                    ss << ", ";
+                first = false;
+                if (!join_.empty() && i.find(".") == std::string::npos)
+                    ss << table_ << ".";
+                ss << i;
+            }
+        };
     };
 protected:
     inline static const Query query {
-        Table({}),
+        Table(),
         Columns({"local_id", "id", "uid", "guid"}),
-        Join({{}}),
-        OrderBy({}),
+        Join(),
+        OrderBy(),
         nullptr
     };
 public:
