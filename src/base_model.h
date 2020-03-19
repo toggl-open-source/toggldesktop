@@ -120,6 +120,62 @@ protected:
         nullptr
     };
 public:
+/*
+    template<typename T, typename U >
+    struct Boo {
+        Boo(U T::*x) {
+            boo = [x]() {
+                return *T->x;
+            }
+        }
+        std::function<U(T)> boo;
+    };
+
+    Boo ahoj { &BaseModel::local_id_ };
+    */
+    struct Foo {
+        Foo(Poco::Int64 BaseModel::*ptr) {
+            std::function<Poco::Int64 (BaseModel*)> b = [ptr](BaseModel *that) {
+                return (that->*ptr);
+            };
+        }
+    };
+    Foo foo { &BaseModel::local_id_ };
+
+    typedef std::function<bool(void *that, Poco::Data::RecordSet &rs, int index)> db_load_t;
+    class Binding {
+    public:
+        enum Type {
+            REQUIRED = 0,
+            OPTIONAL
+        };
+        std::string column_;
+        db_load_t load_;
+    };
+
+    template <typename Value, typename Class>
+    static Binding Bind(const std::string &column, Value Class::*ptr, Binding::Type required) {
+        return {
+            column,
+            [ptr, required](void *that, Poco::Data::RecordSet &rs, int index) {
+                auto actuallyThat = reinterpret_cast<Class*>(that);
+                if (!rs[index].isEmpty() || required) {
+                    (actuallyThat->*ptr) = rs[index].convert<Value>();
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+
+    /*
+    inline static const std::vector<BindBase*> bindings {
+        new Binding<Poco::Int64, BaseModel>("local_id", &BaseModel::local_id_);
+    };
+    */
+
+    //Bind<Poco::Int64, BaseModel> ugh { "local_id", &BaseModel::local_id_ };
 
     virtual ~BaseModel() {}
 
@@ -307,6 +363,13 @@ public:
     // pushed to backend. It only means that some
     // attempt to push failed somewhere.
     bool unsynced_ { false };
+
+    inline static std::vector<Binding> whatever {
+        Bind("local_id", &BaseModel::local_id_, Binding::REQUIRED),
+        Bind("id", &BaseModel::id_, Binding::OPTIONAL),
+        Bind("uid", &BaseModel::uid_, Binding::REQUIRED),
+        Bind("guid", &BaseModel::guid_, Binding::OPTIONAL),
+    };
 };
 
 }  // namespace toggl
