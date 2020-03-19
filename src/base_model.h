@@ -35,6 +35,19 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     typedef std::string Table;
     typedef std::vector<std::string> Columns;
     typedef std::vector<std::string> OrderBy;
+    /**
+     * @brief The Query struct
+     * Use to determine how to retrieve data from the database. Each BaseModel class should implement this and
+     * reference BaseModel::query as the @ref parent_ pointer.
+     *
+     * Only the @ref columns_ list will be prepended to the implementation.
+     * That means, if you do this:
+     *   In BaseModel: Query { "", { "base1", "base2"}, ...
+     *   In Client: { "clients", { "client1", "client2" }, ...
+     * Then Client query will work with the "clients" table and look for columns "base1", "base2", "client1", "client2" (in this order).
+     * This is to have things like ID, Local ID and GUID in the base class for all models here in one place
+     * and to not have to handle their serialization in all child classes separately.
+     */
     struct Query {
         Table table_ {};
         Columns columns_ {};
@@ -42,17 +55,37 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
         OrderBy order_ {};
         const Query *parent_ { nullptr };
 
-        std::string ToSelect(const std::string &by = "uid") const {
+        /**
+         * @brief ToSelect
+         * @param where - which column will be supplied outside as the WHERE condition
+         * @return string with the completed SELECT query
+         */
+        std::string ToSelect(const std::string &where = "uid") const {
             std::ostringstream ss;
+            /*
+             * columns
+             */
             ss << "SELECT ";
             bool firstColumn = true;
             if (parent_)
                 printColumns(ss, firstColumn, parent_->columns_);
             printColumns(ss, firstColumn, columns_);
+            /*
+             * table name
+             */
             ss << " FROM " << table_;
+            /*
+             * join (optional)
+             */
             for (auto i : join_)
                 ss << " " <<  i;
-            ss << " WHERE " << table_ << "." << by << " = :" << by;
+            /*
+             * condition (actual value supplied outside as a reference)
+             */
+            ss << " WHERE " << table_ << "." << where << " = :" << where;
+            /*
+             * order (optional)
+             */
             if (!order_.empty()) {
                 bool firstOrder = true; // disney ruined star wars :(
                 ss << " ORDER BY ";
@@ -62,6 +95,10 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
             return ss.str();
         }
 
+        /**
+         * @brief writes a list of columns to @ref ss
+         * Handles case when there's multiple tables and prepends "main" table name to columns without a dot
+         */
         template <typename T>
         void printColumns(std::ostringstream &ss, bool &first, T &list) const {
             for (auto i : list) {
