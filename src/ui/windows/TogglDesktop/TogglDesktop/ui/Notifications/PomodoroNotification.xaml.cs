@@ -1,73 +1,30 @@
-﻿using System.Windows;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using Hardcodet.Wpf.TaskbarNotification;
+﻿using System;
+using System.Windows;
 
 namespace TogglDesktop
 {
     public partial class PomodoroNotification
     {
-        public PomodoroNotification(TaskbarIcon icon, MainWindow mainWindow)
-            : base(icon, mainWindow)
+        private readonly Action _startNew;
+        private readonly Action _continueLatest;
+
+        public PomodoroNotification(Action close, Action showParentWindow, Action startNew, Action continueLatest)
+            : base(close, showParentWindow)
         {
-            this.InitializeComponent();
+            _startNew = startNew;
+            _continueLatest = continueLatest;
 
-            Toggl.OnDisplayPomodoro += this.onDisplayPomodoro;
-            Toggl.OnDisplayPomodoroBreak += this.onDisplayPomodoroBreak;
+            InitializeComponent();
         }
-
-        private void onDisplayPomodoro(string title, string informativetext)
-        {
-            if (this.TryBeginInvoke(onDisplayPomodoro, title, informativetext))
-                return;
-
-            this.Message = informativetext;
-            this.Title = title;
-
-            if (!_icon.ShowNotification(this, PopupAnimation.Slide, null))
-            {
-                _icon.ShowBalloonTip(title, informativetext, Properties.Resources.toggl, largeIcon: true);
-            }
-            else
-            {
-                System.Media.SystemSounds.Asterisk.Play();
-            }
-        }
-
-        private void onDisplayPomodoroBreak(string title, string informativetext)
-        {
-            if (this.TryBeginInvoke(onDisplayPomodoroBreak, title, informativetext))
-                return;
-
-            this.Message = informativetext;
-            this.Title = title;
-
-            this.RemoveFromParent();
-
-            if (!_icon.ShowNotification(this, PopupAnimation.Slide, null))
-            {
-                _icon.ShowBalloonTip(title, informativetext, Properties.Resources.toggl, largeIcon: true);
-            }
-            else
-            {
-                System.Media.SystemSounds.Asterisk.Play();
-            }
-        }
-
 
         private void onContinueButtonClick(object sender, RoutedEventArgs e)
         {
-            Close();
-            Toggl.ContinueLatest(true);
+            _continueLatest();
         }
 
         private void onStartNewButtonClick(object sender, RoutedEventArgs e)
         {
-            Close();
-            var guid = Toggl.Start("", "", 0, 0, "", "", true);
-            _parentWindow.ShowOnTop();
-            if (guid != null)
-                Toggl.Edit(guid, true, Toggl.Description);
+            _startNew();
         }
     }
 }

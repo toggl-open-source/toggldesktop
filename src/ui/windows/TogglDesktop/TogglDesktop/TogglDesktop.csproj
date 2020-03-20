@@ -272,6 +272,7 @@
     <Compile Include="ui\Notifications\AutotrackerNotification.xaml.cs">
       <DependentUpon>AutotrackerNotification.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\Notifications\NotificationManager.cs" />
     <Compile Include="ui\Notifications\PomodoroNotification.xaml.cs">
       <DependentUpon>PomodoroNotification.xaml</DependentUpon>
     </Compile>
