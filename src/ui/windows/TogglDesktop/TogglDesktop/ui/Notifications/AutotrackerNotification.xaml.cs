@@ -1,40 +1,23 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using Hardcodet.Wpf.TaskbarNotification;
 
 namespace TogglDesktop
 {
     public partial class AutotrackerNotification
     {
-        private ulong projectId;
-        private ulong taskId;
+        private readonly Action _startButtonClick;
 
-        public AutotrackerNotification(TaskbarIcon icon, MainWindow mainWindow)
-            : base(icon, mainWindow)
+        public AutotrackerNotification(Action close, Action showParentWindow, Action startButtonClick)
+            : base(close, showParentWindow)
         {
-            this.InitializeComponent();
-            Toggl.OnAutotrackerNotification += this.onAutotrackerNotification;
-        }
+            _startButtonClick = startButtonClick;
 
-        private void onAutotrackerNotification(string projectName, ulong projectId, ulong taskId)
-        {
-            if (this.TryBeginInvoke(this.onAutotrackerNotification, projectName, projectId, taskId))
-                return;
-
-            this.Message = @$"Start tracking ""{projectName}""?";
-            this.projectId = projectId;
-            this.taskId = taskId;
-
-            _icon.ShowNotification(this, PopupAnimation.Slide, TimeSpan.FromSeconds(6));
+            InitializeComponent();
         }
 
         private void onStartButtonClick(object sender, RoutedEventArgs e)
         {
-            Close();
-            Toggl.Start("", "", this.taskId, this.projectId, null, null);
-            _parentWindow.ShowOnTop();
+            _startButtonClick();
         }
     }
 }

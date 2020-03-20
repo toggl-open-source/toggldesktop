@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Hardcodet.Wpf.TaskbarNotification;
@@ -7,27 +8,32 @@ namespace TogglDesktop
 {
     public class TogglNotification : ContentControl
     {
-        protected readonly TaskbarIcon _icon;
-        protected readonly Window _parentWindow;
+        protected readonly Action Close;
+        protected readonly Action ShowParentWindow;
 
-        public TogglNotification(TaskbarIcon icon, Window parentWindow)
+        public TogglNotification(Action close, Action showParentWindow)
         {
-            _icon = icon;
-            _parentWindow = parentWindow;
-            this.MouseDown += OnNotificationMouseDown;
-        }
-
-        private void OnNotificationMouseDown(object sender, MouseButtonEventArgs args)
-        {
-            Close();
-            _parentWindow.ShowOnTop();
+            Close = close;
+            ShowParentWindow = showParentWindow;
+            this.MouseDown += OnMouseButtonEventHandler;
+            void OnMouseButtonEventHandler(object sender, MouseButtonEventArgs args)
+            {
+                this.MouseDown -= OnMouseButtonEventHandler;
+                close();
+                showParentWindow();
+            }
         }
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             var closeButton = this.Template.FindName("PART_CloseButton", this) as Button;
-            closeButton.Click += OnCloseButtonOnClick;
+            closeButton.Click += OnCloseButton;
+            void OnCloseButton(object sender, RoutedEventArgs args)
+            {
+                closeButton.Click -= OnCloseButton;
+                Close();
+            }
         }
 
         public static readonly DependencyProperty TitleProperty =
@@ -48,13 +54,6 @@ namespace TogglDesktop
         {
             get => (string) GetValue(MessageProperty);
             set => SetValue(MessageProperty, value);
-        }
-
-        protected void Close() => _icon.CloseBalloon();
-
-        private void OnCloseButtonOnClick(object sender, RoutedEventArgs args)
-        {
-            this.Close();
         }
     }
 }
