@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Threading;
 using Hardcodet.Wpf.TaskbarNotification;
 
 namespace TogglDesktop
@@ -9,6 +10,8 @@ namespace TogglDesktop
     {
         private readonly TaskbarIcon _taskbarIcon;
         private readonly Window _parentWindow;
+        private readonly DispatcherTimer _timer;
+        private static readonly Random _random = new Random();
 
         public NotificationManager(TaskbarIcon taskbarIcon, Window parentWindow)
         {
@@ -19,6 +22,29 @@ namespace TogglDesktop
             Toggl.OnAutotrackerNotification += OnAutotrackerNotification;
             Toggl.OnDisplayPomodoro += OnDisplayPomodoro;
             Toggl.OnDisplayPomodoroBreak += OnDisplayPomodoro;
+
+            _timer = new DispatcherTimer(TimeSpan.FromSeconds(0.5), DispatcherPriority.Background, OnTimerTick, _parentWindow.Dispatcher);
+
+        }
+
+        private void OnTimerTick(object sender, EventArgs args)
+        {
+            var randomNumber = _random.Next(4);
+            switch (randomNumber)
+            {
+                case 0:
+                    OnReminder("reminder title", "reminder text");
+                    break;
+                case 1:
+                    OnAutotrackerNotification("(no project)", 0, 0);
+                    break;
+                case 2:
+                    OnDisplayPomodoro("pomodoro title", "pomodoro text");
+                    break;
+                case 3:
+                    OnDisplayPomodoro("pomodoro break title", "pomodoro break text");
+                    break;
+            }
         }
 
         private void OnReminder(string title, string informativeText)
