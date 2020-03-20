@@ -87,7 +87,7 @@ error TimelineUploader::upload(TimelineBatch *batch) {
     logger().trace(json);
 
     // Not implemented in v9 as of 12.05.2017
-    HTTPSRequest req;
+    HTTPRequest req;
     req.host = urls::TimelineUpload();
     req.relative_url = "/api/v8/timeline";
     req.payload = json;

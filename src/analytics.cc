@@ -154,12 +154,12 @@ const std::string GoogleAnalyticsEvent::relativeURL() {
 }
 
 void GoogleAnalyticsEvent::runTask() {
-    HTTPSRequest req;
+    HTTPRequest req;
     req.host = "https://ssl.google-analytics.com";
     req.relative_url = relativeURL();
 
-    HTTPSClient client;
-    HTTPSResponse resp = client.Get(req);
+    HTTPClient client;
+    HTTPResponse resp = client.Get(req);
     if (resp.err != noError) {
         Logger("Analytics").error(resp.err);
         return;
@@ -316,12 +316,12 @@ void GoogleAnalyticsSettingsEvent::setActionString(const std::string &type,
 }
 
 void GoogleAnalyticsSettingsEvent::makeReq() {
-    HTTPSRequest req;
+    HTTPRequest req;
     req.host = "https://ssl.google-analytics.com";
     req.relative_url = relativeURL();
 
-    HTTPSClient client;
-    HTTPSResponse resp = client.Get(req);
+    HTTPClient client;
+    HTTPResponse resp = client.Get(req);
     if (resp.err != noError) {
         Logger("Analytics").error(resp.err);
         return;
