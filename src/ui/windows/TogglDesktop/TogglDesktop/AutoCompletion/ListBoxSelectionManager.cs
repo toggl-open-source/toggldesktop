@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using TogglDesktop.AutoCompletion.Items;
 
 namespace TogglDesktop.AutoCompletion
 {
-    public class ListBoxSelectionManager<T> where T: ISelectable
+    public class ListBoxSelectionManager<T> where T: IAutoCompleteItem
     {
         private int selectedIndex;
         public IList<T> Items { get; set; }
@@ -29,14 +30,14 @@ namespace TogglDesktop.AutoCompletion
             for (var i = 0; i < maxIterations; i++)
             {
                 nextIndex = (nextIndexSelector(nextIndex) + this.Items.Count) % this.Items.Count;
-                if (Items[nextIndex].IsSelectable)
+                if (Items[nextIndex].IsSelectable())
                 {
                     this.selectIndex(nextIndex);
                     return;
                 }
             }
 
-            if (Items[initialIndex].IsSelectable)
+            if (Items[initialIndex].IsSelectable())
             {
                 this.selectIndex(initialIndex);
             }
@@ -46,7 +47,7 @@ namespace TogglDesktop.AutoCompletion
         {
             if (Items.Count == 0) return;
 
-            if (Items[0].IsSelectable)
+            if (Items[0].IsSelectable())
             {
                 selectIndex(0);
             }

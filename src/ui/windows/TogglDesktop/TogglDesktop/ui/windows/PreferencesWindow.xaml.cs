@@ -8,7 +8,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
 using TogglDesktop.AutoCompletion;
-using TogglDesktop.AutoCompletion.Implementation;
+using TogglDesktop.AutoCompletion.Items;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.Theming;
 using TogglDesktop.ViewModels;
@@ -84,7 +84,7 @@ namespace TogglDesktop
 
             this.knownProjects = list;
 
-            this.defaultProjectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list));
+            this.defaultProjectAutoComplete.SetController(AutoCompleteControllersFactory.ForProjects(list));
         }
 
 
@@ -341,13 +341,13 @@ namespace TogglDesktop
             }
         }
 
-        private void defaultProjectAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        private void defaultProjectAutoComplete_OnConfirmCompletion(object sender, IAutoCompleteItem e)
         {
-            var asProjectItem = e as TimerItem;
+            var asProjectItem = e as IModelItem<Toggl.TogglAutocompleteView>;
             if (asProjectItem == null)
                 return;
 
-            var item = asProjectItem.Item;
+            var item = asProjectItem.Model;
 
             this.selectDefaultProject(item);
         }
@@ -356,7 +356,6 @@ namespace TogglDesktop
         {
             this.selectDefaultProject(null);
         }
-
 
         private void selectDefaultProject(Toggl.TogglAutocompleteView? item)
         {

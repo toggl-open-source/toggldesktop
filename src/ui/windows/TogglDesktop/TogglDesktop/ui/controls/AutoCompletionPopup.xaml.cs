@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using TogglDesktop.AutoCompletion;
+using TogglDesktop.AutoCompletion.Items;
 using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
@@ -13,7 +14,7 @@ namespace TogglDesktop
     {
         #region events
 
-        public event EventHandler<AutoCompleteItem> ConfirmCompletion;
+        public event EventHandler<IAutoCompleteItem> ConfirmCompletion;
         public event EventHandler<string> ConfirmWithoutCompletion;
         public event EventHandler IsOpenChanged;
         public event RoutedEventHandler ActionButtonClick;
@@ -361,7 +362,7 @@ namespace TogglDesktop
             return true;
         }
 
-        private void select(AutoCompleteItem item, bool withKeyboard)
+        private void select(IAutoCompleteItem item, bool withKeyboard)
         {
             if (!this.KeepOpenWhenSelecting)
                 this.close();

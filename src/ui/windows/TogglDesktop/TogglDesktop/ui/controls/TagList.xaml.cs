@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
 using TogglDesktop.AutoCompletion;
-using TogglDesktop.AutoCompletion.Implementation;
+using TogglDesktop.AutoCompletion.Items;
 
 namespace TogglDesktop
 {
@@ -194,7 +194,7 @@ namespace TogglDesktop
         {
             if (!autoComplete.IsOpen)
             {
-                controller = AutoCompleteControllers.ForTags(tags, this.tags.ContainsKey);
+                controller = AutoCompleteControllersFactory.ForTags(tags, this.tags.ContainsKey);
                 this.autoComplete.SetController(controller);
             }
         }
@@ -207,18 +207,17 @@ namespace TogglDesktop
         private void ClearEmptyText() => this.textBox.SetValue(TextBoxHelper.WatermarkProperty, string.Empty);
         private void SetEmptyText() => this.textBox.SetValue(TextBoxHelper.WatermarkProperty, "Add tags");
 
-        private void autoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        private void autoComplete_OnConfirmCompletion(object sender, IAutoCompleteItem e)
         {
-            var asStringItem = e as StringItem;
-            if (asStringItem == null)
-                return;
+            if (e is IModelItem<string> asStringItem)
+            {
+                var tag = asStringItem.Text;
+                this.tryAddOrRemoveTag(tag);
+                this.textBox.SetText("");
 
-            var tag = asStringItem.Text;
-            this.tryAddOrRemoveTag(tag);
-            this.textBox.SetText("");
-
-            if(this.autoComplete.IsOpen)
-                this.autoComplete.OpenAndShowAll();
+                if (this.autoComplete.IsOpen)
+                    this.autoComplete.OpenAndShowAll();
+            }
         }
 
         private void autoComplete_OnConfirmWithoutCompletion(object sender, string e)
