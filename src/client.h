@@ -39,7 +39,7 @@ class TOGGL_INTERNAL_EXPORT Client : public BaseModel {
     std::string ModelURL() const override;
     void LoadFromJSON(Json::Value value) override;
     Json::Value SaveToJSON() const override;
-    bool ResolveError(const toggl::error &err) override;
+    error ResolveError(const toggl::error &err) override;
     bool ResourceCannotBeCreated(const toggl::error &err) const override;
 
  private:

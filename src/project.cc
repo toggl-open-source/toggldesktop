@@ -184,25 +184,25 @@ bool Project::onlyAdminsCanChangeProjectVisibility(
         "Only admins can change project visibility"));
 }
 
-bool Project::ResolveError(const toggl::error &err) {
+error Project::ResolveError(const toggl::error &err) {
     if (userCannotAccessWorkspace(err)) {
         SetWID(0);
-        return true;
+        return noError;
     }
     if (clientIsInAnotherWorkspace(err)) {
         SetCID(0);
-        return true;
+        return noError;
     }
     if (!IsPrivate() && onlyAdminsCanChangeProjectVisibility(err)) {
         SetPrivate(true);
-        return true;
+        return noError;
     }
     if (err.find(kProjectNameAlready) != std::string::npos) {
         // remove duplicate from db
         MarkAsDeletedOnServer();
-        return true;
+        return noError;
     }
-    return false;
+    return err;
 }
 
 std::string Project::ModelName() const {

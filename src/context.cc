@@ -4938,6 +4938,94 @@ error Context::pushChanges(
     TogglClient *toggl_client,
     bool *had_something_to_push) {
     try {
+        auto pushModelsInner = [this](auto &models, auto api_token, auto toggl_client) {
+            bool offline = false;
+            error err = noError;
+            for (auto &model : models) {
+                // Avoid trying to POST when we're offline
+                if (offline) {
+                    // Mark the item as unsynced now
+                    model->SetUnsynced();
+                    continue;
+                }
+
+                HTTPSRequest req = model->PrepareRequest();
+                req.host = urls::API();
+                req.basic_auth_username = api_token;
+                req.basic_auth_password = "api_token";
+
+                HTTPSResponse resp = toggl_client.Request(req);
+
+                if (resp.err != noError) {
+                    // if we're able to solve the error
+                    if (model->ResolveError(resp.body) == noError) {
+                        displayError(save(false));
+                    }
+                    err = resp.err;
+                    if (resp.status_code == 429) {
+                        err = error(kRateLimit);
+                    }
+                    offline = IsNetworkingError(resp.err);
+
+                    if (offline) {
+                        trigger_sync_ = false;
+                    }
+                    continue;
+                }
+
+                err = model->LoadFromJSONString(resp.body, model->NeedsPOST());
+            }
+
+            return err;
+        };
+
+        auto updateEntryProjects = [](auto &projects, auto &time_entries) {
+            for (auto &te : time_entries) {
+                if (!te->PID() && !te->ProjectGUID().empty()) {
+                    // Find project id
+                    for (auto &project : projects) {
+                        if (project->GUID().compare(te->ProjectGUID()) == 0) {
+                            te->SetPID(project->ID());
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return noError;
+        };
+
+        auto updateProjectClients = [](auto &clients, auto &projects) {
+            for (auto &project : projects) {
+                if (!project->CID() && !project->ClientGUID().empty()) {
+                    // Find client id
+                    for (auto &client : clients) {
+                        if (client->GUID().compare(project->ClientGUID()) == 0) {
+                            project->SetCID(client->ID());
+                            break;
+                        }
+                    }
+                }
+            }
+            return noError;
+        };
+
+        // TODO get rid of "ensuring" about WIDs
+        auto collectPushableModels = [] (auto &list, auto tempWID) {
+            std::vector<locked<typename std::remove_reference<decltype(list)>::type::value_type>> result;
+            for (auto model : list) {
+                if (!model->NeedsPush())
+                    continue;
+                // was: EnsureWID
+                if (!model->WID())
+                    model->SetWID(tempWID);
+                model->EnsureGUID();
+                // std::move clears model and moves its contents to result, this call needs to be here
+                result.push_back(std::move(model));
+            }
+            return result;
+        };
+
         Poco::Stopwatch stopwatch;
         stopwatch.start();
 
@@ -4947,40 +5035,22 @@ error Context::pushChanges(
 
         auto locks = lockMore(related.User, related.Workspaces, related.TimeEntries, related.Clients, related.Projects, related.Tasks, related.Tags);
 
-        std::map<std::string, locked<BaseModel>> models;
-
-        // FIXME we shouldn't store the locked instances, rather the prepared messages
-        std::vector<locked<TimeEntry>> time_entries;
-        std::vector<locked<Project>> projects;
-        std::vector<locked<Client>> clients;
-
-        std::string api_token("");
-
         if (!related.User) {
             logger.warning("cannot push changes when logged out");
             return noError;
         }
 
-        api_token = related.User->APIToken();
+        std::string api_token = related.User->APIToken();
         if (api_token.empty()) {
             return error("cannot push changes without API token");
         }
 
-        collectPushableModels(
-            related.TimeEntries,
-            &time_entries,
-            &models);
-        collectPushableModels(
-            related.Projects,
-            &projects,
-            &models);
-        collectPushableModels(
-            related.Clients,
-            &clients,
-            &models);
-        if (time_entries.empty()
-                && projects.empty()
-                && clients.empty()) {
+        auto tempWID = related.User->SupplementaryWID();
+        auto time_entries = collectPushableModels(related.TimeEntries, tempWID);
+        auto projects = collectPushableModels(related.Projects, tempWID);
+        auto clients = collectPushableModels(related.Clients, tempWID);
+
+        if (time_entries.empty() && projects.empty() && clients.empty()) {
             *had_something_to_push = false;
             return noError;
         }
@@ -4988,71 +5058,55 @@ error Context::pushChanges(
         std::stringstream ss;
         ss << "Sync success (";
 
-        // Clients first as projects may depend on clients
-        if (clients.size() > 0) {
-            Poco::Stopwatch client_stopwatch;
-            client_stopwatch.start();
-            error err = pushClients(
-                clients,
-                api_token,
-                *toggl_client);
-            if (err != noError &&
-                    err.find(kClientNameAlreadyExists) == std::string::npos) {
-                return err;
+        // dirty, but this will go away anyway
+        auto pushModels = [&ss, &pushModelsInner, &api_token, &toggl_client](auto &name, auto &models) {
+            if (models.size() > 0) {
+                Poco::Stopwatch stopwatch;
+                stopwatch.start();
+                error err = pushModelsInner(models, api_token, *toggl_client);
+                if (err != noError && (err.find(kClientNameAlreadyExists) == std::string::npos ||
+                                       err.find(kProjectNameAlready) == std::string::npos)) {
+                    return err;
+                }
+                stopwatch.stop();
+                ss << models.size() << " " << name << " in " << stopwatch.elapsed() / 1000 << " ms";
             }
-            client_stopwatch.stop();
-            ss << clients.size() << " clients in "
-               << client_stopwatch.elapsed() / 1000 << " ms";
+            return noError;
+        };
+
+        // Clients first as projects may depend on clients
+        error err = pushModels("clients", clients);
+        if (err != noError) {
+            return err;
+        }
+
+        // Update client id on projects if needed
+        err = updateProjectClients(clients, projects);
+        if (err != noError) {
+            return err;
         }
 
         // Projects second as time entries may depend on projects
-        if (projects.size() > 0) {
-            Poco::Stopwatch project_stopwatch;
-            project_stopwatch.start();
-            error err = pushProjects(
-                projects,
-                clients,
-                api_token,
-                *toggl_client);
-            if (err != noError &&
-                    err.find(kProjectNameAlready) == std::string::npos) {
-                return err;
-            }
-
-            // Update project id on time entries if needed
-            err = updateEntryProjects(
-                projects,
-                time_entries);
-            if (err != noError) {
-                return err;
-            }
-            project_stopwatch.stop();
-            ss << " | " << projects.size() << " projects in "
-               << project_stopwatch.elapsed() / 1000 << " ms";
+        err = pushModels("projects", projects);
+        if (err != noError) {
+            return err;
         }
 
-        // Time entries last to be sure clients and projects are synced
-        if (time_entries.size() > 0) {
-            Poco::Stopwatch entry_stopwatch;
-            entry_stopwatch.start();
-            error err = pushEntries(
-                models,
-                time_entries,
-                api_token,
-                *toggl_client);
-            if (err != noError) {
-                // Hide load more button when offline
-                related.User->ConfirmLoadedMore();
-                // Reload list to show unsynced icons in items
-                UIElements render;
-                render.display_time_entries = true;
-                updateUI(render);
-                return err;
-            }
+        // Update project id on time entries if needed
+        err = updateEntryProjects(projects, time_entries);
+        if (err != noError) {
+            return err;
+        }
 
-            entry_stopwatch.stop();
-            ss << " | " << time_entries.size() << " time entries in "
-               << entry_stopwatch.elapsed() / 1000 << " ms";
+        err = pushModels("time entries", time_entries);
+        if (err != noError) {
+            // Hide load more button when offline
+            related.User->ConfirmLoadedMore();
+            // Reload list to show unsynced icons in items
+            UIElements render;
+            render.display_time_entries = true;
+            updateUI(render);
+            return err;
         }
 
         stopwatch.stop();
@@ -5064,228 +5118,6 @@ error Context::pushChanges(
         return ex.what();
     } catch(const std::string & ex) {
         return ex;
-    }
-    return noError;
-}
-
-error Context::pushClients(
-    std::vector<locked<Client>> &clients,
-    const std::string &api_token,
-    const TogglClient &toggl_client) {
-    std::string client_json("");
-    error err = noError;
-    for (auto &client : clients) {
-        Json::Value clientJson = client->SaveToJSON();
-
-        Json::StyledWriter writer;
-        client_json = writer.write(clientJson);
-
-        HTTPSRequest req;
-        req.host = urls::API();
-        req.relative_url = client->ModelURL();
-        req.payload = client_json;
-        req.basic_auth_username = api_token;
-        req.basic_auth_password = "api_token";
-
-        HTTPSResponse resp = toggl_client.Post(req);
-
-        if (resp.err != noError) {
-            // if we're able to solve the error
-            if (client->ResolveError(resp.body)) {
-                displayError(save(false));
-            }
-            continue;
-        }
-
-        Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
-            err = error("error parsing client POST response");
-            continue;
-        }
-
-        client->LoadFromJSON(root);
-    }
-
-    return err;
-}
-
-error Context::pushProjects(
-    std::vector<locked<Project>> &projects,
-    std::vector<locked<Client>> &clients,
-    const std::string &api_token,
-    const TogglClient &toggl_client) {
-    error err = noError;
-    std::string project_json("");
-    for (auto &project : projects) {
-        if (!project->CID() && !project->ClientGUID().empty()) {
-            // Find client id
-            for (auto &client : clients) {
-                if (client->GUID().compare(project->ClientGUID()) == 0) {
-                    project->SetCID(client->ID());
-                    break;
-                }
-            }
-        }
-
-        Json::Value projectJson = project->SaveToJSON();
-
-        Json::StyledWriter writer;
-        project_json = writer.write(projectJson);
-
-        HTTPSRequest req;
-        req.host = urls::API();
-        req.relative_url = project->ModelURL();
-        req.payload = project_json;
-        req.basic_auth_username = api_token;
-        req.basic_auth_password = "api_token";
-
-        HTTPSResponse resp = toggl_client.Post(req);
-
-        if (resp.err != noError) {
-            // if we're able to solve the error
-            if (project->ResolveError(resp.body)) {
-                displayError(save(false));
-            }
-            continue;
-        }
-
-        Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
-            err = error("error parsing project POST response");
-            continue;
-        }
-
-        project->LoadFromJSON(root);
-    }
-
-    return err;
-}
-
-error Context::updateEntryProjects(std::vector<locked<Project>> &projects,
-                                   std::vector<locked<TimeEntry>> &time_entries) {
-    for (auto &te : time_entries) {
-        if (!te->PID() && !te->ProjectGUID().empty()) {
-            // Find project id
-            for (auto &project : projects) {
-                if (project->GUID().compare(te->ProjectGUID()) == 0) {
-                    te->SetPID(project->ID());
-                    break;
-                }
-            }
-        }
-    }
-
-    return noError;
-}
-
-error Context::pushEntries(
-    const std::map<std::string, locked<BaseModel>>&,
-    std::vector<locked<TimeEntry>> &time_entries,
-    const std::string &api_token,
-    const TogglClient &toggl_client) {
-
-    std::string entry_json("");
-    std::string error_message("");
-    bool error_found = false;
-    bool offline = false;
-
-    for (auto &te : time_entries) {
-        // Avoid trying to POST when we're offline
-        if (offline) {
-            // Mark the time entry as unsynced now
-            te->SetUnsynced();
-            continue;
-        }
-
-        Json::Value entryJson = te->SaveToJSON();
-
-        Json::StyledWriter writer;
-        entry_json = writer.write(entryJson);
-
-        // std::cout << entry_json;
-
-        HTTPSRequest req;
-        req.host = urls::API();
-        req.relative_url = te->ModelURL();
-        req.payload = entry_json;
-        req.basic_auth_username = api_token;
-        req.basic_auth_password = "api_token";
-
-        HTTPSResponse resp;
-
-        if (te->NeedsDELETE()) {
-            req.payload = "";
-            resp = toggl_client.Delete(req);
-        } else if (te->ID()) {
-            resp = toggl_client.Put(req);
-        } else {
-            resp = toggl_client.Post(req);
-        }
-
-        if (resp.err != noError) {
-            // if we're able to solve the error
-            if (te->ResolveError(resp.body)) {
-                displayError(save(false));
-            }
-
-            // Not found on server. Probably deleted already.
-            if (te->isNotFound(resp.body)) {
-                te->MarkAsDeletedOnServer();
-                continue;
-            }
-            error_found = true;
-            error_message = resp.err;
-            if (resp.status_code == 429) {
-                error_message = error(kRateLimit);
-            }
-
-            // Mark the time entry as unsynced now
-            te->SetUnsynced();
-
-            offline = IsNetworkingError(resp.err);
-
-            if (offline) {
-                trigger_sync_ = false;
-            }
-
-            continue;
-        }
-
-        if (te->NeedsDELETE()) {
-            // Successfully deleted entry
-            te->MarkAsDeletedOnServer();
-            continue;
-        }
-
-        Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
-            return error("error parsing time entry POST response");
-        }
-
-        auto id = root["id"].asUInt64();
-        if (!id) {
-            logger.error("Backend is sending invalid data: ignoring update without an ID");
-            continue;
-        }
-
-        if (!te->ID()) {
-            if (!(related.User->SetTimeEntryID(id, te))) {
-                continue;
-            }
-        }
-
-        if (te->ID() != id) {
-            return error("Backend has changed the ID of the entry");
-        }
-
-        te->LoadFromJSON(root);
-    }
-
-    if (error_found) {
-        return error_message;
     }
     return noError;
 }
@@ -5912,30 +5744,6 @@ error Context::PullCountries() {
         return ex;
     }
     return noError;
-}
-
-template<typename T>
-void Context::collectPushableModels(ProtectedContainer<T> &list,
-    std::vector<locked<T>> *result,
-    std::map<std::string, locked<BaseModel>> *models) {
-
-    poco_check_ptr(result);
-
-    for (auto model : list) {
-        if (!model->NeedsPush()) {
-            continue;
-        }
-        related.User->EnsureWID(model);
-        model->EnsureGUID();
-        if (models && !model->GUID().empty()) {
-            // split the model into two locked variables
-            auto base = model.base();
-            // this clears base and moves its contents to models
-            (*models)[model->GUID()] = std::move(base);
-        }
-        // std::move clears model and moves its contents to result, this call needs to be here
-        result->push_back(std::move(model));
-    }
 }
 
 void on_websocket_message(
