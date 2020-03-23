@@ -191,8 +191,8 @@ Section
       CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$INSTDIR\TogglDesktop.exe" ""
     ${EndIf}
 
-  ${If} $isOldUpdater == 1
-  ${OrIf} $isNewUpdater == 1
+  ${If} $isOldUpdater == 0
+  ${AndIf} $isNewUpdater == 0
     ;Add/Remove programs entry
     !define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\TogglDesktop"
     WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayName" "Toggl Desktop"
