@@ -40,6 +40,7 @@ class Task;
 class TimeEntry;
 class User;
 class Workspace;
+struct Compare;
 
 class TOGGL_INTERNAL_EXPORT Database {
  public:

@@ -42,6 +42,7 @@ T *modelByGUID(const guid GUID, std::vector<T *> const *list);
 
 extern bool CompareClients(const Client *l, const Client *r);
 extern bool CompareProjects(const Project *l, const Project *r);
+extern bool CompareTimeEntries(const TimeEntry *a, const TimeEntry *b);
 
 class TOGGL_INTERNAL_EXPORT RelatedData {
  public:

@@ -319,17 +319,13 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 };
 
 template<class T>
-void deleteZombies(
-    ProtectedContainer<T> &list,
-    const std::set<Poco::UInt64> &alive);
+void deleteZombies(ProtectedContainer<T> &list, const std::set<Poco::UInt64> &alive);
 
 template <typename T>
-void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
-                                      ProtectedContainer<T> &list);
+void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid, ProtectedContainer<T> &list);
 
 template <typename T>
-void removeProjectFromRelatedModels(const Poco::UInt64 pid,
-                                    ProtectedContainer<T> &list);
+void removeProjectFromRelatedModels(const Poco::UInt64 pid, ProtectedContainer<T> &list);
 
 }  // namespace toggl
 

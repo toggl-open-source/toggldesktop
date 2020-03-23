@@ -10,8 +10,9 @@ static int modelCounter = 0;
 
 class TestModel {
 public:
-    TestModel(ProtectedBase*, guid uuid, uint64_t id)
-        : uuid_(uuid)
+    TestModel(ProtectedBase* parent, guid uuid, uint64_t id)
+        : parent_(parent)
+        , uuid_(uuid)
         , id_(id)
     {
         modelCounter++;
@@ -28,6 +29,7 @@ public:
     void SetGUID(const guid &guid) {
         if (uuid_ != guid) {
             uuid_ = guid;
+            parent_->shift(this);
         }
     }
     uint64_t ID() const {
@@ -36,8 +38,10 @@ public:
     void SetID(uint64_t id) {
         if (id_ != id) {
             id_ = id;
+            parent_->shift(this);
         }
     }
+    ProtectedBase *parent_;
     guid uuid_;
     uint64_t id_;
 };
@@ -124,7 +128,7 @@ TEST(ProtectedContainer, InsertAndRemoveByIterator) {
     ASSERT_EQ(modelCounter, 1);
     auto it = container.begin();
     ASSERT_NE(it, container.end());
-    container.erase(it);
+    it = container.erase(it);
     ASSERT_EQ(it, container.end());
     ASSERT_EQ(container.size(), 0);
     ASSERT_EQ(modelCounter, 0);
@@ -253,7 +257,7 @@ TEST(ProtectedContainer, Resorting) {
     item3->SetID(30);
     item4->SetID(20);
     item5->SetID(10);
-    container.sort();
+    //container.sort();
     for (size_t i = 0; i < 5; i++) {
         // expect the IDs reversed and respecting the change
         ASSERT_EQ(container[i]->ID(), (5 - i) * 10);

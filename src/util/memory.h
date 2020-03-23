@@ -5,6 +5,7 @@
 
 #include <mutex>
 #include <vector>
+#include <set>
 #include <iostream>
 #include <map>
 #include <tuple>
@@ -92,6 +93,9 @@ public:
      */
     const RelatedData *GetRelatedData() const;
 
+    // TODO figure out if it's possible to do without void*
+    virtual bool shift(void *item) { return false; }
+
     lock_type lock(bool immediately = true);
     /**
      * @brief make_locked - Makes pointer to any type locked by the internal mutex
@@ -178,12 +182,15 @@ class ProtectedContainer : public ProtectedBase {
 public:
     typedef ProtectedContainer<T> type;
     typedef T value_type;
+    typedef std::function<bool(const T*, const T*)> comparison_function;
+    using container_type = std::multiset<T*, comparison_function>;
+
     class iterator {
     public:
         friend class ProtectedContainer;
         typedef std::forward_iterator_tag iterator_category;
 
-        iterator(ProtectedContainer *model, size_t position = SIZE_MAX);
+        iterator(ProtectedContainer *parent, typename container_type::iterator it);
         iterator(const iterator &o);
         ~iterator();
 
@@ -196,17 +203,16 @@ public:
         T* operator->() const;
 
     private:
-        size_t realPosition() const;
         lock_type lock;
-        ProtectedContainer *model;
-        size_t position;
+        ProtectedContainer *parent;
+        typename container_type::iterator it;
     };
     class const_iterator {
     public:
         friend class ProtectedContainer;
         typedef std::forward_iterator_tag iterator_category;
 
-        const_iterator(const ProtectedContainer *model, size_t position = SIZE_MAX);
+        const_iterator(const ProtectedContainer *parent, typename container_type::const_iterator it);
         const_iterator(const const_iterator &o);
         const_iterator(const iterator &o);
         ~const_iterator();
@@ -220,10 +226,9 @@ public:
         T* operator->() const;
 
     private:
-        size_t realPosition() const;
         lock_type lock;
-        const ProtectedContainer *model;
-        size_t position;
+        const ProtectedContainer *parent;
+        typename container_type::const_iterator it;
     };
     friend class iterator;
     friend class const_iterator;
@@ -234,7 +239,7 @@ public:
      * @param comparison - a binary predicate with the signature of bool(const T*, const T*), used to insert items at the right position when creating
      * TODO Using the comparison predicate has O(N) complexity, we'd very likely be much better off storing everything in a std::set
      */
-    ProtectedContainer(RelatedData *parent, std::function<bool(const T* left, const T* right)> comparison = {});
+    ProtectedContainer(RelatedData *parent, comparison_function comparison = [](const T* l, const T* r){ return l < r; });
     ProtectedContainer(const ProtectedContainer &o) = delete;
     ~ProtectedContainer();
 
@@ -245,7 +250,7 @@ public:
     const_iterator end() const;
     const_iterator cend() const;
 
-    iterator erase(iterator position);
+    iterator erase(iterator it);
 
     /**
      * @brief clear - Clear the @ref container_
@@ -265,6 +270,8 @@ public:
      * @return - true if found and deleted
      */
     bool remove(const guid &guid);
+
+    bool shift(void *item) override;
     /**
      * @brief size - Get how many items are contained inside
      * @return - number of items inside the container
@@ -282,14 +289,10 @@ public:
      */
     bool contains(const guid &uuid) const;
     /**
-     * @brief sort
-     */
-    void sort();
-    /**
      * @brief operator[] - access elements by their position
      * @param position - order in the underlying sequential container
      * @return locked instance of the element at the position
-     * @warning This uses _position_, NOT IDs
+     * @warning This uses _position_, NOT IDs - with set it's very slow
      */
     locked<T> operator[](size_t position);
     locked<const T> operator[](size_t position) const;
@@ -321,614 +324,20 @@ public:
      */
     bool operator==(const ProtectedContainer &o) const;
 private:
-    std::vector<T*> container_;
+    container_type container_;
     mutable std::map<guid, T*> guidMap_; // mutable because byGUID creates a search cache
-    std::function<bool(const T* left, const T* right)> comparison_;
 };
 
-// one argument variant, recursion stop
-// returns a single unlocked lock
-template<typename Arg>
-std::tuple<lock_type> lockMoreImpl(Arg&& arg) {
-    return std::make_tuple(arg.lock(false));
-}
-
-// recursively go through the list of protected containers
-// return a tuple of unlocked locks
-template<typename Arg, typename... Args>
-auto lockMoreImpl(Arg&& arg, Args&&... args) {
-    return std::tuple_cat(std::make_tuple(arg.lock(false)), lockMoreImpl(std::forward<Args>(args)...));
-}
 
 /**
  * @brief Lock more mutexes
  * This function locks all protected containers at once without causing a deadlock if the order is different in two places
  * Only accepted arguments are Protected* classes
  */
-template<typename... Args>
-std::vector<lock_type> lockMore(Args&&... args) {
-    // Retrieve unlocked locks from all passed Protected instances
-    // It is a tuple because only tuples can be used with std::apply
-    auto tuple = lockMoreImpl(std::forward<Args>(args)...);
-    // Lock them all at once
-    std::apply([](auto&&... elems) {
-        std::lock((elems)...);
-    }, std::forward<decltype(tuple)>(tuple));
-    // Transform the tuple to vector
-    return std::apply([](auto&&... elems) {
-        std::vector<lock_type> result;
-        result.reserve(sizeof...(elems));
-        (result.push_back(std::forward<decltype(elems)>(elems)), ...);
-        return result;
-    }, std::move(tuple));
-}
-
-/*******************************************************************************
- * IMPLEMENTATION
- */
-
-//////// TEMPORARY /////////////////////////////////////////////////////////////
-/*
- * TODO FIXME remove this eventually when GoogleAnalytics doesn't get passed an instance directly from another thread
- */
-template<>
-inline Settings *locked<Settings>::operator*() {
-    return data_;
-}
-template<>
-inline const Settings *locked<const Settings>::operator*() {
-    return data_;
-}
-/*
- * TODO FIXME same for TimelineEvent
- */
-template<>
-inline TimelineEvent *locked<TimelineEvent>::operator*() {
-    return data_;
-}
-template<>
-inline const TimelineEvent *locked<const TimelineEvent>::operator*() {
-    return data_;
-}
-
-//////// LOCKED ////////////////////////////////////////////////////////////////
-template<typename T>
-locked<BaseModel> locked<T>::base() {
-    return locked<BaseModel>( *mutex(), data_ );
-}
-
-template<typename T>
-locked<T> locked<T>::split() {
-    return locked<T>( *mutex(), data_ );
-}
-
-template<typename T>
-locked<T>::locked()
-    : lock_type()
-    , data_(nullptr)
-{ }
-
-template<typename T>
-locked<T>::locked(locked<T> &&o) {
-    lock_type::operator=(std::move(o));
-    data_ = o.data_;
-    o.data_ = nullptr;
-}
-
-template<typename T>
-locked<T>::locked(mutex_type &mutex, T *data)
-    : lock_type(mutex)
-    , data_(data)
-{ }
-
-template<typename T>
-locked<T> &locked<T>::operator=(locked<T> &&o) {
-    lock_type::operator=(std::move(o));
-    data_ = o.data_;
-    o.data_ = nullptr;
-    return *this;
-}
-
-template<typename T>
-T *locked<T>::operator->() { return data_; }
-
-template<typename T>
-locked<T>::operator bool() const {
-    return owns_lock() && data_;
-}
-
-//////// PROTECTEDBASE /////////////////////////////////////////////////////////
-inline ProtectedBase::ProtectedBase(RelatedData *parent)
-    : relatedData_(parent)
-{
-
-}
-
-inline ProtectedBase::~ProtectedBase() {
-
-}
-
-inline RelatedData *ProtectedBase::GetRelatedData() {
-    return relatedData_;
-}
-
-inline const RelatedData *ProtectedBase::GetRelatedData() const {
-    return relatedData_;
-}
-
-inline lock_type ProtectedBase::lock(bool immediately) {
-    if (immediately)
-        return lock_type(mutex_);
-    return { mutex_, std::defer_lock };
-}
-
-template<typename U>
-locked<U> ProtectedBase::make_locked(U *val) const {
-    return { mutex_, val };
-}
-
-template<typename U>
-locked<const U> ProtectedBase::make_locked(const U *val) const {
-    return { mutex_, val };
-}
-
-template<typename T, typename... Args>
-T *ProtectedBase::make(Args&&... args) {
-    return new T(args...);
-}
-
-//////// PROTECTEDMODEL ////////////////////////////////////////////////////////
-template<class T>
-ProtectedModel<T>::ProtectedModel(RelatedData *parent, bool allocate)
-    : ProtectedBase(parent)
-    , value_(allocate ? make<T>(this) : nullptr)
-{
-
-}
-
-template<class T>
-void ProtectedModel<T>::clear() {
-    lock_type lock(mutex_);
-    delete value_;
-    value_ = nullptr;
-}
-
-template<class T>
-locked<T> ProtectedModel<T>::operator*() {
-    return { mutex_, value_ };
-}
-
-template<class T>
-locked<const T> ProtectedModel<T>::operator*() const {
-    return { mutex_, value_ };
-}
-
-template<class T>
-locked<T> ProtectedModel<T>::operator->() {
-    return { mutex_, value_ };
-}
-
-template<class T>
-locked<const T> ProtectedModel<T>::operator->() const {
-    return { mutex_, value_ };
-}
-
-template<class T>
-toggl::ProtectedModel<T>::operator bool() const {
-    lock_type lock(mutex_);
-    return value_;
-}
-
-template <typename T> template <typename ...Args>
-locked<T> ProtectedModel<T>::create(Args&&... args) {
-    lock_type lock(mutex_);
-    if (value_)
-        delete value_;
-    value_ = make<T>(this, std::forward<Args>(args)...);
-    return { mutex_, value_ };
-}
-
-//////// PROTECTEDCONTAINER ////////////////////////////////////////////////////
-template<class T>
-ProtectedContainer<T>::ProtectedContainer(RelatedData *parent, std::function<bool(const T*, const T*)> comparison)
-    : ProtectedBase(parent)
-    , comparison_(comparison)
-{
-
-}
-
-template<class T>
-ProtectedContainer<T>::~ProtectedContainer() {
-    clear();
-}
-
-template<class T>
-typename ProtectedContainer<T>::iterator ProtectedContainer<T>::begin() { return iterator(this, 0); }
-
-template<class T>
-typename ProtectedContainer<T>::const_iterator ProtectedContainer<T>::begin() const { return const_iterator(this, 0); }
-
-template<class T>
-typename ProtectedContainer<T>::const_iterator ProtectedContainer<T>::cbegin() const { return const_iterator(this, 0); }
-
-template<class T>
-typename ProtectedContainer<T>::iterator ProtectedContainer<T>::end() { return iterator(this); }
-
-template<class T>
-typename ProtectedContainer<T>::const_iterator ProtectedContainer<T>::end() const { return const_iterator(this); }
-
-template<class T>
-typename ProtectedContainer<T>::const_iterator ProtectedContainer<T>::cend() const { return const_iterator(this); }
-
-template<class T>
-typename ProtectedContainer<T>::iterator ProtectedContainer<T>::erase(ProtectedContainer<T>::iterator position) {
-    if (position == end()) {
-        // TODO warn?
-        return end();
-    }
-    lock_type lock(mutex_);
-    T* ptr { nullptr };
-    try {
-        ptr = container_[position.position];
-    }
-    catch (std::out_of_range &) {
-        // TODO warn?
-        return end();
-    }
-    if (!ptr) {
-        // again, warn?
-        return end();
-    }
-    container_.erase(container_.begin() + position.position);
-    guidMap_.erase(ptr->GUID());
-    delete ptr;
-    return position;
-}
-
-template<class T>
-void ProtectedContainer<T>::clear() {
-    lock_type lock(mutex_);
-    for (auto i : container_)
-        delete i;
-    container_.clear();
-    guidMap_.clear();
-}
-
-template<class T>
-bool ProtectedContainer<T>::remove(const guid &guid) {
-    lock_type lock(mutex_);
-    T* ptr { nullptr };
-    try {
-        ptr = guidMap_.at(guid);
-    }
-    catch (std::out_of_range &) {
-        return false;
-    }
-    if (!ptr)
-        return false;
-    container_.erase(std::find(container_.begin(), container_.end(), ptr));
-    guidMap_.erase(guid);
-    delete ptr;
-    return true;
-}
-
-template<class T>
-size_t ProtectedContainer<T>::size() const {
-    lock_type lock(mutex_);
-    return container_.size();
-}
-
-template<class T>
-bool ProtectedContainer<T>::empty() const {
-    return size() == 0;
-}
-
-template<class T>
-bool ProtectedContainer<T>::contains(const guid &uuid) const {
-    lock_type lock(mutex_);
-    return guidMap_.find(uuid) != guidMap_.end();
-}
-
-template<class T>
-void ProtectedContainer<T>::sort() {
-    lock_type lock(mutex_);
-    if (comparison_)
-        std::sort(container_.begin(), container_.end(), comparison_);
-}
-
-template<class T>
-locked<T> ProtectedContainer<T>::operator[](size_t position) {
-    lock_type lock(mutex_);
-    if (container_.size() > position)
-        return { mutex_, container_[position] };
-    return {};
-}
-
-template<class T>
-locked<const T> ProtectedContainer<T>::operator[](size_t position) const {
-    lock_type lock(mutex_);
-    if (container_.size() > position)
-        return { mutex_, container_[position] };
-    return {};
-}
-
-template<class T>
-locked<T> ProtectedContainer<T>::operator[](const guid &uuid) {
-    return byGUID(uuid);
-}
-
-template<class T>
-locked<const T> ProtectedContainer<T>::operator[](const guid &uuid) const {
-    return byGUID(uuid);
-}
-
-template<class T>
-locked<T> ProtectedContainer<T>::byGUID(const guid &uuid) {
-    lock_type lock(mutex_);
-    // try checking the GUID cache
-    try {
-        auto ptr = guidMap_.at(uuid);
-        // if the object has a different GUID
-        if (ptr->GUID() != uuid) {
-            // move it where it belongs
-            guidMap_.erase(guidMap_.find(uuid));
-            guidMap_.insert({uuid, ptr});
-            // and check if there is any other object in the main container with the sought-after GUID
-            for (auto i : container_) {
-                if (i->GUID() == uuid) {
-                    guidMap_.insert({uuid, i});
-                    return { mutex_, ptr };
-                }
-            }
-            return {};
-        }
-        return { mutex_, ptr };
-    }
-    catch (std::out_of_range &) {
-        // if not found...
-        for (auto i : container_) {
-            // look into the main container if we have the GUID in question somewhere
-            if (i->GUID() == uuid) {
-                // and if we find it, look if this particular element was stored under a different GUID
-                for (auto it = guidMap_.begin(); it != guidMap_.end(); ) {
-                    // and if it was, delete it from the old location(s)
-                    if (it->second == i)
-                        it = guidMap_.erase(it);
-                    else
-                        ++it;
-                }
-                // then insert it to a location with the new GUID
-                guidMap_.insert({uuid, i});
-                // and return
-                return { mutex_, i };
-            }
-        }
-        return {};
-    }
-}
-
-template<class T>
-locked<const T> ProtectedContainer<T>::byGUID(const guid &uuid) const {
-    lock_type lock(mutex_);
-    // try checking the GUID cache
-    try {
-        auto ptr = guidMap_.at(uuid);
-        // if the object has a different GUID
-        if (ptr->GUID() != uuid) {
-            // move it where it belongs
-            guidMap_.erase(guidMap_.find(uuid));
-            guidMap_.insert({uuid, ptr});
-            // and check if there is any other object in the main container with the sought-after GUID
-            for (auto i : container_) {
-                if (i->GUID() == uuid) {
-                    guidMap_.insert({uuid, i});
-                    return { mutex_, ptr };
-                }
-            }
-            return {};
-        }
-        return { mutex_, ptr };
-    }
-    catch (std::out_of_range &) {
-        // if not found...
-        for (auto i : container_) {
-            // look into the main container if we have the GUID in question somewhere
-            if (i->GUID() == uuid) {
-                // and if we find it, look if this particular element was stored under a different GUID
-                for (auto it = guidMap_.begin(); it != guidMap_.end(); ) {
-                    // and if it was, delete it from the old location(s)
-                    if (it->second == i)
-                        it = guidMap_.erase(it);
-                    else
-                        ++it;
-                }
-                // then insert it to a location with the new GUID
-                guidMap_.insert({uuid, i});
-                // and return
-                return { mutex_, i };
-            }
-        }
-        return {};
-    }
-}
-
-template<class T>
-locked<T> ProtectedContainer<T>::byID(uint64_t id) {
-    lock_type lock(mutex_);
-    for (auto i : container_) {
-        if (i->ID() == id)
-            return { mutex_, i };
-    }
-    return {};
-}
-
-template<class T>
-locked<const T> ProtectedContainer<T>::byID(uint64_t id) const {
-    lock_type lock(mutex_);
-    for (auto i : container_) {
-        if (i->ID() == id)
-            return { mutex_, i };
-    }
-    return {};
-}
-
-template<class T>
-bool ProtectedContainer<T>::operator==(const ProtectedContainer<T> &o) const {
-    return this == &o;
-}
-
-template <typename T> template <typename ...Args>
-locked<T> ProtectedContainer<T>::create(Args&&... args) {
-    lock_type lock(mutex_);
-    T *val = make<T>(this, std::forward<Args>(args)...);
-    if (comparison_) {
-        auto position = std::upper_bound(container_.begin(), container_.end(), val, comparison_);
-        container_.insert(position, val);
-    }
-    else {
-        container_.push_back(val);
-    }
-    guidMap_[val->GUID()] = val;
-    return { mutex_, val };
-}
-
-
-//// iterator ////////
-template<class T>
-ProtectedContainer<T>::iterator::iterator(ProtectedContainer *model, size_t position)
-    : lock(model->mutex_)
-    , model(model)
-    , position(position)
-{ }
-
-template<class T>
-ProtectedContainer<T>::iterator::iterator(const iterator &o)
-    : lock(o.model->mutex_)
-    , model(o.model)
-    , position(o.position)
-{ }
-
-template<class T>
-ProtectedContainer<T>::iterator::~iterator()
-{ }
-
-template<class T>
-typename ProtectedContainer<T>::iterator &ProtectedContainer<T>::iterator::operator=(const iterator &o) {
-    lock = lock_type(o.model->mutex_);
-    model = o.model;
-    position = o.position;
-    return *this;
-}
-
-template<class T>
-bool ProtectedContainer<T>::iterator::operator==(const ProtectedContainer<T>::iterator &o) const {
-    return model == o.model && realPosition() == o.realPosition();
-}
-
-template<class T>
-bool ProtectedContainer<T>::iterator::operator!=(const ProtectedContainer<T>::iterator &o) const {
-    return !(*this == o);
-}
-
-template<class T>
-typename ProtectedContainer<T>::iterator &ProtectedContainer<T>::iterator::operator++() {
-    position++;
-    return *this;
-}
-
-template<class T>
-locked<T> ProtectedContainer<T>::iterator::operator*() {
-    if (realPosition() == SIZE_MAX)
-        return {};
-    return { model->mutex_, model->container_[position] };
-}
-
-template<class T>
-T *ProtectedContainer<T>::iterator::operator->() const {
-    if (realPosition() == SIZE_MAX)
-        return {};
-    return model->container_[position];
-}
-
-template<class T>
-size_t ProtectedContainer<T>::iterator::realPosition() const {
-    if (model->size() <= position)
-        return SIZE_MAX;
-    return position;
-}
-
-//// const_iterator ////////
-template<class T>
-ProtectedContainer<T>::const_iterator::const_iterator(const ProtectedContainer *model, size_t position)
-    : lock(model->mutex_)
-    , model(model)
-    , position(position)
-{ }
-
-template<class T>
-ProtectedContainer<T>::const_iterator::const_iterator(const const_iterator &o)
-    : lock(o.model->mutex_)
-    , model(o.model)
-    , position(o.position)
-{ }
-
-template<class T>
-ProtectedContainer<T>::const_iterator::const_iterator(const iterator &o)
-    : lock(o.model->mutex_)
-    , model(o.model)
-    , position(o.position)
-{ }
-
-template<class T>
-ProtectedContainer<T>::const_iterator::~const_iterator()
-{ }
-
-template<class T>
-typename ProtectedContainer<T>::const_iterator &ProtectedContainer<T>::const_iterator::operator=(const const_iterator &o) {
-    lock = lock_type(o.model->mutex_);
-    model = o.model;
-    position = o.position;
-    return *this;
-}
-
-template<class T>
-bool ProtectedContainer<T>::const_iterator::operator==(const const_iterator &o) const {
-    return model == o.model && realPosition() == o.realPosition();
-}
-
-template<class T>
-bool ProtectedContainer<T>::const_iterator::operator!=(const const_iterator &o) const {
-    return !(*this == o);
-}
-
-template<class T>
-typename ProtectedContainer<T>::const_iterator &ProtectedContainer<T>::const_iterator::operator++() {
-    position++;
-    return *this;
-}
-
-template<class T>
-locked<const T> ProtectedContainer<T>::const_iterator::operator*() const {
-    if (realPosition() == SIZE_MAX)
-        return {};
-    return { model->mutex_, model->container_[position]};
-}
-
-template<class T>
-T *ProtectedContainer<T>::const_iterator::operator->() const {
-    if (realPosition() == SIZE_MAX)
-        return {};
-    return model->container_[position];
-}
-
-template<class T>
-size_t ProtectedContainer<T>::const_iterator::realPosition() const {
-    if (model->size() <= position)
-        return SIZE_MAX;
-    return position;
-}
-
+template<typename... Args> std::vector<lock_type> lockMore(Args&&... args);
 
 } // namespace toggl
+
+#include "memory_impl.h"
 
 #endif // SRC_MEMORY_H_
