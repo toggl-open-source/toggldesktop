@@ -494,6 +494,30 @@ void MainWindowController::writeSettings() {
     settings.setValue("windowState", saveState());
 }
 
+void MainWindowController::showEvent(QShowEvent *event) {
+    QMainWindow::showEvent(event);
+
+    // Avoid 'user already logged in' error from double UI start
+    if (ui_started) {
+        return;
+    }
+    ui_started = true;
+
+    if (!TogglApi::instance->startEvents()) {
+        QMessageBox(
+            QMessageBox::Warning,
+            "Error",
+            "The application could not start. Please inspect the log file.",
+            QMessageBox::Ok|QMessageBox::Cancel).exec();
+        return;
+    }
+    if (script.isEmpty()) {
+        // qDebug() << "no script to run";
+        return;
+    }
+    qDebug() << "will run script: " << script;
+}
+
 void MainWindowController::closeEvent(QCloseEvent *event) {
 
     // Window manager has requested the app to quit so just quit
