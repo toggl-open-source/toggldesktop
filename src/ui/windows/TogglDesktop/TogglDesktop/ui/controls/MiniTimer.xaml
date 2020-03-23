@@ -9,7 +9,8 @@
              MinHeight="44"
              MaxHeight="52"
              Focusable="True"
-             Background="{DynamicResource Toggl.CardBackground}">
+             Background="{DynamicResource Toggl.CardBackground}"
+             PreviewMouseDown="MiniTimer_OnPreviewMouseDown">
     <UserControl.Resources>
         <ResourceDictionary>
             <Style x:Key="Toggl.StartStopButton" TargetType="{x:Type ToggleButton}">

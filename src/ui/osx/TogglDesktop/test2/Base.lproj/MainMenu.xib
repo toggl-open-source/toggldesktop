@@ -230,14 +230,12 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="KUm-TA-aKU"/>
-                            <menuItem title="Next Day" tag="3" keyEquivalent="" toolTip="Change a current Timeliine day to next day" id="HEB-2o-715">
-                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                            <menuItem title="Next Day" tag="3" keyEquivalent="]" toolTip="Change a current Timeliine day to next day" id="HEB-2o-715">
                                 <connections>
                                     <action selector="nextDayMenuOnClick:" target="-1" id="uVN-Lv-UoP"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Previous Day" tag="3" keyEquivalent="" toolTip="Change a current Timeliine day to previous day" id="kdC-8f-3ea">
-                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                            <menuItem title="Previous Day" tag="3" keyEquivalent="[" toolTip="Change a current Timeliine day to previous day" id="kdC-8f-3ea">
                                 <connections>
                                     <action selector="previouosDayMenuOnClick:" target="-1" id="kIq-Tb-6ik"/>
                                 </connections>

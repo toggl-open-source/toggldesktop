@@ -955,7 +955,7 @@ void *ctx;
 			 keyEquivalent:@""].tag = kMenuItemTagOpenBrowser;
 	[menu addItemWithTitle:@"Preferences"
 					action:@selector(onPreferencesMenuItem:)
-			 keyEquivalent:@""];
+			 keyEquivalent:@","];
 	self.manualModeMenuItem = [menu addItemWithTitle:@"Use manual mode"
 											  action:@selector(onModeChange:)
 									   keyEquivalent:@"d"];
@@ -972,7 +972,7 @@ void *ctx;
 			 keyEquivalent:@""].tag = kMenuItemTagLogout;
 	[menu addItemWithTitle:@"Quit"
 					action:@selector(onQuitMenuItem)
-			 keyEquivalent:@""];
+			 keyEquivalent:@"q"];
 
 	NSStatusBar *bar = [NSStatusBar systemStatusBar];
 

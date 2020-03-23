@@ -343,6 +343,22 @@ jobs:
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller-x64.exe" renameto="TogglDesktopInstaller-x64-${TAG_NAME/v/}.exe"
       shell: bash
 
+  windows-dev-release:
+    needs: [windows-32bit, windows-64bit]
+    runs-on: ubuntu-latest # anything supporting bash
+    if: github.event_name == 'release'
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+    - name: Add new dev channel release
+      shell: bash
+      run: |
+        git config user.name "runner"
+        git config user.email "action@github.com"
+        TAG_NAME=$(./dist/get-tag-name.sh)
+        ./dist/update_releases.sh win dev ${TAG_NAME/v/}
+    
   windows-store:
     runs-on: windows-2019
     if: github.event_name == 'release'

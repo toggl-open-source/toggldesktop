@@ -6,6 +6,7 @@
 
 #include <string>
 #include <sstream>
+#include <memory>
 
 #include "formatter.h"
 #include "netconf.h"
@@ -88,12 +89,12 @@ void ServerStatus::runActivity() {
         }
 
         // Check server status
-        HTTPSClient client;
-        HTTPSRequest req;
+        HTTPClient client;
+        HTTPRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/status";
 
-        HTTPSResponse resp = client.Get(req);
+        HTTPResponse resp = client.Get(req);
         if (noError != resp.err) {
             logger().error(resp.err);
 
@@ -140,18 +141,18 @@ void ServerStatus::UpdateStatus(const Poco::Int64 code) {
     stopStatusCheck("Status code " + std::to_string(code));
 }
 
-HTTPSClientConfig HTTPSClient::Config;
-std::map<std::string, Poco::Timestamp> HTTPSClient::banned_until_;
+HTTPClientConfig HTTPClient::Config;
+std::map<std::string, Poco::Timestamp> HTTPClient::banned_until_;
 
-Logger HTTPSClient::logger() const {
-    return { "HTTPSClient" };
+Logger HTTPClient::logger() const {
+    return { "HTTPClient" };
 }
 
-bool HTTPSClient::isRedirect(const Poco::Int64 status_code) const {
+bool HTTPClient::isRedirect(const Poco::Int64 status_code) const {
     return (status_code >= 300 && status_code < 400);
 }
 
-error HTTPSClient::statusCodeToError(const Poco::Int64 status_code) const {
+error HTTPClient::statusCodeToError(const Poco::Int64 status_code) const {
     switch (status_code) {
     case 200:
     case 201:
@@ -196,40 +197,40 @@ error HTTPSClient::statusCodeToError(const Poco::Int64 status_code) const {
     return kCannotConnectError;
 }
 
-HTTPSResponse HTTPSClient::Post(
-    HTTPSRequest req) const {
+HTTPResponse HTTPClient::Post(
+    HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_POST;
     return request(req);
 }
 
-HTTPSResponse HTTPSClient::Get(
-    HTTPSRequest req) const {
+HTTPResponse HTTPClient::Get(
+    HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
     return request(req);
 }
 
-HTTPSResponse HTTPSClient::GetFile(
-    HTTPSRequest req) const {
+HTTPResponse HTTPClient::GetFile(
+    HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
     req.timeout_seconds = kHTTPClientTimeoutSeconds * 10;
     return request(req);
 }
 
-HTTPSResponse HTTPSClient::Delete(
-    HTTPSRequest req) const {
+HTTPResponse HTTPClient::Delete(
+    HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_DELETE;
     return request(req);
 }
 
-HTTPSResponse HTTPSClient::Put(
-    HTTPSRequest req) const {
+HTTPResponse HTTPClient::Put(
+    HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_PUT;
     return request(req);
 }
 
-HTTPSResponse HTTPSClient::request(
-    HTTPSRequest req) const {
-    HTTPSResponse resp = makeHttpRequest(req);
+HTTPResponse HTTPClient::request(
+    HTTPRequest req) const {
+    HTTPResponse resp = makeHttpRequest(req);
 
     if (kCannotConnectError == resp.err && isRedirect(resp.status_code)) {
         // Reattempt request to the given location.
@@ -244,10 +245,10 @@ HTTPSResponse HTTPSClient::request(
     return resp;
 }
 
-HTTPSResponse HTTPSClient::makeHttpRequest(
-    HTTPSRequest req) const {
+HTTPResponse HTTPClient::makeHttpRequest(
+    HTTPRequest req) const {
 
-    HTTPSResponse resp;
+    HTTPResponse resp;
 
     if (!urls::RequestsAllowed()) {
         resp.err = error(kCannotSyncInTestEnv);
@@ -282,7 +283,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         resp.err = error("Cannot make a HTTP request without a relative URL");
         return resp;
     }
-    if (HTTPSClient::Config.CACertPath.empty()) {
+    if (HTTPClient::Config.CACertPath.empty()) {
         resp.err = error("Cannot make a HTTP request without certificates");
         return resp;
     }
@@ -296,22 +297,27 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
 
         Poco::Net::Context::VerificationMode verification_mode =
             Poco::Net::Context::VERIFY_RELAXED;
-        if (HTTPSClient::Config.IgnoreCert) {
+        if (HTTPClient::Config.IgnoreCert) {
             verification_mode = Poco::Net::Context::VERIFY_NONE;
         }
         Poco::Net::Context::Ptr context = new Poco::Net::Context(
             Poco::Net::Context::CLIENT_USE, "", "",
-            HTTPSClient::Config.CACertPath,
+            HTTPClient::Config.CACertPath,
             verification_mode, 9, true, "ALL");
 
         Poco::Net::SSLManager::instance().initializeClient(
             nullptr, acceptCertHandler, context);
 
-        Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
-                                              context);
+        std::shared_ptr<Poco::Net::HTTPClientSession> session;
+        if (uri.getScheme() == "http") {
+            session = std::make_shared<Poco::Net::HTTPClientSession>(uri.getHost(), uri.getPort());
+        }
+        else {
+            session = std::make_shared<Poco::Net::HTTPSClientSession>(uri.getHost(), uri.getPort(), context);
+        }
 
-        session.setKeepAlive(true);
-        session.setTimeout(
+        session->setKeepAlive(true);
+        session->setTimeout(
             Poco::Timespan(req.timeout_seconds * Poco::Timespan::SECONDS));
 
         logger().debug("Sending request to ", req.host, req.relative_url, " ..");
@@ -319,7 +325,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         std::string encoded_url("");
         Poco::URI::encode(req.relative_url, "", encoded_url);
 
-        error err = Netconf::ConfigureProxy(req.host + encoded_url, &session);
+        error err = Netconf::ConfigureProxy(req.host + encoded_url, session.get());
         if (err != noError) {
             resp.err = error("Error while configuring proxy: " + err);
             logger().error(resp.err);
@@ -341,7 +347,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         if (req.payload.size()) {
             poco_req.setContentType(kContentTypeApplicationJSON);
         }
-        poco_req.set("User-Agent", HTTPSClient::Config.UserAgent());
+        poco_req.set("User-Agent", HTTPClient::Config.UserAgent());
 
         Poco::Net::HTTPBasicCredentials cred(
             req.basic_auth_username, req.basic_auth_password);
@@ -371,10 +377,10 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
                 poco_req.setChunkedTransferEncoding(true);
             }
 
-            session.sendRequest(poco_req) << pBuff << std::flush;
+            session->sendRequest(poco_req) << pBuff << std::flush;
         } else {
             req.form->prepareSubmit(poco_req);
-            std::ostream& send = session.sendRequest(poco_req);
+            std::ostream& send = session->sendRequest(poco_req);
             req.form->write(send);
         }
 
@@ -390,7 +396,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
 
         // Receive response
         Poco::Net::HTTPResponse response;
-        std::istream& is = session.receiveResponse(response);
+        std::istream& is = session->receiveResponse(response);
 
         resp.status_code = response.getStatus();
 
@@ -476,7 +482,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
     return resp;
 }
 
-std::string HTTPSClient::clientIDForRefererHeader() const {
+std::string HTTPClient::clientIDForRefererHeader() const {
     if (POCO_OS_MAC_OS_X == POCO_OS) {
         return kTogglDesktopClientID_MacOS;
     }
@@ -490,13 +496,13 @@ Logger TogglClient::logger() const {
     return { "TogglClient" };
 }
 
-HTTPSResponse TogglClient::request(
-    HTTPSRequest req) const {
+HTTPResponse TogglClient::request(
+    HTTPRequest req) const {
 
     error err = TogglStatus.Status();
     if (err != noError) {
         logger().error("Will not connect, because of known bad Toggl status: ", err);
-        HTTPSResponse resp;
+        HTTPResponse resp;
         resp.err = err;
         return resp;
     }
@@ -505,7 +511,7 @@ HTTPSResponse TogglClient::request(
         monitor_->DisplaySyncState(kSyncStateWork);
     }
 
-    HTTPSResponse resp = HTTPSClient::request(req);
+    HTTPResponse resp = HTTPClient::request(req);
 
     if (monitor_) {
         monitor_->DisplaySyncState(kSyncStateIdle);

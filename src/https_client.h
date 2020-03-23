@@ -59,9 +59,9 @@ class TOGGL_INTERNAL_EXPORT ServerStatus {
     Logger logger() const;
 };
 
-class TOGGL_INTERNAL_EXPORT HTTPSClientConfig {
+class TOGGL_INTERNAL_EXPORT HTTPClientConfig {
  public:
-    HTTPSClientConfig()
+    HTTPClientConfig()
         : AppName("")
     , AppVersion("")
     , UseProxy(false)
@@ -69,7 +69,7 @@ class TOGGL_INTERNAL_EXPORT HTTPSClientConfig {
     , IgnoreCert(false)
     , CACertPath("")
     , AutodetectProxy(true) {}
-    ~HTTPSClientConfig() {}
+    ~HTTPClientConfig() {}
 
     std::string AppName;
     std::string AppVersion;
@@ -93,9 +93,9 @@ class TOGGL_INTERNAL_EXPORT HTTPSClientConfig {
     }
 };
 
-class TOGGL_INTERNAL_EXPORT HTTPSRequest {
+class TOGGL_INTERNAL_EXPORT HTTPRequest {
  public:
-    HTTPSRequest()
+    HTTPRequest()
         : method("")
     , host("")
     , relative_url("")
@@ -104,7 +104,7 @@ class TOGGL_INTERNAL_EXPORT HTTPSRequest {
     , basic_auth_password("")
     , form(nullptr)
     , timeout_seconds(kHTTPClientTimeoutSeconds) {}
-    virtual ~HTTPSRequest() {}
+    virtual ~HTTPRequest() {}
 
     std::string method;
     std::string host;
@@ -116,44 +116,44 @@ class TOGGL_INTERNAL_EXPORT HTTPSRequest {
     Poco::Int64 timeout_seconds;
 };
 
-class TOGGL_INTERNAL_EXPORT HTTPSResponse {
+class TOGGL_INTERNAL_EXPORT HTTPResponse {
  public:
-    HTTPSResponse()
+    HTTPResponse()
         : body("")
     , err(noError)
     , status_code(0) {}
-    virtual ~HTTPSResponse() {}
+    virtual ~HTTPResponse() {}
 
     std::string body;
     error err;
     Poco::Int64 status_code;
 };
 
-class TOGGL_INTERNAL_EXPORT HTTPSClient {
+class TOGGL_INTERNAL_EXPORT HTTPClient {
  public:
-    HTTPSClient() {}
-    virtual ~HTTPSClient() {}
+    HTTPClient() {}
+    virtual ~HTTPClient() {}
 
-    HTTPSResponse Post(
-        HTTPSRequest req) const;
+    HTTPResponse Post(
+        HTTPRequest req) const;
 
-    HTTPSResponse Get(
-        HTTPSRequest req) const;
+    HTTPResponse Get(
+        HTTPRequest req) const;
 
-    HTTPSResponse GetFile(
-        HTTPSRequest req) const;
+    HTTPResponse GetFile(
+        HTTPRequest req) const;
 
-    HTTPSResponse Delete(
-        HTTPSRequest req) const;
+    HTTPResponse Delete(
+        HTTPRequest req) const;
 
-    HTTPSResponse Put(
-        HTTPSRequest req) const;
+    HTTPResponse Put(
+        HTTPRequest req) const;
 
-    static HTTPSClientConfig Config;
+    static HTTPClientConfig Config;
 
  protected:
-    virtual HTTPSResponse request(
-        HTTPSRequest req) const;
+    virtual HTTPResponse request(
+        HTTPRequest req) const;
 
     virtual Logger logger() const;
 
@@ -165,8 +165,8 @@ class TOGGL_INTERNAL_EXPORT HTTPSClient {
 
     bool isRedirect(const Poco::Int64 status_code) const;
 
-    virtual HTTPSResponse makeHttpRequest(
-        HTTPSRequest req) const;
+    virtual HTTPResponse makeHttpRequest(
+        HTTPRequest req) const;
 
     std::string clientIDForRefererHeader() const;
 };
@@ -178,7 +178,7 @@ class TOGGL_INTERNAL_EXPORT SyncStateMonitor {
     virtual void DisplaySyncState(const Poco::Int64 state) = 0;
 };
 
-class TOGGL_INTERNAL_EXPORT TogglClient : public HTTPSClient {
+class TOGGL_INTERNAL_EXPORT TogglClient : public HTTPClient {
  public:
     explicit TogglClient(SyncStateMonitor *monitor = nullptr)
         : monitor_(monitor) {}
@@ -186,8 +186,8 @@ class TOGGL_INTERNAL_EXPORT TogglClient : public HTTPSClient {
     static ServerStatus TogglStatus;
 
  protected:
-    virtual HTTPSResponse request(
-        HTTPSRequest req) const override;
+    virtual HTTPResponse request(
+        HTTPRequest req) const override;
 
     virtual Logger logger() const override;
 

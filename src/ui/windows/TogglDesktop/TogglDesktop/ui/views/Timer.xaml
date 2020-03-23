@@ -9,6 +9,7 @@
              MinWidth="300"
              Height="{StaticResource TimerHeight}"
              Focusable="True"
+             FocusVisualStyle="{x:Null}"
              Background="{DynamicResource Toggl.CardBackground}">
     <UserControl.Resources>
         <ResourceDictionary>

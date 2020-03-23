@@ -357,6 +357,7 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
         editorPopover.close()
         DesktopLibraryBridge.shared().timelineSetDate(date)
         delegate?.timelineDidChangeDate(date)
+        scrollToVisibleItem()
     }
 
     func datePickerShouldClose(_ sender: DatePickerView) {

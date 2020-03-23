@@ -17,6 +17,7 @@ fi
 
 prepare() {
   # Copy to tmp folder before checkout to gh-pages
+  mkdir -p tmp
   cp dist/update_updates.sh tmp/update_updates.sh
   cp dist/update_release_links.sh tmp/update_release_links.sh
   cp dist/parse_releases.sh tmp/parse_releases.sh

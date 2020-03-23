@@ -239,6 +239,14 @@ namespace TogglDesktop
             }
         }
 
+        private void FocusLast()
+        {
+            if (_days.Any())
+            {
+                FocusDayOrItsLastCell(_days.Length - 1);
+            }
+        }
+
         private void FocusDayOrItsFirstCell(int dayIndex)
         {
             Debug.Assert(dayIndex >= 0);
@@ -344,6 +352,16 @@ namespace TogglDesktop
                     FocusDayOrItsLastCell(FocusedDayIndex - 1);
                 }
             }
+        }
+
+        private void onHighlightFirst(object sender, ExecutedRoutedEventArgs e)
+        {
+            FocusFirst();
+        }
+
+        private void onHighlightLast(object sender, ExecutedRoutedEventArgs e)
+        {
+            FocusLast();
         }
 
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)

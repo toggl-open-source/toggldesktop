@@ -100,8 +100,8 @@ Context::Context(const std::string &app_name, const std::string &app_version)
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
-    HTTPSClient::Config.AppName = app_name;
-    HTTPSClient::Config.AppVersion = app_version;
+    HTTPClient::Config.AppName = app_name;
+    HTTPClient::Config.AppVersion = app_version;
 
     Poco::Crypto::OpenSSLInitializer::initialize();
 
@@ -243,7 +243,7 @@ error Context::StartEvents() {
             }
         }
 
-        if (HTTPSClient::Config.CACertPath.empty()) {
+        if (HTTPClient::Config.CACertPath.empty()) {
             return displayError("Missing CA cert bundle path!");
         }
 
@@ -808,9 +808,9 @@ void Context::updateUI(const UIElements &what) {
             }
             idle_.SetSettings(settings_);
 
-            HTTPSClient::Config.UseProxy = use_proxy;
-            HTTPSClient::Config.ProxySettings = proxy;
-            HTTPSClient::Config.AutodetectProxy = settings_.autodetect_proxy;
+            HTTPClient::Config.UseProxy = use_proxy;
+            HTTPClient::Config.ProxySettings = proxy;
+            HTTPClient::Config.AutodetectProxy = settings_.autodetect_proxy;
         }
 
         if (what.display_unsynced_items && user_) {
@@ -1424,7 +1424,7 @@ error Context::downloadUpdate() {
             return err;
         }
 
-        if (HTTPSClient::Config.AppVersion.empty()) {
+        if (HTTPClient::Config.AppVersion.empty()) {
             return error("This version cannot check for updates. This has been probably already fixed. Please check https://toggl.com/toggl-desktop/ for a newer version.");
         }
 
@@ -1432,12 +1432,12 @@ error Context::downloadUpdate() {
         std::string url("");
         std::string version_number("");
         {
-            HTTPSRequest req;
+            HTTPRequest req;
             req.host = "https://toggl.github.io";
             req.relative_url = "/toggldesktop/assets/updates-link.txt";
 
             TogglClient client;
-            HTTPSResponse resp = client.Get(req);
+            HTTPResponse resp = client.Get(req);
             if (resp.err != noError) {
                 return resp.err;
             }
@@ -1463,7 +1463,7 @@ error Context::downloadUpdate() {
             }
             version_number = versionNumberJsonToken.asString();
 
-            if (lessThanVersion(HTTPSClient::Config.AppVersion, version_number)) {
+            if (lessThanVersion(HTTPClient::Config.AppVersion, version_number)) {
                 logger.debug("Found update ", version_number, " (", url, ")");
             } else {
                 logger.debug("The app is up to date");
@@ -1564,7 +1564,7 @@ error Context::fetchMessage(const bool periodic) {
             return err;
         }
 
-        if (HTTPSClient::Config.AppVersion.empty()) {
+        if (HTTPClient::Config.AppVersion.empty()) {
             return error("AppVersion missing!");
         }
 
@@ -1575,7 +1575,7 @@ error Context::fetchMessage(const bool periodic) {
         std::string url("");
         std::string appversion("");
         {
-            HTTPSRequest req;
+            HTTPRequest req;
             if ("production" != environment_) {
                 // testing location
                 req.host = "https://indrekv.github.io";
@@ -1586,7 +1586,7 @@ error Context::fetchMessage(const bool periodic) {
             }
 
             TogglClient client;
-            HTTPSResponse resp = client.Get(req);
+            HTTPResponse resp = client.Get(req);
             if (resp.err != noError) {
                 return resp.err;
             }
@@ -1624,19 +1624,19 @@ error Context::fetchMessage(const bool periodic) {
             if (!appversion.empty()) {
                 if (type == 0) {
                     // exactly same version as in message
-                    if (appversion.compare(HTTPSClient::Config.AppVersion) != 0) {
+                    if (appversion.compare(HTTPClient::Config.AppVersion) != 0) {
                         return noError;
                     }
 
                 } else if (type == 1) {
                     // we need older version to show message
-                    if (!lessThanVersion(HTTPSClient::Config.AppVersion, appversion)) {
+                    if (!lessThanVersion(HTTPClient::Config.AppVersion, appversion)) {
                         return noError;
                     }
 
                 } else if (type == 2) {
                     // we need newer version to show message
-                    if (lessThanVersion(HTTPSClient::Config.AppVersion, appversion)) {
+                    if (lessThanVersion(HTTPClient::Config.AppVersion, appversion)) {
                         return noError;
                     }
                 }
@@ -1804,7 +1804,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask&) {  // NOLIN
     }
 
     // Not implemented in v9 as of 12.05.2017
-    HTTPSRequest req;
+    HTTPRequest req;
     req.host = urls::TimelineUpload();
     req.relative_url = "/api/v8/timeline_settings";
     req.payload = json;
@@ -1812,7 +1812,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask&) {  // NOLIN
     req.basic_auth_password = "api_token";
 
     TogglClient client(UI());
-    HTTPSResponse resp = client.Post(req);
+    HTTPResponse resp = client.Post(req);
     if (resp.err != noError) {
         displayError(resp.err);
         logger.error(resp.body);
@@ -1868,7 +1868,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask&) {  // NOLINT
     form.setEncoding(Poco::Net::HTMLForm::ENCODING_MULTIPART);
 
     form.set("desktop", "true");
-    form.set("toggl_version", HTTPSClient::Config.AppVersion);
+    form.set("toggl_version", HTTPClient::Config.AppVersion);
     form.set("details", Formatter::EscapeJSONString(feedback_.Details()));
     form.set("subject", Formatter::EscapeJSONString(feedback_.Subject()));
     form.set("date", Formatter::Format8601(time(nullptr)));
@@ -1910,7 +1910,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask&) {  // NOLINT
                      "settings.json"));
 
     // Not implemented in v9 as of 12.05.2017
-    HTTPSRequest req;
+    HTTPRequest req;
     req.host = urls::API();
     req.relative_url ="/api/v8/feedback/web";
     req.basic_auth_username = api_token_value;
@@ -1918,7 +1918,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask&) {  // NOLINT
     req.form = &form;
 
     TogglClient client(UI());
-    HTTPSResponse resp = client.Post(req);
+    HTTPResponse resp = client.Post(req);
     logger.debug("Feedback result: " + resp.err);
     if (resp.err != noError) {
         displayError(resp.err);
@@ -2347,7 +2347,7 @@ void Context::SetEnvironment(const std::string &value) {
     logger.debug("SetEnvironment " + value);
     environment_ = value;
 
-    HTTPSClient::Config.IgnoreCert = ("development" == environment_);
+    HTTPClient::Config.IgnoreCert = ("development" == environment_);
     urls::SetRequestsAllowed("test" != environment_);
 }
 
@@ -4187,7 +4187,7 @@ error Context::OpenReportsInBrowser() {
     }
 
     // Not implemented in v9 as of 12.05.2017
-    HTTPSRequest req;
+    HTTPRequest req;
     req.host = urls::API();
     req.relative_url = "/api/v8/desktop_login_tokens";
     req.payload = "{}";
@@ -4195,7 +4195,7 @@ error Context::OpenReportsInBrowser() {
     req.basic_auth_password = "api_token";
 
     TogglClient client(UI());
-    HTTPSResponse resp = client.Post(req);
+    HTTPResponse resp = client.Post(req);
     if (resp.err != noError) {
         return displayError(resp.err);
     }
@@ -4881,13 +4881,13 @@ void Context::onLoadMore(Poco::Util::TimerTask&) {
         logger.debug("loading more: ", ss.str());
 
         TogglClient client(UI());
-        HTTPSRequest req;
+        HTTPRequest req;
         req.host = urls::API();
         req.relative_url = ss.str();
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPSResponse resp = client.Get(req);
+        HTTPResponse resp = client.Get(req);
         if (resp.err != noError) {
             logger.warning(resp.err);
             return;
@@ -5178,14 +5178,14 @@ error Context::pushClients(
         Json::StyledWriter writer;
         client_json = writer.write(clientJson);
 
-        HTTPSRequest req;
+        HTTPRequest req;
         req.host = urls::API();
         req.relative_url = (*it)->ModelURL();
         req.payload = client_json;
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPSResponse resp = toggl_client.Post(req);
+        HTTPResponse resp = toggl_client.Post(req);
 
         if (resp.err != noError) {
             // if we're able to solve the error
@@ -5235,14 +5235,14 @@ error Context::pushProjects(
         Json::StyledWriter writer;
         project_json = writer.write(projectJson);
 
-        HTTPSRequest req;
+        HTTPRequest req;
         req.host = urls::API();
         req.relative_url = (*it)->ModelURL();
         req.payload = project_json;
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPSResponse resp = toggl_client.Post(req);
+        HTTPResponse resp = toggl_client.Post(req);
 
         if (resp.err != noError) {
             // if we're able to solve the error
@@ -5314,14 +5314,14 @@ error Context::pushEntries(
 
         // std::cout << entry_json;
 
-        HTTPSRequest req;
+        HTTPRequest req;
         req.host = urls::API();
         req.relative_url = (*it)->ModelURL();
         req.payload = entry_json;
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPSResponse resp;
+        HTTPResponse resp;
 
         if ((*it)->NeedsDELETE()) {
             req.payload = "";
@@ -5400,7 +5400,7 @@ error Context::pushEntries(
 
 error Context::pullObmExperiments() {
     try {
-        if (HTTPSClient::Config.OBMExperimentNrs.empty()) {
+        if (HTTPClient::Config.OBMExperimentNrs.empty()) {
             logger.debug("No OBM experiment enabled by UI");
             return noError;
         }
@@ -5417,14 +5417,14 @@ error Context::pullObmExperiments() {
             apitoken = user_->APIToken();
         }
 
-        HTTPSRequest req;
+        HTTPRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/me/experiments";
         req.basic_auth_username = apitoken;
         req.basic_auth_password = "api_token";
 
         TogglClient client(UI());
-        HTTPSResponse resp = client.Get(req);
+        HTTPResponse resp = client.Get(req);
         if (resp.err != noError) {
             return resp.err;
         }
@@ -5457,7 +5457,7 @@ error Context::pullObmExperiments() {
 error Context::pushObmAction() {
     try {
         ObmAction *for_upload = nullptr;
-        HTTPSRequest req;
+        HTTPRequest req;
         req.host = urls::API();
         req.basic_auth_password = "api_token";
 
@@ -5502,7 +5502,7 @@ error Context::pushObmAction() {
         logger.debug(req.payload);
 
         TogglClient toggl_client;
-        HTTPSResponse resp = toggl_client.Post(req);
+        HTTPResponse resp = toggl_client.Post(req);
         if (resp.err != noError) {
             // backend responds 204 on success
             if (resp.status_code != 204) {
@@ -5554,13 +5554,13 @@ error Context::me(
             ss << "&since=" << since;
         }
 
-        HTTPSRequest req;
+        HTTPRequest req;
         req.host = urls::API();
         req.relative_url = ss.str();
         req.basic_auth_username = email;
         req.basic_auth_password = password;
 
-        HTTPSResponse resp = toggl_client->Get(req);
+        HTTPResponse resp = toggl_client->Get(req);
         if (resp.err != noError) {
             return resp.err;
         }
@@ -5618,13 +5618,13 @@ error Context::pullWorkspaces(TogglClient* toggl_client) {
     std::string json("");
 
     try {
-        HTTPSRequest req;
+        HTTPRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/me/workspaces";
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPSResponse resp = toggl_client->Get(req);
+        HTTPResponse resp = toggl_client->Get(req);
         if (resp.err != noError) {
             if (resp.err.find(kForbiddenError) != std::string::npos) {
                 // User has no workspaces
@@ -5706,13 +5706,13 @@ error Context::pullWorkspacePreferences(
            << workspace->ID()
            << "/preferences";
 
-        HTTPSRequest req;
+        HTTPRequest req;
         req.host = urls::API();
         req.relative_url = ss.str();
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPSResponse resp = toggl_client->Get(req);
+        HTTPResponse resp = toggl_client->Get(req);
         if (resp.err != noError) {
             return resp.err;
         }
@@ -5742,13 +5742,13 @@ error Context::pullUserPreferences(
     try {
         std::string json("");
 
-        HTTPSRequest req;
+        HTTPRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/me/preferences/desktop";
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPSResponse resp = toggl_client->Get(req);
+        HTTPResponse resp = toggl_client->Get(req);
         if (resp.err != noError) {
             return resp.err;
         }
@@ -5821,7 +5821,7 @@ error Context::signUpWithProvider(
         Json::Value user;
         user["token"] = access_token;
         user["created_with"] = Formatter::EscapeJSONString(
-            HTTPSClient::Config.UserAgent());
+            HTTPClient::Config.UserAgent());
         user["tos_accepted"] = true;
         user["country_id"] = Json::UInt64(country_id);
         user["provider"] = provider;
@@ -5836,12 +5836,12 @@ error Context::signUpWithProvider(
         std::stringstream ss;
         ss << "/api/v9/signup?app_name=" << TogglClient::Config.AppName;
 
-        HTTPSRequest req;
+        HTTPRequest req;
         req.host = urls::API();
         req.relative_url = ss.str();
         req.payload = Json::StyledWriter().write(user);
 
-        HTTPSResponse resp = toggl_client->Post(req);
+        HTTPResponse resp = toggl_client->Post(req);
         if (resp.err != noError) {
             if (kBadRequestError == resp.err) {
                 return resp.body;
@@ -5890,7 +5890,7 @@ error Context::signup(
         user["email"] = email;
         user["password"] = password;
         user["created_with"] = Formatter::EscapeJSONString(
-            HTTPSClient::Config.UserAgent());
+            HTTPClient::Config.UserAgent());
         user["tos_accepted"] = true;
         user["country_id"] = Json::UInt64(country_id);
 
@@ -5898,12 +5898,12 @@ error Context::signup(
         ws["initial_pricing_plan"] = 0;
         user["workspace"] = ws;
 
-        HTTPSRequest req;
+        HTTPRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/signup";
         req.payload = Json::StyledWriter().write(user);
 
-        HTTPSResponse resp = toggl_client->Post(req);
+        HTTPResponse resp = toggl_client->Post(req);
         if (resp.err != noError) {
             if (kBadRequestError == resp.err) {
                 return resp.body;
@@ -5980,13 +5980,13 @@ error Context::ToSAccept() {
 
     TogglClient toggl_client(UI());
     try {
-        HTTPSRequest req;
+        HTTPRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/me/accept_tos";
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPSResponse resp = toggl_client.Post(req);
+        HTTPResponse resp = toggl_client.Post(req);
         if (resp.err != noError) {
             return displayError(resp.err);
         }
@@ -6023,10 +6023,10 @@ error Context::PullCountries() {
     try {
         TogglClient toggl_client(UI());
 
-        HTTPSRequest req;
+        HTTPRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/countries";
-        HTTPSResponse resp = toggl_client.Get(req);
+        HTTPResponse resp = toggl_client.Get(req);
         if (resp.err != noError) {
             return resp.err;
         }

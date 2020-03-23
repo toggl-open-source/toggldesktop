@@ -876,6 +876,11 @@ namespace TogglDesktop
 
                 this.activeView = activeView;
                 this.activeView.Activate(hadActiveView);
+                if (hadActiveView)
+                {
+                    Action focusWindowAction = this.ShowOnTop;
+                    this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, focusWindowAction);
+                }
             }
 
             this.closeEditPopup();
@@ -904,6 +909,7 @@ namespace TogglDesktop
         {
             this.Loaded -= onMainWindowLoaded;
             this.enableBlurBehindIfSupported();
+            this.ShowOnTop();
         }
 
         private void enableBlurBehindIfSupported()
@@ -912,6 +918,10 @@ namespace TogglDesktop
             if (isBlurBehindSupported)
             {
                 Win32.EnableBlurBehind(this.interopHelper.Handle);
+            }
+            else
+            {
+                this.SetResourceReference(Window.BackgroundProperty, "Toggl.Background");
             }
         }
 
