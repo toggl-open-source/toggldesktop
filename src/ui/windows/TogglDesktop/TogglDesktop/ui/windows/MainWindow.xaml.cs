@@ -46,6 +46,7 @@ namespace TogglDesktop
         private ExperimentManager experimentManager;
         private MiniTimerWindow miniTimer;
         private InAppNotification inAppNotification;
+        private NotificationManager notificationManager;
 
         private IMainView activeView;
         private bool closing;
@@ -115,9 +116,7 @@ namespace TogglDesktop
 
         private void initializeCustomNotifications()
         {
-            new AutotrackerNotification(this.taskbarIcon, this);
-            new PomodoroNotification(this.taskbarIcon, this);
-            new ReminderNotification(this.taskbarIcon, this);
+            this.notificationManager = new NotificationManager(this.taskbarIcon, this);
         }
 
         private void initializeContextMenu()
