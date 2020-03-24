@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Control = System.Windows.Controls.Control;
 using Panel = System.Windows.Controls.Panel;
 using TextBoxBase = System.Windows.Controls.Primitives.TextBoxBase;
@@ -21,6 +22,7 @@ static class UIExtensions
 
         return true;
     }
+
     #region overloads
 
     public static bool TryBeginInvoke<T0>(this Control control, Action<T0> action, T0 p0)
