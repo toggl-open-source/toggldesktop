@@ -8,19 +8,19 @@
 #include <string>
 #include <vector>
 
-#include "autotracker.h"
-#include "client.h"
+#include "model/autotracker.h"
+#include "model/client.h"
+#include "model/obm_action.h"
+#include "model/project.h"
+#include "model/settings.h"
+#include "model/tag.h"
+#include "model/task.h"
+#include "model/time_entry.h"
+#include "model/user.h"
+#include "model/workspace.h"
 #include "const.h"
 #include "migrations.h"
-#include "obm_action.h"
-#include "project.h"
 #include "proxy.h"
-#include "settings.h"
-#include "tag.h"
-#include "task.h"
-#include "time_entry.h"
-#include "user.h"
-#include "workspace.h"
 
 #include <Poco/Data/Binding.h>
 #include <Poco/Data/RecordSet.h>

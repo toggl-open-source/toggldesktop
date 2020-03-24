@@ -5,9 +5,9 @@
 #include <sstream>
 #include <string>
 
-#include "formatter.h"
 #include "https_client.h"
 #include "urls.h"
+#include "util/formatter.h"
 
 #include <Poco/Foundation.h>
 #include <Poco/Thread.h>

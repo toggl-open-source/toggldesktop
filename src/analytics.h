@@ -8,9 +8,10 @@
 #include <Poco/Task.h>
 #include <Poco/TaskManager.h>
 #include <Poco/LocalDateTime.h>
+
 #include "proxy.h"
-#include "settings.h"
-#include "rectangle.h"
+#include "util/rectangle.h"
+#include "model/settings.h"
 
 namespace toggl {
 

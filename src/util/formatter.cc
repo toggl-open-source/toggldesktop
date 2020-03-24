@@ -7,13 +7,13 @@
 #include <cctype>
 #include <set>
 
-#include "client.h"
 #include "gui.h"
-#include "project.h"
-#include "task.h"
-#include "time_entry.h"
-#include "workspace.h"
 #include "util/logger.h"
+#include "model/client.h"
+#include "model/project.h"
+#include "model/task.h"
+#include "model/time_entry.h"
+#include "model/workspace.h"
 
 #include <Poco/DateTimeFormat.h>
 #include <Poco/DateTimeFormatter.h>

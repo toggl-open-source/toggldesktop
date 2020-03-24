@@ -9,7 +9,7 @@
 #include <Poco/NumberParser.h>
 #include <Poco/UTF8String.h>
 
-#include "formatter.h"
+#include "util/formatter.h"
 
 namespace toggl {
 

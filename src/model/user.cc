@@ -8,7 +8,6 @@
 
 #include "client.h"
 #include "const.h"
-#include "formatter.h"
 #include "https_client.h"
 #include "obm_action.h"
 #include "project.h"
@@ -17,6 +16,7 @@
 #include "time_entry.h"
 #include "timeline_event.h"
 #include "urls.h"
+#include "util/formatter.h"
 
 #include <Poco/Base64Decoder.h>
 #include <Poco/Base64Encoder.h>

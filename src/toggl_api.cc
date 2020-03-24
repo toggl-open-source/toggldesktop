@@ -9,21 +9,21 @@
 
 #include "toggl_api_lua.h"
 
-#include "client.h"
 #include "const.h"
 #include "context.h"
-#include "custom_error_handler.h"
 #include "feedback.h"
-#include "formatter.h"
 #include "https_client.h"
-#include "project.h"
 #include "proxy.h"
-#include "time_entry.h"
 #include "timeline_uploader.h"
 #include "toggl_api_private.h"
-#include "user.h"
 #include "websocket_client.h"
 #include "window_change_recorder.h"
+#include "util/custom_error_handler.h"
+#include "util/formatter.h"
+#include "model/client.h"
+#include "model/project.h"
+#include "model/time_entry.h"
+#include "model/user.h"
 
 #include <Poco/Bugcheck.h>
 #include <Poco/Path.h>

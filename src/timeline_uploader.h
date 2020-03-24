@@ -6,12 +6,12 @@
 #include <string>
 #include <vector>
 
-#include "timeline_event.h"
+#include <Poco/Activity.h>
+
 #include "timeline_notifications.h"
 #include "types.h"
 #include "util/logger.h"
-
-#include <Poco/Activity.h>
+#include "model/timeline_event.h"
 
 namespace toggl {
 

@@ -24,8 +24,8 @@
 #include "const.h"
 #include "https_client.h"
 #include "netconf.h"
-#include "random.h"
 #include "urls.h"
+#include "util/random.h"
 
 namespace toggl {
 
