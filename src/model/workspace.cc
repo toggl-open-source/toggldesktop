@@ -86,7 +86,7 @@ void Workspace::LoadSettingsFromJson(Json::Value n) {
 }
 
 std::string Workspace::ModelName() const {
-    return kModelWorkspace;
+    return modelName;
 }
 
 std::string Workspace::ModelURL() const {

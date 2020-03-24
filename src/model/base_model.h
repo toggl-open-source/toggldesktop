@@ -42,8 +42,8 @@ struct BaseModelQuery {
 
     struct Binding {
         enum Type {
-            REQUIRED = 0,
-            OPTIONAL
+            OPTIONAL = 0,
+            REQUIRED
         };
         std::string column;
         db_load_t load;
@@ -69,6 +69,12 @@ struct BaseModelQuery {
 
     size_t ColumnCount() const {
         return columns_.size();
+    }
+
+    size_t Offset() const {
+        if (parent_)
+            return parent_->ColumnCount();
+        return 0;
     }
 
     /**
@@ -100,7 +106,7 @@ struct BaseModelQuery {
             column,
             [ptr, required](void *that, Poco::Data::RecordSet &rs, size_t index) {
                 auto actuallyThat = reinterpret_cast<Class*>(that);
-                if (!rs[index].isEmpty() || required) {
+                if (!rs[index].isEmpty() || required == Binding::Type::REQUIRED) {
                     (actuallyThat->*ptr) = rs[index].convert<Value>();
                     return true;
                 }
@@ -287,6 +293,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     bool unsynced_ { false };
 
  protected:
+    std::string modelName {};
     // has to be at the end to "know" about the location of all members
     inline static const Query query {
         Query::Table(),

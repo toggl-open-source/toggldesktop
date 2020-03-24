@@ -1107,7 +1107,7 @@ error Database::LoadUserByEmail(
 }
 
 error Database::loadUsersRelatedData(locked<User> &user) {
-    error err = loadWorkspaces(user->ID(), user->GetRelatedData()->Workspaces);
+    error err = loadModels(user->ID(), user->GetRelatedData()->Workspaces);
     if (err != noError) {
         return err;
     }
@@ -1257,62 +1257,6 @@ error Database::LoadUserByID(
     logger.debug("User loaded in ", stopwatch.elapsed() / 1000, " ms");
 
     return noError;
-}
-
-error Database::loadWorkspaces(const Poco::UInt64 &UID,
-    ProtectedContainer<Workspace> &list) {
-
-    if (!UID) {
-        return error("Cannot load user workspaces without an user ID");
-    }
-
-    try {
-        list.clear();
-
-        Poco::Mutex::ScopedLock lock(session_m_);
-
-        Poco::Data::Statement select(*session_);
-        select <<
-               "SELECT local_id, id, uid, name, premium, "
-               "only_admins_may_create_projects, admin, "
-               "projects_billable_by_default, "
-               "is_business, locked_time "
-               "FROM workspaces "
-               "WHERE uid = :uid "
-               "ORDER BY name",
-               useRef(UID);
-        error err = last_error("loadWorkspaces");
-        if (err != noError) {
-            return err;
-        }
-        Poco::Data::RecordSet rs(select);
-        while (!select.done()) {
-            select.execute();
-            bool more = rs.moveFirst();
-            while (more) {
-                auto model = list.create();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
-                model->SetID(rs[1].convert<Poco::UInt64>());
-                model->SetUID(rs[2].convert<Poco::UInt64>());
-                model->SetName(rs[3].convert<std::string>());
-                model->SetPremium(rs[4].convert<bool>());
-                model->SetOnlyAdminsMayCreateProjects(rs[5].convert<bool>());
-                model->SetAdmin(rs[6].convert<bool>());
-                model->SetProjectsBillableByDefault(rs[7].convert<bool>());
-                model->SetBusiness(rs[8].convert<bool>());
-                model->SetLockedTime(rs[9].convert<time_t>());
-                model->ClearDirty();
-                more = rs.moveNext();
-            }
-        }
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string & ex) {
-        return ex;
-    }
-    return last_error("loadWorkspaces");
 }
 
 error Database::loadClients(const Poco::UInt64 &UID,
@@ -3999,6 +3943,44 @@ error Database::saveModel(
         return ex;
     }
     return noError;
+}
+
+template<typename T>
+error Database::loadModels(const Poco::UInt64 &UID, ProtectedContainer<T> &list) {
+    if (!UID) {
+        return error("Cannot load user workspaces without an user ID");
+    }
+
+    try {
+        list.clear();
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        Poco::Data::Statement select(*session_);
+        select << list.GetSelect("uid"),
+               useRef(UID);
+        error err = last_error("load_" + list.ModelName());
+        if (err != noError) {
+            return err;
+        }
+        Poco::Data::RecordSet rs(select);
+        while (!select.done()) {
+            select.execute();
+            bool more = rs.moveFirst();
+            while (more) {
+                auto model = list.create(rs);
+                model->ClearDirty();
+                more = rs.moveNext();
+            }
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string & ex) {
+        return ex;
+    }
+    return last_error("loadWorkspaces");
 }
 
 }   // namespace toggl

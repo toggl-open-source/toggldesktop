@@ -287,9 +287,10 @@ class TOGGL_INTERNAL_EXPORT Database {
 
     error loadUsersRelatedData(locked<User> &user);
 
-    error loadWorkspaces(
+    template <typename T>
+    error loadModels(
         const Poco::UInt64 &UID,
-        ProtectedContainer<Workspace> &list);
+        ProtectedContainer<T> &list);
 
     error loadClients(
         const Poco::UInt64 &UID,

@@ -93,6 +93,16 @@ public:
      */
     const RelatedData *GetRelatedData() const;
 
+    template <typename T>
+    std::string GetSelect(const std::string &by) const {
+        return T::query.ToSelect(by);
+    }
+
+    template <typename T>
+    std::string ModelName() const {
+        return T::modelName;
+    }
+
     // TODO figure out if it's possible to do without void*
     virtual bool shift(void *item) { return false; }
 
@@ -251,6 +261,14 @@ public:
     const_iterator cend() const;
 
     iterator erase(iterator it);
+
+    std::string GetSelect(const std::string &by) const {
+        return ProtectedBase::GetSelect<T>(by);
+    }
+
+    std::string ModelName() const {
+        return ProtectedBase::ModelName<T>();
+    }
 
     /**
      * @brief clear - Clear the @ref container_

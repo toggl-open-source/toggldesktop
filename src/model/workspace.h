@@ -15,6 +15,14 @@ class TOGGL_INTERNAL_EXPORT Workspace : public BaseModel {
     Workspace(ProtectedBase *container)
         : BaseModel(container)
     {}
+    Workspace(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : BaseModel(container, rs)
+    {
+        for (size_t i = 0; i < query.ColumnCount(); i++) {
+            bool result = query.columns_[i].load(this, rs, query.Offset() + i);
+        }
+        ClearDirty();
+    }
 public:
    friend class ProtectedBase;
 
@@ -69,6 +77,23 @@ public:
     bool admin_ { false };
     bool projects_billable_by_default_ { false };
     bool business_ { false };
+
+    inline static const std::string modelName { kModelWorkspace };
+    inline static const Query query {
+        Query::Table{"workspaces"},
+        Query::Columns{
+            Query::Bind("name", &Workspace::name_, Query::Binding::REQUIRED),
+            Query::Bind("premium", &Workspace::premium_, Query::Binding::REQUIRED),
+            Query::Bind("only_admins_may_create_projects", &Workspace::only_admins_may_create_projects_, Query::Binding::REQUIRED),
+            Query::Bind("admin", &Workspace::admin_, Query::Binding::REQUIRED),
+            Query::Bind("projects_billable_by_default", &Workspace::projects_billable_by_default_, Query::Binding::REQUIRED),
+            Query::Bind("is_business", &Workspace::business_, Query::Binding::REQUIRED),
+            Query::Bind("locked_time", &Workspace::locked_time_, Query::Binding::REQUIRED),
+        },
+        Query::Join{},
+        Query::OrderBy{"name"},
+        &BaseModel::query
+    };
 };
 
 }  // namespace toggl
