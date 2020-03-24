@@ -282,4 +282,39 @@ void BaseModel::SetUnsynced() {
     unsynced_ = true;
 }
 
+std::string BaseModelQuery::ToSelect(const std::string &where) const {
+    std::ostringstream ss;
+    /*
+         * columns
+         */
+    ss << "SELECT ";
+    bool firstColumn = true;
+    if (parent_)
+        printColumns(ss, firstColumn, parent_->columns_);
+    printColumns(ss, firstColumn, columns_);
+    /*
+         * table name
+         */
+    ss << " FROM " << table_;
+    /*
+         * join (optional)
+         */
+    for (auto i : join_)
+        ss << " " <<  i;
+    /*
+         * condition (actual value supplied outside as a reference)
+         */
+    ss << " WHERE " << table_ << "." << where << " = :" << where;
+    /*
+         * order (optional)
+         */
+    if (!order_.empty()) {
+        bool firstOrder = true; // disney ruined star wars :(
+        ss << " ORDER BY ";
+        printColumns(ss, firstOrder, order_);
+    }
+    ss << ";";
+    return ss.str();
+}
+
 }   // namespace toggl

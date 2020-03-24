@@ -17,14 +17,102 @@
 #include "https_client.h"
 
 #include <Poco/Types.h>
+#include <Poco/Data/RecordSet.h>
 
 namespace toggl {
 
 class ProtectedBase;
 class BatchUpdateResult;
 
+/**
+ * @brief The BaseModelQuery struct
+ * Use to determine how to retrieve data from the database. Each BaseModel class should implement this and
+ * reference BaseModel::query as the @ref parent_ pointer.
+ *
+ * Only the @ref columns_ list will be prepended to the implementation.
+ * That means, if you do this:
+ *   In BaseModel: Query { "", { "base1", "base2"}, ...
+ *   In Client: { "clients", { "client1", "client2" }, ...
+ * Then Client query will work with the "clients" table and look for columns "base1", "base2", "client1", "client2" (in this order).
+ * This is to have things like ID, Local ID and GUID in the base class for all models here in one place
+ * and to not have to handle their serialization in all child classes separately.
+ */
+struct BaseModelQuery {
+    typedef std::function<bool(void *that, Poco::Data::RecordSet &rs, size_t index)> db_load_t;
+
+    struct Binding {
+        enum Type {
+            REQUIRED = 0,
+            OPTIONAL
+        };
+        std::string column;
+        db_load_t load;
+    };
+
+    typedef std::vector<std::string> Join;
+    typedef std::string Table;
+    typedef std::vector<Binding> Columns;
+    typedef std::vector<std::string> OrderBy;
+
+    Table table_ {};
+    Columns columns_ {};
+    Join join_ {};
+    OrderBy order_ {};
+    const BaseModelQuery *parent_ { nullptr };
+
+    /**
+     * @brief ToSelect
+     * @param where - which column will be supplied outside as the WHERE condition
+     * @return string with the completed SELECT query
+     */
+    std::string ToSelect(const std::string &where = "uid") const;
+
+    size_t ColumnCount() const {
+        return columns_.size();
+    }
+
+    /**
+     * @brief column helper method to retrieve column name from aggregate types (like @ref Binding)
+     * @param item
+     * @return column name of the item
+     */
+    static const std::string &column(const std::string &item) { return item; }
+    static const std::string &column(const Binding &item) { return item.column; }
+    /**
+     * @brief writes a list of columns to @ref ss
+     * Handles case when there's multiple tables and prepends "main" table name to columns without a dot
+     */
+    template <typename T>
+    void printColumns(std::ostringstream &ss, bool &first, T &list) const {
+        for (auto i : list) {
+            if (!first)
+                ss << ", ";
+            first = false;
+            if (!join_.empty() && column(i).find(".") == std::string::npos)
+                ss << table_ << ".";
+            ss << column(i);
+        }
+    };
+
+    template <typename Value, typename Class>
+    static Binding Bind(const std::string &column, Value Class::*ptr, Binding::Type required) {
+        return {
+            column,
+            [ptr, required](void *that, Poco::Data::RecordSet &rs, size_t index) {
+                auto actuallyThat = reinterpret_cast<Class*>(that);
+                if (!rs[index].isEmpty() || required) {
+                    (actuallyThat->*ptr) = rs[index].convert<Value>();
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+};
+
 class TOGGL_INTERNAL_EXPORT BaseModel {
- public:
+ protected:
+    using Query = BaseModelQuery;
     BaseModel(ProtectedBase *container)
         : container_(container)
     , local_id_(0)
@@ -39,7 +127,18 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     , validation_error_("")
     , unsynced_(false) {}
 
+    BaseModel(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : container_(container)
+    {
+        for (size_t i = 0; i < query.ColumnCount(); i++) {
+            bool result = query.columns_[i].load(this, rs, i);
+        }
+        ClearDirty();
+    }
+
+
     virtual ~BaseModel() {}
+ public:
 
     ProtectedBase *GetContainer();
     const ProtectedBase *GetContainer() const;
@@ -195,6 +294,19 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     // pushed to backend. It only means that some
     // attempt to push failed somewhere.
     bool unsynced_;
+
+    inline static const Query query {
+        Query::Table(),
+        Query::Columns({
+            Query::Bind("local_id", &BaseModel::local_id_, Query::Binding::REQUIRED),
+            Query::Bind("id", &BaseModel::id_, Query::Binding::OPTIONAL),
+            Query::Bind("uid", &BaseModel::uid_, Query::Binding::REQUIRED),
+            Query::Bind("guid", &BaseModel::guid_, Query::Binding::OPTIONAL)
+        }),
+        Query::Join(),
+        Query::OrderBy(),
+        nullptr
+    };
 };
 
 }  // namespace toggl

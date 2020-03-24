@@ -17,7 +17,7 @@ target_link_libraries(TogglApiTest PRIVATE
     TogglDesktopLibrary
     ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
-    PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation
+    PocoData PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation PocoData
     gtest_main gtest
     X11
 )
@@ -31,7 +31,7 @@ target_link_libraries(TogglAppTest PRIVATE
     TogglDesktopLibrary
     ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
-    PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation
+    PocoData PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation PocoData
     gtest_main gtest
     X11
 )
@@ -45,7 +45,7 @@ target_link_libraries(TogglMemoryTest PRIVATE
     TogglDesktopLibrary
     ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
-    PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation
+    PocoData PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation
     gtest_main gtest
     X11
 )
