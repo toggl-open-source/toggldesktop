@@ -16,9 +16,7 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT ObmAction : public BaseModel {
     ObmAction(ProtectedBase *container)
         : BaseModel(container)
-    , experiment_id_(0)
-    , key_("")
-    , value_("") {}
+    {}
  public:
     friend class ProtectedBase;
 
@@ -44,18 +42,15 @@ class TOGGL_INTERNAL_EXPORT ObmAction : public BaseModel {
     Json::Value SaveToJSON() const override;
 
  private:
-    Poco::UInt64 experiment_id_;
-    std::string key_;
-    std::string value_;
+    Poco::UInt64 experiment_id_ { 0 };
+    std::string key_ { "" };
+    std::string value_ { "" };
 };
 
 class TOGGL_INTERNAL_EXPORT ObmExperiment : public BaseModel {
     ObmExperiment(ProtectedBase *container)
         : BaseModel(container)
-    , included_(false)
-    , nr_(0)
-    , has_seen_(false)
-    , actions_("") {}
+    {}
  public:
    friend class ProtectedBase;
 
@@ -85,10 +80,10 @@ class TOGGL_INTERNAL_EXPORT ObmExperiment : public BaseModel {
     std::string ModelURL() const override;
 
  private:
-    bool included_;
-    Poco::UInt64 nr_;
-    bool has_seen_;
-    std::string actions_;
+    bool included_ { false };
+    Poco::UInt64 nr_ { 0 };
+    bool has_seen_ { false };
+    std::string actions_ { "" };
 };
 
 }  // namespace toggl

@@ -18,14 +18,7 @@ public:
     // public because instances get created all over the place
     TimelineEvent(ProtectedBase *container)
         : BaseModel(container)
-    , title_("")
-    , filename_("")
-    , start_time_(0)
-    , end_time_(0)
-    , duration_(0)
-    , idle_(false)
-    , chunked_(false)
-    , uploaded_(false) {}
+    {}
 
     virtual ~TimelineEvent() {}
 
@@ -80,14 +73,14 @@ public:
     Json::Value SaveToJSON() const override;
 
  private:
-    std::string title_;
-    std::string filename_;
-    Poco::Int64 start_time_;
-    Poco::Int64 end_time_;
-    Poco::Int64 duration_;
-    bool idle_;
-    bool chunked_;
-    bool uploaded_;
+    std::string title_ { "" };
+    std::string filename_ { "" };
+    Poco::Int64 start_time_ { 0 };
+    Poco::Int64 end_time_ { 0 };
+    Poco::Int64 duration_ { 0 };
+    bool idle_ { false };
+    bool chunked_ { false };
+    bool uploaded_ { false };
 
     void updateDuration();
 };

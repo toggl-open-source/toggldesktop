@@ -17,19 +17,7 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     TimeEntry(ProtectedBase *container)
         : BaseModel(container)
-    , wid_(0)
-    , pid_(0)
-    , tid_(0)
-    , billable_(false)
-    , start_(0)
-    , stop_(0)
-    , duration_in_seconds_(0)
-    , description_("")
-    , duronly_(false)
-    , created_with_("")
-    , project_guid_("")
-    , unsynced_(false)
-    , last_start_at_(0) {}
+    {}
  public:
     friend class ProtectedBase;
 
@@ -145,19 +133,19 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     const std::string GroupHash() const;
 
  private:
-    Poco::UInt64 wid_;
-    Poco::UInt64 pid_;
-    Poco::UInt64 tid_;
-    bool billable_;
-    Poco::Int64 start_;
-    Poco::Int64 stop_;
-    Poco::Int64 duration_in_seconds_;
-    std::string description_;
-    bool duronly_;
-    std::string created_with_;
-    std::string project_guid_;
-    bool unsynced_;
-    Poco::Int64 last_start_at_;
+    std::string description_ { "" };
+    std::string created_with_ { "" };
+    std::string project_guid_ { "" };
+    Poco::UInt64 wid_ { 0 };
+    Poco::UInt64 pid_ { 0 };
+    Poco::UInt64 tid_ { 0 };
+    Poco::Int64 start_ { 0 };
+    Poco::Int64 stop_ { 0 };
+    Poco::Int64 duration_in_seconds_ { 0 };
+    Poco::Int64 last_start_at_ { 0 };
+    bool billable_ { false };
+    bool duronly_ { false };
+    bool unsynced_ { false };
 
     bool setDurationStringHHMMSS(const std::string &value);
     bool setDurationStringHHMM(const std::string &value);

@@ -17,9 +17,7 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
     AutotrackerRule(ProtectedBase *container)
         : BaseModel(container)
-    , term_("")
-    , pid_(0)
-    , tid_(0) {}
+    {}
  public:
     friend class ProtectedBase;
 
@@ -42,9 +40,9 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
     std::string ModelURL() const override;
 
  private:
-    std::string term_;
-    Poco::UInt64 pid_;
-    Poco::UInt64 tid_;
+    std::string term_ { "" };
+    Poco::UInt64 pid_ { 0 };
+    Poco::UInt64 tid_ { 0 };
 };
 
 };  // namespace toggl

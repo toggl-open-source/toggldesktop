@@ -115,17 +115,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     using Query = BaseModelQuery;
     BaseModel(ProtectedBase *container)
         : container_(container)
-    , local_id_(0)
-    , id_(0)
-    , guid_("")
-    , ui_modified_at_(0)
-    , uid_(0)
-    , dirty_(false)
-    , deleted_at_(0)
-    , is_marked_as_deleted_on_server_(false)
-    , updated_at_(0)
-    , validation_error_("")
-    , unsynced_(false) {}
+    {}
 
     BaseModel(ProtectedBase *container, Poco::Data::RecordSet &rs)
         : container_(container)
@@ -272,29 +262,32 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     std::string batchUpdateRelativeURL() const;
     std::string batchUpdateMethod() const;
 
-    ProtectedBase *container_;
+    ProtectedBase *container_ { nullptr };
 
-    Poco::Int64 local_id_;
-    Poco::UInt64 id_;
-    guid guid_;
-    Poco::Int64 ui_modified_at_;
-    Poco::UInt64 uid_;
-    bool dirty_;
-    Poco::Int64 deleted_at_;
-    bool is_marked_as_deleted_on_server_;
-    Poco::Int64 updated_at_;
+    Poco::Int64 local_id_ { 0 };
+    Poco::UInt64 id_ { 0 };
+    Poco::Int64 ui_modified_at_ { 0 };
+    Poco::UInt64 uid_ { 0 };
+    Poco::Int64 deleted_at_ { 0 };
+    Poco::Int64 updated_at_ { 0 };
+    guid guid_ { "" };
 
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.
-    std::string validation_error_;
+    std::string validation_error_ { "" };
+
+    bool dirty_ { false };
+    bool is_marked_as_deleted_on_server_ { false };
 
     // Flag is set only when sync fails.
     // Its for viewing purposes only. It should not
     // be used to check if a model needs to be
     // pushed to backend. It only means that some
     // attempt to push failed somewhere.
-    bool unsynced_;
+    bool unsynced_ { false };
 
+ protected:
+    // has to be at the end to "know" about the location of all members
     inline static const Query query {
         Query::Table(),
         Query::Columns({

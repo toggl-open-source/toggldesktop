@@ -18,8 +18,7 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT Client : public BaseModel {
     Client(ProtectedBase *container)
         : BaseModel(container)
-    , wid_(0)
-    , name_("") {}
+    {}
  public:
     friend class ProtectedBase;
 
@@ -43,8 +42,8 @@ class TOGGL_INTERNAL_EXPORT Client : public BaseModel {
     bool ResourceCannotBeCreated(const toggl::error &err) const override;
 
  private:
-    Poco::UInt64 wid_;
-    std::string name_;
+    Poco::UInt64 wid_ { 0 };
+    std::string name_ { "" };
 
     static bool nameHasAlreadyBeenTaken(const error &err);
 };
