@@ -316,8 +316,21 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string &access_token,
         const uint64_t country_id);
 
+    error AppleSignup(
+        const std::string &access_token,
+        const uint64_t country_id,
+        const std::string full_name);
+
+    error AsyncApleSignup(
+        const std::string &access_token,
+        const uint64_t country_id,
+        const std::string full_name);
+
     error GoogleLogin(const std::string &access_token);
     error AsyncGoogleLogin(const std::string &access_token);
+
+    error AppleLogin(const std::string &access_token);
+    error AsyncAppleLogin(const std::string &access_token);
 
     error Logout();
 
@@ -675,6 +688,20 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string &access_token,
         std::string *user_data_json,
         const uint64_t country_id);
+    error signupApple(
+        TogglClient *toggl_client,
+        const std::string &access_token,
+        std::string *user_data_json,
+        const std::string &full_name,
+        const uint64_t country_id);
+    error signUpWithProvider(
+        TogglClient *toggl_client,
+        const std::string &access_token,
+        std::string *user_data_json,
+        const uint64_t country_id,
+        const std::string &full_name,
+        const std::string provider);
+
     static error me(TogglClient *https_client,
                     const std::string &email,
                     const std::string &password,

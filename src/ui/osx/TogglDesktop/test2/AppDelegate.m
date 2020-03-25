@@ -40,10 +40,6 @@
 #import <Sparkle/Sparkle.h>
 #endif
 
-#ifndef APP_STORE
-#import "TouchBar+PrivateAPIs.h"
-#endif
-
 @interface AppDelegate ()
 @property (nonatomic, strong) MainWindowController *mainWindowController;
 @property (nonatomic, strong) PreferencesWindowController *preferencesWindowController;
@@ -217,6 +213,10 @@ void *ctx;
 											 selector:@selector(startUpdateIconTooltip:)
 												 name:kUpdateIconTooltip
 											   object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(invalidAppleUserCrendentialNotification:)
+                                                 name:kInvalidAppleUserCrendential
+                                               object:nil];
 
 	if (@available(macOS 10.14, *))
 	{
@@ -304,6 +304,13 @@ void *ctx;
 
 	// Setup Google Service Callback
 	[self registerGoogleEventHandler];
+
+    // Validate the apple user
+    #ifdef APP_STORE
+    if (@available(macOS 10.15, *)) {
+        [[AppleAuthenticationService shared] validateCredentialState];
+    }
+    #endif
 }
 
 - (void)systemWillPowerOff:(NSNotification *)aNotification
@@ -1036,6 +1043,13 @@ void *ctx;
 
 - (IBAction)onLogoutMenuItem:(id)sender
 {
+    // Reset the apple state
+    #ifdef APP_STORE
+    if (@available(macOS 10.15, *)) {
+        [[AppleAuthenticationService shared] reset];
+    }
+    #endif
+
 	// Reset the sign up state for the Empty View
 	// Because the Time Entry list present last 9 weeks, so it's no way to know that it's new user or old user
 	[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUserHasBeenSignup];
@@ -1762,42 +1776,6 @@ void on_countries(TogglCountryView *first)
         self.mainWindowController.touchBar = nil;
     }
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kTouchBarSettingChanged object:@(settings.showTouchBar)];
-
-#ifndef APP_STORE
-	if (@available(macOS 10.12.2, *))
-	{
-		// Show/Hide
-		if (settings.showTouchBar)
-		{
-			if (self.isAddedTouchBar)
-			{
-				return;
-			}
-
-			// Init if needd
-			if (!self.touchItem)
-			{
-				self.touchItem = [GlobalTouchbarButton makeDefault];
-			}
-
-			DFRSystemModalShowsCloseBoxWhenFrontMost(YES);
-			self.isAddedTouchBar = YES;
-			[NSTouchBarItem addSystemTrayItem:self.touchItem];
-			DFRElementSetControlStripPresenceForIdentifier([GlobalTouchbarButton ID], YES);
-		}
-		else
-		{
-			if (!self.isAddedTouchBar)
-			{
-				return;
-			}
-
-			self.isAddedTouchBar = NO;
-			[NSTouchBarItem removeSystemTrayItem:self.touchItem];
-			DFRElementSetControlStripPresenceForIdentifier([GlobalTouchbarButton ID], NO);
-		}
-	}
-#endif
 }
 
 #pragma mark - In app message
@@ -1813,5 +1791,12 @@ void on_display_message(const char *title,
                                                       urlAction:[NSString stringWithUTF8String:url]];
     [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kStartDisplayInAppMessage object:message];
 
+}
+
+- (void) invalidAppleUserCrendentialNotification:(NSNotification *) noti
+{
+    [self onLogoutMenuItem:self];
+    [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+                                                                object:@"Invalid Apple session. Please try login again."];
 }
 @end

@@ -118,4 +118,8 @@
 #define kAutocompleteItemProject 2
 #define kAutocompleteItemWorkspace 3
 
+#define kTogglDesktopClientID_MacOS "toggldesktop.TogglDesktop"
+#define kAPIV8 "v8"
+#define kAPIV9 "v9"
+
 #endif  // SRC_CONST_H_

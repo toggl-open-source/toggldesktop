@@ -464,6 +464,30 @@ bool_t toggl_google_signup_async(
             country_id);
 }
 
+bool_t toggl_apple_signup(
+    void *context,
+    const char_t *access_token,
+    const uint64_t country_id,
+    const char_t *full_name) {
+    std::string name("");
+    if (full_name) {
+        name = to_string(full_name);
+    }
+    return toggl::noError == app(context)->AppleSignup(to_string(access_token), country_id, name);
+}
+
+bool_t toggl_apple_signup_async(
+    void *context,
+    const char_t *access_token,
+    const uint64_t country_id,
+    const char_t *full_name) {
+    std::string name("");
+    if (full_name) {
+        name = to_string(full_name);
+    }
+    return toggl::noError == app(context)->AsyncApleSignup(to_string(access_token), country_id, name);
+}
+
 bool_t toggl_google_login(
     void *context,
     const char_t *access_token) {
@@ -474,6 +498,18 @@ bool_t toggl_google_login_async(
     void *context,
     const char_t *access_token) {
     return toggl::noError == app(context)->AsyncGoogleLogin(to_string(access_token));
+}
+
+bool_t toggl_apple_login(
+    void *context,
+    const char_t *access_token) {
+    return toggl::noError == app(context)->AppleLogin(to_string(access_token));
+}
+
+bool_t toggl_apple_login_async(
+    void *context,
+    const char_t *access_token) {
+    return toggl::noError == app(context)->AsyncAppleLogin(to_string(access_token));
 }
 
 bool_t toggl_logout(
@@ -654,19 +690,19 @@ char_t *toggl_start(
 }
 
 char_t *toggl_create_empty_time_entry(
-                                      void *context,
-                                      const uint64_t started,
-                                      const uint64_t ended) {
+    void *context,
+    const uint64_t started,
+    const uint64_t ended) {
     toggl::TimeEntry *te = app(context)->Start("",
-                                               "",
-                                               0,
-                                               0,
-                                               "",
-                                               "",
-                                               false,
-                                               started,
-                                               ended,
-                                               false);
+                           "",
+                           0,
+                           0,
+                           "",
+                           "",
+                           false,
+                           started,
+                           ended,
+                           false);
     if (te) {
         return copy_string(te->GUID());
     }

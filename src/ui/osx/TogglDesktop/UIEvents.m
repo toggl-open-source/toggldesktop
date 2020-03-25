@@ -65,3 +65,4 @@ const char *kFocusedFieldNameProject = "project";
 const char *kFocusedFieldNameTag = "tag";
 
 NSString *const kStartButtonStateChange = @"kStartButtonStateChange";
+NSString *const kInvalidAppleUserCrendential = @"kInvalidAppleUserCrendential";

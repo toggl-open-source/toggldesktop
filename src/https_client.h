@@ -17,9 +17,9 @@
 #include <Poco/Timestamp.h>
 
 namespace Poco {
-    namespace Net {
-        class HTMLForm;
-    } // namespace Poco::Net
+namespace Net {
+class HTMLForm;
+} // namespace Poco::Net
 } // namespace Poco
 
 namespace toggl {
@@ -167,6 +167,8 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
 
     virtual HTTPResponse makeHttpRequest(
         HTTPRequest req) const;
+
+    std::string clientIDForRefererHeader() const;
 };
 
 class TOGGL_INTERNAL_EXPORT SyncStateMonitor {

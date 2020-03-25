@@ -337,6 +337,12 @@ HTTPResponse HTTPClient::makeHttpRequest(
                                         Poco::Net::HTTPMessage::HTTP_1_1);
         poco_req.setKeepAlive(true);
 
+        // Require new header for all Apple token
+        std::string clientID = this->clientIDForRefererHeader();
+        if (!clientID.empty()) {
+            poco_req.set("Referer", clientID);
+        }
+
         // FIXME: should get content type as parameter instead
         if (req.payload.size()) {
             poco_req.setContentType(kContentTypeApplicationJSON);
@@ -474,6 +480,14 @@ HTTPResponse HTTPClient::makeHttpRequest(
         return resp;
     }
     return resp;
+}
+
+std::string HTTPClient::clientIDForRefererHeader() const {
+    if (POCO_OS_MAC_OS_X == POCO_OS) {
+        return kTogglDesktopClientID_MacOS;
+    }
+    // Extend in the future
+    return "";
 }
 
 ServerStatus TogglClient::TogglStatus;

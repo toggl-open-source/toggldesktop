@@ -1,55 +1,224 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LoginViewController">
             <connections>
+                <outlet property="appleBtn" destination="Igm-AP-s4k" id="yeb-GX-G5H"/>
+                <outlet property="appleGoogleGroupViewTop" destination="9CJ-AW-6GG" id="RKE-hG-CeT"/>
                 <outlet property="boxView" destination="5dJ-p6-cHG" id="VMF-WN-OOL"/>
+                <outlet property="containerViewHeight" destination="dsh-UU-U3O" id="GMA-ic-Z5E"/>
                 <outlet property="countrySelect" destination="4Zx-Jg-kcg" id="5KU-LL-Edx"/>
+                <outlet property="donotHaveAccountLbl" destination="Nf5-yf-qTk" id="XQ0-eS-6lG"/>
                 <outlet property="email" destination="KGi-ca-Yer" id="PBJ-L7-SlM"/>
                 <outlet property="forgotPasswordTextField" destination="dzR-Wz-TvW" id="RkM-IV-nDU"/>
-                <outlet property="loginButton" destination="IjV-dM-dEc" id="tZ5-yj-hKl"/>
-                <outlet property="loginGooglBtn" destination="tJn-oc-LUz" id="B9S-uj-Ygi"/>
-                <outlet property="loginLink" destination="8Ya-xT-rzU" id="36m-NE-g6X"/>
+                <outlet property="googleBtn" destination="tJn-oc-LUz" id="IkN-sj-6Yv"/>
                 <outlet property="loginLoaderView" destination="BLv-g2-Q0z" id="WB5-8X-iJh"/>
                 <outlet property="password" destination="es4-S9-8Od" id="mI1-u7-fNs"/>
                 <outlet property="privacyLink" destination="IVx-73-aIM" id="bg4-YH-NLO"/>
+                <outlet property="signUpGroupView" destination="Dqc-J5-qIX" id="u0Z-R2-fUB"/>
                 <outlet property="signUpLink" destination="vHA-Cd-ciE" id="IIF-Rc-Dys"/>
-                <outlet property="signUpLoaderView" destination="RjK-JO-aC4" id="Ags-gt-SEY"/>
-                <outlet property="signupButton" destination="ecN-Qd-Rfu" id="kAt-tp-tbN"/>
-                <outlet property="signupGoogleBtn" destination="BVp-V4-Mkm" id="dfR-ej-hWI"/>
-                <outlet property="tabView" destination="Zob-zi-6R9" id="9Bv-SQ-s56"/>
                 <outlet property="tosCheckbox" destination="p8r-V5-a0Z" id="Vwo-iN-cni"/>
                 <outlet property="tosLink" destination="fZp-Ag-MGC" id="HmT-m5-edl"/>
+                <outlet property="userActionBtn" destination="IjV-dM-dEc" id="fTf-nU-2Wl"/>
                 <outlet property="view" destination="d50-27-v7r" id="fRE-03-vij"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="d50-27-v7r">
-            <rect key="frame" x="0.0" y="0.0" width="300" height="378"/>
+            <rect key="frame" x="0.0" y="0.0" width="369" height="520"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box boxType="custom" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="5dJ-p6-cHG">
-                    <rect key="frame" x="35" y="30" width="230" height="318"/>
+                    <rect key="frame" x="70" y="30" width="230" height="460"/>
                     <view key="contentView" id="52B-J2-unw">
-                        <rect key="frame" x="1" y="1" width="228" height="316"/>
+                        <rect key="frame" x="1" y="1" width="228" height="458"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="BLv-g2-Q0z">
+                                <rect key="frame" x="106" y="43" width="16" height="16"/>
+                            </progressIndicator>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="THc-hA-qiD">
-                                <rect key="frame" x="89" y="285" width="50" height="16"/>
+                                <rect key="frame" x="89" y="422" width="50" height="16"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="toggl-logo" id="RqX-fO-r2O"/>
                             </imageView>
+                            <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dqc-J5-qIX">
+                                <rect key="frame" x="20" y="325" width="188" height="67"/>
+                                <subviews>
+                                    <comboBox focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Zx-Jg-kcg" customClass="NSCustomComboBox">
+                                        <rect key="frame" x="0.0" y="44" width="191" height="25"/>
+                                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" alignment="left" placeholderString="Select country" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="XOG-e3-OcV">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </comboBoxCell>
+                                        <connections>
+                                            <action selector="countrySelected:" target="-2" id="vKQ-iL-8lY"/>
+                                            <outlet property="nextKeyView" destination="p8r-V5-a0Z" id="GlM-hm-ruR"/>
+                                        </connections>
+                                    </comboBox>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="hh4-CF-vWz">
+                                        <rect key="frame" x="0.0" y="0.0" width="179" height="38"/>
+                                        <subviews>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="p8r-V5-a0Z" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                                                <rect key="frame" x="-2" y="20" width="76" height="18"/>
+                                                <buttonCell key="cell" type="check" title="I agree to" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="qm8-nf-Dce">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="label" size="12"/>
+                                                </buttonCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                                        <color key="value" name="login-text-color"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <outlet property="nextKeyView" destination="Igm-AP-s4k" id="l8i-ag-xWj"/>
+                                                </connections>
+                                            </button>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZp-Ag-MGC" customClass="NSTextFieldClickablePointer">
+                                                <rect key="frame" x="72" y="22" width="102" height="15"/>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Terms of Service" id="yMx-7I-dta">
+                                                    <font key="font" metaFont="systemMedium" size="12"/>
+                                                    <color key="textColor" name="login-text-color"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IVx-73-aIM" customClass="NSTextFieldClickablePointer">
+                                                <rect key="frame" x="41" y="3" width="88" height="15"/>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Privacy Policy." id="grP-VP-uk2">
+                                                    <font key="font" metaFont="systemMedium" size="12"/>
+                                                    <color key="textColor" name="login-text-color"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8ub-2k-VFz">
+                                                <rect key="frame" x="16" y="3" width="25" height="15"/>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" title="and" id="6le-qK-Qps">
+                                                    <font key="font" metaFont="label" size="12"/>
+                                                    <color key="textColor" name="login-text-color"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="38" id="7pT-YY-5zq"/>
+                                            <constraint firstItem="p8r-V5-a0Z" firstAttribute="top" secondItem="hh4-CF-vWz" secondAttribute="top" constant="2" id="DdL-rO-G6Q"/>
+                                            <constraint firstItem="fZp-Ag-MGC" firstAttribute="top" secondItem="hh4-CF-vWz" secondAttribute="top" constant="1" id="Kik-tn-n7t"/>
+                                            <constraint firstItem="8ub-2k-VFz" firstAttribute="leading" secondItem="hh4-CF-vWz" secondAttribute="leading" constant="18" id="Nri-cI-IFt"/>
+                                            <constraint firstItem="IVx-73-aIM" firstAttribute="firstBaseline" secondItem="8ub-2k-VFz" secondAttribute="firstBaseline" id="OQr-ah-WqS"/>
+                                            <constraint firstItem="8ub-2k-VFz" firstAttribute="top" secondItem="p8r-V5-a0Z" secondAttribute="bottom" constant="4" id="bfF-2b-pqH"/>
+                                            <constraint firstItem="p8r-V5-a0Z" firstAttribute="leading" secondItem="hh4-CF-vWz" secondAttribute="leading" id="i1g-lF-N3p"/>
+                                            <constraint firstItem="IVx-73-aIM" firstAttribute="leading" secondItem="8ub-2k-VFz" secondAttribute="trailing" constant="4" id="kTm-9a-aCt"/>
+                                            <constraint firstItem="fZp-Ag-MGC" firstAttribute="leading" secondItem="p8r-V5-a0Z" secondAttribute="trailing" constant="2" id="zvD-fk-c4a"/>
+                                        </constraints>
+                                    </customView>
+                                </subviews>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
+                            <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NsR-Mq-gmm">
+                                <rect key="frame" x="20" y="224" width="188" height="68"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Igm-AP-s4k" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="38" width="188" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="q1K-w4-eBp"/>
+                                        </constraints>
+                                        <buttonCell key="cell" type="bevel" title="Log in with Apple" bezelStyle="regularSquare" image="apple-sign-in-logo" imagePosition="left" alignment="center" imageScaling="proportionallyDown" inset="2" id="pSe-Ib-Bqe">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="systemMedium" size="12"/>
+                                        </buttonCell>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
+                                                <color key="value" name="login-apple-google-background-color"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                                <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
+                                                <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" name="login-apple-google-border-color"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="appleBtnOnClick:" target="-2" id="lKq-Mm-FIy"/>
+                                            <outlet property="nextKeyView" destination="tJn-oc-LUz" id="0S8-RP-B6U"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tJn-oc-LUz" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="188" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="plF-to-P6C"/>
+                                        </constraints>
+                                        <buttonCell key="cell" type="bevel" title="Log in with Google" bezelStyle="regularSquare" image="google-logo" imagePosition="left" alignment="center" imageScaling="proportionallyDown" inset="2" id="hE5-JZ-Nlh">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="systemMedium" size="12"/>
+                                        </buttonCell>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
+                                                <color key="value" name="login-apple-google-background-color"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                                <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
+                                                <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" name="login-apple-google-border-color"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="googleBtnOnClick:" target="-2" id="Cit-Ea-W3Z"/>
+                                            <outlet property="nextKeyView" destination="KGi-ca-Yer" id="aZ6-Uh-HtI"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="tJn-oc-LUz" secondAttribute="trailing" id="6B6-PL-tyX"/>
+                                    <constraint firstAttribute="trailing" secondItem="Igm-AP-s4k" secondAttribute="trailing" id="A46-YG-wRe"/>
+                                    <constraint firstItem="tJn-oc-LUz" firstAttribute="leading" secondItem="NsR-Mq-gmm" secondAttribute="leading" id="Lu0-yc-3xN"/>
+                                </constraints>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
                             <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Z5-Nq-p4o">
-                                <rect key="frame" x="20" y="195" width="188" height="70"/>
+                                <rect key="frame" x="20" y="36" width="188" height="135"/>
                                 <subviews>
                                     <textField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGi-ca-Yer">
-                                        <rect key="frame" x="0.0" y="40" width="188" height="30"/>
+                                        <rect key="frame" x="0.0" y="105" width="188" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="Ejy-Ap-HMe"/>
                                         </constraints>
@@ -63,7 +232,7 @@
                                         </connections>
                                     </textField>
                                     <secureTextField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="es4-S9-8Od">
-                                        <rect key="frame" x="0.0" y="0.0" width="188" height="30"/>
+                                        <rect key="frame" x="0.0" y="65" width="188" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="2h3-wv-XZC"/>
                                         </constraints>
@@ -75,7 +244,92 @@
                                                 <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                             </allowedInputSourceLocales>
                                         </secureTextFieldCell>
+                                        <connections>
+                                            <outlet property="nextKeyView" destination="dzR-Wz-TvW" id="p5A-Br-jxr"/>
+                                        </connections>
                                     </secureTextField>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dzR-Wz-TvW" customClass="NSTextFieldClickablePointer">
+                                        <rect key="frame" x="-2" y="40" width="108" height="15"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Forgot password?" id="X3a-gR-Caa">
+                                            <font key="font" metaFont="systemMedium" size="12"/>
+                                            <color key="textColor" name="login-text-color"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                        <connections>
+                                            <outlet property="nextKeyView" destination="IjV-dM-dEc" id="xFT-H1-7zI"/>
+                                        </connections>
+                                    </textField>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IjV-dM-dEc" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="188" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="6Rk-yX-EJw"/>
+                                        </constraints>
+                                        <buttonCell key="cell" type="bevel" title="Log in" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="0Xn-FC-rCJ">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="systemMedium" size="12"/>
+                                        </buttonCell>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
+                                                <color key="value" name="login-button-background"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                <color key="value" name="login-button-foreground"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                                <color key="value" name="white"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
+                                                <color key="value" name="white"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="userActionButtonOnClick:" target="-2" id="z8F-6F-tPZ"/>
+                                            <outlet property="nextKeyView" destination="vHA-Cd-ciE" id="QQC-8i-Wdd"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="IjV-dM-dEc" secondAttribute="trailing" id="M49-zD-kJS"/>
+                                    <constraint firstItem="IjV-dM-dEc" firstAttribute="leading" secondItem="0Z5-Nq-p4o" secondAttribute="leading" id="dDl-Z4-Qxu"/>
+                                </constraints>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
+                            <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B3g-en-asq">
+                                <rect key="frame" x="47" y="20" width="133" height="34"/>
+                                <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nf5-yf-qTk">
+                                        <rect key="frame" x="-2" y="19" width="137" height="15"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Don't have an account?" id="pfV-yA-7TC">
+                                            <font key="font" metaFont="label" size="12"/>
+                                            <color key="textColor" name="login-text-color"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vHA-Cd-ciE" customClass="NSTextFieldClickablePointer">
+                                        <rect key="frame" x="20" y="0.0" width="94" height="15"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Sign up for free" id="MQD-NU-3E3">
+                                            <font key="font" metaFont="systemMedium" size="12"/>
+                                            <color key="textColor" name="login-text-color"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                        <connections>
+                                            <outlet property="nextKeyView" destination="4Zx-Jg-kcg" id="bfB-pE-85l"/>
+                                        </connections>
+                                    </textField>
                                 </subviews>
                                 <visibilityPriorities>
                                     <integer value="1000"/>
@@ -86,278 +340,57 @@
                                     <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
                             </stackView>
-                            <tabView drawsBackground="NO" allowsTruncatedLabels="NO" type="noTabsNoBorder" translatesAutoresizingMaskIntoConstraints="NO" id="Zob-zi-6R9">
-                                <rect key="frame" x="0.0" y="0.0" width="228" height="195"/>
-                                <font key="font" metaFont="system"/>
-                                <tabViewItems>
-                                    <tabViewItem label="Login" identifier="" id="hPv-Je-QMk">
-                                        <view key="view" id="Rv2-bS-MTQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="228" height="195"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <subviews>
-                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="ZIl-yh-uQ0">
-                                                    <rect key="frame" x="0.0" y="0.0" width="228" height="195"/>
-                                                    <subviews>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dzR-Wz-TvW" customClass="NSTextFieldClickablePointer">
-                                                            <rect key="frame" x="18" y="169" width="108" height="16"/>
-                                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Forgot password?" id="X3a-gR-Caa">
-                                                                <font key="font" metaFont="systemMedium" size="12"/>
-                                                                <color key="textColor" name="login-text-color"/>
-                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                        </textField>
-                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IjV-dM-dEc" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
-                                                            <rect key="frame" x="20" y="119" width="188" height="30"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="30" id="6Rk-yX-EJw"/>
-                                                            </constraints>
-                                                            <buttonCell key="cell" type="bevel" title="Log in" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="0Xn-FC-rCJ">
-                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                <font key="font" metaFont="system"/>
-                                                            </buttonCell>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
-                                                                    <color key="value" name="login-button-background"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
-                                                                    <color key="value" name="login-button-foreground"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                    <real key="value" value="4"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                            </userDefinedRuntimeAttributes>
-                                                            <connections>
-                                                                <action selector="clickLoginButton:" target="-2" id="MSd-p3-jrP"/>
-                                                                <outlet property="nextKeyView" destination="tJn-oc-LUz" id="1Yi-Rt-aIt"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tJn-oc-LUz">
-                                                            <rect key="frame" x="18" y="76" width="192" height="35"/>
-                                                            <buttonCell key="cell" type="bevel" title="Log in with Google" bezelStyle="regularSquare" image="google-logo" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hE5-JZ-Nlh">
-                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                <font key="font" metaFont="system"/>
-                                                            </buttonCell>
-                                                            <connections>
-                                                                <action selector="loginGoogleOnTap:" target="-2" id="wD1-I5-hBa"/>
-                                                                <outlet property="nextKeyView" destination="KGi-ca-Yer" id="LIW-sY-gXN"/>
-                                                            </connections>
-                                                        </button>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nf5-yf-qTk">
-                                                            <rect key="frame" x="46" y="36" width="137" height="16"/>
-                                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Don't have an account?" id="pfV-yA-7TC">
-                                                                <font key="font" metaFont="label" size="12"/>
-                                                                <color key="textColor" name="login-text-color"/>
-                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                        </textField>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vHA-Cd-ciE" customClass="NSTextFieldClickablePointer">
-                                                            <rect key="frame" x="67" y="16" width="94" height="16"/>
-                                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Sign up for free" id="MQD-NU-3E3">
-                                                                <font key="font" metaFont="systemMedium" size="12"/>
-                                                                <color key="textColor" name="login-text-color"/>
-                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                        </textField>
-                                                        <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="BLv-g2-Q0z">
-                                                            <rect key="frame" x="144" y="126" width="16" height="16"/>
-                                                        </progressIndicator>
-                                                    </subviews>
-                                                    <constraints>
-                                                        <constraint firstItem="IjV-dM-dEc" firstAttribute="top" secondItem="dzR-Wz-TvW" secondAttribute="bottom" constant="20" id="1hE-fs-K3O"/>
-                                                        <constraint firstItem="BLv-g2-Q0z" firstAttribute="centerY" secondItem="IjV-dM-dEc" secondAttribute="centerY" id="3Lv-Gl-IuK"/>
-                                                        <constraint firstAttribute="trailing" secondItem="IjV-dM-dEc" secondAttribute="trailing" constant="20" id="4AX-AQ-hyZ"/>
-                                                        <constraint firstItem="tJn-oc-LUz" firstAttribute="top" secondItem="IjV-dM-dEc" secondAttribute="bottom" constant="10" id="B3l-SH-NZj"/>
-                                                        <constraint firstItem="Nf5-yf-qTk" firstAttribute="centerX" secondItem="ZIl-yh-uQ0" secondAttribute="centerX" id="Fp0-nB-fJ8"/>
-                                                        <constraint firstItem="dzR-Wz-TvW" firstAttribute="leading" secondItem="ZIl-yh-uQ0" secondAttribute="leading" constant="20" id="N3O-nT-joz"/>
-                                                        <constraint firstItem="tJn-oc-LUz" firstAttribute="height" secondItem="IjV-dM-dEc" secondAttribute="height" id="NEL-Bk-6EV"/>
-                                                        <constraint firstAttribute="bottom" secondItem="vHA-Cd-ciE" secondAttribute="bottom" constant="16" id="Qzc-lC-bmm"/>
-                                                        <constraint firstItem="vHA-Cd-ciE" firstAttribute="top" secondItem="Nf5-yf-qTk" secondAttribute="bottom" constant="4" id="S6t-XJ-NmI"/>
-                                                        <constraint firstItem="dzR-Wz-TvW" firstAttribute="top" secondItem="ZIl-yh-uQ0" secondAttribute="top" constant="10" id="Snu-Fl-ITG"/>
-                                                        <constraint firstAttribute="trailing" secondItem="tJn-oc-LUz" secondAttribute="trailing" constant="20" id="YAY-8A-PBU"/>
-                                                        <constraint firstItem="vHA-Cd-ciE" firstAttribute="centerX" secondItem="ZIl-yh-uQ0" secondAttribute="centerX" id="gxD-tt-Wnn"/>
-                                                        <constraint firstItem="tJn-oc-LUz" firstAttribute="leading" secondItem="ZIl-yh-uQ0" secondAttribute="leading" constant="20" id="nmv-A4-hub"/>
-                                                        <constraint firstAttribute="trailing" secondItem="BLv-g2-Q0z" secondAttribute="trailing" constant="68" id="rKO-hP-DYt"/>
-                                                        <constraint firstItem="tJn-oc-LUz" firstAttribute="width" secondItem="IjV-dM-dEc" secondAttribute="width" id="x3D-el-UuG"/>
-                                                        <constraint firstItem="IjV-dM-dEc" firstAttribute="leading" secondItem="ZIl-yh-uQ0" secondAttribute="leading" constant="20" id="zM6-Kr-3Ol"/>
-                                                    </constraints>
-                                                </customView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="ZIl-yh-uQ0" secondAttribute="trailing" id="Dl2-ax-GDH"/>
-                                                <constraint firstItem="ZIl-yh-uQ0" firstAttribute="top" secondItem="Rv2-bS-MTQ" secondAttribute="top" id="M6I-nV-7kL"/>
-                                                <constraint firstAttribute="bottom" secondItem="ZIl-yh-uQ0" secondAttribute="bottom" id="P6z-Aj-O8t"/>
-                                                <constraint firstItem="ZIl-yh-uQ0" firstAttribute="leading" secondItem="Rv2-bS-MTQ" secondAttribute="leading" id="hX0-3E-lmG"/>
-                                            </constraints>
-                                        </view>
-                                    </tabViewItem>
-                                    <tabViewItem label="Signup" identifier="" id="KMJ-Rd-V8x">
-                                        <view key="view" id="nfe-ZO-kib">
-                                            <rect key="frame" x="0.0" y="0.0" width="228" height="195"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <subviews>
-                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="41Y-oV-0ee">
-                                                    <rect key="frame" x="0.0" y="0.0" width="228" height="195"/>
-                                                    <subviews>
-                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="p8r-V5-a0Z" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
-                                                            <rect key="frame" x="18" y="139" width="76" height="18"/>
-                                                            <buttonCell key="cell" type="check" title="I agree to" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="qm8-nf-Dce">
-                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                                <font key="font" metaFont="label" size="12"/>
-                                                            </buttonCell>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                                                    <color key="value" name="login-text-color"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                            </userDefinedRuntimeAttributes>
-                                                            <connections>
-                                                                <outlet property="nextKeyView" destination="ecN-Qd-Rfu" id="cmY-ky-OZo"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ecN-Qd-Rfu" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
-                                                            <rect key="frame" x="20" y="79" width="188" height="30"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="30" id="6y5-l6-bCL"/>
-                                                            </constraints>
-                                                            <buttonCell key="cell" type="bevel" title="Sign up" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="9dD-YR-iVU">
-                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                <font key="font" metaFont="systemMedium" size="12"/>
-                                                            </buttonCell>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
-                                                                    <color key="value" name="login-button-background"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                                <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                                                    <color key="value" name="login-button-foreground"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                    <real key="value" value="4"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                            </userDefinedRuntimeAttributes>
-                                                            <connections>
-                                                                <action selector="clickSignupButton:" target="-2" id="8ar-ch-RUX"/>
-                                                                <outlet property="nextKeyView" destination="BVp-V4-Mkm" id="rbq-UZ-73X"/>
-                                                            </connections>
-                                                        </button>
-                                                        <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="RjK-JO-aC4">
-                                                            <rect key="frame" x="144" y="86" width="16" height="16"/>
-                                                        </progressIndicator>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Ya-xT-rzU" customClass="NSTextFieldClickablePointer">
-                                                            <rect key="frame" x="71" y="16" width="86" height="16"/>
-                                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Back to Log in" id="WQs-7g-ifL">
-                                                                <font key="font" metaFont="systemMedium" size="12"/>
-                                                                <color key="textColor" name="login-text-color"/>
-                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <outlet property="nextKeyView" destination="KGi-ca-Yer" id="Vgg-6g-Iy3"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BVp-V4-Mkm">
-                                                            <rect key="frame" x="18" y="38" width="192" height="35"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="188" id="9PE-UU-lQW"/>
-                                                                <constraint firstAttribute="height" constant="30" id="ioV-ar-8C4"/>
-                                                            </constraints>
-                                                            <buttonCell key="cell" type="bevel" title="Sign up with Google" bezelStyle="regularSquare" image="google-logo" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="y5t-5i-06C">
-                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                <font key="font" metaFont="system"/>
-                                                            </buttonCell>
-                                                            <connections>
-                                                                <action selector="signupGoogleBtnOnTap:" target="-2" id="KF3-lO-s2y"/>
-                                                                <outlet property="nextKeyView" destination="8Ya-xT-rzU" id="QMB-Wf-XFw"/>
-                                                            </connections>
-                                                        </button>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8ub-2k-VFz">
-                                                            <rect key="frame" x="36" y="123" width="25" height="16"/>
-                                                            <textFieldCell key="cell" lineBreakMode="clipping" title="and" id="6le-qK-Qps">
-                                                                <font key="font" metaFont="label" size="12"/>
-                                                                <color key="textColor" name="login-text-color"/>
-                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                        </textField>
-                                                        <comboBox focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Zx-Jg-kcg" customClass="NSCustomComboBox">
-                                                            <rect key="frame" x="20" y="161" width="191" height="26"/>
-                                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" placeholderString="Select country" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="XOG-e3-OcV">
-                                                                <font key="font" metaFont="system"/>
-                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                            </comboBoxCell>
-                                                            <connections>
-                                                                <action selector="countrySelected:" target="-2" id="vKQ-iL-8lY"/>
-                                                                <outlet property="nextKeyView" destination="p8r-V5-a0Z" id="GlM-hm-ruR"/>
-                                                            </connections>
-                                                        </comboBox>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZp-Ag-MGC" customClass="NSTextFieldClickablePointer">
-                                                            <rect key="frame" x="92" y="140" width="109" height="17"/>
-                                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Terms of Service" id="yMx-7I-dta">
-                                                                <font key="font" metaFont="systemMedium" size="13"/>
-                                                                <color key="textColor" name="login-text-color"/>
-                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                        </textField>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IVx-73-aIM" customClass="NSTextFieldClickablePointer">
-                                                            <rect key="frame" x="59" y="123" width="94" height="17"/>
-                                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Privacy Policy." id="grP-VP-uk2">
-                                                                <font key="font" metaFont="systemMedium" size="13"/>
-                                                                <color key="textColor" name="login-text-color"/>
-                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                        </textField>
-                                                    </subviews>
-                                                    <constraints>
-                                                        <constraint firstItem="IVx-73-aIM" firstAttribute="leading" secondItem="8ub-2k-VFz" secondAttribute="trailing" constant="2" id="088-9f-PLg"/>
-                                                        <constraint firstAttribute="trailing" secondItem="RjK-JO-aC4" secondAttribute="trailing" constant="68" id="11D-Jo-4Pc"/>
-                                                        <constraint firstItem="8ub-2k-VFz" firstAttribute="top" secondItem="p8r-V5-a0Z" secondAttribute="bottom" constant="2" id="68W-Ux-rrt"/>
-                                                        <constraint firstItem="p8r-V5-a0Z" firstAttribute="top" secondItem="4Zx-Jg-kcg" secondAttribute="bottom" constant="10" id="AKK-5g-2ce"/>
-                                                        <constraint firstAttribute="trailing" secondItem="ecN-Qd-Rfu" secondAttribute="trailing" constant="20" id="Cqg-hs-7VU"/>
-                                                        <constraint firstItem="p8r-V5-a0Z" firstAttribute="leading" secondItem="41Y-oV-0ee" secondAttribute="leading" constant="20" id="Du4-uM-ovW"/>
-                                                        <constraint firstItem="ecN-Qd-Rfu" firstAttribute="top" secondItem="8ub-2k-VFz" secondAttribute="bottom" constant="14" id="JiZ-5R-m1y"/>
-                                                        <constraint firstItem="ecN-Qd-Rfu" firstAttribute="centerX" secondItem="41Y-oV-0ee" secondAttribute="centerX" id="Kxg-Yt-js5"/>
-                                                        <constraint firstItem="4Zx-Jg-kcg" firstAttribute="top" secondItem="41Y-oV-0ee" secondAttribute="top" constant="10" id="MCx-x2-yIx"/>
-                                                        <constraint firstItem="IVx-73-aIM" firstAttribute="firstBaseline" secondItem="8ub-2k-VFz" secondAttribute="firstBaseline" id="N2g-kc-Xoe"/>
-                                                        <constraint firstAttribute="bottom" secondItem="8Ya-xT-rzU" secondAttribute="bottom" constant="16" id="Oq9-p6-wnp"/>
-                                                        <constraint firstItem="8ub-2k-VFz" firstAttribute="leading" secondItem="p8r-V5-a0Z" secondAttribute="leading" constant="18" id="Q26-wy-gT1"/>
-                                                        <constraint firstItem="BVp-V4-Mkm" firstAttribute="top" secondItem="ecN-Qd-Rfu" secondAttribute="bottom" constant="8" id="erN-dO-c1u"/>
-                                                        <constraint firstItem="4Zx-Jg-kcg" firstAttribute="leading" secondItem="41Y-oV-0ee" secondAttribute="leading" constant="20" id="heV-uz-hSM"/>
-                                                        <constraint firstItem="fZp-Ag-MGC" firstAttribute="leading" secondItem="p8r-V5-a0Z" secondAttribute="trailing" constant="2" id="mnc-hR-2WM"/>
-                                                        <constraint firstItem="RjK-JO-aC4" firstAttribute="centerY" secondItem="ecN-Qd-Rfu" secondAttribute="centerY" id="q4M-4A-PVp"/>
-                                                        <constraint firstItem="ecN-Qd-Rfu" firstAttribute="leading" secondItem="41Y-oV-0ee" secondAttribute="leading" constant="20" id="s3d-Ap-ckm"/>
-                                                        <constraint firstAttribute="trailing" secondItem="4Zx-Jg-kcg" secondAttribute="trailing" constant="20" id="vne-ET-7Oc"/>
-                                                        <constraint firstItem="fZp-Ag-MGC" firstAttribute="firstBaseline" secondItem="p8r-V5-a0Z" secondAttribute="firstBaseline" id="xOD-Ri-XS1"/>
-                                                        <constraint firstItem="8Ya-xT-rzU" firstAttribute="centerX" secondItem="41Y-oV-0ee" secondAttribute="centerX" id="yAW-sN-L88"/>
-                                                        <constraint firstItem="BVp-V4-Mkm" firstAttribute="centerX" secondItem="41Y-oV-0ee" secondAttribute="centerX" id="yyn-eY-zUR"/>
-                                                    </constraints>
-                                                </customView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="41Y-oV-0ee" secondAttribute="trailing" id="4sP-DC-Ivx"/>
-                                                <constraint firstItem="41Y-oV-0ee" firstAttribute="top" secondItem="nfe-ZO-kib" secondAttribute="top" id="Oq8-d4-H9t"/>
-                                                <constraint firstItem="41Y-oV-0ee" firstAttribute="leading" secondItem="nfe-ZO-kib" secondAttribute="leading" id="ZAm-y5-dmQ"/>
-                                                <constraint firstAttribute="bottom" secondItem="41Y-oV-0ee" secondAttribute="bottom" id="dt9-pg-4Pe"/>
-                                            </constraints>
-                                        </view>
-                                    </tabViewItem>
-                                </tabViewItems>
-                            </tabView>
+                            <box horizontalHuggingPriority="248" verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="0ii-WG-Mwe">
+                                <rect key="frame" x="38" y="195" width="60" height="5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="bi7-ss-2ux"/>
+                                </constraints>
+                            </box>
+                            <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="b55-m8-HrX">
+                                <rect key="frame" x="129" y="195" width="60" height="5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="OhW-be-bfe"/>
+                                </constraints>
+                            </box>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tVo-dL-QHu">
+                                <rect key="frame" x="104" y="191" width="19" height="13"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="OR" id="iHn-E3-WQi">
+                                    <font key="font" metaFont="system" size="10"/>
+                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="THc-hA-qiD" firstAttribute="top" secondItem="52B-J2-unw" secondAttribute="top" constant="15" id="BFx-Ss-c8D"/>
-                            <constraint firstAttribute="trailing" secondItem="Zob-zi-6R9" secondAttribute="trailing" id="EOq-5a-CCz"/>
-                            <constraint firstAttribute="bottom" secondItem="Zob-zi-6R9" secondAttribute="bottom" id="Ee0-8T-CrW"/>
-                            <constraint firstItem="Zob-zi-6R9" firstAttribute="leading" secondItem="52B-J2-unw" secondAttribute="leading" id="Mfc-GG-k3h"/>
+                            <constraint firstItem="tVo-dL-QHu" firstAttribute="top" secondItem="NsR-Mq-gmm" secondAttribute="bottom" constant="20" id="01g-7p-9SJ"/>
+                            <constraint firstItem="NsR-Mq-gmm" firstAttribute="leading" secondItem="52B-J2-unw" secondAttribute="leading" constant="20" id="0h4-Ub-CCS"/>
+                            <constraint firstItem="BLv-g2-Q0z" firstAttribute="centerX" secondItem="IjV-dM-dEc" secondAttribute="centerX" id="5wf-yc-WVa"/>
+                            <constraint firstItem="0Z5-Nq-p4o" firstAttribute="top" secondItem="tVo-dL-QHu" secondAttribute="bottom" constant="20" id="81a-Db-Fwu"/>
+                            <constraint firstItem="0ii-WG-Mwe" firstAttribute="centerY" secondItem="tVo-dL-QHu" secondAttribute="centerY" id="8x7-1Z-LzB"/>
+                            <constraint firstItem="NsR-Mq-gmm" firstAttribute="top" secondItem="52B-J2-unw" secondAttribute="top" constant="166" id="9CJ-AW-6GG"/>
+                            <constraint firstItem="THc-hA-qiD" firstAttribute="top" secondItem="52B-J2-unw" secondAttribute="top" constant="20" id="BFx-Ss-c8D"/>
+                            <constraint firstItem="Dqc-J5-qIX" firstAttribute="leading" secondItem="52B-J2-unw" secondAttribute="leading" constant="20" id="Bcq-Cb-pT6"/>
+                            <constraint firstItem="b55-m8-HrX" firstAttribute="leading" secondItem="tVo-dL-QHu" secondAttribute="trailing" constant="8" id="G1m-85-q6C"/>
+                            <constraint firstItem="tVo-dL-QHu" firstAttribute="centerX" secondItem="52B-J2-unw" secondAttribute="centerX" id="MhQ-DV-cyf"/>
+                            <constraint firstItem="B3g-en-asq" firstAttribute="centerX" secondItem="52B-J2-unw" secondAttribute="centerX" id="O3O-8x-B8w"/>
                             <constraint firstItem="THc-hA-qiD" firstAttribute="centerX" secondItem="52B-J2-unw" secondAttribute="centerX" id="Pyz-2u-uEA"/>
-                            <constraint firstItem="Zob-zi-6R9" firstAttribute="top" secondItem="0Z5-Nq-p4o" secondAttribute="bottom" id="Ukl-Tu-5q2"/>
-                            <constraint firstItem="0Z5-Nq-p4o" firstAttribute="top" secondItem="THc-hA-qiD" secondAttribute="bottom" constant="20" id="W7O-nU-HKn"/>
+                            <constraint firstItem="b55-m8-HrX" firstAttribute="centerY" secondItem="tVo-dL-QHu" secondAttribute="centerY" id="Rjh-po-iVU"/>
+                            <constraint firstItem="tVo-dL-QHu" firstAttribute="leading" secondItem="0ii-WG-Mwe" secondAttribute="trailing" constant="8" id="Xg0-Q4-Ytd"/>
+                            <constraint firstAttribute="trailing" secondItem="Dqc-J5-qIX" secondAttribute="trailing" constant="20" id="gjJ-eD-3VE"/>
                             <constraint firstAttribute="trailing" secondItem="0Z5-Nq-p4o" secondAttribute="trailing" constant="20" id="if0-yE-Faj"/>
+                            <constraint firstItem="BLv-g2-Q0z" firstAttribute="centerY" secondItem="IjV-dM-dEc" secondAttribute="centerY" id="pUC-x9-T82"/>
                             <constraint firstItem="0Z5-Nq-p4o" firstAttribute="leading" secondItem="52B-J2-unw" secondAttribute="leading" constant="20" id="tOh-0W-KO4"/>
+                            <constraint firstItem="Dqc-J5-qIX" firstAttribute="top" secondItem="52B-J2-unw" secondAttribute="top" constant="66" id="tUx-cq-ylf"/>
+                            <constraint firstAttribute="bottom" secondItem="B3g-en-asq" secondAttribute="bottom" constant="20" id="tZJ-BN-Ozy"/>
+                            <constraint firstAttribute="trailing" secondItem="NsR-Mq-gmm" secondAttribute="trailing" constant="20" id="zX3-pt-bqE"/>
                         </constraints>
                     </view>
                     <constraints>
-                        <constraint firstAttribute="height" constant="318" id="dsh-UU-U3O"/>
+                        <constraint firstAttribute="height" constant="460" id="dsh-UU-U3O"/>
                         <constraint firstAttribute="width" constant="230" id="feB-u0-xLT"/>
                     </constraints>
                     <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                    <color key="fillColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    <color key="fillColor" name="login-background-color"/>
                 </box>
             </subviews>
             <constraints>
@@ -368,20 +401,33 @@
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="5dJ-p6-cHG" secondAttribute="bottom" constant="30" id="uzh-sc-5Da"/>
                 <constraint firstItem="5dJ-p6-cHG" firstAttribute="centerY" secondItem="d50-27-v7r" secondAttribute="centerY" id="wx8-DJ-vgX"/>
             </constraints>
-            <point key="canvasLocation" x="380.5" y="251"/>
+            <point key="canvasLocation" x="6.5" y="155"/>
         </customView>
     </objects>
     <resources>
+        <image name="apple-sign-in-logo" width="12" height="12"/>
         <image name="google-logo" width="14" height="14"/>
         <image name="toggl-logo" width="50" height="16"/>
+        <namedColor name="login-apple-google-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="login-apple-google-border-color">
+            <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="login-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="login-button-background">
-            <color red="1" green="0.17599999904632568" blue="0.33300000429153442" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="login-button-foreground">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="login-text-color">
             <color red="0.33300000429153442" green="0.33300000429153442" blue="0.33300000429153442" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="white">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
