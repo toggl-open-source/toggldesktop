@@ -192,6 +192,7 @@
     <LinkIncremental>true</LinkIncremental>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)\..\..\..</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='StoreDebug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -362,10 +363,10 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>TOGGLDESKTOP_DLL_BUILD;JSON_DLL_BUILD;WIN32;NDEBUG;_WINDOWS;_USRDLL;TOGGLDESKTOPDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\third_party\poco\openssl\build\include;$(ProjectDir)..\..\..\..\third_party\jsoncpp\dist;$(ProjectDir)..\..\..\..\third_party\poco\Foundation\include;$(ProjectDir)..\..\..\..\third_party\poco\Util\include;$(ProjectDir)..\..\..\..\third_party\poco\Crypto\include;$(ProjectDir)..\..\..\..\third_party\poco\Net\include;$(ProjectDir)..\..\..\..\third_party\poco\NetSSL_OpenSSL\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\src;$(ProjectDir)..\..\..\..\third_party\lua\src;$(ProjectDir)..\..\..\..\third_party\luafar;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\third_party\poco\openssl\build\include;$(ProjectDir)..\..\..\..\third_party\jsoncpp\dist;$(ProjectDir)..\..\..\..\third_party\poco\Foundation\include;$(ProjectDir)..\..\..\..\third_party\poco\Util\include;$(ProjectDir)..\..\..\..\third_party\poco\Crypto\include;$(ProjectDir)..\..\..\..\third_party\poco\Net\include;$(ProjectDir)..\..\..\..\third_party\poco\NetSSL_OpenSSL\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\src;$(ProjectDir)..\..\..\..\third_party\lua\src;$(ProjectDir)..\..\..\..\third_party\luafar;%(AdditionalIncludeDirectories);$(SolutionDir)..\..\..\</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnablePREfast>false</EnablePREfast>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -497,17 +498,11 @@
     <ClInclude Include="..\..\..\..\third_party\lua\src\lvm.h" />
     <ClInclude Include="..\..\..\..\third_party\lua\src\lzio.h" />
     <ClInclude Include="..\..\..\analytics.h" />
-    <ClInclude Include="..\..\..\autocomplete_item.h" />
-    <ClInclude Include="..\..\..\autotracker.h" />
-    <ClInclude Include="..\..\..\base_model.h" />
     <ClInclude Include="..\..\..\batch_update_result.h" />
-    <ClInclude Include="..\..\..\client.h" />
     <ClInclude Include="..\..\..\const.h" />
     <ClInclude Include="..\..\..\context.h" />
-    <ClInclude Include="..\..\..\custom_error_handler.h" />
     <ClInclude Include="..\..\..\database.h" />
     <ClInclude Include="..\..\..\feedback.h" />
-    <ClInclude Include="..\..\..\formatter.h" />
     <ClInclude Include="..\..\..\get_focused_window.h" />
     <ClInclude Include="..\..\..\error.h" />
     <ClInclude Include="..\..\..\gui.h" />
@@ -515,27 +510,36 @@
     <ClInclude Include="..\..\..\https_client.h" />
     <ClInclude Include="..\..\..\idle.h" />
     <ClInclude Include="..\..\..\migrations.h" />
+    <ClInclude Include="..\..\..\model\autotracker.h" />
+    <ClInclude Include="..\..\..\model\base_model.h" />
+    <ClInclude Include="..\..\..\model\client.h" />
+    <ClInclude Include="..\..\..\model\obm_action.h" />
+    <ClInclude Include="..\..\..\model\project.h" />
+    <ClInclude Include="..\..\..\model\settings.h" />
+    <ClInclude Include="..\..\..\model\tag.h" />
+    <ClInclude Include="..\..\..\model\task.h" />
+    <ClInclude Include="..\..\..\model\timeline_event.h" />
+    <ClInclude Include="..\..\..\model\time_entry.h" />
+    <ClInclude Include="..\..\..\model\user.h" />
+    <ClInclude Include="..\..\..\model\workspace.h" />
     <ClInclude Include="..\..\..\netconf.h" />
-    <ClInclude Include="..\..\..\obm_action.h" />
-    <ClInclude Include="..\..\..\random.h" />
-    <ClInclude Include="..\..\..\Rectangle.h" />
     <ClInclude Include="..\..\..\toggl_api.h" />
     <ClInclude Include="..\..\..\toggl_api_private.h" />
-    <ClInclude Include="..\..\..\project.h" />
     <ClInclude Include="..\..\..\proxy.h" />
     <ClInclude Include="..\..\..\related_data.h" />
-    <ClInclude Include="..\..\..\tag.h" />
-    <ClInclude Include="..\..\..\task.h" />
-    <ClInclude Include="..\..\..\timeline_event.h" />
     <ClInclude Include="..\..\..\timeline_notifications.h" />
     <ClInclude Include="..\..\..\timeline_uploader.h" />
-    <ClInclude Include="..\..\..\time_entry.h" />
     <ClInclude Include="..\..\..\types.h" />
     <ClInclude Include="..\..\..\urls.h" />
-    <ClInclude Include="..\..\..\user.h" />
+    <ClInclude Include="..\..\..\util\custom_error_handler.h" />
+    <ClInclude Include="..\..\..\util\formatter.h" />
+    <ClInclude Include="..\..\..\util\logger.h" />
+    <ClInclude Include="..\..\..\util\memory.h" />
+    <ClInclude Include="..\..\..\util\memory_impl.h" />
+    <ClInclude Include="..\..\..\util\random.h" />
+    <ClInclude Include="..\..\..\util\rectangle.h" />
     <ClInclude Include="..\..\..\websocket_client.h" />
     <ClInclude Include="..\..\..\window_change_recorder.h" />
-    <ClInclude Include="..\..\..\workspace.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -577,15 +581,10 @@
     <ClCompile Include="..\..\..\..\third_party\lua\src\lvm.c" />
     <ClCompile Include="..\..\..\..\third_party\lua\src\lzio.c" />
     <ClCompile Include="..\..\..\analytics.cc" />
-    <ClCompile Include="..\..\..\autotracker.cc" />
-    <ClCompile Include="..\..\..\base_model.cc" />
     <ClCompile Include="..\..\..\batch_update_result.cc" />
-    <ClCompile Include="..\..\..\client.cc" />
     <ClCompile Include="..\..\..\context.cc" />
-    <ClCompile Include="..\..\..\custom_error_handler.cc" />
     <ClCompile Include="..\..\..\database.cc" />
     <ClCompile Include="..\..\..\feedback.cc" />
-    <ClCompile Include="..\..\..\formatter.cc" />
     <ClCompile Include="..\..\..\get_focused_window_windows.cc" />
     <ClCompile Include="..\..\..\error.cc" />
     <ClCompile Include="..\..\..\gui.cc" />
@@ -593,26 +592,33 @@
     <ClCompile Include="..\..\..\https_client.cc" />
     <ClCompile Include="..\..\..\idle.cc" />
     <ClCompile Include="..\..\..\migrations.cc" />
+    <ClCompile Include="..\..\..\model\autotracker.cc" />
+    <ClCompile Include="..\..\..\model\base_model.cc" />
+    <ClCompile Include="..\..\..\model\client.cc" />
+    <ClCompile Include="..\..\..\model\obm_action.cc" />
+    <ClCompile Include="..\..\..\model\project.cc" />
+    <ClCompile Include="..\..\..\model\settings.cc" />
+    <ClCompile Include="..\..\..\model\tag.cc" />
+    <ClCompile Include="..\..\..\model\task.cc" />
+    <ClCompile Include="..\..\..\model\timeline_event.cc" />
+    <ClCompile Include="..\..\..\model\time_entry.cc" />
+    <ClCompile Include="..\..\..\model\user.cc" />
+    <ClCompile Include="..\..\..\model\workspace.cc" />
     <ClCompile Include="..\..\..\netconf.cc" />
-    <ClCompile Include="..\..\..\obm_action.cc" />
-    <ClCompile Include="..\..\..\random.cc" />
-    <ClCompile Include="..\..\..\Rectangle.cc" />
-    <ClCompile Include="..\..\..\settings.cc" />
-    <ClCompile Include="..\..\..\timeline_event.cc" />
     <ClCompile Include="..\..\..\toggl_api.cc" />
     <ClCompile Include="..\..\..\toggl_api_private.cc" />
-    <ClCompile Include="..\..\..\project.cc" />
     <ClCompile Include="..\..\..\proxy.cc" />
     <ClCompile Include="..\..\..\related_data.cc" />
-    <ClCompile Include="..\..\..\tag.cc" />
-    <ClCompile Include="..\..\..\task.cc" />
     <ClCompile Include="..\..\..\timeline_uploader.cc" />
-    <ClCompile Include="..\..\..\time_entry.cc" />
     <ClCompile Include="..\..\..\urls.cc" />
-    <ClCompile Include="..\..\..\user.cc" />
+    <ClCompile Include="..\..\..\util\custom_error_handler.cc" />
+    <ClCompile Include="..\..\..\util\formatter.cc" />
+    <ClCompile Include="..\..\..\util\logger.cc" />
+    <ClCompile Include="..\..\..\util\memory.cc" />
+    <ClCompile Include="..\..\..\util\random.cc" />
+    <ClCompile Include="..\..\..\util\rectangle.cc" />
     <ClCompile Include="..\..\..\websocket_client.cc" />
     <ClCompile Include="..\..\..\window_change_recorder.cc" />
-    <ClCompile Include="..\..\..\workspace.cc" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug.Broken|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug.Broken|x64'">false</CompileAsManaged>

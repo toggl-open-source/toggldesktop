@@ -243,13 +243,16 @@ public:
     friend class iterator;
     friend class const_iterator;
 
+	static inline std::function defaultComparison{
+		[](const T* l, const T* r) { return l < r; }
+	};
     /**
      * @brief ProtectedContainer
      * @param parent - the parent RelatedData instances (to be passed to the children)
      * @param comparison - a binary predicate with the signature of bool(const T*, const T*), used to insert items at the right position when creating
      * TODO Using the comparison predicate has O(N) complexity, we'd very likely be much better off storing everything in a std::set
      */
-    ProtectedContainer(RelatedData *parent, comparison_function comparison = [](const T* l, const T* r){ return l < r; });
+    ProtectedContainer(RelatedData *parent, comparison_function comparison = defaultComparison);
     ProtectedContainer(const ProtectedContainer &o) = delete;
     ~ProtectedContainer();
 

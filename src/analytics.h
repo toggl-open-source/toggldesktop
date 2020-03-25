@@ -10,6 +10,7 @@
 #include <Poco/LocalDateTime.h>
 
 #include "proxy.h"
+#include "util/memory.h"
 #include "util/rectangle.h"
 #include "model/settings.h"
 
