@@ -1,6 +1,20 @@
 {
     "versions": [
         {
+            "version": "7.5.85",
+            "rows": [
+                "Improve the resize area in the Timeline Pill",
+                "Replace deprecated APIs with modern APIs to get the Window Title properly on Catalina",
+                "Add missing keyboard shortcuts to menubar menu",
+                "Add ToolTip for Next/Preview day button in Timeline",
+                "Scroll to visible view (Timeline event, current moment or Timeline Pill) when switching dates",
+                "Fixed conflict macOS shortcut by changing from CMD+SHIFT+Arrow to CMD+[ or ] for switching to the previous or next Timeline day",
+                "Fixed possible crash when selecting the default workspace"
+            ],
+            "date": "March 25th 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.62",
             "rows": [
                 "Ease of project creation by keyboard",
