@@ -10,7 +10,7 @@
                 "Fixed Click in duration field results in field overwriting the duration time when TE is stopped"
             ],
             "date": "March 25th 2020"
-        }
+        },
         {
             "version": "7.5.49",
             "rows": [
