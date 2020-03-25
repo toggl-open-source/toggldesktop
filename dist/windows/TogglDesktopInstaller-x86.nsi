@@ -222,6 +222,7 @@ SectionEnd
 !ifdef INNER
 Section "Uninstall"
 
+  Call un.killAppProcess
   ;ADD YOUR OWN FILES HERE...
   Delete "$INSTDIR\*.dll"
   Delete "$INSTDIR\*.xml"
@@ -230,7 +231,7 @@ Section "Uninstall"
   Delete "$INSTDIR\TogglDesktop.exe.config"
   Delete "$INSTDIR\toggl.ico"
   RMDir "$INSTDIR\updates"
-  RMDir "$LOCALAPPDATA\Onova\TogglDesktop" ;Remove the prepared updates
+  RMDir /r "$LOCALAPPDATA\Onova\TogglDesktop" ;Remove the prepared updates
 
   ;Delete desktop shortcut
   Delete "$DESKTOP\TogglDesktop.lnk"
@@ -328,6 +329,25 @@ Function un.customPage
   nsDialogs::OnClick $CHECKBOX $0
 
   nsDialogs::Show
+
+FunctionEnd
+
+Function un.killAppProcess
+  ;Check if Old version of the app is still running and close it
+  DetailPrint "Closing all old TogglDesktop processes"
+  File "NSIS_plugins\KillProc.exe"
+  nsExec::Exec "$INSTDIR\KillProc.exe TogglDesktop"
+  Delete "$INSTDIR\KillProc.exe"
+  StrCmp $0 "-1" wooops
+
+  Goto completed
+
+  wooops:
+  DetailPrint "-> Error: Something went wrong :-("
+  Abort
+
+  completed:
+  DetailPrint "Everything went okay :-D"
 
 FunctionEnd
 
