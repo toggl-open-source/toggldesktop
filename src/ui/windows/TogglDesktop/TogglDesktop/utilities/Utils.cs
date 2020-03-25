@@ -283,6 +283,7 @@ public static class Utils
         #region registry
 
         private const string StartupAppsRegistryPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
+        private const string PoliciesRegistryPath = @"Software\Policies\Toggl\TogglDesktop";
         public static bool GetLaunchOnStartupRegistry()
         {
             var subKey = Registry.CurrentUser.OpenSubKey(StartupAppsRegistryPath);
@@ -313,6 +314,15 @@ public static class Utils
                     subKey.DeleteValue("TogglDesktop");
                 }
             }
+        }
+
+        public static bool GetIsUpdateCheckDisabledFromRegistry()
+        {
+            // On Windows platform, system admin can disable
+            // automatic update check via registry key.
+            var subKey = Registry.LocalMachine.OpenSubKey(PoliciesRegistryPath, false);
+            var value = subKey?.GetValue("UpdateCheckDisabled", false);
+            return value != null && Convert.ToBoolean(value);
         }
 
         public static bool TryOpenInDefaultBrowser(string url)

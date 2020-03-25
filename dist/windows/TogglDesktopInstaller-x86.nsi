@@ -49,9 +49,8 @@
 ;--------------------------------
 ;Global variables
 
-  Var keyLength
-  Var isUpdater
-  Var fromOldVersion
+  Var isOldUpdater
+  Var isNewUpdater
   Var deleteData
   Var CHECKBOX
   Var cmdLineParams
@@ -140,27 +139,26 @@ Section
 
   SetOutPath "$INSTDIR"
 
-  ;Check if Old version of the app is still running and close it
-  DetailPrint "Closing all old TogglDesktop processes"
-  File "NSIS_plugins\KillProc.exe"
-  nsExec::Exec "$INSTDIR\KillProc.exe TogglDesktop"
-  Delete "$INSTDIR\KillProc.exe"
-  StrCmp $0 "-1" wooops
+  ${If} $isNewUpdater == 0
+    ;Check if Old version of the app is still running and close it
+    DetailPrint "Closing all old TogglDesktop processes"
+    File "NSIS_plugins\KillProc.exe"
+    nsExec::Exec "$INSTDIR\KillProc.exe TogglDesktop"
+    Delete "$INSTDIR\KillProc.exe"
+    StrCmp $0 "-1" wooops
 
-  Goto completed
+    Goto completed
 
-  wooops:
-  DetailPrint "-> Error: Something went wrong :-("
-  Abort
+    wooops:
+    DetailPrint "-> Error: Something went wrong :-("
+    Abort
 
-  completed:
-  DetailPrint "Everything went okay :-D"
-
-  ;Rename Bugsnag so we can update
-  Rename $INSTDIR\Bugsnag.dll $INSTDIR\Bugsnag.1.2.dll
-
-  ;Delete the old Bugsnag file on reboot
-  Delete /REBOOTOK $INSTDIR\Bugsnag.1.2.dll
+    completed:
+    DetailPrint "Everything went okay :-D"
+    
+    ; Delete the main executable to prevent it from being launched while an update is running
+    Delete "$INSTDIR\TogglDesktop.exe"
+  ${EndIf}
 
   ;ADD YOUR OWN FILES HERE...
   File "${redist}\*.dll"
@@ -170,9 +168,12 @@ Section
   File "${srcdir}\TogglDesktop.exe.config"
   File "..\..\src\ui\windows\TogglDesktop\TogglDesktop\Resources\toggl.ico"
 
-  ;Store installation folder
-  WriteRegStr HKCU "Software\TogglDesktop" "" $INSTDIR
-
+  ${If} $isOldUpdater == 0
+  ${AndIf} $isNewUpdater == 0  
+    ;Store installation folder
+    WriteRegStr HKCU "Software\TogglDesktop" "" $INSTDIR
+  ${EndIf}
+  
   ;Create uninstaller
 !ifndef INNER
   SetOutPath $INSTDIR
@@ -180,34 +181,36 @@ Section
   File $%TEMP%\Uninstall.exe
 !endif
 
-  ;Create Desktop shortcut only when shortcut is present or at first install
+  ;Create Desktop shortcut only when shortcut is not present or at first install
   IfFileExists $DESKTOP\TogglDesktop.lnk 0 ShortcutDoesntExist
     CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$INSTDIR\TogglDesktop.exe" ""
     ShortcutDoesntExist:
-    ${If} $isUpdater == 0
-      ;Create desktop shortcut
+    ${If} $isOldUpdater == 0
+    ${AndIf} $isNewUpdater == 0
       CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$INSTDIR\TogglDesktop.exe" ""
     ${EndIf}
 
-  ;Add/Remove programs entry
-  !define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\TogglDesktop"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayName" "Toggl Desktop"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayIcon" "$\"$INSTDIR\TogglDesktop.exe$\""
-  WriteRegStr HKCU "${REG_UNINSTALL}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
-  WriteRegStr HKCU "${REG_UNINSTALL}" "Publisher" "Toggl"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "HelpLink" "https://support.toggl.com/desktop-apps"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "URLInfoAbout" "https://www.toggl.com/"
-  WriteRegStr HKCU "${REG_UNINSTALL}" "InstallLocation" "$\"$INSTDIR$\""
-  WriteRegStr HKCU "${REG_UNINSTALL}" "NoModify" 1
-  WriteRegStr HKCU "${REG_UNINSTALL}" "NoRepair" 1
-  WriteRegStr HKCU "${REG_UNINSTALL}" "Comments" "Uninstalls Toggl Desktop"
+  ${If} $isOldUpdater == 0
+  ${AndIf} $isNewUpdater == 0
+    ;Add/Remove programs entry
+    !define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\TogglDesktop"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayName" "Toggl Desktop"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayIcon" "$\"$INSTDIR\TogglDesktop.exe$\""
+    WriteRegStr HKCU "${REG_UNINSTALL}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
+    WriteRegStr HKCU "${REG_UNINSTALL}" "Publisher" "Toggl"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "HelpLink" "https://support.toggl.com/desktop-apps"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "URLInfoAbout" "https://www.toggl.com/"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "InstallLocation" "$\"$INSTDIR$\""
+    WriteRegStr HKCU "${REG_UNINSTALL}" "NoModify" 1
+    WriteRegStr HKCU "${REG_UNINSTALL}" "NoRepair" 1
+    WriteRegStr HKCU "${REG_UNINSTALL}" "Comments" "Uninstalls Toggl Desktop"
 
-  ;Create start menu entry
-  createDirectory "$SMPROGRAMS\Toggl"
-  createShortCut "$SMPROGRAMS\Toggl\Toggl Desktop.lnk" "$INSTDIR\TogglDesktop.exe" "" "$INSTDIR\toggl.ico"
-  createShortCut "$SMPROGRAMS\Toggl\Uninstall Toggl Desktop.lnk" "$INSTDIR\uninstall.exe" "" ""
-
+    ;Create start menu entry
+    createDirectory "$SMPROGRAMS\Toggl"
+    createShortCut "$SMPROGRAMS\Toggl\Toggl Desktop.lnk" "$INSTDIR\TogglDesktop.exe" "" "$INSTDIR\toggl.ico"
+    createShortCut "$SMPROGRAMS\Toggl\Uninstall Toggl Desktop.lnk" "$INSTDIR\uninstall.exe" "" ""
+  ${EndIf}
 SectionEnd
 
 ;--------------------------------
@@ -227,6 +230,7 @@ Section "Uninstall"
   Delete "$INSTDIR\TogglDesktop.exe.config"
   Delete "$INSTDIR\toggl.ico"
   RMDir "$INSTDIR\updates"
+  RMDir "$LOCALAPPDATA\Onova\TogglDesktop" ;Remove the prepared updates
 
   ;Delete desktop shortcut
   Delete "$DESKTOP\TogglDesktop.lnk"
@@ -261,46 +265,29 @@ Function .onInit
 !endif
 
   ${GetParameters} $cmdLineParams
-  Call checkOldVersion
   Call checkUpdater
-
-FunctionEnd
-
-Function checkOldVersion
-
-  StrCpy $fromOldVersion 0
-
-  ReadRegStr $3 HKLM "SOFTWARE\Toggl\TogglDesktop" "Version"
-  StrLen $keyLength $3
-
-  ${if} $keyLength != 0
-    StrCpy $R3 $3 3
-    StrCmp $R3 "7.1" 0 Newer
-    StrCpy $fromOldVersion 1
-    Newer:
-  ${Endif}
 
 FunctionEnd
 
 Function checkUpdater
 
   Push $R0
-  StrCpy $isUpdater 0
+  StrCpy $isOldUpdater 0
   ${GetOptions} $cmdLineParams '/U' $R0
   IfErrors +3 0
-  StrCpy $isUpdater 1
+  StrCpy $isOldUpdater 1
+  SetSilent silent
+  StrCpy $isNewUpdater 0
+  ${GetOptions} $cmdLineParams "/autoupdate" $R0
+  IfErrors +3 0
+  StrCpy $isNewUpdater 1
   SetSilent silent
 
 FunctionEnd
 
 Function .onInstSuccess
-
-  ${If} $fromOldVersion == 1
-    ;Copy local database from 7.1 app to newer app location
-    CopyFiles "$PROFILE\AppData\Roaming\Kopsik\kopsik.db" "$INSTDIR\toggldesktop.db"
-  ${EndIf}
   
-  ${if} $isUpdater == 1
+  ${if} $isOldUpdater == 1
     Exec "$INSTDIR\TogglDesktop.exe --updated"
   ${Endif}
 

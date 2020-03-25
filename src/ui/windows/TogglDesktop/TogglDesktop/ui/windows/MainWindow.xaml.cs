@@ -18,6 +18,7 @@ using NHotkey;
 using NHotkey.Wpf;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.Experiments;
+using TogglDesktop.Services;
 using TogglDesktop.Theming;
 using TogglDesktop.Tutorial;
 using TogglDesktop.ViewModels;
@@ -181,9 +182,13 @@ namespace TogglDesktop
 
         private void initializeWindows()
         {
+            var aboutWindowViewModel = new AboutWindowViewModel(
+                updateService: new UpdateService(Toggl.IsUpdateCheckDisabled(), Toggl.UpdatesPath),
+                versionText: $"Version {Program.Version()} {Utils.Bitness()}");
+
             this.childWindows = new Window[]{
                 this.editPopup = new EditViewPopup(),
-                new AboutWindow(),
+                new AboutWindow(aboutWindowViewModel),
                 new FeedbackWindow(),
                 new PreferencesWindow(),
             };
@@ -262,7 +267,7 @@ namespace TogglDesktop
 
             this.loadPositions();
 
-            this.GetWindow<AboutWindow>().UpdateReleaseChannel();
+            this.GetWindow<AboutWindow>().ViewModel.InitUpdateChannel(Toggl.UpdateChannel());
 
             this.errorBar.Hide();
             this.statusBar.Hide();
@@ -694,8 +699,6 @@ namespace TogglDesktop
 
             this.PrepareShutdown(exitCode == 0);
 
-            this.Close();
-
             this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
                 Program.Shutdown(exitCode);
@@ -732,10 +735,8 @@ namespace TogglDesktop
                 Utils.SaveWindowLocation(this, this.editPopup, this.miniTimer);
             }
 
-            if (this.IsVisible)
-            {
-                this.Hide();
-            }
+            this.childWindows.ForEach(w => w.Hide());
+            this.Close();
         }
 
         private void updateStatusIcons(bool isOnline)

@@ -189,6 +189,10 @@
     <Compile Include="BugsnagService.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
+    <Compile Include="Services\NsisPackageExtractor.cs" />
+    <Compile Include="Services\UpdateService.cs" />
+    <Compile Include="Services\UpdateStatus.cs" />
+    <Compile Include="Services\Win10\RunOnStartup.cs" />
     <Compile Include="SingleInstanceManager.cs" />
     <Compile Include="ui\Behaviors\ActivateParentWindowOnMouseClick.cs" />
     <Compile Include="ui\Behaviors\ButtonHelper.cs" />
@@ -231,6 +235,7 @@
       <DependentUpon>TrayToolTipControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Converters\AndConverter.cs" />
+    <Compile Include="ui\Converters\CapitalizeConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
     <Compile Include="ui\Converters\IsSelectableItemConverter.cs" />
     <Compile Include="ui\Converters\StringFormatIfNotEmptyConverter.cs" />
@@ -309,6 +314,7 @@
     </Compile>
     <Compile Include="ui\Tutorial\TutorialManager.cs" />
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
+    <Compile Include="ui\ViewModels\AboutWindowViewModel.cs" />
     <Compile Include="ui\ViewModels\DayHeaderViewModel.cs" />
     <Compile Include="ui\ViewModels\FeedbackWindowViewModel.cs" />
     <Compile Include="ui\ViewModels\LoginViewModel.cs" />
@@ -407,7 +413,6 @@
     <Compile Include="ui\views\Timer.xaml.cs">
       <DependentUpon>Timer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Win10\RunOnStartup.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -870,6 +875,9 @@
     </PackageReference>
     <PackageReference Include="NHotkey.Wpf">
       <Version>1.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="Onova">
+      <Version>2.5.2</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.Fody">
       <Version>11.1.23</Version>
