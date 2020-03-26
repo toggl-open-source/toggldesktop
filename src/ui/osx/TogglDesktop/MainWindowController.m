@@ -117,6 +117,7 @@ extern void *ctx;
 	[self.messageView addConstraint:height];
 	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.messageView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0]];
 	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.messageView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.messageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:self.contentView attribute:NSLayoutAttributeTop multiplier:1 constant:16]];
 
 	// Hidden by default
 	self.messageView.hidden = YES;

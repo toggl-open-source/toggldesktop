@@ -262,12 +262,14 @@ extern void *ctx;
 	if ([errorStr isEqualToString:@"access_denied"])
 	{
 		errorStr = @"Google login access was denied to app.";
-	}
-
-	if ([errorStr isEqualToString:@"The operation couldn’t be completed. (com.google.GTMOAuth2 error -1000.)"])
+	} else if ([errorStr isEqualToString:@"The operation couldn’t be completed. (com.google.GTMOAuth2 error -1000.)"])
 	{
 		errorStr = @"Window was closed before login completed.";
-	}
+    } else if (error.code == -1009) {
+        errorStr = @"The Internet connection appears to be offline.";
+    } else {
+        errorStr = [NSString stringWithFormat:@"Google Authorization Failed. Code %ld", (long)error.code];
+    }
 
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
 																object:errorStr];
