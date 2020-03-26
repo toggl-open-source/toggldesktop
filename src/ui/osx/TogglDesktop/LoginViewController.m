@@ -207,7 +207,7 @@ extern void *ctx;
             self.signUpGroupView.hidden = YES;
             self.appleBtn.title = @" Log in with Apple";
             self.googleBtn.title = @" Log in with Google";
-            self.userActionBtn.title = @"Login with email";
+            self.userActionBtn.title = @"Log in with email";
             self.forgotPasswordTextField.hidden = NO;
             self.signUpLink.stringValue = @"Sign up for free";
             self.donotHaveAccountLbl.hidden = NO;
