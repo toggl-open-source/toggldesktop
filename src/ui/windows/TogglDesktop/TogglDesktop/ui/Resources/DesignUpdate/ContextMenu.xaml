@@ -96,7 +96,7 @@
                            Style="{StaticResource Toggl.CaptionText}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Right"
-                           MaxWidth="200"
+                           MaxWidth="180"
                            TextWrapping="NoWrap"
                            TextTrimming="CharacterEllipsis"
                            Text="{TemplateBinding InputGestureText}"/>
