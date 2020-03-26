@@ -3152,10 +3152,6 @@ error Context::SetTimeEntryProject(
             return noError;
         }
 
-        if (isTimeEntryLocked(te)) {
-            return logAndDisplayUserTriedEditingLockedEntry();
-        }
-
         error err = updateTimeEntryProject(te, task_id, project_id, project_guid);
         if (err != noError) {
             return err;
@@ -3175,6 +3171,10 @@ error Context::updateTimeEntryProject(
                                       const Poco::UInt64 task_id,
                                       const Poco::UInt64 project_id,
                                       const std::string &project_guid) {
+    if (isTimeEntryLocked(te)) {
+        return logAndDisplayUserTriedEditingLockedEntry();
+    }
+
     Project *p = nullptr;
     if (project_id) {
         p = user_->related.ProjectByID(project_id);
@@ -6189,4 +6189,43 @@ void Context::TrackExpandAllDays() {
     }
 }
 
+error Context::updateTimeEntry(
+                      const std::string &GUID,
+                      const std::string &description,
+                      const Poco::UInt64 task_id,
+                      const Poco::UInt64 project_id,
+                      const std::string &project_guid,
+                      const std::string &tags) {
+
+    if (GUID.empty()) {
+        return displayError(std::string(__FUNCTION__) + ": Missing GUID");
+    }
+
+    Poco::Mutex::ScopedLock lock(user_m_);
+    if (!user_) {
+        logger.warning("Cannot set project, user logged out");
+        return noError;
+    }
+
+    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
+    if (!te) {
+        logger.warning("Time entry not found: " + GUID);
+        return noError;
+    }
+
+    // Update
+    error err = updateTimeEntryDescription(te, GUID, description);
+    if (err != noError) {
+        return err;
+    }
+    err = updateTimeEntryProject(te, task_id, project_id, project_guid);
+    if (err != noError) {
+        return err;
+    }
+    err = updateTimeEntryTags(te, GUID, tags);
+    if (err != noError) {
+        return err;
+    }
+    return displayError(save(true));
+}
 }  // namespace toggl

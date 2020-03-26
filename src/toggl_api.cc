@@ -1553,11 +1553,26 @@ bool_t toggl_set_time_entry(
     const uint64_t project_id,
     const char_t *project_guid,
     const char_t *tags) {
-    if (app(context)->SetTimeEntryProject(to_string(guid), task_id, project_id, to_string(project_guid)) != toggl::noError) {
-        return false;
+
+    std::string _guid("");
+    if (guid) {
+        _guid = to_string(guid);
     }
-    if (app(context)->SetTimeEntryTags(to_string(guid), to_string(tags)) != toggl::noError) {
-        return false;
+
+    std::string _description("");
+    if (description) {
+        _description = to_string(description);
     }
-    return toggl::noError == app(context)->SetTimeEntryDescription(to_string(guid), to_string(description));
+
+    std::string _project_guid("");
+    if (project_guid) {
+        _project_guid = to_string(project_guid);
+    }
+
+    std::string _tags("");
+    if (tags) {
+        _tags = to_string(tags);
+    }
+
+    return toggl::noError == app(context)->updateTimeEntry(_guid, _description, task_id, project_id, _project_guid, _tags);
 }

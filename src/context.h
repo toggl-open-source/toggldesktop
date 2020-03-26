@@ -388,6 +388,14 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const Poco::UInt64 project_id,
         const std::string &project_guid);
 
+    error updateTimeEntry(
+                          const std::string &GUID,
+                          const std::string &description,
+                          const Poco::UInt64 task_id,
+                          const Poco::UInt64 project_id,
+                          const std::string &project_guid,
+                          const std::string &tags);
+
     error SetTimeEntryDate(
         const std::string &GUID,
         const Poco::Int64 unix_timestamp);
