@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,18 +17,18 @@
                 <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="2" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KwU-6U-Riq">
                     <rect key="frame" x="15" y="10" width="205" height="54"/>
                     <subviews>
-                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="ur6-hb-DKX">
-                            <rect key="frame" x="-2" y="18" width="101" height="18"/>
+                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="ur6-hb-DKX">
+                            <rect key="frame" x="-2" y="19" width="101" height="17"/>
                             <textFieldCell key="cell" selectable="YES" title="Multiline Label " id="B1S-5c-RPX">
-                                <font key="font" metaFont="system" size="14"/>
+                                <font key="font" metaFont="menu" size="14"/>
                                 <color key="textColor" name="error-title-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="0Gx-33-val">
-                            <rect key="frame" x="-2" y="38" width="209" height="16"/>
+                        <textField hidden="YES" verticalHuggingPriority="749" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="0Gx-33-val">
+                            <rect key="frame" x="-2" y="39" width="209" height="15"/>
                             <textFieldCell key="cell" selectable="YES" title="Label Label Label Label Label Label " id="Qco-aY-dFI">
-                                <font key="font" metaFont="cellTitle"/>
+                                <font key="font" metaFont="label" size="12"/>
                                 <color key="textColor" name="grey-text-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
@@ -71,7 +72,7 @@
     <resources>
         <image name="close-button" width="7" height="7"/>
         <namedColor name="error-title-color">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23100000619888306" blue="0.18799999356269836" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="grey-text-color">
             <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
