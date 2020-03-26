@@ -199,7 +199,8 @@ void *ctx;
                          autocomplete.TaskID,
                          autocomplete.ProjectID,
                          0,
-                         tags);
+                         tags,
+                         timeEntry.billable);
 }
 
 - (NSString *)convertDuratonInSecond:(int64_t)durationInSecond
