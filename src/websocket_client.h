@@ -14,12 +14,12 @@
 #include "util/logger.h"
 
 namespace Poco {
-    namespace Net {
-        class HTTPClientSession;
-        class HTTPRequest;
-        class HTTPResponse;
-        class WebSocket;
-    } // namespace Poco::Net
+namespace Net {
+class HTTPClientSession;
+class HTTPRequest;
+class HTTPResponse;
+class WebSocket;
+} // namespace Poco::Net
 } // namespace Poco
 
 namespace toggl {

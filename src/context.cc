@@ -3171,10 +3171,10 @@ error Context::SetTimeEntryProject(
 }
 
 error Context::updateTimeEntryProject(
-                                      TimeEntry *te,
-                                      const Poco::UInt64 task_id,
-                                      const Poco::UInt64 project_id,
-                                      const std::string &project_guid) {
+    TimeEntry *te,
+    const Poco::UInt64 task_id,
+    const Poco::UInt64 project_id,
+    const std::string &project_guid) {
     Project *p = nullptr;
     if (project_id) {
         p = user_->related.ProjectByID(project_id);
@@ -3185,7 +3185,7 @@ error Context::updateTimeEntryProject(
 
     if (p && !canChangeProjectTo(te, p)) {
         return displayError(error(
-                                  "Cannot change project: would end up with locked time entry"));
+            "Cannot change project: would end up with locked time entry"));
     }
 
     if (p) {
@@ -3193,7 +3193,7 @@ error Context::updateTimeEntryProject(
         // flag any more. (User selected billable project, unchecked
         // billable, // then selected the same project again).
         if (p->ID() != te->PID()
-            || (!project_guid.empty() && p->GUID().compare(te->ProjectGUID()) != 0)) {
+                || (!project_guid.empty() && p->GUID().compare(te->ProjectGUID()) != 0)) {
             te->SetBillable(p->Billable());
         }
         te->SetWID(p->WID());
@@ -3490,8 +3490,8 @@ error Context::SetTimeEntryTags(
 }
 
 void Context::updateTimeEntryTags(
-                                   TimeEntry *te,
-                                   const std::string &value) {
+    TimeEntry *te,
+    const std::string &value) {
     te->SetTags(value);
 }
 
@@ -3533,8 +3533,8 @@ error Context::SetTimeEntryBillable(
 }
 
 void Context::updateTimeEntryBillable(
-                                      TimeEntry *te,
-                                      const bool value) {
+    TimeEntry *te,
+    const bool value) {
     te->SetBillable(value);
 }
 
@@ -3573,8 +3573,8 @@ error Context::SetTimeEntryDescription(
 }
 
 error Context::updateTimeEntryDescription(
-                                          TimeEntry *te,
-                                          const std::string &value) {
+    TimeEntry *te,
+    const std::string &value) {
     // Validate description length
     if (value.length() > kMaximumDescriptionLength) {
         return displayError(error(kMaximumDescriptionLengthError));
@@ -6189,13 +6189,13 @@ void Context::TrackExpandAllDays() {
 }
 
 error Context::updateTimeEntry(
-                      const std::string &GUID,
-                      const std::string &description,
-                      const Poco::UInt64 task_id,
-                      const Poco::UInt64 project_id,
-                      const std::string &project_guid,
-                      const std::string &tags,
-                    const bool billable) {
+    const std::string &GUID,
+    const std::string &description,
+    const Poco::UInt64 task_id,
+    const Poco::UInt64 project_id,
+    const std::string &project_guid,
+    const std::string &tags,
+    const bool billable) {
 
     if (GUID.empty()) {
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
