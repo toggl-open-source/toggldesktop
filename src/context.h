@@ -386,8 +386,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string &GUID,
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
-        const std::string &project_guid,
-        const bool_t update_ui = true);
+        const std::string &project_guid);
 
     error SetTimeEntryDate(
         const std::string &GUID,
@@ -816,6 +815,22 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     std::string last_message_id_;
 
     const bool handleStopRunningEntry();
+
+    error updateTimeEntryProject(
+                                 TimeEntry *te,
+                                 const Poco::UInt64 task_id,
+                                 const Poco::UInt64 project_id,
+                                 const std::string &project_guid);
+
+    error updateTimeEntryTags(
+                              TimeEntry *te,
+                              const std::string &GUID,
+                              const std::string &value);
+
+    error updateTimeEntryDescription(
+                                     TimeEntry *te,
+                                     const std::string &GUID,
+                                     const std::string &value);
 };
 
 void on_websocket_message(
