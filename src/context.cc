@@ -2357,19 +2357,19 @@ Database *Context::db() const {
 }
 
 error Context::GoogleLogin(const std::string &access_token) {
-    return Login(access_token, "google_access_token");
+    return Login(access_token, kGoogleAccessToken);
 }
 
 error Context::AsyncGoogleLogin(const std::string &access_token) {
-    return AsyncLogin(access_token, "google_access_token");
+    return AsyncLogin(access_token, kGoogleAccessToken);
 }
 
 error Context::AppleLogin(const std::string &access_token) {
-    return Login(access_token, "apple_token");
+    return Login(access_token, kAppleAccessToken);
 }
 
 error Context::AsyncAppleLogin(const std::string &access_token) {
-    return AsyncLogin(access_token, "apple_token");
+    return AsyncLogin(access_token, kAppleAccessToken);
 }
 
 error Context::attemptOfflineLogin(const std::string &email,
@@ -2484,8 +2484,10 @@ error Context::Login(
         }
 
         if ("production" == environment_) {
-            if (password.compare("google_access_token") == 0) {
+            if (password.compare(kGoogleAccessToken) == 0) {
                 analytics_.TrackLoginWithGoogle(db_->AnalyticsClientID());
+            } else if (password.compare(kAppleAccessToken) == 0) {
+                analytics_.TrackLoginWithApple(db_->AnalyticsClientID());
             } else {
                 analytics_.TrackLoginWithUsernamePassword(db_->AnalyticsClientID());
             }
@@ -2537,7 +2539,7 @@ error Context::GoogleSignup(
     if (err != noError) {
         return displayError(err);
     }
-    return Login(access_token, "google_access_token", true);
+    return Login(access_token, kGoogleAccessToken, true);
 }
 
 error Context::AsyncGoogleSignup(const std::string &access_token,
@@ -2559,7 +2561,7 @@ error Context::AppleSignup(
     if (err != noError) {
         return displayError(err);
     }
-    return Login(access_token, "apple_token");
+    return Login(access_token, kAppleAccessToken);
 }
 
 error Context::AsyncApleSignup(
@@ -5795,7 +5797,7 @@ error Context::signupGoogle(
     const std::string &access_token,
     std::string *user_data_json,
     const uint64_t country_id) {
-    return signUpWithProvider(toggl_client, access_token, user_data_json, country_id, "", "google");
+    return signUpWithProvider(toggl_client, access_token, user_data_json, country_id, "", kGoogleProvider);
 }
 
 error Context::signupApple(
@@ -5804,7 +5806,7 @@ error Context::signupApple(
     std::string *user_data_json,
     const std::string &full_name,
     const uint64_t country_id) {
-    return signUpWithProvider(toggl_client, access_token, user_data_json, country_id, full_name, "apple");
+    return signUpWithProvider(toggl_client, access_token, user_data_json, country_id, full_name, kAppleProvider);
 }
 
 error Context::signUpWithProvider(
@@ -5852,7 +5854,11 @@ error Context::signUpWithProvider(
         *user_data_json = resp.body;
 
         if ("production" == environment_) {
-            analytics_.TrackSignupWithGoogle(db_->AnalyticsClientID());
+            if (provider == kAppleProvider) {
+                analytics_.TrackSignupWithApple(db_->AnalyticsClientID());
+            } else if (provider == kGoogleProvider) {
+                analytics_.TrackSignupWithGoogle(db_->AnalyticsClientID());
+            }
         }
     }
     catch (const Poco::Exception& exc) {

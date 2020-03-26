@@ -121,5 +121,9 @@
 #define kTogglDesktopClientID_MacOS "toggldesktop.TogglDesktop"
 #define kAPIV8 "v8"
 #define kAPIV9 "v9"
+#define kGoogleProvider "google"
+#define kAppleProvider "apple"
+#define kGoogleAccessToken "google_access_token"
+#define kAppleAccessToken "apple_token"
 
 #endif  // SRC_CONST_H_
