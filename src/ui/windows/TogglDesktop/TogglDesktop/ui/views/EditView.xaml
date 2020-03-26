@@ -171,7 +171,7 @@
 
                                         <StackPanel Grid.Row="4" Margin="0 50 0 0" Height="32" Visibility="Visible"
                                                     Orientation="Horizontal" HorizontalAlignment="Right">
-                                            <Button Style="{StaticResource Toggl.PrimaryButton}" Width="125" Click="projectSaveButton_Click">Create project</Button>
+                                            <Button Style="{StaticResource Toggl.PrimaryButton}" Width="123" Click="projectSaveButton_Click">Create project</Button>
                                             <Button Style="{StaticResource Toggl.OutlinedButton}" Margin="8 0 0 0" Width="79" Click="projectCancelButton_Click">Cancel</Button>
                                         </StackPanel>
 
