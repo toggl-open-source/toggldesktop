@@ -350,6 +350,7 @@ namespace TogglDesktop
             var item = asProjectItem.Model;
 
             this.selectDefaultProject(item);
+            this.defaultProjectTextBox.CaretIndex = this.defaultProjectTextBox.Text.Length;
         }
 
         private void defaultProjectAutoComplete_OnConfirmWithoutCompletion(object sender, string e)

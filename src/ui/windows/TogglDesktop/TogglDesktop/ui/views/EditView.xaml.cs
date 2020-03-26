@@ -428,6 +428,7 @@ namespace TogglDesktop
             var item = asTimerItem.Model;
 
             this.descriptionTextBox.SetText(item.Description);
+            this.descriptionTextBox.CaretIndex = this.descriptionTextBox.Text.Length;
 
             Toggl.SetTimeEntryDescription(this.timeEntry.GUID, item.Description);
 
@@ -534,9 +535,10 @@ namespace TogglDesktop
 
         private void setProjectIfDifferent(Toggl.TogglAutocompleteView autoCompleteItem)
         {
+            this.projectTextBox.SetText(autoCompleteItem.ProjectLabel ?? "", autoCompleteItem.TaskLabel ?? "");
+            this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
             if (autoCompleteItem.ProjectID == this.timeEntry.PID && autoCompleteItem.TaskID == this.timeEntry.TID)
                 return;
-            this.projectTextBox.SetText(autoCompleteItem.ProjectLabel ?? "", autoCompleteItem.TaskLabel ?? "");
             this.projectTextBox.DataContext = autoCompleteItem.ProjectID == 0 ? null : autoCompleteItem.ToProjectLabelViewModel();
             this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString(autoCompleteItem.ProjectColor);
             Toggl.SetTimeEntryProject(this.timeEntry.GUID, autoCompleteItem.TaskID, autoCompleteItem.ProjectID, "");

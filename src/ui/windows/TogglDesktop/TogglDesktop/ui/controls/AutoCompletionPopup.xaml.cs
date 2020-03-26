@@ -41,8 +41,6 @@ namespace TogglDesktop
             this.popup.Closed += (s, e) => this.IsOpenChanged?.Invoke(this, EventArgs.Empty);
 
             this.IsEnabledChanged += this.onIsEnabledChanged;
-
-            this.FillTextBoxOnComplete = true;
         }
 
         #region properties
@@ -66,7 +64,6 @@ namespace TogglDesktop
         }
 
         public bool KeepOpenWhenSelecting { get; set; }
-        public bool FillTextBoxOnComplete { get; set; }
 
         #endregion
 
@@ -376,13 +373,6 @@ namespace TogglDesktop
                     this.open();
                 }
                 return;
-            }
-
-            if (this.FillTextBoxOnComplete)
-            {
-                this.textbox.SetText(item.Text);
-                this.textbox.CaretIndex = this.textbox.Text.Length;
-                this.textbox.Focus();
             }
 
             ConfirmCompletion?.Invoke(this, item);

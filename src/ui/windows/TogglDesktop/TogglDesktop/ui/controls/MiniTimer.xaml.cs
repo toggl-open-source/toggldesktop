@@ -145,6 +145,7 @@ namespace TogglDesktop
                 var item = asItem.Model;
 
                 this.descriptionTextBox.SetText(item.Description);
+                this.descriptionTextBox.CaretIndex = this.descriptionTextBox.Text.Length;
 
                 this.editProjectPanel.ShowOnlyIf(item.ProjectID != 0);
                 this.editModeProjectLabel.ViewModel = item.ToProjectLabelViewModel();
