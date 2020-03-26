@@ -1552,7 +1552,8 @@ bool_t toggl_set_time_entry(
     const uint64_t task_id,
     const uint64_t project_id,
     const char_t *project_guid,
-    const char_t *tags) {
+    const char_t *tags,
+    const bool_t billable) {
 
     std::string _guid("");
     if (guid) {
@@ -1574,5 +1575,5 @@ bool_t toggl_set_time_entry(
         _tags = to_string(tags);
     }
 
-    return toggl::noError == app(context)->updateTimeEntry(_guid, _description, task_id, project_id, _project_guid, _tags);
+    return toggl::noError == app(context)->updateTimeEntry(_guid, _description, task_id, project_id, _project_guid, _tags, billable);
 }

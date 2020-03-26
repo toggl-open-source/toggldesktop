@@ -3152,6 +3152,10 @@ error Context::SetTimeEntryProject(
             return noError;
         }
 
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
+
         error err = updateTimeEntryProject(te, task_id, project_id, project_guid);
         if (err != noError) {
             return err;
@@ -3171,10 +3175,6 @@ error Context::updateTimeEntryProject(
                                       const Poco::UInt64 task_id,
                                       const Poco::UInt64 project_id,
                                       const std::string &project_guid) {
-    if (isTimeEntryLocked(te)) {
-        return logAndDisplayUserTriedEditingLockedEntry();
-    }
-
     Project *p = nullptr;
     if (project_id) {
         p = user_->related.ProjectByID(project_id);
@@ -3469,36 +3469,30 @@ error Context::SetTimeEntryTags(
         }
         te = user_->related.TimeEntryByGUID(GUID);
 
-        error err = updateTimeEntryTags(te, GUID, value);
-        if (err != noError) {
-            return err;
+        if (!te) {
+            logger.warning("Time entry not found: " + GUID);
+            return noError;
         }
+
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
+
+        updateTimeEntryTags(te, value);
     }
-
-    return displayError(save(true));
-}
-
-error Context::updateTimeEntryTags(
-                                   TimeEntry *te,
-                                   const std::string &GUID,
-                                   const std::string &value) {
-    if (!te) {
-        logger.warning("Time entry not found: " + GUID);
-        return noError;
-    }
-
-    if (isTimeEntryLocked(te)) {
-        return logAndDisplayUserTriedEditingLockedEntry();
-    }
-
-    te->SetTags(value);
 
     if (te->Dirty()) {
         te->ClearValidationError();
         te->SetUIModified();
     }
 
-    return noError;
+    return displayError(save(true));
+}
+
+void Context::updateTimeEntryTags(
+                                   TimeEntry *te,
+                                   const std::string &value) {
+    te->SetTags(value);
 }
 
 error Context::SetTimeEntryBillable(
@@ -3526,9 +3520,9 @@ error Context::SetTimeEntryBillable(
         if (isTimeEntryLocked(te)) {
             return logAndDisplayUserTriedEditingLockedEntry();
         }
-    }
 
-    te->SetBillable(value);
+        updateTimeEntryBillable(te, value);
+    }
 
     if (te->Dirty()) {
         te->ClearValidationError();
@@ -3536,6 +3530,12 @@ error Context::SetTimeEntryBillable(
     }
 
     return displayError(save(true));
+}
+
+void Context::updateTimeEntryBillable(
+                                      TimeEntry *te,
+                                      const bool value) {
+    te->SetBillable(value);
 }
 
 error Context::SetTimeEntryDescription(
@@ -3560,7 +3560,11 @@ error Context::SetTimeEntryDescription(
             return noError;
         }
 
-        error err = updateTimeEntryDescription(te, GUID, value);
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
+
+        error err = updateTimeEntryDescription(te, value);
         if (err != noError) {
             return err;
         }
@@ -3570,12 +3574,7 @@ error Context::SetTimeEntryDescription(
 
 error Context::updateTimeEntryDescription(
                                           TimeEntry *te,
-                                          const std::string &GUID,
                                           const std::string &value) {
-    if (isTimeEntryLocked(te)) {
-        return logAndDisplayUserTriedEditingLockedEntry();
-    }
-
     // Validate description length
     if (value.length() > kMaximumDescriptionLength) {
         return displayError(error(kMaximumDescriptionLengthError));
@@ -6195,7 +6194,8 @@ error Context::updateTimeEntry(
                       const Poco::UInt64 task_id,
                       const Poco::UInt64 project_id,
                       const std::string &project_guid,
-                      const std::string &tags) {
+                      const std::string &tags,
+                    const bool billable) {
 
     if (GUID.empty()) {
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
@@ -6213,8 +6213,12 @@ error Context::updateTimeEntry(
         return noError;
     }
 
+    if (isTimeEntryLocked(te)) {
+        return logAndDisplayUserTriedEditingLockedEntry();
+    }
+
     // Update
-    error err = updateTimeEntryDescription(te, GUID, description);
+    error err = updateTimeEntryDescription(te, description);
     if (err != noError) {
         return err;
     }
@@ -6222,10 +6226,14 @@ error Context::updateTimeEntry(
     if (err != noError) {
         return err;
     }
-    err = updateTimeEntryTags(te, GUID, tags);
-    if (err != noError) {
-        return err;
+    updateTimeEntryTags(te, tags);
+    updateTimeEntryBillable(te, billable);
+
+    if (te->Dirty()) {
+        te->ClearValidationError();
+        te->SetUIModified();
     }
+
     return displayError(save(true));
 }
 }  // namespace toggl

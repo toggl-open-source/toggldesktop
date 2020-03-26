@@ -1185,7 +1185,8 @@ extern "C" {
         const uint64_t task_id,
         const uint64_t project_id,
         const char_t *project_guid,
-        const char_t *tags);
+        const char_t *tags,
+        const bool_t billable);
 
 #undef TOGGL_EXPORT
 
