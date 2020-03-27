@@ -132,11 +132,11 @@
             <Border x:Name="durationPanel" x:FieldModifier="private"
                     Grid.Column="1"
                     Background="Transparent"
-                    Width="64"
+                    Width="80"
                     Margin="3 0 0 0"
                     MouseLeftButtonDown="onTimeLabelMouseDown">
                 <TextBlock Name="durationLabel" x:FieldModifier="private"
-                           Style="{StaticResource Toggl.BaseText}"
+                           Style="{StaticResource Toggl.TimerDurationText}"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Text="00:00:00" />
