@@ -12,17 +12,38 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Workspace : public BaseModel {
-    Workspace(ProtectedBase *container)
-        : BaseModel(container)
-    {}
+    inline static const std::string modelName{ kModelWorkspace };
+    inline static const Query query{
+        Query::Table{"workspaces"},
+        Query::Columns {
+            { "name", true },
+            { "premium", true },
+            { "only_admins_may_create_projects", true },
+            { "admin", true },
+            { "projects_billable_by_default", true },
+            { "is_business", true },
+            { "locked_time", true } 
+        },
+        Query::Join{},
+        Query::OrderBy{"name"},
+        &BaseModel::query
+    };
     Workspace(ProtectedBase *container, Poco::Data::RecordSet &rs)
         : BaseModel(container, rs)
     {
-        for (size_t i = 0; i < query.ColumnCount(); i++) {
-            bool result = query.columns_[i].load(this, rs, query.Offset() + i);
-        }
+        size_t ptr{ query.Offset() };
+        load(rs, query.IsRequired(ptr), ptr++, name_);
+        load(rs, query.IsRequired(ptr), ptr++, premium_);
+        load(rs, query.IsRequired(ptr), ptr++, only_admins_may_create_projects_);
+        load(rs, query.IsRequired(ptr), ptr++, admin_);
+        load(rs, query.IsRequired(ptr), ptr++, projects_billable_by_default_);
+        load(rs, query.IsRequired(ptr), ptr++, business_);
+        load(rs, query.IsRequired(ptr), ptr++, locked_time_);
         ClearDirty();
     }
+    Workspace(ProtectedBase* container)
+        : BaseModel(container)
+    {}
 public:
    friend class ProtectedBase;
 
@@ -77,23 +98,6 @@ public:
     bool admin_ { false };
     bool projects_billable_by_default_ { false };
     bool business_ { false };
-
-    inline static const std::string modelName { kModelWorkspace };
-    inline static const Query query {
-        Query::Table{"workspaces"},
-        Query::Columns{
-            Query::Bind("name", &Workspace::name_, Query::Binding::REQUIRED),
-            Query::Bind("premium", &Workspace::premium_, Query::Binding::REQUIRED),
-            Query::Bind("only_admins_may_create_projects", &Workspace::only_admins_may_create_projects_, Query::Binding::REQUIRED),
-            Query::Bind("admin", &Workspace::admin_, Query::Binding::REQUIRED),
-            Query::Bind("projects_billable_by_default", &Workspace::projects_billable_by_default_, Query::Binding::REQUIRED),
-            Query::Bind("is_business", &Workspace::business_, Query::Binding::REQUIRED),
-            Query::Bind("locked_time", &Workspace::locked_time_, Query::Binding::REQUIRED),
-        },
-        Query::Join{},
-        Query::OrderBy{"name"},
-        &BaseModel::query
-    };
 };
 
 }  // namespace toggl

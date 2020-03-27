@@ -485,10 +485,10 @@
     <ClCompile Include="..\..\..\..\third_party\luafar\ustring.c">
       <Filter>Source Files\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\database.cc">
+    <ClCompile Include="..\..\..\database\database.cc">
       <Filter>Source Files\database</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\migrations.cc">
+    <ClCompile Include="..\..\..\database\migrations.cc">
       <Filter>Source Files\database</Filter>
     </ClCompile>
   </ItemGroup>

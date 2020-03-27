@@ -203,6 +203,7 @@
     <LinkIncremental>true</LinkIncremental>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);;$(SolutionDir)\..\..\..</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='StoreDebug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -583,7 +584,7 @@
     <ClCompile Include="..\..\..\analytics.cc" />
     <ClCompile Include="..\..\..\batch_update_result.cc" />
     <ClCompile Include="..\..\..\context.cc" />
-    <ClCompile Include="..\..\..\database.cc" />
+    <ClCompile Include="..\..\..\database\database.cc" />
     <ClCompile Include="..\..\..\feedback.cc" />
     <ClCompile Include="..\..\..\get_focused_window_windows.cc" />
     <ClCompile Include="..\..\..\error.cc" />
@@ -591,7 +592,7 @@
     <ClCompile Include="..\..\..\help_article.cc" />
     <ClCompile Include="..\..\..\https_client.cc" />
     <ClCompile Include="..\..\..\idle.cc" />
-    <ClCompile Include="..\..\..\migrations.cc" />
+    <ClCompile Include="..\..\..\database\migrations.cc" />
     <ClCompile Include="..\..\..\model\autotracker.cc" />
     <ClCompile Include="..\..\..\model\base_model.cc" />
     <ClCompile Include="..\..\..\model\client.cc" />

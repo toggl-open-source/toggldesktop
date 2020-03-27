@@ -38,20 +38,14 @@ class BatchUpdateResult;
  * and to not have to handle their serialization in all child classes separately.
  */
 struct BaseModelQuery {
-    typedef std::function<bool(void *that, Poco::Data::RecordSet &rs, size_t index)> db_load_t;
 
-    struct Binding {
-        enum Type {
-            OPTIONAL = 0,
-            REQUIRED
-        };
-        std::string column;
-        db_load_t load;
+    struct Column {
+        std::string name;
+        bool required;
     };
-
     typedef std::vector<std::string> Join;
     typedef std::string Table;
-    typedef std::vector<Binding> Columns;
+    typedef std::vector<Column> Columns;
     typedef std::vector<std::string> OrderBy;
 
     Table table_ {};
@@ -77,13 +71,16 @@ struct BaseModelQuery {
         return 0;
     }
 
-    /**
-     * @brief column helper method to retrieve column name from aggregate types (like @ref Binding)
-     * @param item
-     * @return column name of the item
-     */
-    static const std::string &column(const std::string &item) { return item; }
-    static const std::string &column(const Binding &item) { return item.column; }
+    bool IsRequired(size_t idx) const {
+        if (parent_ && idx >= Offset()) {
+            return parent_->IsRequired(idx - Offset());
+        }
+        return columns_[idx].required;
+    }
+
+    template <typename T> static const std::string &column(const T &item) { return item; }
+    template <> static const std::string &column<Column>(const Column &item) { return item.name; }
+
     /**
      * @brief writes a list of columns to @ref ss
      * Handles case when there's multiple tables and prepends "main" table name to columns without a dot
@@ -99,40 +96,48 @@ struct BaseModelQuery {
             ss << column(i);
         }
     };
-
-    template <typename Value, typename Class>
-    static Binding Bind(const std::string &column, Value Class::*ptr, Binding::Type required) {
-        return {
-            column,
-            [ptr, required](void *that, Poco::Data::RecordSet &rs, size_t index) {
-                auto actuallyThat = reinterpret_cast<Class*>(that);
-                if (!rs[index].isEmpty() || required == Binding::Type::REQUIRED) {
-                    (actuallyThat->*ptr) = rs[index].convert<Value>();
-                    return true;
-                }
-                return false;
-            }
-        };
-    }
 };
 
 class TOGGL_INTERNAL_EXPORT BaseModel {
  protected:
     using Query = BaseModelQuery;
-    BaseModel(ProtectedBase *container)
-        : container_(container)
-    {}
+    inline static std::string modelName {};
+    inline static const Query query {
+        Query::Table(),
+        Query::Columns { 
+            { "local_id", true },
+            { "id", false },
+            { "uid", true },
+            { "guid", false },
+        },
+        Query::Join(),
+        Query::OrderBy(),
+        nullptr
+    };
+
+    template <typename T>
+    bool load(Poco::Data::RecordSet &rs, bool required, size_t index, T& member) {
+        if (!rs[index].isEmpty() || required) {
+            member = rs[index].convert<T>();
+            return true;
+        }
+        return false;
+    }
 
     BaseModel(ProtectedBase *container, Poco::Data::RecordSet &rs)
         : container_(container)
     {
-        for (size_t i = 0; i < query.ColumnCount(); i++) {
-            bool result = query.columns_[i].load(this, rs, i);
-        }
+        size_t ptr { query.Offset() };
+        load(rs, query.IsRequired(ptr), ptr++, local_id_);
+        load(rs, query.IsRequired(ptr), ptr++, id_);
+        load(rs, query.IsRequired(ptr), ptr++, uid_);
+        load(rs, query.IsRequired(ptr), ptr++, guid_);
         ClearDirty();
     }
 
-
+    BaseModel(ProtectedBase* container)
+        : container_(container)
+    {}
     virtual ~BaseModel() {}
  public:
 
@@ -291,22 +296,6 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     // pushed to backend. It only means that some
     // attempt to push failed somewhere.
     bool unsynced_ { false };
-
- protected:
-    std::string modelName {};
-    // has to be at the end to "know" about the location of all members
-    inline static const Query query {
-        Query::Table(),
-        Query::Columns({
-            Query::Bind("local_id", &BaseModel::local_id_, Query::Binding::REQUIRED),
-            Query::Bind("id", &BaseModel::id_, Query::Binding::OPTIONAL),
-            Query::Bind("uid", &BaseModel::uid_, Query::Binding::REQUIRED),
-            Query::Bind("guid", &BaseModel::guid_, Query::Binding::OPTIONAL)
-        }),
-        Query::Join(),
-        Query::OrderBy(),
-        nullptr
-    };
 };
 
 }  // namespace toggl
