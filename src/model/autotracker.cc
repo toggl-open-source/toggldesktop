@@ -9,20 +9,33 @@
 
 namespace toggl {
 
+static const char kTermSeparator = '\t';
+
 bool AutotrackerRule::Matches(const TimelineEvent &event) const {
-    if (Poco::UTF8::toLower(event.Filename()).find(Term())
+    for (const auto& term : Terms()) {
+        if (Poco::UTF8::toLower(event.Filename()).find(term)
             != std::string::npos) {
-        return true;
-    }
-    if (Poco::UTF8::toLower(event.Title()).find(Term())
+            return true;
+        }
+        if (Poco::UTF8::toLower(event.Title()).find(term)
             != std::string::npos) {
-        return true;
+            return true;
+        }
     }
     return false;
 }
 
-void AutotrackerRule::SetTerm(const std::string &value) {
-    if (Term.Set(value))
+void AutotrackerRule::SetTerms(const std::string &value) {
+    if (TermsString() != value) {
+        Terms().clear();
+        if (!value.empty()) {
+            std::stringstream ss(value);
+            while (ss.good()) {
+                std::string tag;
+                getline(ss, tag, kTermSeparator);
+                Terms().push_back(tag);
+            }
+        }
         SetDirty();
 }
 
@@ -39,7 +52,7 @@ void AutotrackerRule::SetTID(Poco::UInt64 value) {
 std::string AutotrackerRule::String() const {
     std::stringstream ss;
     ss << " local_id=" << LocalID()
-       << " term=" << Term()
+       << " terms=" << TermsString()
        << " uid=" << UID()
        << " pid=" << PID()
        << " tid=" << TID();
@@ -52,6 +65,17 @@ std::string AutotrackerRule::ModelName() const {
 
 std::string AutotrackerRule::ModelURL() const {
     return "";
+}
+
+const std::string AutotrackerRule::TermsString() const {
+    std::stringstream ss;
+    for (auto it = Terms().begin(); it != Terms().end(); ++it) {
+        if (it != Terms().begin()) {
+            ss << kTermSeparator;
+        }
+        ss << *it;
+    }
+    return ss.str();
 }
 
 }  // namespace toggl

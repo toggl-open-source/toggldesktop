@@ -1744,7 +1744,7 @@ TEST(Proxy, String) {
 
 TEST(AutotrackerRule, Matches) {
     AutotrackerRule a;
-    a.SetTerm("work");
+    a.SetTerms("work");
     a.SetPID(123);
 
     TimelineEvent ev;
