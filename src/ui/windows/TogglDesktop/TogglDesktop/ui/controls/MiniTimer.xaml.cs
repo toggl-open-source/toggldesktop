@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TogglDesktop.AutoCompletion;
-using TogglDesktop.AutoCompletion.Implementation;
+using TogglDesktop.AutoCompletion.Items;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.ViewModels;
 
@@ -83,7 +83,7 @@ namespace TogglDesktop
 
             using (Performance.Measure("timer building auto complete controller, {0} items", list.Count))
             {
-                this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForTimer(list));
+                this.descriptionAutoComplete.SetController(AutoCompleteControllersFactory.ForTimer(list));
             }
         }
 
@@ -138,19 +138,19 @@ namespace TogglDesktop
             this.tryOpenEditViewIfRunning(e, "");
         }
 
-        private void descriptionAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        private void descriptionAutoComplete_OnConfirmCompletion(object sender, IAutoCompleteItem e)
         {
-            var asItem = e as TimerItem;
-            if (asItem == null)
-                return;
+            if (e is IModelItem<Toggl.TogglAutocompleteView> asItem)
+            {
+                var item = asItem.Model;
 
-            var item = asItem.Item;
+                this.descriptionTextBox.SetText(item.Description);
+                this.descriptionTextBox.CaretIndex = this.descriptionTextBox.Text.Length;
 
-            this.descriptionTextBox.SetText(item.Description);
-
-            this.editProjectPanel.ShowOnlyIf(item.ProjectID != 0);
-            this.editModeProjectLabel.ViewModel = item.ToProjectLabelViewModel();
-            completedProject = item;
+                this.editProjectPanel.ShowOnlyIf(item.ProjectID != 0);
+                this.editModeProjectLabel.ViewModel = item.ToProjectLabelViewModel();
+                completedProject = item;
+            }
         }
 
         private void cancelProjectSelectionButtonClick(object sender, RoutedEventArgs e)

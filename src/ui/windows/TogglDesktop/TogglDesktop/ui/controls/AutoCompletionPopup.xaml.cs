@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using TogglDesktop.AutoCompletion;
+using TogglDesktop.AutoCompletion.Items;
 using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
@@ -13,7 +14,7 @@ namespace TogglDesktop
     {
         #region events
 
-        public event EventHandler<AutoCompleteItem> ConfirmCompletion;
+        public event EventHandler<IAutoCompleteItem> ConfirmCompletion;
         public event EventHandler<string> ConfirmWithoutCompletion;
         public event EventHandler IsOpenChanged;
         public event RoutedEventHandler ActionButtonClick;
@@ -40,8 +41,6 @@ namespace TogglDesktop
             this.popup.Closed += (s, e) => this.IsOpenChanged?.Invoke(this, EventArgs.Empty);
 
             this.IsEnabledChanged += this.onIsEnabledChanged;
-
-            this.FillTextBoxOnComplete = true;
         }
 
         #region properties
@@ -65,7 +64,6 @@ namespace TogglDesktop
         }
 
         public bool KeepOpenWhenSelecting { get; set; }
-        public bool FillTextBoxOnComplete { get; set; }
 
         #endregion
 
@@ -361,7 +359,7 @@ namespace TogglDesktop
             return true;
         }
 
-        private void select(AutoCompleteItem item, bool withKeyboard)
+        private void select(IAutoCompleteItem item, bool withKeyboard)
         {
             if (!this.KeepOpenWhenSelecting)
                 this.close();
@@ -375,13 +373,6 @@ namespace TogglDesktop
                     this.open();
                 }
                 return;
-            }
-
-            if (this.FillTextBoxOnComplete)
-            {
-                this.textbox.SetText(item.Text);
-                this.textbox.CaretIndex = this.textbox.Text.Length;
-                this.textbox.Focus();
             }
 
             ConfirmCompletion?.Invoke(this, item);

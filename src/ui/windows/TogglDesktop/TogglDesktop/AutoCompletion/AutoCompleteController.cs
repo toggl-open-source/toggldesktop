@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using TogglDesktop.AutoCompletion.Implementation;
-using TogglDesktop.Diagnostics;
+using TogglDesktop.AutoCompletion.Items;
 
 namespace TogglDesktop.AutoCompletion
 {
@@ -12,8 +11,8 @@ namespace TogglDesktop.AutoCompletion
     {
         private static readonly char[] splitChars = { ' ' };
         private static readonly string[] categories = { "RECENT TIME ENTRIES", "TASKS", "PROJECTS", "WORKSPACES", "TAGS" };
-        private readonly List<ListBoxItemViewModel> _fullItemsList;
-        public IList<ListBoxItemViewModel> VisibleItems
+        private readonly List<IAutoCompleteItem> _fullItemsList;
+        public IList<IAutoCompleteItem> VisibleItems
         {
             get => _selectionManager.Items;
             private set => _selectionManager.Items = value;
@@ -47,90 +46,94 @@ namespace TogglDesktop.AutoCompletion
         private string filterText;
         private string[] words;
         private readonly int _autocompleteType;
-        private readonly ListBoxSelectionManager<ListBoxItemViewModel> _selectionManager = new ListBoxSelectionManager<ListBoxItemViewModel>();
+        private readonly ListBoxSelectionManager<IAutoCompleteItem> _selectionManager = new ListBoxSelectionManager<IAutoCompleteItem>();
 
-        public AutoCompleteController(List<IAutoCompleteListItem> list, string debugIdentifier, int autocompleteType)
+        public AutoCompleteController(IList<Toggl.TogglAutocompleteView> list, string debugIdentifier, int autocompleteType)
+            : this(CreateTimerItemViewModelsList(list, autocompleteType), debugIdentifier, autocompleteType)
+        {
+        }
+
+        public AutoCompleteController(List<IAutoCompleteItem> list, string debugIdentifier, int autocompleteType)
         {
             this.DebugIdentifier = debugIdentifier;
             this._autocompleteType = autocompleteType;
-            _fullItemsList = CreateItemViewModelsList(list, autocompleteType);
+            _fullItemsList = list;
             VisibleItems = _fullItemsList;
         }
 
-        public AutoCompleteItem SelectedItem
+        public IAutoCompleteItem SelectedItem
         {
             get
             {
-                if (LB != null && LB.SelectedIndex != -1 && VisibleItems[LB.SelectedIndex] is IModelItemViewModel modelItem)
+                if (LB != null && LB.SelectedIndex != -1)
                 {
-                    return modelItem.Model;
+                    return VisibleItems[LB.SelectedIndex];
                 }
                 return null;
             }
         }
 
-        private static List<ListBoxItemViewModel> CreateTimerItemViewModelsList(IList<IAutoCompleteListItem> modelsList, int autocompleteType)
+        private static List<IAutoCompleteItem> CreateTimerItemViewModelsList(IList<Toggl.TogglAutocompleteView> modelsList, int autocompleteType)
         {
             int lastType = -1;
             string lastClient = null;
             int lastWID = -1;
             bool noProjectAdded = false;
 
-            var items = new List<ListBoxItemViewModel>();
+            var items = new List<IAutoCompleteItem>();
 
             var multipleWorkspaces = false;
             for (var count = 0; count < modelsList.Count; ++count)
             {
-                var item = modelsList[count];
-                var it = (TimerItem)item;
+                var it = modelsList[count];
 
                 // Add workspace title
-                if (lastWID != (int)it.Item.WorkspaceID)
+                if (lastWID != (int)it.WorkspaceID)
                 {
                     if (lastWID != -1) // workspace separator
                     {
-                        items.Add(WorkspaceSeparatorItemViewModel.Instance);
+                        items.Add(WorkspaceSeparatorItem.Instance);
                         multipleWorkspaces = true;
                     }
 
-                    items.Add(new WorkspaceItemViewModel(it.Item.WorkspaceName));
-                    lastWID = (int)it.Item.WorkspaceID;
+                    items.Add(new AutoCompleteItem(it.WorkspaceName, ItemType.WORKSPACE));
+                    lastWID = (int)it.WorkspaceID;
                     lastType = -1;
                     lastClient = null;
                 }
 
                 // Add category title if needed
-                if (lastType != (int)it.Item.Type && (int)it.Item.Type != 1)
+                if (lastType != (int)it.Type && (int)it.Type != 1)
                 {
                     // do not show 'Projects' item when auto completing projects
                     if (autocompleteType != 3)
                     {
-                        items.Add(new CategoryItemViewModel(categories[(int) it.Item.Type]));
+                        items.Add(new AutoCompleteItem(categories[(int) it.Type], ItemType.CATEGORY));
                     }
 
                     // if projects autocomplete show 'no project' item
-                    if (autocompleteType == 3 && (int)it.Item.Type == 2
+                    if (autocompleteType == 3 && (int)it.Type == 2
                         && !noProjectAdded)
                     {
-                        items.Add(NoProjectItemViewModel.Instance);
+                        items.Add(NoProjectItem.Instance);
                         noProjectAdded = true;
                     }
-                    lastType = (int)it.Item.Type;
+                    lastType = (int)it.Type;
                 }
 
                 // Add client item if needed
-                if (it.Item.Type == 2 && lastClient != it.Item.ClientLabel)
+                if (it.Type == 2 && lastClient != it.ClientLabel)
                 {
-                    items.Add(new ClientItemViewModel(it.Item.ClientLabel));
-                    lastClient = it.Item.ClientLabel;
+                    items.Add(new AutoCompleteItem(string.IsNullOrEmpty(it.ClientLabel) ? "No client" : it.ClientLabel, ItemType.CLIENT));
+                    lastClient = it.ClientLabel;
                 }
 
-                items.Add(new TimeEntryItemViewModel(it));
+                items.Add(new TimeEntryItem(it));
             }
 
             if (modelsList.Count == 0 && autocompleteType == 3)
             {
-                items.Add(new CustomTextItemViewModel("There are no projects yet", "Go ahead and create your first project now"));
+                items.Add(new CustomTextItem("There are no projects yet", "Go ahead and create your first project now"));
             }
 
             if (!multipleWorkspaces)
@@ -150,26 +153,6 @@ namespace TogglDesktop.AutoCompletion
             LB.ItemsSource = VisibleItems;
         }
 
-        private static List<ListBoxItemViewModel> CreateItemViewModelsList(List<IAutoCompleteListItem> list, int autoCompleteType)
-        {
-            using (Performance.Measure("FILLIST, {0} items", list.Count))
-            {
-                return autoCompleteType switch
-                {
-                    // autotracker terms
-                    1 => list.Select(item1 => (ListBoxItemViewModel)new StringItemViewModel((StringItem) item1)).ToList(),
-                    // client dropdown
-                    2 => list.Select(item1 => (ListBoxItemViewModel)new StringItemViewModel((ModelItem) item1))
-                        .AppendIfEmpty(() => new CustomTextItemViewModel("There are no clients yet", "Add client name and press Enter to add it as a client"))
-                        .ToList(),
-                    // workspace dropdown
-                    4 => list.Select(item1 => (ListBoxItemViewModel)new StringItemViewModel((ModelItem) item1)).ToList(),
-                    // description and project dropdowns
-                    _ => CreateTimerItemViewModelsList(list, autoCompleteType)
-                };
-            }
-        }
-
         public void Complete(string input)
         {
             if (string.IsNullOrEmpty(input))
@@ -184,11 +167,11 @@ namespace TogglDesktop.AutoCompletion
                 }
                 words = input.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
                 filterText = input;
-                var filteredItems = new List<ListBoxItemViewModel>();
+                var filteredItems = new List<IAutoCompleteItem>();
                 
                 if (_autocompleteType != 0 && _autocompleteType != 3)
                 {
-                    filteredItems = VisibleItems.Where(FilterSimpleItem).ToList();
+                    filteredItems = VisibleItems.Where(Filter).ToList();
                 }
                 else
                 {
@@ -196,17 +179,17 @@ namespace TogglDesktop.AutoCompletion
                     string lastProjectLabel = null;
                     string lastClient = null;
                     string lastWSName = null;
-                    var multipleWorkspaces = VisibleItems.Count > 0 && VisibleItems[0] is WorkspaceItemViewModel;
-                    foreach (var item in VisibleItems.OfType<TimeEntryItemViewModel>().Where(Filter))
+                    var multipleWorkspaces = VisibleItems.Count > 0 && VisibleItems[0].Type == ItemType.WORKSPACE;
+                    foreach (var item in VisibleItems.OfType<TimeEntryItem>().Where(Filter))
                     {
                         // Add workspace title
                         if (multipleWorkspaces && lastWSName != item.WorkspaceName)
                         {
                             if (lastWSName != null) // workspace separator
                             {
-                                filteredItems.Add(WorkspaceSeparatorItemViewModel.Instance);
+                                filteredItems.Add(WorkspaceSeparatorItem.Instance);
                             }
-                            filteredItems.Add(new WorkspaceItemViewModel(item.WorkspaceName));
+                            filteredItems.Add(new AutoCompleteItem(item.WorkspaceName, ItemType.WORKSPACE));
                             lastWSName = item.WorkspaceName;
                             lastType = ItemType.CATEGORY; // WORKSPACE?
                             lastClient = null;
@@ -216,21 +199,21 @@ namespace TogglDesktop.AutoCompletion
                         if (_autocompleteType == 0 && lastType != item.Type
                                                   && item.Type != ItemType.TASK)
                         {
-                            filteredItems.Add(new CategoryItemViewModel(categories[(int)item.Type]));
+                            filteredItems.Add(new AutoCompleteItem(categories[(int)item.Type], ItemType.CATEGORY));
                             lastType = item.Type;
                         }
 
                         // Add client item if needed
                         if ((item.Type == ItemType.PROJECT || item.Type == ItemType.TASK) && lastClient != item.ClientLabel)
                         {
-                            filteredItems.Add(new ClientItemViewModel(item.ClientLabel));
+                            filteredItems.Add(new AutoCompleteItem(string.IsNullOrEmpty(item.ClientLabel) ? "No client" : item.ClientLabel, ItemType.CLIENT));
                             lastClient = item.ClientLabel;
                         }
 
                         // In case we have task and project is not completed
                         if (item.Type == ItemType.TASK && item.ProjectLabel != lastProjectLabel)
                         {
-                            filteredItems.Add(new ProjectItemViewModel(item));
+                            filteredItems.Add(new ProjectItem(item));
                         }
 
                         filteredItems.Add(item);
@@ -242,15 +225,15 @@ namespace TogglDesktop.AutoCompletion
                 {
                     if (_autocompleteType == 2)
                     {
-                        filteredItems.Add(new CustomTextItemViewModel("No matching clients found", "Press Enter to add it as a client"));
+                        filteredItems.Add(new CustomTextItem("No matching clients found", "Press Enter to add it as a client"));
                     }
                     else if (_autocompleteType == 3)
                     {
-                        filteredItems.Add(new CustomTextItemViewModel("No matching projects", "Try a different keyword or create a new project"));
+                        filteredItems.Add(new CustomTextItem("No matching projects", "Try a different keyword or create a new project"));
                     }
                     else if (_autocompleteType == 5)
                     {
-                        filteredItems.Add(new CustomTextItemViewModel("No matching tags", "Press Enter to add it as a tag"));
+                        filteredItems.Add(new CustomTextItem("No matching tags", "Press Enter to add it as a tag"));
                     }
                 }
 
@@ -261,16 +244,7 @@ namespace TogglDesktop.AutoCompletion
                 this._selectionManager.SelectFirstItem();
         }
 
-        private bool Filter(TimeEntryItemViewModel timeEntryItem)
-        {
-            var itemText = (timeEntryItem.Type == ItemType.TASK)
-                ? timeEntryItem.ProjectAndTaskLabel
-                : timeEntryItem.Text;
-
-            return words.All(word => itemText.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1);
-        }
-
-        private bool FilterSimpleItem(ListBoxItemViewModel item)
+        private bool Filter(IAutoCompleteItem item)
         {
             return words.All(word => item.Text.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1);
         }
@@ -319,7 +293,7 @@ namespace TogglDesktop.AutoCompletion
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             return
-                item is ListBoxItemViewModel listItem && DataTemplateMap.TryGetValue(listItem.Type, out var resourceKey)
+                item is IAutoCompleteItem listItem && DataTemplateMap.TryGetValue(listItem.Type, out var resourceKey)
                     ? ((FrameworkElement) container).FindResource(resourceKey) as DataTemplate
                     : null;
         }

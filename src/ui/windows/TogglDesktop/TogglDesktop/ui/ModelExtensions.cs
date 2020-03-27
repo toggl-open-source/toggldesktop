@@ -38,5 +38,15 @@ namespace TogglDesktop
                 return durationInSeconds < 15;
             }
         }
+
+        public static string GetProjectAndTaskString(this Toggl.TogglAutocompleteView item)
+        {
+            return item.ProjectLabel + (item.TaskLabel.IsNullOrEmpty() ? "" : $" - {item.TaskLabel}");
+        }
+
+        public static string GetFullProjectString(this Toggl.TogglAutocompleteView item)
+        {
+            return item.GetProjectAndTaskString() + (item.ClientLabel.IsNullOrEmpty() ? "" : $". {item.ClientLabel}");
+        }
     }
 }

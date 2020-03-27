@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
 using TogglDesktop.AutoCompletion;
-using TogglDesktop.AutoCompletion.Implementation;
+using TogglDesktop.AutoCompletion.Items;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.ViewModels;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -234,7 +234,7 @@ namespace TogglDesktop
 
             using (Performance.Measure("building edit view entry auto complete controller, {0} items", list.Count))
             {
-                this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForTimer(list));
+                this.descriptionAutoComplete.SetController(AutoCompleteControllersFactory.ForTimer(list));
             }
         }
 
@@ -247,7 +247,7 @@ namespace TogglDesktop
 
             using (Performance.Measure("building edit view project auto complete controller, {0} items", this.projects.Count))
             {
-                this.projectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list));
+                this.projectAutoComplete.SetController(AutoCompleteControllersFactory.ForProjects(list));
             }
         }
 
@@ -260,7 +260,7 @@ namespace TogglDesktop
 
             using (Performance.Measure("building edit view client auto complete controller, {0} items", this.clients.Count))
             {
-                this.clientAutoComplete.SetController(AutoCompleteControllers.ForClients(list));
+                this.clientAutoComplete.SetController(AutoCompleteControllersFactory.ForClients(list));
             }
         }
 
@@ -413,9 +413,9 @@ namespace TogglDesktop
 
         #region description
 
-        private void descriptionAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        private void descriptionAutoComplete_OnConfirmCompletion(object sender, IAutoCompleteItem e)
         {
-            var asTimerItem = e as TimerItem;
+            var asTimerItem = e as IModelItem<Toggl.TogglAutocompleteView>;
             if (asTimerItem == null)
                 return;
 
@@ -425,9 +425,10 @@ namespace TogglDesktop
                 return;
             }
 
-            var item = asTimerItem.Item;
+            var item = asTimerItem.Model;
 
             this.descriptionTextBox.SetText(item.Description);
+            this.descriptionTextBox.CaretIndex = this.descriptionTextBox.Text.Length;
 
             Toggl.SetTimeEntryDescription(this.timeEntry.GUID, item.Description);
 
@@ -486,13 +487,13 @@ namespace TogglDesktop
 
         #region project
 
-        private void projectAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        private void projectAutoComplete_OnConfirmCompletion(object sender, IAutoCompleteItem e)
         {
             switch (e)
             {
-                case TimerItem projectItem:
+                case IModelItem<Toggl.TogglAutocompleteView> projectItem:
                 {
-                    var item = projectItem.Item;
+                    var item = projectItem.Model;
                     this.setProjectIfDifferent(item);
                     break;
                 }
@@ -534,9 +535,10 @@ namespace TogglDesktop
 
         private void setProjectIfDifferent(Toggl.TogglAutocompleteView autoCompleteItem)
         {
+            this.projectTextBox.SetText(autoCompleteItem.ProjectLabel ?? "", autoCompleteItem.TaskLabel ?? "");
+            this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
             if (autoCompleteItem.ProjectID == this.timeEntry.PID && autoCompleteItem.TaskID == this.timeEntry.TID)
                 return;
-            this.projectTextBox.SetText(autoCompleteItem.ProjectLabel ?? "", autoCompleteItem.TaskLabel ?? "");
             this.projectTextBox.DataContext = autoCompleteItem.ProjectID == 0 ? null : autoCompleteItem.ToProjectLabelViewModel();
             this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString(autoCompleteItem.ProjectColor);
             Toggl.SetTimeEntryProject(this.timeEntry.GUID, autoCompleteItem.TaskID, autoCompleteItem.ProjectID, "");
@@ -659,13 +661,13 @@ namespace TogglDesktop
             this.clientAutoComplete.IsOpen = false;
         }
 
-        private void clientAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        private void clientAutoComplete_OnConfirmCompletion(object sender, IAutoCompleteItem e)
         {
-            var asClientItem = e as ModelItem;
+            var asClientItem = e as IModelItem<Toggl.TogglGenericView>;
             if (asClientItem == null)
                 return;
 
-            var item = asClientItem.Item;
+            var item = asClientItem.Model;
 
             this.selectClient(item);
 
@@ -691,7 +693,7 @@ namespace TogglDesktop
             var list = this.clients.Where(c => c.WID == workspace_id).ToList();
             using (Performance.Measure("building Filtered edit view client auto complete controller, {0} items", this.clients.Count))
             {
-                this.clientAutoComplete.SetController(AutoCompleteControllers.ForClients(list));
+                this.clientAutoComplete.SetController(AutoCompleteControllersFactory.ForClients(list));
             }
         }
 

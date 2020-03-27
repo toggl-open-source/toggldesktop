@@ -2,24 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using TogglDesktop.AutoCompletion.Items;
 
 namespace TogglDesktop.AutoCompletion
 {
     class TagsAutoCompleteController : IAutoCompleteController
     {
-        private readonly ListBoxSelectionManager<ListBoxItemViewModel> _selectionManager = new ListBoxSelectionManager<ListBoxItemViewModel>();
-        private readonly IList<ListBoxItemViewModel> _fullItemsList;
-        private readonly Dictionary<string, TagItemViewModel> _tagItemsDictionary;
+        private readonly ListBoxSelectionManager<IAutoCompleteItem> _selectionManager = new ListBoxSelectionManager<IAutoCompleteItem>();
+        private readonly IList<IAutoCompleteItem> _fullItemsList;
+        private readonly Dictionary<string, TagItem> _tagItemsDictionary;
         private string _previousInput = string.Empty;
         private static readonly char[] _splitChars = { ' ' };
         public TagsAutoCompleteController(IEnumerable<string> list, Func<string, bool> isSelected)
         {
-            _fullItemsList = list.Select(tag => (ListBoxItemViewModel)new TagItemViewModel(tag))
+            _fullItemsList = list.Select(tag => (IAutoCompleteItem)new TagItem(tag))
                 .AppendIfEmpty(() =>
-                    new CustomTextItemViewModel("There are no tags yet",
+                    new CustomTextItem("There are no tags yet",
                         "Start typing and press Enter to add a new tag"))
                 .ToList();
-            _tagItemsDictionary = _fullItemsList.OfType<TagItemViewModel>()
+            _tagItemsDictionary = _fullItemsList.OfType<TagItem>()
                 .ToDictionary(tagItemViewModel => tagItemViewModel.Text, tagItemViewModel => tagItemViewModel);
             _tagItemsDictionary.ForEach(kvp => kvp.Value.IsChecked = isSelected(kvp.Key));
             VisibleItems = _fullItemsList;
@@ -33,7 +34,7 @@ namespace TogglDesktop.AutoCompletion
             }
             else
             {
-                var newTag = new TagItemViewModel(tag) { IsChecked = true };
+                var newTag = new TagItem(tag) { IsChecked = true };
                 AppendTag(newTag);
                 VisibleItems = _fullItemsList;
             }
@@ -60,14 +61,13 @@ namespace TogglDesktop.AutoCompletion
             set => _selectionManager.ListBox = value;
         }
 
-        public AutoCompleteItem SelectedItem =>
+        public IAutoCompleteItem SelectedItem =>
             (ListBox != null
-             && ListBox.SelectedIndex != -1
-             && VisibleItems[ListBox.SelectedIndex] is IModelItemViewModel modelItem)
-                ? modelItem.Model
-                : null;
+             && ListBox.SelectedIndex != -1)
+             ? VisibleItems[ListBox.SelectedIndex]
+             : null;
 
-        public IList<ListBoxItemViewModel> VisibleItems
+        public IList<IAutoCompleteItem> VisibleItems
         {
             get => _selectionManager.Items;
             private set
@@ -103,7 +103,7 @@ namespace TogglDesktop.AutoCompletion
             _previousInput = input;
             VisibleItems = itemsToFilter.Where(item =>
                     filterWords.All(word => item.Text.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1))
-                .AppendIfEmpty(() => new CustomTextItemViewModel("No matching tags", "Press Enter to add it as a tag"))
+                .AppendIfEmpty(() => new CustomTextItem("No matching tags", "Press Enter to add it as a tag"))
                 .ToList();
 
             ShowActionButton = !VisibleItems.Any(it => it.Text == input && it.Type == ItemType.TAG);
@@ -119,7 +119,7 @@ namespace TogglDesktop.AutoCompletion
             _selectionManager.SelectPrevious();
         }
 
-        private void AppendTag(TagItemViewModel tagItem)
+        private void AppendTag(TagItem tagItem)
         {
             if (_fullItemsList[0].Type == ItemType.CUSTOM_TEXT)
             {

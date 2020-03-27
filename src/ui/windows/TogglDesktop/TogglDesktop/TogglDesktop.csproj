@@ -174,18 +174,22 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AutoCompletion\AutoCompleteController.cs" />
-    <Compile Include="AutoCompletion\AutoCompleteItem.cs" />
-    <Compile Include="AutoCompletion\AutoCompleteListItem.cs" />
+    <Compile Include="AutoCompletion\AutoCompleteControllersFactory.cs" />
     <Compile Include="AutoCompletion\IAutoCompleteController.cs" />
-    <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\AutoCompleteControllers.cs" />
-    <Compile Include="AutoCompletion\Implementation\ModelItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\StringItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\SimpleItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\TimerItem.cs" />
-    <Compile Include="AutoCompletion\ListBoxItemViewModel.cs" />
+    <Compile Include="AutoCompletion\Items\AutoCompleteItemExtensions.cs" />
+    <Compile Include="AutoCompletion\Items\WorkspaceSeparatorItem.cs" />
     <Compile Include="AutoCompletion\ListBoxSelectionManager.cs" />
     <Compile Include="AutoCompletion\TagsAutoCompleteController.cs" />
+    <Compile Include="AutoCompletion\Items\AutoCompleteItem.cs" />
+    <Compile Include="AutoCompletion\Items\GenericModelItem.cs" />
+    <Compile Include="AutoCompletion\Items\IAutoCompleteItem.cs" />
+    <Compile Include="AutoCompletion\Items\IModelItem.cs" />
+    <Compile Include="AutoCompletion\Items\ModelItem.cs" />
+    <Compile Include="AutoCompletion\Items\CustomTextItem.cs" />
+    <Compile Include="AutoCompletion\Items\NoProjectItem.cs" />
+    <Compile Include="AutoCompletion\Items\ProjectItem.cs" />
+    <Compile Include="AutoCompletion\Items\TagItem.cs" />
+    <Compile Include="AutoCompletion\Items\TimeEntryItem.cs" />
     <Compile Include="BugsnagService.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using TogglDesktop.AutoCompletion;
-using TogglDesktop.AutoCompletion.Implementation;
+using TogglDesktop.AutoCompletion.Items;
 
 namespace TogglDesktop
 {
@@ -36,7 +36,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onProjectAutocomplete, list))
                 return;
 
-            this.projectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list));
+            this.projectAutoComplete.SetController(AutoCompleteControllersFactory.ForProjects(list));
         }
 
         #endregion
@@ -86,15 +86,12 @@ namespace TogglDesktop
                 this.selectProject(this.selectedProject);
             }
         }
-        private void projectAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        private void projectAutoComplete_OnConfirmCompletion(object sender, IAutoCompleteItem e)
         {
-            var asProjectItem = e as TimerItem;
-            if (asProjectItem == null)
-                return;
-
-            var item = asProjectItem.Item;
-
-            this.selectProject(item);
+            if (e is IModelItem<Toggl.TogglAutocompleteView> modelItemViewModel)
+            {
+                this.selectProject(modelItemViewModel.Model);
+            }
         }
 
         private void projectAutoComplete_OnConfirmWithoutCompletion(object sender, string e)

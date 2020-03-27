@@ -130,7 +130,7 @@
                             Background="{Binding ProjectColor}"
                             ToolTip="{Binding Text}"/>
                     <TextBlock Name="project" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding ProjectLabel}" Foreground="{Binding ProjectColor}"/>
-                    <TextBlock Name="task" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding TaskLabel}" Foreground="{Binding ProjectColor}"/>
+                    <TextBlock Name="task" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding TaskLabel, Converter={StaticResource StringFormatIfNotEmptyConverter}, ConverterParameter='- {0}'}" Foreground="{Binding ProjectColor}"/>
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="category-item-template">
@@ -139,7 +139,7 @@
                                Style="{DynamicResource Toggl.GrayishSemiBoldText}"
                                Margin="8 0"
                                VerticalAlignment="Center"
-                               Text="{Binding Category}"/>
+                               Text="{Binding Text}"/>
                 </StackPanel>
             </DataTemplate>
             <DataTemplate  x:Key="string-item-template">
