@@ -80,6 +80,8 @@ class Analytics : public Poco::TaskManager {
     void TrackLoginWithGoogle(const std::string &client_id);
     void TrackSignupWithUsernamePassword(const std::string &client_id);
     void TrackSignupWithGoogle(const std::string &client_id);
+    void TrackSignupWithApple(const std::string &client_id);
+    void TrackLoginWithApple(const std::string &client_id);
 
  private:
     Poco::LocalDateTime settings_sync_date;

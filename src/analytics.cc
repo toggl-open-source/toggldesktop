@@ -348,12 +348,20 @@ void Analytics::TrackLoginWithGoogle(const std::string &client_id) {
     TrackUserAuthentication(client_id, "login", "google");
 }
 
+void Analytics::TrackLoginWithApple(const std::string &client_id) {
+    TrackUserAuthentication(client_id, "login", "apple");
+}
+
 void Analytics::TrackSignupWithUsernamePassword(const std::string &client_id) {
     TrackUserAuthentication(client_id, "signup", "username_password");
 }
 
 void Analytics::TrackSignupWithGoogle(const std::string &client_id) {
     TrackUserAuthentication(client_id, "signup", "google");
+}
+
+void Analytics::TrackSignupWithApple(const std::string &client_id) {
+    TrackUserAuthentication(client_id, "signup", "apple");
 }
 
 void Analytics::TrackTimeEntryActivity(const std::string &client_id,
