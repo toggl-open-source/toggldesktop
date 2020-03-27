@@ -18,7 +18,6 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
  public:
     AutotrackerRule()
         : BaseModel()
-    , term_("")
     , pid_(0)
     , tid_(0) {}
 
@@ -26,8 +25,9 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
 
     bool Matches(const TimelineEvent &event) const;
 
-    const std::string &Term() const;
-    void SetTerm(const std::string &value);
+    const std::vector<std::string> &Terms() const;
+    void SetTerms(const std::string &value);
+    const std::string TermsString() const;
 
     const Poco::UInt64 &PID() const;
     void SetPID(const Poco::UInt64 value);
@@ -41,7 +41,7 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
     std::string ModelURL() const override;
 
  private:
-    std::string term_;
+    std::vector<std::string> terms_;
     Poco::UInt64 pid_;
     Poco::UInt64 tid_;
 };
