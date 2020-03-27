@@ -90,7 +90,7 @@ bool RelatedData::HasMatchingAutotrackerRule(
         AutotrackerRules.begin();
             it != AutotrackerRules.end(); ++it) {
         AutotrackerRule *rule = *it;
-        if (rule->Term() == lowercase_term) {
+        if (rule->TermsString() == lowercase_term) {
             return true;
         }
     }
