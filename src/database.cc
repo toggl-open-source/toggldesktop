@@ -1633,7 +1633,7 @@ error Database::loadAutotrackerRules(
                 AutotrackerRule *model = new AutotrackerRule();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 model->SetUID(rs[1].convert<Poco::UInt64>());
-                model->SetTerm(rs[2].convert<std::string>());
+                model->SetTerms(rs[2].convert<std::string>());
                 model->SetPID(rs[3].convert<Poco::UInt64>());
                 if (!rs[4].isEmpty()) {
                     model->SetTID(rs[4].convert<Poco::UInt64>());
@@ -2432,7 +2432,7 @@ error Database::saveModel(
                       "tid = :tid "
                       "where local_id = :local_id",
                       useRef(model->UID()),
-                      useRef(model->Term()),
+                      useRef(model->TermsString()),
                       useRef(model->PID()),
                       useRef(model->TID()),
                       useRef(model->LocalID()),
@@ -2461,7 +2461,7 @@ error Database::saveModel(
                       "insert into autotracker_settings(uid, term, pid, tid) "
                       "values(:uid, :term, :pid, :tid)",
                       useRef(model->UID()),
-                      useRef(model->Term()),
+                      useRef(model->TermsString()),
                       useRef(model->PID()),
                       useRef(model->TID()),
                       now;

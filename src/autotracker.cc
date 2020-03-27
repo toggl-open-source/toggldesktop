@@ -9,25 +9,37 @@
 
 namespace toggl {
 
+static const char kTermSeparator = '\t';
+
 bool AutotrackerRule::Matches(const TimelineEvent &event) const {
-    if (Poco::UTF8::toLower(event.Filename()).find(term_)
+    for (const auto& term : terms_) {
+        if (Poco::UTF8::toLower(event.Filename()).find(term)
             != std::string::npos) {
-        return true;
-    }
-    if (Poco::UTF8::toLower(event.Title()).find(term_)
+            return true;
+        }
+        if (Poco::UTF8::toLower(event.Title()).find(term)
             != std::string::npos) {
-        return true;
+            return true;
+        }
     }
     return false;
 }
 
-const std::string &AutotrackerRule::Term() const {
-    return term_;
+const std::vector<std::string>& AutotrackerRule::Terms() const {
+    return terms_;
 }
 
-void AutotrackerRule::SetTerm(const std::string &value) {
-    if (term_ != value) {
-        term_ = value;
+void AutotrackerRule::SetTerms(const std::string &value) {
+    if (TermsString() != value) {
+        terms_.clear();
+        if (!value.empty()) {
+            std::stringstream ss(value);
+            while (ss.good()) {
+                std::string tag;
+                getline(ss, tag, kTermSeparator);
+                terms_.push_back(tag);
+            }
+        }
         SetDirty();
     }
 }
@@ -57,7 +69,7 @@ void AutotrackerRule::SetTID(const Poco::UInt64 value) {
 std::string AutotrackerRule::String() const {
     std::stringstream ss;
     ss << " local_id=" << LocalID()
-       << " term=" << term_
+       << " terms=" << TermsString()
        << " uid=" << UID()
        << " pid=" << pid_
        << " tid=" << tid_;
@@ -70,6 +82,17 @@ std::string AutotrackerRule::ModelName() const {
 
 std::string AutotrackerRule::ModelURL() const {
     return "";
+}
+
+const std::string AutotrackerRule::TermsString() const {
+    std::stringstream ss;
+    for (auto it = terms_.begin(); it != terms_.end(); ++it) {
+        if (it != terms_.begin()) {
+            ss << kTermSeparator;
+        }
+        ss << *it;
+    }
+    return ss.str();
 }
 
 }  // namespace toggl

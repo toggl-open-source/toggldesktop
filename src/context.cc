@@ -832,7 +832,7 @@ void Context::updateUI(const UIElements &what) {
                     view::AutotrackerRule rule;
                     rule.ProjectName = Formatter::JoinTaskName(t, p);
                     rule.ID = model->LocalID();
-                    rule.Term = model->Term();
+                    rule.Term = model->TermsString();
                     autotracker_rule_views.push_back(rule);
                 }
 
@@ -3935,7 +3935,7 @@ error Context::AddAutotrackerRule(
         }
 
         rule = new AutotrackerRule();
-        rule->SetTerm(lowercase);
+        rule->SetTerms(lowercase);
         if (t) {
             rule->SetTID(t->ID());
         }
