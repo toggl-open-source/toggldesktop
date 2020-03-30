@@ -448,25 +448,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\logo64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\icon-billable.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\icon-tags.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\continue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Fonts\Roboto-Bold.ttf" />
-    <Resource Include="Resources\Fonts\Roboto-Light.ttf" />
-    <Resource Include="Resources\Fonts\Roboto-Medium.ttf" />
-    <Resource Include="Resources\Fonts\Roboto-Regular.ttf" />
     <Resource Include="Resources\toggl.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -485,89 +466,7 @@
     <Resource Include="Resources\toggltray_offline_inactive.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Border.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Close.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\CloseDisabled.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CloseHot.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ClosePressed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Maximize.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MaximizeDisabled.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MaximizeHot.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MaximizePressed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Minimize.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MinimizeDisabled.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MinimizeHot.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MinimizePressed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\icon-x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\popup_arrow.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\popup_back_right.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\trash_can.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cog.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cogDisabled.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cogHot.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cogPressed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\continue_hover.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\resize.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\darkBg.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\timerDarkBg.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ic_arrow_back_grey600_24dp.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\shadow.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\icon-google.png" />
-    <Resource Include="Resources\toggl-logo-white.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -807,32 +706,13 @@
     <Resource Include="Resources\timerLightBg.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\ic_expand_more_grey600_36dp.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\ic_arrow_back_grey600_36dp.png" />
     <Resource Include="Resources\ic_close_grey600_36dp.png" />
-    <Resource Include="Resources\ic_delete_grey600_36dp.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\ic_cancel_grey600_24dp.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\ic_calendar_2x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\ic_maximize_grey600_36dp.png" />
-    <Resource Include="Resources\ic_minimize_grey600_36dp.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ic_cog_grey600_36dp.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\syncing-spinner.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\toggl-transparent.ico" />
-    <Resource Include="Resources\toggl_inactive-transparent.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\login-spinner.png" />
@@ -851,18 +731,10 @@
     <Resource Include="Resources\arrow-up.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\warning-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\locked-icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\arrow-up-white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\continue_light.png" />
-    <Resource Include="Resources\group_icon_closed.png" />
-    <Resource Include="Resources\group_icon_open.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bugsnag">
