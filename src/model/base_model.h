@@ -129,10 +129,14 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
         : container_(container)
     {
         size_t ptr { query.Offset() };
-        load(rs, query.IsRequired(ptr), ptr++, local_id_);
-        load(rs, query.IsRequired(ptr), ptr++, id_);
-        load(rs, query.IsRequired(ptr), ptr++, uid_);
-        load(rs, query.IsRequired(ptr), ptr++, guid_);
+        load(rs, query.IsRequired(ptr), ptr, local_id_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, id_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, uid_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, guid_);
+        ptr++;
         ClearDirty();
     }
 

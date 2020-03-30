@@ -292,45 +292,9 @@ class TOGGL_INTERNAL_EXPORT Database {
         const Poco::UInt64 &UID,
         ProtectedContainer<T> &list);
 
-    error loadClients(
-        const Poco::UInt64 &UID,
-        ProtectedContainer<Client> &list);
-
     error loadProjects(
         const Poco::UInt64 &UID,
         ProtectedContainer<Project> &list);
-
-    error loadTasks(
-        const Poco::UInt64 &UID,
-        ProtectedContainer<Task> &list);
-
-    error loadTags(
-        const Poco::UInt64 &UID,
-        ProtectedContainer<Tag> &list);
-
-    error loadAutotrackerRules(
-        const Poco::UInt64 &UID,
-        ProtectedContainer<AutotrackerRule> &list);
-
-    error loadObmActions(
-        const Poco::UInt64 &UID,
-        ProtectedContainer<ObmAction> &list);
-
-    error loadObmExperiments(
-        const Poco::UInt64 &UID,
-        ProtectedContainer<ObmExperiment> &list);
-
-    error loadTimeEntries(
-        const Poco::UInt64 &UID,
-        ProtectedContainer<TimeEntry> &list);
-
-    error loadTimelineEvents(
-        const Poco::UInt64 &UID,
-        ProtectedContainer<TimelineEvent> &list);
-
-    error loadTimeEntriesFromSQLStatement(
-        Poco::Data::Statement *select,
-        ProtectedContainer<TimeEntry> &list);
 
     template <typename T>
     error saveRelatedModels(

@@ -14,6 +14,42 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT ObmAction : public BaseModel {
+    inline static const std::string modelName{ kModelObmAction };
+    inline static const Query query{
+        Query::Table{"obm_actions"},
+        Query::Columns {
+            { "local_id", true },
+            { "guid", false },
+            { "experiment_id", true },
+            { "key", true },
+            { "value", true }
+        },
+        Query::Join{},
+        Query::OrderBy{},
+        // doesn't actually use stuff from BaseModel
+        nullptr
+    };
+    ObmAction(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : BaseModel(container, rs)
+    {
+        size_t ptr{ query.Offset() };
+        // hacky
+        Poco::Int64 localId;
+        load(rs, query.IsRequired(ptr), ptr, localId);
+        SetLocalID(localId);
+        ptr++;
+        guid uuid;
+        load(rs, query.IsRequired(ptr), ptr, uuid);
+        SetGUID(uuid);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, experiment_id_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, key_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, value_);
+        ptr++;
+        ClearDirty();
+    }
     ObmAction(ProtectedBase *container)
         : BaseModel(container)
     {}
@@ -48,6 +84,45 @@ class TOGGL_INTERNAL_EXPORT ObmAction : public BaseModel {
 };
 
 class TOGGL_INTERNAL_EXPORT ObmExperiment : public BaseModel {
+    inline static const std::string modelName{ kModelObmExperiment };
+    inline static const Query query{
+        Query::Table{"obm_experiments"},
+        Query::Columns {
+            { "local_id", true },
+            { "guid", false },
+            { "nr", true },
+            { "included", true },
+            { "has_seen", true },
+            { "actions", true }
+        },
+        Query::Join{},
+        Query::OrderBy{},
+        // doesn't actually use stuff from BaseModel
+        nullptr
+    };
+    ObmExperiment(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : BaseModel(container, rs)
+    {
+        size_t ptr{ query.Offset() };
+        // hacky
+        Poco::Int64 localId;
+        load(rs, query.IsRequired(ptr), ptr, localId);
+        SetLocalID(localId);
+        ptr++;
+        guid uuid;
+        load(rs, query.IsRequired(ptr), ptr, uuid);
+        SetGUID(uuid);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, nr_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, included_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, has_seen_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, actions_);
+        ptr++;
+        ClearDirty();
+    }
     ObmExperiment(ProtectedBase *container)
         : BaseModel(container)
     {}

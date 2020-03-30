@@ -16,6 +16,27 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Client : public BaseModel {
+    inline static const std::string modelName{ kModelClient };
+    inline static const Query query{
+        Query::Table{"clients"},
+        Query::Columns {
+            { "name", true },
+            { "wid", true }
+        },
+        Query::Join{},
+        Query::OrderBy{"name"},
+        &BaseModel::query
+    };
+    Client(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : BaseModel(container, rs)
+    {
+        size_t ptr{ query.Offset() };
+        load(rs, query.IsRequired(ptr), ptr, name_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, wid_);
+        ptr++;
+        ClearDirty();
+    }
     Client(ProtectedBase *container)
         : BaseModel(container)
     {}

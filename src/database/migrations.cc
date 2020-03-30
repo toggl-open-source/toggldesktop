@@ -32,6 +32,8 @@ error Migrations::migrateObmActions() {
     if (err != noError) {
         return err;
     }
+
+    return noError;
 }
 
 error Migrations::migrateObmExperiments() {
@@ -121,8 +123,8 @@ error Migrations::migrateAutotracker() {
 
     err = db_->Migrate(
         "autotracker_settings.guid",
-        "ALTER TABLE autotracker_settings "
-            "ADD COLUMN guid VARCHAR;"
+            "ALTER TABLE autotracker_settings ADD COLUMN guid VARCHAR;"
+            "ALTER TABLE autotracker_settings ADD COLUMN id INTEGER;"
             "CREATE UNIQUE INDEX id_autotracker_settings_guid ON autotracker_settings (uid, guid);");
     if (err != noError) {
         return err;
@@ -567,6 +569,13 @@ error Migrations::migrateTimeline() {
         "timeline_events.guid",
         "CREATE UNIQUE INDEX idx_timeline_events_guid "
         "   ON timeline_events (guid);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "timeline_events.id",
+        "ALTER TABLE timeline_events ADD COLUMN id INTEGER;");
     if (err != noError) {
         return err;
     }

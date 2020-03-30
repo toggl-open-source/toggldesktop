@@ -12,6 +12,27 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Tag : public BaseModel {
+    inline static const std::string modelName{ kModelTag };
+    inline static const Query query{
+        Query::Table{"tags"},
+        Query::Columns {
+            { "name", true },
+            { "wid", true }
+        },
+        Query::Join{},
+        Query::OrderBy{"name"},
+        &BaseModel::query
+    };
+    Tag(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : BaseModel(container, rs)
+    {
+        size_t ptr{ query.Offset() };
+        load(rs, query.IsRequired(ptr), ptr, name_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, wid_);
+        ptr++;
+        ClearDirty();
+    }
     Tag(ProtectedBase *container)
         : BaseModel(container)
     {}

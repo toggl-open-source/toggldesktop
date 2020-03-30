@@ -15,6 +15,30 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
+    inline static const std::string modelName{ kModelAutotrackerRule };
+    inline static const Query query{
+        Query::Table{"autotracker_settings"},
+        Query::Columns {
+            { "term", true },
+            { "pid", false },
+            { "tid", true }
+        },
+        Query::Join{},
+        Query::OrderBy{"term"},
+        &BaseModel::query
+    };
+    AutotrackerRule(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : BaseModel(container, rs)
+    {
+        size_t ptr{ query.Offset() };
+        load(rs, query.IsRequired(ptr), ptr, term_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, pid_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, tid_);
+        ptr++;
+        ClearDirty();
+    }
     AutotrackerRule(ProtectedBase *container)
         : BaseModel(container)
     {}

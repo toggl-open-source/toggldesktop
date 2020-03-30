@@ -15,6 +15,87 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
+    inline static const std::string modelName{ kModelTimeEntry };
+    inline static const Query query{
+        Query::Table{"time_entries"},
+        Query::Columns {
+            { "description", false },
+            { "wid", true },
+            { "pid", false },
+            { "tid", false },
+            { "billable", true },
+            { "duronly", true },
+            { "ui_modified_at", false },
+            { "start", true },
+            { "stop", false },
+            { "duration", true },
+            { "tags", false },
+            { "created_with", false },
+            { "deleted_at", false },
+            { "updated_at", false },
+            { "project_guid", false },
+            { "validation_error", false }
+        },
+        Query::Join{},
+        Query::OrderBy{"start DESC"},
+        &BaseModel::query
+    };
+    TimeEntry(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : BaseModel(container, rs)
+    {
+        size_t ptr{ query.Offset() };
+        load(rs, query.IsRequired(ptr), ptr, description_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, wid_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, pid_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, tid_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, billable_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, duronly_);
+        ptr++;
+        // HACKS AHEAD
+        Poco::Int64 modifiedAt;
+        load(rs, query.IsRequired(ptr), ptr, modifiedAt);
+        SetUIModifiedAt(modifiedAt);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, start_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, stop_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, duration_in_seconds_);
+        ptr++;
+        // MORE HACKS
+        std::string tags;
+        load(rs, query.IsRequired(ptr), ptr, tags);
+        SetTags(tags);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, created_with_);
+        ptr++;
+        // HACK
+        Poco::Int64 deletedAt;
+        load(rs, query.IsRequired(ptr), ptr, deletedAt);
+        SetDeletedAt(deletedAt);
+        ptr++;
+        // HACK
+        Poco::Int64 updatedAt;
+        load(rs, query.IsRequired(ptr), ptr, updatedAt);
+        SetUpdatedAt(updatedAt);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, project_guid_);
+        ptr++;
+        error validationError;
+        load(rs, query.IsRequired(ptr), ptr, validationError);
+        SetValidationError(validationError);
+        ptr++;
+
+        ClearDirty();
+        EnsureGUID();
+        if (Dirty())
+            SetUIModified();
+    }
     TimeEntry(ProtectedBase *container)
         : BaseModel(container)
     {}
