@@ -42,6 +42,10 @@ struct BaseModelQuery {
     struct Column {
         std::string name;
         bool required;
+        // so printColumns still works
+        explicit operator std::string() const {
+            return name;
+        }
     };
     typedef std::vector<std::string> Join;
     typedef std::string Table;
@@ -78,9 +82,6 @@ struct BaseModelQuery {
         return columns_[idx].required;
     }
 
-    template <typename T> static const std::string &column(const T &item) { return item; }
-    template <> static const std::string &column<Column>(const Column &item) { return item.name; }
-
     /**
      * @brief writes a list of columns to @ref ss
      * Handles case when there's multiple tables and prepends "main" table name to columns without a dot
@@ -91,9 +92,9 @@ struct BaseModelQuery {
             if (!first)
                 ss << ", ";
             first = false;
-            if (!join_.empty() && column(i).find(".") == std::string::npos)
+            if (!join_.empty() && std::string(i).find(".") == std::string::npos)
                 ss << table_ << ".";
-            ss << column(i);
+            ss << std::string(i);
         }
     };
 };
