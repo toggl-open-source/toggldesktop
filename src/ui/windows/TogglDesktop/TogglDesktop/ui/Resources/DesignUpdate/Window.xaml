@@ -49,6 +49,7 @@
         <Setter Property="AllowsTransparency" Value="True" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="ShowMaxRestoreButton" Value="False" />
+        <Setter Property="ShowIconOnTitleBar" Value="False" />
     </Style>
 
     <Style TargetType="mah:MetroWindow" x:Key="Toggl.MessageBox"
