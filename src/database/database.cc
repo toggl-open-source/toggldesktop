@@ -1117,7 +1117,7 @@ error Database::loadUsersRelatedData(locked<User> &user) {
         return err;
     }
 
-    err = loadProjects(user->ID(), user->GetRelatedData()->Projects);
+    err = loadModels(user->ID(), user->GetRelatedData()->Projects);
     if (err != noError) {
         return err;
     }
@@ -1257,93 +1257,6 @@ error Database::LoadUserByID(
     logger.debug("User loaded in ", stopwatch.elapsed() / 1000, " ms");
 
     return noError;
-}
-
-error Database::loadProjects(const Poco::UInt64 &UID,
-    ProtectedContainer<Project> &list) {
-
-    if (!UID) {
-        return error("Cannot load user projects without an user ID");
-    }
-
-    try {
-        list.clear();
-
-        Poco::Mutex::ScopedLock lock(session_m_);
-
-        Poco::Data::Statement select(*session_);
-        select <<
-               "SELECT projects.local_id, projects.id, projects.uid, "
-               "projects.name, projects.guid, projects.wid, projects.color, projects.cid, "
-               "projects.active, projects.billable, projects.client_guid, "
-               "clients.name as client_name "
-               "FROM projects "
-               "LEFT JOIN clients on projects.cid = clients.id "
-               "LEFT JOIN workspaces on projects.wid = workspaces.id "
-               "WHERE projects.uid = :uid "
-               "ORDER BY workspaces.name COLLATE NOCASE ASC,"
-               "client_name COLLATE NOCASE ASC,"
-               "projects.name COLLATE NOCASE ASC;",
-               useRef(UID);
-        error err = last_error("loadProjects");
-        if (err != noError) {
-            return err;
-        }
-        Poco::Data::RecordSet rs(select);
-        while (!select.done()) {
-            select.execute();
-            bool more = rs.moveFirst();
-            while (more) {
-                auto model = list.create();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
-                if (rs[1].isEmpty()) {
-                    model->SetID(0);
-                } else {
-                    model->SetID(rs[1].convert<Poco::UInt64>());
-                }
-                model->SetUID(rs[2].convert<Poco::UInt64>());
-                model->SetName(rs[3].convert<std::string>());
-                if (rs[4].isEmpty()) {
-                    model->SetGUID("");
-                } else {
-                    model->SetGUID(rs[4].convert<std::string>());
-                }
-                model->SetWID(rs[5].convert<Poco::UInt64>());
-                if (rs[6].isEmpty()) {
-                    model->SetColor("");
-                } else {
-                    model->SetColor(rs[6].convert<std::string>());
-                }
-                if (rs[7].isEmpty()) {
-                    model->SetCID(0);
-                } else {
-                    model->SetCID(rs[7].convert<Poco::UInt64>());
-                }
-                model->SetActive(rs[8].convert<bool>());
-                model->SetBillable(rs[9].convert<bool>());
-                if (rs[10].isEmpty()) {
-                    model->SetClientGUID("");
-                } else {
-                    model->SetClientGUID(rs[10].convert<std::string>());
-                }
-                if (rs[11].isEmpty()) {
-                    model->SetClientName("");
-                } else {
-                    model->SetClientName(rs[11].convert<std::string>());
-                }
-                model->ClearDirty();
-
-                more = rs.moveNext();
-            }
-        }
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string & ex) {
-        return ex;
-    }
-    return last_error("loadProjects");
 }
 
 template <typename T>

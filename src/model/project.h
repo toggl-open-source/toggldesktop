@@ -14,7 +14,52 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
- public:
+    inline static const std::string modelName{ kModelProject };
+    inline static const Query query{
+        Query::Table{"projects"},
+        Query::Columns {
+            { "name", true },
+            { "wid", true },
+            { "color", false },
+            { "cid", false },
+            { "active", true },
+            { "billable", true },
+            { "client_guid", false },
+            { "clients.name", false }
+        },
+        Query::Join{
+            "LEFT JOIN clients ON projects.cid = clients.id",
+            "LEFT JOIN workspaces ON projects.wid = workspaces.id"
+        },
+        Query::OrderBy{
+            "workspaces.name COLLATE NOCASE ASC",
+            "clients.name COLLATE NOCASE ASC",
+            "projects.name COLLATE NOCASE ASC"
+        },
+        &BaseModel::query
+    };
+    Project(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : BaseModel(container, rs)
+    {
+        size_t ptr{ query.Offset() };
+        load(rs, query.IsRequired(ptr), ptr, name_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, wid_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, color_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, cid_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, active_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, billable_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, client_guid_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, client_name_);
+        ptr++;
+        ClearDirty();
+    }
     Project(ProtectedBase *container)
         : BaseModel(container)
     {}

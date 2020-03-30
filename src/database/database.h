@@ -292,10 +292,6 @@ class TOGGL_INTERNAL_EXPORT Database {
         const Poco::UInt64 &UID,
         ProtectedContainer<T> &list);
 
-    error loadProjects(
-        const Poco::UInt64 &UID,
-        ProtectedContainer<Project> &list);
-
     template <typename T>
     error saveRelatedModels(
         const Poco::UInt64 UID,
