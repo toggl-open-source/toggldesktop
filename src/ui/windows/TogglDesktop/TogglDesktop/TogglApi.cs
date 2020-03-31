@@ -880,6 +880,40 @@ public static partial class Toggl
         string access_token);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_apple_login(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string access_token);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_apple_login_async(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string access_token);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_apple_signup(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string access_token,
+        UInt64 country_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string full_name);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_apple_signup_async(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string access_token,
+        UInt64 country_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string full_name);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_password_forgot(
         IntPtr context);
 
@@ -1421,6 +1455,13 @@ public static partial class Toggl
         UInt64 started,
         UInt64 ended);
 
+    // Create an Empty Time Entry without stopping the running TE
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern string toggl_create_empty_time_entry(
+        IntPtr context,
+        UInt64 started,
+        UInt64 ended);
+
     // returns GUID of the new project. you must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_add_project(
@@ -1608,6 +1649,16 @@ public static partial class Toggl
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern Int64 toggl_autotracker_add_rule(
         IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string term,
+        UInt64 project_id,
+        UInt64 task_id);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_autotracker_update_rule(
+        IntPtr context,
+        Int64 rule_id,
         [MarshalAs(UnmanagedType.LPWStr)]
         string term,
         UInt64 project_id,

@@ -1399,6 +1399,20 @@ int64_t toggl_autotracker_add_rule(
     return rule_id;
 }
 
+bool_t toggl_autotracker_update_rule(
+    void *context,
+    const int64_t rule_id,
+    const char_t *term,
+    const uint64_t project_id,
+    const uint64_t task_id) {
+    return toggl::noError ==
+           app(context)->UpdateAutotrackerRule(
+               rule_id,
+               to_string(term),
+               project_id,
+               task_id);
+}
+
 bool_t toggl_autotracker_delete_rule(
     void *context,
     const int64_t id) {
