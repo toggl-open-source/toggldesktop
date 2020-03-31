@@ -1875,6 +1875,20 @@ TEST(AutotrackerRule, Matches) {
 
     ev.SetTitle("dork");
     ASSERT_FALSE(a.Matches(ev));
+    
+    // multiple terms in a single autotracker rule
+    a.SetTerms("edge\tchrome\tfirefox");
+    
+    ev.SetTitle("toggl-open-source/toggldesktop: Toggl Desktop app for Windows, Mac and Linux - Google Chrome");
+    ASSERT_TRUE(a.Matches(ev));
+    
+    ev.SetTitle("YouTube");
+    ev.SetFilename("msedge.exe");
+    ASSERT_TRUE(a.Matches(ev));
+    
+    ev.SetTitle("YouTube");
+    ev.SetFilename("chromium.exe");
+    ASSERT_FALSE(a.Matches(ev));
 }
 
 TEST(Settings, IsSame) {
