@@ -88,6 +88,7 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
     bool HasMatchingAutotrackerRule(const std::string &lowercase_term) const;
 
     error DeleteAutotrackerRule(const Poco::Int64 local_id);
+    error UpdateAutotrackerRule(const Poco::Int64 local_id, std::string terms, const Poco::UInt64 tid, const Poco::UInt64 pid);
 
     void TimeEntryAutocompleteItems(std::vector<view::Autocomplete> *) const;
     void MinitimerAutocompleteItems(std::vector<view::Autocomplete> *) const;

@@ -71,6 +71,26 @@ error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
     return noError;
 }
 
+error RelatedData::UpdateAutotrackerRule(const Poco::Int64 local_id, std::string terms, const Poco::UInt64 tid, const Poco::UInt64 pid) {
+    if (!local_id) {
+        return error("cannot update rule without an ID");
+    }
+    for (std::vector<AutotrackerRule*>::iterator it =
+        AutotrackerRules.begin();
+        it != AutotrackerRules.end(); ++it) {
+        AutotrackerRule* rule = *it;
+        // Autotracker settings are not saved to DB,
+        // so the ID will be 0 always. But will have local ID
+        if (rule->LocalID() == local_id) {
+            rule->SetTerms(terms);
+            rule->SetTID(tid);
+            rule->SetPID(pid);
+            break;
+        }
+    }
+    return noError;
+}
+
 AutotrackerRule *RelatedData::FindAutotrackerRule(
     const TimelineEvent &event) const {
     for (std::vector<AutotrackerRule *>::const_iterator it =
