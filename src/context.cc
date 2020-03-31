@@ -3960,7 +3960,7 @@ error Context::AddAutotrackerRule(
 
 error Context::UpdateAutotrackerRule(
     const Poco::Int64 rule_id,
-    const std::string& terms,
+    const std::string &terms,
     const Poco::UInt64 pid,
     const Poco::UInt64 tid) {
 

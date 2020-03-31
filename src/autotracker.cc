@@ -14,7 +14,7 @@ static const char kTermSeparator = '\t';
 bool AutotrackerRule::Matches(const TimelineEvent &event) const {
     for (const auto& term : terms_) {
         if (Poco::UTF8::toLower(event.Title()).find(term)
-            != std::string::npos) {
+                != std::string::npos) {
             return true;
         }
     }
