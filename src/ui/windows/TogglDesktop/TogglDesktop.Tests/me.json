@@ -1,0 +1,38 @@
+{
+	"since":1379068550,
+	"data":{
+		"id":10471231,"api_token":"30eb0ae954b536d2f6628f7fec47beb6","default_wid":123456788,"email":"johnsmith@toggl.com","fullname":"John Smith","jquery_timeofday_format":"H:i","jquery_date_format":"d.m.Y","timeofday_format":"H:mm","date_format":"DD.MM.YYYY","store_start_and_stop_time":true,"beginning_of_week":1,"language":"en_US","image_url":"https://www.toggl.com/system/avatars/1/2/3/small/imgres.png","sidebar_piechart":false,"at":"2013-09-12T00:22:05+00:00","retention":9,"record_timeline":true,"render_timeline":true,"timeline_enabled":true,"timeline_experiment":true,"manual_mode":false,"new_blog_post":{"title":"Defining Workplace Activity & 4 Ways to Improve It","url":"http://blog.toggl.com/2013/09/defining-workplace-activity-4-ways-improve/?utm_source=rss&utm_medium=rss&utm_campaign=defining-workplace-activity-4-ways-improve","category":"Uncategorized","pub_date":"2013-09-12T11:13:55Z"},"should_upgrade":false,"show_offer":true,"share_experiment":false,"achievements_enabled":false,"timezone":"Europe/Tallinn","openid_enabled":true,"openid_email":"john.smith@gmail.com","send_product_emails":true,"send_weekly_report":false,"send_timer_notifications":true,"invitation":{},
+		"workspaces":[
+			{"id":123456722,"name":"A deleted workspace","premium":false,"admin":true,"default_hourly_rate":0,"default_currency":"USD","only_admins_may_create_projects":false,"only_admins_see_billable_rates":false,"rounding":1,"rounding_minutes":0,"at":"2013-07-02T13:45:36+00:00","server_deleted_at":"2013-08-22T09:05:31+00:00"},
+			{"id":123456788,"name":"stuff","premium":false,"admin":true,"default_hourly_rate":0,"default_currency":"USD","only_admins_may_create_projects":false,"only_admins_see_billable_rates":false,"rounding":1,"rounding_minutes":0,"at":"2013-07-02T13:45:36+00:00"},
+			{"id":123456789,"name":"Toggl","premium":true,"admin":true,"default_hourly_rate":0,"default_currency":"USD","only_admins_may_create_projects":true,"only_admins_see_billable_rates":false,"rounding":1,"rounding_minutes":15,"at":"2013-08-28T13:22:21+00:00"}
+		],
+		"projects":[
+			{"id":2598323,"guid":"2f0b8f11-f898-d992-3e1a-6bc261fc41ef","wid":123456789,"name":"A deleted project","billable":true,"is_private":false,"active":false,"template":false,"at":"2013-05-13T10:19:24+00:00","color":"#fb8b14","auto_estimates":true,"server_deleted_at":"2013-08-22T09:05:31+00:00"},
+			{"id":2598305,"guid":"2f0b8f51-f898-d992-3e1a-6bc261fc41xf","wid":123456789,"name":"Testing stuff","billable":true,"is_private":false,"active":false,"template":false,"at":"2013-05-13T10:19:24+00:00","color":"#fb8b14","auto_estimates":false},
+			{"id":2567324,"wid":123456789,"cid":1385144,"name":"Even more work","billable":true,"is_private":true,"active":true,"template":false,"at":"2013-06-05T11:32:47+00:00","color":"#999999","auto_estimates":false}
+		],
+		"clients":[
+			{"id":1385144,"wid":123456789,"name":"ABC","at":"2013-08-21T08:07:25+00:00","server_deleted_at":"2013-08-22T09:05:31+00:00"},
+			{"id":878318,"guid":"59b464cd-0f8e-e601-ff44-f135225a6738","wid":123456788,"name":"Big Client","at":"2013-03-27T13:17:18+00:00"}
+		],
+		"tasks":[
+			{"id":1894712,"name":"A deleted task","wid":123456789,"pid":2598305,"active":true,"at":"2013-06-05T07:58:41+00:00","estimated_seconds":0,"server_deleted_at":"2013-08-22T09:05:31+00:00"},
+			{"id":1894794,"name":"blog (writing)","wid":123456789,"pid":2598305,"active":true,"at":"2013-06-05T07:58:41+00:00","estimated_seconds":0},
+			{"id":1879027,"name":"dadsad","wid":123456789,"pid":2598305,"active":true,"at":"2013-05-20T07:21:58+00:00","estimated_seconds":0}
+		],
+		"time_entries":[
+			{"id":89818612,"guid":"07fba193-91c4-0ec8-2345-820df0548123","wid":123456789,"pid":2567324,"billable":true,"start":"2013-09-05T06:33:50+00:00","stop":"2013-09-05T08:19:46+00:00","duration":6356,"description":"A deleted time entry","tags":[""],"duronly":false,"at":"2013-09-05T08:19:45+00:00","server_deleted_at":"2013-08-22T09:05:31+00:00"},
+			{"id":89818605,"guid":"07fba193-91c4-0ec8-2894-820df0548a8f","wid":123456789,"pid":2567324,"billable":true,"start":"2013-09-05T06:33:50+00:00","stop":"2013-09-05T08:19:46+00:00","duration":6356,"description":"Important things","tags":[""],"duronly":false,"at":"2013-09-05T08:19:45+00:00"},
+			{"id":89833438,"guid":"6c97dc31-582e-7662-1d6f-5e9d623b1685","wid":123456789,"pid":2567324,"billable":true,"start":"2013-09-05T08:19:47+00:00","stop":"2013-09-05T08:41:02+00:00","duration":1275,"description":"More work","tags":[""],"duronly":false,"at":"2013-09-05T08:41:00+00:00"},
+			{"id":89837259,"guid":"6a958efd-0e9a-d777-7e19-001b2d7ced92","wid":123456789,"pid":2567324,"billable":true,"start":"2013-09-05T08:41:04+00:00","stop":"2013-09-05T09:09:15+00:00","duration":1691,"description":"arendus käib","tags":[""],"duronly":false,"at":"2013-09-05T09:09:13+00:00"},
+			{"id":89837444,"wid":123456789,"pid":2567324,"start":"2013-09-05T12:15:00+00:00","stop":"2013-09-05T09:09:15+00:00","duration":360,"description":"guidless entry","at":"2013-09-05T11:09:13+00:00"},
+			{"id":89837445,"wid":123456789,"pid":2567324,"start":"0003-03-16T-7:-19:-24Z","stop":"0003-03-16T-5:-52:-51Z","duration":360,"description":"guidless entry","at":"2013-09-05T11:09:13+00:00"}
+		],
+		"tags":[
+			{"id":27457033,"wid":123456788,"name":"A deleted tag","server_deleted_at":"2013-08-22T09:05:31+00:00"},
+			{"id":27457022,"wid":123456788,"name":"billed"},
+			{"id":36253522,"wid":123456788,"name":"create new","at":"2013-10-15T08:51:46+00:00","guid":"041390ba-ed9c-b477-b949-1a4ebb60a9ce"}
+		]
+	}
+}
