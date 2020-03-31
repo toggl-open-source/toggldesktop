@@ -61,7 +61,7 @@ namespace TogglDesktop
 
             foreach (var rule in rules)
             {
-                var item = AutotrackerRuleItem.Make(rule.ID, rule.Term, rule.ProjectAndTaskLabel);
+                var item = AutotrackerRuleItem.Make(rule.ID, rule.Terms, rule.ProjectAndTaskLabel);
 
                 this.ruleItems.Add(item);
                 this.rulesPanel.Children.Add(item);

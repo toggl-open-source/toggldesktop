@@ -294,11 +294,11 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule {
  public:
     AutotrackerRule()
         : ID(0)
-    , Term("")
+    , Terms("")
     , ProjectName("") {}
 
     int64_t ID;
-    std::string Term;
+    std::string Terms;
     std::string ProjectName;
 
     bool operator == (const AutotrackerRule& other) const;

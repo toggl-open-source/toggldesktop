@@ -328,7 +328,7 @@ public static partial class Toggl
     {
         public         Int64 ID;
         [MarshalAs(UnmanagedType.LPWStr)]
-        public         string Term;
+        public         string Terms;
         [MarshalAs(UnmanagedType.LPWStr)]
         public         string ProjectAndTaskLabel;
         public         IntPtr Next;
