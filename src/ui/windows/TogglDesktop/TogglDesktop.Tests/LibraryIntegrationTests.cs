@@ -400,6 +400,77 @@ namespace TogglDesktop.Tests
         {
             Toggl.SetIdleSeconds(123);
         }
+
+        [Fact]
+        public void ShouldAddAutotrackerRule()
+        {
+            var timeEntry = GetTimeEntry(_firstTimeEntryGuid);
+            var pid = timeEntry.PID;
+            var tid = timeEntry.TID;
+
+            var currentRulesList = new List<Toggl.TogglAutotrackerRuleView>();
+            Toggl.OnAutotrackerRules += (rules, terms) => { currentRulesList = rules; };
+
+            var ruleId = Toggl.AddAutotrackerRule("slack", pid, tid);
+
+            Assert.Contains(currentRulesList, rule => rule.ID == ruleId);
+        }
+
+        [Fact]
+        public void ShouldDeleteAutotrackerRule()
+        {
+            var timeEntry = GetTimeEntry(_firstTimeEntryGuid);
+            var pid = timeEntry.PID;
+            var tid = timeEntry.TID;
+
+            var currentRulesList = new List<Toggl.TogglAutotrackerRuleView>();
+            Toggl.OnAutotrackerRules += (rules, terms) => { currentRulesList = rules; };
+
+            var ruleId = Toggl.AddAutotrackerRule("slack", pid, tid);
+            Assert.Contains(currentRulesList, rule => rule.ID == ruleId);
+
+            Assert.True(Toggl.DeleteAutotrackerRule(ruleId));
+            Assert.Empty(currentRulesList);
+        }
+
+        [Fact]
+        public void ShouldUpdateAutotrackerRuleWithDifferentTerm()
+        {
+            var timeEntry = GetTimeEntry(_firstTimeEntryGuid);
+            var pid = timeEntry.PID;
+            var tid = timeEntry.TID;
+
+            var currentRulesList = new List<Toggl.TogglAutotrackerRuleView>();
+            Toggl.OnAutotrackerRules += (rules, terms) => { currentRulesList = rules; };
+
+            var ruleId = Toggl.AddAutotrackerRule("slack", pid, tid);
+
+            Assert.Contains(currentRulesList, rule => rule.ID == ruleId && rule.Terms == "slack");
+
+            Assert.True(Toggl.UpdateAutotrackerRule(ruleId, "teams", pid, tid));
+
+            Assert.Contains(currentRulesList, rule => rule.ID == ruleId && rule.Terms == "teams");
+        }
+
+        [Fact]
+        public void ShouldAddTermToExistingAutotrackerRule()
+        {
+            var timeEntry = GetTimeEntry(_firstTimeEntryGuid);
+            var pid = timeEntry.PID;
+            var tid = timeEntry.TID;
+
+            var currentRulesList = new List<Toggl.TogglAutotrackerRuleView>();
+            Toggl.OnAutotrackerRules += (rules, terms) => { currentRulesList = rules; };
+
+            var ruleId = Toggl.AddAutotrackerRule("slack", pid, tid);
+
+            Assert.Contains(currentRulesList, rule => rule.ID == ruleId && rule.Terms == "slack");
+
+            Assert.True(Toggl.UpdateAutotrackerRule(ruleId, "slack\tteams", pid, tid));
+
+            Assert.Contains(currentRulesList, rule => rule.ID == ruleId && rule.Terms == "slack\tteams");
+        }
+
         private Toggl.TogglTimeEntryView GetTimeEntry(string guid) => _state.TimeEntries.First(te => te.GUID == guid);
     }
 }

@@ -46,6 +46,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\lib\windows\TogglDesktopDLL\TogglDesktopDLL.vcxproj">
+      <Project>{3ace25dd-04ce-47d8-9658-3d0546521da2}</Project>
+      <Name>TogglDesktopDLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TogglDesktop\TogglDesktop.csproj">
       <Project>{27ac6261-3916-4683-b692-dc57e2fe0abd}</Project>
       <Name>TogglDesktop</Name>
