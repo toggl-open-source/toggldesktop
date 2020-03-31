@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Media.Animation;
 using TogglDesktop.Diagnostics;
@@ -30,15 +31,13 @@ namespace TogglDesktop
             this.MinWidth = this.EditView.MinWidth + 16;
             this.mainGrid.Width = 0;
 
-            Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
-
+            Toggl.OnTimeEntryEditor.ObserveOnDispatcher().Subscribe(this.onTimeEntryEditor);
             KeyboardShortcuts.RegisterShortcuts(this);
         }
 
-        private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
+        private void onTimeEntryEditor((bool open, Toggl.TogglTimeEntryView te, string focusedFieldName) x)
         {
-            if (this.TryBeginInvoke(this.onTimeEntryEditor, open, te, focusedFieldName))
-                return;
+            var (open, te, focusedFieldName) = x;
 
             if (!this.Owner.IsVisible)
                 return;

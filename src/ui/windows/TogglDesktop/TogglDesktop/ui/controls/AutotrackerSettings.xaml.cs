@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Input;
 using TogglDesktop.AutoCompletion;
@@ -17,37 +18,14 @@ namespace TogglDesktop
         {
             this.InitializeComponent();
 
-            Toggl.OnAutotrackerRules += this.onAutotrackerRules;
-            Toggl.OnProjectAutocomplete += this.onProjectAutocomplete;
+            Toggl.OnAutotrackerRules.ObserveOnDispatcher().Subscribe(this.fillRules);
+            Toggl.OnProjectAutocomplete
+                .Select(AutoCompleteControllersFactory.ForProjects)
+                .ObserveOnDispatcher()
+                .Subscribe(this.projectAutoComplete.SetController);
         }
-
-        #region toggl events
-
-        private void onAutotrackerRules(List<Toggl.TogglAutotrackerRuleView> rules, string[] terms)
-        {
-            if (this.TryBeginInvoke(this.onAutotrackerRules, rules, terms))
-                return;
-
-            this.fill(rules, terms);
-        }
-
-        private void onProjectAutocomplete(List<Toggl.TogglAutocompleteView> list)
-        {
-            if (this.TryBeginInvoke(this.onProjectAutocomplete, list))
-                return;
-
-            this.projectAutoComplete.SetController(AutoCompleteControllersFactory.ForProjects(list));
-        }
-
-        #endregion
 
         #region filling from data
-
-        private void fill(List<Toggl.TogglAutotrackerRuleView> rules, string[] terms)
-        {
-            // this.termAutoComplete.SetController(AutoCompleteControllers.ForStrings(terms));
-            this.fillRules(rules);
-        }
 
         private void fillRules(List<Toggl.TogglAutotrackerRuleView> rules)
         {

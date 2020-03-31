@@ -1,10 +1,12 @@
 ﻿
-using System.Windows;
+using System;
+using System.Reactive.Disposables;
 
 namespace TogglDesktop.Tutorial
 {
     public partial class BasicTutorialScreen7
     {
+        private IDisposable _subscription;
         public BasicTutorialScreen7()
         {
             this.InitializeComponent();
@@ -12,21 +14,17 @@ namespace TogglDesktop.Tutorial
 
         protected override void initialise()
         {
-            Toggl.OnRunningTimerState += this.onRunningTimerState;
-            Toggl.OnTimeEntryEditor += this.onTimerEntryEditor;
+            _subscription = new CompositeDisposable(
+                Toggl.OnRunningTimerState.Subscribe(this.onRunningTimerState),
+                Toggl.OnTimeEntryEditor.Subscribe(_ => this.quitTutorial()));
         }
 
         protected override void cleanup()
         {
-            Toggl.OnRunningTimerState -= this.onRunningTimerState;
-            Toggl.OnTimeEntryEditor -= this.onTimerEntryEditor;
+            _subscription.Dispose();
         }
 
         private void onRunningTimerState(Toggl.TogglTimeEntryView te)
-        {
-            this.quitTutorial();
-        }
-        private void onTimerEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
         {
             this.quitTutorial();
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,7 +20,6 @@ namespace TogglDesktop
     {
         private Toggl.TogglTimeEntryView timeEntry;
         private bool isInNewProjectMode = true;
-        private List<Toggl.TogglAutocompleteView> projects;
         private List<Toggl.TogglGenericView> clients;
         private List<Toggl.TogglGenericView> workspaces;
         private ulong selectedWorkspaceId;
@@ -33,22 +33,33 @@ namespace TogglDesktop
             this.DataContext = this;
             this.InitializeComponent();
 
-            Toggl.OnLogin += this.onLogin;
-            Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
-            Toggl.OnMinitimerAutocomplete += this.onMinitimerAutocomplete;
-            Toggl.OnProjectAutocomplete += this.onProjectAutocomplete;
-            Toggl.OnClientSelect += this.onClientSelect;
-            Toggl.OnTags += this.onTags;
-            Toggl.OnWorkspaceSelect += this.onWorkspaceSelect;
+            Toggl.OnLogin.ObserveOnDispatcher().Subscribe(_ => this.onLogin());
+            Toggl.OnTimeEntryEditor.ObserveOnDispatcher().Subscribe(this.onTimeEntryEditor);
+            Toggl.OnMinitimerAutocomplete
+                .Select(AutoCompleteControllersFactory.ForTimer)
+                .ObserveOnDispatcher()
+                .Subscribe(this.descriptionAutoComplete.SetController);
+            Toggl.OnProjectAutocomplete
+                .Select(AutoCompleteControllersFactory.ForProjects)
+                .ObserveOnDispatcher()
+                .Subscribe(this.projectAutoComplete.SetController);
+            Toggl.OnClientSelect
+                .ObserveOnDispatcher()
+                .Subscribe(list => this.clients = list);
+            Toggl.OnClientSelect
+                .Select(AutoCompleteControllersFactory.ForClients)
+                .ObserveOnDispatcher()
+                .Subscribe(this.clientAutoComplete.SetController);
+            Toggl.OnTags
+                .Select(list => list.Select(item => item.Name))
+                .ObserveOnDispatcher()
+                .Subscribe(tagList.SetKnownTags);
+            Toggl.OnWorkspaceSelect.ObserveOnDispatcher().Subscribe(this.onWorkspaceSelect);
         }
 
-        private void onLogin(bool open, ulong userId)
+        private void onLogin()
         {
-            if (this.TryBeginInvoke(this.onLogin, open, userId))
-                return;
-
             this.timeEntry = new Toggl.TogglTimeEntryView();
-            this.projects = null;
             this.clients = null;
             this.workspaces = null;
         }
@@ -66,10 +77,9 @@ namespace TogglDesktop
 
         #region from time entry
 
-        private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView timeEntry, string focusedFieldName)
+        private void onTimeEntryEditor((bool open, Toggl.TogglTimeEntryView timeEntry, string focusedFieldName) x)
         {
-            if (this.TryBeginInvoke(this.onTimeEntryEditor, open, timeEntry, focusedFieldName))
-                return;
+            var (open, timeEntry, focusedFieldName) = x;
 
             using (Performance.Measure("filling edit view from OnTimeEntryEditor"))
             {
@@ -225,61 +235,8 @@ namespace TogglDesktop
 
         #endregion
 
-        #region auto completion
-
-        private void onMinitimerAutocomplete(List<Toggl.TogglAutocompleteView> list)
-        {
-            if (this.TryBeginInvoke(this.onMinitimerAutocomplete, list))
-                return;
-
-            using (Performance.Measure("building edit view entry auto complete controller, {0} items", list.Count))
-            {
-                this.descriptionAutoComplete.SetController(AutoCompleteControllersFactory.ForTimer(list));
-            }
-        }
-
-        private void onProjectAutocomplete(List<Toggl.TogglAutocompleteView> list)
-        {
-            if (this.TryBeginInvoke(this.onProjectAutocomplete, list))
-                return;
-
-            this.projects = list;
-
-            using (Performance.Measure("building edit view project auto complete controller, {0} items", this.projects.Count))
-            {
-                this.projectAutoComplete.SetController(AutoCompleteControllersFactory.ForProjects(list));
-            }
-        }
-
-        private void onClientSelect(List<Toggl.TogglGenericView> list)
-        {
-            if (this.TryBeginInvoke(this.onClientSelect, list))
-                return;
-
-            this.clients = list;
-
-            using (Performance.Measure("building edit view client auto complete controller, {0} items", this.clients.Count))
-            {
-                this.clientAutoComplete.SetController(AutoCompleteControllersFactory.ForClients(list));
-            }
-        }
-
-        private void onTags(List<Toggl.TogglGenericView> list)
-        {
-            if (this.TryBeginInvoke(this.onTags, list))
-                return;
-
-            using (Performance.Measure("building edit view tags auto complete controller, {0} items", list.Count))
-            {
-                this.tagList.SetKnownTags(list.Select(m => m.Name));
-            }
-        }
-
         private void onWorkspaceSelect(List<Toggl.TogglGenericView> list)
         {
-            if (this.TryBeginInvoke(this.onWorkspaceSelect, list))
-                return;
-
             this.workspaces = list;
 
             using (Performance.Measure("building edit view workspace auto complete controller, {0} items", list.Count))
@@ -289,8 +246,6 @@ namespace TogglDesktop
                 this.workspaceComboBox.ShowOnlyIf(list.Count > 1);
             }
         }
-
-        #endregion
 
         #endregion
 

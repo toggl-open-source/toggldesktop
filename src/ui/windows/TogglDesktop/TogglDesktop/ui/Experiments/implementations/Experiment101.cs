@@ -1,4 +1,7 @@
 ﻿
+using System;
+using System.Reactive.Linq;
+
 namespace TogglDesktop.Experiments
 {
     sealed class Experiment101 : ExperimentBase
@@ -13,7 +16,7 @@ namespace TogglDesktop.Experiments
         protected override void runIncluded(ExperimentParameters parameters)
         {
             this.parameters = parameters;
-            Toggl.OnRunningTimerState += this.onRunningTimerState;
+            Toggl.OnRunningTimerState.Take(1).Subscribe(this.onRunningTimerState);
         }
 
         private void onRunningTimerState(Toggl.TogglTimeEntryView te)
@@ -21,9 +24,6 @@ namespace TogglDesktop.Experiments
             ExperimentHacks.RemoveEmptyStateFirstLine(this, this.parameters);
             this.parameters.TutorialManager.ActivateScreen<Experiment101Screen>();
             Toggl.SendObmAction(this.Id, "seen");
-
-            Toggl.OnRunningTimerState -= this.onRunningTimerState;
         }
-
     }
 }

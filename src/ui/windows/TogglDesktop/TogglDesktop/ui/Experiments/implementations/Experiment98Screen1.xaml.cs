@@ -1,4 +1,6 @@
 ﻿
+using System;
+using System.Reactive.Linq;
 using System.Windows;
 
 namespace TogglDesktop.Experiments
@@ -10,19 +12,20 @@ namespace TogglDesktop.Experiments
             this.InitializeComponent();
         }
 
+        private IDisposable _subscription;
         protected override void initialise()
         {
             Toggl.SetManualMode(false);
             Toggl.ViewTimeEntryList();
 
-            Toggl.OnRunningTimerState += this.onRunningTimerState;
+            _subscription = Toggl.OnRunningTimerState.Subscribe(this.onRunningTimerState);
 
             Toggl.SendObmAction(98, "seen_1");
         }
 
         protected override void cleanup()
         {
-            Toggl.OnRunningTimerState -= this.onRunningTimerState;
+            _subscription.Dispose();
         }
 
         private void onRunningTimerState(Toggl.TogglTimeEntryView te)
@@ -34,14 +37,12 @@ namespace TogglDesktop.Experiments
         {
             this.quitTutorial();
 
-            Toggl.OnRunningTimerState += this.openSecondScreenDelayed;
+            Toggl.OnRunningTimerState.Take(1).Subscribe(this.openSecondScreenDelayed);
         }
 
         private void openSecondScreenDelayed(Toggl.TogglTimeEntryView te)
         {
             this.activateScreen<Experiment98Screen2>();
-
-            Toggl.OnRunningTimerState -= this.openSecondScreenDelayed;
         }
     }
 }

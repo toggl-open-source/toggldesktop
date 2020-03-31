@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -15,9 +16,12 @@ namespace TogglDesktop
         {
             this.InitializeComponent();
 
-            Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
-            Toggl.OnTimeEntryList += this.onTimeEntryList;
-            Toggl.OnLogin += this.onLogin;
+            Toggl.OnTimeEntryEditor.Select(x => x.timeEntry.GUID)
+                .ObserveOnDispatcher()
+                .Subscribe(this.Entries.SelectEntry);
+            Toggl.OnTimeEntryList.ObserveOnDispatcher().Subscribe(this.onTimeEntryList);
+            Toggl.OnLogin.Where(x => x.open || x.userId == 0).ObserveOnDispatcher()
+                .Subscribe(_ => this.Entries.Children.Clear());
         }
 
         public Brush TitleBarBrush => this.Timer.Background;
@@ -35,35 +39,12 @@ namespace TogglDesktop
 
         #region toggl events
 
-        private void onLogin(bool open, ulong userID)
+        private void onTimeEntryList((bool open, List<Toggl.TogglTimeEntryView> list, bool showLoadMoreButton) x)
         {
-            if (this.TryBeginInvoke(this.onLogin, open, userID))
-                return;
-
-            if (open || userID == 0)
-            {
-                this.Entries.Children.Clear();
-            }
-        }
-
-        private void onTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list, bool showLoadMoreButton)
-        {
-            if (this.TryBeginInvoke(this.onTimeEntryList, open, list, showLoadMoreButton))
-                return;
+            var (open, list, showLoadMoreButton) = x;
 
             this.fillTimeEntryList(list);
             this.Entries.ViewModel.OnTimeEntryList(showLoadMoreButton, list.Count == 0);
-        }
-
-        private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
-        {
-            if (this.TryBeginInvoke(this.onTimeEntryEditor, open, te, focusedFieldName))
-                return;
-
-            using (Performance.Measure("highlighting cell in list"))
-            {
-                this.Entries.SelectEntry(te.GUID);
-            }
         }
 
         #endregion

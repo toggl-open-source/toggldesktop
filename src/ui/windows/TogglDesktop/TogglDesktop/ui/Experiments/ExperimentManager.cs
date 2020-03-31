@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 
 namespace TogglDesktop.Experiments
 {
@@ -22,7 +23,7 @@ namespace TogglDesktop.Experiments
         {
             this.mainWindow = mainWindow;
 
-            Toggl.OnDisplayObmExperiment += this.onDisplayObmExperiment;
+            Toggl.OnDisplayObmExperiment.ObserveOnDispatcher().Subscribe(this.onDisplayObmExperiment);
 
             if (this.experiments.Any(e => e.Id == 0))
             {
@@ -40,10 +41,9 @@ namespace TogglDesktop.Experiments
             get { return this.experiments.Select(e => e.Id); }
         }
 
-        private void onDisplayObmExperiment(ulong id, bool included, bool seenBefore)
+        private void onDisplayObmExperiment((ulong id, bool included, bool seenBefore) x)
         {
-            if (this.mainWindow.TryBeginInvoke(this.onDisplayObmExperiment, id, included, seenBefore))
-                return;
+            var (id, included, seenBefore) = x;
 
             var experiment = this.experiments.FirstOrDefault(e => e.Id == id);
 

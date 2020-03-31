@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 namespace TogglDesktop.Tutorial
 {
     public partial class BasicTutorialScreen6
@@ -8,19 +8,15 @@ namespace TogglDesktop.Tutorial
             this.InitializeComponent();
         }
 
+        private IDisposable _subscription;
         protected override void initialise()
         {
-            Toggl.OnStoppedTimerState += this.onStoppedTimerState;
+            _subscription = Toggl.OnStoppedTimerState.Subscribe(_ => this.activateScreen<BasicTutorialScreen7>());
         }
 
         protected override void cleanup()
         {
-            Toggl.OnStoppedTimerState -= this.onStoppedTimerState;
-        }
-
-        private void onStoppedTimerState()
-        {
-            this.activateScreen<BasicTutorialScreen7>();
+            _subscription.Dispose();
         }
     }
 }

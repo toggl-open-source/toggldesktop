@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace TogglDesktop.Tutorial
 {
     public partial class BasicTutorialScreen3
@@ -8,14 +9,15 @@ namespace TogglDesktop.Tutorial
             this.InitializeComponent();
         }
 
+        private IDisposable _subscription;
         protected override void initialise()
         {
-            Toggl.OnRunningTimerState += this.onRunningTimerState;
+            _subscription = Toggl.OnRunningTimerState.Subscribe(onRunningTimerState);
         }
 
         protected override void cleanup()
         {
-            Toggl.OnRunningTimerState -= this.onRunningTimerState;
+            _subscription.Dispose();
         }
 
         private void onRunningTimerState(Toggl.TogglTimeEntryView te)
