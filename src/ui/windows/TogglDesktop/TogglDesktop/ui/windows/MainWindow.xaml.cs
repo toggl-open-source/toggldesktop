@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Microsoft.Win32;
 using NHotkey;
@@ -22,10 +20,8 @@ using TogglDesktop.Services;
 using TogglDesktop.Theming;
 using TogglDesktop.Tutorial;
 using TogglDesktop.ViewModels;
-using Control = System.Windows.Controls.Control;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MenuItem = System.Windows.Controls.MenuItem;
-using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace TogglDesktop
 {
@@ -786,6 +782,8 @@ namespace TogglDesktop
                 this.Title = "Toggl Desktop";
             }
 
+            var iconName = this.IsTracking ? "toggl" : "toggl_inactive";
+            this.Icon = BitmapFrame.Create(new Uri("pack://application:,,,/TogglDesktop;component/Resources/" + iconName + ".ico"));
             this.updateStatusIcons(true);
         }
 
