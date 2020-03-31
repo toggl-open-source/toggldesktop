@@ -1761,6 +1761,16 @@ private static extern Int64 toggl_autotracker_add_rule(
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
 [return:MarshalAs(UnmanagedType.I1)]
+private static extern bool toggl_autotracker_update_rule(
+        IntPtr context,
+        Int64 rule_id,
+[MarshalAs(UnmanagedType.LPWStr)]
+        string term,
+        UInt64 project_id,
+        UInt64 task_id);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+[return:MarshalAs(UnmanagedType.I1)]
 private static extern bool toggl_autotracker_delete_rule(
         IntPtr context,
         Int64 id);
