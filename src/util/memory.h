@@ -243,7 +243,7 @@ public:
     friend class iterator;
     friend class const_iterator;
 
-	static inline std::function defaultComparison{
+    static inline comparison_function defaultComparison {
 		[](const T* l, const T* r) { return l < r; }
 	};
     /**
