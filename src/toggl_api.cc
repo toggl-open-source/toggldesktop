@@ -1575,5 +1575,5 @@ bool_t toggl_update_time_entry(
         _tags = to_string(tags);
     }
 
-    return toggl::noError == app(context)->updateTimeEntry(_guid, _description, task_id, project_id, _project_guid, _tags, billable);
+    return toggl::noError == app(context)->UpdateTimeEntry(_guid, _description, task_id, project_id, _project_guid, _tags, billable);
 }

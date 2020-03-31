@@ -6175,7 +6175,7 @@ void Context::TrackExpandAllDays() {
     }
 }
 
-error Context::updateTimeEntry(
+error Context::UpdateTimeEntry(
     const std::string &GUID,
     const std::string &description,
     const Poco::UInt64 task_id,
