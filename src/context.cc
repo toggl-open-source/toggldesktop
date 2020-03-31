@@ -3160,6 +3160,10 @@ error Context::SetTimeEntryProject(
         if (err != noError) {
             return err;
         }
+        if (te->Dirty()) {
+            te->ClearValidationError();
+            te->SetUIModified();
+        }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -3201,11 +3205,6 @@ error Context::updateTimeEntryProject(
     te->SetTID(task_id);
     te->SetPID(project_id);
     te->SetProjectGUID(project_guid);
-
-    if (te->Dirty()) {
-        te->ClearValidationError();
-        te->SetUIModified();
-    }
     return noError;
 }
 
@@ -3478,7 +3477,7 @@ error Context::SetTimeEntryTags(
             return logAndDisplayUserTriedEditingLockedEntry();
         }
 
-        updateTimeEntryTags(te, value);
+        te->SetTags(value);
     }
 
     if (te->Dirty()) {
@@ -3487,12 +3486,6 @@ error Context::SetTimeEntryTags(
     }
 
     return displayError(save(true));
-}
-
-void Context::updateTimeEntryTags(
-    TimeEntry *te,
-    const std::string &value) {
-    te->SetTags(value);
 }
 
 error Context::SetTimeEntryBillable(
@@ -3521,7 +3514,7 @@ error Context::SetTimeEntryBillable(
             return logAndDisplayUserTriedEditingLockedEntry();
         }
 
-        updateTimeEntryBillable(te, value);
+        te->SetBillable(value);
     }
 
     if (te->Dirty()) {
@@ -3530,12 +3523,6 @@ error Context::SetTimeEntryBillable(
     }
 
     return displayError(save(true));
-}
-
-void Context::updateTimeEntryBillable(
-    TimeEntry *te,
-    const bool value) {
-    te->SetBillable(value);
 }
 
 error Context::SetTimeEntryDescription(
@@ -3568,6 +3555,11 @@ error Context::SetTimeEntryDescription(
         if (err != noError) {
             return err;
         }
+
+        if (te->Dirty()) {
+            te->ClearValidationError();
+            te->SetUIModified();
+        }
     }
     return displayError(save(true));
 }
@@ -3581,11 +3573,6 @@ error Context::updateTimeEntryDescription(
     }
 
     te->SetDescription(value);
-
-    if (te->Dirty()) {
-        te->ClearValidationError();
-        te->SetUIModified();
-    }
     return noError;
 }
 
@@ -6226,8 +6213,10 @@ error Context::updateTimeEntry(
     if (err != noError) {
         return err;
     }
-    updateTimeEntryTags(te, tags);
-    updateTimeEntryBillable(te, billable);
+
+    // Tag + billable
+    te->SetTags(tags);
+    te->SetBillable(billable);
 
     if (te->Dirty()) {
         te->ClearValidationError();

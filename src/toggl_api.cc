@@ -1545,7 +1545,7 @@ void track_expand_all_days(void *context) {
     app(context)->TrackExpandAllDays();
 }
 
-bool_t toggl_set_time_entry(
+bool_t toggl_update_time_entry(
     void *context,
     const char_t *guid,
     const char_t *description,

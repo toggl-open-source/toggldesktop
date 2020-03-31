@@ -1178,7 +1178,7 @@ extern "C" {
     TOGGL_EXPORT void track_expand_all_days(
         void *context);
 
-    TOGGL_EXPORT bool_t toggl_set_time_entry(
+    TOGGL_EXPORT bool_t toggl_update_time_entry(
         void *context,
         const char_t *guid,
         const char_t *description,

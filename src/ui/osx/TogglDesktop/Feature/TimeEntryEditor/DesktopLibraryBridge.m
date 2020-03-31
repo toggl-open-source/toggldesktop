@@ -193,14 +193,14 @@ void *ctx;
 - (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry autocomplete:(AutocompleteItem *)autocomplete
 {
     const char *tags = [[autocomplete.tags componentsJoinedByString:@"\t"] UTF8String];
-    toggl_set_time_entry(ctx,
+    toggl_update_time_entry(ctx,
                          [timeEntry.GUID UTF8String],
                          [autocomplete.Description UTF8String],
                          autocomplete.TaskID,
                          autocomplete.ProjectID,
                          0,
                          tags,
-                         timeEntry.billable);
+                         autocomplete.Billable);
 }
 
 - (NSString *)convertDuratonInSecond:(int64_t)durationInSecond
