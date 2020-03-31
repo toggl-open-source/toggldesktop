@@ -191,8 +191,8 @@
 		B81AC300242AB290005FA63D /* database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = database.h; path = ../../../database/database.h; sourceTree = "<group>"; };
 		B81AC301242AB290005FA63D /* migrations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = migrations.h; path = ../../../database/migrations.h; sourceTree = "<group>"; };
 		B81AC302242AB290005FA63D /* migrations.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = migrations.cc; path = ../../../database/migrations.cc; sourceTree = "<group>"; };
-		B81AC307242AB3A3005FA63D /* logger.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = logger.cc; sourceTree = "<group>"; };
-		B81AC308242AB3A3005FA63D /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
+                B81AC307242AB3A3005FA63D /* logger.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = logger.cc; path = ../../../util/logger.cc; sourceTree = "<group>"; };
+                B81AC308242AB3A3005FA63D /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = logger.h; path = ../../../util/logger.h; sourceTree = "<group>"; };
 		B81EB946240EAB1500786DF0 /* memory.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = memory.cc; path = ../../../util/memory.cc; sourceTree = "<group>"; };
 		B81EB947240EAB1500786DF0 /* memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = memory.h; path = ../../../util/memory.h; sourceTree = "<group>"; };
 		BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MacOSVersionChecker.mm; sourceTree = "<group>"; };
