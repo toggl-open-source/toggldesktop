@@ -21,7 +21,15 @@ public static class Utils
     {
         if (editPopup != null)
         {
-            editPopup.Width = Toggl.GetEditViewWidth();
+            var editWidth = Toggl.GetEditViewWidth();
+            if (editWidth > 0 && editWidth < int.MaxValue)
+            {
+                editPopup.Width = editWidth;
+            }
+            else
+            {
+                editPopup.Width = editPopup.MinWidth;
+            }
         }
         if (Toggl.GetWindowMaximized())
         {
