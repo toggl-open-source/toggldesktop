@@ -330,7 +330,7 @@ public struct    TogglAutotrackerRuleView
 {
 public         Int64 ID;
 [MarshalAs(UnmanagedType.LPWStr)]
-public         string Term;
+public         string Terms;
 [MarshalAs(UnmanagedType.LPWStr)]
 public         string ProjectAndTaskLabel;
 public         IntPtr Next;

@@ -199,7 +199,7 @@ extern "C" {
 
     typedef struct {
         int64_t ID;
-        char_t *Term;
+        char_t *Terms;
         char_t *ProjectAndTaskLabel;
         void *Next;
     } TogglAutotrackerRuleView;
