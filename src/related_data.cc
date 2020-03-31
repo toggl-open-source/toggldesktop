@@ -77,7 +77,7 @@ error RelatedData::UpdateAutotrackerRule(const Poco::Int64 local_id, std::string
     }
     for (std::vector<AutotrackerRule*>::iterator it =
         AutotrackerRules.begin();
-        it != AutotrackerRules.end(); ++it) {
+            it != AutotrackerRules.end(); ++it) {
         AutotrackerRule* rule = *it;
         // Autotracker settings are not saved to DB,
         // so the ID will be 0 always. But will have local ID
