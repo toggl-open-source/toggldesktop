@@ -21,8 +21,8 @@ jobs:
         security default-keychain -s ~/Library/Keychains/build.keychain
 
         # Mac Developer Certificate
-        base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPMENT }}" > Bundle_cert_macos_development.p12
-        security import ./Bundle_cert_macos_development.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPMENT_PASSWORD }} -T /usr/bin/codesign
+        base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPER }}" > Bundle_cert_macos_developer.p12
+        security import ./Bundle_cert_macos_developer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPER_PASSWORD }} -T /usr/bin/codesign
 
         # Application Certificate
         base64 -D <<< "${{ secrets.CERT_MACOS_APPLICATION }}" > Bundle_cert_macos_distribution.p12
@@ -79,9 +79,12 @@ jobs:
         fetch-depth: 1
     - name: Install dependencies
       run: |
-        sudo apt update
-        sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 qt5-default libqt5gui5 libqt5webengine5 libqt5webenginecore5 libqt5webenginewidgets5 libqt5printsupport5 libqt5quickwidgets5 libqt5x11extras5 libxss1 
-        sudo apt install patchelf binutils cmake pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev  qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
+        # try getting the deps 10 times before solving this right
+        for i in {1..10}; do
+            sudo apt update
+            sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 qt5-default libqt5gui5 libqt5webengine5 libqt5webenginecore5 libqt5webenginewidgets5 libqt5printsupport5 libqt5quickwidgets5 libqt5x11extras5 libxss1
+            sudo apt install patchelf binutils cmake pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev  qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
+        done
     - name: Build the Linux binary
       run: |
         bash ./dist/linux/package.sh build
@@ -99,10 +102,13 @@ jobs:
         fetch-depth: 1
     - name: Install dependencies
       run: |
-        sudo apt update
-        sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0
-        sudo apt install patchelf binutils cmake pkg-config libssl-dev libxss-dev libxmu-dev
-        sudo apt install dbus libfreetype6 fontconfig libx11-6 libx11-xcb1 libgl1-mesa-dev libnss3 libasound2 libxcomposite1 libxcursor1 libxi6 libxtst6 wget
+        # try getting the deps 10 times before solving this right
+        for i in {1..10}; do
+            sudo apt update
+            sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0
+            sudo apt install patchelf binutils cmake pkg-config libssl-dev libxss-dev libxmu-dev
+            sudo apt install dbus libfreetype6 fontconfig libx11-6 libx11-xcb1 libgl1-mesa-dev libnss3 libasound2 libxcomposite1 libxcursor1 libxi6 libxtst6 wget
+        done
     - name: Fetch and install binary Qt
       run: |
         bash ./dist/linux/install-qt.sh 5.12.5
@@ -131,8 +137,11 @@ jobs:
         gpg --import <<< "${{ secrets.CERT_LINUX_DEB64 }}"
     - name: Install dependencies
       run: |
-        sudo apt update
-        sudo apt install devscripts cmake debhelper pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
+        # try getting the deps 10 times before solving this right
+        for i in {1..10}; do
+            sudo apt update
+            sudo apt install devscripts cmake debhelper pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
+        done
     - name: Build a Debian package
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
@@ -156,13 +165,19 @@ jobs:
         fetch-depth: 1
     - name: Install Flatpak
       run: |
-        sudo apt update
-        sudo apt install flatpak flatpak-builder
+        # try getting the deps 10 times before solving this right
+        for i in {1..10}; do
+            sudo apt update
+            sudo apt install flatpak flatpak-builder
+        done
     - name: Install Flatpak KDE SDK
       run: |
-        sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-        sudo flatpak install --system -y flathub org.kde.Platform//5.12
-        sudo flatpak install --system -y flathub org.kde.Sdk//5.12
+        # try getting the deps 10 times before solving this right
+        for i in {1..10}; do
+            sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+            sudo flatpak install --system -y flathub org.kde.Platform//5.12
+            sudo flatpak install --system -y flathub org.kde.Sdk//5.12
+        done
     - name: Build Linux Flatpak package - KDE based
       run: |
         pushd dist/linux/flatpak
