@@ -519,6 +519,12 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const Poco::UInt64 tid,
         Poco::Int64 *rule_id);
 
+    error UpdateAutotrackerRule(
+        const Poco::Int64 rule_id,
+        const std::string& terms,
+        const Poco::UInt64 pid,
+        const Poco::UInt64 tid);
+
     error DeleteAutotrackerRule(
         const Poco::Int64 id);
 

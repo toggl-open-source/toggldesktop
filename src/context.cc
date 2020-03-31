@@ -3957,6 +3957,67 @@ error Context::AddAutotrackerRule(
     return noError;
 }
 
+error Context::UpdateAutotrackerRule(
+    const Poco::Int64 rule_id,
+    const std::string& terms,
+    const Poco::UInt64 pid,
+    const Poco::UInt64 tid) {
+
+    if (!rule_id) {
+        return displayError("missing rule id");
+    }
+    if (terms.empty()) {
+        return displayError("missing terms");
+    }
+    if (!pid && !tid) {
+        return displayError("missing project and task");
+    }
+
+    std::string lowercase = Poco::UTF8::toLower(terms);
+
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            logger.warning("cannot add autotracker rule, user logged out");
+            return noError;
+        }
+
+        Task* t = nullptr;
+        if (tid) {
+            t = user_->related.TaskByID(tid);
+        }
+        if (tid && !t) {
+            return displayError("task not found");
+        }
+
+        Project* p = nullptr;
+        if (pid) {
+            p = user_->related.ProjectByID(pid);
+        }
+        if (pid && !p) {
+            return displayError("project not found");
+        }
+        if (t && t->PID() && !p) {
+            p = user_->related.ProjectByID(t->PID());
+        }
+
+        if (p && t && p->ID() != t->PID()) {
+            return displayError("task does not belong to project");
+        }
+
+        error err = user_->related.UpdateAutotrackerRule(rule_id, terms, tid, pid);
+        if (noError != err) {
+            return displayError(err);
+        }
+    }
+
+    error err = save(false);
+    if (noError != err) {
+        return displayError(err);
+    }
+
+    return noError;
+}
 error Context::DeleteAutotrackerRule(
     const Poco::Int64 id) {
 
