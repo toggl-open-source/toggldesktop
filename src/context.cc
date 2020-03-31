@@ -3158,33 +3158,10 @@ error Context::SetTimeEntryProject(
             return logAndDisplayUserTriedEditingLockedEntry();
         }
 
-        Project *p = nullptr;
-        if (project_id) {
-            p = user_->related.ProjectByID(project_id);
+        error err = updateTimeEntryProject(te, task_id, project_id, project_guid);
+        if (err != noError) {
+            return err;
         }
-        if (p == nullptr && !project_guid.empty()) {
-            p = user_->related.ProjectByGUID(project_guid);
-        }
-
-        if (p && !canChangeProjectTo(te, p)) {
-            return displayError(error(
-                "Cannot change project: would end up with locked time entry"));
-        }
-
-        if (p) {
-            // If user re-assigns project, don't mess with the billable
-            // flag any more. (User selected billable project, unchecked
-            // billable, // then selected the same project again).
-            if (p->ID() != te->PID()
-                    || (!project_guid.empty() && p->GUID().compare(te->ProjectGUID()) != 0)) {
-                te->SetBillable(p->Billable());
-            }
-            te->SetWID(p->WID());
-        }
-        te->SetTID(task_id);
-        te->SetPID(project_id);
-        te->SetProjectGUID(project_guid);
-
         if (te->Dirty()) {
             te->ClearValidationError();
             te->SetUIModified();
@@ -3197,6 +3174,40 @@ error Context::SetTimeEntryProject(
         return displayError(ex);
     }
     return displayError(save(true));
+}
+
+error Context::updateTimeEntryProject(
+    TimeEntry *te,
+    const Poco::UInt64 task_id,
+    const Poco::UInt64 project_id,
+    const std::string &project_guid) {
+    Project *p = nullptr;
+    if (project_id) {
+        p = user_->related.ProjectByID(project_id);
+    }
+    if (p == nullptr && !project_guid.empty()) {
+        p = user_->related.ProjectByGUID(project_guid);
+    }
+
+    if (p && !canChangeProjectTo(te, p)) {
+        return displayError(error(
+            "Cannot change project: would end up with locked time entry"));
+    }
+
+    if (p) {
+        // If user re-assigns project, don't mess with the billable
+        // flag any more. (User selected billable project, unchecked
+        // billable, // then selected the same project again).
+        if (p->ID() != te->PID()
+                || (!project_guid.empty() && p->GUID().compare(te->ProjectGUID()) != 0)) {
+            te->SetBillable(p->Billable());
+        }
+        te->SetWID(p->WID());
+    }
+    te->SetTID(task_id);
+    te->SetPID(project_id);
+    te->SetProjectGUID(project_guid);
+    return noError;
 }
 
 error Context::SetTimeEntryDate(
@@ -3467,9 +3478,9 @@ error Context::SetTimeEntryTags(
         if (isTimeEntryLocked(te)) {
             return logAndDisplayUserTriedEditingLockedEntry();
         }
-    }
 
-    te->SetTags(value);
+        te->SetTags(value);
+    }
 
     if (te->Dirty()) {
         te->ClearValidationError();
@@ -3504,9 +3515,9 @@ error Context::SetTimeEntryBillable(
         if (isTimeEntryLocked(te)) {
             return logAndDisplayUserTriedEditingLockedEntry();
         }
-    }
 
-    te->SetBillable(value);
+        te->SetBillable(value);
+    }
 
     if (te->Dirty()) {
         te->ClearValidationError();
@@ -3541,21 +3552,30 @@ error Context::SetTimeEntryDescription(
         if (isTimeEntryLocked(te)) {
             return logAndDisplayUserTriedEditingLockedEntry();
         }
-    }
 
+        error err = updateTimeEntryDescription(te, value);
+        if (err != noError) {
+            return err;
+        }
+
+        if (te->Dirty()) {
+            te->ClearValidationError();
+            te->SetUIModified();
+        }
+    }
+    return displayError(save(true));
+}
+
+error Context::updateTimeEntryDescription(
+    TimeEntry *te,
+    const std::string &value) {
     // Validate description length
     if (value.length() > kMaximumDescriptionLength) {
         return displayError(error(kMaximumDescriptionLengthError));
     }
 
     te->SetDescription(value);
-
-    if (te->Dirty()) {
-        te->ClearValidationError();
-        te->SetUIModified();
-    }
-
-    return displayError(save(true));
+    return noError;
 }
 
 error Context::Stop(const bool prevent_on_app) {
@@ -6161,4 +6181,54 @@ void Context::TrackExpandAllDays() {
     }
 }
 
+error Context::UpdateTimeEntry(
+    const std::string &GUID,
+    const std::string &description,
+    const Poco::UInt64 task_id,
+    const Poco::UInt64 project_id,
+    const std::string &project_guid,
+    const std::string &tags,
+    const bool billable) {
+
+    if (GUID.empty()) {
+        return displayError(std::string(__FUNCTION__) + ": Missing GUID");
+    }
+
+    Poco::Mutex::ScopedLock lock(user_m_);
+    if (!user_) {
+        logger.warning("Cannot set project, user logged out");
+        return noError;
+    }
+
+    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
+    if (!te) {
+        logger.warning("Time entry not found: " + GUID);
+        return noError;
+    }
+
+    if (isTimeEntryLocked(te)) {
+        return logAndDisplayUserTriedEditingLockedEntry();
+    }
+
+    // Update
+    error err = updateTimeEntryDescription(te, description);
+    if (err != noError) {
+        return err;
+    }
+    err = updateTimeEntryProject(te, task_id, project_id, project_guid);
+    if (err != noError) {
+        return err;
+    }
+
+    // Tag + billable
+    te->SetTags(tags);
+    te->SetBillable(billable);
+
+    if (te->Dirty()) {
+        te->ClearValidationError();
+        te->SetUIModified();
+    }
+
+    return displayError(save(true));
+}
 }  // namespace toggl

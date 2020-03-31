@@ -1544,3 +1544,36 @@ void track_expand_all_days(void *context) {
     }
     app(context)->TrackExpandAllDays();
 }
+
+bool_t toggl_update_time_entry(
+    void *context,
+    const char_t *guid,
+    const char_t *description,
+    const uint64_t task_id,
+    const uint64_t project_id,
+    const char_t *project_guid,
+    const char_t *tags,
+    const bool_t billable) {
+
+    std::string _guid("");
+    if (guid) {
+        _guid = to_string(guid);
+    }
+
+    std::string _description("");
+    if (description) {
+        _description = to_string(description);
+    }
+
+    std::string _project_guid("");
+    if (project_guid) {
+        _project_guid = to_string(project_guid);
+    }
+
+    std::string _tags("");
+    if (tags) {
+        _tags = to_string(tags);
+    }
+
+    return toggl::noError == app(context)->UpdateTimeEntry(_guid, _description, task_id, project_id, _project_guid, _tags, billable);
+}
