@@ -831,7 +831,7 @@ void Context::updateUI(const UIElements &what) {
                     view::AutotrackerRule rule;
                     rule.ProjectName = Formatter::JoinTaskName(t, p);
                     rule.ID = model->LocalID();
-                    rule.Term = model->TermsString();
+                    rule.Terms = model->TermsString();
                     autotracker_rule_views.push_back(rule);
                 }
 
@@ -3880,7 +3880,7 @@ error Context::DefaultTID(Poco::UInt64 *result) {
 }
 
 error Context::AddAutotrackerRule(
-    const std::string &term,
+    const std::string &terms,
     const Poco::UInt64 pid,
     const Poco::UInt64 tid,
     Poco::Int64 *rule_id) {
@@ -3888,14 +3888,14 @@ error Context::AddAutotrackerRule(
     poco_check_ptr(rule_id);
     *rule_id = 0;
 
-    if (term.empty()) {
-        return displayError("missing term");
+    if (terms.empty()) {
+        return displayError("missing terms");
     }
     if (!pid && !tid) {
         return displayError("missing project and task");
     }
 
-    std::string lowercase = Poco::UTF8::toLower(term);
+    std::string lowercase = Poco::UTF8::toLower(terms);
 
     AutotrackerRule *rule = nullptr;
 

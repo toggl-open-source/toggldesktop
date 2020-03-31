@@ -6,7 +6,7 @@
 - (void)load:(TogglAutotrackerRuleView *)data
 {
 	self.ID = data->ID;
-	self.Term = [NSString stringWithUTF8String:data->Term];
+	self.Term = [NSString stringWithUTF8String:data->Terms];
 	self.ProjectAndTaskLabel = [NSString stringWithUTF8String:data->ProjectAndTaskLabel];
 }
 
