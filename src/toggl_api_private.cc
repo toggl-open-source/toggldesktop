@@ -110,10 +110,10 @@ TogglGenericView *generic_to_view_item(
 
 TogglAutotrackerRuleView *autotracker_rule_to_view_item(const toggl::view::AutotrackerRule &model) {
     TogglAutotrackerRuleView *view = new TogglAutotrackerRuleView();
-    // Autotracker settings are not saved to DB,
+    // Autotracker settings are not saved to the server DB,
     // so the ID will be 0 always. But will have local ID
     view->ID = static_cast<int>(model.ID);
-    view->Term = copy_string(model.Term);
+    view->Terms = copy_string(model.Terms);
     view->ProjectAndTaskLabel = copy_string(model.ProjectName);
     return view;
 }
@@ -125,8 +125,8 @@ void autotracker_view_item_clear(TogglAutotrackerRuleView *view) {
 
     view->ID = 0;
 
-    free(view->Term);
-    view->Term = nullptr;
+    free(view->Terms);
+    view->Terms = nullptr;
 
     free(view->ProjectAndTaskLabel);
     view->ProjectAndTaskLabel = nullptr;
