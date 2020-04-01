@@ -242,6 +242,8 @@ namespace TogglDesktop
                 {
                     Toggl.SetTimeEntryBillable(guid, true);
                 }
+
+                this.clearSelectedProject();
             }
         }
 
