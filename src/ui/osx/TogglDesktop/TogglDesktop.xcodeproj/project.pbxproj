@@ -113,6 +113,10 @@
 		BA13D2172269DE3400EB3833 /* NoVibrantPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2162269DE3400EB3833 /* NoVibrantPopoverView.swift */; };
 		BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D2192269E0B500EB3833 /* CalendarViewController.xib */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
+		BA13E563243472A1005244AD /* OnboardingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13E562243472A1005244AD /* OnboardingService.swift */; };
+		BA13E564243472A1005244AD /* OnboardingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13E562243472A1005244AD /* OnboardingService.swift */; };
+		BA13E569243472EC005244AD /* OnboardingPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13E568243472EC005244AD /* OnboardingPayload.swift */; };
+		BA13E56A243472EC005244AD /* OnboardingPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13E568243472EC005244AD /* OnboardingPayload.swift */; };
 		BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
 		BA1FFE71231FB0F300EAD9DC /* PanelSwitcherButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */; };
 		BA24E772230BDBB800B1D4B2 /* TimelineBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */; };
@@ -828,6 +832,8 @@
 		BA13D2192269E0B500EB3833 /* CalendarViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarViewController.xib; sourceTree = "<group>"; };
 		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = test2/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
 		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
+		BA13E562243472A1005244AD /* OnboardingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingService.swift; sourceTree = "<group>"; };
+		BA13E568243472EC005244AD /* OnboardingPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPayload.swift; sourceTree = "<group>"; };
 		BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelSwitcherButton.swift; sourceTree = "<group>"; };
 		BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineBaseCell.swift; sourceTree = "<group>"; };
 		BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineActivityHoverController.swift; sourceTree = "<group>"; };
@@ -1391,6 +1397,15 @@
 			name = UserNotification;
 			sourceTree = "<unknown>";
 		};
+		BA13E5612434728B005244AD /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				BA13E562243472A1005244AD /* OnboardingService.swift */,
+				BA13E568243472EC005244AD /* OnboardingPayload.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		BA1B7FA122E5D52F001333D9 /* Swift */ = {
 			isa = PBXGroup;
 			children = (
@@ -1642,6 +1657,7 @@
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				BA13E5612434728B005244AD /* Onboarding */,
 				BAB8CA8C240E3EA2002FF62B /* AppleSignIn */,
 				BA65A1FE22B7807300F895FD /* Timeline */,
 				BA47DEAF23966F80005216AD /* InAppMessage */,
@@ -2443,6 +2459,7 @@
 				BAF3ACCC2341F8AC00E41B33 /* GlobalTouchbarButton.swift in Sources */,
 				3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */,
 				BAB0027F22731248005ECC93 /* DayLabel.swift in Sources */,
+				BA13E563243472A1005244AD /* OnboardingService.swift in Sources */,
 				3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */,
 				BA75FF3122BCC57700D3F08C /* TimelineTimeEntry.swift in Sources */,
 				BA0E38122225260B00D0121B /* TimeEntryCell+Ext.swift in Sources */,
@@ -2453,6 +2470,7 @@
 				BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */,
 				BA9C2E0C224C8F58002AD2A1 /* KeyboardTableView.swift in Sources */,
 				BA81896A23016148000710EA /* NSColor+VisibleColor.swift in Sources */,
+				BA13E569243472EC005244AD /* OnboardingPayload.swift in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
 				BAB818E3228D594D008C2367 /* DescriptionTimeEntryStorage.swift in Sources */,
@@ -2594,6 +2612,7 @@
 				BAE64D562368334000244D2B /* AutocompleteItem.m in Sources */,
 				BA37AD0323D8902A0013EE26 /* PopoverRootView.swift in Sources */,
 				BAE64D572368334000244D2B /* Settings.m in Sources */,
+				BA13E564243472A1005244AD /* OnboardingService.swift in Sources */,
 				BA37ACD123D8900C0013EE26 /* TimelineBaseCell.swift in Sources */,
 				BAE64D582368334000244D2B /* NSCustomComboBox.m in Sources */,
 				BAE64D592368334000244D2B /* NSTextFieldDuration.m in Sources */,
@@ -2732,6 +2751,7 @@
 				BAE64DBE2368334000244D2B /* AutoCompleteRowView.swift in Sources */,
 				BA4A7D5523755A4200A42095 /* TouchBarService+Name.swift in Sources */,
 				BA37ACF923D890250013EE26 /* NSView+LayoutConstraint.swift in Sources */,
+				BA13E56A243472EC005244AD /* OnboardingPayload.swift in Sources */,
 				BAE64DBF2368334000244D2B /* (null) in Sources */,
 				BAE64DC02368334000244D2B /* ResizablePopover.swift in Sources */,
 				BA37ACFB23D890250013EE26 /* NSView+Xib.swift in Sources */,
