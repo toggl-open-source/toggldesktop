@@ -637,9 +637,9 @@ public static partial class Toggl
         return toggl_format_tracking_time_duration(duration_in_seconds);
     }
 
-    public static long AddAutotrackerRule(string term, ulong projectId, ulong taskId)
+    public static long AddAutotrackerRule(string terms, ulong projectId, ulong taskId)
     {
-        return toggl_autotracker_add_rule(ctx, term, projectId, taskId);
+        return toggl_autotracker_add_rule(ctx, terms, projectId, taskId);
     }
 
     public static bool UpdateAutotrackerRule(long ruleId, string terms, ulong projectId, ulong taskId)

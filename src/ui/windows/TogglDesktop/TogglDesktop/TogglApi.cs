@@ -1650,7 +1650,7 @@ public static partial class Toggl
     private static extern Int64 toggl_autotracker_add_rule(
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]
-        string term,
+        string terms,
         UInt64 project_id,
         UInt64 task_id);
 
