@@ -31,5 +31,26 @@ final class OnboardingViewController: NSViewController {
         super.viewDidLoad()
 
     }
-    
+
+    // MARK: Public
+
+    func present(payload: OnboardingPayload, view: NSView) {
+        contentController.config(with: payload)
+        popover.present(from: view.bounds, of: view, preferredEdge: payload.preferEdges)
+    }
+
+    func dismiss() {
+        popover.performClose(self)
+    }
+
+    override func mouseUp(with event: NSEvent) {
+        super.mouseUp(with: event)
+        guard popover.isShown else { return }
+
+        // Dismiss if we select on the grey background
+        let contentFrame = view.convert(contentController.view.bounds, from: contentController.view)
+        if !view.frame.contains(contentFrame) {
+            dismiss()
+        }
+    }
 }

@@ -8,28 +8,40 @@
 
 import Foundation
 
-struct OnboardingPayload {
+// compatible with objc
+@objc enum OnboardingHint: Int {
+    case newUser
+    case oldUser
+    case manualMode
+    case timelineTab
+    case editTimeEntry
+    case timelineTimeEntry
+    case timelineView
+    case timelineActivity // Use TimelineActivityRecorderViewController instead
+    case recordActivity
+}
 
-    enum Mode {
-        case newUser
-        case oldUser
-        case manualMode
-        case timelineTab
-        case editTimeEntry
-        case timelineTimeEntry
-        case timelineView
-        case timelineActivity // Use TimelineActivityRecorderViewController instead
-        case recordActivity
-    }
+struct OnboardingPayload {
 
     // MARK: Variable
 
     let title: String
+    let hint: OnboardingHint
+
+    var preferEdges: NSRectEdge {
+        switch hint {
+        case .timelineTab:
+            return .minY
+        default: // Fill more later
+            return .maxX
+        }
+    }
 
     // MARK: Init
 
-    init(mode: Mode) {
-        switch mode {
+    init(hint: OnboardingHint) {
+        self.hint = hint
+        switch hint {
         case .editTimeEntry: self.title = "Click on Time Entry to edit it!"
         case .manualMode: self.title = "It’s also possible to add Time Entries manually!\n\nChange to manual mode there..."
         case .newUser: self.title = "Describe your task and start tracking!"

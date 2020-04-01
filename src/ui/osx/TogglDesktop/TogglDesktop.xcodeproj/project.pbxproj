@@ -125,6 +125,8 @@
 		BA13E57D24347716005244AD /* OnboardingContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13E57A24347716005244AD /* OnboardingContentViewController.swift */; };
 		BA13E57E24347716005244AD /* OnboardingContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13E57B24347716005244AD /* OnboardingContentViewController.xib */; };
 		BA13E57F24347716005244AD /* OnboardingContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13E57B24347716005244AD /* OnboardingContentViewController.xib */; };
+		BA13E581243480C5005244AD /* OnboardingService+Objc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13E580243480C5005244AD /* OnboardingService+Objc.swift */; };
+		BA13E582243480C5005244AD /* OnboardingService+Objc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13E580243480C5005244AD /* OnboardingService+Objc.swift */; };
 		BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
 		BA1FFE71231FB0F300EAD9DC /* PanelSwitcherButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */; };
 		BA24E772230BDBB800B1D4B2 /* TimelineBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */; };
@@ -846,6 +848,7 @@
 		BA13E575243476FA005244AD /* OnboardingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnboardingViewController.xib; sourceTree = "<group>"; };
 		BA13E57A24347716005244AD /* OnboardingContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContentViewController.swift; sourceTree = "<group>"; };
 		BA13E57B24347716005244AD /* OnboardingContentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnboardingContentViewController.xib; sourceTree = "<group>"; };
+		BA13E580243480C5005244AD /* OnboardingService+Objc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingService+Objc.swift"; sourceTree = "<group>"; };
 		BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelSwitcherButton.swift; sourceTree = "<group>"; };
 		BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineBaseCell.swift; sourceTree = "<group>"; };
 		BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineActivityHoverController.swift; sourceTree = "<group>"; };
@@ -1413,6 +1416,7 @@
 			isa = PBXGroup;
 			children = (
 				BA13E562243472A1005244AD /* OnboardingService.swift */,
+				BA13E580243480C5005244AD /* OnboardingService+Objc.swift */,
 				BA13E568243472EC005244AD /* OnboardingPayload.swift */,
 				BA13E574243476FA005244AD /* OnboardingViewController.swift */,
 				BA13E575243476FA005244AD /* OnboardingViewController.xib */,
@@ -2511,6 +2515,7 @@
 				BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */,
 				BA4791F322F0478A00E24F79 /* String+Search.swift in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
+				BA13E581243480C5005244AD /* OnboardingService+Objc.swift in Sources */,
 				BAAF56A22223E18B003D0D73 /* TimeDecoratorView.swift in Sources */,
 				BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */,
 				BA4059B7221D46F4002969B8 /* TimeEntryCollectionView.m in Sources */,
@@ -2730,6 +2735,7 @@
 				BA37AD0623D890570013EE26 /* DatePickerView.swift in Sources */,
 				BAE64D9C2368334000244D2B /* TimeEntryListViewController.m in Sources */,
 				BA37ACE223D8900C0013EE26 /* PanelSwitcherButton.swift in Sources */,
+				BA13E582243480C5005244AD /* OnboardingService+Objc.swift in Sources */,
 				BAE64D9D2368334000244D2B /* TimeDecoratorView.swift in Sources */,
 				BAB5FFD523F13F75003781D3 /* TimelineDraggingSession.swift in Sources */,
 				BAE64D9E2368334000244D2B /* TimeEntryEmptyView.swift in Sources */,
