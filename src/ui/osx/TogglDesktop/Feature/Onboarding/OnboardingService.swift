@@ -9,5 +9,12 @@
 import Foundation
 
 final class OnboardingService {
-    
+
+    static let shared = OnboardingService()
+
+    // MARK: Public
+
+    func present(mode: OnboardingPayload.Mode, atView: NSView) {
+        
+    }
 }

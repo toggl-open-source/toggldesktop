@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="OnboardingContentViewController" customModule="TogglDesktop" customModuleProvider="target">
+            <connections>
+                <outlet property="titleTextField" destination="jYZ-L3-Wrw" id="aBX-sK-nvb"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView misplaced="YES" id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="292" height="45"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="jYZ-L3-Wrw">
+                    <rect key="frame" x="13" y="15" width="246" height="15"/>
+                    <textFieldCell key="cell" selectable="YES" title="Multiline Label" id="5Mi-HB-13h">
+                        <font key="font" metaFont="system" size="12"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CHB-sF-vBe">
+                    <rect key="frame" x="264" y="17" width="24" height="24"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="fMG-wp-7kG"/>
+                        <constraint firstAttribute="width" constant="24" id="nDy-kl-M0q"/>
+                    </constraints>
+                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="close-button" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="Eia-Ae-m9m">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="label" size="13"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="exitBtnOnClick:" target="-2" id="Eb1-iO-QiP"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="jYZ-L3-Wrw" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="15" id="6uE-cu-Acd"/>
+                <constraint firstItem="CHB-sF-vBe" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="4" id="CH8-tq-azB"/>
+                <constraint firstAttribute="bottom" secondItem="jYZ-L3-Wrw" secondAttribute="bottom" constant="15" id="Tfv-rJ-bej"/>
+                <constraint firstItem="jYZ-L3-Wrw" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="VCf-wL-xCe"/>
+                <constraint firstAttribute="trailing" secondItem="jYZ-L3-Wrw" secondAttribute="trailing" constant="35" id="Yzh-pH-D01"/>
+                <constraint firstAttribute="trailing" secondItem="CHB-sF-vBe" secondAttribute="trailing" constant="4" id="mC0-H1-Bhr"/>
+            </constraints>
+            <point key="canvasLocation" x="45" y="84.5"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="close-button" width="7" height="7"/>
+    </resources>
+</document>

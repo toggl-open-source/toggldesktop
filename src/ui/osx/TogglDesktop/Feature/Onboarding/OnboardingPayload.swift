@@ -38,7 +38,7 @@ struct OnboardingPayload {
         case .timelineActivity: self.title = "Having troubles recalling what you were working on?"
         case .timelineTab: self.title = "See your Time Entries on Timeline!"
         case .timelineTimeEntry: self.title = "Add and edit Time Entries in this area"
-        case .timelineView: self.title = "See all your Time Entries visualised  in chronological order! "
+        case .timelineView: self.title = "See all your Time Entries visualised in chronological order! "
         }
     }
 }
