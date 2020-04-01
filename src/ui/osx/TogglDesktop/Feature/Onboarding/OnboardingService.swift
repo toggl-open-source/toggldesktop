@@ -16,6 +16,12 @@ final class OnboardingService {
 
     private lazy var controller: OnboardingViewController = OnboardingViewController(nibName: "OnboardingViewController", bundle: nil)
 
+    // MARK: Init
+
+    private init() {
+        controller.delegate = self
+    }
+
     // MARK: Public
 
     func present(hint: OnboardingHint, view: NSView) {
@@ -34,7 +40,16 @@ final class OnboardingService {
     }
 
     func dismiss() {
-        controller.removeFromParent()
+        guard controller.view.superview != nil else { return }
         controller.dismiss()
+    }
+}
+
+// MARK: OnboardingViewControllerDelegate
+
+extension OnboardingService: OnboardingViewControllerDelegate {
+
+    func onboardingViewControllerDidClose() {
+        controller.view.removeFromSuperview()
     }
 }

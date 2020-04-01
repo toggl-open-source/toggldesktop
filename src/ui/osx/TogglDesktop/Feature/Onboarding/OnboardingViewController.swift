@@ -8,6 +8,11 @@
 
 import Cocoa
 
+protocol OnboardingViewControllerDelegate: class {
+
+    func onboardingViewControllerDidClose()
+}
+
 final class OnboardingViewController: NSViewController {
 
     // MARK: OUTLET
@@ -16,12 +21,14 @@ final class OnboardingViewController: NSViewController {
 
     // MARK: Variable
 
+    weak var delegate: OnboardingViewControllerDelegate?
     private lazy var contentController: OnboardingContentViewController = OnboardingContentViewController(nibName: "OnboardingContentViewController", bundle: nil)
     private lazy var popover: NoVibrantPopoverView = {
         let popover = NoVibrantPopoverView()
         popover.animates = true
         popover.behavior = .semitransient
         popover.contentViewController = contentController
+        popover.delegate = self
         return popover
     }()
 
@@ -40,17 +47,15 @@ final class OnboardingViewController: NSViewController {
     }
 
     func dismiss() {
-        popover.performClose(self)
+        popover.close()
     }
+}
 
-    override func mouseUp(with event: NSEvent) {
-        super.mouseUp(with: event)
-        guard popover.isShown else { return }
+// MARK: NSPopoverDelegate
 
-        // Dismiss if we select on the grey background
-        let contentFrame = view.convert(contentController.view.bounds, from: contentController.view)
-        if !view.frame.contains(contentFrame) {
-            dismiss()
-        }
+extension OnboardingViewController: NSPopoverDelegate {
+
+    func popoverWillClose(_ notification: Notification) {
+        delegate?.onboardingViewControllerDidClose()
     }
 }
