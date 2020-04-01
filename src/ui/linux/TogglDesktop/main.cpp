@@ -126,6 +126,37 @@ int main(int argc, char *argv[]) try {
                     QMessageBox::Ok|QMessageBox::Cancel)
             .exec();
         return 1;
+    /* TODO readd
+    QCommandLineOption dbPathOption(
+        QStringList() << "db-path",
+        "<path> of the app DB file",
+        "path");
+    parser.addOption(dbPathOption);
+
+    QCommandLineOption scriptPathOption(
+        QStringList() << "script-path",
+        "<path> of a Lua script to run",
+        "path");
+    parser.addOption(scriptPathOption);
+
+    // A boolean option with multiple names (-b, --background)
+    QCommandLineOption forceOption(QStringList() << "b" << "background",
+                                   QCoreApplication::translate("main", "Start app in background."));
+    parser.addOption(forceOption);
+
+    parser.process(a);
+
+    w = new MainWindowController(nullptr,
+                                 parser.value(logPathOption),
+                                 parser.value(dbPathOption),
+                                 parser.value(scriptPathOption));
+
+    a.w = w;
+
+    w->show();
+    if (parser.isSet(forceOption)) {
+        QTimer::singleShot(1, w, &MainWindowController::hide);
+    */
     }
 
     return a.exec();

@@ -7,20 +7,20 @@
 #include <vector>
 #include <ctime>
 
-#include "Poco/Activity.h"
+#include <Poco/Activity.h>
+#include <Poco/Net/HTTPClientSession.h>
 
-#include "./types.h"
+#include "types.h"
+#include "util/logger.h"
 
 namespace Poco {
-class Logger;
-
 namespace Net {
-class HTTPSClientSession;
+class HTTPClientSession;
 class HTTPRequest;
 class HTTPResponse;
 class WebSocket;
-}
-}
+} // namespace Poco::Net
+} // namespace Poco
 
 namespace toggl {
 
@@ -66,10 +66,10 @@ class TOGGL_INTERNAL_EXPORT WebSocketClient {
 
     int nextWebsocketRestartInterval();
 
-    Poco::Logger &logger() const;
+    Logger logger() const;
 
     Poco::Activity<WebSocketClient> activity_;
-    Poco::Net::HTTPSClientSession *session_;
+    Poco::Net::HTTPClientSession *session_;
     Poco::Net::HTTPRequest *req_;
     Poco::Net::HTTPResponse *res_;
     Poco::Net::WebSocket *ws_;

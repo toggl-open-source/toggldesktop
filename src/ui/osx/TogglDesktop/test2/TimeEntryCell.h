@@ -18,6 +18,7 @@ typedef NS_ENUM (NSUInteger, CellType)
 };
 
 @interface TimeEntryCell : NSCollectionViewItem
+@property (nonatomic, strong, readonly) TimeEntryViewItem *item;
 @property (nonatomic, copy, readonly) NSString *GUID;
 @property (nonatomic, copy, readonly) NSString *GroupName;
 @property (nonatomic, assign, readonly) BOOL GroupOpen;

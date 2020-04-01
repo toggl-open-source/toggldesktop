@@ -1,18 +1,17 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/base_model.h"
+#include "base_model.h"
 
 #include <sstream>
 
-#include "./batch_update_result.h"
-#include "./database.h"
-#include "./formatter.h"
-#include "./model_change.h"
+#include "batch_update_result.h"
+#include "database.h"
+#include "formatter.h"
+#include "model_change.h"
 
-#include "Poco/Timestamp.h"
-#include "Poco/DateTime.h"
-#include "Poco/LocalDateTime.h"
-#include "Poco/Logger.h"
+#include <Poco/Timestamp.h>
+#include <Poco/DateTime.h>
+#include <Poco/LocalDateTime.h>
 
 namespace toggl {
 
@@ -197,8 +196,8 @@ error BaseModel::BatchUpdateJSON(Json::Value *result) const {
     return noError;
 }
 
-Poco::Logger &BaseModel::logger() const {
-    return Poco::Logger::get(ModelName());
+Logger BaseModel::logger() const {
+    return { ModelName() };
 }
 
 void BaseModel::SetDirty() {

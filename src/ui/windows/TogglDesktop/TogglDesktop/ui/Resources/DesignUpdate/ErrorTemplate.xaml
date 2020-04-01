@@ -1,0 +1,107 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
+
+    <Grid x:Key="ValidationPopupRoot" x:Shared="False" Margin="5">
+        <Grid.Resources>
+            <Style TargetType="Border">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Mode=OneWay}" Value="True">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                     To="0.15"
+                                                     Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                     To="1"
+                                                     Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+        <Border Background="{DynamicResource Toggl.ValidationErrorBackground}"
+                Margin="0 0 0 -1"
+                Width="{Binding ElementName=ValidationErrorElement, Path=ActualWidth, Mode=OneWay}">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="2"
+                                  BlurRadius="3"
+                                  Direction="270"
+                                  Color="Black"
+                                  Opacity="0.2"/>
+            </Border.Effect>
+            <!--
+                from Josh Smith
+
+                Binding to (Validation.Errors)[0] without Creating Debug Spew
+
+                http://joshsmithonwpf.wordpress.com/2008/10/08/binding-to-validationerrors0-without-creating-debug-spew/
+
+                The trick is to bind a ContentPresenter’s Content to the CurrentItem of Validation.Errors for the target element.
+                Binding to the CurrentItem means that we’re  binding to the CurrentItem property of the default ICollectionView
+                that wraps the ReadOnlyObservableCollection<ValidationError> returned by the attached Errors property.
+                When the current item is non-null, that means there is a validation error; when it is null, there are no validation errors.
+                We can rely on ICollectionView to safely access the validation error, or not return anything if there are no errors.
+                That is what prevents the debug spew from pouring out.
+
+                The DataTemplate declared in the StackPanel’s Resources knows how to render a ValidationError object.
+                If the ContentPresenter has a null value, the template is not used to render anything.
+
+                Issue #707
+            -->
+            <Border.Resources>
+                <DataTemplate DataType="{x:Type ValidationError}">
+                    <TextBlock Style="{DynamicResource Toggl.CaptionWhiteText}"
+                               Margin="8 3 8 5"
+                               Text="{Binding ErrorContent}"
+                               UseLayoutRounding="False" />
+                </DataTemplate>
+            </Border.Resources>
+            <ItemsControl ItemsSource="{Binding}" />
+        </Border>
+    </Grid>
+
+    <ControlTemplate x:Key="MahApps.Templates.ValidationError">
+        <AdornedElementPlaceholder x:Name="placeholder">
+            <Grid SnapsToDevicePixels="True">
+                <Rectangle x:Name="PopupTargetElement"
+                           Margin="-2 0"
+                           DataContext="{Binding ElementName=placeholder}"
+                           StrokeThickness="0" />
+                <Border x:Name="ValidationErrorElement"
+                        BorderBrush="{DynamicResource Toggl.ValidationErrorBackground}"
+                        BorderThickness="1"
+                        DataContext="{Binding ElementName=placeholder}">
+                </Border>
+
+                <mah:CustomValidationPopup x:Name="ValidationPopup"
+                                           Placement="Top"
+                                           AllowsTransparency="True"
+                                           IsOpen="False"
+                                           PlacementTarget="{Binding ElementName=PopupTargetElement, Mode=OneWay}"
+                                           Child="{StaticResource ValidationPopupRoot}">
+                </mah:CustomValidationPopup>
+            </Grid>
+        </AdornedElementPlaceholder>
+
+        <ControlTemplate.Triggers>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding ElementName=placeholder, Path=AdornedElement.IsKeyboardFocusWithin, Mode=OneWay}" Value="True" />
+                    <Condition Binding="{Binding ElementName=placeholder, Path=AdornedElement.(Validation.HasError), Mode=OneWay}" Value="True" />
+                </MultiDataTrigger.Conditions>
+                <Setter TargetName="ValidationPopup" Property="IsOpen" Value="True" />
+            </MultiDataTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+</ResourceDictionary>

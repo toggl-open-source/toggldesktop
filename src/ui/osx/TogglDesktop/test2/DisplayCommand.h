@@ -18,4 +18,6 @@
 @property (nonatomic, strong) Settings *settings;
 @property (nonatomic, assign) NSInteger user_id;
 @property (nonatomic, assign) BOOL show_load_more;
+@property (nonatomic, strong) NSMutableArray *timelineChunks;
+@property (nonatomic, copy) NSString *timelineDate;
 @end

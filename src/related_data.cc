@@ -1,22 +1,22 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/related_data.h"
+#include "related_data.h"
 
 #include <algorithm>
 #include <sstream>
 
-#include "Poco/UTF8String.h"
+#include <Poco/UTF8String.h>
 
-#include "./autotracker.h"
-#include "./formatter.h"
-#include "./client.h"
-#include "./gui.h"
-#include "./obm_action.h"
-#include "./project.h"
-#include "./tag.h"
-#include "./task.h"
-#include "./time_entry.h"
-#include "./workspace.h"
+#include "autotracker.h"
+#include "formatter.h"
+#include "client.h"
+#include "gui.h"
+#include "obm_action.h"
+#include "project.h"
+#include "tag.h"
+#include "task.h"
+#include "time_entry.h"
+#include "workspace.h"
 
 namespace toggl {
 
@@ -527,7 +527,7 @@ void RelatedData::workspaceAutocompleteItems(
             continue;
         }
 
-        std::string ws_name = Poco::UTF8::toUpper(ws->Name());
+        std::string ws_name = ws->Name();
         (*ws_names)[ws->ID()] = ws_name;
     }
 }

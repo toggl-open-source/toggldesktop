@@ -10,6 +10,13 @@
 #import "TimeEntryViewItem.h"
 #import "toggl_api.h"
 #import "AutocompleteItem.h"
+#import "Utils.h"
+#import "UIEvents.h"
+#import "TogglDesktop-Swift.h"
+
+@interface DesktopLibraryBridge ()
+@property (strong, nonatomic) NSUndoManager *undoManager;
+@end
 
 @implementation DesktopLibraryBridge
 
@@ -78,11 +85,6 @@ void *ctx;
 								 [projectGUID UTF8String]);
 }
 
-- (void)togglEditor
-{
-	toggl_view_time_entry_list(ctx);
-}
-
 - (void)updateTimeEntryWithDescription:(NSString *)descriptionName guid:(NSString *)guid
 {
 	toggl_set_time_entry_description(ctx,
@@ -123,6 +125,16 @@ void *ctx;
 							   [startTime UTF8String]);
 }
 
+- (void)updateTimeEntryWithStartAtTimestamp:(NSTimeInterval)timestamp
+									   guid:(NSString *)guid
+                           keepEndTimeFixed:(BOOL)keepEndTimeFixed
+{
+    toggl_set_time_entry_start_timestamp_with_option(ctx,
+                                                     [guid UTF8String],
+                                                     timestamp,
+                                                     keepEndTimeFixed);
+}
+
 - (void)updateTimeEntryWithEndTime:(NSString *)endTime
 							  guid:(NSString *)guid
 {
@@ -131,12 +143,22 @@ void *ctx;
 							 [endTime UTF8String]);
 }
 
-- (void)deleteTimeEntryImte:(TimeEntryViewItem *)item
+- (void)updateTimeEntryWithEndAtTimestamp:(NSTimeInterval)timestamp
+									 guid:(NSString *)guid
 {
+	toggl_set_time_entry_end_timestamp(ctx,
+									   [guid UTF8String],
+									   timestamp);
+}
+
+- (void)deleteTimeEntryItem:(TimeEntryViewItem *)item undoManager:(NSUndoManager *) undoManager
+{
+    self.undoManager = undoManager;
+
 	// If description is empty and duration is less than 15 seconds delete without confirmation
 	if ([item confirmlessDelete])
 	{
-		toggl_delete_time_entry(ctx, [item.GUID UTF8String]);
+        [self deleteItem:item];
 		return;
 	}
 	NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", item.Description];
@@ -153,20 +175,32 @@ void *ctx;
 	}
 
 	// Delete
-	toggl_delete_time_entry(ctx, [item.GUID UTF8String]);
+    [self deleteItem:item];
+}
+
+- (void) deleteItem:(TimeEntryViewItem *) item
+{
+    [self registerUndoDeleteItem:item];
+    toggl_delete_time_entry(ctx, [item.GUID UTF8String]);
+}
+
+- (void) registerUndoDeleteItem:(TimeEntryViewItem *)item
+{
+    [self.undoManager registerUndoWithTarget:self selector:@selector(createNewTimeEntryWithOldTimeEntry:) object:item];
+    [self.undoManager setActionName:@"Undo Delete Time Entry"];
 }
 
 - (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry autocomplete:(AutocompleteItem *)autocomplete
 {
-	toggl_set_time_entry_project(ctx,
-								 [timeEntry.GUID UTF8String],
-								 autocomplete.TaskID,
-								 autocomplete.ProjectID,
-								 0);
-	toggl_set_time_entry_description(ctx,
-									 [timeEntry.GUID UTF8String],
-									 [autocomplete.Description UTF8String]);
-	[self updateTimeEntryWithTags:autocomplete.tags guid:timeEntry.GUID];
+    const char *tags = [[autocomplete.tags componentsJoinedByString:@"\t"] UTF8String];
+    toggl_update_time_entry(ctx,
+                         [timeEntry.GUID UTF8String],
+                         [autocomplete.Description UTF8String],
+                         autocomplete.TaskID,
+                         autocomplete.ProjectID,
+                         0,
+                         tags,
+                         autocomplete.Billable);
 }
 
 - (NSString *)convertDuratonInSecond:(int64_t)durationInSecond
@@ -176,6 +210,91 @@ void *ctx;
 
 	free(str);
 	return [newValue copy];
+}
+
+#pragma mark - Timeline
+
+- (void)enableTimelineRecord:(BOOL)isEnabled
+{
+	toggl_timeline_toggle_recording(ctx, isEnabled);
+
+    // Try to grant permission
+    if (isEnabled)
+    {
+        [ObjcSystemPermissionManager tryGrantScreenRecordingPermission];
+    }
+}
+
+- (void)enableAutoTracker:(BOOL)isEnabled
+{
+    toggl_set_settings_autotrack(ctx, isEnabled);
+    if (isEnabled)
+    {
+        [ObjcSystemPermissionManager tryGrantScreenRecordingPermission];
+    }
+}
+
+- (void)timelineSetPreviousDate
+{
+	toggl_view_timeline_prev_day(ctx);
+}
+
+- (void)timelineSetNextDate
+{
+	toggl_view_timeline_next_day(ctx);
+}
+
+- (void)timelineSetDate:(NSDate *)date
+{
+	toggl_view_timeline_set_day(ctx, date.timeIntervalSince1970);
+}
+
+- (void)fetchTimelineData
+{
+	toggl_view_timeline_data(ctx);
+}
+
+- (void)timelineGetCurrentDate
+{
+	toggl_view_timeline_current_day(ctx);
+}
+
+- (NSString *)startNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended
+{
+	char *guid = toggl_start(ctx,
+							 "",
+							 "",
+							 0,
+							 0,
+							 0,
+							 NULL,
+							 false,
+							 started,
+							 ended
+							 );
+	NSString *GUID = [NSString stringWithUTF8String:guid];
+
+	free(guid);
+	return GUID;
+}
+
+- (NSString *)createEmptyTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended
+{
+    char *guid = toggl_create_empty_time_entry(ctx, started, ended);
+    NSString *GUID = [NSString stringWithUTF8String:guid];
+
+    free(guid);
+    return GUID;
+}
+
+- (void)startEditorAtGUID:(NSString *)GUID
+{
+	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
+}
+
+- (void)closeEditor
+{
+    toggl_view_time_entry_list(ctx);
 }
 
 - (void)setEditorWindowSize:(CGSize)size
@@ -198,4 +317,65 @@ void *ctx;
 	return CGSizeMake(width, height);
 }
 
+- (void)loadMoreTimeEntry
+{
+	toggl_load_more(ctx);
+}
+
+- (void)setClickCloseBtnInAppMessage
+{
+    toggl_iam_click(ctx, 2);
+}
+
+- (void)setClickActionBtnInAppMessage
+{
+    toggl_iam_click(ctx, 3);
+}
+
+- (void)setActiveTabAtIndex:(NSInteger) index
+{
+    toggl_set_settings_active_tab(ctx, index);
+}
+
+- (NSInteger)getActiveTabIndex
+{
+    return toggl_get_active_tab(ctx);
+}
+
+- (NSString *)createNewTimeEntryWithOldTimeEntry:(TimeEntryViewItem *) item
+{
+    NSString *tags = [item.tags componentsJoinedByString:@"\t"];
+    if (tags == nil) {
+        tags = @"";
+    }
+    char *guid = toggl_start(ctx,
+                             [item.Description UTF8String],
+                             [item.duration UTF8String],
+                             item.TaskID,
+                             item.ProjectID,
+                             0,
+                             [tags UTF8String],
+                             false,
+                             [item.started timeIntervalSince1970],
+                             [item.ended timeIntervalSince1970]);
+    if (guid != nil) {
+        NSString *GUID = [NSString stringWithUTF8String:guid];
+        free(guid);
+        // Don't support redo
+        [self.undoManager removeAllActions];
+        return GUID;
+    }
+    return nil;
+}
+
+- (NSString *) formatDurationTimestampt:(NSTimeInterval) duration
+{
+    char *durationStr = toggl_format_duration_time(ctx, duration);
+    if (durationStr) {
+        NSString *duration = [NSString stringWithUTF8String:durationStr];
+        free(durationStr);
+        return duration;
+    }
+    return nil;
+}
 @end

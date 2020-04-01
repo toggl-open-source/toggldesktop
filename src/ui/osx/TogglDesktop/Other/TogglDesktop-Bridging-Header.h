@@ -12,6 +12,13 @@
 #import "ViewItem.h"
 #import "DesktopLibraryBridge.h"
 #import "UndoTextField.h"
+#import "TimeEntryListViewController.h"
+#import "TimerEditViewController.h"
+#import "DisplayCommand.h"
+#import "TimelineDisplayCommand.h"
 #import "TimeEntryCollectionView.h"
 #import "ConvertHexColor.h"
+#import "BetterFocusAutoCompleteInput.h"
+#import "Settings.h"
 #import "AppDelegate.h"
+

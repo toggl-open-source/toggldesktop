@@ -8,6 +8,7 @@
 #include <QVector>
 #include <QQmlListProperty>
 #include <QThread>
+#include <QRect>
 
 #include <stdint.h>
 
@@ -259,8 +260,6 @@ private:
 
     bool discardTimeAndContinue(const QString guid,
                                 const uint64_t at);
-
-    bool runScriptFile(const QString filename);
 
     Q_INVOKABLE static const QString formatDurationInSecondsHHMMSS(
         const int64_t duration);

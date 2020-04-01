@@ -1,31 +1,31 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/websocket_client.h"
+#include "websocket_client.h"
 
 #include <string>
 #include <sstream>
 
 #include <json/json.h>  // NOLINT
 
-#include "Poco/Exception.h"
-#include "Poco/Logger.h"
-#include "Poco/Net/AcceptCertificateHandler.h"
-#include "Poco/Net/Context.h"
-#include "Poco/Net/HTTPMessage.h"
-#include "Poco/Net/HTTPRequest.h"
-#include "Poco/Net/HTTPResponse.h"
-#include "Poco/Net/HTTPSClientSession.h"
-#include "Poco/Net/InvalidCertificateHandler.h"
-#include "Poco/Net/PrivateKeyPassphraseHandler.h"
-#include "Poco/Net/SSLManager.h"
-#include "Poco/Net/WebSocket.h"
-#include "Poco/URI.h"
+#include <Poco/Exception.h>
+#include <Poco/Logger.h>
+#include <Poco/Net/AcceptCertificateHandler.h>
+#include <Poco/Net/Context.h>
+#include <Poco/Net/HTTPMessage.h>
+#include <Poco/Net/HTTPRequest.h>
+#include <Poco/Net/HTTPResponse.h>
+#include <Poco/Net/HTTPSClientSession.h>
+#include <Poco/Net/InvalidCertificateHandler.h>
+#include <Poco/Net/PrivateKeyPassphraseHandler.h>
+#include <Poco/Net/SSLManager.h>
+#include <Poco/Net/WebSocket.h>
+#include <Poco/URI.h>
 
-#include "./const.h"
-#include "./https_client.h"
-#include "./netconf.h"
-#include "./random.h"
-#include "./urls.h"
+#include "const.h"
+#include "https_client.h"
+#include "netconf.h"
+#include "random.h"
+#include "urls.h"
 
 namespace toggl {
 
@@ -76,7 +76,7 @@ void WebSocketClient::Shutdown() {
 error WebSocketClient::createSession() {
     logger().debug("createSession");
 
-    if (HTTPSClient::Config.CACertPath.empty()) {
+    if (HTTPClient::Config.CACertPath.empty()) {
         return error("Missing CA certifcate, cannot start Websocket");
     }
 
@@ -88,10 +88,7 @@ error WebSocketClient::createSession() {
 
     error err = TogglClient::TogglStatus.Status();
     if (err != noError) {
-        std::stringstream ss;
-        ss << "Will not start Websocket sessions, ";
-        ss << "because of known bad Toggl status: " << err;
-        logger().error(ss.str());
+        logger().error("Will not start Websocket sessions, ", "because of known bad Toggl status: ", err);
         return err;
     }
 
@@ -104,21 +101,23 @@ error WebSocketClient::createSession() {
 
         Poco::Net::Context::VerificationMode verification_mode =
             Poco::Net::Context::VERIFY_RELAXED;
-        if (HTTPSClient::Config.IgnoreCert) {
+        if (HTTPClient::Config.IgnoreCert) {
             verification_mode = Poco::Net::Context::VERIFY_NONE;
         }
         Poco::Net::Context::Ptr context = new Poco::Net::Context(
             Poco::Net::Context::CLIENT_USE, "", "",
-            HTTPSClient::Config.CACertPath,
+            HTTPClient::Config.CACertPath,
             verification_mode, 9, true, "ALL");
 
         Poco::Net::SSLManager::instance().initializeClient(
             nullptr, acceptCertHandler, context);
 
-        session_ = new Poco::Net::HTTPSClientSession(
-            uri.getHost(),
-            uri.getPort(),
-            context);
+        if (uri.getScheme() == "http") {
+            session_ = new Poco::Net::HTTPClientSession(uri.getHost(), uri.getPort());
+        }
+        else {
+            session_ = new Poco::Net::HTTPSClientSession(uri.getHost(), uri.getPort(), context);
+        }
 
         Netconf::ConfigureProxy(urls::WebSocket(), session_);
 
@@ -126,7 +125,7 @@ error WebSocketClient::createSession() {
             Poco::Net::HTTPRequest::HTTP_GET, "/ws",
             Poco::Net::HTTPMessage::HTTP_1_1);
         req_->set("Origin", "https://localhost");
-        req_->set("User-Agent", HTTPSClient::Config.UserAgent());
+        req_->set("User-Agent", HTTPClient::Config.UserAgent());
         res_ = new Poco::Net::HTTPResponse();
         ws_ = new Poco::Net::WebSocket(*session_, *req_, *res_);
         ws_->setBlocking(false);
@@ -219,9 +218,7 @@ error WebSocketClient::poll() {
         if (json.empty()) {
             return error("WebSocket closed the connection");
         }
-        std::stringstream ss;
-        ss << "WebSocket message: " << json;
-        logger().trace(ss.str());
+        logger().trace("WebSocket message: ", json);
 
         last_connection_at_ = time(nullptr);
 
@@ -317,15 +314,13 @@ void WebSocketClient::deleteSession() {
     logger().debug("session deleted");
 }
 
-Poco::Logger &WebSocketClient::logger() const {
-    return Poco::Logger::get("websocket_client");
+Logger WebSocketClient::logger() const {
+    return { "websocket_client" };
 }
 
 int WebSocketClient::nextWebsocketRestartInterval() {
     int res = static_cast<int>(Random::next(kWebsocketRestartRangeSeconds)) + 1;
-    std::stringstream ss;
-    ss << "Next websocket restart in " << res << " seconds";
-    logger().trace(ss.str());
+    logger().trace("Next websocket restart in ", res, " seconds");
     return res;
 }
 

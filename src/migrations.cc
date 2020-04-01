@@ -1,10 +1,10 @@
 // Copyright 2015 Toggl Desktop developers.
 
-#include "../src/migrations.h"
+#include "migrations.h"
 
-#include "./const.h"
-#include "./database.h"
-#include "./random.h"
+#include "const.h"
+#include "database.h"
+#include "random.h"
 
 namespace toggl {
 
@@ -1212,7 +1212,7 @@ error Migrations::migrateSettings() {
     err = db_->Migrate(
         "settings.keep_end_time_fixed",
         "ALTER TABLE settings "
-        "ADD COLUMN keep_end_time_fixed INTEGER NOT NULL DEFAULT 0;");
+        "ADD COLUMN keep_end_time_fixed INTEGER NOT NULL DEFAULT 1;");
     if (err != noError) {
         return err;
     }
@@ -1293,6 +1293,30 @@ error Migrations::migrateSettings() {
         "settings.show_touch_bar",
         "ALTER TABLE settings "
         "ADD COLUMN show_touch_bar INTEGER NOT NULL DEFAULT 1;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "settings.message_seen",
+        "ALTER TABLE settings "
+        "ADD COLUMN message_seen INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "settings.active_tab",
+        "ALTER TABLE settings "
+        "ADD COLUMN active_tab INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "settings.color_theme",
+        "ALTER TABLE settings "
+        "ADD COLUMN color_theme INTEGER NOT NULL DEFAULT 0;");
     if (err != noError) {
         return err;
     }

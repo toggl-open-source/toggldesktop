@@ -1,8 +1,8 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/settings.h"
+#include "settings.h"
 
-#include "./formatter.h"
+#include "formatter.h"
 
 namespace toggl {
 
@@ -37,6 +37,8 @@ Json::Value Settings::SaveToJSON() const {
     json["pomodoro_break_minutes"] = Json::UInt64(pomodoro_break_minutes);
     json["stop_entry_on_shutdown_sleep"] = stop_entry_on_shutdown_sleep;
     json["show_touch_bar"] = show_touch_bar;
+    json["active_tab"] = active_tab;
+    json["color_theme"] = color_theme;
     return json;
 }
 
@@ -71,7 +73,10 @@ std::string Settings::String() const {
        << " pomodoro_break=" << pomodoro_break
        << " pomodoro_break_minutes=" << pomodoro_break_minutes
        << " stop_entry_on_shutdown_sleep=" << stop_entry_on_shutdown_sleep
-       << " show_touch_bar=" << show_touch_bar;
+       << " show_touch_bar=" << show_touch_bar
+       << " active_tab=" << active_tab
+       << " color_theme=" << color_theme;
+
     return ss.str();
 }
 
@@ -104,7 +109,9 @@ bool Settings::IsSame(const Settings &other) const {
             && (pomodoro_break == other.pomodoro_break)
             && (pomodoro_break_minutes == other.pomodoro_break_minutes)
             && (stop_entry_on_shutdown_sleep == other.stop_entry_on_shutdown_sleep)
-            && (show_touch_bar == other.show_touch_bar));
+            && (show_touch_bar == other.show_touch_bar)
+            && (active_tab == other.active_tab)
+            && (color_theme == other.color_theme));
 }
 
 std::string Settings::ModelName() const {

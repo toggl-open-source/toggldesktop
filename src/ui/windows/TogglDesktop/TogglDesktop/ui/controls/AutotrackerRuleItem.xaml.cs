@@ -1,15 +1,9 @@
 ﻿using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
-using TogglDesktop.AutoCompleteControls;
 
 namespace TogglDesktop
 {
     public partial class AutotrackerRuleItem : IRecyclable
     {
-        private static readonly Color idleBackColor = Color.FromRgb(255, 255, 255);
-        private static readonly Color selectedBackColor = Color.FromRgb(244, 244, 244);
-
         private long id;
 
         public AutotrackerRuleItem()
@@ -18,26 +12,13 @@ namespace TogglDesktop
             this.InitializeComponent();
         }
 
-        public Color BackColor
-        {
-            get { return (Color)this.GetValue(BackColorProperty); }
-            set { this.SetValue(BackColorProperty, value); }
-        }
-        public static readonly DependencyProperty BackColorProperty = DependencyProperty
-            .Register("BackColor", typeof(Color), typeof(AutotrackerRuleItem), new FrameworkPropertyMetadata(idleBackColor));
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
+            "IsSelected", typeof(bool), typeof(AutotrackerRuleItem), new PropertyMetadata(default(bool)));
 
-        private bool selected;
-
-        public bool Selected
+        public bool IsSelected
         {
-            get { return this.selected; }
-            set
-            {
-                if (this.selected == value)
-                    return;
-                this.selected = value;
-                this.updateBackground();
-            }
+            get { return (bool) GetValue(IsSelectedProperty); }
+            set { SetValue(IsSelectedProperty, value); }
         }
 
         public static AutotrackerRuleItem Make(long id, string term, string project)
@@ -54,8 +35,7 @@ namespace TogglDesktop
         public void Recycle()
         {
             this.id = 0;
-            this.Selected = false;
-            this.BackColor = idleBackColor;
+            this.IsSelected = false;
             StaticObjectPool.Push(this);
         }
 
@@ -68,23 +48,5 @@ namespace TogglDesktop
         {
             Toggl.DeleteAutotrackerRule(this.id);
         }
-
-        protected override void OnMouseEnter(MouseEventArgs e)
-        {
-            this.updateBackground();
-            base.OnMouseEnter(e);
-        }
-        protected override void OnMouseLeave(MouseEventArgs e)
-        {
-            this.updateBackground();
-            base.OnMouseLeave(e);
-        }
-
-        private void updateBackground()
-        {
-            this.BackColor = (this.selected || this.IsMouseOver)
-                ? selectedBackColor : idleBackColor;
-        }
-
     }
 }

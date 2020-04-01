@@ -5,12 +5,12 @@
 
 #include <string>
 
-#include "Poco/Task.h"
-#include "Poco/TaskManager.h"
-#include "Poco/LocalDateTime.h"
-#include "./proxy.h"
-#include "./settings.h"
-#include "./rectangle.h"
+#include <Poco/Task.h>
+#include <Poco/TaskManager.h>
+#include <Poco/LocalDateTime.h>
+#include "proxy.h"
+#include "settings.h"
+#include "rectangle.h"
 
 namespace toggl {
 
@@ -38,6 +38,11 @@ class Analytics : public Poco::TaskManager {
     void TrackOSDetails(
         const std::string &client_id);
 
+    void TrackInAppMessage(
+        const std::string &client_id,
+        const std::string &id,
+        const Poco::Int64 type);
+
     void TrackSettings(
         const std::string &client_id,
         const bool record_timeline,
@@ -61,6 +66,23 @@ class Analytics : public Poco::TaskManager {
                        const std::string &os,
                        const toggl::Rectangle rect);
 
+    void TrackStartTimeEntry(const std::string &client_id,
+                             const std::string& os,
+                             const uint8_t tab_index);
+    void TrackEditTimeEntry(const std::string &client_id,
+                            const std::string& os,
+                            const uint8_t tab_index);
+    void TrackDeleteTimeEntry(const std::string &client_id,
+                              const std::string& os,
+                              const uint8_t tab_index);
+
+    void TrackLoginWithUsernamePassword(const std::string &client_id);
+    void TrackLoginWithGoogle(const std::string &client_id);
+    void TrackSignupWithUsernamePassword(const std::string &client_id);
+    void TrackSignupWithGoogle(const std::string &client_id);
+    void TrackSignupWithApple(const std::string &client_id);
+    void TrackLoginWithApple(const std::string &client_id);
+
  private:
     Poco::LocalDateTime settings_sync_date;
 
@@ -68,6 +90,15 @@ class Analytics : public Poco::TaskManager {
                    const std::string &os,
                    const std::string &name,
                    const toggl::Rectangle rect);
+
+    void TrackTimeEntryActivity(const std::string &client_id,
+                                const std::string& os,
+                                const std::string &action,
+                                const uint8_t tab_index);
+
+    void TrackUserAuthentication(const std::string &client_id,
+                                 const std::string &action,
+                                 const std::string &from);
 };
 
 class GoogleAnalyticsEvent : public Poco::Task {

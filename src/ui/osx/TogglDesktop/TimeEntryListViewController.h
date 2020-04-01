@@ -8,9 +8,18 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class TimerEditViewController;
+@protocol TimeEntryListViewControllerDelegate <NSObject>
+
+- (BOOL)isTimerFocusing;
+- (NSView *)containerViewForTimer;
+- (void) shouldFocusTimer;
+
+@end
 
 @interface TimeEntryListViewController : NSViewController
-@property (nonatomic, strong) TimerEditViewController *timerEditViewController;
+@property (weak, nonatomic) id<TimeEntryListViewControllerDelegate> delegate;
 @property (nonatomic, assign, readonly) BOOL isEditorOpen;
+
+- (void)loadMoreIfNeedAtDate:(NSDate *)date;
+
 @end

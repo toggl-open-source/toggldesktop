@@ -82,10 +82,6 @@ NSString *kInactiveTimerColor = @"#999999";
 													 name:kDisplayTimerState
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayTimeEntryEditor:)
-													 name:kDisplayTimeEntryEditor
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(focusTimer)
 													 name:kFocusTimer
 												   object:nil];
@@ -275,6 +271,9 @@ NSString *kInactiveTimerColor = @"#999999";
 
 		self.durationTextField.toolTip = [NSString stringWithFormat:@"Started: %@", self.time_entry.startTimeString];
 		self.descriptionLabel.editable = NO;
+
+        // Switch to timer mode in setting
+        toggl_set_settings_manual_mode(ctx, false);
 	}
 	else
 	{
@@ -303,22 +302,14 @@ NSString *kInactiveTimerColor = @"#999999";
 	// Hide
 	self.cancelBtn.hidden = YES;
 
-	if (self.time_entry != nil && self.time_entry.isRunning)
-	{
-		[[TouchBarService shared] updateRunningItem:self.time_entry];
-	}
-}
+    if (@available(macOS 10.12.2, *))
+    {
+        if (self.time_entry != nil && self.time_entry.isRunning)
+        {
+            [[TouchBarService shared] updateRunningItem:self.time_entry];
+        }
+    }
 
-- (void)startDisplayTimeEntryEditor:(NSNotification *)notification
-{
-	[self displayTimeEntryEditor:notification.object];
-}
-
-- (void)displayTimeEntryEditor:(DisplayCommand *)cmd
-{
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 }
 
 - (void)showDefaultTimer
@@ -335,10 +326,6 @@ NSString *kInactiveTimerColor = @"#999999";
 	if ([self.autoCompleteInput currentEditor] == nil)
 	{
 		self.autoCompleteInput.stringValue = @"";
-	}
-	if (self.displayMode == DisplayModeTimer)
-	{
-		[self.view.window makeFirstResponder:self.autoCompleteInput];
 	}
 	self.cancelBtn.hidden = YES;
 	self.time_entry = [[TimeEntryViewItem alloc] init];
@@ -528,7 +515,11 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[self.mainBox setHidden:NO];
 	[self.manualBox setHidden:YES];
-	[self.view.window makeFirstResponder:self.autoCompleteInput];
+
+    // Don't focus if the timer is running
+    if (![self.time_entry isRunning]) {
+        [self.view.window makeFirstResponder:self.autoCompleteInput];
+    }
 }
 
 - (void)toggleManual:(NSNotification *)notification
@@ -547,7 +538,10 @@ NSString *kInactiveTimerColor = @"#999999";
 							 self.time_entry.ProjectID,
 							 0,
 							 tag_list,
-							 false);
+							 false,
+							 0,
+							 0
+							 );
 
 	[self clear];
 	self.time_entry = [[TimeEntryViewItem alloc] init];
@@ -555,6 +549,11 @@ NSString *kInactiveTimerColor = @"#999999";
 	free(guid);
 
 	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
+
+	// Focus on Timeline if need
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDidAdddManualTimeNotification object:nil];
+	});
 }
 
 #pragma AutocompleteTableView Delegate
@@ -758,8 +757,7 @@ NSString *kInactiveTimerColor = @"#999999";
 		}
 		else if (event.keyCode == kVK_Delete)
 		{
-			[Utils deleteTimeEntryWithConfirmationWithGUID:self.time_entry.GUID
-													 title:self.descriptionLabel.stringValue];
+            [[DesktopLibraryBridge shared] deleteTimeEntryItem:self.time_entry undoManager:self.undoManager];
 		}
 		else if (event.keyCode == kVK_Space)
 		{
@@ -806,7 +804,10 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)touchBarSettingChangedNotification:(NSNotification *)noti
 {
-	self.touchBar = nil;
+    if (@available(macOS 10.12.2, *))
+    {
+        self.touchBar = nil;
+    }
 }
 
 @end

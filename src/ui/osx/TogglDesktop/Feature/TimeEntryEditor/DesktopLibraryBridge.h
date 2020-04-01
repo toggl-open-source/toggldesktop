@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)shared;
 
+#pragma mark - Editor
+
 - (NSString *)convertDuratonInSecond:(int64_t)durationInSecond;
 
 - (NSString *)createClientWithWorkspaceID:(uint64_t)workspaceID
@@ -38,8 +40,6 @@ NS_ASSUME_NONNULL_BEGIN
 							 projectID:(uint64_t)projectID
 						   projectGUID:(NSString *)projectGUID;
 
-- (void)togglEditor;
-
 - (void)updateTimeEntryWithDescription:(NSString *)descriptionName guid:(NSString *)guid;
 
 - (void)updateTimeEntryWithTags:(NSArray<NSString *> *)tags guid:(NSString *)guid;
@@ -53,16 +53,66 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateTimeEntryWithStartTime:(NSString *)startTime
 								guid:(NSString *)guid;
 
+- (void)updateTimeEntryWithStartAtTimestamp:(NSTimeInterval)timestamp
+									   guid:(NSString *)guid
+                            keepEndTimeFixed:(BOOL) keepEndTimeFixed;
+
 - (void)updateTimeEntryWithEndTime:(NSString *)endTime
 							  guid:(NSString *)guid;
 
-- (void)deleteTimeEntryImte:(TimeEntryViewItem *)item;
+- (void)updateTimeEntryWithEndAtTimestamp:(NSTimeInterval)timestamp
+									 guid:(NSString *)guid;
+
+- (void)deleteTimeEntryItem:(TimeEntryViewItem *)item undoManager:(NSUndoManager *_Nullable) undoManager;
 
 - (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry
 						 autocomplete:(AutocompleteItem *)autocomplete;
 
+#pragma mark - Timeline
+
+- (void)enableTimelineRecord:(BOOL)isEnabled;
+
+- (void)fetchTimelineData;
+
+- (void)timelineSetPreviousDate;
+
+- (void)timelineSetNextDate;
+
+- (void)timelineSetDate:(NSDate *)date;
+
+- (void)timelineGetCurrentDate;
+
+- (NSString *_Nullable)startNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended;
+
+- (NSString *_Nullable)createEmptyTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended;
+
+- (void)startEditorAtGUID:(NSString *)GUID;
+
+- (void)closeEditor;
+
 - (void)setEditorWindowSize:(CGSize)size;
+
 - (CGSize)getEditorWindowSize;
+
+#pragma mark - Editor
+
+- (void)loadMoreTimeEntry;
+- (void)setClickCloseBtnInAppMessage;
+- (void)setClickActionBtnInAppMessage;
+- (NSString * _Nullable)createNewTimeEntryWithOldTimeEntry:(TimeEntryViewItem *) item;
+
+#pragma mark - Settings
+
+- (void)setActiveTabAtIndex:(NSInteger) index;
+- (NSInteger)getActiveTabIndex;
+
+#pragma mark - Auto Tracker
+
+- (void)enableAutoTracker:(BOOL)isEnabled;
+
+#pragma mark - Formatter
+
+- (NSString * _Nullable) formatDurationTimestampt:(NSTimeInterval) duration;
 
 @end
 

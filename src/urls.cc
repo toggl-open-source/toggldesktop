@@ -1,6 +1,6 @@
 // Copyright 2015 Toggl Desktop developers
 
-#include "../src/urls.h"
+#include "urls.h"
 
 namespace toggl {
 
@@ -19,6 +19,13 @@ void SetUseStagingAsBackend(const bool value) {
     use_staging_as_backend = value;
 }
 
+std::string Main() {
+    if (use_staging_as_backend) {
+        return "https://toggl.space";
+    }
+    return "https://toggl.com";
+}
+
 std::string API() {
     if (use_staging_as_backend) {
         return "https://toggl.space";
@@ -28,7 +35,7 @@ std::string API() {
 
 std::string TimelineUpload() {
     if (use_staging_as_backend) {
-        return "https://toggl.space";
+        return "https://timeline.toggl.space";
     }
     return "https://timeline.toggl.com";
 }

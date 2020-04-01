@@ -2,33 +2,31 @@
 
 // No exceptions should be thrown from this library.
 
-#include "./../src/toggl_api.h"
+#include "toggl_api.h"
 #include <fstream>
 #include <cstring>
 #include <set>
 
-#include "./toggl_api_lua.h"
+#include "client.h"
+#include "const.h"
+#include "context.h"
+#include "custom_error_handler.h"
+#include "feedback.h"
+#include "formatter.h"
+#include "https_client.h"
+#include "project.h"
+#include "proxy.h"
+#include "time_entry.h"
+#include "timeline_uploader.h"
+#include "toggl_api_private.h"
+#include "user.h"
+#include "websocket_client.h"
+#include "window_change_recorder.h"
 
-#include "./client.h"
-#include "./const.h"
-#include "./context.h"
-#include "./custom_error_handler.h"
-#include "./feedback.h"
-#include "./formatter.h"
-#include "./https_client.h"
-#include "./project.h"
-#include "./proxy.h"
-#include "./time_entry.h"
-#include "./timeline_uploader.h"
-#include "./toggl_api_private.h"
-#include "./user.h"
-#include "./websocket_client.h"
-#include "./window_change_recorder.h"
-
-#include "Poco/Bugcheck.h"
-#include "Poco/Path.h"
-#include "Poco/Logger.h"
-#include "Poco/UnicodeConverter.h"
+#include <Poco/Bugcheck.h>
+#include <Poco/Path.h>
+#include <Poco/Logger.h>
+#include <Poco/UnicodeConverter.h>
 
 void *toggl_context_init(
     const char_t *app_name,
@@ -173,6 +171,18 @@ bool_t toggl_set_settings_show_touch_bar(
     void *context,
     const bool_t show_touch_bar) {
     return toggl::noError == app(context)->SetSettingsShowTouchBar(show_touch_bar);
+}
+
+bool_t toggl_set_settings_active_tab(
+    void *context,
+    const uint8_t active_tab) {
+    return toggl::noError == app(context)->SetSettingsActiveTab(active_tab);
+}
+
+bool_t toggl_set_settings_color_theme(
+    void *context,
+    const uint8_t color_theme) {
+    return toggl::noError == app(context)->SetSettingsColorTheme(color_theme);
 }
 
 bool_t toggl_set_settings_idle_minutes(
@@ -355,7 +365,7 @@ void toggl_set_cacert_path(
     void *,
     const char_t *path) {
 
-    toggl::HTTPSClient::Config.CACertPath = to_string(path);
+    toggl::HTTPClient::Config.CACertPath = to_string(path);
 }
 
 bool_t toggl_set_db_path(
@@ -454,6 +464,30 @@ bool_t toggl_google_signup_async(
             country_id);
 }
 
+bool_t toggl_apple_signup(
+    void *context,
+    const char_t *access_token,
+    const uint64_t country_id,
+    const char_t *full_name) {
+    std::string name("");
+    if (full_name) {
+        name = to_string(full_name);
+    }
+    return toggl::noError == app(context)->AppleSignup(to_string(access_token), country_id, name);
+}
+
+bool_t toggl_apple_signup_async(
+    void *context,
+    const char_t *access_token,
+    const uint64_t country_id,
+    const char_t *full_name) {
+    std::string name("");
+    if (full_name) {
+        name = to_string(full_name);
+    }
+    return toggl::noError == app(context)->AsyncApleSignup(to_string(access_token), country_id, name);
+}
+
 bool_t toggl_google_login(
     void *context,
     const char_t *access_token) {
@@ -464,6 +498,18 @@ bool_t toggl_google_login_async(
     void *context,
     const char_t *access_token) {
     return toggl::noError == app(context)->AsyncGoogleLogin(to_string(access_token));
+}
+
+bool_t toggl_apple_login(
+    void *context,
+    const char_t *access_token) {
+    return toggl::noError == app(context)->AppleLogin(to_string(access_token));
+}
+
+bool_t toggl_apple_login_async(
+    void *context,
+    const char_t *access_token) {
+    return toggl::noError == app(context)->AsyncAppleLogin(to_string(access_token));
 }
 
 bool_t toggl_logout(
@@ -507,7 +553,7 @@ bool_t toggl_add_obm_action(
 void toggl_add_obm_experiment_nr(
     const uint64_t nr) {
 
-    toggl::HTTPSClient::Config.OBMExperimentNrs.push_back(nr);
+    toggl::HTTPClient::Config.OBMExperimentNrs.push_back(nr);
 }
 
 char_t *toggl_create_client(
@@ -600,7 +646,9 @@ char_t *toggl_start(
     const uint64_t project_id,
     const char_t *project_guid,
     const char_t *tags,
-    const bool_t prevent_on_app) {
+    const bool_t prevent_on_app,
+    const uint64_t started,
+    const uint64_t ended) {
 
     logger().debug("toggl_start");
 
@@ -631,7 +679,30 @@ char_t *toggl_start(
         project_id,
         p_guid,
         tag_list,
-        prevent_on_app);
+        prevent_on_app,
+        started,
+        ended,
+        true);
+    if (te) {
+        return copy_string(te->GUID());
+    }
+    return nullptr;
+}
+
+char_t *toggl_create_empty_time_entry(
+    void *context,
+    const uint64_t started,
+    const uint64_t ended) {
+    toggl::TimeEntry *te = app(context)->Start("",
+                           "",
+                           0,
+                           0,
+                           "",
+                           "",
+                           false,
+                           started,
+                           ended,
+                           false);
     if (te) {
         return copy_string(te->GUID());
     }
@@ -642,9 +713,7 @@ bool_t toggl_continue(
     void *context,
     const char_t *guid) {
 
-    std::stringstream ss;
-    ss << "toggl_continue guid=" << guid;
-    logger().debug(ss.str());
+    logger().debug("toggl_continue guid=", guid);
 
     toggl::TimeEntry *result = app(context)->Continue(to_string(guid));
     if (!result) {
@@ -658,17 +727,36 @@ void toggl_view_time_entry_list(void *context) {
     app(context)->OpenTimeEntryList();
 }
 
+void toggl_view_timeline_data(void *context) {
+    app(context)->OpenTimelineDataView();
+}
+
+void toggl_view_timeline_prev_day(
+    void *context) {
+    app(context)->ViewTimelinePrevDay();
+}
+
+void toggl_view_timeline_next_day(
+    void *context) {
+    app(context)->ViewTimelineNextDay();
+}
+
+void toggl_view_timeline_current_day(void *context) {
+    app(context)->ViewTimelineCurrentDay();
+}
+
+void toggl_view_timeline_set_day(void *context,
+                                 const int64_t unix_timestamp) {
+    app(context)->ViewTimelineSetDate(unix_timestamp);
+}
+
 void toggl_edit(
     void *context,
     const char_t *guid,
     const bool_t edit_running_entry,
     const char_t *focused_field_name) {
 
-    std::stringstream ss;
-    ss << "toggl_edit guid=" << guid
-       << ", edit_running_entry = " << edit_running_entry
-       << ", focused_field_name = " << focused_field_name;
-    logger().debug(ss.str());
+    logger().debug("toggl_edit guid=", guid, ", edit_running_entry = ", edit_running_entry, ", focused_field_name = ", focused_field_name);
 
     app(context)->OpenTimeEntryEditor(
         to_string(guid),
@@ -697,9 +785,7 @@ bool_t toggl_delete_time_entry(
     void *context,
     const char_t *guid) {
 
-    std::stringstream ss;
-    ss << "toggl_delete_time_entry guid=" << guid;
-    logger().debug(ss.str());
+    logger().debug("toggl_delete_time_entry guid=", guid);
 
     return toggl::noError == app(context)->
            DeleteTimeEntryByGUID(to_string(guid));
@@ -710,10 +796,7 @@ bool_t toggl_set_time_entry_duration(
     const char_t *guid,
     const char_t *value) {
 
-    std::stringstream ss;
-    ss  << "toggl_set_time_entry_duration guid=" << guid
-        << ", value=" << value;
-    logger().debug(ss.str());
+    logger().debug("toggl_set_time_entry_duration guid=", guid, ", value=", value);
 
     return toggl::noError == app(context)->SetTimeEntryDuration(
         to_string(guid),
@@ -749,12 +832,37 @@ bool_t toggl_set_time_entry_start(
            SetTimeEntryStart(to_string(guid), to_string(value));
 }
 
+bool_t toggl_set_time_entry_start_timestamp(
+    void *context,
+    const char_t *guid,
+    const int64_t start) {
+    return toggl::noError == app(context)->
+           SetTimeEntryStart(to_string(guid), start);
+}
+
+bool_t toggl_set_time_entry_start_timestamp_with_option(
+    void *context,
+    const char_t *guid,
+    const int64_t start,
+    const bool_t keep_end_time_fixed) {
+    return toggl::noError == app(context)->
+           SetTimeEntryStartWithOption(to_string(guid), start, keep_end_time_fixed);
+}
+
 bool_t toggl_set_time_entry_end(
     void *context,
     const char_t *guid,
     const char_t *value) {
     return toggl::noError == app(context)->
            SetTimeEntryStop(to_string(guid), to_string(value));
+}
+
+bool_t toggl_set_time_entry_end_timestamp(
+    void *context,
+    const char_t *guid,
+    const int64_t end) {
+    return toggl::noError == app(context)->
+           SetTimeEntryStop(to_string(guid), end);
 }
 
 bool_t toggl_set_time_entry_tags(
@@ -1017,6 +1125,12 @@ void toggl_on_update_download_state(
     app(context)->UI()->OnDisplayUpdateDownloadState(cb);
 }
 
+void toggl_on_message(
+    void *context,
+    TogglDisplayMessage cb) {
+    app(context)->UI()->OnDisplayMessage(cb);
+}
+
 void toggl_on_url(
     void *context,
     TogglDisplayURL cb) {
@@ -1138,6 +1252,12 @@ void toggl_on_time_entry_list(
     void *context,
     TogglDisplayTimeEntryList cb) {
     app(context)->UI()->OnDisplayTimeEntryList(cb);
+}
+
+void toggl_on_timeline(
+    void *context,
+    TogglDisplayTimeline cb) {
+    app(context)->UI()->OnDisplayTimeline(cb);
 }
 
 void toggl_on_mini_timer_autocomplete(
@@ -1265,50 +1385,6 @@ bool_t toggl_set_promotion_response(
         promotion_type, promotion_response);
 }
 
-char_t *toggl_run_script(
-    void *context,
-    const char_t* script,
-    int64_t *err) {
-
-    lua_State *L = luaL_newstate();
-    luaL_openlibs(L);
-    toggl_register_lua(context, L);
-    lua_settop(L, 0);
-
-    *err = luaL_loadstring(L, to_string(script).c_str());
-    if (*err) {
-        return copy_string(lua_tostring(L, -1));
-    }
-
-    *err = lua_pcall(L, 0, LUA_MULTRET, 0);
-    if (*err) {
-        return copy_string(lua_tostring(L, -1));
-    }
-
-    int argc = lua_gettop(L);
-
-    std::stringstream ss;
-    ss << argc << " value(s) returned" << std::endl;
-
-    for (int i = 0; i < argc; i++) {
-        if (lua_isstring(L, -1)) {
-            ss << lua_tostring(L, -1);
-        } else if (lua_isnumber(L, -1)) {
-            ss << lua_tointeger(L, -1);
-        } else if (lua_isboolean(L, -1)) {
-            ss << lua_toboolean(L, -1);
-        } else {
-            ss << "ok";
-        }
-        lua_pop(L, -1);
-    }
-    ss << std::endl << std::endl;
-
-    lua_close(L);
-
-    return copy_string(ss.str());
-}
-
 int64_t toggl_autotracker_add_rule(
     void *context,
     const char_t *term,
@@ -1355,6 +1431,11 @@ bool_t toggl_get_keep_end_time_fixed(
 bool_t toggl_get_show_touch_bar(
     void *context) {
     return app(context)->GetShowTouchBar();
+}
+
+uint8_t toggl_get_active_tab(
+    void *context) {
+    return app(context)->GetActiveTab();
 }
 
 void toggl_set_mini_timer_x(
@@ -1421,4 +1502,78 @@ void track_edit_size(void *context,
         return;
     }
     app(context)->TrackEditSize(width, height);
+}
+
+void toggl_iam_click(void *context,
+                     const uint64_t type) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackInAppMessage(type);
+}
+
+char_t *toggl_format_duration_time(void *context,
+                                   const uint64_t timestamp) {
+    return copy_string(toggl::Formatter::FormatDurationForDateHeader(timestamp));
+}
+
+void track_collapse_day(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackCollapseDay();
+}
+
+void track_expand_day(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackExpandDay();
+}
+
+void track_collapse_all_days(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackCollapseAllDays();
+}
+
+void track_expand_all_days(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackExpandAllDays();
+}
+
+bool_t toggl_update_time_entry(
+    void *context,
+    const char_t *guid,
+    const char_t *description,
+    const uint64_t task_id,
+    const uint64_t project_id,
+    const char_t *project_guid,
+    const char_t *tags,
+    const bool_t billable) {
+
+    std::string _guid("");
+    if (guid) {
+        _guid = to_string(guid);
+    }
+
+    std::string _description("");
+    if (description) {
+        _description = to_string(description);
+    }
+
+    std::string _project_guid("");
+    if (project_guid) {
+        _project_guid = to_string(project_guid);
+    }
+
+    std::string _tags("");
+    if (tags) {
+        _tags = to_string(tags);
+    }
+
+    return toggl::noError == app(context)->UpdateTimeEntry(_guid, _description, task_id, project_id, _project_guid, _tags, billable);
 }

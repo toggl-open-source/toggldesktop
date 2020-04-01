@@ -1,19 +1,18 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/toggl_api_private.h"
+#include "toggl_api_private.h"
 
 #include <cstdlib>
 
-#include "./client.h"
-#include "./context.h"
-#include "./formatter.h"
-#include "./project.h"
-#include "./time_entry.h"
-#include "./timeline_event.h"
-#include "./workspace.h"
+#include "client.h"
+#include "context.h"
+#include "formatter.h"
+#include "project.h"
+#include "time_entry.h"
+#include "timeline_event.h"
+#include "workspace.h"
 
-#include "Poco/Logger.h"
-#include "Poco/UnicodeConverter.h"
+#include <Poco/UnicodeConverter.h>
 
 TogglAutocompleteView *autocomplete_item_init(const toggl::view::Autocomplete &item) {
     TogglAutocompleteView *result = new TogglAutocompleteView();
@@ -225,7 +224,7 @@ std::string trim_whitespace(const std::string &str)
 
 const char_t *to_char_t(const std::string &s) {
 #if defined(_WIN32) || defined(WIN32)
-    std::wstring ws;
+    static thread_local std::wstring ws;
     Poco::UnicodeConverter::toUTF16(s, ws);
     return ws.c_str();
 #else
@@ -348,6 +347,9 @@ TogglTimeEntryView *time_entry_view_item_init(
     view_item->GroupDuration = copy_string(te.GroupDuration);
     view_item->GroupItemCount = te.GroupItemCount;
 
+    view_item->RoundedStart = te.RoundedStart;
+    view_item->RoundedEnd = te.RoundedEnd;
+
     view_item->Next = nullptr;
 
     return view_item;
@@ -469,6 +471,8 @@ TogglSettingsView *settings_view_item_init(
     view->PomodoroBreakMinutes = settings.pomodoro_break_minutes;
     view->StopEntryOnShutdownSleep = settings.stop_entry_on_shutdown_sleep;
     view->ShowTouchBar = settings.show_touch_bar;
+    view->ActiveTab = settings.active_tab;
+    view->ColorTheme = settings.color_theme;
     return view;
 }
 
@@ -547,12 +551,106 @@ TogglHelpArticleView *help_article_list_init(const std::vector<toggl::HelpArticl
     return first;
 }
 
-Poco::Logger &logger() {
-    return Poco::Logger::get("toggl_api");
+TogglTimelineChunkView *timeline_chunk_view_init(
+    const time_t &start) {
+    TogglTimelineChunkView *chunk_view = new TogglTimelineChunkView();
+    chunk_view->Started = static_cast<unsigned int>(start);
+    chunk_view->StartTimeString = copy_string(
+        toggl::Formatter::FormatTimeForTimeEntryEditor(start));
+    chunk_view->Next = nullptr;
+    chunk_view->FirstEvent = nullptr;
+    return chunk_view;
+}
+
+void timeline_chunk_view_list_clear(TogglTimelineChunkView *first) {
+    while (first) {
+        TogglTimelineChunkView *next = reinterpret_cast<TogglTimelineChunkView *>(first->Next);
+        timeline_chunk_view_clear(first);
+        first = next;
+    }
+}
+
+void timeline_chunk_view_clear(
+    TogglTimelineChunkView *chunk_view) {
+    if (!chunk_view) {
+        return;
+    }
+    if (chunk_view->StartTimeString) {
+        free(chunk_view->StartTimeString);
+        chunk_view->StartTimeString = nullptr;
+    }
+    if (chunk_view->EndTimeString) {
+        free(chunk_view->EndTimeString);
+        chunk_view->EndTimeString = nullptr;
+    }
+    if (chunk_view->FirstEvent) {
+        TogglTimelineEventView *firstEvent = reinterpret_cast<TogglTimelineEventView *>(chunk_view->FirstEvent);
+        timeline_event_view_list_clear(firstEvent);
+        chunk_view->FirstEvent = nullptr;
+    }
+    delete chunk_view;
+}
+
+TogglTimelineEventView *timeline_event_view_init(
+    const toggl::TimelineEvent &event) {
+    TogglTimelineEventView *event_view = new TogglTimelineEventView();
+    event_view->Title = copy_string(event.Title());
+    event_view->Filename = copy_string(event.Filename());
+    event_view->Duration = event.EndTime() - event.Start();
+    event_view->DurationString = copy_string(toggl::Formatter::FormatDuration(event_view->Duration, toggl::Format::ImprovedOnlyMinAndSec));
+    event_view->Header = false;
+    event_view->Next = nullptr;
+    return event_view;
+}
+
+void timeline_event_view_update_duration(TogglTimelineEventView *event_view, const int64_t duration) {
+    event_view->Duration = duration;
+    if (event_view->DurationString) {
+        free(event_view->DurationString);
+        event_view->DurationString = nullptr;
+    }
+    event_view->DurationString = copy_string(toggl::Formatter::FormatDuration(duration, toggl::Format::ImprovedOnlyMinAndSec));
+}
+
+void timeline_event_view_list_clear(TogglTimelineEventView *first) {
+    while (first) {
+        TogglTimelineEventView *next = reinterpret_cast<TogglTimelineEventView *>(first->Next);
+        timeline_event_view_clear(first);
+        first = next;
+    }
+}
+
+void timeline_event_view_clear(
+    TogglTimelineEventView *event_view) {
+    if (!event_view) {
+        return;
+    }
+    if (event_view->Title) {
+        free(event_view->Title);
+        event_view->Title = nullptr;
+    }
+    if (event_view->Filename) {
+        free(event_view->Filename);
+        event_view->Filename = nullptr;
+    }
+    if (event_view->DurationString) {
+        free(event_view->DurationString);
+        event_view->DurationString = nullptr;
+    }
+    if (event_view->Event) {
+        TogglTimelineEventView *event = reinterpret_cast<TogglTimelineEventView *>(event_view->Event);
+        timeline_event_view_list_clear(event);
+        event_view->Event = nullptr;
+    }
+    delete event_view;
 }
 
 toggl::Context *app(void *context) {
     poco_check_ptr(context);
 
     return reinterpret_cast<toggl::Context *>(context);
+}
+
+toggl::Logger logger() {
+    return { "toggl_api" };
 }

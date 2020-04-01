@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,6 +20,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="p7u-jM-2YL"/>
+                    </constraints>
                     <color key="fillColor" name="green-color"/>
                 </box>
                 <box boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="M6m-jn-KO0">
@@ -63,21 +66,21 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="M6m-jn-KO0" secondAttribute="trailing" id="0rE-aU-Gko"/>
                 <constraint firstItem="d33-Ax-4zW" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="4jt-3C-3ug"/>
-                <constraint firstItem="D5h-lo-zFy" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="7Zq-hS-73H"/>
                 <constraint firstAttribute="trailing" secondItem="D5h-lo-zFy" secondAttribute="trailing" id="7ou-sF-5cH"/>
-                <constraint firstItem="M6m-jn-KO0" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="GuD-Th-e4d"/>
+                <constraint firstItem="M6m-jn-KO0" firstAttribute="height" secondItem="D5h-lo-zFy" secondAttribute="height" id="Bxc-eO-dZ9"/>
                 <constraint firstItem="M6m-jn-KO0" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="M3m-JP-Rfp"/>
-                <constraint firstAttribute="bottom" secondItem="D5h-lo-zFy" secondAttribute="bottom" id="TdF-5n-Ouv"/>
+                <constraint firstItem="D5h-lo-zFy" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="Mtx-7R-gmJ"/>
+                <constraint firstItem="M6m-jn-KO0" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="Y7i-5f-oUq"/>
                 <constraint firstItem="d33-Ax-4zW" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="cAT-9r-eVP"/>
                 <constraint firstItem="D5h-lo-zFy" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="gNR-TC-zMX"/>
                 <constraint firstAttribute="trailing" secondItem="d33-Ax-4zW" secondAttribute="trailing" id="qP2-MS-EwL"/>
-                <constraint firstAttribute="bottom" secondItem="M6m-jn-KO0" secondAttribute="bottom" id="vaK-nV-Ubb"/>
             </constraints>
             <point key="canvasLocation" x="2" y="-10"/>
         </customView>
         <collectionViewItem identifier="DateCellViewItem" id="uS0-lU-fJp" customClass="DateCellViewItem" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundBox" destination="D5h-lo-zFy" id="lzs-uE-M2t"/>
+                <outlet property="backgroundBoxHeight" destination="p7u-jM-2YL" id="nUQ-Xa-FTI"/>
                 <outlet property="hoverView" destination="M6m-jn-KO0" id="o4b-qz-qsP"/>
                 <outlet property="monthLbl" destination="tRO-0R-uEU" id="RDX-4H-BjV"/>
                 <outlet property="titleLbl" destination="DuL-ri-Jw3" id="Gl5-Le-UqB"/>
@@ -87,13 +90,13 @@
     </objects>
     <resources>
         <namedColor name="calendar-cell-hover-color">
-            <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="0.11999999731779099" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.15700000524520874" green="0.80400002002716064" blue="0.25499999523162842" alpha="0.11999999731779099" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="error-title-color">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23100000619888306" blue="0.18799999356269836" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="green-color">
-            <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.15700000524520874" green="0.80400002002716064" blue="0.25499999523162842" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

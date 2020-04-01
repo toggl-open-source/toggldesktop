@@ -58,7 +58,7 @@ namespace TogglDesktop
 
         private void updateColor()
         {
-            this.colorCircle.Background =
+            this.colorCircle.Fill =
                 Utils.ProjectColorBrushFromString(this.selectedColor);
         }
 

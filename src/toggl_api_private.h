@@ -6,15 +6,12 @@
 #include <string>
 #include <vector>
 
-#include "./autotracker.h"
-#include "./help_article.h"
-#include "./proxy.h"
-#include "./settings.h"
-#include "./toggl_api.h"
-
-namespace Poco {
-class Logger;
-}
+#include "autotracker.h"
+#include "help_article.h"
+#include "proxy.h"
+#include "settings.h"
+#include "toggl_api.h"
+#include "util/logger.h"
 
 namespace toggl {
 class Client;
@@ -104,7 +101,25 @@ void help_article_item_clear(TogglHelpArticleView *view);
 
 void help_article_list_clear(TogglHelpArticleView *first);
 
-Poco::Logger &logger();
+TogglTimelineChunkView *timeline_chunk_view_init(
+    const time_t &start);
+
+void timeline_chunk_view_clear(
+    TogglTimelineChunkView *first);
+
+TogglTimelineEventView *timeline_event_view_init(
+    const toggl::TimelineEvent &event);
+
+void timeline_chunk_view_list_clear(TogglTimelineChunkView *first);
+
+void timeline_event_view_update_duration(TogglTimelineEventView *event_view, const int64_t duration);
+
+void timeline_event_view_clear(
+    TogglTimelineEventView *event_view);
+
+void timeline_event_view_list_clear(TogglTimelineEventView *first);
+
+toggl::Logger logger();
 
 toggl::Context *app(void *context);
 

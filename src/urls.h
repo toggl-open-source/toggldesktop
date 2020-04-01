@@ -9,6 +9,7 @@ namespace toggl {
 
 namespace urls {
 
+std::string Main();
 std::string API();
 std::string TimelineUpload();
 std::string WebSocket();

@@ -36,6 +36,7 @@ extern NSString *const kDisplayTimerState;
 extern NSString *const kDisplayUnsyncedItems;
 extern NSString *const kDisplayAutotrackerRules;
 extern NSString *const kDisplayPromotion;
+extern NSString *const kDisplayTimeline;
 extern NSString *const kStartTimer;
 
 extern NSString *const kHideDisplayError;
@@ -55,7 +56,10 @@ extern NSString *const kDisplayCountries;
 extern NSString *const kUpdateIconTooltip;
 extern NSString *const kUserHasBeenSignup;
 extern NSString *const kDeselectAllTimeEntryList;
+extern NSString *const kDidAdddManualTimeNotification;
 extern NSString *const kTouchBarSettingChanged;
+extern NSString *const kStartDisplayInAppMessage;
+extern NSString *const kStarTimeEntryWithStartTime;
 
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;
@@ -63,3 +67,4 @@ const char *kFocusedFieldNameProject;
 const char *kFocusedFieldNameTag;
 
 extern NSString *const kStartButtonStateChange;
+extern NSString *const kInvalidAppleUserCrendential;

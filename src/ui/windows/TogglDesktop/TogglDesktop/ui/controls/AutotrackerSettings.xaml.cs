@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using TogglDesktop.AutoCompletion;
-using TogglDesktop.AutoCompletion.Implementation;
+using TogglDesktop.AutoCompletion.Items;
 
 namespace TogglDesktop
 {
@@ -36,7 +36,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onProjectAutocomplete, list))
                 return;
 
-            this.projectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list));
+            this.projectAutoComplete.SetController(AutoCompleteControllersFactory.ForProjects(list));
         }
 
         #endregion
@@ -45,8 +45,7 @@ namespace TogglDesktop
 
         private void fill(List<Toggl.TogglAutotrackerRuleView> rules, string[] terms)
         {
-            this.termAutoComplete.SetController(AutoCompleteControllers.ForStrings(terms));
-
+            // this.termAutoComplete.SetController(AutoCompleteControllers.ForStrings(terms));
             this.fillRules(rules);
         }
 
@@ -87,15 +86,12 @@ namespace TogglDesktop
                 this.selectProject(this.selectedProject);
             }
         }
-        private void projectAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        private void projectAutoComplete_OnConfirmCompletion(object sender, IAutoCompleteItem e)
         {
-            var asProjectItem = e as TimerItem;
-            if (asProjectItem == null)
-                return;
-
-            var item = asProjectItem.Item;
-
-            this.selectProject(item);
+            if (e is IModelItem<Toggl.TogglAutocompleteView> modelItemViewModel)
+            {
+                this.selectProject(modelItemViewModel.Model);
+            }
         }
 
         private void projectAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
@@ -174,7 +170,10 @@ namespace TogglDesktop
             switch (e.Key)
             {
                 case Key.Up:
+                case Key.Tab when Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift):
                 {
+                    if (this.selectedRuleId == 0)
+                        break;
                     if (this.selectedRuleId == -1)
                         this.selectRule(0);
                     else if(this.selectedRuleId > 0)
@@ -183,7 +182,10 @@ namespace TogglDesktop
                     break;
                 }
                 case Key.Down:
+                case Key.Tab when !(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)):
                 {
+                    if (this.selectedRuleId == this.ruleItems.Count - 1)
+                        break;
                     if (this.selectedRuleId == -1)
                         this.selectRule(0);
                     else if (this.selectedRuleId < this.ruleItems.Count - 1)
@@ -210,12 +212,12 @@ namespace TogglDesktop
         private void selectRule(int i)
         {
             if (this.selectedRuleId != -1)
-                this.selectedRule.Selected = false;
+                this.selectedRule.IsSelected = false;
 
             this.selectedRuleId = i;
             
             if (this.selectedRuleId != -1)
-                this.selectedRule.Selected = true;
+                this.selectedRule.IsSelected = true;
         }
 
         #endregion

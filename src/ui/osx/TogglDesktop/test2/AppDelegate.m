@@ -7,13 +7,10 @@
 //
 
 #import "AppDelegate.h"
-
-#import "TouchBar.h"
 #import "AboutWindowController.h"
 #import "AutocompleteItem.h"
 #import "AutotrackerRuleItem.h"
 #import <Bugsnag/Bugsnag.h>
-#import "ConsoleViewController.h"
 #import "DisplayCommand.h"
 #import "FeedbackWindowController.h"
 #import "IdleEvent.h"
@@ -34,7 +31,9 @@
 #import "TogglDesktop-Swift.h"
 #import "AppIconFactory.h"
 #import <MASShortcut/Shortcut.h>
+#import "TimelineDisplayCommand.h"
 #import "Reachability.h"
+#import "MenuItemTags.h"
 #import <AppAuth/AppAuth.h>
 
 #ifdef SPARKLE
@@ -47,10 +46,9 @@
 @property (nonatomic, strong) AboutWindowController *aboutWindowController;
 @property (nonatomic, strong) IdleNotificationWindowController *idleNotificationWindowController;
 @property (nonatomic, strong) FeedbackWindowController *feedbackWindowController;
-@property (nonatomic, strong) ConsoleViewController *consoleWindowController;
 
 // Touch Bar items
-@property (nonatomic, strong) GlobalTouchbarButton *touchItem;
+@property (nonatomic, strong) GlobalTouchbarButton *touchItem __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
 @property (nonatomic, assign) BOOL isAddedTouchBar;
 
 // Remember some app state
@@ -76,7 +74,6 @@
 @property (nonatomic, copy) NSString *db_path;
 @property (nonatomic, copy) NSString *log_path;
 @property (nonatomic, copy) NSString *log_level;
-@property (nonatomic, copy) NSString *scriptPath;
 
 // Environment (development, production, etc)
 @property (nonatomic, copy) NSString *environment;
@@ -103,7 +100,6 @@
 @property (strong, nonatomic) SystemService *systemService;
 @property (nonatomic, assign) BOOL manualMode;
 @property (nonatomic, assign) BOOL onTop;
-@property (weak) IBOutlet NSMenuItem *consoleMenuItem;
 
 @end
 
@@ -120,7 +116,6 @@ void *ctx;
 	self.showMenuBarTimer = NO;
 	self.manualMode = NO;
 	self.onTop = NO;
-
 	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
 }
 
@@ -218,6 +213,10 @@ void *ctx;
 											 selector:@selector(startUpdateIconTooltip:)
 												 name:kUpdateIconTooltip
 											   object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(invalidAppleUserCrendentialNotification:)
+                                                 name:kInvalidAppleUserCrendential
+                                               object:nil];
 
 	if (@available(macOS 10.14, *))
 	{
@@ -303,16 +302,15 @@ void *ctx;
 												 name:NSWindowDidDeminiaturizeNotification
 											   object:nil];
 
-	if (self.scriptPath)
-	{
-		[self performSelectorInBackground:@selector(runScript:)
-							   withObject:self.scriptPath];
-	}
-
-	[self hideConsoleMenuIfNeed];
-
 	// Setup Google Service Callback
 	[self registerGoogleEventHandler];
+
+    // Validate the apple user
+    #ifdef APP_STORE
+    if (@available(macOS 10.15, *)) {
+        [[AppleAuthenticationService shared] validateCredentialState];
+    }
+    #endif
 }
 
 - (void)systemWillPowerOff:(NSNotification *)aNotification
@@ -340,25 +338,9 @@ void *ctx;
 	}
 }
 
-- (void)runScript:(NSString *)scriptFile
-{
-	NSString *script = [NSString stringWithContentsOfFile:scriptFile encoding:NSUTF8StringEncoding error:nil];
-	ScriptResult *result = [Utils runScript:script];
-
-	if (result && !result.err)
-	{
-		[[NSApplication sharedApplication] terminate:self];
-	}
-}
-
 - (BOOL)updateCheckEnabled
 {
 	if (![[UnsupportedNotice sharedInstance] validateOSVersion])
-	{
-		return NO;
-	}
-
-	if (self.scriptPath)
 	{
 		return NO;
 	}
@@ -410,7 +392,7 @@ void *ctx;
 				NSNumber *project_id = notification.userInfo[@"project_id"];
 				NSNumber *task_id = notification.userInfo[@"task_id"];
 				NSLog(@"Handle autotracker notification project_id = %@, task_id = %@", project_id, task_id);
-				char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "", false);
+				char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "", false, 0, 0);
 				free(guid);
 				return;
 			}
@@ -446,7 +428,7 @@ void *ctx;
 			// handle reminder track button press
 			if (notification.userInfo[@"reminder"] != nil)
 			{
-				char_t *guid = toggl_start(ctx, "", "", 0, 0, 0, "", false);
+				char_t *guid = toggl_start(ctx, "", "", 0, 0, 0, "", false, 0, 0);
 				free(guid);
 				return;
 			}
@@ -470,24 +452,35 @@ void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
 
+    // Start or create empty TE from Timer mode
+    NSString *duration = self.manualMode ? @"0" : new_time_entry.duration;
+
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		const char *tag_list = [[new_time_entry.tags componentsJoinedByString:@"\t"] UTF8String];
 
 		char *guid = toggl_start(ctx,
 								 [new_time_entry.Description UTF8String],
-								 [new_time_entry.duration UTF8String],
+								 [duration UTF8String],
 								 new_time_entry.TaskID,
 								 new_time_entry.ProjectID,
 								 0,
 								 tag_list,
-								 false);
+								 false,
+								 0,
+								 0);
 
 		if (new_time_entry.billable)
 		{
 			toggl_set_time_entry_billable(ctx, guid, new_time_entry.billable);
 		}
+        NSString *GUID = [NSString stringWithUTF8String:guid];
 		free(guid);
-	});
+
+        // Focus on the created one
+        if (self.manualMode) {
+            toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
+        }
+    });
 }
 
 - (void)startContinueTimeEntry:(NSNotification *)notification
@@ -844,7 +837,9 @@ void *ctx;
 	if (image != self.statusItem.image)
 	{
 		[self.statusItem setImage:image];
-		[self.touchItem update:image];
+        if (@available(macOS 10.12.2, *)) {
+            [self.touchItem update:image];
+        }
 	}
 }
 
@@ -960,10 +955,7 @@ void *ctx;
 			 keyEquivalent:@""].tag = kMenuItemTagOpenBrowser;
 	[menu addItemWithTitle:@"Preferences"
 					action:@selector(onPreferencesMenuItem:)
-			 keyEquivalent:@""];
-	[menu addItemWithTitle:@"Record Timeline"
-					action:@selector(onToggleRecordTimeline:)
-			 keyEquivalent:@""].tag = kMenuItemRecordTimeline;
+			 keyEquivalent:@","];
 	self.manualModeMenuItem = [menu addItemWithTitle:@"Use manual mode"
 											  action:@selector(onModeChange:)
 									   keyEquivalent:@"d"];
@@ -974,13 +966,13 @@ void *ctx;
 			 keyEquivalent:@""];
 	[menu addItemWithTitle:@"Send Feedback"
 					action:@selector(onSendFeedbackMenuItem)
-			 keyEquivalent:@""].tag = kMenuItemSendFeedBack;
+			 keyEquivalent:@""].tag = kMenuItemTagSendFeedBack;
 	[menu addItemWithTitle:@"Logout"
 					action:@selector(onLogoutMenuItem:)
 			 keyEquivalent:@""].tag = kMenuItemTagLogout;
 	[menu addItemWithTitle:@"Quit"
 					action:@selector(onQuitMenuItem)
-			 keyEquivalent:@""];
+			 keyEquivalent:@"q"];
 
 	NSStatusBar *bar = [NSStatusBar systemStatusBar];
 
@@ -998,16 +990,6 @@ void *ctx;
 	[self.statusItem setMenu:menu];
 
 	[self updateStatusItem];
-}
-
-- (IBAction)onConsoleMenuItem:(id)sender
-{
-	if (!self.consoleWindowController)
-	{
-		self.consoleWindowController = [[ConsoleViewController alloc]
-										initWithWindowNibName:@"ConsoleViewController"];
-	}
-	[self.consoleWindowController showWindowAndFocus];
 }
 
 - (void)onNewMenuItem:(id)sender
@@ -1043,12 +1025,6 @@ void *ctx;
 	toggl_sync(ctx);
 }
 
-- (IBAction)onToggleRecordTimeline:(id)sender
-{
-	toggl_timeline_toggle_recording(ctx,
-									!toggl_timeline_is_recording_enabled(ctx));
-}
-
 - (IBAction)onModeChange:(id)sender
 {
 	self.manualMode = !self.manualMode;
@@ -1067,6 +1043,13 @@ void *ctx;
 
 - (IBAction)onLogoutMenuItem:(id)sender
 {
+    // Reset the apple state
+    #ifdef APP_STORE
+    if (@available(macOS 10.15, *)) {
+        [[AppleAuthenticationService shared] reset];
+    }
+    #endif
+
 	// Reset the sign up state for the Empty View
 	// Because the Time Entry list present last 9 weeks, so it's no way to know that it's new user or old user
 	[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUserHasBeenSignup];
@@ -1202,13 +1185,6 @@ const NSString *appName = @"osx_native_app";
 			NSLog(@"log level overriden with '%@'", self.log_level);
 			continue;
 		}
-		if (([argument rangeOfString:@"script"].location != NSNotFound) &&
-			([argument rangeOfString:@"path"].location != NSNotFound))
-		{
-			self.scriptPath = arguments[i + 1];
-			NSLog(@"script path '%@'", self.scriptPath);
-			continue;
-		}
 	}
 }
 
@@ -1285,6 +1261,8 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_promotion(ctx, on_promotion);
 	toggl_on_project_colors(ctx, on_project_colors);
 	toggl_on_countries(ctx, on_countries);
+	toggl_on_timeline(ctx, on_timeline);
+    toggl_on_message(ctx, on_display_message);
 
 	NSLog(@"Version %@", self.version);
 
@@ -1344,7 +1322,9 @@ const NSString *appName = @"osx_native_app";
 													0,
 													0,
 													0,
-													false);
+													false,
+													0,
+													0);
 									});
 				 }
 			 }
@@ -1407,28 +1387,10 @@ const NSString *appName = @"osx_native_app";
 		case kMenuItemTagClearCache :
 		case kMenuItemTagOpenBrowser :
 		case kMenuItemTagNew :
-		case kMenuItemSendFeedBack :
+		case kMenuItemTagSendFeedBack :
 			if (!self.lastKnownUserID)
 			{
 				return NO;
-			}
-			break;
-		case kMenuItemRecordTimeline :
-			if (!self.lastKnownUserID)
-			{
-				NSMenuItem *menuItem = (NSMenuItem *)anItem;
-				[menuItem setState:NSOffState];
-				return NO;
-			}
-			if (toggl_timeline_is_recording_enabled(ctx))
-			{
-				NSMenuItem *menuItem = (NSMenuItem *)anItem;
-				[menuItem setState:NSOnState];
-			}
-			else
-			{
-				NSMenuItem *menuItem = (NSMenuItem *)anItem;
-				[menuItem setState:NSOffState];
 			}
 			break;
 		default :
@@ -1530,8 +1492,7 @@ void on_time_entry_list(const bool_t open,
 
 	while (it)
 	{
-		TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
-		[model load:it];
+        TimeEntryViewItem *model = [[TimeEntryViewItem alloc] initWithView:it];
 		[viewitems addObject:model];
 		if ([model.formattedDate isEqual:@"Today"])
 		{
@@ -1548,6 +1509,25 @@ void on_time_entry_list(const bool_t open,
 																object:cmd];
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kUpdateIconTooltip
 																object:todayTotal];
+}
+
+void on_timeline(const bool_t open,
+				 const char_t *date,
+				 TogglTimelineChunkView *first,
+				 TogglTimeEntryView *first_entry,
+				 long start_day,
+				 long end_day)
+{
+	TimelineDisplayCommand *cmd =
+		[[TimelineDisplayCommand alloc] initWithOpen:open
+												date:[NSString stringWithUTF8String:date]
+									   firstActivity:first
+										  firstEntry:first_entry
+											startDay:start_day
+											  endDay:end_day];
+
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayTimeline
+																object:cmd];
 }
 
 void on_time_entry_autocomplete(TogglAutocompleteView *first)
@@ -1648,9 +1628,7 @@ void on_time_entry_editor(const bool_t open,
 						  TogglTimeEntryView *te,
 						  const char *focused_field_name)
 {
-	TimeEntryViewItem *item = [[TimeEntryViewItem alloc] init];
-
-	[item load:te];
+    TimeEntryViewItem *item = [[TimeEntryViewItem alloc] initWithView:te];
 	DisplayCommand *cmd = [[DisplayCommand alloc] init];
 	cmd.open = open;
 	cmd.timeEntry = item;
@@ -1717,8 +1695,7 @@ void on_timer_state(TogglTimeEntryView *te)
 
 	if (te)
 	{
-		view_item = [[TimeEntryViewItem alloc] init];
-		[view_item load:te];
+        view_item = [[TimeEntryViewItem alloc] initWithView:te];
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayTimerState
 																object:view_item];
@@ -1728,7 +1705,7 @@ void on_idle_notification(
 	const char *guid,
 	const char *since,
 	const char *duration,
-	const uint64_t started,
+	const int64_t started,
 	const char *description)
 {
 	IdleEvent *idleEvent = [[IdleEvent alloc] init];
@@ -1760,15 +1737,6 @@ void on_countries(TogglCountryView *first)
 {
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayCountries
 																object:[CountryViewItem loadAll:first]];
-}
-
-- (void)hideConsoleMenuIfNeed
-{
-#if DEBUG
-	[self.consoleMenuItem setHidden:NO];
-#else
-	[self.consoleMenuItem setHidden:YES];
-#endif
 }
 
 #pragma mark - Google Authentication
@@ -1803,44 +1771,32 @@ void on_countries(TogglCountryView *first)
 
 - (void)handleTouchBarWithSettings:(Settings *)settings
 {
-	[TouchBarService shared].isEnabled = settings.showTouchBar;
+    if (@available(macOS 10.12.2, *)) {
+        [TouchBarService shared].isEnabled = settings.showTouchBar;
+        self.mainWindowController.touchBar = nil;
+    }
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kTouchBarSettingChanged object:@(settings.showTouchBar)];
-
-#ifndef APP_STORE
-	if (@available(macOS 10.12.2, *))
-	{
-		// Show/Hide
-		if (settings.showTouchBar)
-		{
-			if (self.isAddedTouchBar)
-			{
-				return;
-			}
-
-			// Init if needd
-			if (!self.touchItem)
-			{
-				self.touchItem = [GlobalTouchbarButton makeDefault];
-			}
-
-			DFRSystemModalShowsCloseBoxWhenFrontMost(YES);
-			self.isAddedTouchBar = YES;
-			[NSTouchBarItem addSystemTrayItem:self.touchItem];
-			DFRElementSetControlStripPresenceForIdentifier([GlobalTouchbarButton ID], YES);
-		}
-		else
-		{
-			if (!self.isAddedTouchBar)
-			{
-				return;
-			}
-
-			self.isAddedTouchBar = NO;
-			[NSTouchBarItem removeSystemTrayItem:self.touchItem];
-			DFRElementSetControlStripPresenceForIdentifier([GlobalTouchbarButton ID], NO);
-		}
-	}
-#endif
 }
 
+#pragma mark - In app message
+
+void on_display_message(const char *title,
+                        const char *text,
+                        const char *button,
+                        const char *url)
+{
+    InAppMessage *message = [[InAppMessage alloc] initWithTitle:[NSString stringWithUTF8String:title]
+                                                       subTitle:[NSString stringWithUTF8String:text]
+                                                    buttonTitle:[NSString stringWithUTF8String:button]
+                                                      urlAction:[NSString stringWithUTF8String:url]];
+    [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kStartDisplayInAppMessage object:message];
+
+}
+
+- (void) invalidAppleUserCrendentialNotification:(NSNotification *) noti
+{
+    [self onLogoutMenuItem:self];
+    [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+                                                                object:@"Invalid Apple session. Please try login again."];
+}
 @end

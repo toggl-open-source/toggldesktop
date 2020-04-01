@@ -6,12 +6,12 @@
 # Compiled Dynamic libraries
 *.so
 *.so.*
-*.dylib
+third_party/*.dylib
 
 # Compiled Static libraries
 *.lai
 *.la
-*.a
+third_party/*.a
 
 # Pod macOS
 src/ui/osx/Pods/
@@ -112,6 +112,8 @@ third_party/plcrashreporter/build
 *.vcxproj.user
 *.csproj.user
 *.wapproj.user
+
+CMakeLists.txt.user*
 
 third_party/google-astyle/build/
 

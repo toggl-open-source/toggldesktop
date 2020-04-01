@@ -7,9 +7,15 @@
 //
 
 #import "AutoCompleteInput.h"
-#import "TogglDesktop-Swift.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+@protocol TextFieldResponderDelegate <NSObject>
+
+- (void)didBecomeFirstResponder:(NSTextField *)sender;
+- (void)didResignFirstResponder:(NSTextField *)sender;
+
+@end
 
 @interface BetterFocusAutoCompleteInput : AutoCompleteInput
 @property (weak, nonatomic) id<TextFieldResponderDelegate> responderDelegate;

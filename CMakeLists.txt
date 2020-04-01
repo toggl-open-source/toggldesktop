@@ -58,10 +58,6 @@ if(NOT USE_BUNDLED_LIBRARIES)
     # Look for Poco
     find_package(Poco COMPONENTS Crypto DataSQLite NetSSL)
 
-    # Look for Lua
-    pkg_search_module(LUA lua)
-    include_directories(${LUA_INCLUDE_DIRS})
-    
     # Look for JSON
     find_package(jsoncpp CONFIG)
     if(jsoncpp_FOUND)

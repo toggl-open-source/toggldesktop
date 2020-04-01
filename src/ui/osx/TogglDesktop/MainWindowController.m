@@ -9,22 +9,23 @@
 #import "MainWindowController.h"
 #import <Carbon/Carbon.h>
 #import "LoginViewController.h"
-#import "TimeEntryListViewController.h"
 #import "OverlayViewController.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "DisplayCommand.h"
 #import "TrackingService.h"
 #import "TogglDesktop-Swift.h"
+#import "TimelineDisplayCommand.h"
 #import "TimerEditViewController.h"
 
-@interface MainWindowController () <TouchBarServiceDelegate>
+@interface MainWindowController () <TouchBarServiceDelegate, NSWindowDelegate, InAppMessageViewControllerDelegate>
 @property (weak) IBOutlet NSView *contentView;
 @property (weak) IBOutlet NSView *mainView;
 @property (nonatomic, strong) LoginViewController *loginViewController;
-@property (nonatomic, strong) TimeEntryListViewController *timeEntryListViewController;
 @property (nonatomic, strong) OverlayViewController *overlayViewController;
+@property (nonatomic, strong) MainDashboardViewController *mainDashboardViewController;
 @property (nonatomic, strong) SystemMessageView *messageView;
+@property (nonatomic, strong) InAppMessageViewController *inappMessageView;
 @property (nonatomic, assign) CGFloat troubleBoxDefaultHeight;
 @end
 
@@ -37,16 +38,12 @@ extern void *ctx;
 	self = [super initWithWindow:window];
 	if (self)
 	{
-		self.loginViewController = [[LoginViewController alloc]
-									initWithNibName:@"LoginViewController" bundle:nil];
-		self.timeEntryListViewController = [[TimeEntryListViewController alloc]
-											initWithNibName:@"TimeEntryListViewController" bundle:nil];
-		self.overlayViewController = [[OverlayViewController alloc]
-									  initWithNibName:@"OverlayViewController" bundle:nil];
-
+		self.loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
+		self.mainDashboardViewController = [[MainDashboardViewController alloc] initWithNibName:@"MainDashboardViewController" bundle:nil];
+		self.overlayViewController = [[OverlayViewController alloc] initWithNibName:@"OverlayViewController" bundle:nil];
 
 		[self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-		[self.timeEntryListViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+		[self.mainDashboardViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 		[self.overlayViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -73,6 +70,14 @@ extern void *ctx;
 												 selector:@selector(startDisplayOnlineState:)
 													 name:kDisplayOnlineState
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startDisplayTimeline:)
+													 name:kDisplayTimeline
+												   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(startDisplayInAppMessage:)
+                                                     name:kStartDisplayInAppMessage
+                                                   object:nil];
 	}
 	return self;
 }
@@ -80,6 +85,7 @@ extern void *ctx;
 - (void)windowDidLoad
 {
 	[super windowDidLoad];
+    self.window.delegate = self;
 
 	// Tracking the size of window after loaded
 	[self trackWindowSize];
@@ -94,7 +100,9 @@ extern void *ctx;
 
 - (void)initTouchBar
 {
-	[TouchBarService shared].delegate = self;
+    if (@available(macOS 10.12.2, *)) {
+        [TouchBarService shared].delegate = self;
+    }
 }
 
 - (void)initErrorView {
@@ -109,12 +117,19 @@ extern void *ctx;
 	[self.messageView addConstraint:height];
 	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.messageView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0]];
 	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.messageView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.messageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:self.contentView attribute:NSLayoutAttributeTop multiplier:1 constant:16]];
 
 	// Hidden by default
 	self.messageView.hidden = YES;
 
 	// Register
 	[self.messageView registerToSystemMessage];
+}
+
+- (void) initInAppMessageView
+{
+    self.inappMessageView = [[InAppMessageViewController alloc] initWithNibName:@"InAppMessageViewController" bundle:nil];
+    self.inappMessageView.delegate = self;
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
@@ -131,11 +146,21 @@ extern void *ctx;
 		[self.loginViewController.view setFrame:self.contentView.bounds];
 		self.loginViewController.view.hidden = NO;
 
-		[self.timeEntryListViewController.view removeFromSuperview];
+		[self.mainDashboardViewController.view removeFromSuperview];
 		[self.overlayViewController.view removeFromSuperview];
 
-		// Reset the data
-		[[TouchBarService shared] reset];
+		// Reset
+        if (@available(macOS 10.12.2, *)) 
+		{
+            [[TouchBarService shared] resetContent];
+        }
+
+        // Reset the apple state
+        #ifdef APP_STORE
+        if (@available(macOS 10.15, *)) {
+            [[AppleAuthenticationService shared] reset];
+        }
+        #endif
 	}
 }
 
@@ -150,15 +175,15 @@ extern void *ctx;
 	if (cmd.open)
 	{
 		if ([self.loginViewController.view superview] != nil
-			|| [self.timeEntryListViewController.view superview] == nil)
+			|| [self.mainDashboardViewController.view superview] == nil)
 		{
 			// Close error when loging in
 			[self closeError];
 			[self.loginViewController resetLoader];
 
 			self.loginViewController.view.hidden = YES;
-			[self.contentView addSubview:self.timeEntryListViewController.view];
-			[self.timeEntryListViewController.view setFrame:self.contentView.bounds];
+			[self.contentView addSubview:self.mainDashboardViewController.view];
+			[self.mainDashboardViewController.view setFrame:self.contentView.bounds];
 
 			[self.loginViewController.view removeFromSuperview];
 			[self.overlayViewController.view removeFromSuperview];
@@ -167,8 +192,24 @@ extern void *ctx;
 																		object:nil];
 
 			// Prepare the Touch bar
-			[[TouchBarService shared] prepareForPresent];
+            if (@available(macOS 10.12.2, *)) {
+                [[TouchBarService shared] prepareContent];
+            }
 		}
+	}
+}
+
+- (void)startDisplayTimeline:(NSNotification *)notification
+{
+	[self displayTimeline:notification.object];
+}
+
+- (void)displayTimeline:(TimelineDisplayCommand *)cmd
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+	if (cmd.open)
+	{
+		[self.mainDashboardViewController timelineBtnOnTap:self];
 	}
 }
 
@@ -189,7 +230,7 @@ extern void *ctx;
 	[self.overlayViewController.view setFrame:self.contentView.bounds];
 
 	[self.loginViewController.view removeFromSuperview];
-	[self.timeEntryListViewController.view removeFromSuperview];
+	[self.mainDashboardViewController.view removeFromSuperview];
 }
 
 - (void)startDisplayError:(NSNotification *)notification
@@ -233,6 +274,12 @@ extern void *ctx;
 			[self closeError];
 			break;
 	}
+
+    // Have to check if login is present
+    if (self.loginViewController.view.superview != nil)
+    {
+        [self.loginViewController resetLoader];
+    }
 }
 
 - (void)stopDisplayError:(NSNotification *)notification
@@ -260,7 +307,7 @@ extern void *ctx;
 
 - (BOOL)isEditOpened
 {
-	return self.timeEntryListViewController.isEditorOpen;
+	return self.mainDashboardViewController.timeEntryController.isEditorOpen;
 }
 
 - (void)trackWindowSize
@@ -288,12 +335,12 @@ extern void *ctx;
 
 - (void)setInitialWindowSizeIfNeed
 {
-	if (self.contentView == nil || self.timeEntryListViewController.timerEditViewController == nil)
+	if (self.contentView == nil || self.mainDashboardViewController.timerController == nil)
 	{
 		return;
 	}
 
-	if (self.contentView.frame.size.height - 2 <= self.timeEntryListViewController.timerEditViewController.view.frame.size.height)
+	if (self.contentView.frame.size.height - 2 <= self.mainDashboardViewController.timerController.view.frame.size.height)
 	{
 		[self.window setContentSize:CGSizeMake(400, 600)];
 	}
@@ -303,7 +350,75 @@ extern void *ctx;
 
 - (void)touchBarServiceStartTimeEntryOnTap
 {
-	[self.timeEntryListViewController.timerEditViewController startButtonClicked:self];
+	[self.mainDashboardViewController.timerController startButtonClicked:self];
+}
+
+#pragma mark - Timeline Menu
+
+- (IBAction)zoomInBtnOnTap:(id)sender
+{
+    [self.mainDashboardViewController.timelineController zoomLevelIncreaseOnChange:sender];
+}
+
+- (IBAction)zoomOutBtnOnTap:(id)sender
+{
+    [self.mainDashboardViewController.timelineController zoomLevelDecreaseOnChange:sender];
+}
+
+- (IBAction)showTimeEntryTabBtnOnTap:(id)sender
+{
+    [self.mainDashboardViewController listBtnOnTap:sender];
+}
+
+- (IBAction)showTimelineTabBtnOnTap:(id)sender
+{
+    [self.mainDashboardViewController timelineBtnOnTap:sender];
+}
+
+- (IBAction)nextDayMenuOnClick:(id)sender
+{
+    [self.mainDashboardViewController nextDay];
+}
+
+- (IBAction)previouosDayMenuOnClick:(id)sender
+{
+    [self.mainDashboardViewController previousDay];
+}
+
+#pragma mark - In app message
+
+- (void)startDisplayInAppMessage:(NSNotification *)notification
+{
+    if (![notification.object isKindOfClass:[InAppMessage class]]) {
+        return;
+    }
+
+    if (!self.inappMessageView)
+    {
+        [self initInAppMessageView];
+    }
+    self.inappMessageView.view.hidden = YES;
+    [self.contentView addSubview:self.inappMessageView.view];
+    [self.inappMessageView.view edgesToSuperView];
+
+    // Update UI
+    InAppMessage *message = (InAppMessage *) notification.object;
+    [self.inappMessageView update:message];
+
+    // Prepare for animation
+    [self.inappMessageView prepareForAnimation];
+    self.inappMessageView.view.hidden = NO;
+    [self.inappMessageView present];
+}
+
+- (void)InAppMessageViewControllerShouldDismiss
+{
+    [self.inappMessageView.view removeFromSuperview];
+}
+
+- (NSTouchBar *)makeTouchBar
+{
+    return [[TouchBarService shared] makeTouchBar];
 }
 
 @end

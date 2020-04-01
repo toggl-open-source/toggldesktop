@@ -15,6 +15,7 @@
 #import "NSCustomComboBox.h"
 #import <MASShortcut/Shortcut.h>
 #import "TogglDesktop-Swift.h"
+#import "DesktopLibraryBridge.h"
 
 NSString *const kPreferenceGlobalShortcutShowHide = @"TogglDesktopGlobalShortcutShowHide";
 NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcutStartStop";
@@ -28,6 +29,7 @@ typedef enum : NSUInteger
 } TabIndex;
 
 @interface PreferencesWindowController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, NSWindowDelegate>
+@property (strong, nonatomic) Settings *settings;
 @property (weak) IBOutlet NSButton *stopOnShutdownCheckbox;
 @property (weak) IBOutlet NSTextField *hostTextField;
 @property (weak) IBOutlet NSTextField *portTextField;
@@ -36,7 +38,6 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSButton *useIdleDetectionButton;
 @property (weak) IBOutlet NSButton *usePomodoroButton;
 @property (weak) IBOutlet NSButton *usePomodoroBreakButton;
-@property (weak) IBOutlet NSButton *recordTimelineCheckbox;
 @property (weak) IBOutlet NSButton *menubarTimerCheckbox;
 @property (weak) IBOutlet NSButton *menubarProjectCheckbox;
 @property (weak) IBOutlet NSButton *dockIconCheckbox;
@@ -64,7 +65,6 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSTextField *remindEnds;
 @property (weak) IBOutlet NSButton *autotrack;
 @property (weak) IBOutlet NSButton *openEditorOnShortcut;
-@property (weak) IBOutlet NSButton *renderTimeline;
 @property (weak) IBOutlet NSButton *proxyDoNot;
 @property (weak) IBOutlet NSButton *proxySystem;
 @property (weak) IBOutlet NSButton *proxyToggl;
@@ -74,7 +74,7 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSButton *showTouchBarButton;
 @property (weak) IBOutlet NSLayoutConstraint *bottomContainerHeight;
-@property (weak) IBOutlet NSButton *screenRecordingPermissionBtn;
+@property (weak) IBOutlet NSButton *permissionBtn;
 
 @property (nonatomic, assign) NSInteger selectedProxyIndex;
 @property (nonatomic, strong) NSArray<AutotrackerRuleItem *> *rules;
@@ -94,7 +94,6 @@ typedef enum : NSUInteger
 - (IBAction)useIdleDetectionButtonChanged:(id)sender;
 - (IBAction)usePomodoroButtonChanged:(id)sender;
 - (IBAction)usePomodoroBreakButtonChanged:(id)sender;
-- (IBAction)recordTimelineCheckboxChanged:(id)sender;
 - (IBAction)menubarTimerCheckboxChanged:(id)sender;
 - (IBAction)menubarProjectCheckboxChanged:(id)sender;
 - (IBAction)dockIconCheckboxChanged:(id)sender;
@@ -191,13 +190,10 @@ extern void *ctx;
 	[self.pomodoroMinutesTextField setDelegate:self];
 	[self.pomodoroBreakMinutesTextField setDelegate:self];
 	[self.reminderMinutesTextField setDelegate:self];
-
-	self.renderTimeline.hidden = YES;
 }
 
 - (void)enableLoggedInUserControls
 {
-	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
 	[self.defaultProject setEnabled:self.user_id != 0];
 	[self.autotrack setEnabled:self.user_id != 0];
 	[self.autotrackerTerm setEnabled:self.user_id != 0];
@@ -353,19 +349,6 @@ const int kUseProxyToConnectToToggl = 2;
 									[self.remindEnds.stringValue UTF8String]);
 }
 
-- (IBAction)recordTimelineCheckboxChanged:(id)sender
-{
-	BOOL record_timeline = [Utils stateToBool:[self.recordTimelineCheckbox state]];
-
-	toggl_timeline_toggle_recording(ctx, record_timeline);
-
-	// Try to grant permission
-	if (record_timeline)
-	{
-		[ObjcSystemPermissionManager tryGrantScreenRecordingPermission];
-	}
-}
-
 - (IBAction)menubarTimerCheckboxChanged:(id)sender
 {
 	toggl_set_settings_menubar_timer(ctx,
@@ -432,6 +415,7 @@ const int kUseProxyToConnectToToggl = 2;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	Settings *settings = cmd.settings;
+    self.settings = settings;
 
 	[self.useIdleDetectionButton setState:[Utils boolToState:settings.idle_detection]];
 	[self.usePomodoroButton setState:[Utils boolToState:settings.pomodoro]];
@@ -442,10 +426,7 @@ const int kUseProxyToConnectToToggl = 2;
 	[self.ontopCheckbox setState:[Utils boolToState:settings.on_top]];
 	[self.reminderCheckbox setState:[Utils boolToState:settings.reminder]];
 	[self.focusOnShortcutCheckbox setState:[Utils boolToState:settings.focus_on_shortcut]];
-	[self.renderTimeline setState:[Utils boolToState:settings.render_timeline]];
 	[self.stopOnShutdownCheckbox setState:[Utils boolToState:settings.stopWhenShutdown]];
-	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
-	[self.recordTimelineCheckbox setState:[Utils boolToState:settings.timeline_recording_enabled]];
 
 	if (!settings.use_proxy && !settings.autodetect_proxy)
 	{
@@ -522,6 +503,9 @@ const int kUseProxyToConnectToToggl = 2;
 		self.showTouchBarButton.hidden = YES;
 		self.bottomContainerHeight.constant = 38;
 	}
+
+    // Permission for Auto Tracker
+    self.permissionBtn.hidden = settings.autotrack ? [ObjcSystemPermissionManager isScreenRecordingPermissionGranted] : YES;
 }
 
 - (void)selectProxyRadioWithTag:(NSInteger)tag
@@ -574,7 +558,7 @@ const int kUseProxyToConnectToToggl = 2;
 
 - (IBAction)autotrackChanged:(id)sender
 {
-	toggl_set_settings_autotrack(ctx, [Utils stateToBool:self.autotrack.state]);
+    [[DesktopLibraryBridge shared] enableAutoTracker:[Utils stateToBool:self.autotrack.state]];
 }
 
 - (IBAction)openEditorOnShortcut:(id)sender
@@ -761,21 +745,9 @@ const int kUseProxyToConnectToToggl = 2;
 	[self.tabView selectTabViewItemAtIndex:self.tabSegment.selectedSegment];
 }
 
-- (IBAction)screenRecordingPermissionOnTap:(id)sender
+- (IBAction)permissionBtnOnClick:(id)sender
 {
-	[ObjcSystemPermissionManager tryGrantScreenRecordingPermission];
-}
-
-- (void)updatePermissionState
-{
-	BOOL isEnabled = [ObjcSystemPermissionManager isScreenRecordingPermissionGranted];
-
-	[self.screenRecordingPermissionBtn setHidden:isEnabled];
-}
-
-- (void)windowDidBecomeKey:(NSNotification *)notification
-{
-	[self updatePermissionState];
+    [ObjcSystemPermissionManager tryGrantScreenRecordingPermission];
 }
 
 @end

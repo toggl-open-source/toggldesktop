@@ -3,13 +3,13 @@
 #ifndef SRC_RANDOM_H
 #define SRC_RANDOM_H
 
-#include "Poco/Random.h"
+#include <Poco/Random.h>
 
 namespace toggl {
 
 class Random
 {
-public:
+ public:
     static inline Poco::UInt32 next(Poco::UInt32 n) {
         static bool initialized = false;
         if (!initialized) {
@@ -18,7 +18,7 @@ public:
         }
         return _random.next(n);
     }
-private:
+ private:
     static Poco::Random _random;
 };
 

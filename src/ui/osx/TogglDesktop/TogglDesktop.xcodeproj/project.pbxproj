@@ -21,16 +21,12 @@
 		3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */; };
 		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
 		3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */; };
-		3CB7CFF82222033B00A9C806 /* DFRFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CB7CFD92222033B00A9C806 /* DFRFoundation.framework */; };
 		3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CC450E81A31ED540012440B /* NSTextFieldDuration.m */; };
 		3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD30F411F58B02C006FAA0D /* OverlayViewController.m */; };
 		3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CD30F421F58B02C006FAA0D /* OverlayViewController.xib */; };
 		3CD7AD6F19ED579700372797 /* NSResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD7AD6E19ED579700372797 /* NSResize.m */; };
 		3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */; };
 		3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */; };
-		3CFE547E201781A7006B673A /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3CFE547F201781A7006B673A /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE547D201781A5006B673A /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		5B29B9409F01EC0E842DE86D /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		622BBF654A6A958692A4633B /* Pods_TogglDesktop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 776525112125F6AD81DF4DEF /* Pods_TogglDesktop.framework */; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
 		69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
@@ -56,8 +52,6 @@
 		74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		745126B619A28AA600390F47 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 745126B519A28AA600390F47 /* Reachability.m */; };
 		746947FA1AF3FE3E0024BED7 /* AutotrackerRuleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */; };
-		747B74871A0AD28200BB3791 /* ConsoleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 747B74851A0AD28200BB3791 /* ConsoleViewController.m */; };
-		747B74881A0AD28200BB3791 /* ConsoleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 747B74861A0AD28200BB3791 /* ConsoleViewController.xib */; };
 		7484F622191D92C30038885C /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7484F621191D92C30038885C /* Settings.m */; };
 		748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 748B3A3319222DB100F31468 /* DisplayCommand.m */; };
 		7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7498D2471888B226001390B9 /* TimeEntryCell.xib */; };
@@ -98,12 +92,12 @@
 		BA014054225711A3000E5B91 /* TagTokenView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA014053225711A3000E5B91 /* TagTokenView.xib */; };
 		BA01E8A1232F77B3006B93EC /* ClickableImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA01E8A0232F77B3006B93EC /* ClickableImageView.m */; };
 		BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03725421FE9FD400FC277B /* FlatButton.swift */; };
-		BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03729C21FED85700FC277B /* NSView+Xib.swift */; };
 		BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */; };
 		BA05367F225E238D00C26E1F /* ProjectWorksapceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA05367E225E238D00C26E1F /* ProjectWorksapceCellView.swift */; };
 		BA05369F225E239600C26E1F /* ProjectWorksapceCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA05369E225E239600C26E1F /* ProjectWorksapceCellView.xib */; };
+		BA063BFA23B06CA5003A96FE /* EditableTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA063BF923B06CA5003A96FE /* EditableTextField.m */; };
+		BA063BFB23B06CA5003A96FE /* EditableTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA063BF923B06CA5003A96FE /* EditableTextField.m */; };
 		BA067642233A492F00485C3C /* TogglApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = BA067641233A492F00485C3C /* TogglApplication.m */; };
-		BA08E012222E32C90075F68E /* NSView+LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */; };
 		BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA08E086222E709C0075F68E /* ProjectTextField.m */; };
 		BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */; };
 		BA0C3A6722321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */; };
@@ -120,7 +114,10 @@
 		BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D2192269E0B500EB3833 /* CalendarViewController.xib */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
 		BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
-		BA1F9032229D19C000670E0B /* NoInteractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1F9031229D19C000670E0B /* NoInteractionView.swift */; };
+		BA1FFE71231FB0F300EAD9DC /* PanelSwitcherButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */; };
+		BA24E772230BDBB800B1D4B2 /* TimelineBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */; };
+		BA24E793230BE50600B1D4B2 /* TimelineActivityHoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */; };
+		BA24E794230BE50600B1D4B2 /* TimelineActivityHoverController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA24E792230BE50600B1D4B2 /* TimelineActivityHoverController.xib */; };
 		BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA276A122240F5B500810C51 /* FloatingErrorView.swift */; };
 		BA2807E02306A2FA001A9E48 /* NSWindowController+Focusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */; };
 		BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
@@ -132,17 +129,64 @@
 		BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA34F0FF22439C3000C27A15 /* EditorViewController.xib */; };
 		BA35B21F22E6E95200FA560E /* CalendarCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA35B21E22E6E95200FA560E /* CalendarCollectionView.swift */; };
 		BA35B22122E6E9E200FA560E /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA35B22022E6E9E200FA560E /* Key.swift */; };
-		BA3BF86F2315457000721020 /* libPocoCrypto.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA3BF8702315457000721020 /* libPocoData.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA3BF8712315457000721020 /* libPocoDataSQLite.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA3BF8722315457000721020 /* libPocoFoundation.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA3BF8732315457000721020 /* libPocoJSON.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA3BF8742315457000721020 /* libPocoNet.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA3BF8752315457000721020 /* libPocoNetSSL.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA3BF8762315457000721020 /* libPocoUtil.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA3BF8772315457000721020 /* libPocoXML.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA3BF8782315457000721020 /* libcrypto.1.1.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = 3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA3BF8792315457000721020 /* libssl.1.1.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = 3CFE547D201781A5006B673A /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA37ACB423D890050013EE26 /* TimelineDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A21E22B7808700F895FD /* TimelineDashboardViewController.swift */; };
+		BA37ACB523D890050013EE26 /* TimelineDashboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A22022B7809300F895FD /* TimelineDashboardViewController.xib */; };
+		BA37ACB623D890050013EE26 /* MainDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A22222B7823200F895FD /* MainDashboardViewController.swift */; };
+		BA37ACB723D890050013EE26 /* MainDashboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A22322B7823200F895FD /* MainDashboardViewController.xib */; };
+		BA37ACB823D890050013EE26 /* OGSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A22D22B79FEC00F895FD /* OGSwitch.swift */; };
+		BA37ACB923D890050013EE26 /* TimelineDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3422BCC5C400D3F08C /* TimelineDatasource.swift */; };
+		BA37ACBA23D890050013EE26 /* TimelineFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3622BCC5FB00D3F08C /* TimelineFlowLayout.swift */; };
+		BA37ACBB23D890050013EE26 /* TimelineDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA49912D22C0BA14008149D9 /* TimelineDateFormatter.swift */; };
+		BA37ACBC23D890050013EE26 /* TimelineActivityRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E988B23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift */; };
+		BA37ACBD23D890050013EE26 /* TimelineActivityRecorderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5E988C23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib */; };
+		BA37ACBE23D890050013EE26 /* LayerBackedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA3107123CC476D008F2893 /* LayerBackedViewController.swift */; };
+		BA37ACD123D8900C0013EE26 /* TimelineBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */; };
+		BA37ACD223D8900C0013EE26 /* TimelineTimeLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2122BCC1EA00D3F08C /* TimelineTimeLabelCell.swift */; };
+		BA37ACD323D8900C0013EE26 /* TimelineTimeLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA75FF2222BCC1EA00D3F08C /* TimelineTimeLabelCell.xib */; };
+		BA37ACD423D8900C0013EE26 /* TimelineTimeEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2522BCC1FC00D3F08C /* TimelineTimeEntryCell.swift */; };
+		BA37ACD523D8900C0013EE26 /* TimelineTimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA75FF2622BCC1FC00D3F08C /* TimelineTimeEntryCell.xib */; };
+		BA37ACD623D8900C0013EE26 /* TimelineEmptyTimeEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0104D22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift */; };
+		BA37ACD723D8900C0013EE26 /* TimelineEmptyTimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAA0104E22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.xib */; };
+		BA37ACD823D8900C0013EE26 /* TimelineActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2922BCC20D00D3F08C /* TimelineActivityCell.swift */; };
+		BA37ACD923D8900C0013EE26 /* TimelineActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA75FF2A22BCC20D00D3F08C /* TimelineActivityCell.xib */; };
+		BA37ACDA23D8900C0013EE26 /* TimelineDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD0E0BC22C49BAC009F5A83 /* TimelineDividerView.swift */; };
+		BA37ACDB23D8900C0013EE26 /* TimelineBackgroundCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0F5A223A38CB300F04654 /* TimelineBackgroundCell.swift */; };
+		BA37ACDC23D8900C0013EE26 /* TimelineDashedCornerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0105122CB72E4007C1541 /* TimelineDashedCornerView.swift */; };
+		BA37ACDD23D8900C0013EE26 /* TimelineTimeEntryHoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */; };
+		BA37ACDE23D8900C0013EE26 /* TimelineTimeEntryHoverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA6F81E322C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.xib */; };
+		BA37ACDF23D8900C0013EE26 /* TimelineTimeEntryMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0102A22CB4D5C007C1541 /* TimelineTimeEntryMenu.swift */; };
+		BA37ACE023D8900C0013EE26 /* TimelineActivityHoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */; };
+		BA37ACE123D8900C0013EE26 /* TimelineActivityHoverController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA24E792230BE50600B1D4B2 /* TimelineActivityHoverController.xib */; };
+		BA37ACE223D8900C0013EE26 /* PanelSwitcherButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */; };
+		BA37ACE323D8900C0013EE26 /* TimelineCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */; };
+		BA37ACE423D8900C0013EE26 /* HoverImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E988823BF496E0089A2C7 /* HoverImageView.swift */; };
+		BA37ACE523D890100013EE26 /* TimelineTimestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2E22BCC56C00D3F08C /* TimelineTimestamp.swift */; };
+		BA37ACE623D890100013EE26 /* TimelineTimeEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3022BCC57700D3F08C /* TimelineTimeEntry.swift */; };
+		BA37ACE723D890100013EE26 /* TimelineActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3222BCC58000D3F08C /* TimelineActivity.swift */; };
+		BA37ACE823D890100013EE26 /* TimeChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA96846622C0CD8800E07C89 /* TimeChunk.swift */; };
+		BA37ACE923D890100013EE26 /* TimelineData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3822BCC6F800D3F08C /* TimelineData.swift */; };
+		BA37ACF423D890250013EE26 /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791F022F0478A00E24F79 /* Collection+Safe.swift */; };
+		BA37ACF523D890250013EE26 /* NotificationCenter+MainThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791EE22F0478900E24F79 /* NotificationCenter+MainThread.swift */; };
+		BA37ACF623D890250013EE26 /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791EB22F0478900E24F79 /* NSColor+Utils.swift */; };
+		BA37ACF723D890250013EE26 /* NSView+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791E922F0478900E24F79 /* NSView+Animation.swift */; };
+		BA37ACF823D890250013EE26 /* NSView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791EC22F0478900E24F79 /* NSView+Ext.swift */; };
+		BA37ACF923D890250013EE26 /* NSView+LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791ED22F0478900E24F79 /* NSView+LayoutConstraint.swift */; };
+		BA37ACFA23D890250013EE26 /* NSView+Shadow+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791EF22F0478A00E24F79 /* NSView+Shadow+Border.swift */; };
+		BA37ACFB23D890250013EE26 /* NSView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791E822F0478900E24F79 /* NSView+Xib.swift */; };
+		BA37ACFC23D890250013EE26 /* String+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791EA22F0478900E24F79 /* String+Search.swift */; };
+		BA37ACFD23D890250013EE26 /* Theme+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */; };
+		BA37ACFE23D890250013EE26 /* NSView+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */; };
+		BA37ACFF23D890250013EE26 /* NSColor+VisibleColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA81896923016148000710EA /* NSColor+VisibleColor.swift */; };
+		BA37AD0023D890250013EE26 /* NSWindowController+Focusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */; };
+		BA37AD0123D890250013EE26 /* Array+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA787D4E231E58C9003AD3AA /* Array+View.swift */; };
+		BA37AD0223D8902A0013EE26 /* NoInteractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791FC22F0479200E24F79 /* NoInteractionView.swift */; };
+		BA37AD0323D8902A0013EE26 /* PopoverRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791FA22F0479100E24F79 /* PopoverRootView.swift */; };
+		BA37AD0423D8902A0013EE26 /* TimerContainerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791FD22F0479200E24F79 /* TimerContainerBox.swift */; };
+		BA37AD0523D8902A0013EE26 /* VerticallyCenteredTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791FB22F0479200E24F79 /* VerticallyCenteredTextFieldCell.swift */; };
+		BA37AD0623D890570013EE26 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A24F22B7A65D00F895FD /* DatePickerView.swift */; };
+		BA37AD0723D890570013EE26 /* DatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A25122B7A66A00F895FD /* DatePickerView.xib */; };
+		BA37AD0823D8906A0013EE26 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0104B22CB59ED007C1541 /* Date+Extension.swift */; };
+		BA37AD0923D890940013EE26 /* TimelineDisplayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3B22BCE94100D3F08C /* TimelineDisplayCommand.m */; };
 		BA3E75D422291CEB009AD291 /* SystemMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3E75D322291CEB009AD291 /* SystemMessage.swift */; };
 		BA3E75D62229356D009AD291 /* SystemMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3E75D52229356D009AD291 /* SystemMessageView.swift */; };
 		BA3E75D822293576009AD291 /* SystemMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA3E75D722293576009AD291 /* SystemMessageView.xib */; };
@@ -158,7 +202,32 @@
 		BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C24224E147A003CA17A /* ClientAutoCompleteTextField.swift */; };
 		BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C26224E195C003CA17A /* NoClientCellView.swift */; };
 		BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C28224E196D003CA17A /* NoClientCellView.xib */; };
-		BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46E09E2226707F00C25763 /* Collection+Safe.swift */; };
+		BA43B24E23F438AA0007DD99 /* TimelineLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA43B24D23F438AA0007DD99 /* TimelineLineView.swift */; };
+		BA43B24F23F438AA0007DD99 /* TimelineLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA43B24D23F438AA0007DD99 /* TimelineLineView.swift */; };
+		BA43B25423F525F30007DD99 /* TimelineLineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA43B25323F525F30007DD99 /* TimelineLineView.xib */; };
+		BA43B25523F525F30007DD99 /* TimelineLineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA43B25323F525F30007DD99 /* TimelineLineView.xib */; };
+		BA45AAF623FBEED4000C94C0 /* CornerBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA45AAF523FBEED4000C94C0 /* CornerBoxView.swift */; };
+		BA45AAF723FBEED4000C94C0 /* CornerBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA45AAF523FBEED4000C94C0 /* CornerBoxView.swift */; };
+		BA4791F122F0478A00E24F79 /* NSView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791E822F0478900E24F79 /* NSView+Xib.swift */; };
+		BA4791F222F0478A00E24F79 /* NSView+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791E922F0478900E24F79 /* NSView+Animation.swift */; };
+		BA4791F322F0478A00E24F79 /* String+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791EA22F0478900E24F79 /* String+Search.swift */; };
+		BA4791F422F0478A00E24F79 /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791EB22F0478900E24F79 /* NSColor+Utils.swift */; };
+		BA4791F522F0478A00E24F79 /* NSView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791EC22F0478900E24F79 /* NSView+Ext.swift */; };
+		BA4791F622F0478A00E24F79 /* NSView+LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791ED22F0478900E24F79 /* NSView+LayoutConstraint.swift */; };
+		BA4791F722F0478A00E24F79 /* NotificationCenter+MainThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791EE22F0478900E24F79 /* NotificationCenter+MainThread.swift */; };
+		BA4791F822F0478A00E24F79 /* NSView+Shadow+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791EF22F0478A00E24F79 /* NSView+Shadow+Border.swift */; };
+		BA4791F922F0478A00E24F79 /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791F022F0478A00E24F79 /* Collection+Safe.swift */; };
+		BA4791FE22F0479200E24F79 /* PopoverRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791FA22F0479100E24F79 /* PopoverRootView.swift */; };
+		BA4791FF22F0479200E24F79 /* VerticallyCenteredTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791FB22F0479200E24F79 /* VerticallyCenteredTextFieldCell.swift */; };
+		BA47920022F0479200E24F79 /* NoInteractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791FC22F0479200E24F79 /* NoInteractionView.swift */; };
+		BA47920122F0479200E24F79 /* TimerContainerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791FD22F0479200E24F79 /* TimerContainerBox.swift */; };
+		BA47DEB223966F9C005216AD /* InAppMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA47DEB023966F9C005216AD /* InAppMessageViewController.swift */; };
+		BA47DEB323966F9C005216AD /* InAppMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA47DEB023966F9C005216AD /* InAppMessageViewController.swift */; };
+		BA47DEB423966F9C005216AD /* InAppMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA47DEB123966F9C005216AD /* InAppMessageViewController.xib */; };
+		BA47DEB523966F9C005216AD /* InAppMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA47DEB123966F9C005216AD /* InAppMessageViewController.xib */; };
+		BA47DEB823969EAC005216AD /* InAppMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA47DEB723969EAC005216AD /* InAppMessage.swift */; };
+		BA47DEB923969EAC005216AD /* InAppMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA47DEB723969EAC005216AD /* InAppMessage.swift */; };
+		BA49912E22C0BA14008149D9 /* TimelineDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA49912D22C0BA14008149D9 /* TimelineDateFormatter.swift */; };
 		BA4A7D5123755A3700A42095 /* TimeEntryScrubberFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9F2234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift */; };
 		BA4A7D5223755A3D00A42095 /* TimeEntryScrubberItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA00E9F4234C848A0011A703 /* TimeEntryScrubberItem.xib */; };
 		BA4A7D5323755A4200A42095 /* GlobalTouchbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */; };
@@ -167,8 +236,12 @@
 		BA4A7D5623755A4200A42095 /* TimeEntryScrubberItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9EF234C73990011A703 /* TimeEntryScrubberItem.swift */; };
 		BA4AEB9C22C217A4001A898D /* ResizablePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */; };
 		BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */; };
+		BA5AC61623264651007E6C91 /* TimelineCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */; };
 		BA5B0E4E2330E1C6008D1DED /* GoogleAuthenticationServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */; };
 		BA5B0E502330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */; };
+		BA5E988923BF496E0089A2C7 /* HoverImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E988823BF496E0089A2C7 /* HoverImageView.swift */; };
+		BA5E988D23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E988B23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift */; };
+		BA5E988F23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5E988C23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib */; };
 		BA63ABEE238284D9004C70CF /* IdleNotificationTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA32134B236C1E1400D33367 /* IdleNotificationTouchBar.swift */; };
 		BA63ABEF238284DB004C70CF /* LoginSignupTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA133ABF23740EA6003A6A3A /* LoginSignupTouchBar.swift */; };
 		BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A0224DFA6E00BA4C60 /* RGB.swift */; };
@@ -176,14 +249,34 @@
 		BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */; };
 		BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */; };
 		BA6572AA224DFA6F00BA4C60 /* HSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A4224DFA6F00BA4C60 /* HSV.swift */; };
+		BA65A21F22B7808700F895FD /* TimelineDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A21E22B7808700F895FD /* TimelineDashboardViewController.swift */; };
+		BA65A22122B7809300F895FD /* TimelineDashboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A22022B7809300F895FD /* TimelineDashboardViewController.xib */; };
+		BA65A22422B7823200F895FD /* MainDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A22222B7823200F895FD /* MainDashboardViewController.swift */; };
+		BA65A22522B7823200F895FD /* MainDashboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A22322B7823200F895FD /* MainDashboardViewController.xib */; };
+		BA65A24D22B79FEC00F895FD /* OGSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A22D22B79FEC00F895FD /* OGSwitch.swift */; };
+		BA65A25022B7A65D00F895FD /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A24F22B7A65D00F895FD /* DatePickerView.swift */; };
+		BA65A25222B7A66A00F895FD /* DatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A25122B7A66A00F895FD /* DatePickerView.xib */; };
 		BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */; };
-		BA6EB8942249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */; };
-		BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */; };
 		BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */; };
+		BA6F81E422C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */; };
+		BA6F81E522C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA6F81E322C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.xib */; };
 		BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoManager.swift */; };
 		BA712EC621BF913800A2D8DD /* TimeEntrySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */; };
 		BA712EC821BF9F1200A2D8DD /* UndoStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC721BF9F1200A2D8DD /* UndoStack.swift */; };
-		BA763B7B2268601700DC245A /* PopoverRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA763B7A2268601700DC245A /* PopoverRootView.swift */; };
+		BA75FF2322BCC1EA00D3F08C /* TimelineTimeLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2122BCC1EA00D3F08C /* TimelineTimeLabelCell.swift */; };
+		BA75FF2422BCC1EA00D3F08C /* TimelineTimeLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA75FF2222BCC1EA00D3F08C /* TimelineTimeLabelCell.xib */; };
+		BA75FF2722BCC1FC00D3F08C /* TimelineTimeEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2522BCC1FC00D3F08C /* TimelineTimeEntryCell.swift */; };
+		BA75FF2822BCC1FC00D3F08C /* TimelineTimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA75FF2622BCC1FC00D3F08C /* TimelineTimeEntryCell.xib */; };
+		BA75FF2B22BCC20D00D3F08C /* TimelineActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2922BCC20D00D3F08C /* TimelineActivityCell.swift */; };
+		BA75FF2C22BCC20D00D3F08C /* TimelineActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA75FF2A22BCC20D00D3F08C /* TimelineActivityCell.xib */; };
+		BA75FF2F22BCC56C00D3F08C /* TimelineTimestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2E22BCC56C00D3F08C /* TimelineTimestamp.swift */; };
+		BA75FF3122BCC57700D3F08C /* TimelineTimeEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3022BCC57700D3F08C /* TimelineTimeEntry.swift */; };
+		BA75FF3322BCC58000D3F08C /* TimelineActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3222BCC58000D3F08C /* TimelineActivity.swift */; };
+		BA75FF3522BCC5C400D3F08C /* TimelineDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3422BCC5C400D3F08C /* TimelineDatasource.swift */; };
+		BA75FF3722BCC5FB00D3F08C /* TimelineFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3622BCC5FB00D3F08C /* TimelineFlowLayout.swift */; };
+		BA75FF3922BCC6F800D3F08C /* TimelineData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3822BCC6F800D3F08C /* TimelineData.swift */; };
+		BA75FF3C22BCE94100D3F08C /* TimelineDisplayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3B22BCE94100D3F08C /* TimelineDisplayCommand.m */; };
+		BA787D6D231E58C9003AD3AA /* Array+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA787D4E231E58C9003AD3AA /* Array+View.swift */; };
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */; };
 		BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C7B21C293E700B75B14 /* String+Optional.swift */; };
@@ -199,9 +292,9 @@
 		BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
 		BA81896A23016148000710EA /* NSColor+VisibleColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA81896923016148000710EA /* NSColor+VisibleColor.swift */; };
 		BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */; };
-		BA89CB392265EA4400D21584 /* String+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA89CB382265EA4400D21584 /* String+Search.swift */; };
 		BA8B4C752251FAD500592BC7 /* WorkspaceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */; };
 		BA8B4C772251FADF00592BC7 /* WorkspaceCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */; };
+		BA96846722C0CD8800E07C89 /* TimeChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA96846622C0CD8800E07C89 /* TimeChunk.swift */; };
 		BA9C2DF8224C7E44002AD2A1 /* ProjectCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */; };
 		BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */; };
 		BA9C2DFC224C8235002AD2A1 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */; };
@@ -210,12 +303,38 @@
 		BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */; };
 		BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */; };
 		BA9C2E0C224C8F58002AD2A1 /* KeyboardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */; };
-		BA9D90B4222D14ED00D5EC0E /* NSView+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */; };
-		BA9D90D4222D155900D5EC0E /* NSView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */; };
+		BAA0102B22CB4D5C007C1541 /* TimelineTimeEntryMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0102A22CB4D5C007C1541 /* TimelineTimeEntryMenu.swift */; };
+		BAA0104C22CB59ED007C1541 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0104B22CB59ED007C1541 /* Date+Extension.swift */; };
+		BAA0104F22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0104D22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift */; };
+		BAA0105022CB66D0007C1541 /* TimelineEmptyTimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAA0104E22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.xib */; };
+		BAA0105222CB72E4007C1541 /* TimelineDashedCornerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0105122CB72E4007C1541 /* TimelineDashedCornerView.swift */; };
+		BAA0F5A323A38CB300F04654 /* TimelineBackgroundCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0F5A223A38CB300F04654 /* TimelineBackgroundCell.swift */; };
 		BAA11AC12251F49E007F31D2 /* WorkspaceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */; };
 		BAA11AC32251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */; };
 		BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */; };
-		BAA260D1222D1DC70094F4E4 /* NSView+Shadow+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */; };
+		BAA3107223CC476D008F2893 /* LayerBackedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA3107123CC476D008F2893 /* LayerBackedViewController.swift */; };
+		BAA842342403DC9700BCCB67 /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30B23F67EE60007DD99 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842352403DC9700BCCB67 /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30323F67EE60007DD99 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842362403DC9700BCCB67 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30A23F67EE60007DD99 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842372403DC9700BCCB67 /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30723F67EE60007DD99 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842382403DC9700BCCB67 /* libPocoJSON.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30923F67EE60007DD99 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842392403DC9700BCCB67 /* libPocoNet.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30823F67EE60007DD99 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA8423A2403DC9700BCCB67 /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30423F67EE60007DD99 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA8423B2403DC9700BCCB67 /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30523F67EE60007DD99 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA8423C2403DC9700BCCB67 /* libPocoXML.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30623F67EE60007DD99 /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA8423E2403DCA800BCCB67 /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B2DB23F672850007DD99 /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA8423F2403DCC900BCCB67 /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B2DC23F672850007DD99 /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842402403DE6400BCCB67 /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30B23F67EE60007DD99 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842412403DE6400BCCB67 /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30323F67EE60007DD99 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842422403DE6400BCCB67 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30A23F67EE60007DD99 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842432403DE6400BCCB67 /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30723F67EE60007DD99 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842442403DE6400BCCB67 /* libPocoJSON.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30923F67EE60007DD99 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842452403DE6400BCCB67 /* libPocoNet.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30823F67EE60007DD99 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842462403DE6400BCCB67 /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30423F67EE60007DD99 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842472403DE6400BCCB67 /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30523F67EE60007DD99 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842482403DE6400BCCB67 /* libPocoXML.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30623F67EE60007DD99 /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA842492403DE6B00BCCB67 /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B2DC23F672850007DD99 /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAA8424A2403DE6B00BCCB67 /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B2DB23F672850007DD99 /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */; };
 		BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF569D2223D4C7003D0D73 /* DotImageView.swift */; };
 		BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF569F2223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift */; };
@@ -225,27 +344,27 @@
 		BAB0029F2273125C005ECC93 /* DayLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB0029E2273125C005ECC93 /* DayLabel.xib */; };
 		BAB508E2237E8FBC00D3D468 /* SystemPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB508E1237E8FBC00D3D468 /* SystemPermissionManager.swift */; };
 		BAB508E4237EA54500D3D468 /* ObjcSystemPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB508E3237EA54500D3D468 /* ObjcSystemPermissionManager.swift */; };
+		BAB5FFD423F13F75003781D3 /* TimelineDraggingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB5FFD323F13F75003781D3 /* TimelineDraggingSession.swift */; };
+		BAB5FFD523F13F75003781D3 /* TimelineDraggingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB5FFD323F13F75003781D3 /* TimelineDraggingSession.swift */; };
+		BAB5FFD723F15A65003781D3 /* TimelineBackgroundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB5FFD623F15A65003781D3 /* TimelineBackgroundCell.xib */; };
+		BAB5FFD823F15A65003781D3 /* TimelineBackgroundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB5FFD623F15A65003781D3 /* TimelineBackgroundCell.xib */; };
 		BAB818C3228D5847008C2367 /* DescriptionAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818C2228D5847008C2367 /* DescriptionAutoCompleteTextField.swift */; };
 		BAB818E3228D594D008C2367 /* DescriptionTimeEntryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E2228D594D008C2367 /* DescriptionTimeEntryStorage.swift */; };
 		BAB818E5228D5A17008C2367 /* DescriptionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E4228D5A16008C2367 /* DescriptionDataSource.swift */; };
 		BAB818E9228D5A97008C2367 /* DescriptionContentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E8228D5A97008C2367 /* DescriptionContentCellView.swift */; };
 		BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */; };
+		BAB8CA8B240E3E86002FF62B /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAB8CA89240E3E7E002FF62B /* AuthenticationServices.framework */; };
+		BAB8CA8E240E3EB6002FF62B /* AppleAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8CA8D240E3EB6002FF62B /* AppleAuthenticationService.swift */; };
+		BAB8CA8F240E3EB6002FF62B /* AppleAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8CA8D240E3EB6002FF62B /* AppleAuthenticationService.swift */; };
+		BABB85A923882CEE0084DEAC /* ObjcSystemPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB508E3237EA54500D3D468 /* ObjcSystemPermissionManager.swift */; };
+		BABB85AA23882D7C0084DEAC /* SystemPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB508E1237E8FBC00D3D468 /* SystemPermissionManager.swift */; };
 		BAC4D399225470DA00254DAD /* AutoCompleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */; };
+		BAD0E0BD22C49BAC009F5A83 /* TimelineDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD0E0BC22C49BAC009F5A83 /* TimelineDividerView.swift */; };
 		BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */; };
 		BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */; };
-		BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342021D612DF0039C742 /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342121D612DF0039C742 /* libPocoNet.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342221D612DF0039C742 /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342321D612DF0039C742 /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342421D612DF0039C742 /* libPocoXML.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342521D612DF0039C742 /* libPocoJSON.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342621D612DF0039C742 /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342721D612DF0039C742 /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD307D3229C1BD000C727DB /* KeyboardDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */; };
 		BAD858CC228EAE7C00226C71 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD858CB228EAE7C00226C71 /* libz.tbd */; };
 		BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAE007DD21FAF00D00404379 /* Media.xcassets */; };
-		BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */; };
 		BAE6379A22B225C70024DD08 /* AddTagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE6379922B225C70024DD08 /* AddTagButton.swift */; };
 		BAE64D562368334000244D2B /* AutocompleteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74C15795183A8CE600550613 /* AutocompleteItem.m */; };
 		BAE64D572368334000244D2B /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7484F621191D92C30038885C /* Settings.m */; };
@@ -260,8 +379,7 @@
 		BAE64D602368334000244D2B /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
 		BAE64D612368334000244D2B /* AddTagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE6379922B225C70024DD08 /* AddTagButton.swift */; };
 		BAE64D622368334000244D2B /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
-		BAE64D632368334000244D2B /* ConsoleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 747B74851A0AD28200BB3791 /* ConsoleViewController.m */; };
-		BAE64D642368334000244D2B /* NSView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */; };
+		BAE64D642368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64D652368334000244D2B /* TimeEntrySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */; };
 		BAE64D662368334000244D2B /* DescriptionAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818C2228D5847008C2367 /* DescriptionAutoCompleteTextField.swift */; };
 		BAE64D672368334000244D2B /* DateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2102269BE2F00EB3833 /* DateInfo.swift */; };
@@ -272,9 +390,8 @@
 		BAE64D6C2368334000244D2B /* ClientDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C1C224E0D61003CA17A /* ClientDataSource.swift */; };
 		BAE64D6D2368334000244D2B /* ProjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */; };
 		BAE64D6E2368334000244D2B /* NSButton+TextColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */; };
-		BAE64D6F2368334000244D2B /* VerticallyCenteredTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */; };
+		BAE64D6F2368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64D702368334000244D2B /* TagTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01405122571199000E5B91 /* TagTokenView.swift */; };
-		BAE64D712368334000244D2B /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46E09E2226707F00C25763 /* Collection+Safe.swift */; };
 		BAE64D722368334000244D2B /* ProjectWorksapceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA05367E225E238D00C26E1F /* ProjectWorksapceCellView.swift */; };
 		BAE64D732368334000244D2B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 745126B519A28AA600390F47 /* Reachability.m */; };
 		BAE64D742368334000244D2B /* ClientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C20224E1189003CA17A /* ClientCellView.swift */; };
@@ -294,14 +411,13 @@
 		BAE64D822368334000244D2B /* DayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0027E22731248005ECC93 /* DayLabel.swift */; };
 		BAE64D832368334000244D2B /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
 		BAE64D842368334000244D2B /* TimeEntryCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */; };
-		BAE64D852368334000244D2B /* NSView+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */; };
+		BAE64D852368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64D862368334000244D2B /* AutotrackerRuleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */; };
 		BAE64D872368334000244D2B /* AutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */; };
 		BAE64D882368334000244D2B /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
 		BAE64D892368334000244D2B /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 74098C321919899600CBDFB9 /* Utils.m */; };
 		BAE64D8A2368334000244D2B /* CursorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0F67B6224A32F700ED0F91 /* CursorButton.swift */; };
 		BAE64D8B2368334000244D2B /* KeyboardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */; };
-		BAE64D8C2368334000244D2B /* NSColor+VisibleColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA81896923016148000710EA /* NSColor+VisibleColor.swift */; };
 		BAE64D8D2368334000244D2B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180017E6534400B96425 /* main.m */; };
 		BAE64D8E2368334000244D2B /* FeedbackWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */; };
 		BAE64D8F2368334000244D2B /* DescriptionTimeEntryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E2228D594D008C2367 /* DescriptionTimeEntryStorage.swift */; };
@@ -320,15 +436,15 @@
 		BAE64D9C2368334000244D2B /* TimeEntryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */; };
 		BAE64D9D2368334000244D2B /* TimeDecoratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */; };
 		BAE64D9E2368334000244D2B /* TimeEntryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */; };
-		BAE64D9F2368334000244D2B /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */; };
+		BAE64D9F2368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64DA02368334000244D2B /* TimeEntryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B6221D46F4002969B8 /* TimeEntryCollectionView.m */; };
 		BAE64DA12368334000244D2B /* TimeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4059AE221D215A002969B8 /* TimeHeaderView.swift */; };
-		BAE64DA22368334000244D2B /* String+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA89CB382265EA4400D21584 /* String+Search.swift */; };
+		BAE64DA22368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64DA32368334000244D2B /* ProjectColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */; };
 		BAE64DA42368334000244D2B /* TagCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404522570805000E5B91 /* TagCellView.swift */; };
 		BAE64DA52368334000244D2B /* AutoCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */; };
-		BAE64DA62368334000244D2B /* NoInteractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1F9031229D19C000670E0B /* NoInteractionView.swift */; };
-		BAE64DA72368334000244D2B /* NSView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03729C21FED85700FC277B /* NSView+Xib.swift */; };
+		BAE64DA62368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
+		BAE64DA72368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64DA82368334000244D2B /* DesktopLibraryBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */; };
 		BAE64DA92368334000244D2B /* TimeEntryDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B8221D53E7002969B8 /* TimeEntryDatasource.swift */; };
 		BAE64DAA2368334000244D2B /* SystemMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3E75D52229356D009AD291 /* SystemMessageView.swift */; };
@@ -337,11 +453,11 @@
 		BAE64DAD2368334000244D2B /* ProjectTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA08E086222E709C0075F68E /* ProjectTextField.m */; };
 		BAE64DAE2368334000244D2B /* EditorPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E5FB0223787C300EB866E /* EditorPopover.swift */; };
 		BAE64DAF2368334000244D2B /* ProjectHeaderCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D334E224897FC00B953A8 /* ProjectHeaderCellView.swift */; };
-		BAE64DB02368334000244D2B /* TimerContainerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */; };
+		BAE64DB02368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64DB12368334000244D2B /* CalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2092269BA6500EB3833 /* CalendarDataSource.swift */; };
 		BAE64DB22368334000244D2B /* CustomFocusRingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */; };
 		BAE64DB32368334000244D2B /* AutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */; };
-		BAE64DB42368334000244D2B /* PopoverRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA763B7A2268601700DC245A /* PopoverRootView.swift */; };
+		BAE64DB42368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64DB52368334000244D2B /* NSCustomTimerComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */; };
 		BAE64DB62368334000244D2B /* KeyboardDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */; };
 		BAE64DB72368334000244D2B /* AutoCompleteViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */; };
@@ -349,16 +465,15 @@
 		BAE64DB92368334000244D2B /* ViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAD31D18BD7D83002FD4CF /* ViewItem.m */; };
 		BAE64DBA2368334000244D2B /* CalendarCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA35B21E22E6E95200FA560E /* CalendarCollectionView.swift */; };
 		BAE64DBB2368334000244D2B /* NSResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD7AD6E19ED579700372797 /* NSResize.m */; };
-		BAE64DBC2368334000244D2B /* NSView+LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */; };
 		BAE64DBD2368334000244D2B /* ProjectDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335922489C8000B953A8 /* ProjectDataSource.swift */; };
 		BAE64DBE2368334000244D2B /* AutoCompleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */; };
-		BAE64DBF2368334000244D2B /* NSView+Shadow+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */; };
+		BAE64DBF2368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64DC02368334000244D2B /* ResizablePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */; };
 		BAE64DC12368334000244D2B /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoManager.swift */; };
 		BAE64DC22368334000244D2B /* WorkspaceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */; };
 		BAE64DC32368334000244D2B /* CountryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */; };
 		BAE64DC42368334000244D2B /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2052269B7C400EB3833 /* CalendarViewController.swift */; };
-		BAE64DC52368334000244D2B /* NotificationCenter+MainThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */; };
+		BAE64DC52368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64DC62368334000244D2B /* SystemService.m in Sources */ = {isa = PBXBuildFile; fileRef = BAFBFCC721CD1D3C004B443F /* SystemService.m */; };
 		BAE64DC72368334000244D2B /* AppIconFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */; };
 		BAE64DC82368334000244D2B /* ConvertHexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A7346918297DD100525BBC /* ConvertHexColor.m */; };
@@ -367,7 +482,6 @@
 		BAE64DCB2368334000244D2B /* IdleNotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */; };
 		BAE64DCC2368334000244D2B /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404922570893000E5B91 /* Tag.swift */; };
 		BAE64DCD2368334000244D2B /* DescriptionContentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E8228D5A97008C2367 /* DescriptionContentCellView.swift */; };
-		BAE64DCE2368334000244D2B /* Theme+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */; };
 		BAE64DCF2368334000244D2B /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750218204EFB009019CB /* AboutWindowController.m */; };
 		BAE64DD02368334000244D2B /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
 		BAE64DD12368334000244D2B /* UnsupportedNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */; };
@@ -380,14 +494,12 @@
 		BAE64DD82368334000244D2B /* BetterFocusAutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = BA403BAD2230CFBC008B202C /* BetterFocusAutoCompleteInput.m */; };
 		BAE64DD92368334000244D2B /* CalendarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */; };
 		BAE64DDA2368334000244D2B /* NSCustomComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */; };
-		BAE64DDB2368334000244D2B /* NSWindowController+Focusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */; };
 		BAE64DDC2368334000244D2B /* DotImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF569D2223D4C7003D0D73 /* DotImageView.swift */; };
 		BAE64DDD2368334000244D2B /* TagAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */; };
 		BAE64DDE2368334000244D2B /* ProjectAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */; };
 		BAE64DDF2368334000244D2B /* HSBGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */; };
 		BAE64DE02368334000244D2B /* GoogleAuthenticationServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */; };
 		BAE64DE12368334000244D2B /* WorkspaceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */; };
-		BAE64DE22368334000244D2B /* NSView+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */; };
 		BAE64DE32368334000244D2B /* idler.c in Sources */ = {isa = PBXBuildFile; fileRef = 743D7829182791FA00978BCC /* idler.c */; };
 		BAE64DE42368334000244D2B /* ProjectCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */; };
 		BAE64DE52368334000244D2B /* ClientStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412BFB224E0CBE003CA17A /* ClientStorage.swift */; };
@@ -432,7 +544,6 @@
 		BAE64E0F2368334000244D2B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
 		BAE64E102368334000244D2B /* DayLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB0029E2273125C005ECC93 /* DayLabel.xib */; };
 		BAE64E112368334000244D2B /* ColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2DFD224C823C002AD2A1 /* ColorPickerView.xib */; };
-		BAE64E122368334000244D2B /* ConsoleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 747B74861A0AD28200BB3791 /* ConsoleViewController.xib */; };
 		BAE64E132368334000244D2B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 743E584F1A775BB300F17CB0 /* Localizable.strings */; };
 		BAE64E142368334000244D2B /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAE007DD21FAF00D00404379 /* Media.xcassets */; };
 		BAE64E152368334000244D2B /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */; };
@@ -456,36 +567,17 @@
 		BAE64E272368334000244D2B /* CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D2192269E0B500EB3833 /* CalendarViewController.xib */; };
 		BAE64E282368334000244D2B /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
 		BAE64E292368334000244D2B /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
-		BAE64E2C2368334000244D2B /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E2D2368334000244D2B /* libPocoNet.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E2E2368334000244D2B /* libPocoJSON.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E2F2368334000244D2B /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E302368334000244D2B /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E312368334000244D2B /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE547D201781A5006B673A /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAE64E322368334000244D2B /* TogglDesktopLibrary.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E332368334000244D2B /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E342368334000244D2B /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E352368334000244D2B /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E362368334000244D2B /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E372368334000244D2B /* libPocoXML.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E392368334000244D2B /* libPocoCrypto.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E3A2368334000244D2B /* libPocoData.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E3B2368334000244D2B /* libPocoDataSQLite.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E3C2368334000244D2B /* libPocoFoundation.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E3D2368334000244D2B /* libPocoJSON.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E3E2368334000244D2B /* libPocoNet.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E3F2368334000244D2B /* libPocoNetSSL.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E402368334000244D2B /* libPocoUtil.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E412368334000244D2B /* libPocoXML.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E422368334000244D2B /* libcrypto.1.1.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = 3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAE64E432368334000244D2B /* libssl.1.1.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = 3CFE547D201781A5006B673A /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */; };
 		BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA276A132240F5B500810C51 /* FloatingErrorView.xib */; };
 		BAF3ACCC2341F8AC00E41B33 /* GlobalTouchbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */; };
 		BAF3ACD32343325A00E41B33 /* TouchBarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF3ACD22343325A00E41B33 /* TouchBarService.swift */; };
 		BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF50DE421A29FED0090BA95 /* Images.xcassets */; };
 		BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */; };
-		BAF6319C21E6F868002DD6AB /* NotificationCenter+MainThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */; };
+		BAF9364C23E8114800EE1076 /* TimelineResizeHoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF9364B23E8114800EE1076 /* TimelineResizeHoverController.swift */; };
+		BAF9364D23E8114800EE1076 /* TimelineResizeHoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF9364B23E8114800EE1076 /* TimelineResizeHoverController.swift */; };
+		BAF9364F23E8116900EE1076 /* TimelineResizeHoverController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAF9364E23E8116900EE1076 /* TimelineResizeHoverController.xib */; };
+		BAF9365023E8116900EE1076 /* TimelineResizeHoverController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAF9364E23E8116900EE1076 /* TimelineResizeHoverController.xib */; };
 		BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */ = {isa = PBXBuildFile; fileRef = BAFBFCC721CD1D3C004B443F /* SystemService.m */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
@@ -526,40 +618,19 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3CFE547E201781A7006B673A /* libcrypto.1.1.dylib in CopyFiles */,
-				BAD2342121D612DF0039C742 /* libPocoNet.60.dylib in CopyFiles */,
-				BAD2342521D612DF0039C742 /* libPocoJSON.60.dylib in CopyFiles */,
-				BAD2342321D612DF0039C742 /* libPocoData.60.dylib in CopyFiles */,
-				BAD2342721D612DF0039C742 /* libPocoFoundation.60.dylib in CopyFiles */,
-				3CFE547F201781A7006B673A /* libssl.1.1.dylib in CopyFiles */,
 				74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */,
-				BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */,
-				BAD2342621D612DF0039C742 /* libPocoUtil.60.dylib in CopyFiles */,
-				BAD2342021D612DF0039C742 /* libPocoNetSSL.60.dylib in CopyFiles */,
-				BAD2342221D612DF0039C742 /* libPocoCrypto.60.dylib in CopyFiles */,
-				BAD2342421D612DF0039C742 /* libPocoXML.60.dylib in CopyFiles */,
+				BAA8423F2403DCC900BCCB67 /* libcrypto.1.1.dylib in CopyFiles */,
+				BAA842342403DC9700BCCB67 /* libPocoCrypto.60.dylib in CopyFiles */,
+				BAA842352403DC9700BCCB67 /* libPocoData.60.dylib in CopyFiles */,
+				BAA842362403DC9700BCCB67 /* libPocoDataSQLite.60.dylib in CopyFiles */,
+				BAA842372403DC9700BCCB67 /* libPocoFoundation.60.dylib in CopyFiles */,
+				BAA8423E2403DCA800BCCB67 /* libssl.1.1.dylib in CopyFiles */,
+				BAA842382403DC9700BCCB67 /* libPocoJSON.60.dylib in CopyFiles */,
+				BAA842392403DC9700BCCB67 /* libPocoNet.60.dylib in CopyFiles */,
+				BAA8423A2403DC9700BCCB67 /* libPocoNetSSL.60.dylib in CopyFiles */,
+				BAA8423B2403DC9700BCCB67 /* libPocoUtil.60.dylib in CopyFiles */,
+				BAA8423C2403DC9700BCCB67 /* libPocoXML.60.dylib in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BA3BF8502315455B00721020 /* Copy Files for Library in Debug mode */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 16;
-			files = (
-				BA3BF86F2315457000721020 /* libPocoCrypto.60.dylib in Copy Files for Library in Debug mode */,
-				BA3BF8702315457000721020 /* libPocoData.60.dylib in Copy Files for Library in Debug mode */,
-				BA3BF8712315457000721020 /* libPocoDataSQLite.60.dylib in Copy Files for Library in Debug mode */,
-				BA3BF8722315457000721020 /* libPocoFoundation.60.dylib in Copy Files for Library in Debug mode */,
-				BA3BF8732315457000721020 /* libPocoJSON.60.dylib in Copy Files for Library in Debug mode */,
-				BA3BF8742315457000721020 /* libPocoNet.60.dylib in Copy Files for Library in Debug mode */,
-				BA3BF8752315457000721020 /* libPocoNetSSL.60.dylib in Copy Files for Library in Debug mode */,
-				BA3BF8762315457000721020 /* libPocoUtil.60.dylib in Copy Files for Library in Debug mode */,
-				BA3BF8772315457000721020 /* libPocoXML.60.dylib in Copy Files for Library in Debug mode */,
-				BA3BF8782315457000721020 /* libcrypto.1.1.dylib in Copy Files for Library in Debug mode */,
-				BA3BF8792315457000721020 /* libssl.1.1.dylib in Copy Files for Library in Debug mode */,
-			);
-			name = "Copy Files for Library in Debug mode";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		BAE64E2B2368334000244D2B /* CopyFiles */ = {
@@ -568,40 +639,19 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BAE64E2C2368334000244D2B /* libcrypto.1.1.dylib in CopyFiles */,
-				BAE64E2D2368334000244D2B /* libPocoNet.60.dylib in CopyFiles */,
-				BAE64E2E2368334000244D2B /* libPocoJSON.60.dylib in CopyFiles */,
-				BAE64E2F2368334000244D2B /* libPocoData.60.dylib in CopyFiles */,
-				BAE64E302368334000244D2B /* libPocoFoundation.60.dylib in CopyFiles */,
-				BAE64E312368334000244D2B /* libssl.1.1.dylib in CopyFiles */,
 				BAE64E322368334000244D2B /* TogglDesktopLibrary.dylib in CopyFiles */,
-				BAE64E332368334000244D2B /* libPocoDataSQLite.60.dylib in CopyFiles */,
-				BAE64E342368334000244D2B /* libPocoUtil.60.dylib in CopyFiles */,
-				BAE64E352368334000244D2B /* libPocoNetSSL.60.dylib in CopyFiles */,
-				BAE64E362368334000244D2B /* libPocoCrypto.60.dylib in CopyFiles */,
-				BAE64E372368334000244D2B /* libPocoXML.60.dylib in CopyFiles */,
+				BAA842492403DE6B00BCCB67 /* libcrypto.1.1.dylib in CopyFiles */,
+				BAA8424A2403DE6B00BCCB67 /* libssl.1.1.dylib in CopyFiles */,
+				BAA842402403DE6400BCCB67 /* libPocoCrypto.60.dylib in CopyFiles */,
+				BAA842412403DE6400BCCB67 /* libPocoData.60.dylib in CopyFiles */,
+				BAA842422403DE6400BCCB67 /* libPocoDataSQLite.60.dylib in CopyFiles */,
+				BAA842432403DE6400BCCB67 /* libPocoFoundation.60.dylib in CopyFiles */,
+				BAA842442403DE6400BCCB67 /* libPocoJSON.60.dylib in CopyFiles */,
+				BAA842452403DE6400BCCB67 /* libPocoNet.60.dylib in CopyFiles */,
+				BAA842462403DE6400BCCB67 /* libPocoNetSSL.60.dylib in CopyFiles */,
+				BAA842472403DE6400BCCB67 /* libPocoUtil.60.dylib in CopyFiles */,
+				BAA842482403DE6400BCCB67 /* libPocoXML.60.dylib in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BAE64E382368334000244D2B /* Copy Files for Library in Debug mode */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 16;
-			files = (
-				BAE64E392368334000244D2B /* libPocoCrypto.60.dylib in Copy Files for Library in Debug mode */,
-				BAE64E3A2368334000244D2B /* libPocoData.60.dylib in Copy Files for Library in Debug mode */,
-				BAE64E3B2368334000244D2B /* libPocoDataSQLite.60.dylib in Copy Files for Library in Debug mode */,
-				BAE64E3C2368334000244D2B /* libPocoFoundation.60.dylib in Copy Files for Library in Debug mode */,
-				BAE64E3D2368334000244D2B /* libPocoJSON.60.dylib in Copy Files for Library in Debug mode */,
-				BAE64E3E2368334000244D2B /* libPocoNet.60.dylib in Copy Files for Library in Debug mode */,
-				BAE64E3F2368334000244D2B /* libPocoNetSSL.60.dylib in Copy Files for Library in Debug mode */,
-				BAE64E402368334000244D2B /* libPocoUtil.60.dylib in Copy Files for Library in Debug mode */,
-				BAE64E412368334000244D2B /* libPocoXML.60.dylib in Copy Files for Library in Debug mode */,
-				BAE64E422368334000244D2B /* libcrypto.1.1.dylib in Copy Files for Library in Debug mode */,
-				BAE64E432368334000244D2B /* libssl.1.1.dylib in Copy Files for Library in Debug mode */,
-			);
-			name = "Copy Files for Library in Debug mode";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -643,8 +693,6 @@
 		3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadMoreCell.m; sourceTree = "<group>"; };
 		3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoCompleteTableContainer.h; sourceTree = "<group>"; };
 		3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableContainer.m; sourceTree = "<group>"; };
-		3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.1.dylib; path = ../../../../third_party/openssl/libcrypto.1.1.dylib; sourceTree = "<group>"; };
-		3CFE547D201781A5006B673A /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.1.1.dylib; path = ../../../../third_party/openssl/libssl.1.1.dylib; sourceTree = "<group>"; };
 		4BCB2D1F3BD02A806D947C18 /* Pods-TogglDesktop-AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop-AppStore.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktop-AppStore/Pods-TogglDesktop-AppStore.release.xcconfig"; sourceTree = "<group>"; };
 		523FD02C959288FBFA20F5B1 /* Pods-TogglDesktop-AppStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop-AppStore.debug.xcconfig"; path = "Target Support Files/Pods-TogglDesktop-AppStore/Pods-TogglDesktop-AppStore.debug.xcconfig"; sourceTree = "<group>"; };
 		5F76040E605C5D6E37B6F73B /* Pods_TogglDesktop_AppStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TogglDesktop_AppStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -693,9 +741,6 @@
 		746947F81AF3FE3E0024BED7 /* AutotrackerRuleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutotrackerRuleItem.h; sourceTree = "<group>"; };
 		746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutotrackerRuleItem.m; sourceTree = "<group>"; };
 		74762B9E18A12DB8004433A9 /* NSComboBox_Expansion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSComboBox_Expansion.h; sourceTree = "<group>"; };
-		747B74841A0AD28200BB3791 /* ConsoleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConsoleViewController.h; path = ../ConsoleViewController.h; sourceTree = "<group>"; };
-		747B74851A0AD28200BB3791 /* ConsoleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConsoleViewController.m; path = ../ConsoleViewController.m; sourceTree = "<group>"; };
-		747B74861A0AD28200BB3791 /* ConsoleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConsoleViewController.xib; path = ../ConsoleViewController.xib; sourceTree = "<group>"; };
 		7484F620191D92C30038885C /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Settings.h; path = ../Settings.h; sourceTree = "<group>"; };
 		7484F621191D92C30038885C /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Settings.m; path = ../Settings.m; sourceTree = "<group>"; };
 		748B3A3219222DB100F31468 /* DisplayCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayCommand.h; sourceTree = "<group>"; };
@@ -757,13 +802,13 @@
 		BA01E89F232F77B3006B93EC /* ClickableImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClickableImageView.h; sourceTree = "<group>"; };
 		BA01E8A0232F77B3006B93EC /* ClickableImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClickableImageView.m; sourceTree = "<group>"; };
 		BA03725421FE9FD400FC277B /* FlatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
-		BA03729C21FED85700FC277B /* NSView+Xib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Xib.swift"; sourceTree = "<group>"; };
 		BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFocusRingButton.swift; sourceTree = "<group>"; };
 		BA05367E225E238D00C26E1F /* ProjectWorksapceCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWorksapceCellView.swift; sourceTree = "<group>"; };
 		BA05369E225E239600C26E1F /* ProjectWorksapceCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectWorksapceCellView.xib; sourceTree = "<group>"; };
+		BA063BF823B06CA5003A96FE /* EditableTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditableTextField.h; sourceTree = "<group>"; };
+		BA063BF923B06CA5003A96FE /* EditableTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditableTextField.m; sourceTree = "<group>"; };
 		BA067640233A492F00485C3C /* TogglApplication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TogglApplication.h; sourceTree = "<group>"; };
 		BA067641233A492F00485C3C /* TogglApplication.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TogglApplication.m; sourceTree = "<group>"; };
-		BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+LayoutConstraint.swift"; sourceTree = "<group>"; };
 		BA08E085222E709C0075F68E /* ProjectTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectTextField.h; sourceTree = "<group>"; };
 		BA08E086222E709C0075F68E /* ProjectTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectTextField.m; sourceTree = "<group>"; };
 		BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteCellType.swift; sourceTree = "<group>"; };
@@ -783,7 +828,10 @@
 		BA13D2192269E0B500EB3833 /* CalendarViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarViewController.xib; sourceTree = "<group>"; };
 		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = test2/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
 		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
-		BA1F9031229D19C000670E0B /* NoInteractionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoInteractionView.swift; sourceTree = "<group>"; };
+		BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelSwitcherButton.swift; sourceTree = "<group>"; };
+		BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineBaseCell.swift; sourceTree = "<group>"; };
+		BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineActivityHoverController.swift; sourceTree = "<group>"; };
+		BA24E792230BE50600B1D4B2 /* TimelineActivityHoverController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineActivityHoverController.xib; sourceTree = "<group>"; };
 		BA276A122240F5B500810C51 /* FloatingErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingErrorView.swift; sourceTree = "<group>"; };
 		BA276A132240F5B500810C51 /* FloatingErrorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FloatingErrorView.xib; sourceTree = "<group>"; };
 		BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSWindowController+Focusable.swift"; sourceTree = "<group>"; };
@@ -815,25 +863,81 @@
 		BA412C24224E147A003CA17A /* ClientAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BA412C26224E195C003CA17A /* NoClientCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoClientCellView.swift; sourceTree = "<group>"; };
 		BA412C28224E196D003CA17A /* NoClientCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoClientCellView.xib; sourceTree = "<group>"; };
-		BA46E09E2226707F00C25763 /* Collection+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
-		BA4A7D502375527B00A42095 /* TouchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchBar.h; path = test2/TouchBar.h; sourceTree = SOURCE_ROOT; };
+		BA43B24D23F438AA0007DD99 /* TimelineLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineLineView.swift; sourceTree = "<group>"; };
+		BA43B25323F525F30007DD99 /* TimelineLineView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineLineView.xib; sourceTree = "<group>"; };
+		BA43B2DB23F672850007DD99 /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libssl.1.1.dylib; sourceTree = "<group>"; };
+		BA43B2DC23F672850007DD99 /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.1.1.dylib; sourceTree = "<group>"; };
+		BA43B30323F67EE60007DD99 /* libPocoData.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPocoData.60.dylib; sourceTree = "<group>"; };
+		BA43B30423F67EE60007DD99 /* libPocoNetSSL.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPocoNetSSL.60.dylib; sourceTree = "<group>"; };
+		BA43B30523F67EE60007DD99 /* libPocoUtil.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPocoUtil.60.dylib; sourceTree = "<group>"; };
+		BA43B30623F67EE60007DD99 /* libPocoXML.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPocoXML.60.dylib; sourceTree = "<group>"; };
+		BA43B30723F67EE60007DD99 /* libPocoFoundation.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPocoFoundation.60.dylib; sourceTree = "<group>"; };
+		BA43B30823F67EE60007DD99 /* libPocoNet.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPocoNet.60.dylib; sourceTree = "<group>"; };
+		BA43B30923F67EE60007DD99 /* libPocoJSON.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPocoJSON.60.dylib; sourceTree = "<group>"; };
+		BA43B30A23F67EE60007DD99 /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
+		BA43B30B23F67EE60007DD99 /* libPocoCrypto.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPocoCrypto.60.dylib; sourceTree = "<group>"; };
+		BA43B33A23F680E20007DD99 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
+		BA43B33B23F680E20007DD99 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
+		BA45AAF523FBEED4000C94C0 /* CornerBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerBoxView.swift; sourceTree = "<group>"; };
+		BA4791E822F0478900E24F79 /* NSView+Xib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSView+Xib.swift"; sourceTree = "<group>"; };
+		BA4791E922F0478900E24F79 /* NSView+Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSView+Animation.swift"; sourceTree = "<group>"; };
+		BA4791EA22F0478900E24F79 /* String+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Search.swift"; sourceTree = "<group>"; };
+		BA4791EB22F0478900E24F79 /* NSColor+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSColor+Utils.swift"; sourceTree = "<group>"; };
+		BA4791EC22F0478900E24F79 /* NSView+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSView+Ext.swift"; sourceTree = "<group>"; };
+		BA4791ED22F0478900E24F79 /* NSView+LayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSView+LayoutConstraint.swift"; sourceTree = "<group>"; };
+		BA4791EE22F0478900E24F79 /* NotificationCenter+MainThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+MainThread.swift"; sourceTree = "<group>"; };
+		BA4791EF22F0478A00E24F79 /* NSView+Shadow+Border.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSView+Shadow+Border.swift"; sourceTree = "<group>"; };
+		BA4791F022F0478A00E24F79 /* Collection+Safe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
+		BA4791FA22F0479100E24F79 /* PopoverRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverRootView.swift; sourceTree = "<group>"; };
+		BA4791FB22F0479200E24F79 /* VerticallyCenteredTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticallyCenteredTextFieldCell.swift; sourceTree = "<group>"; };
+		BA4791FC22F0479200E24F79 /* NoInteractionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoInteractionView.swift; sourceTree = "<group>"; };
+		BA4791FD22F0479200E24F79 /* TimerContainerBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerContainerBox.swift; sourceTree = "<group>"; };
+		BA47DEB023966F9C005216AD /* InAppMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppMessageViewController.swift; sourceTree = "<group>"; };
+		BA47DEB123966F9C005216AD /* InAppMessageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InAppMessageViewController.xib; sourceTree = "<group>"; };
+		BA47DEB723969EAC005216AD /* InAppMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppMessage.swift; sourceTree = "<group>"; };
+		BA49912D22C0BA14008149D9 /* TimelineDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDateFormatter.swift; sourceTree = "<group>"; };
 		BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizablePopover.swift; sourceTree = "<group>"; };
 		BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowLayout.swift; sourceTree = "<group>"; };
+		BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineCollectionView.swift; sourceTree = "<group>"; };
 		BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthenticationServer.swift; sourceTree = "<group>"; };
 		BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleAuthenticationServer+Objc.swift"; sourceTree = "<group>"; };
+		BA5E988823BF496E0089A2C7 /* HoverImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverImageView.swift; sourceTree = "<group>"; };
+		BA5E988B23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineActivityRecorderViewController.swift; sourceTree = "<group>"; };
+		BA5E988C23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineActivityRecorderViewController.xib; sourceTree = "<group>"; };
 		BA6572A0224DFA6E00BA4C60 /* RGB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGB.swift; sourceTree = "<group>"; };
 		BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSBGen.swift; sourceTree = "<group>"; };
 		BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentColorView.swift; sourceTree = "<group>"; };
 		BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorGraphicsView.swift; sourceTree = "<group>"; };
 		BA6572A4224DFA6F00BA4C60 /* HSV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSV.swift; sourceTree = "<group>"; };
+		BA65A21E22B7808700F895FD /* TimelineDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDashboardViewController.swift; sourceTree = "<group>"; };
+		BA65A22022B7809300F895FD /* TimelineDashboardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineDashboardViewController.xib; sourceTree = "<group>"; };
+		BA65A22222B7823200F895FD /* MainDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDashboardViewController.swift; sourceTree = "<group>"; };
+		BA65A22322B7823200F895FD /* MainDashboardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainDashboardViewController.xib; sourceTree = "<group>"; };
+		BA65A22D22B79FEC00F895FD /* OGSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OGSwitch.swift; sourceTree = "<group>"; };
+		BA65A24F22B7A65D00F895FD /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
+		BA65A25122B7A66A00F895FD /* DatePickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerView.xib; sourceTree = "<group>"; };
 		BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStorage.swift; sourceTree = "<group>"; };
-		BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticallyCenteredTextFieldCell.swift; sourceTree = "<group>"; };
-		BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Utils.swift"; sourceTree = "<group>"; };
 		BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Notification.swift"; sourceTree = "<group>"; };
+		BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntryHoverViewController.swift; sourceTree = "<group>"; };
+		BA6F81E322C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineTimeEntryHoverViewController.xib; sourceTree = "<group>"; };
 		BA712EC121BF907200A2D8DD /* UndoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoManager.swift; sourceTree = "<group>"; };
 		BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntrySnapshot.swift; sourceTree = "<group>"; };
 		BA712EC721BF9F1200A2D8DD /* UndoStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoStack.swift; sourceTree = "<group>"; };
-		BA763B7A2268601700DC245A /* PopoverRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverRootView.swift; sourceTree = "<group>"; };
+		BA75FF2122BCC1EA00D3F08C /* TimelineTimeLabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeLabelCell.swift; sourceTree = "<group>"; };
+		BA75FF2222BCC1EA00D3F08C /* TimelineTimeLabelCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineTimeLabelCell.xib; sourceTree = "<group>"; };
+		BA75FF2522BCC1FC00D3F08C /* TimelineTimeEntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntryCell.swift; sourceTree = "<group>"; };
+		BA75FF2622BCC1FC00D3F08C /* TimelineTimeEntryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineTimeEntryCell.xib; sourceTree = "<group>"; };
+		BA75FF2922BCC20D00D3F08C /* TimelineActivityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineActivityCell.swift; sourceTree = "<group>"; };
+		BA75FF2A22BCC20D00D3F08C /* TimelineActivityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineActivityCell.xib; sourceTree = "<group>"; };
+		BA75FF2E22BCC56C00D3F08C /* TimelineTimestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimestamp.swift; sourceTree = "<group>"; };
+		BA75FF3022BCC57700D3F08C /* TimelineTimeEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntry.swift; sourceTree = "<group>"; };
+		BA75FF3222BCC58000D3F08C /* TimelineActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineActivity.swift; sourceTree = "<group>"; };
+		BA75FF3422BCC5C400D3F08C /* TimelineDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDatasource.swift; sourceTree = "<group>"; };
+		BA75FF3622BCC5FB00D3F08C /* TimelineFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineFlowLayout.swift; sourceTree = "<group>"; };
+		BA75FF3822BCC6F800D3F08C /* TimelineData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineData.swift; sourceTree = "<group>"; };
+		BA75FF3A22BCE94100D3F08C /* TimelineDisplayCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimelineDisplayCommand.h; sourceTree = "<group>"; };
+		BA75FF3B22BCE94100D3F08C /* TimelineDisplayCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimelineDisplayCommand.m; sourceTree = "<group>"; };
+		BA787D4E231E58C9003AD3AA /* Array+View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+View.swift"; sourceTree = "<group>"; };
 		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
 		BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+Utils.m"; sourceTree = "<group>"; };
 		BA7B4C3521C24B9D00B75B14 /* UndoTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UndoTextField.h; sourceTree = "<group>"; };
@@ -852,9 +956,9 @@
 		BA81896923016148000710EA /* NSColor+VisibleColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+VisibleColor.swift"; sourceTree = "<group>"; };
 		BA84363922533A6600EF5830 /* DesktopLibraryBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DesktopLibraryBridge.h; sourceTree = "<group>"; };
 		BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DesktopLibraryBridge.m; sourceTree = "<group>"; };
-		BA89CB382265EA4400D21584 /* String+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Search.swift"; sourceTree = "<group>"; };
 		BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCellView.swift; sourceTree = "<group>"; };
 		BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkspaceCellView.xib; sourceTree = "<group>"; };
+		BA96846622C0CD8800E07C89 /* TimeChunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeChunk.swift; sourceTree = "<group>"; };
 		BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreationView.swift; sourceTree = "<group>"; };
 		BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectCreationView.xib; sourceTree = "<group>"; };
 		BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
@@ -863,12 +967,16 @@
 		BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorViewItem.xib; sourceTree = "<group>"; };
 		BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectColor.swift; sourceTree = "<group>"; };
 		BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardTableView.swift; sourceTree = "<group>"; };
-		BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Animation.swift"; sourceTree = "<group>"; };
-		BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Ext.swift"; sourceTree = "<group>"; };
+		BAA0102A22CB4D5C007C1541 /* TimelineTimeEntryMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntryMenu.swift; sourceTree = "<group>"; };
+		BAA0104B22CB59ED007C1541 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		BAA0104D22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineEmptyTimeEntryCell.swift; sourceTree = "<group>"; };
+		BAA0104E22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineEmptyTimeEntryCell.xib; sourceTree = "<group>"; };
+		BAA0105122CB72E4007C1541 /* TimelineDashedCornerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDashedCornerView.swift; sourceTree = "<group>"; };
+		BAA0F5A223A38CB300F04654 /* TimelineBackgroundCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineBackgroundCell.swift; sourceTree = "<group>"; };
 		BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceStorage.swift; sourceTree = "<group>"; };
 		BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDataSource.swift; sourceTree = "<group>"; };
-		BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Shadow+Border.swift"; sourceTree = "<group>"; };
+		BAA3107123CC476D008F2893 /* LayerBackedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerBackedViewController.swift; sourceTree = "<group>"; };
 		BAAC931A22EEF92100E2EE1C /* TogglDesktop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TogglDesktop.entitlements; path = TogglDesktop/TogglDesktop.entitlements; sourceTree = "<group>"; };
 		BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSButton+TextColor.swift"; sourceTree = "<group>"; };
 		BAAF569D2223D4C7003D0D73 /* DotImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotImageView.swift; sourceTree = "<group>"; };
@@ -879,28 +987,23 @@
 		BAB0029E2273125C005ECC93 /* DayLabel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DayLabel.xib; sourceTree = "<group>"; };
 		BAB508E1237E8FBC00D3D468 /* SystemPermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPermissionManager.swift; sourceTree = "<group>"; };
 		BAB508E3237EA54500D3D468 /* ObjcSystemPermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjcSystemPermissionManager.swift; sourceTree = "<group>"; };
+		BAB5FFD323F13F75003781D3 /* TimelineDraggingSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDraggingSession.swift; sourceTree = "<group>"; };
+		BAB5FFD623F15A65003781D3 /* TimelineBackgroundCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineBackgroundCell.xib; sourceTree = "<group>"; };
 		BAB818C2228D5847008C2367 /* DescriptionAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAB818E2228D594D008C2367 /* DescriptionTimeEntryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionTimeEntryStorage.swift; sourceTree = "<group>"; };
 		BAB818E4228D5A16008C2367 /* DescriptionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionDataSource.swift; sourceTree = "<group>"; };
 		BAB818E8228D5A97008C2367 /* DescriptionContentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionContentCellView.swift; sourceTree = "<group>"; };
 		BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DescriptionContentCellView.xib; sourceTree = "<group>"; };
+		BAB8CA89240E3E7E002FF62B /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
+		BAB8CA8D240E3EB6002FF62B /* AppleAuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthenticationService.swift; sourceTree = "<group>"; };
 		BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteRowView.swift; sourceTree = "<group>"; };
+		BAD0E0BC22C49BAC009F5A83 /* TimelineDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDividerView.swift; sourceTree = "<group>"; };
 		BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryEmptyView.swift; sourceTree = "<group>"; };
 		BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeEntryEmptyView.xib; sourceTree = "<group>"; };
-		BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
-		BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.60.dylib; sourceTree = "<group>"; };
-		BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.60.dylib; sourceTree = "<group>"; };
-		BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoCrypto.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoCrypto.60.dylib; sourceTree = "<group>"; };
-		BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoData.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoData.60.dylib; sourceTree = "<group>"; };
-		BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoXML.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoXML.60.dylib; sourceTree = "<group>"; };
-		BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoJSON.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoJSON.60.dylib; sourceTree = "<group>"; };
-		BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.60.dylib; sourceTree = "<group>"; };
-		BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.60.dylib; sourceTree = "<group>"; };
 		BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDatePicker.swift; sourceTree = "<group>"; };
 		BAD858C5228EAE3000226C71 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		BAD858CB228EAE7C00226C71 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		BAE007DD21FAF00D00404379 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
-		BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerContainerBox.swift; sourceTree = "<group>"; };
 		BAE6379922B225C70024DD08 /* AddTagButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagButton.swift; sourceTree = "<group>"; };
 		BAE64E4B2368334000244D2B /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAE64E4C2368334000244D2B /* TogglDesktop copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TogglDesktop copy-Info.plist"; path = "/Users/nghiatran/Documents/Work/Toggl/toggldesktop/src/ui/osx/TogglDesktop/TogglDesktop copy-Info.plist"; sourceTree = "<absolute>"; };
@@ -912,9 +1015,10 @@
 		BAF50DE421A29FED0090BA95 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TogglDesktop/Images.xcassets; sourceTree = "<group>"; };
 		BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppIconFactory.h; sourceTree = "<group>"; };
 		BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppIconFactory.m; sourceTree = "<group>"; };
-		BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+MainThread.swift"; sourceTree = "<group>"; };
 		BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
 		BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+Ext.m"; sourceTree = "<group>"; };
+		BAF9364B23E8114800EE1076 /* TimelineResizeHoverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineResizeHoverController.swift; sourceTree = "<group>"; };
+		BAF9364E23E8116900EE1076 /* TimelineResizeHoverController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineResizeHoverController.xib; sourceTree = "<group>"; };
 		BAFBFCC621CD1D3C004B443F /* SystemService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SystemService.h; sourceTree = "<group>"; };
 		BAFBFCC721CD1D3C004B443F /* SystemService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SystemService.m; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
@@ -936,7 +1040,6 @@
 			files = (
 				BAD858CC228EAE7C00226C71 /* libz.tbd in Frameworks */,
 				74456B9D1A774BAE002A6338 /* TogglDesktopLibrary.dylib in Frameworks */,
-				3CB7CFF82222033B00A9C806 /* DFRFoundation.framework in Frameworks */,
 				743D94281827929C000E6F70 /* Carbon.framework in Frameworks */,
 				743D942618279290000E6F70 /* IOKit.framework in Frameworks */,
 				74AA947818090A8E0000539F /* Security.framework in Frameworks */,
@@ -944,7 +1047,6 @@
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
-				5B29B9409F01EC0E842DE86D /* (null) in Frameworks */,
 				622BBF654A6A958692A4633B /* Pods_TogglDesktop.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -957,6 +1059,7 @@
 				BAE64DF42368334000244D2B /* TogglDesktopLibrary.dylib in Frameworks */,
 				BAE64DF52368334000244D2B /* Carbon.framework in Frameworks */,
 				BAE64DF62368334000244D2B /* IOKit.framework in Frameworks */,
+				BAB8CA8B240E3E86002FF62B /* AuthenticationServices.framework in Frameworks */,
 				BAE64DF72368334000244D2B /* Security.framework in Frameworks */,
 				BAE64DF82368334000244D2B /* ExceptionHandling.framework in Frameworks */,
 				BAE64DF92368334000244D2B /* SystemConfiguration.framework in Frameworks */,
@@ -1004,22 +1107,11 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				BA43B25C23F6706B0007DD99 /* Library */,
 				BAE64E4E23683E3F00244D2B /* TogglDesktop-AppStore.entitlements */,
 				BAAC931A22EEF92100E2EE1C /* TogglDesktop.entitlements */,
 				BAE007DD21FAF00D00404379 /* Media.xcassets */,
-				BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */,
-				BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */,
-				BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */,
-				BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */,
-				BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */,
-				BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */,
-				BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */,
-				BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */,
-				BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */,
 				BAF50DE421A29FED0090BA95 /* Images.xcassets */,
-				3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */,
-				3CFE547D201781A5006B673A /* libssl.1.1.dylib */,
-				742134C3195C63AE007EF78B /* poco */,
 				74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */,
 				74E857AA194F8807007A88B9 /* ssl */,
 				BA712EAF21BF904E00A2D8DD /* Feature */,
@@ -1031,6 +1123,7 @@
 				3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */,
 				3A742A9261BE0A8B078F1749 /* Pods */,
 				BAE64E4C2368334000244D2B /* TogglDesktop copy-Info.plist */,
+				BA63ABF923829C2B004C70CF /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1046,6 +1139,7 @@
 		69FC17F317E6534400B96425 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BAB8CA89240E3E7E002FF62B /* AuthenticationServices.framework */,
 				BAD858CB228EAE7C00226C71 /* libz.tbd */,
 				BAD858C5228EAE3000226C71 /* libc++.tbd */,
 				3CB7CFD92222033B00A9C806 /* DFRFoundation.framework */,
@@ -1096,9 +1190,6 @@
 				74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */,
 				74C15794183A8CE600550613 /* AutocompleteItem.h */,
 				74C15795183A8CE600550613 /* AutocompleteItem.m */,
-				747B74841A0AD28200BB3791 /* ConsoleViewController.h */,
-				747B74851A0AD28200BB3791 /* ConsoleViewController.m */,
-				747B74861A0AD28200BB3791 /* ConsoleViewController.xib */,
 				7408EDB918C532C200CBE8F1 /* const.h */,
 				74A7346818297DD100525BBC /* ConvertHexColor.h */,
 				74A7346918297DD100525BBC /* ConvertHexColor.m */,
@@ -1190,12 +1281,16 @@
 				BAFBFCC721CD1D3C004B443F /* SystemService.m */,
 				BA08E085222E709C0075F68E /* ProjectTextField.h */,
 				BA08E086222E709C0075F68E /* ProjectTextField.m */,
+				BA75FF3A22BCE94100D3F08C /* TimelineDisplayCommand.h */,
+				BA75FF3B22BCE94100D3F08C /* TimelineDisplayCommand.m */,
 				745126B419A28AA500390F47 /* Reachability.h */,
 				745126B519A28AA600390F47 /* Reachability.m */,
 				BA01E89F232F77B3006B93EC /* ClickableImageView.h */,
 				BA01E8A0232F77B3006B93EC /* ClickableImageView.m */,
 				BA067640233A492F00485C3C /* TogglApplication.h */,
 				BA067641233A492F00485C3C /* TogglApplication.m */,
+				BA063BF823B06CA5003A96FE /* EditableTextField.h */,
+				BA063BF923B06CA5003A96FE /* EditableTextField.m */,
 			);
 			name = ui;
 			path = test2;
@@ -1213,13 +1308,6 @@
 				69FC180317E6534400B96425 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		742134C3195C63AE007EF78B /* poco */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = poco;
 			sourceTree = "<group>";
 		};
 		74456B871A774858002A6338 /* Products */ = {
@@ -1315,11 +1403,11 @@
 		BA1B7FA222E5D53A001333D9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BA4791FC22F0479200E24F79 /* NoInteractionView.swift */,
+				BA4791FA22F0479100E24F79 /* PopoverRootView.swift */,
+				BA4791FD22F0479200E24F79 /* TimerContainerBox.swift */,
+				BA4791FB22F0479200E24F79 /* VerticallyCenteredTextFieldCell.swift */,
 				BA03725421FE9FD400FC277B /* FlatButton.swift */,
-				BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */,
-				BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */,
-				BA763B7A2268601700DC245A /* PopoverRootView.swift */,
-				BA1F9031229D19C000670E0B /* NoInteractionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1327,19 +1415,20 @@
 		BA1B7FA322E5D543001333D9 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				BA4791F022F0478A00E24F79 /* Collection+Safe.swift */,
+				BA4791EE22F0478900E24F79 /* NotificationCenter+MainThread.swift */,
+				BA4791EB22F0478900E24F79 /* NSColor+Utils.swift */,
+				BA4791E922F0478900E24F79 /* NSView+Animation.swift */,
+				BA4791EC22F0478900E24F79 /* NSView+Ext.swift */,
+				BA4791ED22F0478900E24F79 /* NSView+LayoutConstraint.swift */,
+				BA4791EF22F0478A00E24F79 /* NSView+Shadow+Border.swift */,
+				BA4791E822F0478900E24F79 /* NSView+Xib.swift */,
+				BA4791EA22F0478900E24F79 /* String+Search.swift */,
 				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
 				BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */,
-				BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */,
-				BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */,
-				BA03729C21FED85700FC277B /* NSView+Xib.swift */,
-				BA46E09E2226707F00C25763 /* Collection+Safe.swift */,
-				BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */,
-				BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */,
-				BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */,
-				BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */,
-				BA89CB382265EA4400D21584 /* String+Search.swift */,
 				BA81896923016148000710EA /* NSColor+VisibleColor.swift */,
 				BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */,
+				BA787D4E231E58C9003AD3AA /* Array+View.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1347,6 +1436,7 @@
 		BA34F0DB22439BF300C27A15 /* TimeEntryEditor */ = {
 			isa = PBXGroup;
 			children = (
+				BA65A24E22B7A64400F895FD /* DateSelectionView */,
 				BAB818E7228D5A66008C2367 /* Description */,
 				BA014026225707F1000E5B91 /* Tag */,
 				BA8B4C522251FA6900592BC7 /* Workspace */,
@@ -1433,6 +1523,52 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		BA43B25C23F6706B0007DD99 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				BA43B2E723F67ECB0007DD99 /* poco */,
+				BA43B25E23F670790007DD99 /* openssl */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		BA43B25E23F670790007DD99 /* openssl */ = {
+			isa = PBXGroup;
+			children = (
+				BA43B2DC23F672850007DD99 /* libcrypto.1.1.dylib */,
+				BA43B2DB23F672850007DD99 /* libssl.1.1.dylib */,
+				BA43B33A23F680E20007DD99 /* libcrypto.a */,
+				BA43B33B23F680E20007DD99 /* libssl.a */,
+			);
+			path = openssl;
+			sourceTree = "<group>";
+		};
+		BA43B2E723F67ECB0007DD99 /* poco */ = {
+			isa = PBXGroup;
+			children = (
+				BA43B30B23F67EE60007DD99 /* libPocoCrypto.60.dylib */,
+				BA43B30323F67EE60007DD99 /* libPocoData.60.dylib */,
+				BA43B30A23F67EE60007DD99 /* libPocoDataSQLite.60.dylib */,
+				BA43B30723F67EE60007DD99 /* libPocoFoundation.60.dylib */,
+				BA43B30923F67EE60007DD99 /* libPocoJSON.60.dylib */,
+				BA43B30823F67EE60007DD99 /* libPocoNet.60.dylib */,
+				BA43B30423F67EE60007DD99 /* libPocoNetSSL.60.dylib */,
+				BA43B30523F67EE60007DD99 /* libPocoUtil.60.dylib */,
+				BA43B30623F67EE60007DD99 /* libPocoXML.60.dylib */,
+			);
+			path = poco;
+			sourceTree = "<group>";
+		};
+		BA47DEAF23966F80005216AD /* InAppMessage */ = {
+			isa = PBXGroup;
+			children = (
+				BA47DEB023966F9C005216AD /* InAppMessageViewController.swift */,
+				BA47DEB123966F9C005216AD /* InAppMessageViewController.xib */,
+				BA47DEB723969EAC005216AD /* InAppMessage.swift */,
+			);
+			path = InAppMessage;
+			sourceTree = "<group>";
+		};
 		BA5B0E2E2330E1A8008D1DED /* GoogleLogin */ = {
 			isa = PBXGroup;
 			children = (
@@ -1440,6 +1576,13 @@
 				BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */,
 			);
 			path = GoogleLogin;
+			sourceTree = "<group>";
+		};
+		BA63ABF923829C2B004C70CF /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		BA657280224DFA4F00BA4C60 /* ColorWheel */ = {
@@ -1452,6 +1595,36 @@
 				BA6572A0224DFA6E00BA4C60 /* RGB.swift */,
 			);
 			path = ColorWheel;
+			sourceTree = "<group>";
+		};
+		BA65A1FE22B7807300F895FD /* Timeline */ = {
+			isa = PBXGroup;
+			children = (
+				BA75FF2D22BCC4F300D3F08C /* Models */,
+				BA75FF0122BCC17000D3F08C /* Views */,
+				BA65A21E22B7808700F895FD /* TimelineDashboardViewController.swift */,
+				BA65A22022B7809300F895FD /* TimelineDashboardViewController.xib */,
+				BA65A22222B7823200F895FD /* MainDashboardViewController.swift */,
+				BA65A22322B7823200F895FD /* MainDashboardViewController.xib */,
+				BA65A22D22B79FEC00F895FD /* OGSwitch.swift */,
+				BA75FF3422BCC5C400D3F08C /* TimelineDatasource.swift */,
+				BA75FF3622BCC5FB00D3F08C /* TimelineFlowLayout.swift */,
+				BA49912D22C0BA14008149D9 /* TimelineDateFormatter.swift */,
+				BA5E988B23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift */,
+				BA5E988C23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib */,
+				BAA3107123CC476D008F2893 /* LayerBackedViewController.swift */,
+				BAB5FFD323F13F75003781D3 /* TimelineDraggingSession.swift */,
+			);
+			path = Timeline;
+			sourceTree = "<group>";
+		};
+		BA65A24E22B7A64400F895FD /* DateSelectionView */ = {
+			isa = PBXGroup;
+			children = (
+				BA65A24F22B7A65D00F895FD /* DatePickerView.swift */,
+				BA65A25122B7A66A00F895FD /* DatePickerView.xib */,
+			);
+			path = DateSelectionView;
 			sourceTree = "<group>";
 		};
 		BA6EB8202248CBD3003BB8EF /* Storage */ = {
@@ -1469,6 +1642,9 @@
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				BAB8CA8C240E3EA2002FF62B /* AppleSignIn */,
+				BA65A1FE22B7807300F895FD /* Timeline */,
+				BA47DEAF23966F80005216AD /* InAppMessage */,
 				BAB508E0237E8FAB00D3D468 /* Permission */,
 				BAF3ACCA2341F86300E41B33 /* TouchBar */,
 				BA5B0E2E2330E1A8008D1DED /* GoogleLogin */,
@@ -1493,6 +1669,51 @@
 				BA7B4C7B21C293E700B75B14 /* String+Optional.swift */,
 			);
 			path = Undo;
+			sourceTree = "<group>";
+		};
+		BA75FF0122BCC17000D3F08C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */,
+				BA75FF2122BCC1EA00D3F08C /* TimelineTimeLabelCell.swift */,
+				BA75FF2222BCC1EA00D3F08C /* TimelineTimeLabelCell.xib */,
+				BA75FF2522BCC1FC00D3F08C /* TimelineTimeEntryCell.swift */,
+				BA75FF2622BCC1FC00D3F08C /* TimelineTimeEntryCell.xib */,
+				BAA0104D22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift */,
+				BAA0104E22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.xib */,
+				BA75FF2922BCC20D00D3F08C /* TimelineActivityCell.swift */,
+				BA75FF2A22BCC20D00D3F08C /* TimelineActivityCell.xib */,
+				BAD0E0BC22C49BAC009F5A83 /* TimelineDividerView.swift */,
+				BA43B24D23F438AA0007DD99 /* TimelineLineView.swift */,
+				BA43B25323F525F30007DD99 /* TimelineLineView.xib */,
+				BAA0F5A223A38CB300F04654 /* TimelineBackgroundCell.swift */,
+				BAB5FFD623F15A65003781D3 /* TimelineBackgroundCell.xib */,
+				BAA0105122CB72E4007C1541 /* TimelineDashedCornerView.swift */,
+				BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */,
+				BA6F81E322C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.xib */,
+				BAA0102A22CB4D5C007C1541 /* TimelineTimeEntryMenu.swift */,
+				BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */,
+				BA24E792230BE50600B1D4B2 /* TimelineActivityHoverController.xib */,
+				BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */,
+				BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */,
+				BA5E988823BF496E0089A2C7 /* HoverImageView.swift */,
+				BAF9364B23E8114800EE1076 /* TimelineResizeHoverController.swift */,
+				BAF9364E23E8116900EE1076 /* TimelineResizeHoverController.xib */,
+				BA45AAF523FBEED4000C94C0 /* CornerBoxView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BA75FF2D22BCC4F300D3F08C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BA75FF2E22BCC56C00D3F08C /* TimelineTimestamp.swift */,
+				BA75FF3022BCC57700D3F08C /* TimelineTimeEntry.swift */,
+				BA75FF3222BCC58000D3F08C /* TimelineActivity.swift */,
+				BA96846622C0CD8800E07C89 /* TimeChunk.swift */,
+				BA75FF3822BCC6F800D3F08C /* TimelineData.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		BA7D332B2248940800B953A8 /* AutoComplete */ = {
@@ -1578,6 +1799,14 @@
 			path = Description;
 			sourceTree = "<group>";
 		};
+		BAB8CA8C240E3EA2002FF62B /* AppleSignIn */ = {
+			isa = PBXGroup;
+			children = (
+				BAB8CA8D240E3EB6002FF62B /* AppleAuthenticationService.swift */,
+			);
+			path = AppleSignIn;
+			sourceTree = "<group>";
+		};
 		BAD15FDC223A521900A8CCC9 /* TimeEntryEmptyView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1590,7 +1819,6 @@
 		BAF3ACCA2341F86300E41B33 /* TouchBar */ = {
 			isa = PBXGroup;
 			children = (
-				BA4A7D502375527B00A42095 /* TouchBar.h */,
 				BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */,
 				BAF3ACD22343325A00E41B33 /* TouchBarService.swift */,
 				BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */,
@@ -1619,6 +1847,7 @@
 				BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */,
 				BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */,
 				BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */,
+				BAA0104B22CB59ED007C1541 /* Date+Extension.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -1667,7 +1896,6 @@
 				69FC17EF17E6534400B96425 /* Resources */,
 				74E3CDDA17FC37A500C3ADD3 /* Run Script (install bugsnag) */,
 				74A50AA818434D90006F37BB /* CopyFiles */,
-				BA3BF8502315455B00721020 /* Copy Files for Library in Debug mode */,
 				7407F1F41AA80466000380C4 /* Run Script (Fix dynamic library paths in Frameworks) */,
 				BA6406F121C8FC690074BC96 /* Run Formatter */,
 				CE4DD35122BF90B10398A0A6 /* [CP] Embed Pods Frameworks */,
@@ -1693,7 +1921,6 @@
 				BAE64DFD2368334000244D2B /* Resources */,
 				BAE64E2A2368334000244D2B /* Run Script (install bugsnag) */,
 				BAE64E2B2368334000244D2B /* CopyFiles */,
-				BAE64E382368334000244D2B /* Copy Files for Library in Debug mode */,
 				BAE64E442368334000244D2B /* Run Script (Fix dynamic library paths in Frameworks) */,
 				BAE64E452368334000244D2B /* Run Formatter */,
 				BAE64E462368334000244D2B /* [CP] Embed Pods Frameworks */,
@@ -1744,10 +1971,9 @@
 			};
 			buildConfigurationList = 69FC17EC17E6534400B96425 /* Build configuration list for PBXProject "TogglDesktop" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 				et,
@@ -1786,8 +2012,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA24E794230BE50600B1D4B2 /* TimelineActivityHoverController.xib in Resources */,
 				BA7D33532248981200B953A8 /* ProjectHeaderCellView.xib in Resources */,
 				BA05369F225E239600C26E1F /* ProjectWorksapceCellView.xib in Resources */,
+				BAA0105022CB66D0007C1541 /* TimelineEmptyTimeEntryCell.xib in Resources */,
 				BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */,
 				BA00E9F5234C848A0011A703 /* TimeEntryScrubberItem.xib in Resources */,
 				BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */,
@@ -1795,27 +2023,33 @@
 				BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */,
 				3C6B2489203E01D90063FC08 /* AutoCompleteTableCell.xib in Resources */,
 				BA3E75D822293576009AD291 /* SystemMessageView.xib in Resources */,
+				BA65A22522B7823200F895FD /* MainDashboardViewController.xib in Resources */,
 				BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */,
 				BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */,
 				BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */,
 				3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */,
 				BA7D3355224898E400B953A8 /* ProjectContentCellView.xib in Resources */,
+				BA65A25222B7A66A00F895FD /* DatePickerView.xib in Resources */,
 				BA014054225711A3000E5B91 /* TagTokenView.xib in Resources */,
+				BA47DEB423966F9C005216AD /* InAppMessageViewController.xib in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
 				BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
 				BAB0029F2273125C005ECC93 /* DayLabel.xib in Resources */,
 				BA9C2DFE224C823C002AD2A1 /* ColorPickerView.xib in Resources */,
-				747B74881A0AD28200BB3791 /* ConsoleViewController.xib in Resources */,
+				BA43B25423F525F30007DD99 /* TimelineLineView.xib in Resources */,
 				743E584D1A775BB300F17CB0 /* Localizable.strings in Resources */,
 				BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */,
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
+				BAB5FFD723F15A65003781D3 /* TimelineBackgroundCell.xib in Resources */,
 				BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */,
+				BA5E988F23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib in Resources */,
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
 				BA8B4C772251FADF00592BC7 /* WorkspaceCellView.xib in Resources */,
+				BA6F81E522C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.xib in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
 				BA7D334D2248945300B953A8 /* AutoCompleteView.xib in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
@@ -1825,12 +2059,18 @@
 				3C50BCAC1C1F0574004BAE9E /* (null) in Resources */,
 				BA0140482257080F000E5B91 /* TagCellView.xib in Resources */,
 				BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */,
+				BA75FF2822BCC1FC00D3F08C /* TimelineTimeEntryCell.xib in Resources */,
 				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
+				BA75FF2C22BCC20D00D3F08C /* TimelineActivityCell.xib in Resources */,
+				BAF9364F23E8116900EE1076 /* TimelineResizeHoverController.xib in Resources */,
+				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
+				BA65A22122B7809300F895FD /* TimelineDashboardViewController.xib in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
 				3C0158F01C7B414E00FE63AA /* LoadMoreCell.xib in Resources */,
 				BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
 				3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */,
+				BA75FF2422BCC1EA00D3F08C /* TimelineTimeLabelCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1848,22 +2088,26 @@
 				BAE64E042368334000244D2B /* AutoCompleteTableCell.xib in Resources */,
 				BAE64E052368334000244D2B /* SystemMessageView.xib in Resources */,
 				BAE64E062368334000244D2B /* TimeEntryEmptyView.xib in Resources */,
+				BA37ACD723D8900C0013EE26 /* TimelineEmptyTimeEntryCell.xib in Resources */,
+				BA43B25523F525F30007DD99 /* TimelineLineView.xib in Resources */,
 				BAE64E072368334000244D2B /* DateCellViewItem.xib in Resources */,
 				BAE64E082368334000244D2B /* ColorViewItem.xib in Resources */,
 				BAE64E092368334000244D2B /* OverlayViewController.xib in Resources */,
 				BAE64E0A2368334000244D2B /* ProjectContentCellView.xib in Resources */,
 				BAE64E0B2368334000244D2B /* TagTokenView.xib in Resources */,
+				BA47DEB523966F9C005216AD /* InAppMessageViewController.xib in Resources */,
 				BAE64E0C2368334000244D2B /* AboutWindowController.xib in Resources */,
 				BAE64E0D2368334000244D2B /* TimeHeaderView.xib in Resources */,
 				BAE64E0E2368334000244D2B /* PreferencesWindowController.xib in Resources */,
 				BAE64E0F2368334000244D2B /* InfoPlist.strings in Resources */,
 				BAE64E102368334000244D2B /* DayLabel.xib in Resources */,
+				BA37ACD523D8900C0013EE26 /* TimelineTimeEntryCell.xib in Resources */,
 				BAE64E112368334000244D2B /* ColorPickerView.xib in Resources */,
-				BAE64E122368334000244D2B /* ConsoleViewController.xib in Resources */,
 				BAE64E132368334000244D2B /* Localizable.strings in Resources */,
 				BAE64E142368334000244D2B /* Media.xcassets in Resources */,
 				BAE64E152368334000244D2B /* LoginViewController.xib in Resources */,
 				BAE64E162368334000244D2B /* Credits.rtf in Resources */,
+				BA37ACE123D8900C0013EE26 /* TimelineActivityHoverController.xib in Resources */,
 				BAE64E172368334000244D2B /* TimeDecoratorView.xib in Resources */,
 				BAE64E182368334000244D2B /* FeedbackWindowController.xib in Resources */,
 				BAE64E192368334000244D2B /* IdleNotificationWindowController.xib in Resources */,
@@ -1871,16 +2115,25 @@
 				BAE64E1B2368334000244D2B /* MainMenu.xib in Resources */,
 				BAE64E1C2368334000244D2B /* AutoCompleteView.xib in Resources */,
 				BAE64E1D2368334000244D2B /* MainWindowController.xib in Resources */,
+				BA37ACD923D8900C0013EE26 /* TimelineActivityCell.xib in Resources */,
 				BAE64E1E2368334000244D2B /* ClientCellView.xib in Resources */,
+				BAB5FFD823F15A65003781D3 /* TimelineBackgroundCell.xib in Resources */,
+				BA37ACBD23D890050013EE26 /* TimelineActivityRecorderViewController.xib in Resources */,
 				BAE64E1F2368334000244D2B /* FloatingErrorView.xib in Resources */,
 				BAE64E202368334000244D2B /* TimeEntryListViewController.xib in Resources */,
 				BAE64E212368334000244D2B /* (null) in Resources */,
 				BAE64E222368334000244D2B /* TagCellView.xib in Resources */,
 				BAE64E232368334000244D2B /* ProjectCreationView.xib in Resources */,
 				BAE64E242368334000244D2B /* NoClientCellView.xib in Resources */,
+				BAF9365023E8116900EE1076 /* TimelineResizeHoverController.xib in Resources */,
 				BAE64E252368334000244D2B /* TimeEntryCell.xib in Resources */,
 				BAE64E262368334000244D2B /* LoadMoreCell.xib in Resources */,
+				BA37ACD323D8900C0013EE26 /* TimelineTimeLabelCell.xib in Resources */,
 				BAE64E272368334000244D2B /* CalendarViewController.xib in Resources */,
+				BA37AD0723D890570013EE26 /* DatePickerView.xib in Resources */,
+				BA37ACB723D890050013EE26 /* MainDashboardViewController.xib in Resources */,
+				BA37ACDE23D8900C0013EE26 /* TimelineTimeEntryHoverViewController.xib in Resources */,
+				BA37ACB523D890050013EE26 /* TimelineDashboardViewController.xib in Resources */,
 				BAE64E282368334000244D2B /* TimerEditViewController.xib in Resources */,
 				BAE64E292368334000244D2B /* dsa_pub.pem in Resources */,
 			);
@@ -1937,7 +2190,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /usr/bin/ruby;
-			shellScript = "if ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\nexit\nend\n\nfork do\nProcess.setsid\nSTDIN.reopen(\"/dev/null\")\nSTDOUT.reopen(\"/dev/null\", \"a\")\nSTDERR.reopen(\"/dev/null\", \"a\")\n\nrequire 'shellwords'\n\nDir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/#{ENV[\"DWARF_DSYM_FILE_NAME\"]}/Contents/Resources/DWARF/*\"].each do |dsym|\nsystem(\"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\nend\nend";
+			shellScript = "if ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\nexit\nend\n\nfork do\nProcess.setsid\nSTDIN.reopen(\"/dev/null\")\nSTDOUT.reopen(\"/dev/null\", \"a\")\nSTDERR.reopen(\"/dev/null\", \"a\")\n\nrequire 'shellwords'\n\nDir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/#{ENV[\"DWARF_DSYM_FILE_NAME\"]}/Contents/Resources/DWARF/*\"].each do |dsym|\nsystem(\"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\nend\nend\n";
 		};
 		B984F0D8FC24E4374FFADFBB /* Upload Bugsnag dSYM */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2127,41 +2380,53 @@
 			buildActionMask = 2147483647;
 			files = (
 				74C15796183A8CE600550613 /* AutocompleteItem.m in Sources */,
+				BA787D6D231E58C9003AD3AA /* Array+View.swift in Sources */,
 				7484F622191D92C30038885C /* Settings.m in Sources */,
 				95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */,
 				3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */,
+				BA75FF3722BCC5FB00D3F08C /* TimelineFlowLayout.swift in Sources */,
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
+				BA65A21F22B7808700F895FD /* TimelineDashboardViewController.swift in Sources */,
+				BA75FF2F22BCC56C00D3F08C /* TimelineTimestamp.swift in Sources */,
 				BA13D2152269C01500EB3833 /* Date+Utils.swift in Sources */,
 				BA5B0E502330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift in Sources */,
 				BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */,
 				BA01E8A1232F77B3006B93EC /* ClickableImageView.m in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
+				BAA3107223CC476D008F2893 /* LayerBackedViewController.swift in Sources */,
 				BAE6379A22B225C70024DD08 /* AddTagButton.swift in Sources */,
 				BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */,
-				747B74871A0AD28200BB3791 /* ConsoleViewController.m in Sources */,
-				BA9D90D4222D155900D5EC0E /* NSView+Ext.swift in Sources */,
 				BA712EC621BF913800A2D8DD /* TimeEntrySnapshot.swift in Sources */,
+				BAA0105222CB72E4007C1541 /* TimelineDashedCornerView.swift in Sources */,
+				BAD0E0BD22C49BAC009F5A83 /* TimelineDividerView.swift in Sources */,
 				BAB818C3228D5847008C2367 /* DescriptionAutoCompleteTextField.swift in Sources */,
 				BA13D2112269BE2F00EB3833 /* DateInfo.swift in Sources */,
+				BA5AC61623264651007E6C91 /* TimelineCollectionView.swift in Sources */,
 				BA13D20E2269BAA600EB3833 /* DateCellViewItem.swift in Sources */,
+				BA47920122F0479200E24F79 /* TimerContainerBox.swift in Sources */,
 				BA712EC821BF9F1200A2D8DD /* UndoStack.swift in Sources */,
+				BA75FF2722BCC1FC00D3F08C /* TimelineTimeEntryCell.swift in Sources */,
 				BA00E9ED234C5A6C0011A703 /* TouchBarService+Name.swift in Sources */,
 				BA13D2172269DE3400EB3833 /* NoVibrantPopoverView.swift in Sources */,
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
+				BA47920022F0479200E24F79 /* NoInteractionView.swift in Sources */,
 				BA412C1D224E0D61003CA17A /* ClientDataSource.swift in Sources */,
 				BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */,
 				BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */,
-				BA6EB8942249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift in Sources */,
+				BA4791F722F0478A00E24F79 /* NotificationCenter+MainThread.swift in Sources */,
+				BA75FF3922BCC6F800D3F08C /* TimelineData.swift in Sources */,
 				BA01405222571199000E5B91 /* TagTokenView.swift in Sources */,
-				BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */,
+				BAF9364C23E8114800EE1076 /* TimelineResizeHoverController.swift in Sources */,
 				BA05367F225E238D00C26E1F /* ProjectWorksapceCellView.swift in Sources */,
+				BA47DEB223966F9C005216AD /* InAppMessageViewController.swift in Sources */,
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
 				BA412C21224E1189003CA17A /* ClientCellView.swift in Sources */,
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,
 				BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */,
 				BA7D33512248980B00B953A8 /* ProjectContentCellView.swift in Sources */,
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
+				BAB5FFD423F13F75003781D3 /* TimelineDraggingSession.swift in Sources */,
 				BA133AC023740EA6003A6A3A /* LoginSignupTouchBar.swift in Sources */,
 				BA3E75D422291CEB009AD291 /* SystemMessage.swift in Sources */,
 				BAA11AC32251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift in Sources */,
@@ -2169,6 +2434,9 @@
 				3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */,
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
 				BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */,
+				BA96846722C0CD8800E07C89 /* TimeChunk.swift in Sources */,
+				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
+				BA75FF2322BCC1EA00D3F08C /* TimelineTimeLabelCell.swift in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
 				3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */,
 				749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */,
@@ -2176,8 +2444,8 @@
 				3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */,
 				BAB0027F22731248005ECC93 /* DayLabel.swift in Sources */,
 				3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */,
+				BA75FF3122BCC57700D3F08C /* TimelineTimeEntry.swift in Sources */,
 				BA0E38122225260B00D0121B /* TimeEntryCell+Ext.swift in Sources */,
-				BA9D90B4222D14ED00D5EC0E /* NSView+Animation.swift in Sources */,
 				746947FA1AF3FE3E0024BED7 /* AutotrackerRuleItem.m in Sources */,
 				3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */,
 				BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */,
@@ -2191,72 +2459,87 @@
 				BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */,
 				BA6572AA224DFA6F00BA4C60 /* HSV.swift in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
+				BA4791F422F0478A00E24F79 /* NSColor+Utils.swift in Sources */,
 				BA34F10022439C3000C27A15 /* EditorViewController.swift in Sources */,
 				BA0C3A6722321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift in Sources */,
 				3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */,
 				BAB818E5228D5A17008C2367 /* DescriptionDataSource.swift in Sources */,
 				BA01404E22571081000E5B91 /* TagDataSource.swift in Sources */,
+				BAA0104C22CB59ED007C1541 /* Date+Extension.swift in Sources */,
 				BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */,
 				BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */,
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
 				BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */,
+				BA4791F322F0478A00E24F79 /* String+Search.swift in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				BAAF56A22223E18B003D0D73 /* TimeDecoratorView.swift in Sources */,
 				BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */,
-				BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */,
 				BA4059B7221D46F4002969B8 /* TimeEntryCollectionView.m in Sources */,
+				BA4791F222F0478A00E24F79 /* NSView+Animation.swift in Sources */,
+				BA24E772230BDBB800B1D4B2 /* TimelineBaseCell.swift in Sources */,
 				BA4059AF221D215A002969B8 /* TimeHeaderView.swift in Sources */,
-				BA89CB392265EA4400D21584 /* String+Search.swift in Sources */,
 				BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */,
 				BA01404622570805000E5B91 /* TagCellView.swift in Sources */,
+				BA5E988D23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift in Sources */,
 				BA7D334B2248944C00B953A8 /* AutoCompleteView.swift in Sources */,
-				BA1F9032229D19C000670E0B /* NoInteractionView.swift in Sources */,
-				BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */,
+				BAA0102B22CB4D5C007C1541 /* TimelineTimeEntryMenu.swift in Sources */,
 				BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */,
 				BA4059B9221D53E7002969B8 /* TimeEntryDatasource.swift in Sources */,
 				BA3E75D62229356D009AD291 /* SystemMessageView.swift in Sources */,
+				BA1FFE71231FB0F300EAD9DC /* PanelSwitcherButton.swift in Sources */,
 				BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */,
+				BA4791F622F0478A00E24F79 /* NSView+LayoutConstraint.swift in Sources */,
 				749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */,
 				BA00E9F3234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift in Sources */,
 				BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */,
 				BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */,
 				BA7D334F224897FC00B953A8 /* ProjectHeaderCellView.swift in Sources */,
-				BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */,
 				BA13D20A2269BA6500EB3833 /* CalendarDataSource.swift in Sources */,
+				BA49912E22C0BA14008149D9 /* TimelineDateFormatter.swift in Sources */,
+				BA65A25022B7A65D00F895FD /* DatePickerView.swift in Sources */,
 				BAB508E2237E8FBC00D3D468 /* SystemPermissionManager.swift in Sources */,
 				BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */,
+				BA75FF2B22BCC20D00D3F08C /* TimelineActivityCell.swift in Sources */,
 				BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */,
-				BA763B7B2268601700DC245A /* PopoverRootView.swift in Sources */,
+				BA24E793230BE50600B1D4B2 /* TimelineActivityHoverController.swift in Sources */,
 				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
+				BA65A22422B7823200F895FD /* MainDashboardViewController.swift in Sources */,
 				BAD307D3229C1BD000C727DB /* KeyboardDatePicker.swift in Sources */,
 				BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */,
 				BA01404C22570967000E5B91 /* TagStorage.swift in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
+				BAA0104F22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift in Sources */,
 				BA35B21F22E6E95200FA560E /* CalendarCollectionView.swift in Sources */,
 				3CD7AD6F19ED579700372797 /* NSResize.m in Sources */,
-				BA08E012222E32C90075F68E /* NSView+LayoutConstraint.swift in Sources */,
 				BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */,
 				BAC4D399225470DA00254DAD /* AutoCompleteRowView.swift in Sources */,
-				BAA260D1222D1DC70094F4E4 /* NSView+Shadow+Border.swift in Sources */,
 				BA4AEB9C22C217A4001A898D /* ResizablePopover.swift in Sources */,
+				BA4791F122F0478A00E24F79 /* NSView+Xib.swift in Sources */,
 				BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */,
 				BAA11AC12251F49E007F31D2 /* WorkspaceStorage.swift in Sources */,
 				3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */,
+				BA45AAF623FBEED4000C94C0 /* CornerBoxView.swift in Sources */,
 				BA13D2062269B7C400EB3833 /* CalendarViewController.swift in Sources */,
-				BAF6319C21E6F868002DD6AB /* NotificationCenter+MainThread.swift in Sources */,
 				BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */,
 				BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */,
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
+				BA65A24D22B79FEC00F895FD /* OGSwitch.swift in Sources */,
+				BA4791F822F0478A00E24F79 /* NSView+Shadow+Border.swift in Sources */,
+				BA47DEB823969EAC005216AD /* InAppMessage.swift in Sources */,
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
 				BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */,
 				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
+				BA4791F522F0478A00E24F79 /* NSView+Ext.swift in Sources */,
 				BA01404A22570893000E5B91 /* Tag.swift in Sources */,
+				BA75FF3322BCC58000D3F08C /* TimelineActivity.swift in Sources */,
 				BAB818E9228D5A97008C2367 /* DescriptionContentCellView.swift in Sources */,
 				BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */,
 				7430750418204EFB009019CB /* AboutWindowController.m in Sources */,
+				BA4791FE22F0479200E24F79 /* PopoverRootView.swift in Sources */,
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
 				3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */,
 				BAF3ACD32343325A00E41B33 /* TouchBarService.swift in Sources */,
+				BAA0F5A323A38CB300F04654 /* TimelineBackgroundCell.swift in Sources */,
 				741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */,
 				BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */,
 				BA067642233A492F00485C3C /* TogglApplication.m in Sources */,
@@ -2265,11 +2548,15 @@
 				BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */,
 				BA403BAE2230CFBC008B202C /* BetterFocusAutoCompleteInput.m in Sources */,
 				BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */,
+				BA6F81E422C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift in Sources */,
+				BA75FF3C22BCE94100D3F08C /* TimelineDisplayCommand.m in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				BA2807E02306A2FA001A9E48 /* NSWindowController+Focusable.swift in Sources */,
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
 				BA014050225710FD000E5B91 /* TagAutoCompleteTextField.swift in Sources */,
+				BA5E988923BF496E0089A2C7 /* HoverImageView.swift in Sources */,
 				BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */,
+				BA43B24E23F438AA0007DD99 /* TimelineLineView.swift in Sources */,
 				BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */,
 				BA5B0E4E2330E1C6008D1DED /* GoogleAuthenticationServer.swift in Sources */,
 				BA8B4C752251FAD500592BC7 /* WorkspaceCellView.swift in Sources */,
@@ -2279,16 +2566,21 @@
 				BA412BFC224E0CBE003CA17A /* ClientStorage.swift in Sources */,
 				BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */,
 				BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */,
+				BA4791F922F0478A00E24F79 /* Collection+Safe.swift in Sources */,
 				BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */,
 				3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */,
+				BA4791FF22F0479200E24F79 /* VerticallyCenteredTextFieldCell.swift in Sources */,
 				BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */,
 				3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */,
 				BAB508E4237EA54500D3D468 /* ObjcSystemPermissionManager.swift in Sources */,
+				BA063BFA23B06CA5003A96FE /* EditableTextField.m in Sources */,
 				BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */,
+				BA75FF3522BCC5C400D3F08C /* TimelineDatasource.swift in Sources */,
 				BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */,
 				BA9C2DFC224C8235002AD2A1 /* ColorPickerView.swift in Sources */,
 				BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */,
 				C5DA1FC417F1B38B001C4565 /* LoginViewController.m in Sources */,
+				BAB8CA8E240E3EB6002FF62B /* AppleAuthenticationService.swift in Sources */,
 				BA00E9F0234C73990011A703 /* TimeEntryScrubberItem.swift in Sources */,
 				743D942F1827C633000E6F70 /* IdleEvent.m in Sources */,
 			);
@@ -2298,11 +2590,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA37ACB923D890050013EE26 /* TimelineDatasource.swift in Sources */,
 				BAE64D562368334000244D2B /* AutocompleteItem.m in Sources */,
+				BA37AD0323D8902A0013EE26 /* PopoverRootView.swift in Sources */,
 				BAE64D572368334000244D2B /* Settings.m in Sources */,
+				BA37ACD123D8900C0013EE26 /* TimelineBaseCell.swift in Sources */,
 				BAE64D582368334000244D2B /* NSCustomComboBox.m in Sources */,
 				BAE64D592368334000244D2B /* NSTextFieldDuration.m in Sources */,
 				BAE64D5A2368334000244D2B /* UIEvents.m in Sources */,
+				BA37ACB823D890050013EE26 /* OGSwitch.swift in Sources */,
 				BAE64D5B2368334000244D2B /* Date+Utils.swift in Sources */,
 				BAE64D5C2368334000244D2B /* GoogleAuthenticationServer+Objc.swift in Sources */,
 				BAE64D5D2368334000244D2B /* VertificalTimeEntryFlowLayout.swift in Sources */,
@@ -2311,120 +2607,153 @@
 				BAE64D602368334000244D2B /* MainWindowController.m in Sources */,
 				BAE64D612368334000244D2B /* AddTagButton.swift in Sources */,
 				BAE64D622368334000244D2B /* NSTextField+Ext.m in Sources */,
-				BAE64D632368334000244D2B /* ConsoleViewController.m in Sources */,
-				BAE64D642368334000244D2B /* NSView+Ext.swift in Sources */,
+				BAE64D642368334000244D2B /* (null) in Sources */,
 				BAE64D652368334000244D2B /* TimeEntrySnapshot.swift in Sources */,
 				BAE64D662368334000244D2B /* DescriptionAutoCompleteTextField.swift in Sources */,
 				BAE64D672368334000244D2B /* DateInfo.swift in Sources */,
+				BAB8CA8F240E3EB6002FF62B /* AppleAuthenticationService.swift in Sources */,
 				BAE64D682368334000244D2B /* DateCellViewItem.swift in Sources */,
 				BAE64D692368334000244D2B /* UndoStack.swift in Sources */,
 				BAE64D6A2368334000244D2B /* NoVibrantPopoverView.swift in Sources */,
+				BA37ACFE23D890250013EE26 /* NSView+Appearance.swift in Sources */,
+				BA37ACDD23D8900C0013EE26 /* TimelineTimeEntryHoverViewController.swift in Sources */,
 				BAE64D6B2368334000244D2B /* AutoCompleteTable.m in Sources */,
 				BAE64D6C2368334000244D2B /* ClientDataSource.swift in Sources */,
 				BAE64D6D2368334000244D2B /* ProjectStorage.swift in Sources */,
 				BAE64D6E2368334000244D2B /* NSButton+TextColor.swift in Sources */,
-				BAE64D6F2368334000244D2B /* VerticallyCenteredTextFieldCell.swift in Sources */,
+				BA37ACE623D890100013EE26 /* TimelineTimeEntry.swift in Sources */,
+				BA37ACDF23D8900C0013EE26 /* TimelineTimeEntryMenu.swift in Sources */,
+				BAE64D6F2368334000244D2B /* (null) in Sources */,
 				BAE64D702368334000244D2B /* TagTokenView.swift in Sources */,
-				BAE64D712368334000244D2B /* Collection+Safe.swift in Sources */,
+				BA37ACE923D890100013EE26 /* TimelineData.swift in Sources */,
 				BAE64D722368334000244D2B /* ProjectWorksapceCellView.swift in Sources */,
 				BAE64D732368334000244D2B /* Reachability.m in Sources */,
+				BA37ACF823D890250013EE26 /* NSView+Ext.swift in Sources */,
+				BA37AD0423D8902A0013EE26 /* TimerContainerBox.swift in Sources */,
 				BAE64D742368334000244D2B /* ClientCellView.swift in Sources */,
 				BAE64D752368334000244D2B /* AutocompleteDataSource.m in Sources */,
 				BAE64D762368334000244D2B /* BezierPath+Corner.swift in Sources */,
+				BA43B24F23F438AA0007DD99 /* TimelineLineView.swift in Sources */,
+				BA47DEB923969EAC005216AD /* InAppMessage.swift in Sources */,
 				BAE64D772368334000244D2B /* ProjectContentCellView.swift in Sources */,
 				BAE64D782368334000244D2B /* NSHoverButton.m in Sources */,
 				BAE64D792368334000244D2B /* SystemMessage.swift in Sources */,
 				BAE64D7A2368334000244D2B /* WorkspaceAutoCompleteTextField.swift in Sources */,
 				BAE64D7B2368334000244D2B /* NSTextFieldClickablePointer.m in Sources */,
+				BA47DEB323966F9C005216AD /* InAppMessageViewController.swift in Sources */,
 				BA63ABEE238284D9004C70CF /* IdleNotificationTouchBar.swift in Sources */,
+				BA063BFB23B06CA5003A96FE /* EditableTextField.m in Sources */,
 				BAE64D7C2368334000244D2B /* DisplayCommand.m in Sources */,
+				BA37ACF423D890250013EE26 /* Collection+Safe.swift in Sources */,
 				BAE64D7D2368334000244D2B /* ColorViewItem.swift in Sources */,
 				BAE64D7E2368334000244D2B /* MenuItemTags.m in Sources */,
 				BAE64D7F2368334000244D2B /* LoadMoreCell.m in Sources */,
 				BAE64D802368334000244D2B /* PreferencesWindowController.m in Sources */,
 				BAE64D812368334000244D2B /* NSTextFieldVerticallyAligned.m in Sources */,
+				BA37ACF623D890250013EE26 /* NSColor+Utils.swift in Sources */,
+				BA37ACE723D890100013EE26 /* TimelineActivity.swift in Sources */,
 				BA4A7D5623755A4200A42095 /* TimeEntryScrubberItem.swift in Sources */,
 				BAE64D822368334000244D2B /* DayLabel.swift in Sources */,
 				BAE64D832368334000244D2B /* NSSecureTextFieldVerticallyAligned.m in Sources */,
+				BA37ACDB23D8900C0013EE26 /* TimelineBackgroundCell.swift in Sources */,
 				BAE64D842368334000244D2B /* TimeEntryCell+Ext.swift in Sources */,
-				BAE64D852368334000244D2B /* NSView+Animation.swift in Sources */,
+				BA37AD0523D8902A0013EE26 /* VerticallyCenteredTextFieldCell.swift in Sources */,
+				BAE64D852368334000244D2B /* (null) in Sources */,
 				BAE64D862368334000244D2B /* AutotrackerRuleItem.m in Sources */,
 				BAE64D872368334000244D2B /* AutoCompleteInput.m in Sources */,
+				BA37ACBA23D890050013EE26 /* TimelineFlowLayout.swift in Sources */,
 				BAE64D882368334000244D2B /* UserNotificationCenter.m in Sources */,
 				BAE64D892368334000244D2B /* Utils.m in Sources */,
 				BAE64D8A2368334000244D2B /* CursorButton.swift in Sources */,
+				BA37ACFC23D890250013EE26 /* String+Search.swift in Sources */,
 				BAE64D8B2368334000244D2B /* KeyboardTableView.swift in Sources */,
-				BAE64D8C2368334000244D2B /* NSColor+VisibleColor.swift in Sources */,
 				BAE64D8D2368334000244D2B /* main.m in Sources */,
+				BA37ACE823D890100013EE26 /* TimeChunk.swift in Sources */,
 				BAE64D8E2368334000244D2B /* FeedbackWindowController.m in Sources */,
 				BAE64D8F2368334000244D2B /* DescriptionTimeEntryStorage.swift in Sources */,
 				BAE64D902368334000244D2B /* FlatButton.swift in Sources */,
 				BAE64D912368334000244D2B /* HSV.swift in Sources */,
 				BAE64D922368334000244D2B /* AppDelegate.m in Sources */,
 				BAE64D932368334000244D2B /* EditorViewController.swift in Sources */,
+				BA37ACFD23D890250013EE26 /* Theme+Notification.swift in Sources */,
 				BAE64D942368334000244D2B /* AutoCompleteTableCell+Ext.swift in Sources */,
 				BAE64D952368334000244D2B /* LiteAutoCompleteDataSource.m in Sources */,
 				BA4A7D5323755A4200A42095 /* GlobalTouchbarButton.swift in Sources */,
 				BAE64D962368334000244D2B /* DescriptionDataSource.swift in Sources */,
+				BA45AAF723FBEED4000C94C0 /* CornerBoxView.swift in Sources */,
 				BAE64D972368334000244D2B /* TagDataSource.swift in Sources */,
 				BAE64D982368334000244D2B /* ColorGraphicsView.swift in Sources */,
 				BAE64D992368334000244D2B /* WorkspaceDataSource.swift in Sources */,
 				BAE64D9A2368334000244D2B /* OverlayViewController.m in Sources */,
 				BAE64D9B2368334000244D2B /* ClientAutoCompleteTextField.swift in Sources */,
+				BA37AD0623D890570013EE26 /* DatePickerView.swift in Sources */,
 				BAE64D9C2368334000244D2B /* TimeEntryListViewController.m in Sources */,
+				BA37ACE223D8900C0013EE26 /* PanelSwitcherButton.swift in Sources */,
 				BAE64D9D2368334000244D2B /* TimeDecoratorView.swift in Sources */,
+				BAB5FFD523F13F75003781D3 /* TimelineDraggingSession.swift in Sources */,
 				BAE64D9E2368334000244D2B /* TimeEntryEmptyView.swift in Sources */,
-				BAE64D9F2368334000244D2B /* NSColor+Utils.swift in Sources */,
+				BA37AD0923D890940013EE26 /* TimelineDisplayCommand.m in Sources */,
+				BAE64D9F2368334000244D2B /* (null) in Sources */,
 				BAE64DA02368334000244D2B /* TimeEntryCollectionView.m in Sources */,
 				BAE64DA12368334000244D2B /* TimeHeaderView.swift in Sources */,
-				BAE64DA22368334000244D2B /* String+Search.swift in Sources */,
+				BAE64DA22368334000244D2B /* (null) in Sources */,
 				BAE64DA32368334000244D2B /* ProjectColor.swift in Sources */,
 				BAE64DA42368334000244D2B /* TagCellView.swift in Sources */,
 				BAE64DA52368334000244D2B /* AutoCompleteView.swift in Sources */,
-				BAE64DA62368334000244D2B /* NoInteractionView.swift in Sources */,
-				BAE64DA72368334000244D2B /* NSView+Xib.swift in Sources */,
+				BABB85AA23882D7C0084DEAC /* SystemPermissionManager.swift in Sources */,
+				BAE64DA62368334000244D2B /* (null) in Sources */,
+				BAE64DA72368334000244D2B /* (null) in Sources */,
 				BAE64DA82368334000244D2B /* DesktopLibraryBridge.m in Sources */,
 				BAE64DA92368334000244D2B /* TimeEntryDatasource.swift in Sources */,
 				BAE64DAA2368334000244D2B /* SystemMessageView.swift in Sources */,
+				BA37ACBC23D890050013EE26 /* TimelineActivityRecorderViewController.swift in Sources */,
 				BAE64DAB2368334000244D2B /* HoverTableCellView.swift in Sources */,
 				BAE64DAC2368334000244D2B /* NSBoxClickable.m in Sources */,
 				BAE64DAD2368334000244D2B /* ProjectTextField.m in Sources */,
+				BA37ACD623D8900C0013EE26 /* TimelineEmptyTimeEntryCell.swift in Sources */,
 				BAE64DAE2368334000244D2B /* EditorPopover.swift in Sources */,
 				BAE64DAF2368334000244D2B /* ProjectHeaderCellView.swift in Sources */,
-				BAE64DB02368334000244D2B /* TimerContainerBox.swift in Sources */,
+				BAE64DB02368334000244D2B /* (null) in Sources */,
 				BAE64DB12368334000244D2B /* CalendarDataSource.swift in Sources */,
 				BAE64DB22368334000244D2B /* CustomFocusRingButton.swift in Sources */,
 				BAE64DB32368334000244D2B /* AutoCompleteTextField.swift in Sources */,
-				BAE64DB42368334000244D2B /* PopoverRootView.swift in Sources */,
+				BA37ACFF23D890250013EE26 /* NSColor+VisibleColor.swift in Sources */,
+				BA37ACDA23D8900C0013EE26 /* TimelineDividerView.swift in Sources */,
+				BAE64DB42368334000244D2B /* (null) in Sources */,
 				BAE64DB52368334000244D2B /* NSCustomTimerComboBox.m in Sources */,
 				BAE64DB62368334000244D2B /* KeyboardDatePicker.swift in Sources */,
 				BAE64DB72368334000244D2B /* AutoCompleteViewDataSource.swift in Sources */,
+				BA37ACF723D890250013EE26 /* NSView+Animation.swift in Sources */,
 				BAE64DB82368334000244D2B /* TagStorage.swift in Sources */,
 				BAE64DB92368334000244D2B /* ViewItem.m in Sources */,
 				BAE64DBA2368334000244D2B /* CalendarCollectionView.swift in Sources */,
 				BAE64DBB2368334000244D2B /* NSResize.m in Sources */,
-				BAE64DBC2368334000244D2B /* NSView+LayoutConstraint.swift in Sources */,
 				BAE64DBD2368334000244D2B /* ProjectDataSource.swift in Sources */,
 				BAE64DBE2368334000244D2B /* AutoCompleteRowView.swift in Sources */,
 				BA4A7D5523755A4200A42095 /* TouchBarService+Name.swift in Sources */,
-				BAE64DBF2368334000244D2B /* NSView+Shadow+Border.swift in Sources */,
+				BA37ACF923D890250013EE26 /* NSView+LayoutConstraint.swift in Sources */,
+				BAE64DBF2368334000244D2B /* (null) in Sources */,
 				BAE64DC02368334000244D2B /* ResizablePopover.swift in Sources */,
+				BA37ACFB23D890250013EE26 /* NSView+Xib.swift in Sources */,
 				BAE64DC12368334000244D2B /* UndoManager.swift in Sources */,
 				BAE64DC22368334000244D2B /* WorkspaceStorage.swift in Sources */,
 				BAE64DC32368334000244D2B /* CountryViewItem.m in Sources */,
 				BAE64DC42368334000244D2B /* CalendarViewController.swift in Sources */,
-				BAE64DC52368334000244D2B /* NotificationCenter+MainThread.swift in Sources */,
+				BAE64DC52368334000244D2B /* (null) in Sources */,
+				BA37ACBE23D890050013EE26 /* LayerBackedViewController.swift in Sources */,
+				BAF9364D23E8114800EE1076 /* TimelineResizeHoverController.swift in Sources */,
 				BAE64DC62368334000244D2B /* SystemService.m in Sources */,
 				BAE64DC72368334000244D2B /* AppIconFactory.m in Sources */,
+				BA37ACDC23D8900C0013EE26 /* TimelineDashedCornerView.swift in Sources */,
 				BAE64DC82368334000244D2B /* ConvertHexColor.m in Sources */,
 				BAE64DC92368334000244D2B /* TimeEntryViewItem.m in Sources */,
 				BAE64DCA2368334000244D2B /* NoClientCellView.swift in Sources */,
 				BAE64DCB2368334000244D2B /* IdleNotificationWindowController.m in Sources */,
 				BAE64DCC2368334000244D2B /* Tag.swift in Sources */,
 				BAE64DCD2368334000244D2B /* DescriptionContentCellView.swift in Sources */,
-				BAE64DCE2368334000244D2B /* Theme+Notification.swift in Sources */,
 				BAE64DCF2368334000244D2B /* AboutWindowController.m in Sources */,
 				BAE64DD02368334000244D2B /* TimerEditViewController.m in Sources */,
+				BA37ACD223D8900C0013EE26 /* TimelineTimeLabelCell.swift in Sources */,
 				BA63ABEF238284DB004C70CF /* LoginSignupTouchBar.swift in Sources */,
 				BAE64DD12368334000244D2B /* UnsupportedNotice.m in Sources */,
 				BAE64DD22368334000244D2B /* NSTextFieldWithBackground.m in Sources */,
@@ -2436,7 +2765,6 @@
 				BAE64DD82368334000244D2B /* BetterFocusAutoCompleteInput.m in Sources */,
 				BAE64DD92368334000244D2B /* CalendarFlowLayout.swift in Sources */,
 				BAE64DDA2368334000244D2B /* NSCustomComboBoxCell.m in Sources */,
-				BAE64DDB2368334000244D2B /* NSWindowController+Focusable.swift in Sources */,
 				BAE64DDC2368334000244D2B /* DotImageView.swift in Sources */,
 				BAE64DDD2368334000244D2B /* TagAutoCompleteTextField.swift in Sources */,
 				BAE64DDE2368334000244D2B /* ProjectAutoCompleteTextField.swift in Sources */,
@@ -2444,22 +2772,37 @@
 				BAE64DDF2368334000244D2B /* HSBGen.swift in Sources */,
 				BAE64DE02368334000244D2B /* GoogleAuthenticationServer.swift in Sources */,
 				BAE64DE12368334000244D2B /* WorkspaceCellView.swift in Sources */,
-				BAE64DE22368334000244D2B /* NSView+Appearance.swift in Sources */,
+				BA37ACD823D8900C0013EE26 /* TimelineActivityCell.swift in Sources */,
 				BAE64DE32368334000244D2B /* idler.c in Sources */,
 				BAE64DE42368334000244D2B /* ProjectCreationView.swift in Sources */,
 				BAE64DE52368334000244D2B /* ClientStorage.swift in Sources */,
+				BA37ACD423D8900C0013EE26 /* TimelineTimeEntryCell.swift in Sources */,
+				BA37ACE023D8900C0013EE26 /* TimelineActivityHoverController.swift in Sources */,
 				BAE64DE62368334000244D2B /* String+Optional.swift in Sources */,
+				BA37ACB623D890050013EE26 /* MainDashboardViewController.swift in Sources */,
 				BAE64DE72368334000244D2B /* CurrentColorView.swift in Sources */,
+				BA37ACE323D8900C0013EE26 /* TimelineCollectionView.swift in Sources */,
+				BA37ACBB23D890050013EE26 /* TimelineDateFormatter.swift in Sources */,
 				BAE64DE82368334000244D2B /* TrackingService.m in Sources */,
+				BA37ACB423D890050013EE26 /* TimelineDashboardViewController.swift in Sources */,
 				BAE64DE92368334000244D2B /* AutoCompleteTableCell.m in Sources */,
 				BAE64DEA2368334000244D2B /* RGB.swift in Sources */,
+				BA37ACFA23D890250013EE26 /* NSView+Shadow+Border.swift in Sources */,
 				BAE64DEB2368334000244D2B /* AutoCompleteTableContainer.m in Sources */,
 				BAE64DEC2368334000244D2B /* AutoCompleteCellType.swift in Sources */,
+				BA37AD0223D8902A0013EE26 /* NoInteractionView.swift in Sources */,
+				BA37ACE523D890100013EE26 /* TimelineTimestamp.swift in Sources */,
 				BAE64DED2368334000244D2B /* UndoTextField.m in Sources */,
+				BA37AD0823D8906A0013EE26 /* Date+Extension.swift in Sources */,
+				BA37ACE423D8900C0013EE26 /* HoverImageView.swift in Sources */,
 				BAE64DEE2368334000244D2B /* ColorPickerView.swift in Sources */,
 				BAE64DEF2368334000244D2B /* FloatingErrorView.swift in Sources */,
 				BAE64DF02368334000244D2B /* LoginViewController.m in Sources */,
+				BA37AD0023D890250013EE26 /* NSWindowController+Focusable.swift in Sources */,
+				BABB85A923882CEE0084DEAC /* ObjcSystemPermissionManager.swift in Sources */,
+				BA37AD0123D890250013EE26 /* Array+View.swift in Sources */,
 				BAE64DF12368334000244D2B /* IdleEvent.m in Sources */,
+				BA37ACF523D890250013EE26 /* NotificationCenter+MainThread.swift in Sources */,
 				BA4A7D5123755A3700A42095 /* TimeEntryScrubberFlowLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2615,8 +2958,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3A54C9591227E723FEC0DB85 /* Pods-TogglDesktop.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TogglDesktop/TogglDesktop.entitlements;
@@ -2632,7 +2975,6 @@
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/../../../../third_party",
 					"$(SRCROOT)/../../../../third_party/Sparkle",
-					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2644,23 +2986,47 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
-					"$(SRCROOT)/../../../lib/include",
-					"$(SRCROOT)/../../../../third_party/Sparkle/Sparkle.framework/**",
-					"$(SRCROOT)/../../../../third_party/openssl/include",
+					"$(SRCROOT)/Library/openssl/include",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					../../../lib/osx/build,
-					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
-					"$(SRCROOT)/../../../../third_party/openssl/",
+					"$(SRCROOT)/Library/poco/",
+					"$(SRCROOT)/Library/openssl/",
+					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/poco",
+					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"c++\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AppAuth\"",
+					"-framework",
+					"\"AppKit\"",
+					"-framework",
+					"\"Bugsnag\"",
+					"-framework",
+					"\"Carbon\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GTMAppAuth\"",
+					"-framework",
+					"\"GTMSessionFetcher\"",
+					"-framework",
+					"\"MASShortcut\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"Sparkle\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+				);
 				OTHER_SWIFT_FLAGS = "-DSPARKLE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
 				PRODUCT_NAME = TogglDesktop;
@@ -2671,7 +3037,9 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Other/TogglDesktop-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited) $(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
+				WARNING_CFLAGS = "-Wpartial-availability";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2680,8 +3048,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TogglDesktop/TogglDesktop.entitlements;
@@ -2698,7 +3066,6 @@
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/../../../../third_party",
 					"$(SRCROOT)/../../../../third_party/Sparkle",
-					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2710,23 +3077,47 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
-					"$(SRCROOT)/../../../lib/include",
-					"$(SRCROOT)/../../../../third_party/Sparkle/Sparkle.framework/**",
-					"$(SRCROOT)/../../../../third_party/openssl/include",
+					"$(SRCROOT)/Library/openssl/include",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					../../../lib/osx/build,
-					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
-					"$(SRCROOT)/../../../../third_party/openssl/",
+					"$(SRCROOT)/Library/poco/",
+					"$(SRCROOT)/Library/openssl/",
+					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/poco",
+					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"c++\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AppAuth\"",
+					"-framework",
+					"\"AppKit\"",
+					"-framework",
+					"\"Bugsnag\"",
+					"-framework",
+					"\"Carbon\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GTMAppAuth\"",
+					"-framework",
+					"\"GTMSessionFetcher\"",
+					"-framework",
+					"\"MASShortcut\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"Sparkle\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+				);
 				OTHER_SWIFT_FLAGS = "-DSPARKLE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
 				PRODUCT_NAME = TogglDesktop;
@@ -2736,7 +3127,8 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Other/TogglDesktop-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited) $(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -2833,7 +3225,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 523FD02C959288FBFA20F5B1 /* Pods-TogglDesktop-AppStore.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
@@ -2846,11 +3237,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/../../../../third_party",
 					"$(SRCROOT)/../../../../third_party/Sparkle",
-					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2862,23 +3251,47 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
-					"$(SRCROOT)/../../../lib/include",
-					"$(SRCROOT)/../../../../third_party/Sparkle/Sparkle.framework/**",
-					"$(SRCROOT)/../../../../third_party/openssl/include",
+					"$(SRCROOT)/Library/openssl/include",
 				);
 				INFOPLIST_FILE = "TogglDesktop-AppStore-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					../../../lib/osx/build,
-					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
-					"$(SRCROOT)/../../../../third_party/openssl/",
+					"$(SRCROOT)/Library/poco/",
+					"$(SRCROOT)/Library/openssl/",
+					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/poco",
+					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"c++\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AppAuth\"",
+					"-framework",
+					"\"AppKit\"",
+					"-framework",
+					"\"Bugsnag\"",
+					"-framework",
+					"\"Carbon\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GTMAppAuth\"",
+					"-framework",
+					"\"GTMSessionFetcher\"",
+					"-framework",
+					"\"MASShortcut\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"AuthenticationServices\"",
+				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_STORE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
 				PRODUCT_MODULE_NAME = TogglDesktop;
@@ -2897,7 +3310,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4BCB2D1F3BD02A806D947C18 /* Pods-TogglDesktop-AppStore.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
@@ -2911,11 +3323,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/../../../../third_party",
 					"$(SRCROOT)/../../../../third_party/Sparkle",
-					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2927,23 +3337,47 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
-					"$(SRCROOT)/../../../lib/include",
-					"$(SRCROOT)/../../../../third_party/Sparkle/Sparkle.framework/**",
-					"$(SRCROOT)/../../../../third_party/openssl/include",
+					"$(SRCROOT)/Library/openssl/include",
 				);
 				INFOPLIST_FILE = "TogglDesktop-AppStore-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					../../../lib/osx/build,
-					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
-					"$(SRCROOT)/../../../../third_party/openssl/",
+					"$(SRCROOT)/Library/poco/",
+					"$(SRCROOT)/Library/openssl/",
+					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/poco",
+					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"c++\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AppAuth\"",
+					"-framework",
+					"\"AppKit\"",
+					"-framework",
+					"\"Bugsnag\"",
+					"-framework",
+					"\"Carbon\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GTMAppAuth\"",
+					"-framework",
+					"\"GTMSessionFetcher\"",
+					"-framework",
+					"\"MASShortcut\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"AuthenticationServices\"",
+				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_STORE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
 				PRODUCT_MODULE_NAME = TogglDesktop;

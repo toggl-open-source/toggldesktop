@@ -7,11 +7,12 @@
 #include <vector>
 #include <map>
 
-#include "./types.h"
+#include "types.h"
+#include "util/logger.h"
 
 #include <json/json.h>  // NOLINT
 
-#include "Poco/Types.h"
+#include <Poco/Types.h>
 
 namespace toggl {
 
@@ -43,6 +44,10 @@ class TOGGL_INTERNAL_EXPORT BatchUpdateResult {
         std::vector<BatchUpdateResult> * const results,
         std::map<std::string, BaseModel *> *models,
         std::vector<error> *errors);
+
+ private:
+    static Logger logger();
+
 };
 
 }  // namespace toggl

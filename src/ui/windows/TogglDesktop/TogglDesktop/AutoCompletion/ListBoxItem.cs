@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TogglDesktop.AutoCompletion
+﻿namespace TogglDesktop.AutoCompletion
 {
     class ListBoxItem
     {
@@ -17,7 +11,7 @@ namespace TogglDesktop.AutoCompletion
         public string ClientLabel { get; set; }
         public string Category { get; set; }
         public string WorkspaceName { get; set; }
-        public int Type { get; set; }
+        public ItemType Type { get; set; }
         public int Index { get; set; }
     }
 }

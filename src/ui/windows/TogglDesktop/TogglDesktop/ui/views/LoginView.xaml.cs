@@ -1,410 +1,90 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Reactive.Disposables;
 using System.Windows;
-using System.Windows.Input;
+using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Oauth2.v2;
-using TogglDesktop.Diagnostics;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
 using System.Windows.Navigation;
-using Google.Apis.Auth.OAuth2.Flows;
-using Google.Apis.Http;
-using Google.Apis.Util;
+using System.Windows.Threading;
+using MahApps.Metro.Behaviors;
+using ReactiveUI;
+using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
 {
-    public partial class LoginView : IMainView
+    public partial class LoginView : IMainView, IViewFor<LoginViewModel>
     {
-        private enum ConfirmAction
+        public LoginViewModel ViewModel
         {
-            Unknown = 0,
-            LogIn,
-            SignUp
+            get => (LoginViewModel)DataContext;
+            set => DataContext = value;
+        }
+
+        object IViewFor.ViewModel
+        {
+            get => ViewModel;
+            set => ViewModel = (LoginViewModel) value;
         }
 
         private readonly Storyboard confirmSpinnerAnimation;
-
         private Action onLogin;
         private object opacityAnimationToken;
+        private bool isLoggingIn = false;
 
-        private ConfirmAction confirmAction = ConfirmAction.Unknown;
-        private bool loggingIn;
-        private bool countriesLoaded = false;
-        private long selectedCountryID = -1;
-        private List<TogglDesktop.Toggl.TogglCountryView> countriesList;
-        private HttpClientFactory httpClientFactory;
+        private CompositeDisposable _disposable = new CompositeDisposable();
 
         public LoginView()
         {
             this.InitializeComponent();
             this.confirmSpinnerAnimation = (Storyboard)this.Resources["RotateConfirmSpinner"];
-
-            this.IsVisibleChanged += this.onIsVisibleChanged;
-            Toggl.OnDisplayCountries += this.onDisplayCountries;
-            Toggl.OnSettings += this.onSettings;
-        }
-
-        private void onSettings(bool open, Toggl.TogglSettingsView settings)
-        {
-            this.httpClientFactory = HttpClientFactoryFromProxySettings(settings);
-        }
-
-        private static HttpClientFactory HttpClientFactoryFromProxySettings(Toggl.TogglSettingsView settings)
-        {
-            var proxyHttpClientFactory = new ProxySupportedHttpClientFactory
-            {
-                UseProxy = settings.UseProxy
-            };
-            if (settings.AutodetectProxy)
-            {
-                proxyHttpClientFactory.Proxy = WebRequest.DefaultWebProxy;
-            }
-            else if (settings.UseProxy)
-            {
-                var proxy = new WebProxy(settings.ProxyHost + ":" + settings.ProxyPort, true);
-                if (!string.IsNullOrEmpty(settings.ProxyUsername))
-                {
-                    proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
-                }
-                proxyHttpClientFactory.Proxy = proxy;
-            }
-
-            return proxyHttpClientFactory;
-        }
-
-        private void onDisplayCountries(List<TogglDesktop.Toggl.TogglCountryView> list)
-        {
-            if (this.TryBeginInvoke(this.onDisplayCountries, list))
-                return;
-
-            this.countriesList = list;
-
-            List<ComboItem> items = new List<ComboItem>();
-            foreach (TogglDesktop.Toggl.TogglCountryView c in list)
-            {
-                items.Add(new ComboItem()
-                {
-                    Name = c.Name,
-                    ID = (int)c.ID
-                });
-            }
-            this.countrySelect.ItemsSource = items;
-         }
-
-        private void onIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (this.IsVisible)
-                this.setConfirmAction(ConfirmAction.LogIn);
-        }
-
-        #region events
-
-        protected override void OnKeyUp(KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                this.tryConfirm();
-                e.Handled = true;
-            }
-        }
-
-        private void onConfirmButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.tryConfirm();
+            this.Reset();
         }
 
         private void onSignupLoginToggleClick(object sender, RoutedEventArgs e)
         {
-            switch (this.confirmAction)
+            if (ViewModel.SelectedConfirmAction == ConfirmAction.LogIn)
             {
-                case ConfirmAction.LogIn:
-                    this.setConfirmAction(ConfirmAction.SignUp);
-                    break;
-                case ConfirmAction.SignUp:
-                    this.setConfirmAction(ConfirmAction.LogIn);
-                    break;
-                default:
-                    throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", this.confirmAction));
+                ViewModel.SelectedConfirmAction = ConfirmAction.SignUp;
+            }
+            else if (ViewModel.SelectedConfirmAction == ConfirmAction.SignUp)
+            {
+                ViewModel.SelectedConfirmAction = ConfirmAction.LogIn;
             }
         }
 
-        private void onGoogleLoginClick(object sender, RoutedEventArgs e)
-        {
-            if (!validateGoogleLoginSignup())
-            {
-                return;
-            }
-
-            switch (this.confirmAction)
-            {
-                case ConfirmAction.LogIn:
-                    this.googleLogin();
-                    break;
-                case ConfirmAction.SignUp:
-                    this.googleSignup();
-                    break;
-                default:
-                    throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", this.confirmAction));
-            }
-        }
-
-        private void onForgotPasswordButtonClick(object sender, RoutedEventArgs e)
+        private void onForgotPasswordLinkClick(object sender, RoutedEventArgs e)
         {
             Toggl.PasswordForgot();
         }
 
-        #endregion
-
-        #region controlling
-
-        private void setConfirmAction(ConfirmAction action)
+        private void Reset()
         {
-            switch (action)
+            _disposable?.Dispose();
+            _disposable = new CompositeDisposable();
+            ViewModel = new LoginViewModel(RefreshLoginBindings, RefreshSignupBindings);
+            ViewModel.IsLoginSignupExecuting.Subscribe(isExecuting =>
             {
-                case ConfirmAction.LogIn:
-                    this.confirmButtonText.Text = "LOG IN";
-                    this.forgotPasswordButton.Visibility = Visibility.Visible;
-                    this.googleLoginButtonTextBlock.Text = "LOG IN WITH GOOGLE";
-                    this.countryLabel.Visibility = Visibility.Collapsed;
-                    this.countrySelect.Visibility = Visibility.Collapsed;
-                    this.tosCheckbox.Visibility = Visibility.Collapsed;
-                    this.signupLoginToggle.Content = "Sign up for free";
-                    break;
-                case ConfirmAction.SignUp:
-                    this.confirmButtonText.Text = "SIGN UP";
-                    this.forgotPasswordButton.Visibility = Visibility.Collapsed;
-                    this.googleLoginButtonTextBlock.Text = "SIGN UP WITH GOOGLE";
-                    this.countryLabel.Visibility = Visibility.Visible;
-                    this.countrySelect.Visibility = Visibility.Visible;
-                    this.tosCheckbox.Visibility = Visibility.Visible;
-                    this.signupLoginToggle.Content = "Log in";
-                    Task.Run(getCountries);
-                    break;
-                default:
-                    throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", action));
-            }
-            this.confirmAction = action;
-        }
-
-        private void getCountries()
-        {
-            if (!this.countriesLoaded)
-            {
-                Toggl.GetCountries();
-                this.countriesLoaded = true;
-            }
-        }
-
-        private void tryConfirm()
-        {
-            if (!this.validateLoginSignup())
-            {
-                return;
-            }
-            switch (this.confirmAction)
-            {
-                case ConfirmAction.LogIn:
-                    this.confirm(Toggl.Login, "log in");
-                    break;
-                case ConfirmAction.SignUp:
-                    this.confirm(Toggl.Signup, "sign up");
-                    break;
-                default:
-                    throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", this.confirmAction));
-            }
-        }
-
-        private async void confirm(Func<string, string, long, bool> confirmAction, string actionName)
-        {
-            using (Performance.Measure("attempting " + actionName))
-            {
-                var success = false;
-                try
+                if (isExecuting)
                 {
-                    this.loggingIn = true;
-                    this.disableForm();
-
-                    var email = this.emailTextBox.Text;
-                    var password = this.passwordBox.Text;
-
-                    success = await Task.Run(() => confirmAction(email, password, selectedCountryID));
-                }
-                finally
-                {
-                    this.loggingIn = false;
-                    if (success && this.onLogin != null)
-                    {
-                        var action = this.onLogin;
-                        this.onLogin = null;
-                        action();
-                    }
-                    else
-                    {
-                        this.reset();
-                    }
-                }
-            }
-        }
-
-        private void enableForm()
-        {
-            this.formPanel.IsEnabled = true;
-            this.formPanel.Opacity = 1;
-            this.confirmButtonText.Visibility = Visibility.Visible;
-            this.confirmButtonSpinner.Visibility = Visibility.Collapsed;
-            this.confirmSpinnerAnimation.Stop();
-        }
-
-        private void disableForm()
-        {
-            this.formPanel.IsEnabled = false;
-            this.formPanel.Opacity = 0.5;
-            this.confirmButtonText.Visibility = Visibility.Collapsed;
-            this.confirmButtonSpinner.Visibility = Visibility.Visible;
-            this.confirmSpinnerAnimation.Begin();
-        }
-
-        private bool validateLoginSignup()
-        {
-            if (this.emailTextBox.Text == "")
-            {
-                this.emailTextBox.Focus();
-                Toggl.NewError("Please enter valid email address", true);
-                return false;
-            }
-            if (this.passwordBox.Text == "")
-            {
-                this.passwordBox.Focus();
-                Toggl.NewError("A password is required", true);
-                return false;
-            }
-
-            if (this.confirmAction == ConfirmAction.SignUp
-                && !validateMandatorySignupFields())
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool validateMandatorySignupFields()
-        {
-            if (this.selectedCountryID == -1)
-            {
-                this.countrySelect.Focus();
-                Toggl.NewError("Please select Country before signing up", true);
-                return false;
-            }
-            if (!this.tosCheckbox.IsChecked.Value)
-            {
-                this.tosCheckbox.Focus();
-                Toggl.NewError("You must agree to the terms of service and privacy policy to use Toggl", true);
-
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool validateGoogleLoginSignup()
-        {
-            if (this.confirmAction == ConfirmAction.SignUp
-                && !validateMandatorySignupFields())
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private async void googleLogin()
-        {
-            try
-            {
-                var credential = await obtainGoogleUserCredentialAsync();
-                Toggl.GoogleLogin(credential.Token.AccessToken);
-                await credential.RevokeTokenAsync(CancellationToken.None);
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("access_denied") ||
-                    (ex.InnerException != null &&
-                     ex.InnerException.Message.Contains("access_denied")))
-                {
-                    Toggl.NewError("Login process was canceled", true);
+                    confirmSpinnerAnimation.Begin();
                 }
                 else
                 {
-                    Toggl.NewError(ex.Message, false);
+                    confirmSpinnerAnimation.Stop();
                 }
-            }
-        }
-
-        private async void googleSignup()
-        {
-            try
+            });
+            ViewModel.ConfirmLoginSignupCommand.IsExecuting.Subscribe(isExecuting => { isLoggingIn = isExecuting; });
+            var subscription = ViewModel.ConfirmLoginSignupCommand.Subscribe(isLoggedIn =>
             {
-                var credential = await obtainGoogleUserCredentialAsync();
-                Toggl.GoogleSignup(credential.Token.AccessToken, selectedCountryID);
-                await credential.RevokeTokenAsync(CancellationToken.None);
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("access_denied") ||
-                    (ex.InnerException != null &&
-                    ex.InnerException.Message.Contains("access_denied")))
+                if (isLoggedIn && this.onLogin != null)
                 {
-                    Toggl.NewError("Signup process was canceled", true);
+                    var action = this.onLogin;
+                    this.onLogin = null;
+                    action();
                 }
-                else
-                {
-                    Toggl.NewError(ex.Message, false);
-                }
-            }
+            });
+            _disposable.Add(subscription);
         }
-
-        private async Task<UserCredential> obtainGoogleUserCredentialAsync()
-        {
-            var initializer = new GoogleAuthorizationCodeFlow.Initializer
-            {
-                ClientSecrets = new ClientSecrets
-                {
-                    ClientId = "426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com",
-                    ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui"
-                },
-                HttpClientFactory = httpClientFactory
-            };
-            var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                initializer,
-                new[]
-                {
-                    Oauth2Service.Scope.UserinfoEmail,
-                    Oauth2Service.Scope.UserinfoProfile
-                },
-                "user",
-                CancellationToken.None);
-            var isTokenExpired = credential.Token.IsExpired(SystemClock.Default);
-            if (isTokenExpired)
-            {
-                await credential.RefreshTokenAsync(CancellationToken.None);
-            }
-
-            return credential;
-        }
-
-        private void reset()
-        {
-            this.enableForm();
-            this.passwordBox.Clear();
-        }
-
-        #endregion
-
 
         #region fade in/out
 
@@ -424,9 +104,12 @@ namespace TogglDesktop
                 this.BeginAnimation(OpacityProperty, null);
             }
 
-            this.reset();
             this.IsEnabled = true;
             this.Visibility = Visibility.Visible;
+
+            // this isn't guaranteed to work when running without dispatcher:
+            var focusEmailFieldAction = new Action(() => { this.ViewModel.IsEmailFocused = true; });
+            this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, focusEmailFieldAction);
         }
 
         public void Deactivate(bool allowAnimation)
@@ -442,10 +125,10 @@ namespace TogglDesktop
                     if (this.opacityAnimationToken == anim)
                     {
                         this.Visibility = Visibility.Collapsed;
-                        this.reset();
+                        this.Reset();
                     }
                 };
-                if (this.loggingIn)
+                if (this.isLoggingIn)
                 {
                     this.onLogin = () => this.BeginAnimation(OpacityProperty, anim);
                 }
@@ -463,6 +146,12 @@ namespace TogglDesktop
             this.IsEnabled = false;
         }
 
+        public bool HandlesError(string errorMessage)
+        {
+            return errorMessage == "Invalid e-mail or password!" && ViewModel.SelectedConfirmAction == ConfirmAction.LogIn;
+        }
+
+        public Brush TitleBarBrush => this.Background;
 
         #endregion
 
@@ -471,36 +160,22 @@ namespace TogglDesktop
             Toggl.OpenInBrowser(e.Uri.ToString());
         }
 
-        private void countrySelect_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void RefreshLoginBindings()
         {
-            TogglDesktop.Toggl.TogglCountryView item = this.countriesList[this.countrySelect.SelectedIndex];
-            this.selectedCountryID = item.ID;
+            RefreshEmailTextBoxBinding();
+            RefreshPasswordBoxBinding();
         }
 
-        private class ProxySupportedHttpClientFactory : HttpClientFactory
+        private void RefreshSignupBindings()
         {
-            public bool UseProxy { get; set; }
-            public IWebProxy Proxy { get; set; }
-            protected override HttpMessageHandler CreateHandler(CreateHttpClientArgs args)
-            {
-                var webRequestHandler = new WebRequestHandler
-                {
-                    UseProxy = this.UseProxy,
-                    UseCookies = false
-                };
-                if (webRequestHandler.UseProxy)
-                {
-                    webRequestHandler.Proxy = Proxy;
-                }
-
-                return webRequestHandler;
-            }
+            RefreshCountryComboBoxBinding();
+            RefreshTosCheckBoxBinding();
         }
-    }
 
-    class ComboItem
-    {
-        public string Name { get; set; }
-        public int ID { get; set; }
+        private void RefreshEmailTextBoxBinding() => emailTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+        private void RefreshPasswordBoxBinding() => passwordBox.GetBindingExpression(PasswordBoxBindingBehavior.PasswordProperty).UpdateSource();
+
+        private void RefreshCountryComboBoxBinding() => countryComboBox.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateSource();
+        private void RefreshTosCheckBoxBinding() => tosCheckBox.GetBindingExpression(CheckBox.IsCheckedProperty).UpdateSource();
     }
 }

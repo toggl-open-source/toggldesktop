@@ -9,6 +9,11 @@
 import Cocoa
 import Carbon.HIToolbox
 
+protocol EditorViewControllerDelegate: class {
+
+    func editorShouldClose()
+}
+
 final class EditorViewController: NSViewController {
 
     private struct Constans {
@@ -44,6 +49,7 @@ final class EditorViewController: NSViewController {
 
     // MARK: Variables
 
+    weak var delegate: EditorViewControllerDelegate?
     var timeEntry: TimeEntryViewItem! {
         didSet {
             fillData(oldValue)
@@ -117,7 +123,7 @@ final class EditorViewController: NSViewController {
     }
 
     @IBAction func closeBtnOnTap(_ sender: Any) {
-        DesktopLibraryBridge.shared().togglEditor()
+        delegate?.editorShouldClose()
     }
 
     @IBAction func nextDateBtnOnTap(_ sender: Any) {
@@ -148,7 +154,7 @@ final class EditorViewController: NSViewController {
     }
 
     @IBAction func durationTextFieldOnChange(_ sender: Any) {
-        guard durationTextField.stringValue != timeEntry.duration else { return }
+        guard durationTextField.stringValue != timeEntry.duration && durationTextField.isTextChanged else { return }
         DesktopLibraryBridge.shared().updateTimeEntry(withDuration: durationTextField.stringValue,
                                                       guid: timeEntry.guid)
     }
@@ -173,7 +179,8 @@ final class EditorViewController: NSViewController {
     }
 
     @IBAction func deleteBtnOnTap(_ sender: Any) {
-        DesktopLibraryBridge.shared().deleteTimeEntryImte(timeEntry)
+        DesktopLibraryBridge.shared().deleteTimeEntryItem(timeEntry, undoManager: undoManager)
+        delegate?.editorShouldClose()   
     }
 
     override func mouseDown(with event: NSEvent) {
@@ -196,6 +203,12 @@ final class EditorViewController: NSViewController {
         if event.keyCode == UInt16(kVK_Escape) {
             closeBtnOnTap(self)
         }
+    }
+
+    func closeCalendarPopover() {
+        calendarPopover.animates = false
+        calendarPopover.close()
+        calendarPopover.animates = true
     }
 }
 
@@ -508,7 +521,7 @@ extension EditorViewController: NSTextFieldDelegate {
         guard let textField = obj.object as? NSTextField else { return }
 
         // Duration
-        if textField == durationTextField {
+        if textField == durationTextField && durationTextField.isTextChanged {
             durationTextFieldOnChange(self)
             return
         }
@@ -650,6 +663,10 @@ extension EditorViewController: CalendarViewControllerDelegate {
 
     func calendarViewControllerDidSelect(date: Date) {
         DesktopLibraryBridge.shared().updateTimeEntry(withStart: date, guid: timeEntry.guid)
+    }
+
+    func calendarViewControllerDoneBtnOnTap() {
+        calendarPopover.performClose(self)
     }
 }
 

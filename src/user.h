@@ -10,13 +10,14 @@
 
 #include <json/json.h>  // NOLINT
 
-#include "./base_model.h"
-#include "./batch_update_result.h"
-#include "./related_data.h"
-#include "./types.h"
-#include "./workspace.h"
+#include "base_model.h"
+#include "batch_update_result.h"
+#include "related_data.h"
+#include "types.h"
+#include "workspace.h"
 
-#include "Poco/Types.h"
+#include <Poco/LocalDateTime.h>
+#include <Poco/Types.h>
 
 namespace toggl {
 
@@ -61,8 +62,11 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         const std::string &duration,
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
-        const std::string &project_guid,
-        const std::string &tags);
+        const std::string project_guid,
+        const std::string tags,
+        const time_t started,
+        const time_t ended,
+        const bool stop_current_running);
 
     TimeEntry *Continue(
         const std::string &GUID,
@@ -193,7 +197,9 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     void MarkTimelineBatchAsUploaded(
         const std::vector<TimelineEvent> &events);
     void CompressTimeline();
-    std::vector<TimelineEvent> CompressedTimeline() const;
+
+    std::vector<TimelineEvent> CompressedTimelineForUI(const Poco::LocalDateTime *date) const;
+    std::vector<TimelineEvent> CompressedTimelineForUpload(const Poco::LocalDateTime *date = nullptr) const;
 
     error UpdateJSON(
         std::vector<TimeEntry *> * const,
@@ -203,6 +209,10 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     bool LoadUserPreferencesFromJSON(
         Json::Value data);
+
+    bool SetTimeEntryID(
+        Poco::UInt64 id,
+        TimeEntry* timeEntry);
 
     template<typename T>
     void EnsureWID(T *model) const {
@@ -309,6 +319,9 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     void loadObmExperimentFromJson(Json::Value const &obm);
 
+    std::vector<TimelineEvent> CompressedTimeline(
+        const Poco::LocalDateTime *date = nullptr, bool is_for_upload = true) const;
+
     std::string api_token_;
     Poco::UInt64 default_wid_;
     // Unix timestamp of the user data; returned from API
@@ -325,6 +338,8 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     bool has_loaded_more_;
     bool collapse_entries_;
+
+    Poco::Mutex loadTimeEntries_m_;
 };
 
 template<class T>

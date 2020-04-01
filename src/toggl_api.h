@@ -11,6 +11,8 @@ extern "C" {
 #include <stdio.h>
 #include <stdint.h>
 
+#include <time.h>
+
 #if defined(_WIN32) || defined(WIN32)
 #define TOGGL_EXPORT __declspec(dllexport)
 #else
@@ -84,9 +86,33 @@ extern "C" {
         char_t *GroupName;
         char_t *GroupDuration;
         uint64_t GroupItemCount;
+        // To categorize to 15-minute batches
+        uint64_t RoundedStart;
+        uint64_t RoundedEnd;
         // Next in list
         void *Next;
     } TogglTimeEntryView;
+
+    typedef struct {
+        char_t *Title;
+        char_t *Filename;
+        int64_t Duration;
+        char_t *DurationString;
+        bool_t Header;
+        // references subevents
+        void *Event;
+        // Next in list
+        void *Next;
+    } TogglTimelineEventView;
+
+    typedef struct {
+        uint64_t Started;
+        uint64_t Ended;
+        char_t *StartTimeString;
+        char_t *EndTimeString;
+        void *Next;
+        void *FirstEvent;
+    } TogglTimelineChunkView;
 
     typedef struct {
         // This is what is displayed to user, includes project and task.
@@ -165,6 +191,8 @@ extern "C" {
         int64_t PomodoroBreakMinutes;
         bool_t StopEntryOnShutdownSleep;
         bool_t ShowTouchBar;
+        uint8_t ActiveTab;
+        uint8_t ColorTheme;
     } TogglSettingsView;
 
     typedef struct {
@@ -173,16 +201,6 @@ extern "C" {
         char_t *ProjectAndTaskLabel;
         void *Next;
     } TogglAutotrackerRuleView;
-
-    typedef struct {
-        int64_t ID;
-        char_t *Title;
-        char_t *Filename;
-        int64_t StartTime;
-        int64_t EndTime;
-        bool_t Idle;
-        void *Next;
-    } TogglTimelineEventView;
 
     typedef struct {
         int64_t ID;
@@ -252,6 +270,14 @@ extern "C" {
         TogglTimeEntryView *first,
         const bool_t show_load_more_button);
 
+    typedef void (*TogglDisplayTimeline)(
+        const bool_t open,
+        const char_t *date,
+        TogglTimelineChunkView *first,
+        TogglTimeEntryView *first_entry,
+        long start_day,
+        long end_day);
+
     typedef void (*TogglDisplayAutocomplete)(
         TogglAutocompleteView *first);
 
@@ -286,6 +312,12 @@ extern "C" {
     typedef void (*TogglDisplayUpdateDownloadState)(
         const char_t *version,
         const int64_t download_state);
+
+    typedef void (*TogglDisplayMessage)(
+        const char_t *title,
+        const char_t *text,
+        const char_t *button,
+        const char_t *url);
 
     typedef char_t * string_list_t[];
 
@@ -394,6 +426,10 @@ extern "C" {
         void *context,
         TogglDisplayUpdateDownloadState cb);
 
+    TOGGL_EXPORT void toggl_on_message(
+        void *context,
+        TogglDisplayMessage cb);
+
     TOGGL_EXPORT void toggl_on_online_state(
         void *context,
         TogglDisplayOnlineState cb);
@@ -429,6 +465,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_toggle_entries_group(
         void *context,
         const char_t *name);
+
+    TOGGL_EXPORT void toggl_on_timeline(
+        void *context,
+        TogglDisplayTimeline cb);
 
     TOGGL_EXPORT void toggl_on_mini_timer_autocomplete(
         void *context,
@@ -541,6 +581,26 @@ extern "C" {
         void *context,
         const char_t *access_token);
 
+    TOGGL_EXPORT bool_t toggl_apple_login(
+        void *context,
+        const char_t *access_token);
+
+    TOGGL_EXPORT bool_t toggl_apple_login_async(
+        void *context,
+        const char_t *access_token);
+
+    TOGGL_EXPORT bool_t toggl_apple_signup(
+        void *context,
+        const char_t *access_token,
+        const uint64_t country_id,
+        const char_t *full_name);
+
+    TOGGL_EXPORT bool_t toggl_apple_signup_async(
+        void *context,
+        const char_t *access_token,
+        const uint64_t country_id,
+        const char_t *full_name);
+
     TOGGL_EXPORT void toggl_password_forgot(
         void *context);
 
@@ -572,6 +632,22 @@ extern "C" {
 
     TOGGL_EXPORT void toggl_view_time_entry_list(
         void *context);
+
+    TOGGL_EXPORT void toggl_view_timeline_data(
+        void *context);
+
+    TOGGL_EXPORT void toggl_view_timeline_prev_day(
+        void *context);
+
+    TOGGL_EXPORT void toggl_view_timeline_next_day(
+        void *context);
+
+    TOGGL_EXPORT void toggl_view_timeline_current_day(
+        void *context);
+
+    TOGGL_EXPORT void toggl_view_timeline_set_day(
+        void *context,
+        const int64_t unix_timestamp);
 
     TOGGL_EXPORT void toggl_edit(
         void *context,
@@ -616,10 +692,26 @@ extern "C" {
         const char_t *guid,
         const char_t *value);
 
+    TOGGL_EXPORT bool_t toggl_set_time_entry_start_timestamp(
+        void *context,
+        const char_t *guid,
+        const int64_t start);
+
+    TOGGL_EXPORT bool_t toggl_set_time_entry_start_timestamp_with_option(
+        void *context,
+        const char_t *guid,
+        const int64_t start,
+        const bool_t keep_end_time_fixed);
+
     TOGGL_EXPORT bool_t toggl_set_time_entry_end(
         void *context,
         const char_t *guid,
         const char_t *value);
+
+    TOGGL_EXPORT bool_t toggl_set_time_entry_end_timestamp(
+        void *context,
+        const char_t *guid,
+        const int64_t end);
 
     // value is '\t' separated tag list
     TOGGL_EXPORT bool_t toggl_set_time_entry_tags(
@@ -718,6 +810,14 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_set_settings_show_touch_bar(
         void *context,
         const bool_t show_touch_bar);
+
+    TOGGL_EXPORT bool_t toggl_set_settings_active_tab(
+        void *context,
+        const uint8_t active_tab);
+
+    TOGGL_EXPORT bool_t toggl_set_settings_color_theme(
+        void *context,
+        const uint8_t color_theme);
 
     TOGGL_EXPORT bool_t toggl_set_settings_idle_minutes(
         void *context,
@@ -840,7 +940,15 @@ extern "C" {
         const uint64_t project_id,
         const char_t *project_guid,
         const char_t *tags,
-        const bool_t prevent_on_app);
+        const bool_t prevent_on_app,
+        const uint64_t started,
+        const uint64_t ended);
+
+    // Create an Empty Time Entry without stopping the running TE
+    TOGGL_EXPORT char_t *toggl_create_empty_time_entry(
+        void *context,
+        const uint64_t started,
+        const uint64_t ended);
 
     // returns GUID of the new project. you must free() the result
     TOGGL_EXPORT char_t *toggl_add_project(
@@ -977,12 +1085,6 @@ extern "C" {
         const int settings_size,
         const int autotracker_view_item_size);
 
-    // You must free() the result
-    TOGGL_EXPORT char_t *toggl_run_script(
-        void *context,
-        const char_t *script,
-        int64_t *err);
-
     TOGGL_EXPORT int64_t toggl_autotracker_add_rule(
         void *context,
         const char_t *term,
@@ -1010,6 +1112,9 @@ extern "C" {
         void *context);
 
     TOGGL_EXPORT bool_t toggl_get_show_touch_bar(
+        void *context);
+
+    TOGGL_EXPORT uint8_t toggl_get_active_tab(
         void *context);
 
     TOGGL_EXPORT void toggl_set_mini_timer_x(
@@ -1052,6 +1157,37 @@ extern "C" {
         void *context,
         const uint64_t width,
         const uint64_t height);
+
+    TOGGL_EXPORT void toggl_iam_click(
+        void *context,
+        const uint64_t type);
+
+    TOGGL_EXPORT char_t *toggl_format_duration_time(
+        void *context,
+        const uint64_t timestamp);
+
+    TOGGL_EXPORT void track_collapse_day(
+        void *context);
+
+    TOGGL_EXPORT void track_expand_day(
+        void *context);
+
+    TOGGL_EXPORT void track_collapse_all_days(
+        void *context);
+
+    TOGGL_EXPORT void track_expand_all_days(
+        void *context);
+
+    TOGGL_EXPORT bool_t toggl_update_time_entry(
+        void *context,
+        const char_t *guid,
+        const char_t *description,
+        const uint64_t task_id,
+        const uint64_t project_id,
+        const char_t *project_guid,
+        const char_t *tags,
+        const bool_t billable);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus

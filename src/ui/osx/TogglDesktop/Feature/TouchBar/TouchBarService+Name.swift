@@ -29,6 +29,8 @@ extension NSTouchBarItem.Identifier {
 
     static let loginItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.loginItem")
     static let loginGoogleItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.loginGoogleItem")
+    static let loginAppleItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.loginAppleItem")
     static let signUpItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.signUpItem")
     static let signUpGoogleItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.signUpGoogleItem")
+    static let signUpAppleItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.signUpAppleItem")
 }

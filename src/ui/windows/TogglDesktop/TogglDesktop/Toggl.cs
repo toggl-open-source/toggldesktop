@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Input;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.Services;
 
 // ReSharper disable InconsistentNaming
 
@@ -28,12 +28,18 @@ public static partial class Toggl
     private static IntPtr ctx = IntPtr.Zero;
 
     private static MainWindow mainWindow;
-    private static string updatePath;
 
     // User can override some parameters when running the app
     public static string ScriptPath;
     public static string DatabasePath;
     public static string LogPath;
+
+    public static readonly string WritableAppDirPath =
+        Path.Combine(
+            Environment.GetFolderPath(
+            Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
+
+    public static readonly string UpdatesPath = Path.Combine(WritableAppDirPath, "updates");
 
 #if TOGGL_PRODUCTION_BUILD
     public static string Env = "production";
@@ -136,9 +142,6 @@ public static partial class Toggl
     public delegate void DisplayAutotrackerNotification(
         string projectName, ulong projectId, ulong taskId);
 
-    public delegate void DisplayUpdateDownloadState(
-        string url, DownloadStatus status);
-
     public delegate void DisplayProjectColors(
         string[] colors, ulong count);
 
@@ -156,6 +159,9 @@ public static partial class Toggl
 
     public delegate void DisplayPomodoroBreak(
         string title, string informativeText);
+
+    public delegate void DisplayInAppNotification(
+        string title, string text, string button, string url);
 
     #endregion
 
@@ -481,6 +487,11 @@ public static partial class Toggl
             return false;
         }
 
+        if (!toggl_set_settings_color_theme(ctx, settings.ColorTheme))
+        {
+            return false;
+        }
+
         return toggl_timeline_toggle_recording(ctx, settings.RecordTimeline);
     }
 
@@ -521,7 +532,9 @@ public static partial class Toggl
                            project_id,
                            project_guid,
                            tags,
-                           preventOnApp);
+                           preventOnApp,
+                           0,
+                           0);
     }
 
     public static string AddProject(
@@ -624,11 +637,6 @@ public static partial class Toggl
         return toggl_format_tracking_time_duration(duration_in_seconds);
     }
 
-    public static string RunScript(string script, ref Int64 err)
-    {
-        return toggl_run_script(ctx, script, ref err);
-    }
-
     public static long AddAutotrackerRule(string term, ulong projectId, ulong taskId)
     {
         return toggl_autotracker_add_rule(ctx, term, projectId, taskId);
@@ -718,6 +726,37 @@ public static partial class Toggl
     {
         return toggl_get_mini_timer_visible(ctx);
     }
+
+    public static void TrackClickCloseButtonInAppMessage()
+    {
+        toggl_iam_click(ctx, 2);
+    }
+
+    public static void TrackClickActionButtonInAppMessage()
+    {
+        toggl_iam_click(ctx, 3);
+    }
+
+    public static void TrackCollapseDay()
+    {
+        track_collapse_day(ctx);
+    }
+
+    public static void TrackExpandDay()
+    {
+        track_expand_day(ctx);
+    }
+
+    public static void TrackCollapseAllDays()
+    {
+        track_collapse_all_days(ctx);
+    }
+
+    public static void TrackExpandAllDays()
+    {
+        track_expand_all_days(ctx);
+    }
+
     #endregion
 
     #region callback events
@@ -745,14 +784,15 @@ public static partial class Toggl
     public static event DisplayAutotrackerNotification OnAutotrackerNotification = delegate { };
     public static event DisplaySyncState OnDisplaySyncState = delegate { };
     public static event DisplayUnsyncedItems OnDisplayUnsyncedItems = delegate { };
-    public static event DisplayUpdateDownloadState OnDisplayUpdateDownloadState = delegate { };
     public static event DisplayProjectColors OnDisplayProjectColors = delegate { };
     public static event DisplayCountries OnDisplayCountries = delegate { };
     public static event DisplayPromotion OnDisplayPromotion = delegate { };
     public static event DisplayObmExperiment OnDisplayObmExperiment = delegate { };
     public static event DisplayPomodoro OnDisplayPomodoro = delegate { };
     public static event DisplayPomodoroBreak OnDisplayPomodoroBreak = delegate { };
-
+    public static event DisplayInAppNotification OnDisplayInAppNotification = delegate { };
+    public static readonly BehaviorSubject<UpdateStatus> OnUpdateDownloadStatus
+        = new BehaviorSubject<UpdateStatus>(new UpdateStatus());
     private static void listenToLibEvents()
     {
         toggl_on_show_app(ctx, open =>
@@ -942,7 +982,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnUpdateDownloadState, v: {0}, state: {1}", version, state))
             {
-                OnDisplayUpdateDownloadState(version, (DownloadStatus)state);
+                OnUpdateDownloadStatus.OnNext(new UpdateStatus(Version.Parse(version), (DownloadStatus)state));
             }
         });
 
@@ -991,6 +1031,13 @@ public static partial class Toggl
             using (Performance.Measure("Calling OnDisplayPomodoroBreak"))
             {
                 OnDisplayPomodoroBreak(title, text);
+            }
+        });
+        toggl_on_message(ctx, (title, text, button, url) =>
+        {
+            using (Performance.Measure("Calling OnDisplayInAppNotification"))
+            {
+                OnDisplayInAppNotification(title, text, button, url);
             }
         });
     }
@@ -1083,22 +1130,13 @@ public static partial class Toggl
 
         listenToLibEvents();
 
-        if (IsUpdateCheckDisabled())
+        if (Utils.GetIsUpdateCheckDisabledFromRegistry())
         {
             toggl_disable_update_check(ctx);
         }
 
-        // Move "old" format app data folder, if it exists
-        string oldpath = Path.Combine(Environment.GetFolderPath(
-            Environment.SpecialFolder.ApplicationData), "Kopsik");
         string path = Path.Combine(Environment.GetFolderPath(
             Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
-        if (Directory.Exists(oldpath) && !Directory.Exists(path))
-        {
-            Directory.Move(oldpath, path);
-        }
-
-        updatePath = Path.Combine(path, "updates");
 
 #if TOGGL_ALLOW_UPDATE_CHECK
         installPendingUpdates();
@@ -1112,130 +1150,51 @@ public static partial class Toggl
             DatabasePath = Path.Combine(path, "toggldesktop.db");
         }
 
-        // Rename database file, if not done yet
-        string olddatabasepath = Path.Combine(path, "kopsik.db");
-        if (File.Exists(olddatabasepath) && !File.Exists(DatabasePath))
-        {
-            File.Move(olddatabasepath, DatabasePath);
-        }
-
         if (!toggl_set_db_path(ctx, DatabasePath))
         {
             throw new System.Exception("Failed to initialize database at " + DatabasePath);
         }
 
-        toggl_set_update_path(ctx, updatePath);
+        toggl_set_update_path(ctx, UpdatesPath);
 
         // Start pumping UI events
         return toggl_ui_start(ctx);
     }
 
     // ReSharper disable once UnusedMember.Local
-    // (updates are disabled in Release_VS configuration to allow for proper debugging)
+    // (updates are disabled in Debug configuration to allow for proper debugging)
     private static void installPendingUpdates()
     {
-        if (Environment.GetCommandLineArgs().Contains("--updated"))
+        Directory.CreateDirectory(UpdatesPath); // make sure the directory exists
+        var di = new DirectoryInfo(UpdatesPath);
+        foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
         {
-            // --updated means we've just been silently updated and started by the installer
-            // so we just clean up the installer files and continue
-            var di = new DirectoryInfo(updatePath);
-            foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
-            {
-                try
-                {
-                    Utils.DeleteFile(file.FullName);
-                }
-                catch (Exception e)
-                {
-                    BugsnagService.NotifyBugsnag(e);
-                    Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
-                }
-            }
-
-            return;
-        }
-
-        var update = createUpdateAction();
-
-        if (update == null)
-            return;
-
-        update();
-    }
-
-    private static Action createUpdateAction()
-    {
-        if (!Directory.Exists(updatePath))
-        {
-            return null;
-        }
-
-        var di = new DirectoryInfo(updatePath);
-        var files = di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly);
-        if (files.Length > 1)
-        {
-            Debug("Multiple update installers found. Deleting.");
-            foreach (var file in files)
-            {
-                try
-                {
-                    Utils.DeleteFile(file.FullName);
-                }
-                catch (Exception e)
-                {
-                    BugsnagService.NotifyBugsnag(e);
-                    Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
-                }
-            }
-            return null;
-        }
-
-        if (files.Length < 1)
-        {
-            return null;
-        }
-
-        var installerFullPath = files[0].FullName;
-
-        return () =>
-        {
-            Process process;
             try
             {
-                process = Process.Start(installerFullPath, "/S /U");
+                Utils.DeleteFile(file.FullName);
             }
-            catch (Win32Exception e)
+            catch (Exception e)
             {
                 BugsnagService.NotifyBugsnag(e);
-                Toggl.OnError?.Invoke("Unable to run the installer. Please update manually.", false);
-                return;
+                Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
             }
+        }
 
-            if (process != null && !process.HasExited && process.Id != 0)
-            {
-                // Update has started. Quit, installer will restart me.
-                Environment.Exit(0);
-            }
-            else
-            {
-                Toggl.OnError?.Invoke("Unable to run the installer. Please update manually.", false);
-            }
-        };
+        var aboutWindowViewModel = mainWindow.GetWindow<AboutWindow>().ViewModel;
+        if (aboutWindowViewModel.InstallPendingUpdate())
+        {
+            // quit, updater will restart the app
+            Environment.Exit(0);
+        }
     }
 
     public static bool IsUpdateCheckDisabled()
     {
-        // On Windows platform, system admin can disable
-        // automatic update check via registry key.
-        object value = Microsoft.Win32.Registry.GetValue(
-            "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Toggl\\TogglDesktop",
-            "UpdateCheckDisabled",
-            false);
-        if (value == null)
-        {
-            return false;
-        }
-        return Convert.ToBoolean(value);
+#if TOGGL_ALLOW_UPDATE_CHECK
+        return Utils.GetIsUpdateCheckDisabledFromRegistry();
+#else
+        return true;
+#endif
     }
     #endregion
 
@@ -1303,17 +1262,19 @@ public static partial class Toggl
     {
         toggl_set_key_start(ctx, key);
     }
-    public static string GetKeyStart()
+    public static Key GetKeyStart()
     {
-        return toggl_get_key_start(ctx);
+        var keyCode = toggl_get_key_start(ctx);
+        return getKey(keyCode);
     }
     public static void SetKeyShow(string key)
     {
         toggl_set_key_show(ctx, key);
     }
-    public static string GetKeyShow()
+    public static Key GetKeyShow()
     {
-        return toggl_get_key_show(ctx);
+        var keyCode = toggl_get_key_show(ctx);
+        return getKey(keyCode);
     }
     public static void SetKeyModifierShow(ModifierKeys mods)
     {
@@ -1322,9 +1283,9 @@ public static partial class Toggl
     public static ModifierKeys GetKeyModifierShow()
     {
         var s = toggl_get_key_modifier_show(ctx);
-        if (string.IsNullOrWhiteSpace(s))
+        if (string.IsNullOrWhiteSpace(s) || !Enum.TryParse(s, true, out ModifierKeys modifierKeys))
             return ModifierKeys.None;
-        return (ModifierKeys)Enum.Parse(typeof(ModifierKeys), s, true);
+        return modifierKeys;
     }
     public static void SetKeyModifierStart(ModifierKeys mods)
     {
@@ -1333,9 +1294,19 @@ public static partial class Toggl
     public static ModifierKeys GetKeyModifierStart()
     {
         var s = toggl_get_key_modifier_start(ctx);
-        if(string.IsNullOrWhiteSpace(s))
+        if (string.IsNullOrWhiteSpace(s) || !Enum.TryParse(s, true, out ModifierKeys modifierKeys))
             return ModifierKeys.None;
-        return (ModifierKeys)Enum.Parse(typeof(ModifierKeys), s, true);
+        return modifierKeys;
+    }
+
+    private static Key getKey(string keyCode)
+    {
+        if (string.IsNullOrEmpty(keyCode) || !Enum.TryParse(keyCode, out Key key))
+        {
+            return Key.None;
+        }
+
+        return key;
     }
 
     #endregion
@@ -1385,20 +1356,9 @@ public static partial class Toggl
 
     #region various
 
-    public static void RestartAndUpdate()
+    public static void PrepareShutdown()
     {
-        var update = createUpdateAction();
-
-        if (update == null)
-        {
-            return;
-        }
-
         mainWindow.PrepareShutdown(true);
-
-        Clear();
-
-        update();
     }
 
     public static void SetManualMode(bool manualMode)
@@ -1436,7 +1396,7 @@ public static partial class Toggl
     public static bool AskToDeleteEntry(string guid)
     {
         var result = MessageBox.Show(mainWindow, "Deleted time entries cannot be restored.", "Delete time entry?",
-                                     MessageBoxButton.OKCancel, "DELETE ENTRY");
+                                     MessageBoxButton.OKCancel, "Delete entry");
 
         if (result == MessageBoxResult.OK)
         {

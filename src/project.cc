@@ -1,15 +1,15 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/project.h"
+#include "project.h"
 
 #include <sstream>
 #include <ctime>
 
-#include "Poco/UTF8String.h"
-#include "Poco/NumberParser.h"
-#include "Poco/UTF8String.h"
+#include <Poco/UTF8String.h>
+#include <Poco/NumberParser.h>
+#include <Poco/UTF8String.h>
 
-#include "./formatter.h"
+#include "formatter.h"
 
 namespace toggl {
 

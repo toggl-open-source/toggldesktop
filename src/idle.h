@@ -5,10 +5,11 @@
 
 #include <sstream>
 
-#include "./settings.h"
-#include "./user.h"
+#include "settings.h"
+#include "user.h"
+#include "util/logger.h"
 
-#include "Poco/Types.h"
+#include <Poco/Types.h>
 
 namespace toggl {
 
@@ -46,7 +47,7 @@ class TOGGL_INTERNAL_EXPORT Idle {
     void computeIdleState(const Poco::Int64 idle_seconds,
                           User *current_user);
 
-    Poco::Logger &logger() const;
+    Logger logger { "idle" };
 
     // Idle detection related values
     Poco::Int64 last_idle_seconds_reading_;

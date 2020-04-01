@@ -54,7 +54,7 @@ extension NSColor {
         rgbColor.getRed(&red, green: &green, blue: &blue, alpha: nil)
         return (red, green, blue)
     }
-    
+
     func getRelativeLuminance(red: CGFloat, green: CGFloat, blue: CGFloat) -> CGFloat {
         func getComponentLuminance(component: CGFloat) -> CGFloat {
             return component <= 0.03928
@@ -75,4 +75,12 @@ extension NSColor {
             return max(0.0, (component - 0.12) / 1.2)
         }
     }
+
+    public func lighten(by percentage: CGFloat = 1.0) -> NSColor {
+        guard let components = self.getRGBComponents() else { return NSColor(deviceWhite: 0, alpha: percentage) }
+        return NSColor(red: components.red,
+                       green: components.green,
+                       blue: components.blue,
+                      alpha: percentage)
+     }
 }

@@ -1,0 +1,62 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
+                    xmlns:togglDesktop="clr-namespace:TogglDesktop">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBlock.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <ContextMenu x:Key="Toggl.TextBox.ContextMenu" Width="200">
+        <MenuItem Command="ApplicationCommands.Cut"  />
+        <MenuItem Command="ApplicationCommands.Copy" />
+        <MenuItem Command="ApplicationCommands.Paste" />
+    </ContextMenu>
+
+    <Style x:Key="MahApps.Styles.TextBlock.Watermark"
+           BasedOn="{StaticResource MahApps.Styles.TextBlock}"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="Opacity" Value="0.33" />
+    </Style>
+
+    <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">
+        <Setter Property="FontFamily" Value="{DynamicResource BaseFont}" />
+        <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+        <Setter Property="Background" Value="{DynamicResource Toggl.SelectionElements.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.TextBox.Border}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+        <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
+        <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Toggl.TextBox.MouseOverBorder}" />
+        <Setter Property="Padding" Value="5 3" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="behaviors:TextBoxHelper.IsPaddingClickable" Value="True" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="ContextMenu" Value="{StaticResource Toggl.TextBox.ContextMenu}" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.LightGrayBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type togglDesktop:ProjectTextBox}" BasedOn="{StaticResource {x:Type TextBox}}" />
+
+    <Style x:Key="Toggl.Timer.DescriptionTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="Background" Value="{DynamicResource Toggl.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Background}" />
+        <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Toggl.TextBox.Timer.MouseOverBackground}" />
+        <Setter Property="mah:TextBoxHelper.Watermark" Value="What are you working on?" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.TextBox.Timer.MouseOverBackground}" />
+            </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.SelectionElements.Background}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

@@ -3,15 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:togglDesktop="clr-namespace:TogglDesktop"
              mc:Ignorable="d"
-             Style="{StaticResource Tag}"
-             Margin="0, 3, 6, 3">
-
-    <Border>
-        <Grid>
-            <TextBlock Name="textBlock" x:FieldModifier="private" Text="This is tag"/>
-            <Button Click="remove_OnClick" />
-        </Grid>
+             Margin="2">
+    <Border Padding="8 0 0 0"
+            Cursor="Arrow"
+            Height="24">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Primary.Background}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type togglDesktop:Tag}}}" Value="False">
+                        <Setter Property="Background" Value="{DynamicResource Toggl.Button.Primary.MouseOverBackground}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Name="textBlock" x:FieldModifier="private" Style="{StaticResource Toggl.CaptionBlackText}" Text="This is tag" TextTrimming="CharacterEllipsis"
+                       Margin="0 3 0 0"
+                       MaxWidth="144"/>
+            <Button Click="remove_OnClick" Style="{StaticResource Toggl.CrossButton}" Height="24" Width="24"
+                    IsTabStop="False" Focusable="False" />
+        </StackPanel>
     </Border>
 </UserControl>

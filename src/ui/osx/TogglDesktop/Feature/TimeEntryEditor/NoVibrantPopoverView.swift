@@ -27,6 +27,7 @@ class NoVibrantPopoverView: ResizablePopover {
     }
 
     @objc func present(from rect: NSRect, of view: NSView, preferredEdge: NSRectEdge = .maxX) {
+        guard view.window != nil else { return }
         show(relativeTo: rect, of: view, preferredEdge: preferredEdge)
     }
 }

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
+using MahApps.Metro.Controls;
 using TogglDesktop.AutoCompletion;
-using TogglDesktop.AutoCompletion.Implementation;
+using TogglDesktop.AutoCompletion.Items;
 
 namespace TogglDesktop
 {
@@ -13,10 +14,11 @@ namespace TogglDesktop
         public event EventHandler<string> TagAdded;
 
         private readonly Dictionary<string, Tag> tags = new Dictionary<string, Tag>();
-        private readonly Stack<string> orderedTags = new Stack<string>(); 
+        private readonly Stack<string> orderedTags = new Stack<string>();
+        private TagsAutoCompleteController controller;
 
-        public int TagCount { get { return this.tags.Count; } }
-        public IEnumerable<string> Tags { get { return this.tags.Keys; } }
+        public int TagCount => this.tags.Count;
+        public IEnumerable<string> Tags => this.tags.Keys;
 
         public TagList()
         {
@@ -56,6 +58,11 @@ namespace TogglDesktop
 
         private void textBoxOnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
+            if (autoComplete.HasKeyboardFocus())
+            {
+                return;
+            }
+
             this.textBox.SetText("");
         }
 
@@ -81,9 +88,13 @@ namespace TogglDesktop
         private bool tryAddTag(string tag)
         {
             var success = this.AddTag(tag);
-            if (success && this.TagAdded != null)
-                this.TagAdded(this, tag);
+            if (success) TagAdded?.Invoke(this, tag);
             return success;
+        }
+
+        private bool tryAddOrRemoveTag(string tag)
+        {
+            return tryAddTag(tag) || RemoveTag(tag);
         }
 
         public void AddTags(IEnumerable<string> tags)
@@ -110,6 +121,7 @@ namespace TogglDesktop
 
             this.tags.Add(tag, element);
             this.orderedTags.Push(tag);
+            this.controller?.AddTag(tag);
 
             this.panel.Children.Insert(this.panel.Children.Count - 1, element);
 
@@ -118,6 +130,8 @@ namespace TogglDesktop
                 this.RemoveTag(tag);
                 this.focusTextBox();
             };
+
+            ClearEmptyText();
         }
 
         #endregion
@@ -132,14 +146,16 @@ namespace TogglDesktop
 
             this.panel.Children.Remove(element);
             this.tags.Remove(tag);
+            this.controller?.RemoveTag(tag);
 
             if (this.orderedTags.Count > 0 && this.orderedTags.Peek() == tag)
                 this.orderedTags.Pop();
 
             element.Dispose();
 
-            if (this.TagRemoved != null)
-                this.TagRemoved(this, tag);
+            if (tags.Count == 0) this.SetEmptyText();
+
+            TagRemoved?.Invoke(this, tag);
 
             return true;
         }
@@ -153,8 +169,11 @@ namespace TogglDesktop
             }
             this.tags.Clear();
             this.orderedTags.Clear();
+            this.controller.ClearSelection();
             if (clearTextBox)
                 this.textBox.SetText("");
+
+            this.SetEmptyText();
         }
 
         private bool tryRemoveLastTag()
@@ -173,13 +192,11 @@ namespace TogglDesktop
 
         public void SetKnownTags(IEnumerable<string> tags)
         {
-            if (!this.autoComplete.popUpOpen())
-                this.autoComplete.SetController(AutoCompleteControllers.ForTags(tags, this.Contains));
-        }
-
-        public bool Contains(string tag)
-        {
-            return this.tags.ContainsKey(tag);
+            if (!autoComplete.IsOpen)
+            {
+                controller = AutoCompleteControllersFactory.ForTags(tags, this.tags.ContainsKey);
+                this.autoComplete.SetController(controller);
+            }
         }
 
         public void ClearUndoHistory()
@@ -187,18 +204,20 @@ namespace TogglDesktop
             this.textBox.ClearUndoHistory();
         }
 
-        private void autoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        private void ClearEmptyText() => this.textBox.SetValue(TextBoxHelper.WatermarkProperty, string.Empty);
+        private void SetEmptyText() => this.textBox.SetValue(TextBoxHelper.WatermarkProperty, "Add tags");
+
+        private void autoComplete_OnConfirmCompletion(object sender, IAutoCompleteItem e)
         {
-            var asStringItem = e as StringItem;
-            if (asStringItem == null)
-                return;
+            if (e is IModelItem<string> asStringItem)
+            {
+                var tag = asStringItem.Text;
+                this.tryAddOrRemoveTag(tag);
+                this.textBox.SetText("");
 
-            var tag = asStringItem.Text;
-            this.tryAddTag(tag);
-            this.textBox.SetText("");
-
-            if(this.autoComplete.IsOpen)
-                this.autoComplete.OpenAndShowAll();
+                if (this.autoComplete.IsOpen)
+                    this.autoComplete.OpenAndShowAll();
+            }
         }
 
         private void autoComplete_OnConfirmWithoutCompletion(object sender, string e)
@@ -209,6 +228,22 @@ namespace TogglDesktop
         private void panel_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.autoComplete.RecalculatePosition();
+        }
+
+        private void AutoComplete_OnActionButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.tryAddTagFromTextBox();
+        }
+
+        private void AutoComplete_OnIsOpenChanged(object sender, EventArgs e)
+        {
+            if (!autoComplete.IsOpen)
+            {
+                if (!this.textBox.Text.IsNullOrEmpty())
+                {
+                    this.textBox.SetText("");
+                }
+            }
         }
     }
 }

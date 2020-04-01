@@ -12,15 +12,14 @@
 #include <string>
 #include <vector>
 
-#include "Poco/Data/SQLite/Connector.h"
+#include <Poco/Data/SQLite/Connector.h>
 
-#include "./model_change.h"
-#include "./timeline_event.h"
-#include "./types.h"
+#include "model_change.h"
+#include "timeline_event.h"
+#include "types.h"
+#include "util/logger.h"
 
 namespace Poco {
-class Logger;
-
 namespace Data {
 class Session;
 class Statement;
@@ -88,6 +87,8 @@ class TOGGL_INTERNAL_EXPORT Database {
 
     error SetSettingsHasSeenBetaOffering(const bool &value);
 
+    error SetSettingsMessageSeen(const Poco::UInt64 message_id);
+
     error SetSettingsUseIdleDetection(const bool &use_idle_detection);
 
     error SetSettingsAutotrack(const bool &value);
@@ -127,6 +128,10 @@ class TOGGL_INTERNAL_EXPORT Database {
 
     error SetSettingsShowTouchBar(const bool &show_touch_bar);
 
+    error SetSettingsActiveTab(const uint8_t &active_tab);
+
+    error SetSettingsColorTheme(const uint8_t &color_theme);
+
     error SetSettingsRemindTimes(
         const std::string &remind_starts,
         const std::string &remind_ends);
@@ -156,6 +161,8 @@ class TOGGL_INTERNAL_EXPORT Database {
         bool *);
 
     error GetShowTouchBar(bool *result);
+
+    error GetActiveTab(uint8_t *result);
 
     error SetWindowMaximized(
         const bool value);
@@ -196,6 +203,8 @@ class TOGGL_INTERNAL_EXPORT Database {
         const std::string &value);
 
     error GetKeyModifierStart(std::string *result);
+
+    error GetMessageSeen(Poco::Int64 *result);
 
     error LoadProxySettings(
         bool *use_proxy,
@@ -397,7 +406,7 @@ class TOGGL_INTERNAL_EXPORT Database {
         const Poco::UInt64 &user_id,
         std::vector<TimelineEvent> *timeline_events);
 
-    Poco::Logger &logger() const;
+    Logger logger { "database" };
 
     Poco::Mutex session_m_;
     Poco::Data::Session *session_;

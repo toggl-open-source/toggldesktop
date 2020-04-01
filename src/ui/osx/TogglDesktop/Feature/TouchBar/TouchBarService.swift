@@ -20,7 +20,7 @@ final class TouchBarService: NSObject {
     static let shared = TouchBarService()
 
     enum DisplayState {
-        case tracking
+        case hasRunningTimeEntry
         case normal
     }
 
@@ -45,10 +45,20 @@ final class TouchBarService: NSObject {
     // MARK: Variables
 
     var isEnabled = true
-    private var touchBar: NSTouchBar?
+    private var isPresented = false
     weak var delegate: TouchBarServiceDelegate?
+    private var runningBtn: NSButton?
     private var timeEntries: [TimeEntryViewItem] = []
     private var displayState = DisplayState.normal { didSet { updateDisplayState() }}
+    private lazy var touchBar: NSTouchBar = {
+        let touchBar = NSTouchBar()
+        touchBar.delegate = self
+        touchBar.customizationIdentifier = .mainTouchBar
+        touchBar.defaultItemIdentifiers = defaultTouchBarItems()
+        touchBar.customizationAllowedItemIdentifiers = []
+        return touchBar
+    }()
+
     private lazy var scrubberView: NSScrubber = {
         let view = NSScrubber(frame: .zero)
         view.delegate = self
@@ -65,6 +75,14 @@ final class TouchBarService: NSObject {
         return view
     }()
 
+    private func defaultTouchBarItems() -> [NSTouchBarItem.Identifier] {
+        // otherItemsProxy is important to make sure the Main Touch Bar doesn't dismiss
+        if displayState == .normal {
+            return [.timeEntryItem, .startStopItem, .otherItemsProxy]
+        }
+        return [.timeEntryItem, .runningTimeEntry, .startStopItem, .otherItemsProxy]
+    }
+
     // MARK: Init
 
     override init() {
@@ -77,10 +95,6 @@ final class TouchBarService: NSObject {
 
     func makeTouchBar() -> NSTouchBar? {
         guard isEnabled else { return nil }
-        touchBar = NSTouchBar()
-        touchBar?.delegate = self
-        touchBar?.customizationIdentifier = .mainTouchBar
-        touchBar?.defaultItemIdentifiers = [.timeEntryItem, .startStopItem]
         return touchBar
     }
 
@@ -103,7 +117,12 @@ final class TouchBarService: NSObject {
             if timeEntry.groupOpen && !timeEntry.group {
                 continue
             }
-            touchBarEntries.append(timeEntry)
+
+            // Only add unique TE
+            if touchBarEntries.first(where: { $0.isSameContent(with: timeEntry)}) == nil {
+                touchBarEntries.append(timeEntry)
+            }
+
             if touchBarEntries.count >= Constants.NumberTimeEntry {
                 break
             }
@@ -112,13 +131,13 @@ final class TouchBarService: NSObject {
         scrubberView.reloadData()
     }
 
-    func reset() {
+    func resetContent() {
         self.timeEntries = []
         scrubberView.reloadData()
         startButton.isHidden = true
     }
 
-    func prepareForPresent() {
+    func prepareContent() {
         scrubberView.reloadData()
         startButton.isHidden = false
     }
@@ -145,18 +164,11 @@ extension TouchBarService {
             return
         }
         startButton.state = NSControl.StateValue(rawValue: value.intValue)
-        displayState = startButton.state == .on ? .tracking : .normal
+        displayState = startButton.state == .on ? .hasRunningTimeEntry : .normal
     }
 
     private func updateDisplayState() {
-        guard let touchBar = touchBar else { return }
-        switch displayState {
-        case .normal:
-            touchBar.defaultItemIdentifiers.removeAll(where: { $0 == .runningTimeEntry })
-        case .tracking:
-            let count = touchBar.defaultItemIdentifiers.count
-            touchBar.defaultItemIdentifiers.insert(.runningTimeEntry, at: count - 1)
-        }
+        touchBar.defaultItemIdentifiers = defaultTouchBarItems()
     }
 }
 

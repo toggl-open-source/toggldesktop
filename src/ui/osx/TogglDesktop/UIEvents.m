@@ -33,6 +33,7 @@ NSString *const kDisplayTimerState = @"kDisplayTimerState";
 NSString *const kDisplayUnsyncedItems = @"kDisplayUnsyncedItems";
 NSString *const kDisplayAutotrackerRules = @"kDisplayAutotrackerRules";
 NSString *const kDisplayPromotion = @"kDisplayPromotion";
+NSString *const kDisplayTimeline = @"kDisplayTimeline";
 NSString *const kStartTimer = @"kStartTimer";
 
 NSString *const kHideDisplayError = @"kHideDisplayError";
@@ -52,8 +53,11 @@ NSString *const kDisplayCountries = @"kDisplayCountries";
 NSString *const kUpdateIconTooltip = @"kUpdateIconTooltip";
 NSString *const kUserHasBeenSignup = @"kUserHasBeenSignup";
 NSString *const kTouchBarSettingChanged = @"kTouchBarSettingChanged";
+NSString *const kStartDisplayInAppMessage = @"kStartDisplayInAppMessage";
 
 NSString *const kDeselectAllTimeEntryList = @"kDeselectAllTimeEntryList";
+NSString *const kDidAdddManualTimeNotification = @"kDidAdddManualTimeNotification";
+NSString *const kStarTimeEntryWithStartTime = @"kStarTimeEntryWithStartTime";
 
 const char *kFocusedFieldNameDuration = "duration";
 const char *kFocusedFieldNameDescription = "description";
@@ -61,3 +65,4 @@ const char *kFocusedFieldNameProject = "project";
 const char *kFocusedFieldNameTag = "tag";
 
 NSString *const kStartButtonStateChange = @"kStartButtonStateChange";
+NSString *const kInvalidAppleUserCrendential = @"kInvalidAppleUserCrendential";

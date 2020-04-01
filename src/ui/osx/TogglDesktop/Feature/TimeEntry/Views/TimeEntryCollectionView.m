@@ -260,7 +260,7 @@ extern void *ctx;
 {
 	for (TimeEntryCell *cell in cells)
 	{
-		toggl_delete_time_entry(ctx, [cell.GUID UTF8String]);
+        [[DesktopLibraryBridge shared] deleteTimeEntryItem:cell.item undoManager:self.undoManager];
 	}
 	[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
 }
@@ -275,18 +275,14 @@ extern void *ctx;
 	// If description is empty and duration is less than 15 seconds delete without confirmation
 	if (cell.confirmless_delete)
 	{
-		if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
-		{
-			[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
-		}
+        [[DesktopLibraryBridge shared] deleteTimeEntryItem:cell.item undoManager:self.undoManager];
+        [self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
 		return;
 	}
 
 	// Delete and select preview cell
-	if ([Utils deleteTimeEntryWithConfirmationWithGUID:cell.GUID title:cell.descriptionString])
-	{
-		[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
-	}
+    [[DesktopLibraryBridge shared] deleteTimeEntryItem:cell.item undoManager:self.undoManager];
+    [self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
 }
 
 - (void)selectPreviousRowFromIndexPath:(NSIndexPath *)indexPath
@@ -320,6 +316,12 @@ extern void *ctx;
 			[self deselectAll:self];
 		}
 
+		// Skip if the indexpath is invalid
+		if ([self itemAtIndexPath:previousIndexPath] == nil)
+		{
+			return;
+		}
+
 		// Select previous cell
 		[self selectItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:previousIndexPath]
 					   scrollPosition:NSCollectionViewScrollPositionNone];
@@ -334,5 +336,4 @@ extern void *ctx;
 		}
 	}
 }
-
 @end

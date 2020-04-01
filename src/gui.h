@@ -7,17 +7,16 @@
 #include <string>
 #include <vector>
 
-#include "./help_article.h"
-#include "./https_client.h"
-#include "./proxy.h"
-#include "./settings.h"
-#include "./toggl_api.h"
-#include "./toggl_api_private.h"
-#include "./types.h"
+#include "help_article.h"
+#include "https_client.h"
+#include "proxy.h"
+#include "settings.h"
+#include "toggl_api.h"
+#include "toggl_api_private.h"
+#include "types.h"
+#include "util/logger.h"
 
-namespace Poco {
-class Logger;
-}
+#include <Poco/LocalDateTime.h>
 
 namespace toggl {
 
@@ -60,7 +59,9 @@ class TOGGL_INTERNAL_EXPORT TimeEntry {
     , GroupOpen(false)
     , GroupName("")
     , GroupDuration("")
-    , GroupItemCount(0) {}
+    , GroupItemCount(0)
+    , RoundedStart(0)
+    , RoundedEnd(0) {}
 
     uint64_t ID;
     int64_t DurationInSeconds;
@@ -102,6 +103,11 @@ class TOGGL_INTERNAL_EXPORT TimeEntry {
     std::string GroupName;
     std::string GroupDuration;
     uint64_t GroupItemCount;
+    // To show time entry properly in timeline view
+    uint64_t RoundedStart;
+    uint64_t RoundedEnd;
+
+    void GenerateRoundedTimes();
 
     void Fill(toggl::TimeEntry * const model);
 
@@ -242,7 +248,8 @@ class TOGGL_INTERNAL_EXPORT Settings {
     , PomodoroMinutes(0)
     , PomodoroBreakMinutes(0)
     , StopEntryOnShutdownSleep(false)
-    , ShowTouchBar(true) {}
+    , ShowTouchBar(true)
+    , ActiveTab(0) {}
 
     bool UseProxy;
     std::string ProxyHost;
@@ -278,6 +285,7 @@ class TOGGL_INTERNAL_EXPORT Settings {
     uint64_t PomodoroBreakMinutes;
     bool StopEntryOnShutdownSleep;
     bool ShowTouchBar;
+    uint8_t ActiveTab;
 
     bool operator == (const Settings& other) const;
 };
@@ -371,9 +379,11 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     , on_display_unsynced_items_(nullptr)
     , on_display_update_(nullptr)
     , on_display_update_download_state_(nullptr)
+    , on_display_message_(nullptr)
     , on_display_autotracker_rules_(nullptr)
     , on_display_autotracker_notification_(nullptr)
     , on_display_promotion_(nullptr)
+    , on_display_timeline_(nullptr)
     , on_display_help_articles_(nullptr)
     , on_display_project_colors_(nullptr)
     , on_display_countries_(nullptr)
@@ -384,7 +394,9 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     , lastDisplayLoginUserID(0)
     , lastOnlineState(-1)
     , lastErr(noError)
-    , isFirstLaunch(true) {}
+    , isFirstLaunch(true)
+    , time_entry_editor_guid_("")
+    , timeline_date_at_(Poco::LocalDateTime()) {}
 
     ~GUI() {}
 
@@ -428,6 +440,13 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
 
     void DisplayProjectColors();
 
+    void DisplayTimeline(
+        const bool open,
+        const std::vector<TimelineEvent> list,
+        const std::vector<view::TimeEntry> &entries_list);
+
+    TogglTimelineEventView* SortList(TogglTimelineEventView *head);
+
     void DisplayCountries(
         std::vector<TogglCountryView> *items);
 
@@ -438,7 +457,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         const std::vector<view::Generic> &list);
 
     void DisplayTags(
-        const std::vector<view::Generic> &list);
+        const std::vector<view::Generic> list);
 
     void DisplayAutotrackerRules(
         const std::vector<view::AutotrackerRule> &autotracker_rules,
@@ -477,10 +496,20 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         const std::string &version,
         const Poco::Int64 download_state);
 
+    void DisplayMessage(
+        const std::string &title,
+        const std::string &text,
+        const std::string &button,
+        const std::string &url);
+
     error VerifyCallbacks();
 
     void OnDisplayUpdate(TogglDisplayUpdate cb) {
         on_display_update_ = cb;
+    }
+
+    void OnDisplayMessage(TogglDisplayMessage cb) {
+        on_display_message_ = cb;
     }
 
     void OnDisplayHelpArticles(TogglDisplayHelpArticles cb) {
@@ -542,6 +571,10 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
 
     void OnDisplayTimeEntryList(TogglDisplayTimeEntryList cb) {
         on_display_time_entry_list_ = cb;
+    }
+
+    void OnDisplayTimeline(TogglDisplayTimeline cb) {
+        on_display_timeline_ = cb;
     }
 
     void OnDisplayWorkspaceSelect(TogglDisplayViewItems cb) {
@@ -612,6 +645,10 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         return !!on_display_update_download_state_;
     }
 
+    bool CanDisplayMessage() const {
+        return !!on_display_message_;
+    }
+
     bool CanDisplayAutotrackerRules() const {
         return !!on_display_autotracker_rules_;
     }
@@ -637,6 +674,18 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
 
     void resetFirstLaunch() {
         isFirstLaunch = true;
+    }
+
+    const Poco::LocalDateTime &TimelineDateAt() {
+        return timeline_date_at_;
+    }
+
+    void SetTimelineDateAt(const Poco::LocalDateTime &value) {
+        timeline_date_at_ = value;
+    }
+
+    void resetTimeEntryGUID() {
+        time_entry_editor_guid_ = "";
     }
 
  private:
@@ -666,9 +715,11 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     TogglDisplayUnsyncedItems on_display_unsynced_items_;
     TogglDisplayUpdate on_display_update_;
     TogglDisplayUpdateDownloadState on_display_update_download_state_;
+    TogglDisplayMessage on_display_message_;
     TogglDisplayAutotrackerRules on_display_autotracker_rules_;
     TogglDisplayAutotrackerNotification on_display_autotracker_notification_;
     TogglDisplayPromotion on_display_promotion_;
+    TogglDisplayTimeline on_display_timeline_;
     TogglDisplayHelpArticles on_display_help_articles_;
     TogglDisplayProjectColors on_display_project_colors_;
     TogglDisplayCountries on_display_countries_;
@@ -682,7 +733,13 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     Poco::Int64 lastOnlineState;
     error lastErr;
     bool isFirstLaunch;
-    Poco::Logger &logger() const;
+
+    // UI state
+    std::string time_entry_editor_guid_;
+
+    Poco::LocalDateTime timeline_date_at_;
+
+    Logger logger { "ui" };
 };
 
 }  // namespace toggl

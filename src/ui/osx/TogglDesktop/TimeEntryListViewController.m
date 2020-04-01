@@ -8,7 +8,6 @@
 
 #import "TimeEntryListViewController.h"
 #import "TimeEntryViewItem.h"
-#import "TimerEditViewController.h"
 #import "TimeEntryCell.h"
 #import "DisplayCommand.h"
 #import "ConvertHexColor.h"
@@ -28,12 +27,12 @@ static NSString *kFrameKey = @"frame";
 @property (nonatomic, strong) TimeEntryDatasource *dataSource;
 @property (nonatomic, assign) NSInteger defaultPopupHeight;
 @property (nonatomic, assign) NSInteger defaultPopupWidth;
-@property (nonatomic, assign) NSInteger addedHeight;
 @property (nonatomic, assign) NSInteger minimumEditFormWidth;
 @property (nonatomic, assign) BOOL runningEdit;
 @property (nonatomic, copy) NSString *lastSelectedGUID;
 @property (nonatomic, strong) TimeEntryEmptyView *emptyView;
 @property (nonatomic, strong) EditorPopover *timeEntrypopover;
+@property (nonatomic, assign) BOOL isOpening;
 @end
 
 @implementation TimeEntryListViewController
@@ -45,8 +44,6 @@ extern void *ctx;
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self)
 	{
-		self.timerEditViewController = [[TimerEditViewController alloc]
-										initWithNibName:@"TimerEditViewController" bundle:nil];
 	}
 	return self;
 }
@@ -71,17 +68,23 @@ extern void *ctx;
 - (void)viewDidAppear
 {
 	[super viewDidAppear];
+	self.isOpening = YES;
 	[self.collectionView reloadData];
 }
 
-- (void)initCommon {
-	[self.headerView addSubview:self.timerEditViewController.view];
-	[self.timerEditViewController.view edgesToSuperView];
-	self.addedHeight = 0;
+- (void)viewWillDisappear
+{
+	[super viewWillDisappear];
+	self.isOpening = NO;
+}
+
+- (void)initCommon
+{
+	self.isOpening = YES;
 	self.runningEdit = NO;
 
 	// Shadow for Header
-	[self.headerView applyShadowWithColor:[NSColor blackColor] opacity:0.1 radius:6.0];
+    [self.headerView applyShadowWithColor:[NSColor blackColor] opacity:0.1 radius:6.0 offset:CGSizeMake(0, -2)];
 }
 
 - (void)initNotifications
@@ -99,24 +102,12 @@ extern void *ctx;
 												 name:kDisplayLogin
 											   object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(closeEditPopup:)
-												 name:kForceCloseEditPopover
-											   object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(resizeEditPopupHeight:)
-												 name:kResizeEditForm
-											   object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(resizeEditPopupWidth:)
 												 name:kResizeEditFormWidth
 											   object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(resetEditPopover:)
 												 name:NSPopoverDidCloseNotification
-											   object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(closeEditPopup:)
-												 name:kCommandStop
 											   object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(resetEditPopoverSize:)
@@ -130,12 +121,10 @@ extern void *ctx;
 											 selector:@selector(escapeListing:)
 												 name:kEscapeListing
 											   object:nil];
-
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(effectiveAppearanceChangedNotification)
 												 name:NSNotification.EffectiveAppearanceChanged
 											   object:nil];
-
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(windowSizeDidChange)
 												 name:NSWindowDidResizeNotification
@@ -217,7 +206,6 @@ extern void *ctx;
 - (void)displayTimeEntryList:(DisplayCommand *)cmd
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-	NSLog(@"❌ TimeEntryListViewController displayTimeEntryList, Total Count %lu, show_load_more %@", (unsigned long)cmd.timeEntries.count, cmd.show_load_more ? @"YES" : @"NO");
 
 	NSArray<TimeEntryViewItem *> *newTimeEntries = [cmd.timeEntries copy];
 
@@ -230,7 +218,6 @@ extern void *ctx;
 		if (self.timeEntrypopover.shown)
 		{
 			[self.timeEntrypopover performClose:self];
-			[self setDefaultPopupSize];
 		}
 	}
 
@@ -297,20 +284,26 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
+	NSLog(@"✅ TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
+
+    self.runningEdit = [cmd.timeEntry isRunning];
+
+	// Skip render if need
+	if (!self.isOpening && !self.runningEdit)
+	{
+		return;
+	}
 
 	TimeEntryViewItem *timeEntry = cmd.timeEntry;
 	if (cmd.open)
 	{
-		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
-
 		NSView *ofView = self.view;
 		TimeEntryCell *selectedCell = [self.collectionView getSelectedEntryCells].firstObject;
 		CGRect positionRect = [self positionRectForItem:selectedCell];
 
 		if (self.runningEdit)
 		{
-			ofView = self.headerView;
+			ofView = [self.delegate containerViewForTimer];
 			positionRect = [ofView bounds];
 			self.lastSelectedGUID = nil;
 		}
@@ -378,38 +371,6 @@ extern void *ctx;
 {
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kResetEditPopover
 																object:nil];
-	[self setDefaultPopupSize];
-}
-
-- (void)resizing:(NSSize)n
-{
-//    [self.timeEntrypopover setContentSize:n];
-//    NSRect f = [self.timeEntryEditViewController.view frame];
-//    NSRect r = NSMakeRect(f.origin.x,
-//                          f.origin.y,
-//                          n.width,
-//                          n.height);
-//
-//    [self.timeEntryPopupEditView setBounds:r];
-//    [self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
-}
-
-- (void)resizeEditPopupHeight:(NSNotification *)notification
-{
-	if (!self.timeEntrypopover.shown)
-	{
-		return;
-	}
-	NSInteger addHeight = [[[notification userInfo] valueForKey:@"height"] intValue];
-	if (addHeight == self.addedHeight)
-	{
-		return;
-	}
-	self.addedHeight = addHeight;
-	float newHeight = self.timeEntrypopover.contentSize.height + self.addedHeight;
-	NSSize n = NSMakeSize(self.timeEntrypopover.contentSize.width, newHeight);
-
-	[self resizing:n];
 }
 
 - (void)resizeEditPopupWidth:(NSNotification *)notification
@@ -425,42 +386,6 @@ extern void *ctx;
 	{
 		return;
 	}
-	NSSize n = NSMakeSize(newWidth, self.timeEntrypopover.contentSize.height);
-
-	[self resizing:n];
-}
-
-- (void)closeEditPopup:(NSNotification *)notification
-{
-//    if (self.timeEntrypopover.shown)
-//    {
-//        if ([self.timeEntryEditViewController autcompleteFocused])
-//        {
-//            return;
-//        }
-//        if (self.runningEdit)
-//        {
-//            [self.timeEntryEditViewController closeEdit];
-//            self.runningEdit = false;
-//        }
-//        else
-//        {
-//            [[self.collectionView getSelectedEntryCell] openEdit];
-//        }
-//
-//        [self setDefaultPopupSize];
-//    }
-}
-
-- (void)setDefaultPopupSize
-{
-	if (self.addedHeight != 0)
-	{
-		NSSize n = NSMakeSize(self.timeEntrypopover.contentSize.width, self.defaultPopupHeight);
-
-		[self resizing:n];
-		self.addedHeight = 0;
-	}
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
@@ -474,7 +399,6 @@ extern void *ctx;
 	if (cmd.open && self.timeEntrypopover.shown)
 	{
 		[self.timeEntrypopover performClose:self];
-		[self setDefaultPopupSize];
 	}
 }
 
@@ -501,7 +425,6 @@ extern void *ctx;
 {
 	if (self.timeEntrypopover.shown)
 	{
-		[self closeEditPopup:nil];
 		return;
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kFocusTimer
@@ -612,7 +535,6 @@ extern void *ctx;
 
 		     // define content frame
 			 NSRect contentFrame = NSMakeRect(0, imageOffset, contentSize.width, contentSize.height);
-			 NSBezierPath *contentPath = [NSBezierPath bezierPathWithRect:contentFrame];
 			 [theContext restoreGraphicsState];
 
 			 NSColor *backgroundColor;
@@ -627,7 +549,7 @@ extern void *ctx;
 
 		     // fill content
 			 [backgroundColor set];
-			 contentPath = [NSBezierPath bezierPathWithRect:NSInsetRect(contentFrame, 1, 1)];
+			 NSBezierPath *contentPath = [NSBezierPath bezierPathWithRect:NSInsetRect(contentFrame, 1, 1)];
 			 [contentPath fill];
 
 			 [image unlockFocus];
@@ -719,19 +641,24 @@ extern void *ctx;
 
 - (void)windowDidBecomeKeyNotification:(NSNotification *)notification
 {
-	// Don't focus on Timer Bar if the Editor is presented
-	if (self.timeEntrypopover.isShown)
-	{
-		return;
-	}
+    // Don't focus on Timer Bar if the Editor is presented
+    if (self.timeEntrypopover.isShown)
+    {
+        return;
+    }
 
-	// Only focus if the window is main
-	// Otherwise, shouldn't override the firstResponder
-	if (notification.object != self.view.window)
-	{
-		return;
-	}
-	[self.timerEditViewController focusTimer];
+    // Only focus if the window is main
+    // Otherwise, shouldn't override the firstResponder
+    if (notification.object != self.view.window)
+    {
+        return;
+    }
+    [self.delegate shouldFocusTimer];
+}
+
+- (void)loadMoreIfNeedAtDate:(NSDate *)date;
+{
+	[self.dataSource loadMoreTimeEntryIfNeedAt:date];
 }
 
 - (NSTouchBar *)makeTouchBar
@@ -741,7 +668,10 @@ extern void *ctx;
 
 - (void)touchBarSettingChangedNotification:(NSNotification *)noti
 {
-	self.touchBar = nil;
+    if (@available(macOS 10.12.2, *))
+    {
+        self.touchBar = nil;
+    }
 }
 
 @end

@@ -53,9 +53,34 @@ jobs:
   macos:
     runs-on: macOS-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
       with:
         fetch-depth: 1
+    - name: Prepare ENV
+      run: |
+        TAG_NAME=$(./dist/get-tag-name.sh)
+        version=${TAG_NAME/v/}
+        timestamp=$(date '+%Y-%m-%d-%H-%M-%S')
+        escaped_version=$(echo $version | sed 's/\./_/g')
+        installer=TogglDesktop-$escaped_version-$timestamp.dmg
+        installer_name=TogglDesktop-$escaped_version.dmg
+
+        echo $version
+        echo $installer
+        echo $installer_name
+
+        # Export env to all future steps
+        echo "::set-env name=TAG_NAME::$TAG_NAME"
+        echo "::set-env name=version::$version"
+        echo "::set-env name=timestamp::$timestamp"
+        echo "::set-env name=escaped_version::$escaped_version"
+        echo "::set-env name=installer::$installer"
+        echo "::set-env name=installer_name::$installer_name"
+    - name: Setup Golang env
+      if: github.event_name == 'release'
+      uses: actions/setup-go@v1
+      with:
+        version: 1.13
     - name: Import signing key
       run: |
         # Create a new keychian and make it default
@@ -63,8 +88,8 @@ jobs:
         security default-keychain -s ~/Library/Keychains/build.keychain
 
         # Mac Developer Certificate
-        base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPMENT }}" > Bundle_cert_macos_development.p12
-        security import ./Bundle_cert_macos_development.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPMENT_PASSWORD }} -T /usr/bin/codesign
+        base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPER }}" > Bundle_cert_macos_developer.p12
+        security import ./Bundle_cert_macos_developer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPER_PASSWORD }} -T /usr/bin/codesign
 
         # Application Certificate
         base64 -D <<< "${{ secrets.CERT_MACOS_APPLICATION }}" > Bundle_cert_macos_distribution.p12
@@ -78,9 +103,6 @@ jobs:
         security unlock-keychain -p password ~/Library/Keychains/build.keychain
         security set-keychain-settings -lu
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k password ~/Library/Keychains/build.keychain
-    - name: Build the dependencies
-      run: |
-        bash ./dist/osx/build.sh dependencies
     - name: Get cocoapods
       run: |
         bash ./dist/osx/build.sh cocoapods
@@ -88,12 +110,9 @@ jobs:
       run: |
         bash ./dist/osx/build.sh app
     - name: Insert version string
-      if: github.event_name == 'release'
       run: |
-        TAG_NAME=$(./dist/get-tag-name.sh)
         bash ./dist/osx/build.sh plist
     - name: Codesign
-      if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh sign
     - name: Notarize
@@ -106,12 +125,21 @@ jobs:
       if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh dmg
-    - name: Upload to GitHub Release
+    - name: Update Appcast
       if: github.event_name == 'release'
       run: |
-        TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="TogglDesktop.dmg" renameto="TogglDesktop-${TAG_NAME/v/}.dmg"
-
+        base64 -D <<< "${{ secrets.APPCAST_PRIVATE_PEM }}" > dsa_priv.pem
+        bash ./dist/osx/build.sh appcast
+    - name: Upload
+      if: github.event_name == 'release'
+      run: |
+        export "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        bash ./dist/osx/build.sh upload
+    - name: Update Release
+      if: github.event_name == 'release'
+      run: |
+        bash ./dist/osx/build.sh update_release
+   
   linux-basic:
     runs-on: ubuntu-latest
     if: github.event_name != 'release'
@@ -131,10 +159,6 @@ jobs:
       run: |
         pushd build-tarball
         ../dist/run-tests.sh test=./src/test/TogglAppTest name="App" slack_url=${{ secrets.SLACK_HOOK_URL }} slack_channel="#desktop-bots"
-    - name: Run API test
-      run: |
-        pushd build-tarball
-        ../dist/run-tests.sh test=./src/test/TogglApiTest name="API" slack_url=${{ secrets.SLACK_HOOK_URL }} slack_channel="#desktop-bots"
 
   linux-tarball:
     runs-on: ubuntu-16.04
@@ -233,16 +257,31 @@ jobs:
         base64 -d Certificate.b64 > Certificate.pfx
         cp Certificate.pfx dist/windows
       shell: bash
-    - name: Install dependencies
-      run: |
-        choco install nsis -y
     - name: Set version
       shell: bash
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         echo "Setting version to ${TAG_NAME/v/}"
         bash dist/windows/scripts/set_version.sh "${TAG_NAME/v/}"
+    - name: Cache POCO bin
+      id: cache-poco-bin
+      uses: actions/cache@v1
+      with:
+        path: third_party/poco/bin
+        key: ${{ runner.os }}-poco-bin-1.9.0
+    - name: Cache POCO lib
+      id: cache-poco-lib
+      uses: actions/cache@v1
+      with:
+        path: third_party/poco/lib
+        key: ${{ runner.os }}-poco-lib-1.9.0
+    - name: Build on Windows x86 without POCO
+      if: steps.cache-poco-bin.outputs.cache-hit == 'true'
+      shell: cmd
+      run: |
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.NoPoco.sln
     - name: Build on Windows x86
+      if: steps.cache-poco-bin.outputs.cache-hit != 'true'
       shell: cmd
       run: |
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.sln
@@ -251,6 +290,10 @@ jobs:
       run: |
         ./dist/windows/scripts/sign.sh
       shell: bash
+    - name: Install NSIS
+      if: github.event_name == 'release'
+      run: |
+        choco install nsis -y
     - name: Create x86 installer
       if: github.event_name == 'release'
       run: |
@@ -260,7 +303,7 @@ jobs:
       if: github.event_name == 'release'
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Windows Kits\10\Tools\bin\i386\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx dist\windows\TogglDesktopInstaller.exe
+        "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx dist\windows\TogglDesktopInstaller.exe
     - name: Upload to GitHub
       if: github.event_name == 'release'
       run: |
@@ -280,16 +323,31 @@ jobs:
         base64 -d Certificate.b64 > Certificate.pfx
         cp Certificate.pfx dist/windows
       shell: bash
-    - name: Install dependencies
-      run: |
-        choco install nsis -y
     - name: Set version
       shell: bash
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         echo "Setting version to ${TAG_NAME/v/}"
         bash dist/windows/scripts/set_version.sh "${TAG_NAME/v/}"
+    - name: Cache POCO bin64
+      id: cache-poco-bin64
+      uses: actions/cache@v1
+      with:
+        path: third_party/poco/bin64
+        key: ${{ runner.os }}-poco-bin64-1.9.0
+    - name: Cache POCO lib64
+      id: cache-poco-lib64
+      uses: actions/cache@v1
+      with:
+        path: third_party/poco/lib64
+        key: ${{ runner.os }}-poco-lib64-1.9.0
+    - name: Build on Windows x64 without POCO
+      if: steps.cache-poco-bin64.outputs.cache-hit == 'true'
+      shell: cmd
+      run: |
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.NoPoco.sln
     - name: Build on Windows x64
+      if: steps.cache-poco-bin64.outputs.cache-hit != 'true'
       shell: cmd
       run: |
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.sln
@@ -298,6 +356,10 @@ jobs:
       run: |
         ./dist/windows/scripts/sign.sh
       shell: bash
+    - name: Install NSIS
+      if: github.event_name == 'release'
+      run: |
+        choco install nsis -y
     - name: Make x64 installer
       if: github.event_name == 'release'
       run: |
@@ -307,14 +369,30 @@ jobs:
       if: github.event_name == 'release'
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Windows Kits\10\Tools\bin\i386\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx dist\windows\TogglDesktopInstaller-x64.exe
+        "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx dist\windows\TogglDesktopInstaller-x64.exe
     - name: Upload to GitHub
       if: github.event_name == 'release'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller-x64.exe" renameto="TogglDesktopInstaller-${TAG_NAME/v/}-x64.exe"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller-x64.exe" renameto="TogglDesktopInstaller-x64-${TAG_NAME/v/}.exe"
       shell: bash
 
+  windows-dev-release:
+    needs: [windows-32bit, windows-64bit]
+    runs-on: ubuntu-latest # anything supporting bash
+    if: github.event_name == 'release'
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+    - name: Add new dev channel release
+      shell: bash
+      run: |
+        git config user.name "runner"
+        git config user.email "action@github.com"
+        TAG_NAME=$(./dist/get-tag-name.sh)
+        ./dist/update_releases.sh win dev ${TAG_NAME/v/}
+    
   windows-store:
     runs-on: windows-2019
     if: github.event_name == 'release'

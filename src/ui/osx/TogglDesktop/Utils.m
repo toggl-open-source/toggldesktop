@@ -35,28 +35,6 @@ extern void *ctx;
 
 @implementation Utils
 
-+ (ScriptResult *)runScript:(NSString *)script
-{
-	ScriptResult *result = nil;
-	char *text = 0;
-
-	@try {
-		int64_t err = 0;
-		text = toggl_run_script(ctx, [script UTF8String], &err);
-		result = [[ScriptResult alloc] init];
-		result.err = err;
-		result.text = [NSString stringWithUTF8String:text];
-	}
-	@catch (NSException *e) {
-		NSLog(@"Script exception: %@", e);
-	} @finally {
-		free(text);
-		NSLog(@"Script result: %@", result);
-	}
-
-	return result;
-}
-
 + (void)runClearCommand
 {
 	NSString *location = @"Library/Application Support/TogglDesktop/.Sparkle";
@@ -75,7 +53,7 @@ extern void *ctx;
 + (void)setUpdaterChannel:(NSString *)channel
 {
 #ifdef SPARKLE
-	NSString *url = [NSString stringWithFormat:@"https://assets.toggl.com/installers/darwin_%@_appcast.xml", channel];
+	NSString *url = [NSString stringWithFormat:@"https://toggl-open-source.github.io/toggldesktop/assets/releases/darwin_%@_appcast.xml", channel];
 
 	NSAssert([SUUpdater sharedUpdater], @"No updater found");
 	NSLog(@"Setting updater feed URL to %@", url);
@@ -148,25 +126,6 @@ extern void *ctx;
 	return path;
 }
 
-+ (BOOL)deleteTimeEntryWithConfirmationWithGUID:(NSString *)guid title:(NSString *)title
-{
-	NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", title];
-
-	NSAlert *alert = [[NSAlert alloc] init];
-
-	[alert addButtonWithTitle:@"OK"];
-	[alert addButtonWithTitle:@"Cancel"];
-	[alert setMessageText:msg];
-	[alert setInformativeText:@"Deleted time entries cannot be restored."];
-	[alert setAlertStyle:NSWarningAlertStyle];
-	if ([alert runModal] != NSAlertFirstButtonReturn)
-	{
-		return NO;
-	}
-
-	return toggl_delete_time_entry(ctx, [guid UTF8String]);
-}
-
 /*
  * Returns whether or not an NSString represents a numeric value.
  * For more info see:  http://appliedsoftwaredesign.com/blog/iphone-sdk-nsstring-numeric/
@@ -185,6 +144,26 @@ extern void *ctx;
 
 	[forgot addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, forgot.length)];
 	[field setAttributedStringValue:forgot];
+}
+
++ (NSString *)formatTimeFromSeconds:(int)numberOfSeconds
+{
+	int seconds = numberOfSeconds % 60;
+	int minutes = (numberOfSeconds / 60) % 60;
+	int hours = numberOfSeconds / 3600;
+
+	// we have >=1 hour => example : 3h:25m
+	if (hours)
+	{
+		return [NSString stringWithFormat:@"%dh:%02dm", hours, minutes];
+	}
+	// we have 0 hours and >=1 minutes => example : 3m:25s
+	if (minutes)
+	{
+		return [NSString stringWithFormat:@"%dm:%02ds", minutes, seconds];
+	}
+	// we have only seconds example : 25s
+	return [NSString stringWithFormat:@"%ds", seconds];
 }
 
 @end
@@ -240,10 +219,16 @@ BOOL wasLaunchedAsHiddenLoginItem()
 		if (CFEqual(item_url_ref, url_ref))
 		{
 			CFBooleanRef hidden = LSSharedFileListItemCopyProperty(item, kLSSharedFileListLoginItemHidden);
-			return (hidden && kCFBooleanTrue == hidden);
+			BOOL value = (hidden && kCFBooleanTrue == hidden);
+            if (hidden != NULL) {
+                CFRelease(hidden);
+            }
+            CFRelease(login_items_array);
+            return value;
 		}
 	}
 
+    CFRelease(login_items_array);
 	return NO;
 }
 

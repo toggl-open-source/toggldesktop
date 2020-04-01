@@ -5,7 +5,9 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Input;
 using System.Windows.Media;
+using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using Rectangle = System.Drawing.Rectangle;
 
@@ -19,7 +21,15 @@ public static class Utils
     {
         if (editPopup != null)
         {
-            editPopup.Width = Toggl.GetEditViewWidth();
+            var editWidth = Toggl.GetEditViewWidth();
+            if (editWidth > 0 && editWidth < int.MaxValue)
+            {
+                editPopup.Width = editWidth;
+            }
+            else
+            {
+                editPopup.Width = editPopup.MinWidth;
+            }
         }
         if (Toggl.GetWindowMaximized())
         {
@@ -42,8 +52,9 @@ public static class Utils
         }
         else
         {
-            mainWindow.Width = 330;
-            mainWindow.Height = 510;
+            mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            mainWindow.Width = 300;
+            mainWindow.Height = 458;
             Toggl.Debug("Failed to retrieve window location and size. Setting the default size.");
         }
 
@@ -66,10 +77,23 @@ public static class Utils
             x = Toggl.GetMiniTimerX();
             y = Toggl.GetMiniTimerY();
             w = Toggl.GetMiniTimerW();
-            miniTimer.Left = x;
-            miniTimer.Top = y;
-            miniTimer.Width = w;
-            Toggl.Debug("Retrieved mini timer location ({0}x{1} by {2})", x, y, w);
+            if (ValidateMiniTimerWindowSettings(x, y, w))
+            {
+                miniTimer.Left = x;
+                miniTimer.Top = y;
+                miniTimer.Width = w;
+                Toggl.Debug("Retrieved mini timer location ({0}x{1} by {2})", x, y, w);
+            }
+            else
+            {
+                const int defaultX = 0;
+                const int defaultY = 0;
+                const int defaultWidth = 360;
+                miniTimer.Left = defaultX;
+                miniTimer.Top = defaultY;
+                miniTimer.Width = defaultWidth;
+                Toggl.Debug($"Set default mini-timer position and size: ({defaultX}x{defaultY} by {defaultWidth}");
+            }
 
             CheckMinitimerVisibility(miniTimer);
         }
@@ -78,6 +102,11 @@ public static class Utils
     private static bool ValidateWindowSettings(long x, long y, long h, long w)
     {
         return new[] {x, y, h, w}.All(v => v >= int.MinValue && v <= int.MaxValue) && h > 0 && w > 0;
+    }
+
+    private static bool ValidateMiniTimerWindowSettings(long x, long y, long w)
+    {
+        return new[] {x, y, w}.All(v => v >= int.MinValue && v <= int.MaxValue) && w > 0;
     }
 
     public static void CheckMinitimerVisibility(MiniTimerWindow miniTimer)
@@ -193,95 +222,50 @@ public static class Utils
 
     #region keyboard shortcuts
 
-    public struct KeyCombination : IEquatable<KeyCombination>
+    public static void SetShortcutForShow(HotKey hotKey)
     {
-        private readonly ModifierKeys modifiers;
-        private readonly string keyCode;
-
-        public KeyCombination(ModifierKeys modifiers, string keyCode)
-        {
-            this.modifiers = modifiers;
-            this.keyCode = keyCode;
-        }
-
-        public ModifierKeys Modifiers {
-            get {
-                return this.modifiers;
-            }
-        }
-        public string KeyCode {
-            get {
-                return this.keyCode;
-            }
-        }
-
-        public bool Equals(KeyCombination other)
-        {
-            return this.modifiers == other.modifiers && string.Equals(this.keyCode, other.keyCode);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            return obj is KeyCombination && Equals((KeyCombination)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return ((int)this.modifiers * 397) ^ (this.keyCode != null ? this.keyCode.GetHashCode() : 0);
-            }
-        }
-
-        public static bool operator ==(KeyCombination c0, KeyCombination c1)
-        {
-            return c0.Equals(c1);
-        }
-
-        public static bool operator !=(KeyCombination c0, KeyCombination c1)
-        {
-            return !(c0 == c1);
-        }
+        setShortcut(hotKey, "show",
+            Toggl.SetKeyModifierShow,
+            Toggl.SetKeyShow
+        );
     }
 
-    public static void SetShortcutForShow(KeyCombination? e)
+    public static void SetShortcutForStart(HotKey hotKey)
     {
-        setShortcut(e, "show",
-                    Toggl.SetKeyModifierShow,
-                    Toggl.SetKeyShow
-                   );
-    }
-
-    public static void SetShortcutForStart(KeyCombination? e)
-    {
-        setShortcut(e, "start",
+        setShortcut(hotKey, "start",
                     Toggl.SetKeyModifierStart,
                     Toggl.SetKeyStart
                    );
     }
 
-    private static void setShortcut(KeyCombination? e, string shortcutName,
-                                    Action<ModifierKeys> setModifier, Action<string> setKey)
+    private static void setShortcut(HotKey hotKey, string shortcutName,
+        Action<ModifierKeys> setModifier, Action<string> setKey)
     {
+        if (hotKey == null)
+        {
+            return;
+        }
+
         try
         {
-            if (e.HasValue)
+            if (hotKey.Key != Key.None)
             {
-                setModifier(e.Value.Modifiers);
-                setKey(e.Value.KeyCode);
+                setModifier(hotKey.ModifierKeys);
+                setKey(hotKey.Key.ToString());
             }
             else
             {
-                setModifier(0);
+                setModifier(ModifierKeys.None);
                 setKey(null);
             }
         }
         catch (Exception ex)
         {
-            Toggl.Debug(string.Format("Could not set shortcut for {0}: {1}", shortcutName, ex));
+            Toggl.Debug($"Could not set shortcut for {shortcutName}: {ex}");
         }
     }
+
+    public static bool IsNullOrNone(this HotKey hotKey) => hotKey == null || hotKey.Key == Key.None;
 
     #endregion
 
@@ -307,6 +291,7 @@ public static class Utils
         #region registry
 
         private const string StartupAppsRegistryPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
+        private const string PoliciesRegistryPath = @"Software\Policies\Toggl\TogglDesktop";
         public static bool GetLaunchOnStartupRegistry()
         {
             var subKey = Registry.CurrentUser.OpenSubKey(StartupAppsRegistryPath);
@@ -337,6 +322,15 @@ public static class Utils
                     subKey.DeleteValue("TogglDesktop");
                 }
             }
+        }
+
+        public static bool GetIsUpdateCheckDisabledFromRegistry()
+        {
+            // On Windows platform, system admin can disable
+            // automatic update check via registry key.
+            var subKey = Registry.LocalMachine.OpenSubKey(PoliciesRegistryPath, false);
+            var value = subKey?.GetValue("UpdateCheckDisabled", false);
+            return value != null && Convert.ToBoolean(value);
         }
 
         public static bool TryOpenInDefaultBrowser(string url)

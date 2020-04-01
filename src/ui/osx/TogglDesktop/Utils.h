@@ -21,10 +21,9 @@
 + (NSString *)applicationSupportDirectory:(NSString *)environment;
 + (bool)isNumeric:(NSString *)checkText;
 + (void)addUnderlineToTextField:(NSTextField *)field;
++ (NSString *)formatTimeFromSeconds:(int)numberOfSeconds;
 + (void)setUpdaterChannel:(NSString *)channel;
-+ (ScriptResult *)runScript:(NSString *)script;
 + (void)runClearCommand;
-+ (BOOL)deleteTimeEntryWithConfirmationWithGUID:(NSString *)guid title:(NSString *)title;
 @end
 
 BOOL wasLaunchedAsLoginOrResumeItem(void);

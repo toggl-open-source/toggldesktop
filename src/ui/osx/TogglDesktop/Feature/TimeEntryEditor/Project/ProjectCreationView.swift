@@ -121,7 +121,7 @@ final class ProjectCreationView: NSView {
 
         initCommon()
         getRandomColor()
-        selecteFirstWorkspace()
+        selectDefaultWorkspace()
         updateLayoutState()
     }
 
@@ -305,13 +305,15 @@ extension ProjectCreationView {
         addBtn.isEnabled = true
     }
 
-    fileprivate func selecteFirstWorkspace() {
-        guard !workspaceDatasource.items.isEmpty else { return }
-        workspaceDatasource.selectRow(at: 0)
+    fileprivate func selectDefaultWorkspace() {
+        guard let workspaceID = selectedTimeEntry?.workspaceID else { return }
+        guard let workspaces = workspaceDatasource.items as? [Workspace] else { return }
+        let index = workspaces.firstIndex(where: { $0.WID == workspaceID }) ?? 0
+        workspaceDatasource.selectRow(at: index)
     }
 
     fileprivate func resetViews() {
-        selecteFirstWorkspace()
+        selectDefaultWorkspace()
         clientAutoComplete.stringValue = ""
         selectedClient = nil
         selectedColor = originalColor
@@ -406,6 +408,21 @@ extension ProjectCreationView: NSTextFieldDelegate {
         if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
             cancelBtnOnTap(self)
             return true
+        }
+
+        // Enter
+        // Easy to create a new project by pressing Enter Twice
+        if commandSelector == #selector(NSResponder.insertNewline(_:)) {
+
+            if isValidDataForProjectCreation && (control == projectTextField || control == workspaceAutoComplete || control == clientAutoComplete) {
+
+                // Make sure that the user is selected all text
+                if let selectedRange = control.currentEditor()?.selectedRange,
+                    selectedRange.length == control.stringValue.count {
+                    addBtnOnTap(self)
+                    return true
+                }
+            }
         }
 
         return false

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="TimelineActivityHoverController" customModule="TogglDesktop" customModuleProvider="target">
+            <connections>
+                <outlet property="eventStackView" destination="rwS-sw-Itv" id="5eQ-4a-h0a"/>
+                <outlet property="timeLbl" destination="yUv-wJ-ujD" id="Auw-Mj-Xod"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="200" height="41"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <visualEffectView appearanceType="inheritedVibrantLight" blendingMode="withinWindow" material="popover" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="Yld-ky-HAR">
+                    <rect key="frame" x="0.0" y="0.0" width="200" height="41"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yUv-wJ-ujD">
+                            <rect key="frame" x="8" y="15" width="85" height="16"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" title="08:00 - 08:15" id="thW-lH-ZkV">
+                                <font key="font" metaFont="systemMedium" size="12"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rwS-sw-Itv">
+                            <rect key="frame" x="10" y="10" width="180" height="0.0"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="500" id="f7T-Z0-gis"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="rwS-sw-Itv" secondAttribute="bottom" constant="10" id="DSz-od-Zv9"/>
+                        <constraint firstItem="yUv-wJ-ujD" firstAttribute="leading" secondItem="Yld-ky-HAR" secondAttribute="leading" constant="10" id="EJj-ho-ebO"/>
+                        <constraint firstItem="yUv-wJ-ujD" firstAttribute="top" secondItem="Yld-ky-HAR" secondAttribute="top" constant="10" id="Sga-uc-ek4"/>
+                        <constraint firstAttribute="trailing" secondItem="rwS-sw-Itv" secondAttribute="trailing" constant="10" id="iRy-Rm-4ac"/>
+                        <constraint firstItem="rwS-sw-Itv" firstAttribute="top" secondItem="yUv-wJ-ujD" secondAttribute="bottom" constant="5" id="qVk-nq-8t5"/>
+                        <constraint firstItem="rwS-sw-Itv" firstAttribute="leading" secondItem="Yld-ky-HAR" secondAttribute="leading" constant="10" id="um7-uk-f5u"/>
+                    </constraints>
+                </visualEffectView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="Yld-ky-HAR" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="P4E-e2-F0b"/>
+                <constraint firstAttribute="bottom" secondItem="Yld-ky-HAR" secondAttribute="bottom" id="ZnL-8c-6T7"/>
+                <constraint firstItem="Yld-ky-HAR" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="hdA-55-8FP"/>
+                <constraint firstAttribute="trailing" secondItem="Yld-ky-HAR" secondAttribute="trailing" id="rOz-Pi-xut"/>
+            </constraints>
+            <point key="canvasLocation" x="-161" y="-103.5"/>
+        </customView>
+    </objects>
+</document>

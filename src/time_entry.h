@@ -6,11 +6,11 @@
 #include <string>
 #include <vector>
 
-#include "./base_model.h"
-#include "./formatter.h"
-#include "./types.h"
+#include "base_model.h"
+#include "formatter.h"
+#include "types.h"
 
-#include "Poco/Types.h"
+#include <Poco/Types.h>
 
 namespace toggl {
 
@@ -133,7 +133,7 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
 
     // Implement TimedEvent
 
-    virtual Poco::Int64 Duration() const override {
+    virtual const Poco::Int64 &Duration() const {
         return DurationInSeconds();
     }
 

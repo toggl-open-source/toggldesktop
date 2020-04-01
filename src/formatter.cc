@@ -1,36 +1,37 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/formatter.h"
+#include "formatter.h"
 
 #include <time.h>
 #include <sstream>
 #include <cctype>
 #include <set>
 
-#include "./client.h"
-#include "./gui.h"
-#include "./project.h"
-#include "./task.h"
-#include "./time_entry.h"
-#include "./workspace.h"
+#include "client.h"
+#include "gui.h"
+#include "project.h"
+#include "task.h"
+#include "time_entry.h"
+#include "workspace.h"
+#include "util/logger.h"
 
-#include "Poco/DateTimeFormat.h"
-#include "Poco/DateTimeFormatter.h"
-#include "Poco/DateTimeParser.h"
-#include "Poco/LocalDateTime.h"
-#include "Poco/Logger.h"
-#include "Poco/NumberFormatter.h"
-#include "Poco/NumberParser.h"
-#include "Poco/String.h"
-#include "Poco/StringTokenizer.h"
-#include "Poco/Types.h"
-#include "Poco/UTF8String.h"
+#include <Poco/DateTimeFormat.h>
+#include <Poco/DateTimeFormatter.h>
+#include <Poco/DateTimeParser.h>
+#include <Poco/LocalDateTime.h>
+#include <Poco/NumberFormatter.h>
+#include <Poco/NumberParser.h>
+#include <Poco/String.h>
+#include <Poco/StringTokenizer.h>
+#include <Poco/Types.h>
+#include <Poco/UTF8String.h>
 
 namespace toggl {
 
 const std::string Format::Classic = std::string("classic");
 const std::string Format::Improved = std::string("improved");
 const std::string Format::Decimal = std::string("decimal");
+const std::string Format::ImprovedOnlyMinAndSec = std::string("improvedOnlyMinAndSec");
 
 std::string Formatter::TimeOfDayFormat = std::string("");
 std::string Formatter::DurationFormat = Format::Improved;
@@ -57,7 +58,6 @@ std::string Formatter::JoinTaskName(
             ss << ". ";
         }
         ss << p->Name();
-        empty = false;
         if (p->CID()) {
             ss << ". "
                << p->ClientName();
@@ -86,6 +86,10 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
     Poco::LocalDateTime datetime(ts);
 
+    return FormatDateHeader(datetime);
+}
+
+std::string Formatter::FormatDateHeader(const Poco::LocalDateTime datetime) {
     Poco::LocalDateTime today;
     if (today.year() == datetime.year() &&
             today.month() == datetime.month() &&
@@ -476,8 +480,10 @@ std::string Formatter::FormatDuration(
     // So format hours by hand:
     std::stringstream ss;
     Poco::Int64 hours = duration / 3600;
-    ss << hours;
-    ss << ":";
+    if (Format::ImprovedOnlyMinAndSec != format_name) {
+        ss << hours;
+        ss << ":";
+    }
     Poco::Timespan span(duration * Poco::Timespan::SECONDS);
     if (with_seconds) {
         ss << Poco::DateTimeFormatter::format(span, "%M:%S");
@@ -506,20 +512,12 @@ std::time_t Formatter::Parse8601(const std::string &iso_8601_formatted_date) {
 
     // Sun  9 Sep 2001 03:46:40 EET
     if (epoch_time < 1000000000) {
-        Poco::Logger &logger = Poco::Logger::get("Formatter");
-        std::stringstream ss;
-        ss  << "Parsed timestamp is too small, will interpret as 0: "
-            << epoch_time;
-        logger.warning(ss.str());
+        Logger("Formatter").warning("Parsed timestamp is too small, will interpret as 0: ", epoch_time);
         return 0;
     }
 
     if (epoch_time > 2000000000) {
-        Poco::Logger &logger = Poco::Logger::get("Formatter");
-        std::stringstream ss;
-        ss  << "Parsed timestamp is too large, will interpret as 0: "
-            << epoch_time;
-        logger.warning(ss.str());
+        Logger("Formatter").warning("Parsed timestamp is too large, will interpret as 0: ", epoch_time);
         return 0;
     }
 

@@ -3,13 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance viewModels:TimeEntryListViewModel, IsDesignTimeCreatable=False}"
              Focusable="True">
 
-    <UserControl.Resources>
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Setter Property="Background" Value="{DynamicResource Toggl.Background}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CurrentScreen}" Value="{x:Static viewModels:Screen.TimeEntriesList}">
+                    <Setter Property="Background" Value="{DynamicResource Toggl.TimeEntryListBackground}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
 
+    <UserControl.Resources>
         <!-- ReSharper disable once Xaml.RedundantResource -->
         <Storyboard x:Key="RotateLoadMoreSpinner" BeginTime="00:00:00.000"
                         Duration="00:00:1.000" RepeatBehavior="Forever">
@@ -23,6 +34,8 @@
         <RoutedUICommand x:Key="HighlightEdit" />
         <RoutedUICommand x:Key="HighlightContinue" />
         <RoutedUICommand x:Key="HighlightDelete" />
+        <RoutedUICommand x:Key="HighlightFirst" />
+        <RoutedUICommand x:Key="HighlightLast" />
         <RoutedUICommand x:Key="FocusTimer" />
         <RoutedUICommand x:Key="ExpandSelectedItem" />
         <RoutedUICommand x:Key="CollapseSelectedItem" />
@@ -33,6 +46,8 @@
     <UserControl.CommandBindings>
         <CommandBinding Command="{StaticResource HighlightDown}" Executed="onHighlightDown"/>
         <CommandBinding Command="{StaticResource HighlightUp}" Executed="onHighlightUp"/>
+        <CommandBinding Command="{StaticResource HighlightFirst}" Executed="onHighlightFirst"/>
+        <CommandBinding Command="{StaticResource HighlightLast}" Executed="onHighlightLast"/>
         <CommandBinding Command="{StaticResource HighlightEdit}" Executed="onHighlightEdit"/>
         <CommandBinding Command="{StaticResource HighlightContinue}" Executed="onHighlightContinue"/>
         <CommandBinding Command="{StaticResource HighlightDelete}" Executed="onHighlightDelete"/>
@@ -46,10 +61,16 @@
     <UserControl.InputBindings>
         <KeyBinding Key="Down" Command="{StaticResource HighlightDown}" />
         <KeyBinding Key="Up" Command="{StaticResource HighlightUp}" />
+        <KeyBinding Key="Tab" Command="{StaticResource HighlightDown}" />
+        <KeyBinding Key="Tab" Modifiers="Shift" Command="{StaticResource HighlightUp}" />
         <KeyBinding Key="Enter" Command="{StaticResource HighlightEdit}" />
         <KeyBinding Key="Space" Command="{StaticResource HighlightContinue}" />
         <KeyBinding Key="Back" Command="{StaticResource HighlightDelete}" />
         <KeyBinding Key="Delete" Command="{StaticResource HighlightDelete}" />
+        <KeyBinding Key="PageUp" Command="{StaticResource HighlightFirst}" />
+        <KeyBinding Key="Up" Modifiers="Control" Command="{StaticResource HighlightFirst}" />
+        <KeyBinding Key="PageDown" Command="{StaticResource HighlightLast}" />
+        <KeyBinding Key="Down" Modifiers="Control" Command="{StaticResource HighlightLast}" />
         <KeyBinding Key="Escape" Command="{StaticResource FocusTimer}" />
         <KeyBinding Key="Right" Command="{StaticResource ExpandSelectedItem}" />
         <KeyBinding Key="Left" Command="{StaticResource CollapseSelectedItem}" />
@@ -58,98 +79,80 @@
     </UserControl.InputBindings>
     
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Visible"
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled"
                       HorizontalAlignment="Stretch"
-                      SizeChanged="onSizeChanged"
-                      Background="#f7f7f7"
-                      Style="{StaticResource CustomSrollViewer}"
-                      >
-            <Grid Background="{StaticResource ViewBackgroundLight}"> 
+                      Margin="4 0"
+                      Focusable="False"
+                      IsTabStop="False"
+                      PreviewKeyDown="UIElement_OnPreviewKeyDown">
+            <Grid Margin="0 4">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 
-                <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch" Grid.Row="0" Margin="0 0 0 10">
-
-                </VirtualizingStackPanel>
-                <Rectangle x:Name="highlightRectangleTop" x:FieldModifier="private" Grid.Row="0"
-                           Fill="#f7f7f7" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="0"
-                           IsHitTestVisible="False"/>
-                <Rectangle x:Name="highlightRectangleBottom" x:FieldModifier="private" Grid.Row="0"
-                           Fill="#f7f7f7" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="0"
-                           IsHitTestVisible="False"/>
-
-                <Border x:Name="keyboardHighlight" x:FieldModifier="private" Grid.Row="0" Visibility="Visible"
-                        HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="59" Margin="-10 20"
-                        Background="White">
-                    <Border.Effect>
-                        <DropShadowEffect
-                            Direction="270"
-                            ShadowDepth="1"
-                            BlurRadius="10"
-                            Opacity="0.5"/>
-                    </Border.Effect>
-                    <toggl:TimeEntryCell x:Name="keyboardHighlightCellImposter" x:FieldModifier="private"
-                        Margin="10 0" IsFloating="True" VerticalAlignment="Center" Height="59"
-                        />
-                </Border>
-
+                <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch" Grid.Row="0"
+                                        KeyboardNavigation.TabNavigation="Contained" />
                 
-                <Button Grid.Row="1" Style="{StaticResource FlatButton}"
-                        Margin="10" HorizontalAlignment="Center" Focusable="False"
-                        Name="loadMoreButton" x:FieldModifier="private"
+                <Button Grid.Row="1" Style="{StaticResource Toggl.OutlinedButton}"
+                        Margin="12" HorizontalAlignment="Center" Focusable="False"
+                        Height="32" Width="96"
+                        Visibility="{Binding ShowLoadMore, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        IsEnabled="{Binding IsViewEnabled}"
                         Click="onLoadMoreButtonClick">
-                    <Grid Height="24" Width="120">
+                    <Grid>
                         <Image Source="/TogglDesktop;component/Resources/login-spinner.png"
                             Name="loadMoreSpinner" x:FieldModifier="private"
-                            Stretch="Fill" Width="16" Height="16"
+                            Stretch="Fill" Width="24" Height="24"
                             VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Visibility="Collapsed" Opacity="0.5"
+                            Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Opacity="0.6"
                             UseLayoutRounding="False">
                             <Image.LayoutTransform>
                                 <RotateTransform Angle="00"/>
                             </Image.LayoutTransform>
                         </Image>
-                        <TextBlock Name="loadMoreButtonText" x:FieldModifier="private"
-                            VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Foreground="#333333"
-                            Text="LOAD MORE"/>
+                        <TextBlock Style="{DynamicResource Toggl.BodyText}"
+                                   Visibility="{Binding IsViewEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                                   Text="Load more"/>
                     </Grid>
                 </Button>
+
+                <StackPanel Grid.Row="0" Orientation="Vertical"
+                            Visibility="{Binding CurrentScreen, Converter={StaticResource EnumEqualToVisibilityConverter}, ConverterParameter={x:Static viewModels:Screen.Welcome}}">
+                    <Image Source="/TogglDesktop;component/Resources/stopwatch.png"
+                           HorizontalAlignment="Center"
+                           Stretch="None"
+                           Margin="0 30 0 0"/>
+                    <TextBlock Style="{StaticResource Toggl.TitleText}"
+                               Margin="0 16 0 0"
+                               HorizontalAlignment="Center"
+                               Text="Welcome to Toggl" />
+                    <TextBlock Style="{StaticResource Toggl.BodyGrayText}"
+                               Margin="32 16 32 0"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Text="Time each activity you do and see where your hours go" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="0" Orientation="Vertical"
+                            Margin="0 0 0 4"
+                            Visibility="{Binding CurrentScreen, Converter={StaticResource EnumEqualToVisibilityConverter}, ConverterParameter={x:Static viewModels:Screen.NoRecentEntries}}">
+                    <Image Source="/TogglDesktop;component/Resources/spider.png"
+                           HorizontalAlignment="Center"
+                           Stretch="None"/>
+                    <TextBlock Style="{StaticResource Toggl.TitleText}"
+                               Margin="0 16 0 0"
+                               HorizontalAlignment="Center"
+                               Text="No recent entries" />
+                    <TextBlock Style="{StaticResource Toggl.BodyGrayText}"
+                               Margin="32 16 32 0"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Text="It’s been a long time since you’ve tracked your tasks!" />
+                </StackPanel>
             </Grid>
         </ScrollViewer>
-        <Rectangle Name="resizeBackground" x:FieldModifier="private"
-            VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                Width="17" Height="17" Fill="#f0f0f0" IsHitTestVisible="True"/>
-
-        <Button Name="emptyListText" x:FieldModifier="private" Visibility="Hidden"
-                        FontSize="14" Foreground="Gray" Cursor="Hand"
-                        Click="onEmptyListTextClick">
-            <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Control}}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border BorderThickness="0"
-                                        Background="{StaticResource ViewBackgroundLight}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Top"
-                                                      Margin="10 30"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-            <StackPanel>
-                <TextBlock Text="Welcome. Let's start tracking!"
-                           HorizontalAlignment="Center" Margin="0 0 0 10"/>
-                <TextBlock Text="If you have previous entries,"
-                           HorizontalAlignment="Center"/>
-                <TextBlock Text="click here to see them in reports."
-                           HorizontalAlignment="Center"/>
-            </StackPanel>
-        </Button>
     </Grid>
 </UserControl>

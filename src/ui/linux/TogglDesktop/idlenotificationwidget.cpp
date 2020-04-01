@@ -174,4 +174,7 @@ void IdleNotificationWidget::displayIdleNotification(
     ui->timeEntryDescriptionLabel->setText(description);
 
     display();
+
+    window()->raise();
+    window()->activateWindow();
 }

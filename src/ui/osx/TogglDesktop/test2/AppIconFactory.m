@@ -20,7 +20,13 @@
 			icon = [NSImage imageNamed:@"AppIconActive"];
 			break;
 		case AppIconTypeDefault :
-			icon = [NSImage imageNamed:@"AppIcon"];
+            if (@available(macOS 10.13.0, *))
+            {
+                icon = [NSImage imageNamed:@"AppIcon"]; // NSImageNameApplicationIcon causes lost icon app in NSAlert in 10.13+
+            } else {
+                icon = [NSImage imageNamed:NSImageNameApplicationIcon];
+            }
+
 			break;
 	}
 

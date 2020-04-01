@@ -5,13 +5,13 @@
 
 #include <string>
 
-#include "./types.h"
+#include "types.h"
 
 #include <json/json.h>  // NOLINT
 
-#include "Poco/Types.h"
+#include <Poco/Types.h>
 
-#include "./base_model.h"
+#include "base_model.h"
 
 namespace toggl {
 

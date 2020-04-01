@@ -3,6 +3,11 @@
 #ifndef SRC_CONST_H_
 #define SRC_CONST_H_
 
+// used later in the file
+#ifndef TOGGL_BUILD_TYPE
+#define TOGGL_BUILD_TYPE ""
+#endif
+
 #define kOneSecondInMicros 1000000
 
 #define kMaxTimeEntryDurationSeconds 3596400
@@ -10,6 +15,7 @@
 #define kSyncIntervalRangeSeconds 900
 #define kWebsocketRestartRangeSeconds 45
 #define kCheckUpdateIntervalSeconds 86400
+#define kCheckInAppMessageIntervalSeconds 14400
 #define kRequestThrottleSeconds 2
 #define kTimerStartInterval 10
 #define kTimelineSecondsToKeep 604800
@@ -18,7 +24,7 @@
 #define kBetaChannelPercentage 25
 #define kTimelineChunkSeconds 900
 #define kEnterpriseInstall false
-#define kDebianPackage false
+#define kDebianPackage (TOGGL_BUILD_TYPE == std::string("deb"))
 #define kTimelineUploadIntervalSeconds 60
 #define kTimelineUploadMaxBackoffSeconds (kTimelineUploadIntervalSeconds * 10)  // NOLINT
 #define kMaxFileSize 5242880  // 5MB
@@ -27,6 +33,7 @@
 #define kMinimumAllowedYear 2006
 #define kMaximumAllowedYear 2030
 #define kMaximumDescriptionLength 3000
+#define kTimeComparisonEpsilonMicroSeconds 100000 // 100 ms
 
 #define kLostPasswordURL "https://toggl.com/forgot-password?desktop=true"
 #define kGeneralSupportURL "https://support.toggl.com/toggl-on-my-desktop/"
@@ -110,5 +117,13 @@
 #define kAutocompleteItemTask 1
 #define kAutocompleteItemProject 2
 #define kAutocompleteItemWorkspace 3
+
+#define kTogglDesktopClientID_MacOS "toggldesktop.TogglDesktop"
+#define kAPIV8 "v8"
+#define kAPIV9 "v9"
+#define kGoogleProvider "google"
+#define kAppleProvider "apple"
+#define kGoogleAccessToken "google_access_token"
+#define kAppleAccessToken "apple_token"
 
 #endif  // SRC_CONST_H_

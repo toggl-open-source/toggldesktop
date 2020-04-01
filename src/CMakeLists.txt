@@ -3,11 +3,12 @@ set(CMAKE_CXX_FLAGS
 )
 if(TOGGL_PRODUCTION_BUILD)
     add_definitions(
-        -DAPP_ENVIRONMENT="\\\"production\\\""
+        -DAPP_ENVIRONMENT="production"
+        -DTOGGL_BUILD_TYPE="${TOGGL_BUILD_TYPE}"
         -DTOGGL_PRODUCTION_BUILD=1
     )
 else()
-    add_definitions(-DAPP_ENVIRONMENT="\\\"development\\\"")
+    add_definitions(-DAPP_ENVIRONMENT="development")
 endif()
 
 if(TOGGL_ALLOW_UPDATE_CHECK)
@@ -33,6 +34,8 @@ include_directories(
 
 # TogglDesktopLibrary sources
 set(LIBRARY_SOURCE_FILES
+    util/logger.cc
+
     base_model.cc
     batch_update_result.cc
     client.cc

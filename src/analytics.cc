@@ -5,20 +5,19 @@
 // https://developers.google.com/analytics/devguides/collection/protocol/v1/
 // or using Toggl's own backend when appropriate.
 
-#include "../src/analytics.h"
+#include "analytics.h"
 
 #include <sstream>
 
 #include <json/json.h>  // NOLINT
 
-#include "./const.h"
-#include "./https_client.h"
-#include "./platforminfo.h"
-#include "./settings.h"
-#include "./urls.h"
-#include "./user.h"
-
-#include "Poco/Logger.h"
+#include "const.h"
+#include "https_client.h"
+#include "platforminfo.h"
+#include "settings.h"
+#include "urls.h"
+#include "user.h"
+#include "util/logger.h"
 
 namespace toggl {
 
@@ -55,6 +54,30 @@ void Analytics::TrackOSDetails(const std::string &client_id) {
 
     Track(client_id, "osdetails", ss.str());
 }
+
+void Analytics::TrackInAppMessage(const std::string &client_id,
+                                  const std::string &id,
+                                  const Poco::Int64 type) {
+    std::stringstream ss;
+    ss << "message/" << id << "/";
+
+    if (type == 0) {
+        // in-app message shown on app start
+        ss << "show/appstart";
+    } else if (type == 1) {
+        // in-app message shown with periodic trigger
+        ss << "show/periodic";
+    } else if (type == 2) {
+        // in-app message close clicked
+        ss << "click/close";
+    } else {
+        // in-app message cta clicked
+        ss << "click/cta";
+    }
+
+    Track(client_id, "in-app-message", ss.str());
+}
+
 
 void Analytics::TrackWindowSize(const std::string &client_id,
                                 const std::string &os,
@@ -131,14 +154,14 @@ const std::string GoogleAnalyticsEvent::relativeURL() {
 }
 
 void GoogleAnalyticsEvent::runTask() {
-    HTTPSRequest req;
+    HTTPRequest req;
     req.host = "https://ssl.google-analytics.com";
     req.relative_url = relativeURL();
 
-    HTTPSClient client;
-    HTTPSResponse resp = client.Get(req);
+    HTTPClient client;
+    HTTPResponse resp = client.Get(req);
     if (resp.err != noError) {
-        Poco::Logger::get("Analytics").error(resp.err);
+        Logger("Analytics").error(resp.err);
         return;
     }
 }
@@ -248,17 +271,22 @@ void GoogleAnalyticsSettingsEvent::runTask() {
     setActionBool("pomodoro_break-", settings.pomodoro_break);
     makeReq();
 
+    if (settings.pomodoro_break) {
+        setActionInt("pomodoro_break_minutes-", settings.pomodoro_break_minutes);
+        makeReq();
+    }
+
     setActionBool("stop_entry_on_shutdown_sleep-", settings.stop_entry_on_shutdown_sleep);
     makeReq();
 
     setActionBool("show_touch_bar-", settings.show_touch_bar);
     makeReq();
 
-    if (settings.pomodoro_break) {
-        setActionInt("pomodoro_break_minutes-",
-                     settings.pomodoro_break_minutes);
-        makeReq();
-    }
+    setActionBool("active_tab-", settings.active_tab);
+    makeReq();
+
+    setActionInt("color_theme-", settings.color_theme);
+    makeReq();
 }
 
 void GoogleAnalyticsSettingsEvent::setActionBool(const std::string &type, bool value) {
@@ -288,16 +316,68 @@ void GoogleAnalyticsSettingsEvent::setActionString(const std::string &type,
 }
 
 void GoogleAnalyticsSettingsEvent::makeReq() {
-    HTTPSRequest req;
+    HTTPRequest req;
     req.host = "https://ssl.google-analytics.com";
     req.relative_url = relativeURL();
 
-    HTTPSClient client;
-    HTTPSResponse resp = client.Get(req);
+    HTTPClient client;
+    HTTPResponse resp = client.Get(req);
     if (resp.err != noError) {
-        Poco::Logger::get("Analytics").error(resp.err);
+        Logger("Analytics").error(resp.err);
         return;
     }
+}
+
+void Analytics::TrackStartTimeEntry(const std::string &client_id, const std::string& os, const uint8_t tab_index) {
+    TrackTimeEntryActivity(client_id, os, "start", tab_index);
+}
+
+void Analytics::TrackEditTimeEntry(const std::string &client_id, const std::string& os, const uint8_t tab_index) {
+    TrackTimeEntryActivity(client_id, os, "edit", tab_index);
+}
+
+void Analytics::TrackDeleteTimeEntry(const std::string &client_id, const std::string& os, const uint8_t tab_index) {
+    TrackTimeEntryActivity(client_id, os, "delete", tab_index);
+}
+
+void Analytics::TrackLoginWithUsernamePassword(const std::string &client_id) {
+    TrackUserAuthentication(client_id, "login", "username_password");
+}
+
+void Analytics::TrackLoginWithGoogle(const std::string &client_id) {
+    TrackUserAuthentication(client_id, "login", "google");
+}
+
+void Analytics::TrackLoginWithApple(const std::string &client_id) {
+    TrackUserAuthentication(client_id, "login", "apple");
+}
+
+void Analytics::TrackSignupWithUsernamePassword(const std::string &client_id) {
+    TrackUserAuthentication(client_id, "signup", "username_password");
+}
+
+void Analytics::TrackSignupWithGoogle(const std::string &client_id) {
+    TrackUserAuthentication(client_id, "signup", "google");
+}
+
+void Analytics::TrackSignupWithApple(const std::string &client_id) {
+    TrackUserAuthentication(client_id, "signup", "apple");
+}
+
+void Analytics::TrackTimeEntryActivity(const std::string &client_id,
+                                       const std::string& os,
+                                       const std::string &action,
+                                       const uint8_t tab_index) {
+    std::string active_view = tab_index == 0 ? "list-view" : "timeline-view";
+    std::stringstream ss;
+    ss << os << "/" << active_view << "/" << action;
+    Track(client_id, active_view, ss.str());
+}
+
+void Analytics::TrackUserAuthentication(const std::string &client_id, const std::string &action, const std::string &from) {
+    std::stringstream ss;
+    ss << action << "/" << from;
+    Track(client_id, "user", ss.str());
 }
 
 }  // namespace toggl

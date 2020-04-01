@@ -3,44 +3,97 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d"  
-             d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Background="{StaticResource ViewBackgroundLight}">
-        <TextBlock TextWrapping="Wrap"
-                   Name="TopText"
-                   Margin="20,40,20,0"
-                   Height="150"
-                   VerticalAlignment="Center"
-                   TextAlignment="Center"
-                   FontSize="14"><Run Text="You no longer have access to"/><Run Text=" "/><Run Text="your last Workspace."/><Run Text=" "/><Run Text="Create a new workspace on Toggl.com to"/><Run Text=" "/><Run Text="continue tracking"/></TextBlock>
-        <Button
-                    Style="{StaticResource RaisedButton}"
-                    Margin="0 10" HorizontalAlignment="Center"
-                    Click="onActionButtonClick"
-                    Name="ActionButton">
-            <Grid Height="24" Width="160">
-                <Image Source="/TogglDesktop;component/Resources/login-spinner.png"
-                            Name="confirmButtonSpinner" x:FieldModifier="private"
-                            Stretch="Fill" Width="16" Height="16"
-                            VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Visibility="Collapsed" Opacity="0.5"
-                            UseLayoutRounding="False">
-                    <Image.LayoutTransform>
-                        <RotateTransform Angle="00"/>
-                    </Image.LayoutTransform>
-                </Image>
-                <TextBlock Name="confirmButtonText" x:FieldModifier="private"
-                            VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Foreground="#333333"
-                            Text="Log in to Toggl.com"/>
-            </Grid>
-        </Button>
-        <TextBlock
-            Margin="20,40,20,0"
-            MouseDown="TextBlock_MouseDown"
-            TextAlignment="Center"
-            Name="BottomText"><Run Text="Created your new workspace?"/><LineBreak/><Run/><Run Text="Force sync" TextDecorations="Underline"/></TextBlock>
+             d:DesignHeight="300" d:DesignWidth="300"
+             MinWidth="300"
+             MinHeight="428"
+             Background="{DynamicResource Toggl.Background}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/DesignUpdate/Hyperlink.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
 
+    </UserControl.Resources>
+
+    <StackPanel Orientation="Vertical">
+        <Image Source="/TogglDesktop;component/Resources/restricted-area.png"
+               Margin="5 30 0 0"
+               HorizontalAlignment="Center"
+               Stretch="None"/>
+        <TextBlock Style="{StaticResource Toggl.TitleText}"
+                   Margin="0 16 0 0"
+                   HorizontalAlignment="Center"
+                   Text="No access" />
+
+        <StackPanel Name="missingWorkspacePanel" Margin="0 16 0 0">
+            <TextBlock Style="{StaticResource Toggl.BodyGrayText}"
+                       Margin="32 16 32 0"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center"
+                       Text="You no longer have access to your last Workspace." />
+            <TextBlock Margin="0 24 0 0"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center">
+                <Hyperlink Style="{StaticResource Toggl.AccentHyperlink}"
+                           NavigateUri="https://toggl.com/"
+                           RequestNavigate="CreateWorkspaceOnClick">Create a workspace</Hyperlink>
+            </TextBlock>
+            <TextBlock Style="{StaticResource Toggl.BodyGrayText}"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center"
+                       Margin="0 2 0 0"
+                       Text="to continue tracking or" />
+            <TextBlock Margin="0 2 0 0"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center">
+                <Hyperlink Style="{StaticResource Toggl.AccentHyperlink}"
+                           Click="ReLoginOnClick">log in with a different account</Hyperlink>
+            </TextBlock>
+            <TextBlock Style="{StaticResource Toggl.CaptionText}"
+                       Margin="32 52 32 0"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center"
+                       Text="Don't think you should be seeing this?" />
+            <TextBlock Margin="0 2 0 0"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center">
+                <Hyperlink Style="{StaticResource Toggl.NormalHyperlink}"
+                           Click="RefreshNowOnClick">Refresh now</Hyperlink>
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Name="tosChangesPanel" Margin="0 16 0 0">
+            <TextBlock Style="{StaticResource Toggl.BodyGrayText}"
+                       Margin="32 16 32 0"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center"
+                       Text="Our Terms of Service and Privacy Policy have changed." />
+            <TextBlock Style="{StaticResource Toggl.BodyGrayText}"
+                       Margin="0 24 0 0"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center">
+                <Run Text="Please read and accept our updated" />
+                <LineBreak />
+                <Hyperlink Style="{StaticResource Toggl.AccentHyperlink}"
+                           NavigateUri="https://toggl.com/legal/terms"
+                           RequestNavigate="openTos">Terms of Service</Hyperlink>
+                <LineBreak />
+                <Hyperlink Style="{StaticResource Toggl.AccentHyperlink}"
+                           NavigateUri="https://toggl.com/legal/privacy"
+                           RequestNavigate="openPrivacy">Privacy Policy</Hyperlink>
+            </TextBlock>
+            <Button Style="{StaticResource Toggl.PrimaryButton}"
+                    Margin="0 24 0 0"
+                    Width="96"
+                    Content="I accept"
+                    Click="onAcceptTosClick" />
+            <TextBlock Style="{StaticResource Toggl.CaptionText}"
+                       Margin="0 32 0 0"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center"
+                       Text="If you have any questions, contact us at support@toggl.com" />
+        </StackPanel>
     </StackPanel>
 </UserControl>

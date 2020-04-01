@@ -1,0 +1,83 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <FontFamily x:Key="BaseFont">Segoe UI</FontFamily>
+    <system:Double x:Key="NormalFontSize">14</system:Double>
+    <Style TargetType="TextBlock" x:Key="Toggl.Text">
+        <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.TitleText" BasedOn="{StaticResource Toggl.Text}">
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.TitleTextBrush}" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.SubtitleText" BasedOn="{StaticResource Toggl.Text}">
+        <Setter Property="FontSize" Value="20" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.BaseText" BasedOn="{StaticResource Toggl.Text}">
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.BaseBlackText">
+        <!-- doesn't change foreground when disabled -->
+        <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.BaseWhiteText" BasedOn="{StaticResource Toggl.BaseText}">
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.BaseGrayText">
+        <!-- doesn't change foreground when disabled -->
+        <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.BodyText" BasedOn="{StaticResource Toggl.Text}">
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.BodyGrayText">
+        <!-- doesn't change foreground when disabled -->
+        <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.BodyText.Hoverable" BasedOn="{StaticResource Toggl.BodyText}">
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.CaptionBlackText" BasedOn="{StaticResource Toggl.Text}">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.CaptionSemiBoldText" BasedOn="{StaticResource Toggl.CaptionBlackText}">
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="LineHeight" Value="16" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.CaptionWhiteText" BasedOn="{StaticResource Toggl.CaptionBlackText}">
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.CaptionGrayishText" BasedOn="{StaticResource Toggl.CaptionBlackText}">
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.CaptionText" BasedOn="{StaticResource Toggl.CaptionBlackText}">
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.GrayishSemiBoldText" BasedOn="{StaticResource Toggl.CaptionText}">
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+</ResourceDictionary>

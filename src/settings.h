@@ -8,9 +8,9 @@
 
 #include <json/json.h>  // NOLINT
 
-#include "./base_model.h"
+#include "base_model.h"
 
-#include "Poco/Types.h"
+#include <Poco/Types.h>
 
 namespace toggl {
 
@@ -45,7 +45,9 @@ class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
     , pomodoro_minutes(0)
     , pomodoro_break_minutes(0)
     , stop_entry_on_shutdown_sleep(false)
-    , show_touch_bar(true) {}
+    , show_touch_bar(true)
+    , active_tab(0)
+    , color_theme(0) {}
 
     virtual ~Settings() {}
 
@@ -78,6 +80,8 @@ class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
     Poco::Int64 pomodoro_break_minutes;
     bool stop_entry_on_shutdown_sleep;
     bool show_touch_bar;
+    Poco::UInt8 active_tab;
+    Poco::UInt8 color_theme;
 
     bool IsSame(const Settings &other) const;
 

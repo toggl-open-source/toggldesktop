@@ -36,7 +36,6 @@ static NSString *const upArrow = @"\u25B2";
 	self = [super initWithCoder:coder];
 	if (self)
 	{
-		self.automaticTextCompletionEnabled = NO;
 		self.posY = 0;
 		self.constraintsActive = NO;
 		self.itemHeight = 30.0;
@@ -46,6 +45,10 @@ static NSString *const upArrow = @"\u25B2";
 		self.layer.masksToBounds = NO;
 		self.displayMode = AutoCompleteDisplayModeCompact;
 		[self initBackgroundView];
+        if (@available(macOS 10.12.2, *))
+        {
+            self.automaticTextCompletionEnabled = NO;
+        }
 	}
 	return self;
 }
@@ -107,7 +110,7 @@ static NSString *const upArrow = @"\u25B2";
 	[self.window.contentView addSubview:self.autocompleteTableContainer positioned:NSWindowAbove relativeTo:nil];
 
 	// Get view for leading/trailing
-	NSView *view = self;
+    NSView *view;
 	switch (self.displayMode)
 	{
 		case AutoCompleteDisplayModeCompact :
@@ -116,7 +119,7 @@ static NSString *const upArrow = @"\u25B2";
 		case AutoCompleteDisplayModeFullscreen :
 			view = self.window.contentView;
 		default :
-			break;
+            view = self;
 	}
 
 	// Set constraints to input field so autocomplete size is always connected to input
