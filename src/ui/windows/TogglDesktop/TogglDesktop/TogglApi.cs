@@ -1755,7 +1755,7 @@ private static extern string toggl_check_view_struct_size(
 private static extern Int64 toggl_autotracker_add_rule(
         IntPtr context,
 [MarshalAs(UnmanagedType.LPWStr)]
-        string term,
+        string terms,
         UInt64 project_id,
         UInt64 task_id);
 
