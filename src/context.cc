@@ -3988,7 +3988,8 @@ error Context::UpdateAutotrackerRule(
             t = user_->related.TaskByID(tid);
         }
         if (tid && !t) {
-            return displayError("task not found");
+            logger.warning("task not found");
+            return noError;
         }
 
         Project* p = nullptr;
@@ -3996,14 +3997,16 @@ error Context::UpdateAutotrackerRule(
             p = user_->related.ProjectByID(pid);
         }
         if (pid && !p) {
-            return displayError("project not found");
+            logger.warning("project not found");
+            return noError;
         }
         if (t && t->PID() && !p) {
             p = user_->related.ProjectByID(t->PID());
         }
 
         if (p && t && p->ID() != t->PID()) {
-            return displayError("task does not belong to project");
+            logger.warning("task does not belong to project");
+            return noError;
         }
 
         error err = user_->related.UpdateAutotrackerRule(rule_id, terms, tid, pid);
