@@ -1094,7 +1094,7 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_autotracker_update_rule(
         void *context,
         const int64_t rule_id,
-        const char_t *term,
+        const char_t *terms,
         const uint64_t project_id,
         const uint64_t task_id);
 
