@@ -2439,7 +2439,7 @@ error Database::saveModel(
                       "tid = :tid "
                       "where local_id = :local_id",
                       useRef(model->UID()),
-                      useRef(model->TermsString()),
+                      bind(model->TermsString()),
                       useRef(model->PID()),
                       useRef(model->TID()),
                       useRef(model->LocalID()),
@@ -2468,7 +2468,7 @@ error Database::saveModel(
                       "insert into autotracker_settings(uid, term, pid, tid) "
                       "values(:uid, :term, :pid, :tid)",
                       useRef(model->UID()),
-                      useRef(model->TermsString()),
+                      bind(model->TermsString()),
                       useRef(model->PID()),
                       useRef(model->TID()),
                       now;
