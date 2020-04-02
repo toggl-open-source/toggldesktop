@@ -11,8 +11,7 @@
                 "Fixed conflict macOS shortcut by changing from CMD+SHIFT+Arrow to CMD+[ or ] for switching to the previous or next Timeline day",
                 "Fixed possible crash when selecting the default workspace"
             ],
-            "date": "March 25th 2020",
-            "beta": "true"
+            "date": "April 2nd 2020"
         },
         {
             "version": "7.5.62",
