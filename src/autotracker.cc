@@ -12,9 +12,33 @@ namespace toggl {
 static const char kTermSeparator = '\t';
 
 bool AutotrackerRule::Matches(const TimelineEvent &event) const {
-    const Poco::LocalDateTime localDateTime(Poco::DateTime(event.EndTime()));
-    if (!days_of_week_[localDateTime.dayOfWeek()]) {
+    const Poco::LocalDateTime event_time(Poco::DateTime(event.EndTime()));
+    if (!days_of_week_[event_time.dayOfWeek()]) {
+        logger().debug("Autotracker rule is not enabled on this weekday");
         return false;
+    }
+    if (!start_time_.empty()) {
+        int h(0), m(0);
+        if (toggl::Formatter::ParseTimeInput(start_time_, &h, &m)) {
+            Poco::LocalDateTime start(
+                event_time.year(), event_time.month(), event_time.day(), h, m, event_time.second());
+            if (event_time < start) {
+                logger().debug("It's too early for this autotracker rule", " [", event_time.hour(), ":", event_time.minute(), "]", " (allowed from ", h, ":", m, ")");
+                return false;
+            }
+        }
+    }
+
+    if (!end_time_.empty()) {
+        int h(0), m(0);
+        if (toggl::Formatter::ParseTimeInput(end_time_, &h, &m)) {
+            Poco::LocalDateTime end(
+                event_time.year(), event_time.month(), event_time.day(), h, m, event_time.second());
+            if (event_time > end) {
+                logger().debug("It's too late for this autotracker rule", " [", event_time.hour(), ":", event_time.minute(), "]", " (allowed until ", h, ":", m, ")");
+                return false;
+            }
+        }
     }
 
     for (const auto& term : terms_) {
@@ -106,6 +130,28 @@ void AutotrackerRule::SetDaysOfWeek(const Poco::UInt32 daysOfWeek) {
 
 Poco::UInt32 AutotrackerRule::DaysOfWeekUInt32() const {
     return days_of_week_.to_ulong();
+}
+
+const std::string &AutotrackerRule::StartTime() const {
+    return start_time_;
+}
+
+void AutotrackerRule::SetStartTime(const std::string &value) {
+    if (start_time_ != value) {
+        start_time_ = value;
+        SetDirty();
+    }
+}
+
+const std::string &AutotrackerRule::EndTime() const {
+    return end_time_;
+}
+
+void AutotrackerRule::SetEndTime(const std::string &value) {
+    if (end_time_ != value) {
+        end_time_ = value;
+        SetDirty();
+    }
 }
 
 }  // namespace toggl

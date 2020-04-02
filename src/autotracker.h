@@ -20,6 +20,8 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
     AutotrackerRule()
         : BaseModel()
     , days_of_week_(std::bitset<7>(0x7F))
+    , start_time_("")
+    , end_time_("")
     , pid_(0)
     , tid_(0) {}
 
@@ -35,6 +37,12 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
     void SetDaysOfWeek(const Poco::UInt32 daysOfWeek);
     Poco::UInt32 DaysOfWeekUInt32() const;
 
+    const std::string &StartTime() const;
+    void SetStartTime(const std::string &value);
+
+    const std::string &EndTime() const;
+    void SetEndTime(const std::string &value);
+
     const Poco::UInt64 &PID() const;
     void SetPID(const Poco::UInt64 value);
 
@@ -49,6 +57,8 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
  private:
     std::vector<std::string> terms_;
     std::bitset<7> days_of_week_;
+    std::string start_time_;
+    std::string end_time_;
     Poco::UInt64 pid_;
     Poco::UInt64 tid_;
 };
