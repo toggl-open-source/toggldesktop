@@ -40,6 +40,7 @@ using Poco::Data::Keywords::useRef;
 using Poco::Data::Keywords::limit;
 using Poco::Data::Keywords::into;
 using Poco::Data::Keywords::now;
+using Poco::Data::Keywords::bind;
 
 Database::Database(const std::string &db_path)
     : session_(nullptr)
