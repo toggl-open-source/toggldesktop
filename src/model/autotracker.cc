@@ -12,9 +12,33 @@ namespace toggl {
 static const char kTermSeparator = '\t';
 
 bool AutotrackerRule::Matches(const TimelineEvent &event) const {
-    const Poco::LocalDateTime localDateTime(Poco::DateTime(event.EndTime()));
-    if (!DaysOfWeek()[localDateTime.dayOfWeek()]) {
+    const Poco::LocalDateTime event_time(Poco::DateTime(event.EndTime()));
+    if (!DaysOfWeek()[event_time.dayOfWeek()]) {
+        logger().debug("Autotracker rule is not enabled on this weekday");
         return false;
+    }
+    if (!StartTime().empty()) {
+        int h(0), m(0);
+        if (toggl::Formatter::ParseTimeInput(StartTime(), &h, &m)) {
+            Poco::LocalDateTime start(
+                event_time.year(), event_time.month(), event_time.day(), h, m, event_time.second());
+            if (event_time < start) {
+                logger().debug("It's too early for this autotracker rule", " [", event_time.hour(), ":", event_time.minute(), "]", " (allowed from ", h, ":", m, ")");
+                return false;
+            }
+        }
+    }
+
+    if (!EndTime().empty()) {
+        int h(0), m(0);
+        if (toggl::Formatter::ParseTimeInput(EndTime(), &h, &m)) {
+            Poco::LocalDateTime end(
+                event_time.year(), event_time.month(), event_time.day(), h, m, event_time.second());
+            if (event_time > end) {
+                logger().debug("It's too late for this autotracker rule", " [", event_time.hour(), ":", event_time.minute(), "]", " (allowed until ", h, ":", m, ")");
+                return false;
+            }
+        }
     }
 
     for (const auto& term : Terms()) {
@@ -79,16 +103,23 @@ const std::string AutotrackerRule::TermsString() const {
     return ss.str();
 }
 
-const std::bitset<7> &AutotrackerRule::DaysOfWeek() const {
-    return days_of_week_;
-}
-
 void AutotrackerRule::SetDaysOfWeek(const Poco::UInt32 daysOfWeek) {
-    days_of_week_ = std::bitset<7>(daysOfWeek);
+    if (DaysOfWeek.Set(std::bitset<7>(daysOfWeek)))
+        SetDirty();
 }
 
 Poco::UInt32 AutotrackerRule::DaysOfWeekUInt32() const {
-    return days_of_week_.to_ulong();
+    return DaysOfWeek().to_ulong();
+}
+
+void AutotrackerRule::SetStartTime(const std::string &value) {
+    if (StartTime.Set(value))
+        SetDirty();
+}
+
+void AutotrackerRule::SetEndTime(const std::string &value) {
+    if (EndTime.Set(value))
+        SetDirty();
 }
 
 }  // namespace toggl
