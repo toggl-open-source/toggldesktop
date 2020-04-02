@@ -1620,7 +1620,7 @@ error Database::loadAutotrackerRules(
 
         Poco::Data::Statement select(*session_);
         select <<
-               "SELECT local_id, uid, term, pid, tid "
+               "SELECT local_id, uid, term, pid, tid, start_time, end_time, days_of_week "
                "FROM autotracker_settings "
                "WHERE uid = :uid "
                "ORDER BY term DESC",
@@ -1642,6 +1642,13 @@ error Database::loadAutotrackerRules(
                 if (!rs[4].isEmpty()) {
                     model->SetTID(rs[4].convert<Poco::UInt64>());
                 }
+                if (!rs[5].isEmpty()) {
+                    model->SetStartTime(rs[5].convert<std::string>());
+                }
+                if (!rs[6].isEmpty()) {
+                    model->SetEndTime(rs[6].convert<std::string>());
+                }
+                model->SetDaysOfWeek(rs[7].convert<Poco::UInt32>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -2433,12 +2440,16 @@ error Database::saveModel(
             *session_ <<
                       "update autotracker_settings set "
                       "uid = :uid, term = :term, pid = :pid, "
-                      "tid = :tid "
+                      "tid = :tid, start_time = :start_time, end_time = :end_time, "
+                      "days_of_week = :days_of_week "
                       "where local_id = :local_id",
                       useRef(model->UID()),
                       bind(model->TermsString()),
                       useRef(model->PID()),
                       useRef(model->TID()),
+                      useRef(model->StartTime()),
+                      useRef(model->EndTime()),
+                      bind(model->DaysOfWeekUInt32()),
                       useRef(model->LocalID()),
                       now;
             error err = last_error("saveAutotrackerRule");
@@ -2462,12 +2473,15 @@ error Database::saveModel(
         } else {
             logger.trace("Inserting autotracker rule ", model->String(), " in thread ", Poco::Thread::currentTid());
             *session_ <<
-                      "insert into autotracker_settings(uid, term, pid, tid) "
-                      "values(:uid, :term, :pid, :tid)",
+                      "insert into autotracker_settings(uid, term, pid, tid, start_time, end_time, days_of_week) "
+                      "values(:uid, :term, :pid, :tid, :start_time, :end_time, :days_of_week)",
                       useRef(model->UID()),
                       bind(model->TermsString()),
                       useRef(model->PID()),
                       useRef(model->TID()),
+                      useRef(model->StartTime()),
+                      useRef(model->EndTime()),
+                      bind(model->DaysOfWeekUInt32()),
                       now;
             error err = last_error("saveAutotrackerRule");
             if (err != noError) {

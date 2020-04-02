@@ -98,6 +98,30 @@ error Migrations::migrateAutotracker() {
         return err;
     }
 
+    err = db_->Migrate(
+        "autotracker_settings.start_time",
+        "alter table autotracker_settings"
+        " add column start_time varchar not null;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "autotracker_settings.end_time",
+        "alter table autotracker_settings"
+        " add column end_time varchar not null;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "autotracker_settings.days_of_week",
+        "alter table autotracker_settings"
+        " add column days_of_week integer not null default 127;"); // 127 == 0x7F == "1111111"
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
