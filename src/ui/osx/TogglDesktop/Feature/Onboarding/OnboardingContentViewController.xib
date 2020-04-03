@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,11 +19,19 @@
             <rect key="frame" x="0.0" y="0.0" width="292" height="45"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ztJ-kK-jyl">
+                    <rect key="frame" x="0.0" y="0.0" width="292" height="45"/>
+                    <view key="contentView" id="XK1-w6-eSW">
+                        <rect key="frame" x="0.0" y="0.0" width="292" height="45"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <color key="fillColor" name="onboarding-hint-background-color"/>
+                </box>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="jYZ-L3-Wrw">
                     <rect key="frame" x="13" y="15" width="246" height="15"/>
                     <textFieldCell key="cell" selectable="YES" title="Multiline Label" id="5Mi-HB-13h">
                         <font key="font" metaFont="controlContent"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
@@ -44,7 +53,11 @@
             <constraints>
                 <constraint firstItem="jYZ-L3-Wrw" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="15" id="6uE-cu-Acd"/>
                 <constraint firstItem="CHB-sF-vBe" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="4" id="CH8-tq-azB"/>
+                <constraint firstItem="ztJ-kK-jyl" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="P3m-Af-tfq"/>
+                <constraint firstAttribute="trailing" secondItem="ztJ-kK-jyl" secondAttribute="trailing" id="S2E-Vq-KJ6"/>
                 <constraint firstAttribute="bottom" secondItem="jYZ-L3-Wrw" secondAttribute="bottom" constant="15" id="Tfv-rJ-bej"/>
+                <constraint firstItem="ztJ-kK-jyl" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="U88-uw-Gne"/>
+                <constraint firstAttribute="bottom" secondItem="ztJ-kK-jyl" secondAttribute="bottom" id="V4o-ws-woR"/>
                 <constraint firstItem="jYZ-L3-Wrw" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="VCf-wL-xCe"/>
                 <constraint firstAttribute="trailing" secondItem="jYZ-L3-Wrw" secondAttribute="trailing" constant="35" id="Yzh-pH-D01"/>
                 <constraint firstAttribute="trailing" secondItem="CHB-sF-vBe" secondAttribute="trailing" constant="4" id="mC0-H1-Bhr"/>
@@ -54,5 +67,8 @@
     </objects>
     <resources>
         <image name="close-button" width="7" height="7"/>
+        <namedColor name="onboarding-hint-background-color">
+            <color red="0.023529411764705882" green="0.66666666666666663" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
