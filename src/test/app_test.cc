@@ -1881,24 +1881,24 @@ TEST(AutotrackerRule, Matches) {
 
     ev.SetTitle("toggl-open-source/toggldesktop: Toggl Desktop app for Windows, Mac and Linux - Google Chrome");
     ASSERT_TRUE(a.Matches(ev));
-    
+
     ev.SetTitle("YouTube - Chromium");
     ASSERT_FALSE(a.Matches(ev));
 
     ev.SetTitle("(1) Home / Twitter - Mozilla Firefox");
     ASSERT_TRUE(a.Matches(ev));
-    
+
     a.SetStartTime("9:00");
     a.SetEndTime("17:00");
-    
+
     Poco::LocalDateTime eventTime(2020, 4, 3, 21); // Friday, 21:00
     ev.SetEndTime(eventTime.timestamp().epochTime());
     ASSERT_FALSE(a.Matches(ev));
-    
+
     eventTime = Poco::LocalDateTime(2020, 4, 3, 14); // Friday, 14:00
     ev.SetEndTime(eventTime.timestamp().epochTime());
     ASSERT_TRUE(a.Matches(ev));
-    
+
     a.SetDaysOfWeek(0);
     ASSERT_FALSE(a.Matches(ev));
 
