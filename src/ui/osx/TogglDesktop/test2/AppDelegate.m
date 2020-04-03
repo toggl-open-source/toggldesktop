@@ -116,7 +116,6 @@ void *ctx;
 	self.showMenuBarTimer = NO;
 	self.manualMode = NO;
 	self.onTop = NO;
-	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
