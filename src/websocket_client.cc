@@ -5,6 +5,8 @@
 #include <string>
 #include <sstream>
 
+#include <iostream>
+
 #include <json/json.h>  // NOLINT
 
 #include <Poco/Exception.h>
@@ -145,12 +147,13 @@ error WebSocketClient::createSession() {
 void WebSocketClient::authenticate() {
     logger().debug("authenticate");
 
-    Json::Value c;
-    c["type"] = "authenticate";
-    c["api_token"] = api_token_;
+    Json::Value c(Json::objectValue);
+    Json::Value &ref1 = c["type"];
+    ref1 = "authenticate";
+    Json::Value &ref2 = c["api_token"];
+    ref2 = api_token_;
 
-    Json::StyledWriter writer;
-    std::string payload = writer.write(c);
+    std::string payload = c.toStyledString();
 
     ws_->sendFrame(payload.data(),
                    static_cast<int>(payload.size()),

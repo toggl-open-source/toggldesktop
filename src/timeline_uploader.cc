@@ -101,7 +101,7 @@ std::string convertTimelineToJSON(
     const std::vector<TimelineEvent> &timeline_events,
     const std::string &desktop_id) {
 
-    Json::Value root;
+    Json::Value root(Json::objectValue);
 
     for (std::vector<TimelineEvent>::const_iterator i = timeline_events.begin();
             i != timeline_events.end();

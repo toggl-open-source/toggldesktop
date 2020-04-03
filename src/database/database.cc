@@ -3331,6 +3331,9 @@ error Database::loadModels(const Poco::UInt64 &UID, ProtectedContainer<T> &list)
         Poco::Mutex::ScopedLock lock(session_m_);
 
         Poco::Data::Statement select(*session_);
+        if (list.ModelName() == "project") {
+            std::cerr << list.GetSelect("uid") << std::endl;
+        }
         select << list.GetSelect("uid"),
                useRef(UID);
         error err = last_error("load_" + list.ModelName());

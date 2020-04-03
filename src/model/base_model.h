@@ -76,10 +76,10 @@ struct BaseModelQuery {
     }
 
     bool IsRequired(size_t idx) const {
-        if (parent_ && idx >= Offset()) {
-            return parent_->IsRequired(idx - Offset());
+        if (!parent_ || idx >= Offset()) {
+            return columns_[idx - Offset()].required;
         }
-        return columns_[idx].required;
+        return parent_->IsRequired(idx);
     }
 
     /**
@@ -118,7 +118,12 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
 
     template <typename T>
     bool load(Poco::Data::RecordSet &rs, bool required, size_t index, T& member) {
-        if (!rs[index].isEmpty() || required) {
+        std::cerr << "Column count: " << (int)rs.columnCount() << std::endl;
+        std::cerr << "Current column: " << index << std::endl;
+        std::cerr << "Value present: " << !rs[index].isEmpty() << std::endl;
+        std::cerr << "Required: " << required << std::endl;
+        std::cerr << "Column count: " << std::endl;
+        if ((rs.columnCount() > index && !rs[index].isEmpty()) || required) {
             member = rs[index].convert<T>();
             return true;
         }
