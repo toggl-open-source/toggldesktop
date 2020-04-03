@@ -22,6 +22,7 @@ final class OnboardingViewController: NSViewController {
     // MARK: Variable
 
     weak var delegate: OnboardingViewControllerDelegate?
+    private weak var hintView: NSView?
     private lazy var contentController: OnboardingContentViewController = OnboardingContentViewController(nibName: "OnboardingContentViewController", bundle: nil)
     private lazy var popover: NoVibrantPopoverView = {
         let popover = NoVibrantPopoverView()
@@ -41,16 +42,21 @@ final class OnboardingViewController: NSViewController {
         initCommon()
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     // MARK: Public
 
     func present(payload: OnboardingPayload, hintView: NSView) {
+        self.hintView = hintView
+
         // Force render to get the correct size after autolayout
         view.setNeedsDisplay(view.bounds)
         view.displayIfNeeded()
 
         // Render
-        let hintFrame = view.convert(hintView.frame, from: hintView.superview)
-        backgroundView.drawMask(at: hintFrame)
+        updateMaskLayer(with: hintView)
         contentController.config(with: payload)
         popover.present(from: hintView.bounds, of: hintView, preferredEdge: payload.preferEdges)
     }
@@ -67,6 +73,24 @@ extension OnboardingViewController {
     private func initCommon() {
         // Pre-load the view
         _ = popover
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.windowDidResizeNoti(_:)),
+                                               name: NSWindow.didResizeNotification,
+                                               object: nil)
+    }
+
+    @objc private func windowDidResizeNoti(_ noti: Notification) {
+        guard let window = noti.object as? NSWindow,
+            window === self.view.window else { return }
+        guard let hintView = hintView, popover.isShown else { return }
+
+        // Re-draw the mask layer if the window size is changed
+        updateMaskLayer(with: hintView)
+    }
+
+    private func updateMaskLayer(with hintView: NSView) {
+        let hintFrame = view.convert(hintView.frame, from: hintView.superview)
+        backgroundView.drawMask(at: hintFrame)
     }
 }
 
