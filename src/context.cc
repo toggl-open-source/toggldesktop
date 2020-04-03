@@ -13,23 +13,24 @@
 
 #include <iostream>  // NOLINT
 
-#include "autotracker.h"
-#include "client.h"
 #include "const.h"
-#include "database.h"
 #include "error.h"
-#include "formatter.h"
 #include "https_client.h"
-#include "obm_action.h"
-#include "project.h"
-#include "random.h"
-#include "settings.h"
-#include "task.h"
-#include "time_entry.h"
 #include "timeline_uploader.h"
 #include "urls.h"
 #include "window_change_recorder.h"
-#include "workspace.h"
+
+#include "util/formatter.h"
+#include "util/random.h"
+#include "database/database.h"
+#include "model/autotracker.h"
+#include "model/client.h"
+#include "model/obm_action.h"
+#include "model/project.h"
+#include "model/settings.h"
+#include "model/task.h"
+#include "model/time_entry.h"
+#include "model/workspace.h"
 
 #include <Poco/Crypto/OpenSSLInitializer.h>
 #include <Poco/DateTimeFormat.h>

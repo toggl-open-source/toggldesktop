@@ -3,7 +3,7 @@
 #include "workspace.h"
 
 #include <sstream>
-#include "formatter.h"
+#include "util/formatter.h"
 
 namespace toggl {
 
@@ -86,7 +86,7 @@ void Workspace::LoadSettingsFromJson(Json::Value n) {
 }
 
 std::string Workspace::ModelName() const {
-    return kModelWorkspace;
+    return modelName;
 }
 
 std::string Workspace::ModelURL() const {

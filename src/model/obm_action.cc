@@ -4,7 +4,7 @@
 
 #include <sstream>
 
-#include "formatter.h"
+#include "util/formatter.h"
 
 namespace toggl {
 

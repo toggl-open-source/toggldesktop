@@ -17,7 +17,7 @@
 #include <json/json.h>  // NOLINT
 
 #include "https_client.h"
-#include "formatter.h"
+#include "util/formatter.h"
 
 #include <Poco/DateTime.h>
 #include <Poco/LocalDateTime.h>

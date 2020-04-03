@@ -25,20 +25,7 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     User(ProtectedBase *container)
         : BaseModel(container)
-    , api_token_("")
-    , default_wid_(0)
-    , since_(0)
-    , fullname_("")
-    , email_("")
-    , record_timeline_(false)
-    , store_start_and_stop_time_(true)
-    , timeofday_format_("")
-    , duration_format_("")
-    , offline_data_("")
-    , default_pid_(0)
-    , default_tid_(0)
-    , has_loaded_more_(false)
-    , collapse_entries_(false) {}
+    {}
  public:
     ~User();
 
@@ -300,22 +287,22 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     std::vector<locked<TimelineEvent>> CompressedTimeline(
         const Poco::LocalDateTime *date = nullptr, bool is_for_upload = true);
 
-    std::string api_token_;
-    Poco::UInt64 default_wid_;
+    std::string api_token_ { "" };
+    std::string fullname_ { "" };
+    std::string email_ { "" };
+    std::string timeofday_format_ { "" };
+    std::string duration_format_ { "" };
+    std::string offline_data_ { "" };
+    Poco::UInt64 default_wid_ { 0 };
     // Unix timestamp of the user data; returned from API
-    Poco::Int64 since_;
-    std::string fullname_;
-    std::string email_;
-    bool record_timeline_;
-    bool store_start_and_stop_time_;
-    std::string timeofday_format_;
-    std::string duration_format_;
-    std::string offline_data_;
-    Poco::UInt64 default_pid_;
-    Poco::UInt64 default_tid_;
+    Poco::Int64 since_ { 0 };
+    Poco::UInt64 default_pid_ { 0 };
+    Poco::UInt64 default_tid_ { 0 };
+    bool record_timeline_ { false };
+    bool store_start_and_stop_time_ { true };
 
-    bool has_loaded_more_;
-    bool collapse_entries_;
+    bool has_loaded_more_ { false };
+    bool collapse_entries_ { false };
 };
 
 template<class T>

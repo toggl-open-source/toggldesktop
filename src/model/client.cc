@@ -5,7 +5,7 @@
 #include <sstream>
 #include <cstring>
 
-#include "formatter.h"
+#include "util/formatter.h"
 
 namespace toggl {
 

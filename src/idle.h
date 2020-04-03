@@ -5,9 +5,9 @@
 
 #include <sstream>
 
-#include "settings.h"
-#include "user.h"
 #include "util/logger.h"
+#include "model/settings.h"
+#include "model/user.h"
 
 #include <Poco/Types.h>
 

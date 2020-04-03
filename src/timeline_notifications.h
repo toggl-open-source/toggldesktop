@@ -3,14 +3,13 @@
 #ifndef SRC_TIMELINE_NOTIFICATIONS_H_
 #define SRC_TIMELINE_NOTIFICATIONS_H_
 
-#include "timeline_event.h"
-
 #include <vector>
 #include <string>
 
-#include "types.h"
-
 #include <Poco/Types.h>
+
+#include "types.h"
+#include "model/timeline_event.h"
 
 namespace toggl {
 

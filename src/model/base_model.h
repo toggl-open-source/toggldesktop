@@ -17,29 +17,134 @@
 #include "https_client.h"
 
 #include <Poco/Types.h>
+#include <Poco/Data/RecordSet.h>
 
 namespace toggl {
 
 class ProtectedBase;
 class BatchUpdateResult;
 
-class TOGGL_INTERNAL_EXPORT BaseModel {
- public:
-    BaseModel(ProtectedBase *container)
-        : container_(container)
-    , local_id_(0)
-    , id_(0)
-    , guid_("")
-    , ui_modified_at_(0)
-    , uid_(0)
-    , dirty_(false)
-    , deleted_at_(0)
-    , is_marked_as_deleted_on_server_(false)
-    , updated_at_(0)
-    , validation_error_("")
-    , unsynced_(false) {}
+/**
+ * @brief The BaseModelQuery struct
+ * Use to determine how to retrieve data from the database. Each BaseModel class should implement this and
+ * reference BaseModel::query as the @ref parent_ pointer.
+ *
+ * Only the @ref columns_ list will be prepended to the implementation.
+ * That means, if you do this:
+ *   In BaseModel: Query { "", { "base1", "base2"}, ...
+ *   In Client: { "clients", { "client1", "client2" }, ...
+ * Then Client query will work with the "clients" table and look for columns "base1", "base2", "client1", "client2" (in this order).
+ * This is to have things like ID, Local ID and GUID in the base class for all models here in one place
+ * and to not have to handle their serialization in all child classes separately.
+ */
+struct BaseModelQuery {
 
+    struct Column {
+        std::string name;
+        bool required;
+        // so printColumns still works
+        explicit operator std::string() const {
+            return name;
+        }
+    };
+    typedef std::vector<std::string> Join;
+    typedef std::string Table;
+    typedef std::vector<Column> Columns;
+    typedef std::vector<std::string> OrderBy;
+
+    Table table_ {};
+    Columns columns_ {};
+    Join join_ {};
+    OrderBy order_ {};
+    const BaseModelQuery *parent_ { nullptr };
+
+    /**
+     * @brief ToSelect
+     * @param where - which column will be supplied outside as the WHERE condition
+     * @return string with the completed SELECT query
+     */
+    std::string ToSelect(const std::string &where = "uid") const;
+
+    size_t ColumnCount() const {
+        return columns_.size();
+    }
+
+    size_t Offset() const {
+        if (parent_)
+            return parent_->ColumnCount();
+        return 0;
+    }
+
+    bool IsRequired(size_t idx) const {
+        if (!parent_ || idx >= Offset()) {
+            return columns_[idx - Offset()].required;
+        }
+        return parent_->IsRequired(idx);
+    }
+
+    /**
+     * @brief writes a list of columns to @ref ss
+     * Handles case when there's multiple tables and prepends "main" table name to columns without a dot
+     */
+    template <typename T>
+    void printColumns(std::ostringstream &ss, bool &first, T &list) const {
+        for (auto i : list) {
+            if (!first)
+                ss << ", ";
+            first = false;
+            if (!join_.empty() && std::string(i).find(".") == std::string::npos)
+                ss << table_ << ".";
+            ss << std::string(i);
+        }
+    };
+};
+
+class TOGGL_INTERNAL_EXPORT BaseModel {
+ protected:
+    using Query = BaseModelQuery;
+    inline static std::string modelName {};
+    inline static const Query query {
+        Query::Table(),
+        Query::Columns { 
+            { "local_id", true },
+            { "id", false },
+            { "uid", true },
+            { "guid", false },
+        },
+        Query::Join(),
+        Query::OrderBy(),
+        nullptr
+    };
+
+    template <typename T>
+    bool load(Poco::Data::RecordSet &rs, bool required, size_t index, T& member) {
+        if (!rs[index].isEmpty() || required) {
+            member = rs[index].convert<T>();
+            return true;
+        }
+        return false;
+    }
+
+    BaseModel(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : container_(container)
+    {
+        size_t ptr { query.Offset() };
+        load(rs, query.IsRequired(ptr), ptr, local_id_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, id_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, uid_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, guid_);
+        ptr++;
+        ClearDirty();
+    }
+
+    BaseModel(ProtectedBase* container)
+        : container_(container)
+    {}
     virtual ~BaseModel() {}
+ public:
 
     ProtectedBase *GetContainer();
     const ProtectedBase *GetContainer() const;
@@ -173,28 +278,29 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     std::string batchUpdateRelativeURL() const;
     std::string batchUpdateMethod() const;
 
-    ProtectedBase *container_;
+    ProtectedBase *container_ { nullptr };
 
-    Poco::Int64 local_id_;
-    Poco::UInt64 id_;
-    guid guid_;
-    Poco::Int64 ui_modified_at_;
-    Poco::UInt64 uid_;
-    bool dirty_;
-    Poco::Int64 deleted_at_;
-    bool is_marked_as_deleted_on_server_;
-    Poco::Int64 updated_at_;
+    Poco::Int64 local_id_ { 0 };
+    Poco::UInt64 id_ { 0 };
+    Poco::Int64 ui_modified_at_ { 0 };
+    Poco::UInt64 uid_ { 0 };
+    Poco::Int64 deleted_at_ { 0 };
+    Poco::Int64 updated_at_ { 0 };
+    guid guid_ { "" };
 
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.
-    std::string validation_error_;
+    std::string validation_error_ { "" };
+
+    bool dirty_ { false };
+    bool is_marked_as_deleted_on_server_ { false };
 
     // Flag is set only when sync fails.
     // Its for viewing purposes only. It should not
     // be used to check if a model needs to be
     // pushed to backend. It only means that some
     // attempt to push failed somewhere.
-    bool unsynced_;
+    bool unsynced_ { false };
 };
 
 }  // namespace toggl

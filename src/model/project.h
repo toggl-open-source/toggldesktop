@@ -14,18 +14,55 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
- public:
+    inline static const std::string modelName{ kModelProject };
+    inline static const Query query{
+        Query::Table{"projects"},
+        Query::Columns {
+            { "name", true },
+            { "wid", true },
+            { "color", false },
+            { "cid", false },
+            { "active", true },
+            { "billable", true },
+            { "client_guid", false },
+            { "clients.name", false }
+        },
+        Query::Join{
+            "LEFT JOIN clients ON projects.cid = clients.id",
+            "LEFT JOIN workspaces ON projects.wid = workspaces.id"
+        },
+        Query::OrderBy{
+            "workspaces.name COLLATE NOCASE ASC",
+            "clients.name COLLATE NOCASE ASC",
+            "projects.name COLLATE NOCASE ASC"
+        },
+        &BaseModel::query
+    };
+    Project(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : BaseModel(container, rs)
+    {
+        size_t ptr{ query.Offset() };
+        load(rs, query.IsRequired(ptr), ptr, name_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, wid_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, color_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, cid_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, active_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, billable_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, client_guid_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, client_name_);
+        ptr++;
+        ClearDirty();
+    }
     Project(ProtectedBase *container)
         : BaseModel(container)
-    , wid_(0)
-    , cid_(0)
-    , name_("")
-    , color_("")
-    , active_(false)
-    , private_(false)
-    , billable_(false)
-    , client_guid_("")
-    , client_name_("") {}
+    {}
  public:
     friend class ProtectedBase;
 
@@ -95,18 +132,16 @@ class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
     bool clientIsInAnotherWorkspace(const toggl::error &err) const;
     bool onlyAdminsCanChangeProjectVisibility(const toggl::error &err) const;
 
-    Poco::UInt64 wid_;
-    Poco::UInt64 cid_;
-    std::string name_;
-    std::string color_;
-    bool active_;
-    bool private_;
-    bool billable_;
-    std::string client_guid_;
-    std::string client_name_;
+    std::string name_ { "" };
+    std::string color_ { "" };
+    std::string client_guid_ { "" };
+    std::string client_name_ { "" };
+    Poco::UInt64 wid_ { 0 };
+    Poco::UInt64 cid_ { 0 };
+    bool active_ { false };
+    bool private_ { false };
+    bool billable_ { false };
 };
-
-template<typename T, size_t N> T *end(T (&ra)[N]);
 
 }  // namespace toggl
 

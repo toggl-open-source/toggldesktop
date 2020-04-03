@@ -14,12 +14,36 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Task : public BaseModel {
+    inline static const std::string modelName{ kModelTask };
+    inline static const Query query{
+        Query::Table{"tasks"},
+        Query::Columns {
+            { "name", true },
+            { "wid", true },
+            { "pid", false },
+            { "active", true }
+        },
+        Query::Join{},
+        Query::OrderBy{"name"},
+        &BaseModel::query
+    };
+    Task(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : BaseModel(container, rs)
+    {
+        size_t ptr{ query.Offset() };
+        load(rs, query.IsRequired(ptr), ptr, name_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, wid_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, pid_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, active_);
+        ptr++;
+        ClearDirty();
+    }
     Task(ProtectedBase *container)
         : BaseModel(container)
-    , name_("")
-    , wid_(0)
-    , pid_(0)
-    , active_(false) {}
+    {}
  public:
     friend class ProtectedBase;
 
@@ -50,10 +74,10 @@ class TOGGL_INTERNAL_EXPORT Task : public BaseModel {
     void LoadFromJSON(Json::Value value) override;
 
  private:
-    std::string name_;
-    Poco::UInt64 wid_;
-    Poco::UInt64 pid_;
-    bool active_;
+    std::string name_ { " "};
+    Poco::UInt64 wid_ { 0 };
+    Poco::UInt64 pid_ { 0 };
+    bool active_ { false };
 };
 
 }  // namespace toggl

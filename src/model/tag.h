@@ -12,10 +12,30 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Tag : public BaseModel {
+    inline static const std::string modelName{ kModelTag };
+    inline static const Query query{
+        Query::Table{"tags"},
+        Query::Columns {
+            { "name", true },
+            { "wid", true }
+        },
+        Query::Join{},
+        Query::OrderBy{"name"},
+        &BaseModel::query
+    };
+    Tag(ProtectedBase *container, Poco::Data::RecordSet &rs)
+        : BaseModel(container, rs)
+    {
+        size_t ptr{ query.Offset() };
+        load(rs, query.IsRequired(ptr), ptr, name_);
+        ptr++;
+        load(rs, query.IsRequired(ptr), ptr, wid_);
+        ptr++;
+        ClearDirty();
+    }
     Tag(ProtectedBase *container)
         : BaseModel(container)
-    , wid_(0)
-    , name_("") {}
+    {}
  public:
     friend class ProtectedBase;
 
@@ -36,8 +56,8 @@ class TOGGL_INTERNAL_EXPORT Tag : public BaseModel {
     void LoadFromJSON(Json::Value data) override;
 
  private:
-    Poco::UInt64 wid_;
-    std::string name_;
+    Poco::UInt64 wid_ { 0 };
+    std::string name_ { "" };
 };
 
 }  // namespace toggl

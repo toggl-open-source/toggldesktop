@@ -4,12 +4,12 @@
 
 #include "const.h"
 #include "database.h"
-#include "random.h"
+#include "util/random.h"
 
 namespace toggl {
 
 error Migrations::migrateObmActions() {
-    return db_->Migrate(
+    error err = db_->Migrate(
         "obm_actions",
         "create table obm_actions("
         "local_id integer primary key,"
@@ -20,6 +20,20 @@ error Migrations::migrateObmActions() {
         "constraint fk_obm_actions_uid foreign key (uid) "
         "   references users(id) on delete no action on update no action"
         "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "obm_actions.guid",
+        "ALTER TABLE obm_actions "
+            "ADD COLUMN guid VARCHAR;"
+            "CREATE UNIQUE INDEX id_obm_actions_guid ON obm_actions (uid, guid);");
+    if (err != noError) {
+        return err;
+    }
+
+    return noError;
 }
 
 error Migrations::migrateObmExperiments() {
@@ -62,6 +76,15 @@ error Migrations::migrateObmExperiments() {
         return err;
     }
 
+    err = db_->Migrate(
+        "obm_experiments.guid",
+        "ALTER TABLE obm_experiments "
+            "ADD COLUMN guid VARCHAR;"
+            "CREATE UNIQUE INDEX id_obm_experiments_guid ON obm_experiments (uid, guid);");
+    if (err != noError) {
+        return err;
+    }
+
     return err;
 }
 
@@ -94,6 +117,15 @@ error Migrations::migrateAutotracker() {
         "autotracker_settings.tid",
         "alter table autotracker_settings"
         " add column tid integer references tasks (id);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "autotracker_settings.guid",
+            "ALTER TABLE autotracker_settings ADD COLUMN guid VARCHAR;"
+            "ALTER TABLE autotracker_settings ADD COLUMN id INTEGER;"
+            "CREATE UNIQUE INDEX id_autotracker_settings_guid ON autotracker_settings (uid, guid);");
     if (err != noError) {
         return err;
     }
@@ -176,6 +208,15 @@ error Migrations::migrateTasks() {
     err = db_->Migrate(
         "tasks.active",
         "alter table tasks add column active integer not null default 1;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "tasks.guid",
+        "ALTER TABLE tasks "
+            "ADD COLUMN guid VARCHAR;"
+            "CREATE UNIQUE INDEX id_tasks_guid ON tasks (uid, guid);");
     if (err != noError) {
         return err;
     }
@@ -314,6 +355,15 @@ error Migrations::migrateWorkspaces() {
         "workspaces.projects_billable_by_default",
         "alter table workspaces add column "
         "   projects_billable_by_default integer not null default 0; ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "workspaces.guid",
+        "ALTER TABLE workspaces "
+            "ADD COLUMN guid VARCHAR;"
+            "CREATE UNIQUE INDEX id_workspaces_guid ON workspaces (uid, guid);");
     if (err != noError) {
         return err;
     }
@@ -523,6 +573,13 @@ error Migrations::migrateTimeline() {
         return err;
     }
 
+    err = db_->Migrate(
+        "timeline_events.id",
+        "ALTER TABLE timeline_events ADD COLUMN id INTEGER;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
@@ -661,6 +718,14 @@ error Migrations::migrateUsers() {
         "users.collapse_entries",
         "alter table users"
         " add column collapse_entries integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "users.guid",
+        "ALTER TABLE users "
+            "ADD COLUMN guid VARCHAR;");
     if (err != noError) {
         return err;
     }
@@ -1309,6 +1374,14 @@ error Migrations::migrateSettings() {
         "settings.active_tab",
         "ALTER TABLE settings "
         "ADD COLUMN active_tab INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "settings.guid",
+        "ALTER TABLE settings "
+            "ADD COLUMN guid VARCHAR;");
     if (err != noError) {
         return err;
     }

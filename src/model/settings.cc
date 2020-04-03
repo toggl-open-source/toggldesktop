@@ -2,7 +2,7 @@
 
 #include "settings.h"
 
-#include "formatter.h"
+#include "util/formatter.h"
 
 namespace toggl {
 

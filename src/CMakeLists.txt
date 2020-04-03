@@ -35,21 +35,34 @@ include_directories(
 set(LIBRARY_SOURCE_FILES
     util/logger.cc
     util/memory.cc
+    util/custom_error_handler.cc
+    util/rectangle.cc
+    util/random.cc
+    util/formatter.cc
 
-    base_model.cc
+    model/autotracker.cc
+    model/base_model.cc
+    model/client.cc
+    model/obm_action.cc
+    model/project.cc
+    model/settings.cc
+    model/tag.cc
+    model/task.cc
+    model/time_entry.cc
+    model/timeline_event.cc
+    model/user.cc
+    model/workspace.cc
+
+    database/database.cc
+    database/migrations.cc
+
     batch_update_result.cc
-    client.cc
     idle.cc
     analytics.cc
     help_article.cc
-    autotracker.cc
     urls.cc
-    migrations.cc
     context.cc
-    custom_error_handler.cc
-    database.cc
     feedback.cc
-    formatter.cc
     get_focused_window_linux.cc
     error.cc
     gui.cc
@@ -58,23 +71,12 @@ set(LIBRARY_SOURCE_FILES
     toggl_api.cc
     toggl_api_private.cc
     model_change.cc
-    obm_action.cc
     platforminfo.cc
-    project.cc
     proxy.cc
-    random.cc
-    rectangle.cc
     related_data.cc
-    settings.cc
-    tag.cc
-    task.cc
-    timeline_event.cc
-    time_entry.cc
     timeline_uploader.cc
-    user.cc
     websocket_client.cc
     window_change_recorder.cc
-    workspace.cc
 )
 
 # Set up compilation targets
@@ -84,7 +86,7 @@ add_library(TogglDesktopLibrary SHARED ${LIBRARY_SOURCE_FILES})
 target_link_libraries(TogglDesktopLibrary PRIVATE
     ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
-    PocoCrypto PocoDataSQLite PocoNetSSL
+    PocoData PocoCrypto PocoDataSQLite PocoNetSSL
 )
 
 install(TARGETS TogglDesktopLibrary DESTINATION lib)

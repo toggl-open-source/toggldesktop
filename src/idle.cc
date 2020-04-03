@@ -8,9 +8,9 @@
 
 #include "idle.h"
 
-#include "formatter.h"
 #include "gui.h"
-#include "time_entry.h"
+#include "util/formatter.h"
+#include "model/time_entry.h"
 
 namespace toggl {
 

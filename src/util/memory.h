@@ -93,6 +93,16 @@ public:
      */
     const RelatedData *GetRelatedData() const;
 
+    template <typename T>
+    std::string GetSelect(const std::string &by) const {
+        return T::query.ToSelect(by);
+    }
+
+    template <typename T>
+    std::string ModelName() const {
+        return T::modelName;
+    }
+
     // TODO figure out if it's possible to do without void*
     virtual bool shift(void *item) { return false; }
 
@@ -233,13 +243,16 @@ public:
     friend class iterator;
     friend class const_iterator;
 
+    static inline comparison_function defaultComparison {
+		[](const T* l, const T* r) { return l < r; }
+	};
     /**
      * @brief ProtectedContainer
      * @param parent - the parent RelatedData instances (to be passed to the children)
      * @param comparison - a binary predicate with the signature of bool(const T*, const T*), used to insert items at the right position when creating
      * TODO Using the comparison predicate has O(N) complexity, we'd very likely be much better off storing everything in a std::set
      */
-    ProtectedContainer(RelatedData *parent, comparison_function comparison = [](const T* l, const T* r){ return l < r; });
+    ProtectedContainer(RelatedData *parent, comparison_function comparison = defaultComparison);
     ProtectedContainer(const ProtectedContainer &o) = delete;
     ~ProtectedContainer();
 
@@ -251,6 +264,14 @@ public:
     const_iterator cend() const;
 
     iterator erase(iterator it);
+
+    std::string GetSelect(const std::string &by) const {
+        return ProtectedBase::GetSelect<T>(by);
+    }
+
+    std::string ModelName() const {
+        return ProtectedBase::ModelName<T>();
+    }
 
     /**
      * @brief clear - Clear the @ref container_
