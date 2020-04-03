@@ -3,13 +3,12 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="OnboardingViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
-                <outlet property="containerView" destination="glZ-8Q-BCF" id="gb1-a2-sf9"/>
+                <outlet property="backgroundView" destination="glZ-8Q-BCF" id="1Gd-ei-7gQ"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -19,38 +18,17 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="oRd-Ok-Fk6">
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="glZ-8Q-BCF" customClass="OnboardingBackgroundView" customModule="TogglDesktop" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
-                    <view key="contentView" id="rV9-CZ-4dj">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="glZ-8Q-BCF">
-                                <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
-                            </customView>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="glZ-8Q-BCF" firstAttribute="top" secondItem="rV9-CZ-4dj" secondAttribute="top" id="R8Q-G2-gyy"/>
-                            <constraint firstItem="glZ-8Q-BCF" firstAttribute="leading" secondItem="rV9-CZ-4dj" secondAttribute="leading" id="Wy0-Sr-csr"/>
-                            <constraint firstAttribute="trailing" secondItem="glZ-8Q-BCF" secondAttribute="trailing" id="ZW2-tc-4xv"/>
-                            <constraint firstAttribute="bottom" secondItem="glZ-8Q-BCF" secondAttribute="bottom" id="eau-U5-gHQ"/>
-                        </constraints>
-                    </view>
-                    <color key="fillColor" name="onboarding-background-color"/>
-                </box>
+                </customView>
             </subviews>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="oRd-Ok-Fk6" secondAttribute="bottom" id="3S0-oW-0kY"/>
-                <constraint firstItem="oRd-Ok-Fk6" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="AGl-Hw-WWQ"/>
-                <constraint firstAttribute="trailing" secondItem="oRd-Ok-Fk6" secondAttribute="trailing" id="OCX-Sb-fzA"/>
-                <constraint firstItem="oRd-Ok-Fk6" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="fsf-59-CSY"/>
+                <constraint firstItem="glZ-8Q-BCF" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="bbx-Qy-PBb"/>
+                <constraint firstAttribute="trailing" secondItem="glZ-8Q-BCF" secondAttribute="trailing" id="gsH-Gu-qjh"/>
+                <constraint firstAttribute="bottom" secondItem="glZ-8Q-BCF" secondAttribute="bottom" id="lDi-PZ-DXv"/>
+                <constraint firstItem="glZ-8Q-BCF" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="vWy-gM-QMz"/>
             </constraints>
             <point key="canvasLocation" x="139" y="154"/>
         </customView>
     </objects>
-    <resources>
-        <namedColor name="onboarding-background-color">
-            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-    </resources>
 </document>

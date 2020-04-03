@@ -270,6 +270,8 @@
 		BA65A24D22B79FEC00F895FD /* OGSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A22D22B79FEC00F895FD /* OGSwitch.swift */; };
 		BA65A25022B7A65D00F895FD /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A24F22B7A65D00F895FD /* DatePickerView.swift */; };
 		BA65A25222B7A66A00F895FD /* DatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A25122B7A66A00F895FD /* DatePickerView.xib */; };
+		BA683F6F24372B3400C3A3F1 /* OnboardingBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA683F6E24372B3400C3A3F1 /* OnboardingBackgroundView.swift */; };
+		BA683F7024372B3400C3A3F1 /* OnboardingBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA683F6E24372B3400C3A3F1 /* OnboardingBackgroundView.swift */; };
 		BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */; };
 		BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */; };
 		BA6F81E422C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */; };
@@ -937,6 +939,7 @@
 		BA65A22D22B79FEC00F895FD /* OGSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OGSwitch.swift; sourceTree = "<group>"; };
 		BA65A24F22B7A65D00F895FD /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		BA65A25122B7A66A00F895FD /* DatePickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerView.xib; sourceTree = "<group>"; };
+		BA683F6E24372B3400C3A3F1 /* OnboardingBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBackgroundView.swift; sourceTree = "<group>"; };
 		BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStorage.swift; sourceTree = "<group>"; };
 		BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Notification.swift"; sourceTree = "<group>"; };
 		BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntryHoverViewController.swift; sourceTree = "<group>"; };
@@ -1422,6 +1425,7 @@
 				BA13E575243476FA005244AD /* OnboardingViewController.xib */,
 				BA13E57A24347716005244AD /* OnboardingContentViewController.swift */,
 				BA13E57B24347716005244AD /* OnboardingContentViewController.xib */,
+				BA683F6E24372B3400C3A3F1 /* OnboardingBackgroundView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -2456,6 +2460,7 @@
 				BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */,
 				BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */,
 				BA4791F722F0478A00E24F79 /* NotificationCenter+MainThread.swift in Sources */,
+				BA683F6F24372B3400C3A3F1 /* OnboardingBackgroundView.swift in Sources */,
 				BA75FF3922BCC6F800D3F08C /* TimelineData.swift in Sources */,
 				BA01405222571199000E5B91 /* TagTokenView.swift in Sources */,
 				BAF9364C23E8114800EE1076 /* TimelineResizeHoverController.swift in Sources */,
@@ -2782,6 +2787,7 @@
 				BA37ACF923D890250013EE26 /* NSView+LayoutConstraint.swift in Sources */,
 				BA13E56A243472EC005244AD /* OnboardingPayload.swift in Sources */,
 				BAE64DBF2368334000244D2B /* (null) in Sources */,
+				BA683F7024372B3400C3A3F1 /* OnboardingBackgroundView.swift in Sources */,
 				BAE64DC02368334000244D2B /* ResizablePopover.swift in Sources */,
 				BA37ACFB23D890250013EE26 /* NSView+Xib.swift in Sources */,
 				BAE64DC12368334000244D2B /* UndoManager.swift in Sources */,

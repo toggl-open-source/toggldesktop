@@ -17,7 +17,7 @@ final class OnboardingViewController: NSViewController {
 
     // MARK: OUTLET
 
-    @IBOutlet weak var containerView: NSView!
+    @IBOutlet weak var backgroundView: OnboardingBackgroundView!
 
     // MARK: Variable
 
@@ -44,6 +44,7 @@ final class OnboardingViewController: NSViewController {
     // MARK: Public
 
     func present(payload: OnboardingPayload, view: NSView) {
+        backgroundView.setMaskPosition(at: view)
         contentController.config(with: payload)
         popover.present(from: view.bounds, of: view, preferredEdge: payload.preferEdges)
     }
