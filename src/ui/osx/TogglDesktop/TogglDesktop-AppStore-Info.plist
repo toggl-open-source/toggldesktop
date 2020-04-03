@@ -59,8 +59,6 @@
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.11</string>
-	<key>LSUIElement</key>
-	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2017 Toggl Desktop developers. All rights reserved.</string>
 	<key>NSMainNibFile</key>
