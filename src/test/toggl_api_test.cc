@@ -1833,13 +1833,13 @@ TEST(toggl_api, toggl_autotracker_add_rule) {
     const uint64_t existing_project_id = 2598305;
 
     int64_t rule_id = toggl_autotracker_add_rule(
-        app.ctx(), STR("delfi"), existing_project_id, 0);
+        app.ctx(), STR("delfi"), existing_project_id, 0, STR(""), STR(""), 0);
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(rule_id);
 
     testing::testresult::error = noError;
     rule_id = toggl_autotracker_add_rule(
-        app.ctx(), STR("delfi"), existing_project_id, 0);
+        app.ctx(), STR("delfi"), existing_project_id, 0, STR(""), STR(""), 0);
     ASSERT_EQ("rule already exists", testing::testresult::error);
     ASSERT_FALSE(rule_id);
 
@@ -1847,7 +1847,7 @@ TEST(toggl_api, toggl_autotracker_add_rule) {
 
     testing::testresult::error = noError;
     rule_id = toggl_autotracker_add_rule(
-        app.ctx(), STR("with task"), 0, existing_task_id);
+        app.ctx(), STR("with task"), 0, existing_task_id, STR(""), STR(""), 0);
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(rule_id);
 
@@ -1856,7 +1856,10 @@ TEST(toggl_api, toggl_autotracker_add_rule) {
         app.ctx(),
         STR("with task and project"),
         existing_project_id,
-        existing_task_id);
+        existing_task_id,
+        STR(""),
+        STR(""),
+        0);
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(rule_id);
 }
