@@ -12,6 +12,8 @@
 #include "types.h"
 #include <stdio.h>
 
+class Database;
+
 namespace toggl {
 enum OnboardingType {
     NewUser,
@@ -28,13 +30,19 @@ enum OnboardingType {
 class TOGGL_INTERNAL_EXPORT OnboardingService {
 public:
 
+    // Register action
+    void RegisterEvents(std::function<void (const OnboardingType)> callback);
+    void SetDatabase(Database *db);
+
     // User actions
-    void openApp();
-    void stopTimeEntry();
-    void openTimelineTab();
-    void turnOnRecordActivity();
+    void OpenApp();
+    void StopTimeEntry();
+    void OpenTimelineTab();
+    void TurnOnRecordActivity();
 
-
+private:
+    Database *database;
+    std::function<void (const OnboardingType)> _callback;
 };
 }
 

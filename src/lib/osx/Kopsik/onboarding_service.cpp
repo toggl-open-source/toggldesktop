@@ -10,20 +10,28 @@
 
 namespace toggl {
 
+void OnboardingService::RegisterEvents(std::function<void (const OnboardingType)> callback) {
+    _callback = callback;
+}
+
+void OnboardingService::SetDatabase(Database *db) {
+    database = db;
+}
+
 // User actions
-void OnboardingService::openApp() {
+void OnboardingService::OpenApp() {
 
 }
 
-void OnboardingService::stopTimeEntry() {
+void OnboardingService::StopTimeEntry() {
 
 }
 
-void OnboardingService::openTimelineTab() {
+void OnboardingService::OpenTimelineTab() {
 
 }
 
-void OnboardingService::turnOnRecordActivity() {
+void OnboardingService::TurnOnRecordActivity() {
 
 }
 
