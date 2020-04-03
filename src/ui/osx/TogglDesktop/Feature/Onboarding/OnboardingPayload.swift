@@ -31,7 +31,7 @@ struct OnboardingPayload {
     var preferEdges: NSRectEdge {
         switch hint {
         case .timelineTab:
-            return .minY
+            return .maxY
         default: // Fill more later
             return .maxX
         }

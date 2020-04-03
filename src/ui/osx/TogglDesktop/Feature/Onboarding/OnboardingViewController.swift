@@ -28,6 +28,7 @@ final class OnboardingViewController: NSViewController {
         popover.animates = true
         popover.behavior = .semitransient
         popover.contentViewController = contentController
+        contentController.popover = popover
         popover.delegate = self
         return popover
     }()
@@ -37,6 +38,7 @@ final class OnboardingViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        initCommon()
     }
 
     // MARK: Public
@@ -48,6 +50,16 @@ final class OnboardingViewController: NSViewController {
 
     func dismiss() {
         popover.close()
+    }
+}
+
+// MARK: Private
+
+extension OnboardingViewController {
+
+    private func initCommon() {
+        // Pre-load the view
+        _ = popover
     }
 }
 

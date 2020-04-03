@@ -18,7 +18,7 @@ final class OnboardingContentViewController: NSViewController {
     // MARK: Public
 
     func config(with payload: OnboardingPayload) {
-        self.title = payload.title
+        self.titleTextField.stringValue = payload.title
     }
 
     @IBAction func exitBtnOnClick(_ sender: Any) {
