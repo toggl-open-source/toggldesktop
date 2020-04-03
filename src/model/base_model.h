@@ -76,10 +76,10 @@ struct BaseModelQuery {
     }
 
     bool IsRequired(size_t idx) const {
-        if (parent_ && idx >= Offset()) {
-            return parent_->IsRequired(idx - Offset());
+        if (!parent_ || idx >= Offset()) {
+            return columns_[idx - Offset()].required;
         }
-        return columns_[idx].required;
+        return parent_->IsRequired(idx);
     }
 
     /**
