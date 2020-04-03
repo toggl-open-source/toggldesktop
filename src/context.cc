@@ -30,6 +30,7 @@
 #include "urls.h"
 #include "window_change_recorder.h"
 #include "workspace.h"
+#include "onboarding_service.h"
 
 #include <Poco/Crypto/OpenSSLInitializer.h>
 #include <Poco/DateTimeFormat.h>
@@ -120,6 +121,12 @@ Context::Context(const std::string &app_name, const std::string &app_version)
     resetLastTrackingReminderTime();
 
     pomodoro_break_entry_ = nullptr;
+    onboarding_service = new OnboardingService();
+
+    // Register event action to trigger UI
+    onboarding_service->RegisterEvents([&] (const OnboardingType onboardingType) {
+        UI()->DisplayOnboarding(onboardingType);
+    });
 }
 
 Context::~Context() {
@@ -156,6 +163,14 @@ Context::~Context() {
         if (user_) {
             delete user_;
             user_ = nullptr;
+        }
+    }
+
+    {
+        Poco::Mutex::ScopedLock lock(onboarding_service_m_);
+        if (onboarding_service) {
+            delete onboarding_service;
+            onboarding_service = nullptr;
         }
     }
 

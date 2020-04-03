@@ -333,6 +333,9 @@ extern "C" {
     typedef void (*TogglDisplayCountries)(
         TogglCountryView *first);
 
+    typedef void (*TogglDisplayOnboarding)(
+        const int64_t onboarding_type);
+
     // Initialize/destroy an instance of the app
 
     TOGGL_EXPORT void *toggl_context_init(

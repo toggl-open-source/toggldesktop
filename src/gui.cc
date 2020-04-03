@@ -257,6 +257,9 @@ error GUI::findMissingCallbacks() {
     if (!on_display_pomodoro_break_) {
         return error("!on_display_pomodoro_break_");
     }
+    if (!on_display_onboarding_) {
+        return error("!on_display_onboarding_");
+    }
     return noError;
 }
 
@@ -812,6 +815,10 @@ void GUI::DisplayIdleNotification(const std::string &guid,
     free(since_s);
     free(duration_s);
     free(description_s);
+}
+
+void GUI::DisplayOnboarding(const OnboardingType onboarding_type) {
+    on_display_onboarding_(onboarding_type);
 }
 
 }  // namespace toggl

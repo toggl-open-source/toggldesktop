@@ -15,6 +15,7 @@
 #include "toggl_api_private.h"
 #include "types.h"
 #include "util/logger.h"
+#include "onboarding_service.h"
 
 #include <Poco/LocalDateTime.h>
 
@@ -688,6 +689,11 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         time_entry_editor_guid_ = "";
     }
 
+    void DisplayOnboarding(const OnboardingType onboarding_type);
+    void OnDisplayOnboarding(TogglDisplayOnboarding cb) {
+        on_display_onboarding_ = cb;
+    }
+
  private:
     error findMissingCallbacks();
 
@@ -724,6 +730,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     TogglDisplayProjectColors on_display_project_colors_;
     TogglDisplayCountries on_display_countries_;
     TogglDisplayObmExperiment on_display_obm_experiment_;
+    TogglDisplayOnboarding on_display_onboarding_;
 
     // Cached views
     Poco::Int64 lastSyncState;
