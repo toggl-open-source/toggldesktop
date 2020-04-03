@@ -117,7 +117,7 @@ error Migrations::migrateAutotracker() {
     err = db_->Migrate(
         "autotracker_settings.days_of_week",
         "alter table autotracker_settings"
-        " add column days_of_week integer not null default 127;"); // 127 == 0x7F == "1111111"
+        " add column days_of_week integer not null default 0;");
     if (err != noError) {
         return err;
     }

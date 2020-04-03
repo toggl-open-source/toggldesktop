@@ -19,7 +19,7 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
  public:
     AutotrackerRule()
         : BaseModel()
-    , days_of_week_(std::bitset<7>(0x7F))
+    , days_of_week_(std::bitset<7>(0))
     , start_time_("")
     , end_time_("")
     , pid_(0)
