@@ -33,6 +33,9 @@ func convert(s string, public bool) string {
 	if strings.Contains(s, "double") {
 		return visibility + strings.Replace(s, "double", "double", -1)
 	}
+	if strings.Contains(s, "uint32_t") {
+		return visibility + strings.Replace(s, "uint32_t", "uint", -1)
+	}
 	if strings.Contains(s, "void *") {
 		return visibility + strings.Replace(s, "void *", "IntPtr ", -1)
 	}

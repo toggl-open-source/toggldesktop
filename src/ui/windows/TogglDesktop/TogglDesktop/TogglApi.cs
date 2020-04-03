@@ -333,11 +333,16 @@ public         Int64 ID;
 public         string Terms;
 [MarshalAs(UnmanagedType.LPWStr)]
 public         string ProjectAndTaskLabel;
+[MarshalAs(UnmanagedType.LPWStr)]
+public         string StartTime;
+[MarshalAs(UnmanagedType.LPWStr)]
+public         string EndTime;
+public         uint DaysOfWeek;
 public         IntPtr Next;
 
 public override string ToString()
 {
-    return ProjectAndTaskLabel;
+        return EndTime;
 }
 
 }
@@ -1761,7 +1766,12 @@ private static extern Int64 toggl_autotracker_add_rule(
 [MarshalAs(UnmanagedType.LPWStr)]
         string terms,
         UInt64 project_id,
-        UInt64 task_id);
+        UInt64 task_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string start_time,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string end_time,
+        uint days_of_week);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
 [return:MarshalAs(UnmanagedType.I1)]
@@ -1769,9 +1779,14 @@ private static extern bool toggl_autotracker_update_rule(
         IntPtr context,
         Int64 rule_id,
 [MarshalAs(UnmanagedType.LPWStr)]
-        string term,
+        string terms,
         UInt64 project_id,
-        UInt64 task_id);
+        UInt64 task_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string start_time,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string end_time,
+        uint days_of_week);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
 [return:MarshalAs(UnmanagedType.I1)]
