@@ -1191,6 +1191,10 @@ extern "C" {
         const char_t *tags,
         const bool_t billable);
 
+    TOGGL_EXPORT void toggl_on_onboarding(
+        void *context,
+        TogglDisplayOnboarding cb);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus
