@@ -5353,7 +5353,7 @@ error Context::pullWorkspaces(TogglClient* toggl_client) {
 
         json = resp.body;
 
-        related.User->LoadWorkspacesFromJSONString(json);
+        related.LoadModelFromJSON(related.Workspaces, json, related.User->ID());
 
     }
     catch (const Poco::Exception& exc) {

@@ -41,6 +41,12 @@ class TOGGL_INTERNAL_EXPORT Task : public BaseModel {
         ptr++;
         ClearDirty();
     }
+    Task(ProtectedBase *container, const Json::Value &data)
+        : BaseModel(container)
+    {
+        LoadFromJSON(data);
+        ClearDirty();
+    }
     Task(ProtectedBase *container)
         : BaseModel(container)
     {}

@@ -9,12 +9,14 @@
 #include <map>
 #include <functional>
 
+#include "const.h"
 #include "types.h"
 #include "util/memory.h"
+#include "util/logger.h"
 
 #include <Poco/Mutex.h>
 #include <Poco/UTF8String.h>
-#include <functional>
+#include <json/json.h>
 
 namespace toggl {
 
@@ -62,6 +64,63 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
 
     void Clear();
 
+    template <typename T>
+    error LoadModelFromJSON(ProtectedContainer<T> &into, const Json::Value &data, Poco::UInt64 uid, std::set<Poco::UInt64> *alive = nullptr) {
+        std::cerr << "WORKING ON " << into.ModelName() << " and now the JSON is:" << std::endl;
+        Json::StyledWriter w;
+        std::cerr << w.write(data) << std::endl << std::endl << std::flush;
+        auto id = data["id"].asUInt64();
+        if (!id) {
+            logger().error("Backend is sending invalid data: ignoring update without an ID");
+            // TODO maybe return something?
+            return noError;
+        }
+        locked<T> model = into.byID(id);
+        if (!data["server_deleted_at"].asString().empty()) {
+            if (model)
+                model->MarkAsDeletedOnServer();
+            return noError;
+        }
+        if (alive)
+            alive->insert(id);
+        if (!model) {
+            model = into.create(data);
+            model->SetUID(uid);
+        }
+        else {
+            model->SetUID(uid);
+            model->LoadFromJSON(data);
+        }
+        return noError;
+    }
+    template <typename T>
+    error LoadModelFromJSON(ProtectedContainer<T> &into, const std::string &data, Poco::UInt64 uid, std::set<Poco::UInt64> *alive = nullptr) {
+        Json::Value root;
+        Json::Reader reader;
+        if (!reader.parse(data, root)) {
+            return error("Failed to parse JSON for model " + into.ModelName());
+        }
+        if (root.size() == 0)
+            return kMissingModelData;
+        return LoadModelFromJSON<T>(into, root, uid, alive);
+    }
+
+    template<class T>
+    void deleteZombies(ProtectedContainer<T> &list, const std::set<Poco::UInt64> &alive) {
+        for (auto model : list) {
+            if (!model->ID()) {
+                // If model has no server-assigned ID, it's not even
+                // pushed to server. So actually we don't know if it's
+                // a zombie or not. Ignore:
+                continue;
+            }
+            if (alive.end() == alive.find(model->ID())) {
+                model->MarkAsDeletedOnServer();
+            }
+        }
+    }
+
+
     void TagList(std::vector<std::string> *result, const Poco::UInt64 wid) const;
     std::vector<locked<Workspace>> WorkspaceList();
     std::vector<locked<Client>> ClientList();
@@ -92,11 +151,14 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
 
     locked<AutotrackerRule> FindAutotrackerRule(locked<TimelineEvent> &event);
 
-    locked<Client> clientByProject(locked<Project> &p);
     locked<const Client> clientByProject(locked<const Project> &p) const;
 
  private:
     Poco::Mutex timeEntries_m_;
+
+    Logger logger() const {
+        return { "related_data" };
+    }
 
     void timeEntryAutocompleteItems(
         std::set<std::string> *unique_names,

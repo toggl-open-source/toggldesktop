@@ -523,75 +523,6 @@ void User::RemoveTaskFromRelatedModels(const Poco::UInt64 tid) {
     }
 }
 
-void User::loadUserTagFromJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
-
-    // alive can be 0, dont assert/check it
-
-    Poco::UInt64 id = data["id"].asUInt64();
-    if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");
-        return;
-    }
-
-    auto model = GetRelatedData()->Tags.byID(id);
-
-    if (!model) {
-        model = GetRelatedData()->Tags.byGUID(data["guid"].asString());
-    }
-
-    if (!data["server_deleted_at"].asString().empty()) {
-        if (model) {
-            model->MarkAsDeletedOnServer();
-        }
-        return;
-    }
-
-    if (!model) {
-        model = GetRelatedData()->Tags.create();
-    }
-    if (alive) {
-        alive->insert(id);
-    }
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
-}
-
-void User::loadUserTaskFromJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
-
-    // alive can be 0, dont assert/check it
-
-    Poco::UInt64 id = data["id"].asUInt64();
-    if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");
-        return;
-    }
-
-    auto model = GetRelatedData()->Tasks.byID(id);
-
-    // Tasks have no GUID
-
-    if (!data["server_deleted_at"].asString().empty()) {
-        if (model) {
-            model->MarkAsDeletedOnServer();
-        }
-        return;
-    }
-
-    if (!model) {
-        model = GetRelatedData()->Tasks.create();
-    }
-
-    if (alive) {
-        alive->insert(id);
-    }
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
-}
-
 error User::LoadUserUpdateFromJSONString(
     const std::string &json) {
 
@@ -622,52 +553,20 @@ void User::loadUserUpdateFromJSON(
     Logger("json").debug("Update parsed into action=", action, ", model=", model);
 
     if (kModelWorkspace == model) {
-        loadUserWorkspaceFromJSON(data);
+        GetRelatedData()->LoadModelFromJSON(GetRelatedData()->Workspaces, data, ID());
     } else if (kModelClient == model) {
-        loadUserClientFromSyncJSON(data);
+        GetRelatedData()->LoadModelFromJSON(GetRelatedData()->Clients, data, ID());
     } else if (kModelProject == model) {
-        loadUserProjectFromSyncJSON(data);
+        GetRelatedData()->LoadModelFromJSON(GetRelatedData()->Projects, data, ID());
     } else if (kModelTask == model) {
-        loadUserTaskFromJSON(data);
+        GetRelatedData()->LoadModelFromJSON(GetRelatedData()->Tasks, data, ID());
     } else if (kModelTimeEntry == model) {
         loadUserTimeEntryFromJSON(data);
     } else if (kModelTag == model) {
-        loadUserTagFromJSON(data);
+        GetRelatedData()->LoadModelFromJSON(GetRelatedData()->Tags, data, ID());
     } else if (kModelUser == model) {
         loadUserAndRelatedDataFromJSON(data, false);
     }
-}
-
-void User::loadUserWorkspaceFromJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
-
-    // alive can be 0, dont assert/check it
-
-    Poco::UInt64 id = data["id"].asUInt64();
-    if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");
-        return;
-    }
-    locked<Workspace> model = GetRelatedData()->Workspaces.byID(id);
-
-    // Workspaces have no GUID
-
-    if (!data["server_deleted_at"].asString().empty()) {
-        if (model) {
-            model->MarkAsDeletedOnServer();
-        }
-        return;
-    }
-
-    if (!model) {
-        model = GetRelatedData()->Workspaces.create();
-    }
-    if (alive) {
-        alive->insert(id);
-    }
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
 }
 
 error User::LoadUserAndRelatedDataFromJSONString(
@@ -689,32 +588,6 @@ error User::LoadUserAndRelatedDataFromJSONString(
     Logger("json").debug("User data as of: ", Since());
 
     loadUserAndRelatedDataFromJSON(root["data"], including_related_data);
-    return noError;
-}
-
-error User::LoadWorkspacesFromJSONString(const std::string & json) {
-    if (json.empty()) {
-        return noError;
-    }
-
-    Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(json, root)) {
-        return error("Failed to LoadWorkspacessFromJSONString");
-    }
-
-    if (root.size() == 0) {
-        // Handle missing workspace issue.
-        // If default wid is missing there are no workspaces
-        return error(kMissingWS); // NOLINT
-    }
-
-    std::set<Poco::UInt64> alive;
-
-    for (unsigned int i = 0; i < root.size(); i++) {
-        loadUserWorkspaceFromJSON(root[i]);
-    }
-
     return noError;
 }
 
@@ -797,7 +670,7 @@ void User::loadUserAndRelatedDataFromJSON(
             Json::Value list = data["workspaces"];
 
             for (unsigned int i = 0; i < list.size(); i++) {
-                loadUserWorkspaceFromJSON(list[i], &alive);
+                GetRelatedData()->LoadModelFromJSON(GetRelatedData()->Workspaces, list[i], ID(), &alive);
             }
         }
 
@@ -813,7 +686,7 @@ void User::loadUserAndRelatedDataFromJSON(
             Json::Value list = data["clients"];
 
             for (unsigned int i = 0; i < list.size(); i++) {
-                loadUserClientFromSyncJSON(list[i], &alive);
+                GetRelatedData()->LoadModelFromJSON(GetRelatedData()->Clients, list[i], UID(), &alive);
             }
         }
 
@@ -829,7 +702,7 @@ void User::loadUserAndRelatedDataFromJSON(
             Json::Value list = data["projects"];
 
             for (unsigned int i = 0; i < list.size(); i++) {
-                loadUserProjectFromSyncJSON(list[i], &alive);
+                GetRelatedData()->LoadModelFromJSON(GetRelatedData()->Projects, list[i], ID(), &alive);
             }
         }
 
@@ -845,7 +718,7 @@ void User::loadUserAndRelatedDataFromJSON(
             Json::Value list = data["tasks"];
 
             for (unsigned int i = 0; i < list.size(); i++) {
-                loadUserTaskFromJSON(list[i], &alive);
+                GetRelatedData()->LoadModelFromJSON(GetRelatedData()->Tasks, list[i], ID(), &alive);
             }
         }
 
@@ -861,7 +734,7 @@ void User::loadUserAndRelatedDataFromJSON(
             Json::Value list = data["tags"];
 
             for (unsigned int i = 0; i < list.size(); i++) {
-                loadUserTagFromJSON(list[i], &alive);
+                GetRelatedData()->LoadModelFromJSON(GetRelatedData()->Tags, list[i], ID(), &alive);
             }
         }
 
@@ -885,160 +758,6 @@ void User::loadUserAndRelatedDataFromJSON(
             deleteZombies(GetRelatedData()->TimeEntries, alive);
         }
     }
-}
-
-void User::loadUserClientFromSyncJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
-    bool addNew = false;
-    Poco::UInt64 id = data["id"].asUInt64();
-    if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");
-        return;
-    }
-    auto model = GetRelatedData()->Clients.byID(id);
-
-    if (!model) {
-        model = GetRelatedData()->Clients.byGUID(data["guid"].asString());
-    }
-
-    if (!data["server_deleted_at"].asString().empty()) {
-        if (model) {
-            model->MarkAsDeletedOnServer();
-        }
-        return;
-    }
-
-    if (!model) {
-        model = GetRelatedData()->Clients.create();
-    }
-    if (alive) {
-        alive->insert(id);
-    }
-
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
-
-    // FIXME sorting not implemented yet
-    //if (addNew) {
-    //    AddClientToList(model);
-    //}
-    //GetRelatedData()->Clients.sort();
-}
-
-void User::loadUserClientFromJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
-
-    // alive can be 0, dont assert/check it
-
-    Poco::UInt64 id = data["id"].asUInt64();
-    if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");
-        return;
-    }
-    auto model = GetRelatedData()->Clients.byID(id);
-
-    if (!model) {
-        model = GetRelatedData()->Clients.byGUID(data["guid"].asString());
-    }
-
-    if (!data["server_deleted_at"].asString().empty()) {
-        if (model) {
-            model->MarkAsDeletedOnServer();
-        }
-        return;
-    }
-
-    if (!model) {
-        model = GetRelatedData()->Clients.create();
-    }
-    if (alive) {
-        alive->insert(id);
-    }
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
-}
-
-void User::loadUserProjectFromSyncJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
-    bool addNew = false;
-    Poco::UInt64 id = data["id"].asUInt64();
-    if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");
-        return;
-    }
-
-    auto model = GetRelatedData()->Projects.byID(id);
-
-    if (!model) {
-        model = GetRelatedData()->Projects.byGUID(data["guid"].asString());
-    }
-
-    if (!data["server_deleted_at"].asString().empty()) {
-        if (model) {
-            model->MarkAsDeletedOnServer();
-        }
-        return;
-    }
-
-    if (!model) {
-        model = GetRelatedData()->Projects.create();
-        addNew = true;
-    }
-    if (alive) {
-        alive->insert(id);
-    }
-
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
-
-    auto c = GetRelatedData()->clientByProject(model);
-    if (c) {
-        model->SetClientName(c->Name());
-    }
-
-    // FIXME sorting not implemented yet
-    //if (addNew) {
-    //    AddProjectToList(model);
-    //}
-    //GetRelatedData()->Projects.sort();
-}
-
-void User::loadUserProjectFromJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
-
-    // alive can be 0, dont assert/check it
-
-    Poco::UInt64 id = data["id"].asUInt64();
-    if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");
-        return;
-    }
-
-    locked<Project> model = GetRelatedData()->Projects.byID(id);
-
-    if (!model) {
-        model = GetRelatedData()->Projects.byGUID(data["guid"].asString());
-    }
-
-    if (!data["server_deleted_at"].asString().empty()) {
-        if (model) {
-            model->MarkAsDeletedOnServer();
-        }
-        return;
-    }
-
-    if (!model) {
-        model = GetRelatedData()->Projects.create();
-    }
-    if (alive) {
-        alive->insert(id);
-    }
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
 }
 
 bool User::SetTimeEntryID(Poco::UInt64 id,

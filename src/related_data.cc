@@ -582,17 +582,6 @@ void RelatedData::ProjectLabelAndColorCode(locked<TimeEntry> &te,
     }
 }
 
-locked<Client> RelatedData::clientByProject(locked<Project> &p) {
-    locked<Client> c;
-    if (p && p->CID()) {
-        c = Clients.byID(p->CID());
-    }
-    if (!c && p && !p->ClientGUID().empty()) {
-        c = Clients.byGUID(p->ClientGUID());
-    }
-    return c;
-}
-
 locked<const Client> RelatedData::clientByProject(locked<const Project> &p) const {
     locked<const Client> c;
     if (p && p->CID()) {

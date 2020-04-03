@@ -92,6 +92,7 @@
 #define kProjectNameAlreadyExists "Project name already exists"
 #define kClientNameAlreadyExists "Client name already exists"
 #define kDatabaseDiskMalformed "The database disk image is malformed"
+#define kMissingModelData "There was no data to parse in the last server response"
 #define kMissingWS "You no longer have access to your last workspace"
 #define kOutOfDatePleaseUpgrade "Your version of Toggl Desktop is out of date, please upgrade!"
 #define kThisEntryCantBeSavedPleaseAdd "This entry can't be saved - please add"

@@ -172,8 +172,6 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         const std::string &json,
         const bool &including_related_data);
 
-    error LoadWorkspacesFromJSONString(const std::string & json);
-
     error LoadTimeEntriesFromJSONString(const std::string &json);
 
     error SetAPITokenFromOfflineData(const std::string &password);
@@ -223,40 +221,12 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     }
 
  private:
-    void loadUserTagFromJSON(
-        Json::Value data,
-        std::set<Poco::UInt64> *alive = nullptr);
-
     void loadUserAndRelatedDataFromJSON(
         Json::Value node,
         const bool &including_related_data);
 
     void loadUserUpdateFromJSON(
         Json::Value list);
-
-    void loadUserProjectFromJSON(
-        Json::Value data,
-        std::set<Poco::UInt64> *alive = nullptr);
-
-    void loadUserProjectFromSyncJSON(
-        Json::Value data,
-        std::set<Poco::UInt64> *alive = nullptr);
-
-    void loadUserWorkspaceFromJSON(
-        Json::Value data,
-        std::set<Poco::UInt64> *alive = nullptr);
-
-    void loadUserClientFromJSON(
-        Json::Value data,
-        std::set<Poco::UInt64> *alive = nullptr);
-
-    void loadUserClientFromSyncJSON(
-        Json::Value data,
-        std::set<Poco::UInt64> *alive = nullptr);
-
-    void loadUserTaskFromJSON(
-        Json::Value data,
-        std::set<Poco::UInt64> *alive = nullptr);
 
     void loadUserTimeEntryFromJSON(
         Json::Value data,

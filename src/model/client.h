@@ -37,6 +37,12 @@ class TOGGL_INTERNAL_EXPORT Client : public BaseModel {
         ptr++;
         ClearDirty();
     }
+    Client(ProtectedBase *container, const Json::Value &data)
+        : BaseModel(container)
+    {
+        LoadFromJSON(data);
+        EnsureGUID();
+    }
     Client(ProtectedBase *container)
         : BaseModel(container)
     {}

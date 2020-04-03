@@ -60,6 +60,12 @@ class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
         ptr++;
         ClearDirty();
     }
+    Project(ProtectedBase *container, const Json::Value &data)
+        : BaseModel(container)
+    {
+        LoadFromJSON(data);
+        updateClientName();
+    }
     Project(ProtectedBase *container)
         : BaseModel(container)
     {}
@@ -131,6 +137,9 @@ class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
  private:
     bool clientIsInAnotherWorkspace(const toggl::error &err) const;
     bool onlyAdminsCanChangeProjectVisibility(const toggl::error &err) const;
+
+    // moved over from JSON parsing in User
+    void updateClientName();
 
     std::string name_ { "" };
     std::string color_ { "" };

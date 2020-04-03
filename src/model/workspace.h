@@ -48,6 +48,12 @@ class TOGGL_INTERNAL_EXPORT Workspace : public BaseModel {
         ptr++;
         ClearDirty();
     }
+    Workspace(ProtectedBase *container, const Json::Value &data)
+        : BaseModel(container)
+    {
+        LoadFromJSON(data);
+        EnsureGUID();
+    }
     Workspace(ProtectedBase* container)
         : BaseModel(container)
     {}
