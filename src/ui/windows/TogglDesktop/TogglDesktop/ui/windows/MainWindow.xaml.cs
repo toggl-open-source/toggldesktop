@@ -906,21 +906,7 @@ namespace TogglDesktop
         private void onMainWindowLoaded(object sender, EventArgs args)
         {
             this.Loaded -= onMainWindowLoaded;
-            this.enableBlurBehindIfSupported();
             this.ShowOnTop();
-        }
-
-        private void enableBlurBehindIfSupported()
-        {
-            var isBlurBehindSupported = Environment.OSVersion.Version >= new Version(10, 0, 17134);
-            if (isBlurBehindSupported)
-            {
-                Win32.EnableBlurBehind(this.interopHelper.Handle);
-            }
-            else
-            {
-                this.SetResourceReference(Window.BackgroundProperty, "Toggl.Background");
-            }
         }
 
         #endregion

@@ -86,7 +86,7 @@
                       Focusable="False"
                       IsTabStop="False"
                       PreviewKeyDown="UIElement_OnPreviewKeyDown">
-            <Grid Margin="0 4">
+            <Grid Margin="0 8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
