@@ -12,7 +12,7 @@ final class OnboardingBackgroundView: NSView {
 
     // MARK: Variable
 
-    private lazy var maskLayer = CALayer()
+    private lazy var maskLayer = CAShapeLayer()
     private lazy var backgroundColor: NSColor = {
         if #available(OSX 10.13, *) {
             return NSColor(named: NSColor.Name("onboarding-background-color"))!
@@ -40,15 +40,12 @@ final class OnboardingBackgroundView: NSView {
 
     // MARK: Public
 
-    func setMaskPosition(at view: NSView) {
-        maskLayer.backgroundColor = NSColor.white.cgColor
-        maskLayer.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-
-        if layer?.mask == nil {
-            layer?.mask = maskLayer
-        }
+    func drawMask(at frame: CGRect) {
+        let path = NSBezierPath(rect: frame)
+        path.append(NSBezierPath(rect: bounds))
+        maskLayer.path = path.cgPath
+        layer?.mask = maskLayer
     }
-
 }
 
 // MARK: Private
@@ -58,5 +55,7 @@ extension OnboardingBackgroundView {
     private func initCommon() {
         wantsLayer = true
         layer?.backgroundColor = backgroundColor.cgColor
+        maskLayer.backgroundColor = NSColor.white.cgColor
+        maskLayer.fillRule = .evenOdd // invert mask
     }
 }

@@ -36,7 +36,7 @@ final class OnboardingService {
 
         // Present
         let payload = OnboardingPayload(hint: hint)
-        controller.present(payload: payload, view: view)
+        controller.present(payload: payload, hintView: view)
     }
 
     func dismiss() {

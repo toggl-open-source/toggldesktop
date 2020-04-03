@@ -43,10 +43,16 @@ final class OnboardingViewController: NSViewController {
 
     // MARK: Public
 
-    func present(payload: OnboardingPayload, view: NSView) {
-        backgroundView.setMaskPosition(at: view)
+    func present(payload: OnboardingPayload, hintView: NSView) {
+        // Force render to get the correct size after autolayout
+        view.setNeedsDisplay(view.bounds)
+        view.displayIfNeeded()
+
+        // Render
+        let hintFrame = view.convert(hintView.frame, from: hintView.superview)
+        backgroundView.drawMask(at: hintFrame)
         contentController.config(with: payload)
-        popover.present(from: view.bounds, of: view, preferredEdge: payload.preferEdges)
+        popover.present(from: hintView.bounds, of: hintView, preferredEdge: payload.preferEdges)
     }
 
     func dismiss() {
