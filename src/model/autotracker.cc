@@ -13,7 +13,7 @@ static const char kTermSeparator = '\t';
 
 bool AutotrackerRule::Matches(const TimelineEvent &event) const {
     const Poco::LocalDateTime event_time(Poco::DateTime(event.EndTime()));
-    if (!DaysOfWeek()[event_time.dayOfWeek()]) {
+    if (!DaysOfWeek().none() && !DaysOfWeek()[event_time.dayOfWeek()]) {
         logger().debug("Autotracker rule is not enabled on this weekday");
         return false;
     }
