@@ -10,7 +10,8 @@ import Foundation
 
 final class OnboardingServiceObjc: NSObject {
 
-    @objc class func present(hint: OnboardingHint, atView: NSView) {
+    @objc class func present(hintValue: Int, atView: NSView) {
+        guard let hint = OnboardingHint(rawValue: hintValue) else { return }
         OnboardingService.shared.present(hint: hint, view: atView)
     }
 }

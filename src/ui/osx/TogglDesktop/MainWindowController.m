@@ -78,6 +78,10 @@ extern void *ctx;
                                                  selector:@selector(startDisplayInAppMessage:)
                                                      name:kStartDisplayInAppMessage
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(startOnboardingNotification:)
+                                                     name:kStartDisplayOnboarding
+                                                   object:nil];
 	}
 	return self;
 }
@@ -425,9 +429,14 @@ extern void *ctx;
 
 #pragma mark - Onboarding
 
+- (void)startOnboardingNotification:(NSNotification *) noti {
+    NSNumber *onboardingTypeNumber = (NSNumber *) noti.object;
+    [OnboardingServiceObjc presentWithHintValue:onboardingTypeNumber.integerValue atView:self.mainDashboardViewController.timelineBtn];
+}
+
 -(void) handleOnboarding {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [OnboardingServiceObjc presentWithHint:OnboardingHintTimelineTab atView:self.mainDashboardViewController.timelineBtn];
+        [OnboardingServiceObjc presentWithHintValue:0 atView:self.mainDashboardViewController.timelineBtn];
     });
 }
 

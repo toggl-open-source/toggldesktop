@@ -8,8 +8,7 @@
 
 import Foundation
 
-// compatible with objc
-@objc enum OnboardingHint: Int {
+enum OnboardingHint: Int {
     case newUser
     case oldUser
     case manualMode

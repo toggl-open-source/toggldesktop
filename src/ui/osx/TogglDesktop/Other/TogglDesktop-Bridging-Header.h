@@ -21,4 +21,4 @@
 #import "BetterFocusAutoCompleteInput.h"
 #import "Settings.h"
 #import "AppDelegate.h"
-
+#import "MainWindowController.h"
