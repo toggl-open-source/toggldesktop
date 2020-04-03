@@ -591,7 +591,7 @@ const int kUseProxyToConnectToToggl = 2;
 		return;
 	}
 
-	if (!toggl_autotracker_add_rule(ctx, [term UTF8String], pid, tid))
+	if (!toggl_autotracker_add_rule(ctx, [term UTF8String], pid, tid, "", "", 0))
 	{
 		return;
 	}

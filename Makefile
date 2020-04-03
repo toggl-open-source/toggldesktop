@@ -207,7 +207,6 @@ third_party/google-astyle/build/google-astyle:
 
 fmt_lib: third_party/google-astyle/build/google-astyle
 	third_party/google-astyle/build/google-astyle -n $(source_dirs)
-	third_party/google-astyle/build/google-astyle -n src/ui/windows/TogglDesktop/TogglDesktopDLLInteropTest//*.cs
 
 fmt_ui:
 	./third_party/Xcode-formatter/CodeFormatter/scripts/formatAllSources.sh src/ui/osx/TogglDesktop

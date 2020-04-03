@@ -116,6 +116,9 @@ TogglAutotrackerRuleView *autotracker_rule_to_view_item(const toggl::view::Autot
     view->ID = static_cast<int>(model.ID);
     view->Terms = copy_string(model.Terms);
     view->ProjectAndTaskLabel = copy_string(model.ProjectName);
+    view->StartTime = copy_string(model.StartTime);
+    view->EndTime = copy_string(model.EndTime);
+    view->DaysOfWeek = model.DaysOfWeek;
     return view;
 }
 

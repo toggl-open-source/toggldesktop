@@ -331,11 +331,16 @@ public static partial class Toggl
         public         string Terms;
         [MarshalAs(UnmanagedType.LPWStr)]
         public         string ProjectAndTaskLabel;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public         string StartTime;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public         string EndTime;
+        public         uint DaysOfWeek;
         public         IntPtr Next;
 
         public override string ToString()
         {
-            return ProjectAndTaskLabel;
+            return EndTime;
         }
 
     }
@@ -1652,7 +1657,12 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         string terms,
         UInt64 project_id,
-        UInt64 task_id);
+        UInt64 task_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string start_time,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string end_time,
+        uint days_of_week);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
@@ -1660,9 +1670,14 @@ public static partial class Toggl
         IntPtr context,
         Int64 rule_id,
         [MarshalAs(UnmanagedType.LPWStr)]
-        string term,
+        string terms,
         UInt64 project_id,
-        UInt64 task_id);
+        UInt64 task_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string start_time,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string end_time,
+        uint days_of_week);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
@@ -1782,6 +1797,23 @@ public static partial class Toggl
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void track_expand_all_days(
         IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_update_time_entry(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string guid,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string description,
+        UInt64 task_id,
+        UInt64 project_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string project_guid,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string tags,
+        [MarshalAs(UnmanagedType.I1)]
+        bool billable);
 
 
 

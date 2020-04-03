@@ -199,6 +199,9 @@ extern "C" {
         int64_t ID;
         char_t *Terms;
         char_t *ProjectAndTaskLabel;
+        char_t *StartTime;
+        char_t *EndTime;
+        uint32_t DaysOfWeek;
         void *Next;
     } TogglAutotrackerRuleView;
 
@@ -1087,16 +1090,22 @@ extern "C" {
 
     TOGGL_EXPORT int64_t toggl_autotracker_add_rule(
         void *context,
-        const char_t *term,
+        const char_t *terms,
         const uint64_t project_id,
-        const uint64_t task_id);
+        const uint64_t task_id,
+        const char_t *start_time,
+        const char_t *end_time,
+        const uint32_t days_of_week);
 
     TOGGL_EXPORT bool_t toggl_autotracker_update_rule(
         void *context,
         const int64_t rule_id,
         const char_t *terms,
         const uint64_t project_id,
-        const uint64_t task_id);
+        const uint64_t task_id,
+        const char_t *start_time,
+        const char_t *end_time,
+        const uint32_t days_of_week);
 
     TOGGL_EXPORT bool_t toggl_autotracker_delete_rule(
         void *context,

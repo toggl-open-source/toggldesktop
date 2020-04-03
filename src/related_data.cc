@@ -71,7 +71,15 @@ error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
     return noError;
 }
 
-error RelatedData::UpdateAutotrackerRule(const Poco::Int64 local_id, std::string terms, const Poco::UInt64 tid, const Poco::UInt64 pid) {
+error RelatedData::UpdateAutotrackerRule(
+    const Poco::Int64 local_id,
+    std::string terms,
+    const Poco::UInt64 tid,
+    const Poco::UInt64 pid,
+    std::string start_time,
+    std::string end_time,
+    const Poco::UInt32 days_of_week) {
+
     if (!local_id) {
         return error("cannot update rule without an ID");
     }
@@ -85,6 +93,9 @@ error RelatedData::UpdateAutotrackerRule(const Poco::Int64 local_id, std::string
             rule->SetTerms(terms);
             rule->SetTID(tid);
             rule->SetPID(pid);
+            rule->SetStartTime(start_time);
+            rule->SetEndTime(end_time);
+            rule->SetDaysOfWeek(days_of_week);
             break;
         }
     }

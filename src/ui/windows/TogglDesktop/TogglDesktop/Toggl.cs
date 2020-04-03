@@ -639,12 +639,12 @@ public static partial class Toggl
 
     public static long AddAutotrackerRule(string terms, ulong projectId, ulong taskId)
     {
-        return toggl_autotracker_add_rule(ctx, terms, projectId, taskId);
+        return toggl_autotracker_add_rule(ctx, terms, projectId, taskId, "", "", 0);
     }
 
     public static bool UpdateAutotrackerRule(long ruleId, string terms, ulong projectId, ulong taskId)
     {
-        return toggl_autotracker_update_rule(ctx, ruleId, terms, projectId, taskId);
+        return toggl_autotracker_update_rule(ctx, ruleId, terms, projectId, taskId, "", "", 0);
     }
 
     public static bool DeleteAutotrackerRule(long id)

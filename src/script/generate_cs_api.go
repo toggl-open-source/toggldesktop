@@ -30,6 +30,9 @@ func convert(s string, public bool) string {
 	if strings.Contains(s, "uint8_t") {
 		return visibility + strings.Replace(s, "uint8_t", "byte", -1)
 	}
+	if strings.Contains(s, "uint32_t") {
+		return visibility + strings.Replace(s, "uint32_t", "uint", -1)
+	}
 	if strings.Contains(s, "void *") {
 		return visibility + strings.Replace(s, "void *", "IntPtr ", -1)
 	}

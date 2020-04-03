@@ -41,7 +41,7 @@ bool AutotrackerRule::Matches(const TimelineEvent &event) const {
         }
     }
 
-    for (const auto& term : terms_) {
+for (const auto& term : terms_) {
         if (Poco::UTF8::toLower(event.Title()).find(term)
                 != std::string::npos) {
             return true;

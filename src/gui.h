@@ -295,11 +295,17 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule {
     AutotrackerRule()
         : ID(0)
     , Terms("")
-    , ProjectName("") {}
+    , ProjectName("")
+    , StartTime("")
+    , EndTime("")
+    , DaysOfWeek(0) {}
 
     int64_t ID;
     std::string Terms;
     std::string ProjectName;
+    std::string StartTime;
+    std::string EndTime;
+    uint32_t DaysOfWeek;
 
     bool operator == (const AutotrackerRule& other) const;
 };

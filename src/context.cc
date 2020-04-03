@@ -832,6 +832,9 @@ void Context::updateUI(const UIElements &what) {
                     rule.ProjectName = Formatter::JoinTaskName(t, p);
                     rule.ID = model->LocalID();
                     rule.Terms = model->TermsString();
+                    rule.StartTime = model->StartTime();
+                    rule.EndTime = model->EndTime();
+                    rule.DaysOfWeek = model->DaysOfWeekUInt32();
                     autotracker_rule_views.push_back(rule);
                 }
 
@@ -3883,6 +3886,9 @@ error Context::AddAutotrackerRule(
     const std::string &terms,
     const Poco::UInt64 pid,
     const Poco::UInt64 tid,
+    const std::string &start_time,
+    const std::string &end_time,
+    const Poco::UInt32 days_of_week,
     Poco::Int64 *rule_id) {
 
     poco_check_ptr(rule_id);
@@ -3941,6 +3947,9 @@ error Context::AddAutotrackerRule(
         if (p) {
             rule->SetPID(p->ID());
         }
+        rule->SetStartTime(start_time);
+        rule->SetEndTime(end_time);
+        rule->SetDaysOfWeek(days_of_week);
         rule->SetUID(user_->ID());
         user_->related.AutotrackerRules.push_back(rule);
     }
@@ -3961,7 +3970,10 @@ error Context::UpdateAutotrackerRule(
     const Poco::Int64 rule_id,
     const std::string &terms,
     const Poco::UInt64 pid,
-    const Poco::UInt64 tid) {
+    const Poco::UInt64 tid,
+    const std::string &start_time,
+    const std::string &end_time,
+    const Poco::UInt32 days_of_week) {
 
     if (!rule_id) {
         return displayError("missing rule id");
@@ -4008,7 +4020,7 @@ error Context::UpdateAutotrackerRule(
             return noError;
         }
 
-        error err = user_->related.UpdateAutotrackerRule(rule_id, terms, tid, pid);
+        error err = user_->related.UpdateAutotrackerRule(rule_id, terms, tid, pid, start_time, end_time, days_of_week);
         if (noError != err) {
             return displayError(err);
         }
