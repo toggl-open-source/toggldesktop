@@ -82,7 +82,7 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled"
                       HorizontalAlignment="Stretch"
-                      Margin="4 0"
+                      Margin="6 0"
                       Focusable="False"
                       IsTabStop="False"
                       PreviewKeyDown="UIElement_OnPreviewKeyDown">
