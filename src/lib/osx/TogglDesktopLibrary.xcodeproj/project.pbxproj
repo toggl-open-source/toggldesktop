@@ -96,6 +96,8 @@
 		BA43B33323F680B00007DD99 /* libPocoNetSSL.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B32423F680B00007DD99 /* libPocoNetSSL.60.dylib */; };
 		BA43B33523F680B00007DD99 /* libPocoUtil.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B32523F680B00007DD99 /* libPocoUtil.60.dylib */; };
 		BA43B33723F680B00007DD99 /* libPocoXML.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B32623F680B00007DD99 /* libPocoXML.60.dylib */; };
+		BA683F772437698400C3A3F1 /* onboarding_service.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA683F752437698400C3A3F1 /* onboarding_service.cpp */; };
+		BA683F782437698400C3A3F1 /* onboarding_service.h in Headers */ = {isa = PBXBuildFile; fileRef = BA683F762437698400C3A3F1 /* onboarding_service.h */; };
 		BAA842252403D99800BCCB67 /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B31E23F680B00007DD99 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAA842262403D99800BCCB67 /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B31F23F680B00007DD99 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAA842272403D99800BCCB67 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B32023F680B00007DD99 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -232,6 +234,8 @@
 		BA43B34B23F681CF0007DD99 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../../ui/osx/TogglDesktop/Library/openssl/libcrypto.a; sourceTree = "<group>"; };
 		BA43B34C23F681CF0007DD99 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../../ui/osx/TogglDesktop/Library/openssl/libssl.a; sourceTree = "<group>"; };
 		BA43B34F23F681D60007DD99 /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua.a; path = ../../ui/osx/TogglDesktop/Library/lua/liblua.a; sourceTree = "<group>"; };
+		BA683F752437698400C3A3F1 /* onboarding_service.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = onboarding_service.cpp; sourceTree = "<group>"; };
+		BA683F762437698400C3A3F1 /* onboarding_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = onboarding_service.h; sourceTree = "<group>"; };
 		BAA8422E2403DAE000BCCB67 /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.1.dylib; path = ../../ui/osx/TogglDesktop/Library/openssl/libcrypto.1.1.dylib; sourceTree = "<group>"; };
 		BAA8422F2403DAE000BCCB67 /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.1.1.dylib; path = ../../ui/osx/TogglDesktop/Library/openssl/libssl.1.1.dylib; sourceTree = "<group>"; };
 		BAD233DA21D60A4D0039C742 /* libPocoNet.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.dylib; sourceTree = "<group>"; };
@@ -273,8 +277,6 @@
 				BA43B33523F680B00007DD99 /* libPocoUtil.60.dylib in Frameworks */,
 				BA43B33123F680B00007DD99 /* libPocoNet.60.dylib in Frameworks */,
 				BA063C0423B0B761003A96FE /* AppKit.framework in Frameworks */,
-				C5DA1F9317F18CBB001C4565 /* libcrypto.a in Frameworks */,
-				C5DA1F9117F18CB6001C4565 /* libssl.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,6 +421,8 @@
 				BA2DA11B21A6864D0027B7A5 /* rectangle.cc */,
 				BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */,
 				BA063BFF23B0AF2F003A96FE /* MacOSApplicationInfo.mm */,
+				BA683F752437698400C3A3F1 /* onboarding_service.cpp */,
+				BA683F762437698400C3A3F1 /* onboarding_service.h */,
 			);
 			name = lib;
 			path = Kopsik;
@@ -454,6 +458,7 @@
 				748B7DA81AC5963B00FE01D2 /* model_change.h in Headers */,
 				74B587C218BBC77E00E9F6CE /* workspace.h in Headers */,
 				BA2DA11C21A6864D0027B7A5 /* rectangle.h in Headers */,
+				BA683F782437698400C3A3F1 /* onboarding_service.h in Headers */,
 				74CAAD1F181860F7001B77BB /* timeline_notifications.h in Headers */,
 				74B587BF18BBC77E00E9F6CE /* user.h in Headers */,
 				748B7DA61AC5963B00FE01D2 /* custom_error_handler.h in Headers */,
@@ -591,6 +596,7 @@
 				743024141AEFA819006DC911 /* autotracker.cc in Sources */,
 				7408EDB818C51CEB00CBE8F1 /* feedback.cc in Sources */,
 				74E16831180F26D90026261C /* websocket_client.cc in Sources */,
+				BA683F772437698400C3A3F1 /* onboarding_service.cpp in Sources */,
 				74B587CA18BBC77E00E9F6CE /* client.cc in Sources */,
 				BA1AB53E235DEAD4000433AE /* MacOSVersionChecker.mm in Sources */,
 				7408EDB118C51CEB00CBE8F1 /* proxy.cc in Sources */,
