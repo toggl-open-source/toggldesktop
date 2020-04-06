@@ -519,7 +519,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const Poco::UInt64 tid,
         const std::string &start_time,
         const std::string &end_time,
-        const Poco::UInt32 days_of_week,
+        const Poco::UInt8 days_of_week,
         Poco::Int64 *rule_id);
 
     error UpdateAutotrackerRule(
@@ -529,7 +529,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const Poco::UInt64 tid,
         const std::string &start_time,
         const std::string &end_time,
-        const Poco::UInt32 days_of_week);
+        const Poco::UInt8 days_of_week);
 
     error DeleteAutotrackerRule(
         const Poco::Int64 id);

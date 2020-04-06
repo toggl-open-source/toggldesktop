@@ -305,7 +305,7 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule {
     std::string ProjectName;
     std::string StartTime;
     std::string EndTime;
-    uint32_t DaysOfWeek;
+    uint8_t DaysOfWeek;
 
     bool operator == (const AutotrackerRule& other) const;
 };

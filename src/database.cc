@@ -1648,7 +1648,7 @@ error Database::loadAutotrackerRules(
                 if (!rs[6].isEmpty()) {
                     model->SetEndTime(rs[6].convert<std::string>());
                 }
-                model->SetDaysOfWeek(rs[7].convert<Poco::UInt32>());
+                model->SetDaysOfWeek(rs[7].convert<Poco::UInt8>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -2449,7 +2449,7 @@ error Database::saveModel(
                       useRef(model->TID()),
                       useRef(model->StartTime()),
                       useRef(model->EndTime()),
-                      bind(model->DaysOfWeekUInt32()),
+                      bind(model->DaysOfWeek()),
                       useRef(model->LocalID()),
                       now;
             error err = last_error("saveAutotrackerRule");
@@ -2481,7 +2481,7 @@ error Database::saveModel(
                       useRef(model->TID()),
                       useRef(model->StartTime()),
                       useRef(model->EndTime()),
-                      bind(model->DaysOfWeekUInt32()),
+                      bind(model->DaysOfWeek()),
                       now;
             error err = last_error("saveAutotrackerRule");
             if (err != noError) {

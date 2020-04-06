@@ -95,7 +95,7 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
         const Poco::UInt64 pid,
         std::string start_time,
         std::string end_time,
-        const Poco::UInt32 days_of_week);
+        const Poco::UInt8 days_of_week);
 
     void TimeEntryAutocompleteItems(std::vector<view::Autocomplete> *) const;
     void MinitimerAutocompleteItems(std::vector<view::Autocomplete> *) const;

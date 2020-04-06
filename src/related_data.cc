@@ -78,7 +78,7 @@ error RelatedData::UpdateAutotrackerRule(
     const Poco::UInt64 pid,
     std::string start_time,
     std::string end_time,
-    const Poco::UInt32 days_of_week) {
+    const Poco::UInt8 days_of_week) {
 
     if (!local_id) {
         return error("cannot update rule without an ID");
