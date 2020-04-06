@@ -13,7 +13,7 @@ static const char kTermSeparator = '\t';
 
 bool AutotrackerRule::Matches(const TimelineEvent &event) const {
     const Poco::LocalDateTime event_time(Poco::Timestamp::fromEpochTime(event.EndTime()));
-    if (!DaysOfWeek().none() && !DaysOfWeek()[event_time.dayOfWeek()]) {
+    if (DaysOfWeek() != 0 && !std::bitset<7>(DaysOfWeek())[event_time.dayOfWeek()]) {
         logger().debug("Autotracker rule is not enabled on this weekday");
         return false;
     }
@@ -103,13 +103,9 @@ const std::string AutotrackerRule::TermsString() const {
     return ss.str();
 }
 
-void AutotrackerRule::SetDaysOfWeek(const Poco::UInt32 daysOfWeek) {
-    if (DaysOfWeek.Set(std::bitset<7>(daysOfWeek)))
+void AutotrackerRule::SetDaysOfWeek(const Poco::UInt8 daysOfWeek) {
+    if (DaysOfWeek.Set(daysOfWeek))
         SetDirty();
-}
-
-Poco::UInt32 AutotrackerRule::DaysOfWeekUInt32() const {
-    return DaysOfWeek().to_ulong();
 }
 
 void AutotrackerRule::SetStartTime(const std::string &value) {
