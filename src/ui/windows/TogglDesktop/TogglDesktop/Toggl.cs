@@ -637,14 +637,14 @@ public static partial class Toggl
         return toggl_format_tracking_time_duration(duration_in_seconds);
     }
 
-    public static long AddAutotrackerRule(string terms, ulong projectId, ulong taskId)
+    public static long AddAutotrackerRule(string terms, ulong projectId, ulong taskId, string startTime = "", string endTime = "", uint daysOfWeek = 0)
     {
-        return toggl_autotracker_add_rule(ctx, terms, projectId, taskId, "", "", 0);
+        return toggl_autotracker_add_rule(ctx, terms, projectId, taskId, startTime, endTime, daysOfWeek);
     }
 
-    public static bool UpdateAutotrackerRule(long ruleId, string terms, ulong projectId, ulong taskId)
+    public static bool UpdateAutotrackerRule(long ruleId, string terms, ulong projectId, ulong taskId, string startTime = "", string endTime = "", uint daysOfWeek = 0)
     {
-        return toggl_autotracker_update_rule(ctx, ruleId, terms, projectId, taskId, "", "", 0);
+        return toggl_autotracker_update_rule(ctx, ruleId, terms, projectId, taskId, startTime, endTime, daysOfWeek);
     }
 
     public static bool DeleteAutotrackerRule(long id)
