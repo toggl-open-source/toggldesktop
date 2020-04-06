@@ -674,4 +674,8 @@ extern void *ctx;
     }
 }
 
+-(NSView * __nullable)firstTimeEntryCellForOnboarding
+{
+    return [self.collectionView itemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]].view;
+}
 @end

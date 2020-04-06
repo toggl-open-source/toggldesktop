@@ -8,7 +8,11 @@
 
 import Foundation
 
-final class OnboardingServiceObjc: NSObject {
+@objc final class OnboardingServiceObjc: NSObject {
+
+    @objc class func hintFrom(value: Int) -> OnboardingHint {
+        return OnboardingHint(rawValue: value) ?? .none
+    }
 
     @objc class func present(hintValue: Int, atView: NSView) {
         guard let hint = OnboardingHint(rawValue: hintValue) else { return }

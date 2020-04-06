@@ -431,7 +431,16 @@ extern void *ctx;
 
 - (void)startOnboardingNotification:(NSNotification *) noti {
     NSNumber *onboardingTypeNumber = (NSNumber *) noti.object;
-    [OnboardingServiceObjc presentWithHintValue:onboardingTypeNumber.integerValue atView:self.mainDashboardViewController.timelineBtn];
+    OnboardingHint hint = [OnboardingServiceObjc hintFromValue:onboardingTypeNumber.integerValue];
+
+    if (hint == OnboardingHintNone) {
+        return;
+    }
+    NSView *presentView = [self getOnboardingViewWithHint:hint];
+    if (!presentView) {
+        return;
+    }
+    [OnboardingServiceObjc presentWithHintValue:onboardingTypeNumber.integerValue atView:presentView];
 }
 
 -(void) handleOnboarding {
@@ -440,4 +449,31 @@ extern void *ctx;
     });
 }
 
+- (NSView * __nullable) getOnboardingViewWithHint:(OnboardingHint) hint
+{
+    switch (hint) {
+        case OnboardingHintNewUser:
+            return (NSView *) self.mainDashboardViewController.timerController.mainBox;
+        case OnboardingHintOldUser:
+            return (NSView *) self.mainDashboardViewController.timerController.mainBox;
+        case OnboardingHintManualMode:
+            return (NSView *) self.mainDashboardViewController.timerController.mainBox;
+        case OnboardingHintTimelineTab:
+            return self.mainDashboardViewController.timelineBtn;
+        case OnboardingHintEditTimeEntry:
+            return [self.mainDashboardViewController.timeEntryController firstTimeEntryCellForOnboarding];
+        case OnboardingHintTimelineTimeEntry:
+            return self.mainDashboardViewController.timelineController.collectionView; // Need update
+        case OnboardingHintTimelineView:
+            return self.mainDashboardViewController.timelineController.collectionView;
+        case OnboardingHintTimelineActivity:
+            return self.mainDashboardViewController.timelineController.collectionView;
+        case OnboardingHintRecordActivity:
+            return self.mainDashboardViewController.timelineController.collectionView;
+        case OnboardingHintNone:
+            return nil;
+        default:
+            return nil;
+    }
+}
 @end
