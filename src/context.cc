@@ -744,9 +744,10 @@ void Context::updateUI(const UIElements &what) {
                                     group_entry_view.Duration = toggl::Formatter::FormatDuration(
                                         group_entry_view.DurationInSeconds,
                                         Formatter::DurationFormat);
-                                    group_entry_view.DateDuration =
-                                        Formatter::FormatDurationForDateHeader(
-                                            date_durations[group_entry_view.DateHeader]);
+                                    group_entry_view.DateDuration = toggl::Formatter::FormatDuration(
+                                        date_durations[group_entry_view.DateHeader],
+                                        Formatter::DurationFormat);
+
                                     time_entry_views.push_back(group_entry_view);
                                 }
                             }
@@ -764,8 +765,9 @@ void Context::updateUI(const UIElements &what) {
                                     group_durations[view.GroupName],
                                     Formatter::DurationFormat);
                             group_view.DateDuration =
-                                Formatter::FormatDurationForDateHeader(
-                                    date_durations[view.DateHeader]);
+                                Formatter::FormatDuration(
+                                    date_durations[view.DateHeader],
+                                    Formatter::DurationFormat);
                             group_view.GroupItemCount = group_items[group_view.GroupName].size();
                             time_entry_views.push_back(group_view);
                         }
