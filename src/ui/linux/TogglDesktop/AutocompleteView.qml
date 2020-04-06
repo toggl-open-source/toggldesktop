@@ -121,14 +121,13 @@ Item {
                     right: parent.right
                 }
                 height: 1
-                color: mainPalette.alternateBase
+                color: mainPalette.separator
             }
         }
     }
 
     Component {
         id: clientDelegate
-
 
         Rectangle {
             height: 30

@@ -32,6 +32,8 @@ Rectangle {
         property color listBackground: mixColors(mainPalette.base, mainPalette.alternateBase, 0.8)
 
         property color borderColor: mixColors(mainPalette.text, mainPalette.base, 0.33)
+
+        property color separator: mixColors(mainPalette.button, mainPalette.midlight, 0.9)
     }
     SystemPalette {
         id: disabledPalette
