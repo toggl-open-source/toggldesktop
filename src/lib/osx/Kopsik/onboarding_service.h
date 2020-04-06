@@ -12,9 +12,10 @@
 #include "types.h"
 #include <stdio.h>
 
+namespace toggl {
+
 class Database;
 
-namespace toggl {
 enum OnboardingType {
     NewUser,
     OldUser,

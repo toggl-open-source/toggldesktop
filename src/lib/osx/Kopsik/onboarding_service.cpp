@@ -7,6 +7,7 @@
 //
 
 #include "onboarding_service.h"
+#include "database.h"
 
 namespace toggl {
 

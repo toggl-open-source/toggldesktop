@@ -2342,6 +2342,7 @@ error Context::SetDBPath(
             db_ = nullptr;
         }
         db_ = new Database(path);
+        onboarding_service->SetDatabase(db());
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
