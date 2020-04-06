@@ -834,7 +834,7 @@ void Context::updateUI(const UIElements &what) {
                     rule.Terms = model->TermsString();
                     rule.StartTime = model->StartTime();
                     rule.EndTime = model->EndTime();
-                    rule.DaysOfWeek = model->DaysOfWeekUInt32();
+                    rule.DaysOfWeek = model->DaysOfWeek();
                     autotracker_rule_views.push_back(rule);
                 }
 
@@ -3888,7 +3888,7 @@ error Context::AddAutotrackerRule(
     const Poco::UInt64 tid,
     const std::string &start_time,
     const std::string &end_time,
-    const Poco::UInt32 days_of_week,
+    const Poco::UInt8 days_of_week,
     Poco::Int64 *rule_id) {
 
     poco_check_ptr(rule_id);
@@ -3973,7 +3973,7 @@ error Context::UpdateAutotrackerRule(
     const Poco::UInt64 tid,
     const std::string &start_time,
     const std::string &end_time,
-    const Poco::UInt32 days_of_week) {
+    const Poco::UInt8 days_of_week) {
 
     if (!rule_id) {
         return displayError("missing rule id");

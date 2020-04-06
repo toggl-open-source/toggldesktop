@@ -201,7 +201,7 @@ extern "C" {
         char_t *ProjectAndTaskLabel;
         char_t *StartTime;
         char_t *EndTime;
-        uint32_t DaysOfWeek;
+        uint8_t DaysOfWeek;
         void *Next;
     } TogglAutotrackerRuleView;
 
@@ -1095,7 +1095,7 @@ extern "C" {
         const uint64_t task_id,
         const char_t *start_time,
         const char_t *end_time,
-        const uint32_t days_of_week);
+        const uint8_t days_of_week);
 
     TOGGL_EXPORT bool_t toggl_autotracker_update_rule(
         void *context,
@@ -1105,7 +1105,7 @@ extern "C" {
         const uint64_t task_id,
         const char_t *start_time,
         const char_t *end_time,
-        const uint32_t days_of_week);
+        const uint8_t days_of_week);
 
     TOGGL_EXPORT bool_t toggl_autotracker_delete_rule(
         void *context,

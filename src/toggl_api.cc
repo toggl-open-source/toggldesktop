@@ -1392,7 +1392,7 @@ int64_t toggl_autotracker_add_rule(
     const uint64_t task_id,
     const char_t *start_time,
     const char_t *end_time,
-    const uint32_t days_of_week) {
+    const uint8_t days_of_week) {
     Poco::Int64 rule_id(0);
     app(context)->AddAutotrackerRule(
         to_string(term),
@@ -1413,7 +1413,7 @@ bool_t toggl_autotracker_update_rule(
     const uint64_t task_id,
     const char_t *start_time,
     const char_t *end_time,
-    const uint32_t days_of_week) {
+    const uint8_t days_of_week) {
     return toggl::noError ==
            app(context)->UpdateAutotrackerRule(
                rule_id,

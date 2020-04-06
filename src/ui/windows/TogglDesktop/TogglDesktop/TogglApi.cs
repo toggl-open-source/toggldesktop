@@ -335,7 +335,7 @@ public static partial class Toggl
         public         string StartTime;
         [MarshalAs(UnmanagedType.LPWStr)]
         public         string EndTime;
-        public         uint DaysOfWeek;
+        public         byte DaysOfWeek;
         public         IntPtr Next;
 
         public override string ToString()
@@ -1662,7 +1662,7 @@ public static partial class Toggl
         string start_time,
         [MarshalAs(UnmanagedType.LPWStr)]
         string end_time,
-        uint days_of_week);
+        byte days_of_week);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
@@ -1677,7 +1677,7 @@ public static partial class Toggl
         string start_time,
         [MarshalAs(UnmanagedType.LPWStr)]
         string end_time,
-        uint days_of_week);
+        byte days_of_week);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
