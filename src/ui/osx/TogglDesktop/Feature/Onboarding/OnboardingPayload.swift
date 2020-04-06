@@ -8,8 +8,8 @@
 
 import Foundation
 
-enum OnboardingHint: Int {
-    case newUser
+@objc enum OnboardingHint: Int {
+    case newUser = 0
     case oldUser
     case manualMode
     case timelineTab
@@ -18,6 +18,7 @@ enum OnboardingHint: Int {
     case timelineView
     case timelineActivity // Use TimelineActivityRecorderViewController instead
     case recordActivity
+    case none // compatible to objc since we couldn't expose the type OnboardingHint?
 }
 
 struct OnboardingPayload {
@@ -50,6 +51,7 @@ struct OnboardingPayload {
         case .timelineTab: self.title = "See your Time Entries on Timeline!"
         case .timelineTimeEntry: self.title = "Add and edit Time Entries in this area"
         case .timelineView: self.title = "See all your Time Entries visualised in chronological order! "
+        case .none: self.title = ""
         }
     }
 }

@@ -10,11 +10,14 @@
 
 @class BetterFocusAutoCompleteInput;
 @class AutocompleteItem;
+@class NSBoxClickable;
 
 @interface TimerEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate, NSTableViewDelegate>
 @property (weak) IBOutlet BetterFocusAutoCompleteInput *autoCompleteInput;
 @property (strong, nonatomic) NSArray *projectComboConstraint;
 @property (strong, nonatomic) NSArray *projectLabelConstraint;
+@property (weak) IBOutlet NSBoxClickable *manualBox;
+@property (weak) IBOutlet NSBoxClickable *mainBox;
 
 - (IBAction)startButtonClicked:(id)sender;
 - (void)timerFired:(NSTimer *)timer;

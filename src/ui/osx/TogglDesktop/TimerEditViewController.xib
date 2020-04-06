@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="101400" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -40,7 +40,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wfb-M9-ix6">
-                                <rect key="frame" x="185" y="3" width="42" height="17"/>
+                                <rect key="frame" x="185" y="3" width="42" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Toggl" id="w7a-dF-DEb">
                                     <font key="font" usesAppearanceFont="YES"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -126,9 +126,9 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="234" height="62"/>
                                                 <subviews>
                                                     <textField horizontalCompressionResistancePriority="900" verticalCompressionResistancePriority="900" translatesAutoresizingMaskIntoConstraints="NO" id="oaA-Wf-zkO" customClass="AutoCompleteInput">
-                                                        <rect key="frame" x="-2" y="30" width="105" height="16"/>
+                                                        <rect key="frame" x="-2" y="31" width="105" height="15"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="+ Add description" id="qf8-8Y-Po8">
-                                                            <font key="font" metaFont="cellTitle"/>
+                                                            <font key="font" metaFont="label" size="12"/>
                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
@@ -138,7 +138,7 @@
                                                         </connections>
                                                     </textField>
                                                     <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="fQn-ym-gNM" customClass="DotImageView" customModule="TogglDesktop" customModuleProvider="target">
-                                                        <rect key="frame" x="1" y="17" width="8" height="8"/>
+                                                        <rect key="frame" x="1" y="18" width="8" height="8"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="8" id="5jt-T8-42H"/>
                                                             <constraint firstAttribute="height" constant="8" id="kbX-JT-n52"/>
@@ -146,9 +146,9 @@
                                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="R7r-TA-kJS"/>
                                                     </imageView>
                                                     <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Cqy-Vf-bE1" customClass="ProjectTextField">
-                                                        <rect key="frame" x="14" y="12" width="81" height="18"/>
+                                                        <rect key="frame" x="14" y="13" width="81" height="18"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="+ Add project" id="BuW-NB-Qnm">
-                                                            <font key="font" metaFont="cellTitle"/>
+                                                            <font key="font" metaFont="label" size="12"/>
                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
@@ -186,12 +186,12 @@
                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="time-entry-billable" id="Ts9-qZ-IE7"/>
                                             </imageView>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Rt4-7t-bwl" customClass="NSTextFieldDuration">
-                                                <rect key="frame" x="275" y="23" width="63" height="16"/>
+                                                <rect key="frame" x="275" y="24" width="63" height="15"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="Mat-ez-BK9"/>
                                                 </constraints>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="44:49 min" id="AtD-uY-SAZ">
-                                                    <font key="font" metaFont="cellTitle"/>
+                                                    <font key="font" metaFont="label" size="12"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
@@ -238,7 +238,7 @@
                                 </connections>
                             </button>
                             <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1SK-Qe-78h">
-                                <rect key="frame" x="9" y="16" width="12" height="12"/>
+                                <rect key="frame" x="9" y="5" width="12" height="12"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="12" id="SGg-S5-feg"/>
                                     <constraint firstAttribute="width" constant="12" id="dAf-r0-aJQ"/>
@@ -331,13 +331,13 @@
         <image name="time-entry-dot" width="8" height="8"/>
         <image name="time-entry-tag" width="17" height="17"/>
         <namedColor name="green-color">
-            <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.15700000524520874" green="0.80400002002716064" blue="0.25499999523162842" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="lighter-grey-color">
             <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="preference-box-background-color">
-            <color red="0.69411764705882351" green="0.69411764705882351" blue="0.69411764705882351" alpha="0.070000000298023224" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.6940000057220459" green="0.6940000057220459" blue="0.6940000057220459" alpha="0.070000000298023224" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="white-background-color">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

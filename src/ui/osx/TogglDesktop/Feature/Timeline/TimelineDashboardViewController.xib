@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -135,7 +135,7 @@ To get the focused application window name properly for the Timeline, TogglDeskt
                                             <rect key="frame" x="33" y="9" width="11" height="11"/>
                                             <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSAddTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="as8-De-WrX">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="label" size="13"/>
                                             </buttonCell>
                                             <connections>
                                                 <action selector="zoomLevelIncreaseOnChange:" target="-2" id="QsV-0i-5La"/>
@@ -145,7 +145,7 @@ To get the focused application window name properly for the Timeline, TogglDeskt
                                             <rect key="frame" x="10" y="9" width="11" height="11"/>
                                             <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSRemoveTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="kr9-Ry-BUy">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="label" size="13"/>
                                             </buttonCell>
                                             <connections>
                                                 <action selector="zoomLevelDecreaseOnChange:" target="-2" id="ksx-ak-4he"/>
@@ -227,7 +227,7 @@ To get the focused application window name properly for the Timeline, TogglDeskt
                                 <constraint firstAttribute="width" constant="140" id="mdj-ct-y7d"/>
                             </constraints>
                             <textFieldCell key="cell" alignment="center" title="No entries here…  Go ahead and track some time!" id="rM7-R2-ABZ">
-                                <font key="font" metaFont="system"/>
+                                <font key="font" metaFont="label" size="13"/>
                                 <color key="textColor" name="timeline-time-label-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
@@ -235,7 +235,7 @@ To get the focused application window name properly for the Timeline, TogglDeskt
                         <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3EE-on-mJF">
                             <rect key="frame" x="327" y="287" width="252" height="16"/>
                             <textFieldCell key="cell" alignment="center" title="Turn on activity recording to see results." id="PUb-OL-l5z">
-                                <font key="font" metaFont="system"/>
+                                <font key="font" metaFont="label" size="13"/>
                                 <color key="textColor" name="timeline-time-label-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
