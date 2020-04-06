@@ -12,8 +12,8 @@ namespace toggl {
 static const char kTermSeparator = '\t';
 
 bool AutotrackerRule::Matches(const TimelineEvent &event) const {
-    const Poco::LocalDateTime event_time(Poco::DateTime(event.EndTime()));
     if (!days_of_week_.none() && !days_of_week_[event_time.dayOfWeek()]) {
+    const Poco::LocalDateTime event_time(Poco::Timestamp::fromEpochTime(event.EndTime()));
         logger().debug("Autotracker rule is not enabled on this weekday");
         return false;
     }
