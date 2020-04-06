@@ -244,16 +244,6 @@
         <Setter Property="Height" Value="36" />
         <Setter Property="Margin" Value="4" />
         <Setter Property="Padding" Value="10 7 10 10" />
-        <Setter Property="Content">
-            <Setter.Value>
-                <StackPanel Orientation="Horizontal">
-                    <Canvas Width="24" Height="24" Margin="4 -3 4 0">
-                        <Path Fill="White" Data="M12.5 6v5.5H18v1h-5.5V18h-1v-5.5H6v-1h5.5V6h1z" />
-                    </Canvas>
-                    <TextBlock Style="{StaticResource Toggl.BodyText}" Text="Add Time Entry" Foreground="White" />
-                </StackPanel>
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <Style TargetType="ToggleButton" x:Key="Toggl.TimeEntryDayHeaderToggleButton">
