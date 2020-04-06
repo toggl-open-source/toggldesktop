@@ -759,6 +759,7 @@ void Context::updateUI(const UIElements &what) {
                                 &group_view);
                             group_view.Group = true;
                             group_view.GroupOpen = entry_groups[group_view.GroupName];
+                            group_view.DurationInSeconds = group_durations[view.GroupName];
                             group_view.Duration =
                                 Formatter::FormatDuration(
                                     group_durations[view.GroupName],
