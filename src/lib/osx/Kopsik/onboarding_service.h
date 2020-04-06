@@ -9,8 +9,11 @@
 #ifndef onboarding_service_h
 #define onboarding_service_h
 
-#include "types.h"
+#include <string>
+#include <Poco/Types.h>
 #include <stdio.h>
+
+#include "types.h"
 
 namespace toggl {
 
@@ -28,6 +31,43 @@ enum OnboardingType {
     RecordActivity
 };
 
+class TOGGL_INTERNAL_EXPORT OnboardingState {
+public:
+    OnboardingState()
+        : openTimelineTabCount(0)
+    , lastOpenApp(0)
+    , editOnTimelineCount(0)
+    , isUseTimelineRecord(false)
+    , isUseManualMode(false)
+    , isPresentNewUser(false)
+    , isPresentOldUser(false)
+    , isPresentManualMode(false)
+    , isPresentTimelineTab(false)
+    , isPresentEditTimeEntry(false)
+    , isPresentTimelineTimeEntry(false)
+    , isPresentTimelineView(false)
+    , isPresentTimelineActivity(false)
+    , isPresentRecordActivity(false) {}
+
+private:
+    Poco::Int64 openTimelineTabCount;
+    Poco::Int64 lastOpenApp;
+    Poco::Int64 editOnTimelineCount;
+    bool isUseTimelineRecord;
+    bool isUseManualMode;
+
+    // Onboarding
+    bool isPresentNewUser;
+    bool isPresentOldUser;
+    bool isPresentManualMode;
+    bool isPresentTimelineTab;
+    bool isPresentEditTimeEntry;
+    bool isPresentTimelineTimeEntry;
+    bool isPresentTimelineView;
+    bool isPresentTimelineActivity;
+    bool isPresentRecordActivity;
+};
+
 class TOGGL_INTERNAL_EXPORT OnboardingService {
 public:
 
@@ -42,6 +82,7 @@ public:
     void TurnOnRecordActivity();
 
 private:
+    OnboardingState state;
     Database *database;
     std::function<void (const OnboardingType)> _callback;
 };
