@@ -1091,6 +1091,11 @@ public static partial class Toggl
         }
     }
 
+    public static string LogAndDbFileName(string environment)
+    {
+        return environment == "production" ? "toggldesktop" : $"toggldesktop_{environment}";
+    }
+
     public static void InitialiseLog()
     {
         string path = Path.Combine(Environment.GetFolderPath(
@@ -1099,7 +1104,7 @@ public static partial class Toggl
 
         if (null == LogPath)
         {
-            LogPath = Path.Combine(path, "toggldesktop.log");
+            LogPath = Path.Combine(path, $"{LogAndDbFileName(Env)}.log");
         }
         toggl_set_log_path(LogPath);
         toggl_set_log_level("debug");
@@ -1152,7 +1157,7 @@ public static partial class Toggl
 
         if (null == DatabasePath)
         {
-            DatabasePath = Path.Combine(path, "toggldesktop.db");
+            DatabasePath = Path.Combine(path, $"{LogAndDbFileName(Env)}.db");
         }
 
         if (!toggl_set_db_path(ctx, DatabasePath))
