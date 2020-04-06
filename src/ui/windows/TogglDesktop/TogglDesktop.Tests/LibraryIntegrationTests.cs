@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -412,6 +413,21 @@ namespace TogglDesktop.Tests
             Toggl.OnAutotrackerRules += (rules, terms) => { currentRulesList = rules; };
 
             var ruleId = Toggl.AddAutotrackerRule("slack", pid, tid);
+
+            Assert.Contains(currentRulesList, rule => rule.ID == ruleId);
+        }
+
+        [Fact]
+        public void ShouldAddAutotrackerRuleWithStartTimeEndTime()
+        {
+            var timeEntry = GetTimeEntry(_firstTimeEntryGuid);
+            var pid = timeEntry.PID;
+            var tid = timeEntry.TID;
+
+            var currentRulesList = new List<Toggl.TogglAutotrackerRuleView>();
+            Toggl.OnAutotrackerRules += (rules, terms) => { currentRulesList = rules; };
+
+            var ruleId = Toggl.AddAutotrackerRule("slack", pid, tid, "10:00", "19:00");
 
             Assert.Contains(currentRulesList, rule => rule.ID == ruleId);
         }
