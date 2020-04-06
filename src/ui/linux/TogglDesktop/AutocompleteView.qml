@@ -112,7 +112,7 @@ Item {
                 color: mainPalette.text
 
                 text: autocompleteData && autocompleteData.Description
-                font.pointSize: 14
+                font.pointSize: 12
             }
             Rectangle {
                 anchors {
@@ -136,13 +136,12 @@ Item {
             color: mainPalette.base
             Text {
                 anchors.left: parent.left
-                anchors.leftMargin: 12
+                anchors.leftMargin: 24
                 anchors.verticalCenter: parent.verticalCenter
-                height: 24
-                x: 9
                 color: mainPalette.text
 
                 text: autocompleteData && autocompleteData.Description
+                font.pointSize: 10
             }
         }
     }
@@ -160,7 +159,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 text: autocompleteData && autocompleteData.Description
                 color: mainPalette.text
-                font.pointSize: 11
+                font.pointSize: 10
             }
         }
     }
@@ -176,9 +175,8 @@ Item {
             Text {
                 anchors.fill: parent
                 anchors.left: parent.left
-                anchors.leftMargin: 18
+                anchors.leftMargin: 32
                 verticalAlignment: Text.AlignVCenter
-                x: 9
                 textFormat: Text.RichText
                 property string timeEntry: autocompleteData ? autocompleteData.Description : ""
                 property string project: autocompleteData && autocompleteData.ProjectLabel.length > 0 ?
@@ -186,7 +184,8 @@ Item {
                                              ""
                 property string task: autocompleteData && autocompleteData.TaskLabel.length > 0 ? " " + autocompleteData.TaskLabel : ""
                 text: (ListView.isCurrentItem ? "Iscurrent" : "") + timeEntry + project + task
-                font.pointSize: 12
+                font.pointSize: 10
+                font.weight: Font.Light
                 color: mainPalette.text
             }
             MouseArea {
