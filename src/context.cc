@@ -783,9 +783,10 @@ void Context::updateUI(const UIElements &what) {
                 view.Duration = toggl::Formatter::FormatDuration(
                     view.DurationInSeconds,
                     Formatter::DurationFormat);
-                view.DateDuration =
-                    Formatter::FormatDurationForDateHeader(
-                        date_durations[view.DateHeader]);
+                view.DateDuration = toggl::Formatter::FormatDuration(
+                    date_durations[view.DateHeader],
+                    Formatter::DurationFormat);
+
                 time_entry_views.push_back(view);
             }
         }
