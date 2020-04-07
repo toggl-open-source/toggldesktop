@@ -2674,7 +2674,7 @@ void Context::setUser(User *value, const bool logged_in) {
     }
 
     // Setup the Onboarding state when the user data is initialized
-    onboarding_service->SetUserID(user_id);
+    onboarding_service->LoadOnboardingStateFromCurrentUser(user_);
 }
 
 error Context::SetLoggedInUserFromJSON(

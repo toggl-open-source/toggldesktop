@@ -8,6 +8,7 @@
 
 #include "onboarding_service.h"
 #include "database.h"
+#include "user.h"
 
 namespace toggl {
 
@@ -19,10 +20,14 @@ void OnboardingService::SetDatabase(Database *db) {
     database = db;
 }
 
-void OnboardingService::SetUserID(Poco::UInt64 user_id) {
-    // Load onboarding state
+void OnboardingService::LoadOnboardingStateFromCurrentUser(User *user) {
     state = new OnboardingState();
-    database->LoadOnboardingState(user_id, state);
+
+    // Load onboarding state from database
+    database->LoadOnboardingState(user->ID(), state);
+
+    // Load total TE because we don't store it
+    state->timeEntryTotal = user->related.TimeEntries.size();
     logger.debug("Onboarding state ", state);
 }
 
