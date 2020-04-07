@@ -4673,13 +4673,26 @@ error Context::StartAutotrackerEvent(const TimelineEvent &event) {
         return noError;
     }
 
-    // Notify user to track using autotracker rules:
-    if (user_ && user_->RunningTimeEntry()) {
-        return noError;
+    TimeEntry* runningEntry = user_->RunningTimeEntry();
+    if (runningEntry) {
+        // on Windows show suggestion also where there is a running entry (#3917)
+        if (POCO_OS_WINDOWS_NT != POCO_OS) {
+            return noError;
+        }
     }
+
     AutotrackerRule *rule = user_->related.FindAutotrackerRule(event);
     if (!rule) {
         return noError;
+    }
+
+    if (runningEntry) {
+        bool isRunningEntryMatchingAutotrackerRuleProject = 
+            rule->PID() == runningEntry->PID() && (!rule->TID() || rule->TID() == runningEntry->TID());
+
+        if (isRunningEntryMatchingAutotrackerRuleProject) {
+            return noError;
+        }
     }
 
     Project *p = nullptr;
