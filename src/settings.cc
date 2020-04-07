@@ -37,6 +37,7 @@ Json::Value Settings::SaveToJSON() const {
     json["pomodoro_break_minutes"] = Json::UInt64(pomodoro_break_minutes);
     json["stop_entry_on_shutdown_sleep"] = stop_entry_on_shutdown_sleep;
     json["show_touch_bar"] = show_touch_bar;
+    json["start_autotracker_without_suggestions"] = start_autotracker_without_suggestions;
     json["active_tab"] = active_tab;
     json["color_theme"] = color_theme;
     return json;
@@ -74,6 +75,7 @@ std::string Settings::String() const {
        << " pomodoro_break_minutes=" << pomodoro_break_minutes
        << " stop_entry_on_shutdown_sleep=" << stop_entry_on_shutdown_sleep
        << " show_touch_bar=" << show_touch_bar
+       << " start_autotracker_without_suggestions=" << start_autotracker_without_suggestions
        << " active_tab=" << active_tab
        << " color_theme=" << color_theme;
 
@@ -110,6 +112,7 @@ bool Settings::IsSame(const Settings &other) const {
             && (pomodoro_break_minutes == other.pomodoro_break_minutes)
             && (stop_entry_on_shutdown_sleep == other.stop_entry_on_shutdown_sleep)
             && (show_touch_bar == other.show_touch_bar)
+            && (start_autotracker_without_suggestions == other.start_autotracker_without_suggestions)
             && (active_tab == other.active_tab)
             && (color_theme == other.color_theme));
 }

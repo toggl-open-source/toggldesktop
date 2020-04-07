@@ -479,6 +479,7 @@ TogglSettingsView *settings_view_item_init(
     view->PomodoroBreakMinutes = settings.pomodoro_break_minutes;
     view->StopEntryOnShutdownSleep = settings.stop_entry_on_shutdown_sleep;
     view->ShowTouchBar = settings.show_touch_bar;
+    view->StartAutotrackerWithoutSuggestions = settings.start_autotracker_without_suggestions;
     view->ActiveTab = settings.active_tab;
     view->ColorTheme = settings.color_theme;
     return view;

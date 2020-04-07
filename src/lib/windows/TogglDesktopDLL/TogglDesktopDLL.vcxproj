@@ -484,6 +484,7 @@
     <ClInclude Include="..\..\..\obm_action.h" />
     <ClInclude Include="..\..\..\random.h" />
     <ClInclude Include="..\..\..\Rectangle.h" />
+    <ClInclude Include="..\..\..\settings.h" />
     <ClInclude Include="..\..\..\toggl_api.h" />
     <ClInclude Include="..\..\..\toggl_api_private.h" />
     <ClInclude Include="..\..\..\project.h" />
