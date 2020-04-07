@@ -48,6 +48,15 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
     const Poco::UInt64 &TID() const;
     void SetTID(const Poco::UInt64 value);
 
+    static Poco::UInt8 DaysOfWeekIntoUInt8(
+        const bool sunday,
+        const bool monday,
+        const bool tuesday,
+        const bool wednesday,
+        const bool thursday,
+        const bool friday,
+        const bool saturday);
+
     // Override BaseModel
     std::string String() const override;
     std::string ModelName() const override;

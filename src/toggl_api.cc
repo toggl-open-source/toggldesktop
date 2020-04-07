@@ -1076,6 +1076,17 @@ int64_t toggl_parse_duration_string_into_seconds(
     return toggl::Formatter::ParseDurationString(to_string(duration_string));
 }
 
+uint8_t toggl_days_of_week_into_uint8(
+    const bool_t sun,
+    const bool_t mon,
+    const bool_t tue,
+    const bool_t wed,
+    const bool_t thu,
+    const bool_t fri,
+    const bool_t sat) {
+    return toggl::AutotrackerRule::DaysOfWeekIntoUInt8(sun, mon, tue, wed, thu, fri, sat);
+}
+
 void toggl_on_show_app(
     void *context,
     TogglDisplayApp cb) {
