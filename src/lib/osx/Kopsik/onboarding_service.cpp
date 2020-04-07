@@ -19,6 +19,13 @@ void OnboardingService::SetDatabase(Database *db) {
     database = db;
 }
 
+void OnboardingService::SetUserID(Poco::UInt64 user_id) {
+    // Load onboarding state
+    state = new OnboardingState();
+    database->LoadOnboardingState(user_id, state);
+    logger.debug("Onboarding state ", state);
+}
+
 // User actions
 void OnboardingService::OpenApp() {
 
