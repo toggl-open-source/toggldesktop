@@ -100,8 +100,6 @@ extern void *ctx;
 
 	// Touch bar
 	[self initTouchBar];
-
-    [self handleOnboarding];
 }
 
 - (void)initTouchBar
@@ -441,12 +439,6 @@ extern void *ctx;
         return;
     }
     [OnboardingServiceObjc presentWithHintValue:onboardingTypeNumber.integerValue atView:presentView];
-}
-
--(void) handleOnboarding {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [OnboardingServiceObjc presentWithHintValue:0 atView:self.mainDashboardViewController.timelineBtn];
-    });
 }
 
 - (NSView * __nullable) getOnboardingViewWithHint:(OnboardingHint) hint
