@@ -1073,6 +1073,15 @@ extern "C" {
     TOGGL_EXPORT int64_t toggl_parse_duration_string_into_seconds(
         const char_t *duration_string);
 
+    TOGGL_EXPORT uint8_t toggl_days_of_week_into_uint8(
+        const bool_t sun,
+        const bool_t mon,
+        const bool_t tue,
+        const bool_t wed,
+        const bool_t thu,
+        const bool_t fri,
+        const bool_t sat);
+
     // Write to the lib logger
     TOGGL_EXPORT void toggl_debug(
         const char_t *text);

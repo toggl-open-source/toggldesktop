@@ -150,4 +150,21 @@ void AutotrackerRule::SetEndTime(const std::string &value) {
     }
 }
 
+Poco::UInt8 AutotrackerRule::DaysOfWeekIntoUInt8(
+    const bool sunday,
+    const bool monday,
+    const bool tuesday,
+    const bool wednesday,
+    const bool thursday,
+    const bool friday,
+    const bool saturday) {
+    return sunday << 0 |
+           monday << 1 |
+           tuesday << 2 |
+           wednesday << 3 |
+           thursday << 4 |
+           friday << 5 |
+           saturday << 6;
+}
+
 }  // namespace toggl
