@@ -31,13 +31,31 @@ void OnboardingService::LoadOnboardingStateFromCurrentUser(User *user) {
     logger.debug("Onboarding state ", state);
 }
 
+void OnboardingService::Reset() {
+    if (state) {
+        delete state;
+        state = nullptr;
+    }
+}
+
 // User actions
 void OnboardingService::OpenApp() {
 
 }
 
 void OnboardingService::StopTimeEntry() {
+    if (state == nullptr) {
+        return;
+    }
 
+    // Stop the first TE
+    if (state->timeEntryTotal == 0 && !state->isPresentEditTimeEntry) {
+        state->isPresentEditTimeEntry = true;
+        state->timeEntryTotal += 1;
+
+        // UI
+        _callback(EditTimeEntry);
+    }
 }
 
 void OnboardingService::OpenTimelineTab() {
