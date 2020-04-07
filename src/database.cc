@@ -4094,4 +4094,47 @@ error Database::LoadOnboardingState(const Poco::UInt64 &UID, OnboardingState *st
     }
     return last_error("LoadOnboardingSetting");
 }
+
+error Database::SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *state) {
+    try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
+        *session_ <<
+        "update users "
+        "set last_open_app = :last_open_app, open_timeline_tab_count = :open_timeline_tab_count, "
+        "edit_timeline_tab_count = :edit_timeline_tab_count, is_use_timeline_record = :is_use_timeline_record, is_use_manual_mode = :is_use_manual_mode, "
+        "is_present_new_user_onboarding = :is_present_new_user_onboarding, is_present_old_user_onboarding = :is_present_old_user_onboarding, is_present_manual_mode_onboarding = :is_present_manual_mode_onboarding, is_present_timeline_tab_onboarding = :is_present_timeline_tab_onboarding, "
+        "is_present_edit_timeentry_onboarding = :is_present_edit_timeentry_onboarding, is_present_timeline_timeentry_onboarding = :is_present_timeline_timeentry_onboarding, is_present_timeline_view_onboarding = :is_present_timeline_view_onboarding, is_present_timeline_activity_onboarding = :is_present_timeline_activity_onboarding, "
+        "is_present_recode_activity_onboarding = :is_present_recode_activity_onboarding "
+        "where id = :uid",
+        useRef(state->lastOpenApp),
+        useRef(state->openTimelineTabCount),
+        useRef(state->editOnTimelineCount),
+        useRef(state->isUseTimelineRecord),
+        useRef(state->isUseManualMode),
+        useRef(state->isPresentNewUser),
+        useRef(state->isPresentOldUser),
+        useRef(state->isPresentManualMode),
+        useRef(state->isPresentTimelineTab),
+        useRef(state->isPresentEditTimeEntry),
+        useRef(state->isPresentTimelineTimeEntry),
+        useRef(state->isPresentTimelineView),
+        useRef(state->isPresentTimelineActivity),
+        useRef(state->isPresentRecordActivity),
+        useRef(UID),
+        now;
+
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string & ex) {
+        return ex;
+    }
+
+    return last_error("SaveWindowSettings");
+}
+
 }   // namespace toggl

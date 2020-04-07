@@ -22,9 +22,10 @@ void OnboardingService::SetDatabase(Database *db) {
 
 void OnboardingService::LoadOnboardingStateFromCurrentUser(User *user) {
     state = new OnboardingState();
+    userID = user->ID();
 
     // Load onboarding state from database
-    database->LoadOnboardingState(user->ID(), state);
+    database->LoadOnboardingState(userID, state);
 
     // Load total TE because we don't store it
     state->timeEntryTotal = user->related.TimeEntries.size();
@@ -36,6 +37,11 @@ void OnboardingService::Reset() {
         delete state;
         state = nullptr;
     }
+    userID = 0;
+}
+
+void OnboardingService::sync() {
+    database->SetOnboardingState(userID, state);
 }
 
 // User actions
@@ -55,6 +61,7 @@ void OnboardingService::StopTimeEntry() {
 
         // UI
         _callback(EditTimeEntry);
+        sync();
     }
 }
 
