@@ -121,10 +121,9 @@ Context::Context(const std::string &app_name, const std::string &app_version)
     resetLastTrackingReminderTime();
 
     pomodoro_break_entry_ = nullptr;
-    onboarding_service = new OnboardingService();
 
     // Register event action to trigger UI
-    onboarding_service->RegisterEvents([&] (const OnboardingType onboardingType) {
+    OnboardingService::getInstance()->RegisterEvents([&] (const OnboardingType onboardingType) {
         UI()->DisplayOnboarding(onboardingType);
     });
 }
@@ -168,10 +167,7 @@ Context::~Context() {
 
     {
         Poco::Mutex::ScopedLock lock(onboarding_service_m_);
-        if (onboarding_service) {
-            delete onboarding_service;
-            onboarding_service = nullptr;
-        }
+        OnboardingService::getInstance()->Reset();
     }
 
     Poco::Net::uninitializeSSL();
@@ -2342,7 +2338,7 @@ error Context::SetDBPath(
             db_ = nullptr;
         }
         db_ = new Database(path);
-        onboarding_service->SetDatabase(db());
+        OnboardingService::getInstance()->SetDatabase(db());
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -2674,7 +2670,7 @@ void Context::setUser(User *value, const bool logged_in) {
     }
 
     // Setup the Onboarding state when the user data is initialized
-    onboarding_service->LoadOnboardingStateFromCurrentUser(user_);
+    OnboardingService::getInstance()->LoadOnboardingStateFromCurrentUser(user_);
 }
 
 error Context::SetLoggedInUserFromJSON(

@@ -73,11 +73,16 @@ public:
 
 class TOGGL_INTERNAL_EXPORT OnboardingService {
 public:
+    static OnboardingService* getInstance() {
+        static OnboardingService instance;
+        return &instance;
+    }
 
     // Register action
     void RegisterEvents(std::function<void (const OnboardingType)> callback);
     void SetDatabase(Database *db);
     void LoadOnboardingStateFromCurrentUser(User *user);
+    void Reset();
     
     // User actions
     void OpenApp();
@@ -86,13 +91,13 @@ public:
     void TurnOnRecordActivity();
 
 private:
+    OnboardingService() {};
     OnboardingState *state;
     Database *database;
     Logger logger { "Onboarding" };
     std::function<void (const OnboardingType)> _callback;
 };
 }
-
 
 #endif /* onboarding_service_hpp */
 
