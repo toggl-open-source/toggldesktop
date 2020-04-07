@@ -313,6 +313,8 @@ public static partial class Toggl
         public         bool StopEntryOnShutdownSleep;
         [MarshalAs(UnmanagedType.I1)]
         public         bool ShowTouchBar;
+        [MarshalAs(UnmanagedType.I1)]
+        public         bool StartAutotrackerWithoutSuggestions;
         public         byte ActiveTab;
         public         byte ColorTheme;
 
@@ -1262,6 +1264,13 @@ public static partial class Toggl
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_set_settings_start_autotracker_without_suggestions(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
+        bool start_autotracker_without_suggestions);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_active_tab(
         IntPtr context,
         byte active_tab);
@@ -1697,6 +1706,11 @@ public static partial class Toggl
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_get_show_touch_bar(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_get_start_autotracker_without_suggestions(
         IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
