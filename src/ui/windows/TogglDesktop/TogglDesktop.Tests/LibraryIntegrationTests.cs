@@ -469,6 +469,26 @@ namespace TogglDesktop.Tests
         }
 
         [Fact]
+        public void ShouldUpdateAutotrackerRuleWithTimeOfDayAndDaysOfWeek()
+        {
+            var timeEntry = GetTimeEntry(_firstTimeEntryGuid);
+            var pid = timeEntry.PID;
+            var tid = timeEntry.TID;
+
+            var currentRulesList = new List<Toggl.TogglAutotrackerRuleView>();
+            Toggl.OnAutotrackerRules += (rules, terms) => { currentRulesList = rules; };
+
+            var ruleId = Toggl.AddAutotrackerRule("slack", pid, tid);
+
+            Assert.Contains(currentRulesList, rule => rule.ID == ruleId && rule.Terms == "slack");
+
+            var weekDays = Toggl.DaysOfWeekIntoByte(false, true, true, true, true, true, false);
+            Assert.True(Toggl.UpdateAutotrackerRule(ruleId, "slack", pid, tid, "09:00", "17:00", weekDays));
+
+            Assert.Contains(currentRulesList, rule => rule.ID == ruleId && rule.Terms == "slack" && rule.DaysOfWeek == weekDays);
+        }
+
+        [Fact]
         public void ShouldAddTermToExistingAutotrackerRule()
         {
             var timeEntry = GetTimeEntry(_firstTimeEntryGuid);

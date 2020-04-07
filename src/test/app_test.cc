@@ -1892,20 +1892,20 @@ TEST(AutotrackerRule, Matches) {
     a.SetEndTime("17:00");
 
     Poco::LocalDateTime eventTime(2020, 4, 3, 21); // Friday, 21:00
-    ev.SetEndTime(eventTime.timestamp().epochTime());
+    ev.SetEndTime(eventTime.utc().timestamp().epochTime());
     ASSERT_FALSE(a.Matches(ev));
 
     eventTime = Poco::LocalDateTime(2020, 4, 3, 14); // Friday, 14:00
-    ev.SetEndTime(eventTime.timestamp().epochTime());
+    ev.SetEndTime(eventTime.utc().timestamp().epochTime());
     ASSERT_TRUE(a.Matches(ev));
 
-    a.SetDaysOfWeek(0);
-    ASSERT_FALSE(a.Matches(ev));
-
-    a.SetDaysOfWeek(std::bitset<7>("0111110").to_ulong()); // weekdays
+    a.SetDaysOfWeek(0); // default value, means no days restrictions
     ASSERT_TRUE(a.Matches(ev));
 
-    a.SetDaysOfWeek(std::bitset<7>("0111100").to_ulong()); // Monday - Thursday
+    a.SetDaysOfWeek(toggl::AutotrackerRule::DaysOfWeekIntoUInt8(false, true, true, true, true, true, false)); // weekdays
+    ASSERT_TRUE(a.Matches(ev));
+
+    a.SetDaysOfWeek(toggl::AutotrackerRule::DaysOfWeekIntoUInt8(false, true, true, true, true, false, false)); // Monday - Thursday
     ASSERT_FALSE(a.Matches(ev));
 }
 
