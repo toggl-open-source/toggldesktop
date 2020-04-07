@@ -169,6 +169,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error SetSettingsShowTouchBar(const bool show_touch_bar);
 
+    error SetSettingsStartAutotrackerWithoutSuggestions(const bool start_autotracker_without_suggestions);
+
     error SetSettingsActiveTab(const uint8_t active_tab);
 
     error SetSettingsColorTheme(const uint8_t color_theme);
@@ -214,6 +216,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     bool GetKeepEndTimeFixed();
 
     bool GetShowTouchBar();
+
+    bool GetStartAutotrackerWithoutSuggestions();
 
     uint8_t GetActiveTab();
 
