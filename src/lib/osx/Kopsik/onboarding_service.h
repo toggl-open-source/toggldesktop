@@ -19,6 +19,7 @@
 namespace toggl {
 
 class Database;
+class User;
 
 enum OnboardingType {
     NewUser,
@@ -35,7 +36,8 @@ enum OnboardingType {
 class TOGGL_INTERNAL_EXPORT OnboardingState {
 public:
     OnboardingState()
-        : openTimelineTabCount(0)
+        : timeEntryTotal(0)
+    , openTimelineTabCount(0)
     , lastOpenApp(0)
     , editOnTimelineCount(0)
     , isUseTimelineRecord(false)
@@ -50,6 +52,7 @@ public:
     , isPresentTimelineActivity(false)
     , isPresentRecordActivity(false) {}
 
+    Poco::Int64 timeEntryTotal;
     Poco::Int64 openTimelineTabCount;
     Poco::Int64 lastOpenApp;
     Poco::Int64 editOnTimelineCount;
@@ -74,7 +77,7 @@ public:
     // Register action
     void RegisterEvents(std::function<void (const OnboardingType)> callback);
     void SetDatabase(Database *db);
-    void SetUserID(Poco::UInt64 user_id);
+    void LoadOnboardingStateFromCurrentUser(User *user);
     
     // User actions
     void OpenApp();
