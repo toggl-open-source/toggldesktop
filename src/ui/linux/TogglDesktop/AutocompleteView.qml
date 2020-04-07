@@ -97,6 +97,15 @@ Item {
                 property var autocompleteData: modelData
                 property int index: index
             }
+            Rectangle {
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    right: parent.right
+                }
+                height: 2
+                color: mainPalette.separator
+            }
         }
     }
 
