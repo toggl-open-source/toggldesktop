@@ -17,6 +17,7 @@
 #include "time_entry.h"
 #include "timeline_event.h"
 #include "urls.h"
+#include "onboarding_service.h"
 
 #include <Poco/Base64Decoder.h>
 #include <Poco/Base64Encoder.h>
@@ -414,6 +415,12 @@ void User::SetCollapseEntries(const bool value) {
 // all of them are stopped (multi-tracking is not supported by Toggl).
 void User::Stop(std::vector<TimeEntry *> *stopped) {
     TimeEntry *te = RunningTimeEntry();
+
+    // Trigger onboarding when one TE is stopped
+    if (te != nullptr) {
+        OnboardingService::getInstance()->StopTimeEntry();
+    }
+
     while (te) {
         if (stopped) {
             stopped->push_back(te);
@@ -421,6 +428,7 @@ void User::Stop(std::vector<TimeEntry *> *stopped) {
         te->StopTracking();
         te = RunningTimeEntry();
     }
+
 }
 
 TimeEntry *User::DiscardTimeAt(
