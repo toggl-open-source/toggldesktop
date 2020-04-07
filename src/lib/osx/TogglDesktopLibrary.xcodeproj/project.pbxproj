@@ -222,6 +222,8 @@
 		BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MacOSVersionChecker.mm; sourceTree = "<group>"; };
 		BA2DA11A21A6864D0027B7A5 /* rectangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = rectangle.h; path = ../../../rectangle.h; sourceTree = "<group>"; };
 		BA2DA11B21A6864D0027B7A5 /* rectangle.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = rectangle.cc; path = ../../../rectangle.cc; sourceTree = "<group>"; };
+		BA2E149A243C6E720029C94F /* logger.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = logger.cc; sourceTree = "<group>"; };
+		BA2E149B243C6E720029C94F /* logger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
 		BA43B31E23F680B00007DD99 /* libPocoCrypto.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoCrypto.60.dylib; path = ../../ui/osx/TogglDesktop/Library/poco/libPocoCrypto.60.dylib; sourceTree = "<group>"; };
 		BA43B31F23F680B00007DD99 /* libPocoData.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoData.60.dylib; path = ../../ui/osx/TogglDesktop/Library/poco/libPocoData.60.dylib; sourceTree = "<group>"; };
 		BA43B32023F680B00007DD99 /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.60.dylib; path = ../../ui/osx/TogglDesktop/Library/poco/libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
@@ -283,6 +285,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BA2E1499243C6E720029C94F /* util */ = {
+			isa = PBXGroup;
+			children = (
+				BA2E149A243C6E720029C94F /* logger.cc */,
+				BA2E149B243C6E720029C94F /* logger.h */,
+			);
+			name = util;
+			path = ../../../util;
+			sourceTree = "<group>";
+		};
 		BAD233D921D60A4D0039C742 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -336,6 +348,7 @@
 		C55DA59E17F06A3B00B42178 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				BA2E1499243C6E720029C94F /* util */,
 				B8470E4B2334C377000D88CE /* random.cc */,
 				B8470E4A2334C377000D88CE /* random.h */,
 				7426535C1BEAD91900F0944C /* help_article.cc */,

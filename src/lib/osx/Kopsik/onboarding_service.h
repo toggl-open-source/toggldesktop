@@ -14,6 +14,7 @@
 #include <stdio.h>
 
 #include "types.h"
+#include "logger.h"
 
 namespace toggl {
 
@@ -49,7 +50,6 @@ public:
     , isPresentTimelineActivity(false)
     , isPresentRecordActivity(false) {}
 
-private:
     Poco::Int64 openTimelineTabCount;
     Poco::Int64 lastOpenApp;
     Poco::Int64 editOnTimelineCount;
@@ -74,7 +74,8 @@ public:
     // Register action
     void RegisterEvents(std::function<void (const OnboardingType)> callback);
     void SetDatabase(Database *db);
-
+    void SetUserID(Poco::UInt64 user_id);
+    
     // User actions
     void OpenApp();
     void StopTimeEntry();
@@ -82,8 +83,9 @@ public:
     void TurnOnRecordActivity();
 
 private:
-    OnboardingState state;
+    OnboardingState *state;
     Database *database;
+    Logger logger { "Onboarding" };
     std::function<void (const OnboardingType)> _callback;
 };
 }

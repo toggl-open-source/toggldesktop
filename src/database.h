@@ -40,6 +40,7 @@ class Task;
 class TimeEntry;
 class User;
 class Workspace;
+class OnboardingState;
 
 class TOGGL_INTERNAL_EXPORT Database {
  public:
@@ -262,6 +263,7 @@ class TOGGL_INTERNAL_EXPORT Database {
     error Trim(const std::string &text, std::string *result);
 
     error ResetWindow();
+    error LoadOnboardingState(const Poco::UInt64 &UID, OnboardingState *state);
 
  private:
     error vacuum();

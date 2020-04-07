@@ -21,6 +21,7 @@
 #include "time_entry.h"
 #include "user.h"
 #include "workspace.h"
+#include "onboarding_service.h"
 
 #include <Poco/Data/Binding.h>
 #include <Poco/Data/RecordSet.h>
@@ -4050,4 +4051,49 @@ error Database::saveModel(
     return noError;
 }
 
+error Database::LoadOnboardingState(const Poco::UInt64 &UID, OnboardingState *state) {
+
+    if (!UID) {
+        return error("Cannot load on boarding without an user ID");
+    }
+
+    try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
+        *session_ <<
+                  "select last_open_app, open_timeline_tab_count, edit_timeline_tab_count, is_use_timeline_record, is_use_manual_mode, "
+                  "is_present_new_user_onboarding, is_present_old_user_onboarding, is_present_manual_mode_onboarding, is_present_timeline_tab_onboarding, "
+                  "is_present_edit_timeentry_onboarding, is_present_timeline_timeentry_onboarding, is_present_timeline_view_onboarding, is_present_timeline_activity_onboarding, "
+                  "is_present_recode_activity_onboarding"
+                  "from settings "
+                  "where uid = :uid "
+                  "limit 1",
+                  useRef(UID),
+                  into(state->lastOpenApp),
+                  into(state->openTimelineTabCount),
+                  into(state->editOnTimelineCount),
+                  into(state->isUseTimelineRecord),
+                  into(state->isUseManualMode),
+                  into(state->isPresentNewUser),
+                  into(state->isPresentOldUser),
+                  into(state->isPresentManualMode),
+                  into(state->isPresentTimelineTab),
+                  into(state->isPresentEditTimeEntry),
+                  into(state->isPresentTimelineTimeEntry),
+                  into(state->isPresentTimelineView),
+                  into(state->isPresentTimelineActivity),
+                  into(state->isPresentRecordActivity),
+                  limit(1),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string & ex) {
+        return ex;
+    }
+    return last_error("LoadOnboardingSetting");
+}
 }   // namespace toggl
