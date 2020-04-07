@@ -1435,5 +1435,10 @@ public static partial class Toggl
     {
         toggl_toggle_entries_group(ctx, groupName);
     }
+
+    public static byte DaysOfWeekIntoByte(bool sun, bool mon, bool tue, bool wed, bool thu, bool fri, bool sat)
+    {
+        return toggl_days_of_week_into_uint8(sun, mon, tue, wed, thu, fri, sat);
+    }
 }
 }
