@@ -282,6 +282,9 @@ void GoogleAnalyticsSettingsEvent::runTask() {
     setActionBool("show_touch_bar-", settings.show_touch_bar);
     makeReq();
 
+    setActionBool("start_autotracker_without_suggestions", settings.start_autotracker_without_suggestions);
+    makeReq();
+
     setActionBool("active_tab-", settings.active_tab);
     makeReq();
 

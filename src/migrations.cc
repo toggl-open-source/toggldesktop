@@ -1321,6 +1321,14 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.start_autotracker_without_suggestions",
+        "ALTER TABLE settings "
+        "ADD COLUMN start_autotracker_without_suggestions INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 

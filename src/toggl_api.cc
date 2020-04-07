@@ -173,6 +173,12 @@ bool_t toggl_set_settings_show_touch_bar(
     return toggl::noError == app(context)->SetSettingsShowTouchBar(show_touch_bar);
 }
 
+bool_t toggl_set_settings_start_autotracker_without_suggestions(
+    void *context,
+    const bool_t start_autotracker_without_suggestions) {
+    return toggl::noError == app(context)->SetSettingsStartAutotrackerWithoutSuggestions(start_autotracker_without_suggestions);
+}
+
 bool_t toggl_set_settings_active_tab(
     void *context,
     const uint8_t active_tab) {
@@ -1445,6 +1451,11 @@ bool_t toggl_get_keep_end_time_fixed(
 bool_t toggl_get_show_touch_bar(
     void *context) {
     return app(context)->GetShowTouchBar();
+}
+
+bool_t toggl_get_start_autotracker_without_suggestions(
+    void *context) {
+    return app(context)->GetStartAutotrackerWithoutSuggestions();
 }
 
 uint8_t toggl_get_active_tab(

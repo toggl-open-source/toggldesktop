@@ -2033,6 +2033,11 @@ error Context::SetSettingsShowTouchBar(const bool show_touch_bar) {
         db()->SetSettingsShowTouchBar(show_touch_bar));
 }
 
+error Context::SetSettingsStartAutotrackerWithoutSuggestions(const bool start_autotracker_without_suggestions) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsStartAutotrackerWithoutSuggestions(start_autotracker_without_suggestions));
+}
+
 error Context::SetSettingsActiveTab(const uint8_t active_tab) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsActiveTab(active_tab));
@@ -2165,6 +2170,12 @@ bool Context::GetKeepEndTimeFixed() {
 bool Context::GetShowTouchBar() {
     bool value(false);
     displayError(db()->GetShowTouchBar(&value));
+    return value;
+}
+
+bool Context::GetStartAutotrackerWithoutSuggestions() {
+    bool value(false);
+    displayError(db()->GetStartAutotrackerWithoutSuggestions(&value));
     return value;
 }
 
