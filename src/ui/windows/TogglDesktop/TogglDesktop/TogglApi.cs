@@ -1743,6 +1743,23 @@ private static extern Int64 toggl_parse_duration_string_into_seconds(
 [MarshalAs(UnmanagedType.LPWStr)]
         string duration_string);
 
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern byte toggl_days_of_week_into_uint8(
+        [MarshalAs(UnmanagedType.I1)]
+        bool sun,
+        [MarshalAs(UnmanagedType.I1)]
+        bool mon,
+        [MarshalAs(UnmanagedType.I1)]
+        bool tue,
+        [MarshalAs(UnmanagedType.I1)]
+        bool wed,
+        [MarshalAs(UnmanagedType.I1)]
+        bool thu,
+        [MarshalAs(UnmanagedType.I1)]
+        bool fri,
+        [MarshalAs(UnmanagedType.I1)]
+        bool sat);
+
     // Write to the lib logger
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
 private static extern void toggl_debug(
