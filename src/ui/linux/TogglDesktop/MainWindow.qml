@@ -33,7 +33,7 @@ Rectangle {
 
         property color borderColor: mixColors(mainPalette.text, mainPalette.base, 0.33)
 
-        property color separator: mixColors(mainPalette.button, mainPalette.midlight, 0.9)
+        property color separator: isDark ? mixColors(mainPalette.button, mainPalette.midlight, 0.8) : mainPalette.shadow
     }
     SystemPalette {
         id: disabledPalette
