@@ -77,6 +77,7 @@ Rectangle {
                     else {
                         if (acceptableInput) {
                             start()
+                            autocomplete.visible = false
                         }
                     }
                 }
