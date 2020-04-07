@@ -95,7 +95,10 @@ private:
     OnboardingState *state;
     Database *database;
     Logger logger { "Onboarding" };
+    Poco::UInt64 userID;
     std::function<void (const OnboardingType)> _callback;
+
+    void sync();
 };
 }
 

@@ -264,7 +264,8 @@ class TOGGL_INTERNAL_EXPORT Database {
 
     error ResetWindow();
     error LoadOnboardingState(const Poco::UInt64 &UID, OnboardingState *state);
-
+    error SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *state);
+    
  private:
     error vacuum();
 
