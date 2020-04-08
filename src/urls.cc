@@ -7,7 +7,12 @@ namespace toggl {
 namespace urls {
 
 // Whether requests are sent to staging backend
+
+#ifndef TOGGL_PRODUCTION_BUILD
+static bool use_staging_as_backend = true;
+#else
 static bool use_staging_as_backend = false;
+#endif
 
 // Whether requests are allowed to Toggl backend
 static bool im_a_teapot_ = false;

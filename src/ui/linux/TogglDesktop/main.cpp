@@ -21,6 +21,7 @@
 #include "./genericview.h"
 #include "./mainwindowcontroller.h"
 #include "./toggl.h"
+#include "./urls.h"
 
 MainWindowController *w = nullptr;
 
@@ -93,12 +94,21 @@ int main(int argc, char *argv[]) try {
         "path");
     parser.addOption(scriptPathOption);
 
+    QCommandLineOption forceStagingOption(
+        QStringList() << "staging",
+        "Force connecting to the staging server");
+    parser.addOption(forceStagingOption);
+
     // A boolean option with multiple names (-b, --background)
     QCommandLineOption forceOption(QStringList() << "b" << "background",
                                    QCoreApplication::translate("main", "Start app in background."));
     parser.addOption(forceOption);
 
     parser.process(a);
+
+    if (parser.isSet(forceStagingOption)) {
+        toggl::urls::SetUseStagingAsBackend(true);
+    }
 
     w = new MainWindowController(nullptr,
                                  parser.value(logPathOption),

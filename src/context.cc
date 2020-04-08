@@ -93,10 +93,6 @@ Context::Context(const std::string &app_name, const std::string &app_version)
         Poco::Net::HTTPSStreamFactory::registerFactory();
     }
 
-#ifndef TOGGL_PRODUCTION_BUILD
-    urls::SetUseStagingAsBackend(true);
-#endif
-
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
