@@ -4677,6 +4677,9 @@ error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
 }
 
 error Context::StartTimelineEvent(TimelineEvent *event) {
+    // Prevent a leak in case of an early exit
+    std::unique_ptr<TimelineEvent> handler { event };
+
     try {
         poco_check_ptr(event);
 
@@ -4687,7 +4690,7 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
 
         if (user_ && user_->RecordTimeline()) {
             event->SetUID(static_cast<unsigned int>(user_->ID()));
-            user_->related.TimelineEvents.push_back(event);
+            user_->related.TimelineEvents.push_back(handler.release());
             return displayError(save(false));
         }
     } catch(const Poco::Exception& exc) {
