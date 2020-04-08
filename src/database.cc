@@ -432,7 +432,7 @@ error Database::LoadSettings(Settings *settings) {
                   "open_editor_on_shortcut, has_seen_beta_offering, "
                   "pomodoro, pomodoro_minutes, "
                   "pomodoro_break, pomodoro_break_minutes, stop_entry_on_shutdown_sleep, "
-                  "show_touch_bar, active_tab, color_theme, start_autotracker_without_suggestions, "
+                  "show_touch_bar, active_tab, color_theme, start_autotracker_without_suggestions "
                   "from settings "
                   "limit 1",
                   into(settings->use_idle_detection),
