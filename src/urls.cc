@@ -33,7 +33,7 @@ std::string Main() {
 
 std::string API() {
     if (use_staging_as_backend) {
-        return "https://toggl.space";
+        return "https://desktop.toggl.space";
     }
     return "https://desktop.toggl.com";
 }
