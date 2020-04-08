@@ -352,7 +352,7 @@
                                           Margin="0 14 0 0"/>
                         <TextBlock Style="{StaticResource Toggl.BodyText}"
                                    Margin="0 30 0 0"
-                                   Text="Allow to start tracking automatically without showing the suggestion." />
+                                   Text="Allow starting tracking automatically without showing the suggestion" />
                         <mah:ToggleSwitch x:Name="startTrackingWithoutSuggestionCheckbox" x:FieldModifier="private"
                                           Margin="0 14 0 0" />
                     </StackPanel>
