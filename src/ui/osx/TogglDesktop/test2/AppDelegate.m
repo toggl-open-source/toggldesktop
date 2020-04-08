@@ -83,6 +83,9 @@
 // For testing crash reporter
 @property (nonatomic, assign) BOOL forceCrash;
 
+// For connecting to staging in production builds
+@property (nonatomic, assign) BOOL forceStaging;
+
 // Avoid doing stuff when app is already shutting down
 @property (nonatomic, assign) BOOL willTerminate;
 
@@ -1184,6 +1187,12 @@ const NSString *appName = @"osx_native_app";
 			NSLog(@"log level overriden with '%@'", self.log_level);
 			continue;
 		}
+        if ([argument rangeOfString:@"staging"].location != NSNotFound)
+        {
+            NSLog(@"forcing staging");
+            self.forceStaging = YES;
+            continue;
+        }
 	}
 }
 
@@ -1217,6 +1226,7 @@ const NSString *appName = @"osx_native_app";
 	self.db_path = [self.app_path stringByAppendingPathComponent:@"kopsik.db"];
 	self.log_path = [self.app_path stringByAppendingPathComponent:@"toggl_desktop.log"];
 	self.log_level = @"debug";
+	self.forceStaging = NO;
 	self.systemService = [[SystemService alloc] init];
 	self.isAddedTouchBar = NO;
 
@@ -1227,6 +1237,11 @@ const NSString *appName = @"osx_native_app";
 
 	toggl_set_log_path([self.log_path UTF8String]);
 	toggl_set_log_level([self.log_level UTF8String]);
+
+	if (self.forceStaging)
+	{
+		toggl_set_staging_override(self.forceStaging);
+	}
 
 	ctx = toggl_context_init([appName UTF8String], [self.version UTF8String]);
 

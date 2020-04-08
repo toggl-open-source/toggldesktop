@@ -10,6 +10,7 @@ extern "C" {
 #include <stddef.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #include <time.h>
 
@@ -390,6 +391,11 @@ extern "C" {
 
     TOGGL_EXPORT void toggl_set_log_level(
         const char_t *level);
+
+    // Allow overriding the server in production
+
+    TOGGL_EXPORT void toggl_set_staging_override(
+        bool value);
 
     // Various parts of UI can tell the app to show itself.
 
