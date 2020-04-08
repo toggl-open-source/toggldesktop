@@ -29,7 +29,7 @@ namespace TogglDesktop
     {
         #region fields
 
-        private const int WindowHeaderHeight = 30;
+        private const int WindowHeaderHeight = 32;
         private readonly DispatcherTimer idleDetectionTimer =
             new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
 
@@ -833,7 +833,7 @@ namespace TogglDesktop
                 var x = (double)bounds.Left;
                 var y = (double)bounds.Top;
 
-                var headerHeight = WindowHeaderHeight + this.timerEntryListView.TimerHeight;
+                var headerHeight = WindowHeaderHeight + this.timerEntryListView.TimerHeight + 8;
 
                 y += headerHeight;
                 x += this.ActualWidth;
