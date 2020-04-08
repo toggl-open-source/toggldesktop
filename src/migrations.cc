@@ -665,6 +665,14 @@ error Migrations::migrateUsers() {
         return err;
     }
 
+    err = db_->Migrate(
+        "users.beginning_of_week",
+        "alter table users"
+        " add column beginning_of_week integer not null default 1;");
+    if (err != noError) {
+        return err;
+    }
+
     return err;
 }
 

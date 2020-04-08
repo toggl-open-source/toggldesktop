@@ -36,6 +36,7 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     , offline_data_("")
     , default_pid_(0)
     , default_tid_(0)
+    , beginning_of_week_(1)
     , has_loaded_more_(false)
     , collapse_entries_(false) {}
 
@@ -168,6 +169,11 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         return collapse_entries_;
     }
     void SetCollapseEntries(const bool value);
+
+    const Poco::UInt8 &BeginningOfWeek() const {
+        return beginning_of_week_;
+    }
+    void SetBeginningOfWeek(const Poco::UInt8 value);
 
     RelatedData related;
 
@@ -335,9 +341,9 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     std::string offline_data_;
     Poco::UInt64 default_pid_;
     Poco::UInt64 default_tid_;
-
     bool has_loaded_more_;
     bool collapse_entries_;
+    Poco::UInt8 beginning_of_week_;
 
     Poco::Mutex loadTimeEntries_m_;
 };
