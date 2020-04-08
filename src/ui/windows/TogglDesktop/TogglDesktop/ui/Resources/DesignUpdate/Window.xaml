@@ -46,7 +46,6 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="AllowsTransparency" Value="True" />
         <Setter Property="Background" Value="{DynamicResource Toggl.Background}" />
         <Setter Property="ShowMaxRestoreButton" Value="False" />
         <Setter Property="ShowIconOnTitleBar" Value="False" />
