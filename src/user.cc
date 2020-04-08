@@ -409,6 +409,13 @@ void User::SetCollapseEntries(const bool value) {
     }
 }
 
+void User::SetBeginningOfWeek(const Poco::UInt8 value) {
+    if (beginning_of_week_ != value) {
+        beginning_of_week_ = value;
+        SetDirty();
+    }
+}
+
 // Stop a time entry, mark it as dirty.
 // Note that there may be multiple TE-s running. If there are,
 // all of them are stopped (multi-tracking is not supported by Toggl).
@@ -800,6 +807,7 @@ void User::loadUserAndRelatedDataFromJSON(
     SetStoreStartAndStopTime(data["store_start_and_stop_time"].asBool());
     SetTimeOfDayFormat(data["timeofday_format"].asString());
     SetDurationFormat(data["duration_format"].asString());
+    SetBeginningOfWeek(data["beginning_of_week"].asUInt());
 
     {
         std::set<Poco::UInt64> alive;

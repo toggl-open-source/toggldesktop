@@ -1197,13 +1197,14 @@ error Database::LoadUserByID(
         std::string offline_data("");
         Poco::UInt64 default_pid(0);
         Poco::UInt64 default_tid(0);
+        Poco::UInt8 beginning_of_week(1);
         bool collapse_entries(false);
         *session_ <<
                   "select local_id, id, default_wid, since, "
                   "fullname, "
                   "email, record_timeline, store_start_and_stop_time, "
                   "timeofday_format, duration_format, offline_data, "
-                  "default_pid, default_tid, collapse_entries "
+                  "default_pid, default_tid, collapse_entries, beginning_of_week "
                   "from users where id = :id limit 1",
                   into(local_id),
                   into(id),
@@ -1219,6 +1220,7 @@ error Database::LoadUserByID(
                   into(default_pid),
                   into(default_tid),
                   into(collapse_entries),
+                  into(beginning_of_week),
                   useRef(UID),
                   limit(1),
                   now;
@@ -1247,6 +1249,7 @@ error Database::LoadUserByID(
         user->SetDefaultPID(default_pid);
         user->SetDefaultTID(default_tid);
         user->SetCollapseEntries(collapse_entries);
+        user->SetBeginningOfWeek(beginning_of_week);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -3272,7 +3275,8 @@ error Database::SaveUser(
                           "offline_data = :offline_data, "
                           "default_pid = :default_pid, "
                           "default_tid = :default_tid, "
-                          "collapse_entries = :collapse_entries "
+                          "collapse_entries = :collapse_entries, "
+                          "beginning_of_week = :beginning_of_week "
                           "where local_id = :local_id",
                           useRef(user->DefaultWID()),
                           useRef(user->Since()),
@@ -3287,6 +3291,7 @@ error Database::SaveUser(
                           useRef(user->DefaultPID()),
                           useRef(user->DefaultTID()),
                           useRef(user->CollapseEntries()),
+                          useRef(user->BeginningOfWeek()),
                           useRef(user->LocalID()),
                           now;
                 error err = last_error("SaveUser");
@@ -3303,13 +3308,13 @@ error Database::SaveUser(
                           "id, default_wid, since, fullname, email, "
                           "record_timeline, store_start_and_stop_time, "
                           "timeofday_format, duration_format, offline_data, "
-                          "default_pid, default_tid"
+                          "default_pid, default_tid, beginning_of_week"
                           ") values("
                           ":id, :default_wid, :since, :fullname, "
                           ":email, "
                           ":record_timeline, :store_start_and_stop_time, "
                           ":timeofday_format, :duration_format, :offline_data, "
-                          ":default_pid, :default_tid"
+                          ":default_pid, :default_tid, :beginning_of_week"
                           ")",
                           useRef(user->ID()),
                           useRef(user->DefaultWID()),
@@ -3323,6 +3328,7 @@ error Database::SaveUser(
                           useRef(user->OfflineData()),
                           useRef(user->DefaultPID()),
                           useRef(user->DefaultTID()),
+                          useRef(user->BeginningOfWeek()),
                           now;
                 error err = last_error("SaveUser");
                 if (err != noError) {
