@@ -4725,7 +4725,12 @@ error Context::StartAutotrackerEvent(const TimelineEvent &event) {
         return error("no project or task specified in autotracker rule");
     }
 
-    UI()->DisplayAutotrackerNotification(p, t);
+    if (settings_.start_autotracker_without_suggestions) {
+        auto te = user_->Start("", "", rule->TID(), rule->PID(), "", "", 0, 0, true);
+    }
+    else {
+        UI()->DisplayAutotrackerNotification(p, t);
+    }
 
     return noError;
 }
