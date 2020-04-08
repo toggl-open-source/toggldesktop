@@ -350,8 +350,13 @@
                                    Text="Autotracker helps to make time tracking faster by triggering customized suggestions. When a selected app is open in the foreground, you'll get one of the prefilled suggestions." />
                         <mah:ToggleSwitch Name="enableAutotrackerCheckbox" x:FieldModifier="private"
                                           Margin="0 14 0 0"/>
+                        <TextBlock Style="{StaticResource Toggl.BodyText}"
+                                   Margin="0 30 0 0"
+                                   Text="Allow to start tracking automatically without showing the suggestion." />
+                        <mah:ToggleSwitch x:Name="startTrackingWithoutSuggestionCheckbox" x:FieldModifier="private"
+                                          Margin="0 14 0 0" />
                     </StackPanel>
-                    <toggl:AutotrackerSettings Grid.Row="1" Margin="0 40 0 12" IsEnabled="{Binding ElementName=enableAutotrackerCheckbox, Path=IsChecked}"/>
+                    <toggl:AutotrackerSettings Grid.Row="1" Margin="0 22 0 12" IsEnabled="{Binding ElementName=enableAutotrackerCheckbox, Path=IsChecked}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Proxy">
