@@ -82,11 +82,11 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled"
                       HorizontalAlignment="Stretch"
-                      Margin="4 0"
+                      Margin="6 0"
                       Focusable="False"
                       IsTabStop="False"
                       PreviewKeyDown="UIElement_OnPreviewKeyDown">
-            <Grid Margin="0 4">
+            <Grid Margin="0 8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
