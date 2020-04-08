@@ -4674,63 +4674,73 @@ void Context::displayPomodoroBreak() {
 }
 
 error Context::StartAutotrackerEvent(const TimelineEvent &event) {
-    Poco::Mutex::ScopedLock lock(user_m_);
-    if (!user_) {
-        return noError;
-    }
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            return noError;
+        }
 
-    if (!settings_.autotrack) {
-        return noError;
-    }
+        if (!settings_.autotrack) {
+            return noError;
+        }
 
-    TimeEntry* runningEntry = user_->RunningTimeEntry();
-    if (runningEntry) {
-        // on Windows show suggestion also where there is a running entry (#3917)
-        if (POCO_OS_WINDOWS_NT != POCO_OS) {
+        TimeEntry* runningEntry = user_->RunningTimeEntry();
+        if (runningEntry) {
+            // on Windows show suggestion also where there is a running entry (#3917)
+            if (POCO_OS_WINDOWS_NT != POCO_OS) {
+                return noError;
+            }
+        }
+
+        AutotrackerRule *rule = user_->related.FindAutotrackerRule(event);
+        if (!rule) {
+            return noError;
+        }
+
+        if (runningEntry) {
+            bool isRunningEntryMatchingAutotrackerRuleProject = 
+                rule->PID() == runningEntry->PID() && (!rule->TID() || rule->TID() == runningEntry->TID());
+
+            if (isRunningEntryMatchingAutotrackerRuleProject) {
+                return noError;
+            }
+        }
+
+        Project *p = nullptr;
+        if (rule->PID()) {
+            p = user_->related.ProjectByID(rule->PID());
+        }
+        if (rule->PID() && !p) {
+            return error("autotracker project not found");
+        }
+
+        Task *t = nullptr;
+        if (rule->TID()) {
+            t = user_->related.TaskByID(rule->TID());
+        }
+        if (rule->TID() && !t) {
+            return error("autotracker task not found");
+        }
+
+        if (!p && !t) {
+            return error("no project or task specified in autotracker rule");
+        }
+
+        if (settings_.start_autotracker_without_suggestions) {
+            auto te = user_->Start("", "", rule->TID(), rule->PID(), "", "", 0, 0, true);
+        }
+        else {
+            UI()->DisplayAutotrackerNotification(p, t);
             return noError;
         }
     }
 
-    AutotrackerRule *rule = user_->related.FindAutotrackerRule(event);
-    if (!rule) {
-        return noError;
+    error err = save(true);
+    if (err != noError) {
+        displayError(err);
+        return nullptr;
     }
-
-    if (runningEntry) {
-        bool isRunningEntryMatchingAutotrackerRuleProject = 
-            rule->PID() == runningEntry->PID() && (!rule->TID() || rule->TID() == runningEntry->TID());
-
-        if (isRunningEntryMatchingAutotrackerRuleProject) {
-            return noError;
-        }
-    }
-
-    Project *p = nullptr;
-    if (rule->PID()) {
-        p = user_->related.ProjectByID(rule->PID());
-    }
-    if (rule->PID() && !p) {
-        return error("autotracker project not found");
-    }
-
-    Task *t = nullptr;
-    if (rule->TID()) {
-        t = user_->related.TaskByID(rule->TID());
-    }
-    if (rule->TID() && !t) {
-        return error("autotracker task not found");
-    }
-
-    if (!p && !t) {
-        return error("no project or task specified in autotracker rule");
-    }
-
-    if (settings_.start_autotracker_without_suggestions) {
-        auto te = user_->Start("", "", rule->TID(), rule->PID(), "", "", 0, 0, true);
-    }
-    else {
-        UI()->DisplayAutotrackerNotification(p, t);
-    }
+    OpenTimeEntryList();
 
     return noError;
 }
