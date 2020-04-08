@@ -41,6 +41,7 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     Property<Poco::UInt64> DefaultTID { 0 };
     // Unix timestamp of the user data; returned from API
     Property<Poco::Int64> Since { 0 };
+    Property<Poco::UInt8> BeginningOfWeek { 1 };
     Property<bool> RecordTimeline { false };
 
     Property<bool> HasLoadedMore { false };
@@ -59,6 +60,7 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     void SetDefaultTID(Poco::UInt64 value);
     // Unix timestamp of the user data; returned from API
     void SetSince(Poco::Int64 value);
+    void SetBeginningOfWeek(Poco::UInt8 value);
     void SetRecordTimeline(bool value);
     void ConfirmLoadedMore();
     void SetCollapseEntries(bool value);

@@ -685,9 +685,17 @@ error Migrations::migrateUsers() {
         return err;
     }
 
+
+    err = db_->Migrate(
+        "users.beginning_of_week",
+        "alter table users"
+        " add column beginning_of_week integer not null default 1;");
+    if (err != noError) {
+        return err;
+    }
     // TODO when modifying the structure of this table, drop the store_start_and_stop_time,
     // it's been removed from the class altogether -- martin
-
+    
     return err;
 }
 

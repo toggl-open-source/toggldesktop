@@ -454,6 +454,11 @@ void User::SetCollapseEntries(bool value) {
         SetDirty();
 }
 
+void User::SetBeginningOfWeek(Poco::UInt8 value) {
+    if (BeginingOfWeek.Set(value))
+        SetDirty();
+}
+
 // Stop a time entry, mark it as dirty.
 // Note that there may be multiple TE-s running. If there are,
 // all of them are stopped (multi-tracking is not supported by Toggl).
@@ -1166,6 +1171,8 @@ bool User::LoadUserPreferencesFromJSON(
         SetTimeOfDayFormat(data["timeofday_format"].asString());
     if (data.isMember("duration_format"))
         SetDurationFormat(data["duration_format"].asString());
+    if (data.isMember("beginning_of_week"))
+        SetBeginningOfWeek(data["beginning_of_week"].asString());
 
     if (!excludeCollapseTimeEntries
             && data.isMember("CollapseTimeEntries")
