@@ -102,7 +102,17 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
         }
         if (root.size() == 0)
             return kMissingModelData;
-        return LoadModelFromJSON<T>(into, root, uid, alive);
+        if (root.isArray()) {
+            for (auto i : root) {
+                auto err = LoadModelFromJSON<T>(into, i, uid, alive);
+                if (err != noError)
+                    return err;
+            }
+        }
+        else {
+            return LoadModelFromJSON<T>(into, root, uid, alive);
+        }
+        return noError;
     }
 
     template<class T>

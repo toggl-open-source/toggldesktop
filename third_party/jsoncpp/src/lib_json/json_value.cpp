@@ -20,6 +20,7 @@
 #include <cpptl/conststring.h>
 #endif
 #include <cstddef> // size_t
+#include <iostream>
 
 #define JSON_ASSERT_UNREACHABLE assert(false)
 
@@ -996,8 +997,14 @@ Value Value::get(ArrayIndex index, const Value& defaultValue) const {
 bool Value::isValidIndex(ArrayIndex index) const { return index < size(); }
 
 const Value& Value::operator[](const char* key) const {
+
+    auto type = type_;
+    if (type != nullValue && type != objectValue) {
+        std::cerr << "AAAA" << (int) type << key << std::endl;
+        *(int*)0 = 0;
+    }
   JSON_ASSERT_MESSAGE(
-      type_ == nullValue || type_ == objectValue,
+      (type == nullValue || type == objectValue),
       "in Json::Value::operator[](char const*)const: requires objectValue");
   if (type_ == nullValue)
     return null;

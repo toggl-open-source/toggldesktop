@@ -148,12 +148,11 @@ void WebSocketClient::authenticate() {
     logger().debug("authenticate");
 
     Json::Value c(Json::objectValue);
-    Json::Value &ref1 = c["type"];
-    ref1 = "authenticate";
-    Json::Value &ref2 = c["api_token"];
-    ref2 = api_token_;
+    c["type"] = std::string("authenticate");
+    c["api_token"] = api_token_;
 
-    std::string payload = c.toStyledString();
+    Json::StyledWriter w;
+    std::string payload = w.write(c);
 
     ws_->sendFrame(payload.data(),
                    static_cast<int>(payload.size()),
