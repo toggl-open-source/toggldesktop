@@ -1655,6 +1655,10 @@ private static extern string toggl_get_update_channel(
 private static extern string toggl_get_user_fullname(
         IntPtr context);
 
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern byte toggl_get_user_beginning_of_week(
+        IntPtr context);
+
     // You must free() the result
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
 private static extern string toggl_get_user_email(
