@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "task.h"
+#include "model/task.h"
 
 #include <sstream>
 

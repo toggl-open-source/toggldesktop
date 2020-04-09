@@ -4,7 +4,7 @@
 
 #include "const.h"
 #include "database.h"
-#include "random.h"
+#include "util/random.h"
 
 namespace toggl {
 

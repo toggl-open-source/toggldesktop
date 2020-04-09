@@ -11,7 +11,7 @@
 
 #include <Poco/Types.h>
 
-#include "base_model.h"
+#include "model/base_model.h"
 
 namespace toggl {
 

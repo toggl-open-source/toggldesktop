@@ -1,7 +1,7 @@
 
 // Copyright 2015 Toggl Desktop developers
 
-#include "autotracker.h"
+#include "model/autotracker.h"
 
 #include <Poco/UTF8String.h>
 

@@ -24,6 +24,7 @@ set(TOGGLDESKTOPLIBRARY_INCLUDE_DIR
 
 # And include dirs
 include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${OAUTH_INCLUDE_DIR}
     ${BUGSNAG_INCLUDE_DIR}
     ${LUA_INCLUDE_DIRS}
@@ -33,47 +34,49 @@ include_directories(
 
 # TogglDesktopLibrary sources
 set(LIBRARY_SOURCE_FILES
+    util/custom_error_handler.cc
+    util/formatter.cc
     util/logger.cc
+    util/random.cc
+    util/rectangle.cc
 
-    base_model.cc
-    batch_update_result.cc
-    client.cc
-    idle.cc
+    database/database.cc
+    database/migrations.cc
+
+    model/autotracker.cc
+    model/base_model.cc
+    model_change.cc
+    model/client.cc
+    model/obm_action.cc
+    model/project.cc
+    model/settings.cc
+    model/tag.cc
+    model/task.cc
+    model/time_entry.cc
+    model/timeline_event.cc
+    model/user.cc
+    model/workspace.cc
+
     analytics.cc
-    help_article.cc
-    autotracker.cc
-    urls.cc
-    migrations.cc
+    batch_update_result.cc
     context.cc
-    custom_error_handler.cc
-    database.cc
-    feedback.cc
-    formatter.cc
-    get_focused_window_linux.cc
     error.cc
+    feedback.cc
+    get_focused_window_linux.cc
     gui.cc
-    netconf.cc
+    help_article.cc
     https_client.cc
+    idle.cc
+    netconf.cc
+    platforminfo.cc
+    proxy.cc
+    related_data.cc
+    timeline_uploader.cc
     toggl_api.cc
     toggl_api_private.cc
-    model_change.cc
-    obm_action.cc
-    platforminfo.cc
-    project.cc
-    proxy.cc
-    random.cc
-    rectangle.cc
-    related_data.cc
-    settings.cc
-    tag.cc
-    task.cc
-    timeline_event.cc
-    time_entry.cc
-    timeline_uploader.cc
-    user.cc
+    urls.cc
     websocket_client.cc
     window_change_recorder.cc
-    workspace.cc
 )
 
 # Set up compilation targets

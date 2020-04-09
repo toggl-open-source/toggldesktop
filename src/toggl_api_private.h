@@ -6,10 +6,10 @@
 #include <string>
 #include <vector>
 
-#include "autotracker.h"
+#include "model/autotracker.h"
 #include "help_article.h"
 #include "proxy.h"
-#include "settings.h"
+#include "model/settings.h"
 #include "toggl_api.h"
 #include "util/logger.h"
 

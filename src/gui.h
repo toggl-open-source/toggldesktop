@@ -10,7 +10,7 @@
 #include "help_article.h"
 #include "https_client.h"
 #include "proxy.h"
-#include "settings.h"
+#include "model/settings.h"
 #include "toggl_api.h"
 #include "toggl_api_private.h"
 #include "types.h"
