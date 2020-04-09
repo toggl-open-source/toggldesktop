@@ -77,8 +77,6 @@ error TimelineUploader::process() {
 }
 
 error TimelineUploader::upload(TimelineBatch *batch) {
-    TogglClient client;
-
     logger().debug("Uploading ", batch->Events().size(), " event(s) of user ", batch->UserID());
 
     std::string json = convertTimelineToJSON(
@@ -94,7 +92,7 @@ error TimelineUploader::upload(TimelineBatch *batch) {
     req.basic_auth_username = batch->APIToken();
     req.basic_auth_password = "api_token";
 
-    return client.Post(req).err;
+    return TogglClient::GetInstance().Post(req).err;
 }
 
 std::string convertTimelineToJSON(

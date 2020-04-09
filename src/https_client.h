@@ -179,19 +179,23 @@ class TOGGL_INTERNAL_EXPORT SyncStateMonitor {
 };
 
 class TOGGL_INTERNAL_EXPORT TogglClient : public HTTPClient {
- public:
-    explicit TogglClient(SyncStateMonitor *monitor = nullptr)
-        : monitor_(monitor) {}
-
+public:
     static ServerStatus TogglStatus;
+    static TogglClient& GetInstance() {
+        static TogglClient instance; // staic is thread-safe in C++11.
+        return instance;
+    }
 
- protected:
-    virtual HTTPResponse request(
-        HTTPRequest req) const override;
+    void SetSyncStateMonitor(SyncStateMonitor *monitor = nullptr) {
+        monitor_ = monitor;
+    }
 
+protected:
+    virtual HTTPResponse request(HTTPRequest req) const override;
     virtual Logger logger() const override;
 
- private:
+private:
+    TogglClient()= default;
     SyncStateMonitor *monitor_;
 };
 

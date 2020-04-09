@@ -724,7 +724,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error logAndDisplayUserTriedEditingLockedEntry();
 
-    error pullWorkspaces(TogglClient* toggl_client);
+    error pullWorkspaces();
 
     error pullWorkspacePreferences(TogglClient* https_client);
     error pullWorkspacePreferences(TogglClient* https_client,

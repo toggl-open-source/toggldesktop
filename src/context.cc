@@ -120,6 +120,8 @@ Context::Context(const std::string &app_name, const std::string &app_version)
     resetLastTrackingReminderTime();
 
     pomodoro_break_entry_ = nullptr;
+
+    TogglClient::GetInstance().SetSyncStateMonitor(UI());
 }
 
 Context::~Context() {
@@ -1035,9 +1037,7 @@ error Context::displayError(const error &err) {
 
     if (user_ && (err.find(kRequestIsNotPossible) != std::string::npos
                   || (err.find(kForbiddenError) != std::string::npos))) {
-        TogglClient toggl_client(UI());
-
-        error err = pullWorkspaces(&toggl_client);
+        error err = pullWorkspaces();
         if (err != noError) {
             // Check for missing WS error and
             if (err.find(kMissingWS) != std::string::npos) {
@@ -1437,7 +1437,7 @@ error Context::downloadUpdate() {
             req.host = "https://toggl.github.io";
             req.relative_url = "/toggldesktop/assets/updates-link.txt";
 
-            TogglClient client;
+            TogglClient client = TogglClient::GetInstance();
             HTTPResponse resp = client.Get(req);
             if (resp.err != noError) {
                 return resp.err;
@@ -5634,7 +5634,7 @@ bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
     return t < lockedTime;
 }
 
-error Context::pullWorkspaces(TogglClient* toggl_client) {
+error Context::pullWorkspaces() {
     std::string api_token = user_->APIToken();
 
     if (api_token.empty()) {
@@ -5650,7 +5650,7 @@ error Context::pullWorkspaces(TogglClient* toggl_client) {
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPResponse resp = toggl_client->Get(req);
+        HTTPResponse resp = TogglClient::GetInstance().Get(req);
         if (resp.err != noError) {
             if (resp.err.find(kForbiddenError) != std::string::npos) {
                 // User has no workspaces
