@@ -245,7 +245,7 @@ error Context::StartEvents() {
             }
         }
 
-        if (HTTPClient::Config.CACertPath.empty()) {
+        if (HTTPClient::Config.CACertPath().empty()) {
             return displayError("Missing CA cert bundle path!");
         }
 
@@ -2346,7 +2346,7 @@ void Context::SetEnvironment(const std::string &value) {
     logger.debug("SetEnvironment " + value);
     environment_ = value;
 
-    HTTPClient::Config.IgnoreCert = ("development" == environment_);
+    TogglClient::GetInstance().setIgnoreCert(("development" == environment_));
     urls::SetRequestsAllowed("test" != environment_);
 }
 

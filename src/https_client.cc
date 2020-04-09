@@ -42,6 +42,19 @@
 
 namespace toggl {
 
+void HTTPClient::SetCACertPath(std::string path) {
+    Config.SetCACertPath(path);
+    resetSession();
+}
+void HTTPClient::setIgnoreCert(bool ignore) {
+    Config.setIgnoreCert(ignore);
+    resetSession();
+}
+
+void HTTPClient::resetSession() {
+
+}
+
 void ServerStatus::startStatusCheck() {
     logger().debug("startStatusCheck fast_retry=", fast_retry_);
 
@@ -283,7 +296,7 @@ HTTPResponse HTTPClient::makeHttpRequest(
         resp.err = error("Cannot make a HTTP request without a relative URL");
         return resp;
     }
-    if (HTTPClient::Config.CACertPath.empty()) {
+    if (HTTPClient::Config.CACertPath().empty()) {
         resp.err = error("Cannot make a HTTP request without certificates");
         return resp;
     }
@@ -297,12 +310,12 @@ HTTPResponse HTTPClient::makeHttpRequest(
 
         Poco::Net::Context::VerificationMode verification_mode =
             Poco::Net::Context::VERIFY_RELAXED;
-        if (HTTPClient::Config.IgnoreCert) {
+        if (HTTPClient::Config.IgnoreCert()) {
             verification_mode = Poco::Net::Context::VERIFY_NONE;
         }
         Poco::Net::Context::Ptr context = new Poco::Net::Context(
             Poco::Net::Context::CLIENT_USE, "", "",
-            HTTPClient::Config.CACertPath,
+            HTTPClient::Config.CACertPath(),
             verification_mode, 9, true, "ALL");
 
         Poco::Net::SSLManager::instance().initializeClient(

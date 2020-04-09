@@ -66,19 +66,16 @@ class TOGGL_INTERNAL_EXPORT HTTPClientConfig {
     , AppVersion("")
     , UseProxy(false)
     , ProxySettings(Proxy())
-    , IgnoreCert(false)
-    , CACertPath("")
-    , AutodetectProxy(true) {}
+    , AutodetectProxy(true)
+    , ignoreCert(false)
+    , caCertPath("") {}
     ~HTTPClientConfig() {}
 
     std::string AppName;
     std::string AppVersion;
     bool UseProxy;
     toggl::Proxy ProxySettings;
-    bool IgnoreCert;
-    std::string CACertPath;
     bool AutodetectProxy;
-
     std::vector<Poco::UInt64> OBMExperimentNrs;
 
     std::string UserAgent() const {
@@ -91,6 +88,15 @@ class TOGGL_INTERNAL_EXPORT HTTPClientConfig {
         }
         return ss.str();
     }
+
+    bool IgnoreCert() { return ignoreCert; };
+    std::string CACertPath() { return caCertPath; };
+    void SetCACertPath(std::string path) { caCertPath = path; }
+    void setIgnoreCert(bool ignore) { ignoreCert = ignore; }
+
+private:
+    bool ignoreCert;
+    std::string caCertPath;
 };
 
 class TOGGL_INTERNAL_EXPORT HTTPRequest {
@@ -151,6 +157,9 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
 
     static HTTPClientConfig Config;
 
+    void SetCACertPath(std::string path);
+    void setIgnoreCert(bool ignore);
+    
  protected:
     virtual HTTPResponse request(
         HTTPRequest req) const;
@@ -169,6 +178,8 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
         HTTPRequest req) const;
 
     std::string clientIDForRefererHeader() const;
+
+    void resetSession();
 };
 
 class TOGGL_INTERNAL_EXPORT SyncStateMonitor {

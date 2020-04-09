@@ -365,7 +365,7 @@ void toggl_set_cacert_path(
     void *,
     const char_t *path) {
 
-    toggl::HTTPClient::Config.CACertPath = to_string(path);
+    toggl::TogglClient::GetInstance().SetCACertPath(to_string(path));
 }
 
 bool_t toggl_set_db_path(
