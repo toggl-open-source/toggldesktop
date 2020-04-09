@@ -5,14 +5,15 @@
 #include "gtest/gtest.h"
 
 #include "toggl_api_test.h"
-#include "./../https_client.h"
-#include "./../model/obm_action.h"
-#include "./../proxy.h"
-#include "./../model/settings.h"
-#include "./../model/time_entry.h"
-#include "./../toggl_api.h"
-#include "./../toggl_api_private.h"
-#include "./test_data.h"
+#include "https_client.h"
+#include "model/obm_action.h"
+#include "proxy.h"
+#include "model/settings.h"
+#include "model/time_entry.h"
+#include "toggl_api.h"
+#include "toggl_api_private.h"
+
+#include "test_data.h"
 
 #include <iostream>   // NOLINT
 
