@@ -1012,6 +1012,9 @@ extern "C" {
     TOGGL_EXPORT char_t *toggl_get_user_fullname(
         void *context);
 
+    TOGGL_EXPORT uint8_t toggl_get_user_beginning_of_week(
+        void *context);
+
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_get_user_email(
         void *context);

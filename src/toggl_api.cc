@@ -1063,6 +1063,11 @@ char_t *toggl_get_user_email(
     return copy_string(app(context)->UserEmail());
 }
 
+uint8_t toggl_get_user_beginning_of_week(
+    void *context) {
+    return app(context)->UserBeginningOfWeek();
+}
+
 int64_t toggl_parse_duration_string_into_seconds(
     const char_t *duration_string) {
     if (!duration_string) {

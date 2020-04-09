@@ -529,8 +529,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const Poco::Int64 id);
 
     std::string UserFullName();
-
     std::string UserEmail();
+    Poco::UInt8 UserBeginningOfWeek();
 
     // Timeline datasource
     error StartAutotrackerEvent(const TimelineEvent &event) override;
