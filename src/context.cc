@@ -1399,6 +1399,14 @@ std::string Context::UserEmail() {
     return user_->Email();
 }
 
+Poco::UInt8 Context::UserBeginningOfWeek() {
+    Poco::Mutex::ScopedLock lock(user_m_);
+    if (!user_) {
+        return 1;
+    }
+    return user_->BeginningOfWeek();
+}
+
 void Context::executeUpdateCheck() {
     logger.debug("executeUpdateCheck");
 
