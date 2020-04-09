@@ -6032,16 +6032,17 @@ error Context::PullCountries() {
         }
 
         std::vector<TogglCountryView> countries;
-
+        TogglCountryView *first = nullptr;
         for (unsigned int i = root.size(); i > 0; i--) {
             TogglCountryView *item = country_view_item_init(root[i - 1]);
             countries.push_back(*item);
+            item->Next = first;
+            first = item;
         }
 
         // update country selectbox
         UI()->DisplayCountries(&countries);
-
-        //country_item_clear(first);
+        country_list_delete_item(first);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
