@@ -183,6 +183,9 @@ void country_item_clear(TogglCountryView *item) {
     free(item->VatRegex);
     item->VatRegex = nullptr;
 
+    free(item->Code);
+    item->Code = nullptr;
+
     delete item;
 }
 
