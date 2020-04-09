@@ -20,7 +20,6 @@
 #include <Poco/InflatingStream.h>
 #include <Poco/Logger.h>
 #include <Poco/Net/AcceptCertificateHandler.h>
-#include <Poco/Net/Context.h>
 #include <Poco/Net/HTMLForm.h>
 #include <Poco/Net/HTTPBasicCredentials.h>
 #include <Poco/Net/HTTPCredentials.h>
@@ -43,16 +42,38 @@
 namespace toggl {
 
 void HTTPClient::SetCACertPath(std::string path) {
+    if (path.compare(Config.CACertPath()) == 0) {
+        return;
+    }
+    // Re-initialize the Poco Context
     Config.SetCACertPath(path);
-    resetSession();
+    resetPocoContext();
 }
 void HTTPClient::setIgnoreCert(bool ignore) {
+    if (ignore == Config.IgnoreCert()) {
+        return;
+    }
+    // Re-initialize the Poco Context
     Config.setIgnoreCert(ignore);
-    resetSession();
+    resetPocoContext();
 }
 
-void HTTPClient::resetSession() {
+void HTTPClient::resetPocoContext() {
+    Poco::SharedPtr<Poco::Net::InvalidCertificateHandler>
+    acceptCertHandler = new Poco::Net::AcceptCertificateHandler(true);
 
+    Poco::Net::Context::VerificationMode verification_mode =
+        Poco::Net::Context::VERIFY_RELAXED;
+    if (HTTPClient::Config.IgnoreCert()) {
+        verification_mode = Poco::Net::Context::VERIFY_NONE;
+    }
+    Poco::Net::Context::Ptr _context = new Poco::Net::Context(
+        Poco::Net::Context::CLIENT_USE, "", "",
+        HTTPClient::Config.CACertPath(),
+        verification_mode, 9, true, "ALL");
+    Poco::Net::SSLManager::instance().initializeClient(
+        nullptr, acceptCertHandler, _context);
+    context = _context;
 }
 
 void ServerStatus::startStatusCheck() {
@@ -303,23 +324,6 @@ HTTPResponse HTTPClient::makeHttpRequest(
 
     try {
         Poco::URI uri(req.host);
-
-        Poco::SharedPtr<Poco::Net::InvalidCertificateHandler>
-        acceptCertHandler =
-            new Poco::Net::AcceptCertificateHandler(true);
-
-        Poco::Net::Context::VerificationMode verification_mode =
-            Poco::Net::Context::VERIFY_RELAXED;
-        if (HTTPClient::Config.IgnoreCert()) {
-            verification_mode = Poco::Net::Context::VERIFY_NONE;
-        }
-        Poco::Net::Context::Ptr context = new Poco::Net::Context(
-            Poco::Net::Context::CLIENT_USE, "", "",
-            HTTPClient::Config.CACertPath(),
-            verification_mode, 9, true, "ALL");
-
-        Poco::Net::SSLManager::instance().initializeClient(
-            nullptr, acceptCertHandler, context);
 
         std::shared_ptr<Poco::Net::HTTPClientSession> session;
         if (uri.getScheme() == "http") {

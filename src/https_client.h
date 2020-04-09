@@ -15,10 +15,12 @@
 
 #include <Poco/Activity.h>
 #include <Poco/Timestamp.h>
+#include <Poco/Net/Context.h>
 
 namespace Poco {
 namespace Net {
 class HTMLForm;
+class Context;
 } // namespace Poco::Net
 } // namespace Poco
 
@@ -167,6 +169,8 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
     virtual Logger logger() const;
 
  private:
+    Poco::Net::Context::Ptr context; // share context with many Poco session
+
     // We only make requests if this timestamp lies in the past.
     static std::map<std::string, Poco::Timestamp> banned_until_;
 
@@ -179,7 +183,7 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
 
     std::string clientIDForRefererHeader() const;
 
-    void resetSession();
+    void resetPocoContext();
 };
 
 class TOGGL_INTERNAL_EXPORT SyncStateMonitor {
@@ -206,7 +210,7 @@ protected:
     virtual Logger logger() const override;
 
 private:
-    TogglClient()= default;
+    TogglClient() {};
     SyncStateMonitor *monitor_;
 };
 
