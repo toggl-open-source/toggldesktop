@@ -11,14 +11,14 @@
 #include <iostream> // NOLINT
 
 #include "analytics.h"
-#include "custom_error_handler.h"
+#include "util/custom_error_handler.h"
 #include "feedback.h"
 #include "gui.h"
 #include "help_article.h"
 #include "idle.h"
 #include "util/logger.h"
 #include "model_change.h"
-#include "timeline_event.h"
+#include "model/timeline_event.h"
 #include "timeline_notifications.h"
 #include "types.h"
 #include "websocket_client.h"

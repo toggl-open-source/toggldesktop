@@ -1,12 +1,12 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "base_model.h"
+#include "model/base_model.h"
 
 #include <sstream>
 
 #include "batch_update_result.h"
-#include "database.h"
-#include "formatter.h"
+#include "database/database.h"
+#include "util/formatter.h"
 #include "model_change.h"
 
 #include <Poco/Timestamp.h>

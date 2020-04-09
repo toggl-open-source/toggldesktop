@@ -1,6 +1,6 @@
 // Copyright 2015 Toggl Desktop developers.
 
-#include "timeline_event.h"
+#include "model/timeline_event.h"
 
 #include <sstream>
 #include <cstring>

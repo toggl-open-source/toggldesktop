@@ -14,9 +14,9 @@
 #include "const.h"
 #include "https_client.h"
 #include "platforminfo.h"
-#include "settings.h"
+#include "model/settings.h"
 #include "urls.h"
-#include "user.h"
+#include "model/user.h"
 #include "util/logger.h"
 
 namespace toggl {

@@ -1,18 +1,18 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "formatter.h"
+#include "util/formatter.h"
 
 #include <time.h>
 #include <sstream>
 #include <cctype>
 #include <set>
 
-#include "client.h"
+#include "model/client.h"
 #include "gui.h"
-#include "project.h"
-#include "task.h"
-#include "time_entry.h"
-#include "workspace.h"
+#include "model/project.h"
+#include "model/task.h"
+#include "model/time_entry.h"
+#include "model/workspace.h"
 #include "util/logger.h"
 
 #include <Poco/DateTimeFormat.h>

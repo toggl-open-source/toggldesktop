@@ -6,8 +6,8 @@
 #include <string>
 #include <vector>
 
-#include "base_model.h"
-#include "formatter.h"
+#include "model/base_model.h"
+#include "util/formatter.h"
 #include "types.h"
 
 #include <Poco/Types.h>

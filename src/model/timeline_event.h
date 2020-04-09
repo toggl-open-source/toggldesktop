@@ -8,8 +8,8 @@
 #include <sstream>
 #include <string>
 
-#include "base_model.h"
-#include "formatter.h"
+#include "model/base_model.h"
+#include "util/formatter.h"
 
 namespace toggl {
 

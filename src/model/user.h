@@ -10,11 +10,11 @@
 
 #include <json/json.h>  // NOLINT
 
-#include "base_model.h"
+#include "model/base_model.h"
 #include "batch_update_result.h"
 #include "related_data.h"
 #include "types.h"
-#include "workspace.h"
+#include "model/workspace.h"
 
 #include <Poco/LocalDateTime.h>
 #include <Poco/Types.h>

@@ -8,7 +8,7 @@
 
 #include <json/json.h>  // NOLINT
 
-#include "base_model.h"
+#include "model/base_model.h"
 
 #include <Poco/Types.h>
 

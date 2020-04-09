@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "timeline_event.h"
+#include "model/timeline_event.h"
 #include "timeline_notifications.h"
 #include "types.h"
 #include "util/logger.h"

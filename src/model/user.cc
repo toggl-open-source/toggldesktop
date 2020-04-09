@@ -1,21 +1,21 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "user.h"
+#include "model/user.h"
 
 #include <time.h>
 
 #include <sstream>
 
-#include "client.h"
+#include "model/client.h"
 #include "const.h"
-#include "formatter.h"
+#include "util/formatter.h"
 #include "https_client.h"
-#include "obm_action.h"
-#include "project.h"
-#include "tag.h"
-#include "task.h"
-#include "time_entry.h"
-#include "timeline_event.h"
+#include "model/obm_action.h"
+#include "model/project.h"
+#include "model/tag.h"
+#include "model/task.h"
+#include "model/time_entry.h"
+#include "model/timeline_event.h"
 #include "urls.h"
 
 #include <Poco/Base64Decoder.h>

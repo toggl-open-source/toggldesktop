@@ -8,7 +8,7 @@
 #include <sstream>
 #include <memory>
 
-#include "formatter.h"
+#include "util/formatter.h"
 #include "netconf.h"
 #include "urls.h"
 #include "toggl_api.h"

@@ -6,7 +6,7 @@
 //  Copyright © 2018 Toggl. All rights reserved.
 //
 
-#include "rectangle.h"
+#include "util/rectangle.h"
 #include <sstream>
 
 namespace toggl {

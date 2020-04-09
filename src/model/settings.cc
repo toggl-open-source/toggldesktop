@@ -1,8 +1,8 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "settings.h"
+#include "model/settings.h"
 
-#include "formatter.h"
+#include "util/formatter.h"
 
 namespace toggl {
 

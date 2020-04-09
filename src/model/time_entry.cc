@@ -9,7 +9,7 @@
 // from context, using specific functions, not
 // setters.
 
-#include "time_entry.h"
+#include "model/time_entry.h"
 
 #include <sstream>
 #include <algorithm>
@@ -17,7 +17,7 @@
 #include <json/json.h>  // NOLINT
 
 #include "https_client.h"
-#include "formatter.h"
+#include "util/formatter.h"
 
 #include <Poco/DateTime.h>
 #include <Poco/LocalDateTime.h>
