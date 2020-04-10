@@ -12,6 +12,7 @@
 #import "AutocompleteDataSource.h"
 #import "NSCustomComboBox.h"
 #import "TogglDesktop-Swift.h"
+#import "const.h"
 
 typedef NS_ENUM (NSUInteger, TabViewType)
 {
@@ -192,16 +193,24 @@ extern void *ctx;
 
 - (void)changeTabView:(TabViewType)type
 {
-	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
-																object:nil];
-	self.currentTab = type;
+    [self changeTabView:type hideErrorMessage:YES];
+}
 
-	// Focus on email when changing mode
-	[self.view.window makeFirstResponder:self.email];
+- (void)changeTabView:(TabViewType)type hideErrorMessage:(BOOL) hideErrorMessage
+{
+    if (hideErrorMessage) {
+        [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
+                                                                    object:nil];
+    }
 
-	switch (type)
-	{
-		case TabViewTypeLogin :
+    self.currentTab = type;
+
+    // Focus on email when changing mode
+    [self.view.window makeFirstResponder:self.email];
+
+    switch (type)
+    {
+        case TabViewTypeLogin :
             self.appleGoogleGroupViewTop.constant = kLoginAppleViewTop;
             self.containerViewHeight.constant = kLoginContainerHeight;
             self.signUpGroupView.hidden = YES;
@@ -212,9 +221,9 @@ extern void *ctx;
             self.signUpLink.stringValue = @"Sign up for free";
             self.donotHaveAccountLbl.hidden = NO;
             self.signUpLink.titleUnderline = YES;
-			break;
+            break;
 
-		case TabViewTypeSingup :
+        case TabViewTypeSingup :
             self.appleGoogleGroupViewTop.constant = kSignupAppleViewTop;
             self.containerViewHeight.constant = kSignupContainerHeight;
             self.signUpGroupView.hidden = NO;
@@ -225,10 +234,10 @@ extern void *ctx;
             self.signUpLink.stringValue = @"Back to Log in";
             self.donotHaveAccountLbl.hidden = YES;
             self.signUpLink.titleUnderline = YES;
-			break;
-	}
+            break;
+    }
 
-	// Reset touchbar
+    // Reset touchbar
     if (@available(macOS 10.12.2, *))
     {
         self.touchBar = nil;
@@ -694,5 +703,13 @@ extern void *ctx;
 
     [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
                                                                 object:error.description];
+}
+
+-(void)handleErrorMessage:(NSString *)errorMessage
+{
+    // Switch to Sign Up page when it's error from Sign In Apple
+    if (self.userAction == UserActionAppleLogin && [errorMessage isEqualToString:[NSString stringWithCString:kCouldNotFoundTogglAccountWithAppleEmail encoding:NSUTF8StringEncoding]])  {
+        [self changeTabView:TabViewTypeSingup hideErrorMessage:NO];
+    }
 }
 @end

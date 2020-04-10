@@ -250,6 +250,7 @@ extern void *ctx;
 	if (self.loginViewController.view.superview != nil)
 	{
 		[self.loginViewController resetLoader];
+        [self.loginViewController handleErrorMessage:errorMessage];
 	}
 }
 
