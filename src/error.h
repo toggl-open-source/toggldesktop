@@ -11,6 +11,7 @@ namespace toggl {
 
 bool IsNetworkingError(const error &err);
 bool IsUserError(const error &err);
+bool IsAppleAuthenticationError(const error &err);
 std::string MakeErrorActionable(const error &err);
 
 }  // namespace toggl

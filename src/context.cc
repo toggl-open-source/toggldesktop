@@ -2444,9 +2444,27 @@ error Context::Login(
         std::string json("");
         error err = me(&client, email, password, &json, 0);
         if (err != noError) {
+
+            // Hack
+            // TODO: Support proper error handler from networking
+            // Change the error code from 401 - Unauthorized! Please login again to friendly error from Apple
+            // Only work with Apple Provider
+            //
+            // Apple considers that Toggl will create account regardless of "Sign In / Sign Up with Apple"
+            // At the moment, Toggl BE doesn't automatically create new Toggl Account with Apple Email by "Sign In with Apple"
+            // So, the error will be "Unauthorized! Please login again", which might results in the Rejection from Apple Review team
+            //
+            // Workaround by changing the Error message and automatically open the Sign Up tab (Like mobile app does)
+            // Discussion: https://toggl.slack.com/archives/CSE5U3ZUN/p1586418153111700
+            if ((password.compare(kAppleAccessToken) == 0) && IsAppleAuthenticationError(err)) {
+                err = kCouldNotFoundTogglAccountWithAppleEmail;
+                return displayError(err);
+            }
+
             if (!IsNetworkingError(err)) {
                 return displayError(err);
             }
+
             // Indicate we're offline
             displayError(err);
 

@@ -209,6 +209,13 @@ bool IsUserError(const error &err) {
     return false;
 }
 
+bool IsAppleAuthenticationError(const error &err) {
+    if (err.find(kUnauthorizedError) != std::string::npos) {
+        return true;
+    }
+    return false;
+}
+
 std::string MakeErrorActionable(const error &err) {
     if (noError == err) {
         return err;
