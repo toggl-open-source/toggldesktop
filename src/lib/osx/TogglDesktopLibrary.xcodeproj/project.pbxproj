@@ -98,6 +98,8 @@
 		BA43B33723F680B00007DD99 /* libPocoXML.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B32623F680B00007DD99 /* libPocoXML.60.dylib */; };
 		BA683F772437698400C3A3F1 /* onboarding_service.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA683F752437698400C3A3F1 /* onboarding_service.cpp */; };
 		BA683F782437698400C3A3F1 /* onboarding_service.h in Headers */ = {isa = PBXBuildFile; fileRef = BA683F762437698400C3A3F1 /* onboarding_service.h */; };
+		BA7CA84C2444558500D3BAEB /* timer.cc in Sources */ = {isa = PBXBuildFile; fileRef = BA7CA84A2444558500D3BAEB /* timer.cc */; };
+		BA7CA84D2444558500D3BAEB /* timer.h in Headers */ = {isa = PBXBuildFile; fileRef = BA7CA84B2444558500D3BAEB /* timer.h */; };
 		BAA842252403D99800BCCB67 /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B31E23F680B00007DD99 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAA842262403D99800BCCB67 /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B31F23F680B00007DD99 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAA842272403D99800BCCB67 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B32023F680B00007DD99 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -238,6 +240,8 @@
 		BA43B34F23F681D60007DD99 /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua.a; path = ../../ui/osx/TogglDesktop/Library/lua/liblua.a; sourceTree = "<group>"; };
 		BA683F752437698400C3A3F1 /* onboarding_service.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = onboarding_service.cpp; sourceTree = "<group>"; };
 		BA683F762437698400C3A3F1 /* onboarding_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = onboarding_service.h; sourceTree = "<group>"; };
+		BA7CA84A2444558500D3BAEB /* timer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = timer.cc; sourceTree = "<group>"; };
+		BA7CA84B2444558500D3BAEB /* timer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = timer.h; sourceTree = "<group>"; };
 		BAA8422E2403DAE000BCCB67 /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.1.dylib; path = ../../ui/osx/TogglDesktop/Library/openssl/libcrypto.1.1.dylib; sourceTree = "<group>"; };
 		BAA8422F2403DAE000BCCB67 /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.1.1.dylib; path = ../../ui/osx/TogglDesktop/Library/openssl/libssl.1.1.dylib; sourceTree = "<group>"; };
 		BAD233DA21D60A4D0039C742 /* libPocoNet.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.dylib; sourceTree = "<group>"; };
@@ -290,6 +294,8 @@
 			children = (
 				BA2E149A243C6E720029C94F /* logger.cc */,
 				BA2E149B243C6E720029C94F /* logger.h */,
+				BA7CA84A2444558500D3BAEB /* timer.cc */,
+				BA7CA84B2444558500D3BAEB /* timer.h */,
 			);
 			name = util;
 			path = ../../../util;
@@ -461,6 +467,7 @@
 				74B587BC18BBC77E00E9F6CE /* tag.h in Headers */,
 				74B587C018BBC77E00E9F6CE /* client.h in Headers */,
 				74BC59DB1A37C6790081104D /* error.h in Headers */,
+				BA7CA84D2444558500D3BAEB /* timer.h in Headers */,
 				74B587C318BBC77E00E9F6CE /* time_entry.h in Headers */,
 				74B587C418BBC77E00E9F6CE /* related_data.h in Headers */,
 				748B7DAC1AC5963B00FE01D2 /* settings.h in Headers */,
@@ -597,6 +604,7 @@
 				7484A2AC18887BEE0025A88B /* toggl_api_private.cc in Sources */,
 				7426535E1BEAD91900F0944C /* help_article.cc in Sources */,
 				74DF24E51B414BD8000179AE /* timeline_event.cc in Sources */,
+				BA7CA84C2444558500D3BAEB /* timer.cc in Sources */,
 				74B587CB18BBC77E00E9F6CE /* project.cc in Sources */,
 				748B7DAB1AC5963B00FE01D2 /* settings.cc in Sources */,
 				74B587CF18BBC77E00E9F6CE /* batch_update_result.cc in Sources */,
