@@ -427,18 +427,28 @@ extern void *ctx;
 
 #pragma mark - Onboarding
 
-- (void)startOnboardingNotification:(NSNotification *) noti {
+- (void)startOnboardingNotification:(NSNotification *) noti
+{
     NSNumber *onboardingTypeNumber = (NSNumber *) noti.object;
     OnboardingHint hint = [OnboardingServiceObjc hintFromValue:onboardingTypeNumber.integerValue];
+    [self presentOnboardingViewWithHint:hint];
+}
 
+- (void) presentOnboardingViewWithHint:(OnboardingHint) hint
+{
     if (hint == OnboardingHintNone) {
         return;
     }
     NSView *presentView = [self getOnboardingViewWithHint:hint];
     if (!presentView) {
+        NSLog(@"[ERROR] Present Hint %ld - nil PresentedView", (long)hint);
         return;
     }
-    [OnboardingServiceObjc presentWithHintValue:onboardingTypeNumber.integerValue atView:presentView];
+
+    NSLog(@"✅Present Hint %ld at view %@", (long)hint, presentView);
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [OnboardingServiceObjc presentWithHint:hint atView:presentView];
+    });
 }
 
 - (NSView * __nullable) getOnboardingViewWithHint:(OnboardingHint) hint

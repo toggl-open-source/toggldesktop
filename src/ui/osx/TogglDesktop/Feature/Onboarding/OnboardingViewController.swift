@@ -22,12 +22,13 @@ final class OnboardingViewController: NSViewController {
     // MARK: Variable
 
     weak var delegate: OnboardingViewControllerDelegate?
+    private var shouldClosePopover = false
     private weak var hintView: NSView?
     private lazy var contentController: OnboardingContentViewController = OnboardingContentViewController(nibName: "OnboardingContentViewController", bundle: nil)
-    private lazy var popover: NoVibrantPopoverView = {
-        let popover = NoVibrantPopoverView()
+    private lazy var popover: NSPopover = {
+        let popover = NSPopover()
         popover.animates = true
-        popover.behavior = .semitransient
+        popover.behavior = .applicationDefined // Manual trigger the close action
         popover.contentViewController = contentController
         contentController.popover = popover
         popover.delegate = self
@@ -50,6 +51,7 @@ final class OnboardingViewController: NSViewController {
 
     func present(payload: OnboardingPayload, hintView: NSView) {
         self.hintView = hintView
+        shouldClosePopover = false
 
         // Force render to get the correct size after autolayout
         view.setNeedsDisplay(view.bounds)
@@ -58,7 +60,7 @@ final class OnboardingViewController: NSViewController {
         // Render
         updateMaskLayer(with: hintView)
         contentController.config(with: payload)
-        popover.present(from: hintView.bounds, of: hintView, preferredEdge: payload.preferEdges)
+        popover.show(relativeTo: hintView.bounds, of: hintView, preferredEdge: payload.preferEdges)
     }
 
     func dismiss() {
@@ -73,6 +75,8 @@ extension OnboardingViewController {
     private func initCommon() {
         // Pre-load the view
         _ = popover
+        _ = contentController.view
+        backgroundView.delegate = self
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.windowDidResizeNoti(_:)),
                                                name: NSWindow.didResizeNotification,
@@ -98,7 +102,26 @@ extension OnboardingViewController {
 
 extension OnboardingViewController: NSPopoverDelegate {
 
+    func popoverShouldClose(_ popover: NSPopover) -> Bool {
+        return shouldClosePopover
+    }
+    
     func popoverWillClose(_ notification: Notification) {
         delegate?.onboardingViewControllerDidClose()
+    }
+}
+
+// MARK: OnboardingBackgroundViewDelegate
+
+extension OnboardingViewController: OnboardingBackgroundViewDelegate {
+
+    func onboardingBackgroundDidClick(_ sender: OnboardingBackgroundView) {
+        //
+        // Manual trigger the close when the user click on the background
+        // Because some view that NSPopover presents would be re-cycle (Ex: TimeEntryCell when the Collection View reload)
+        // It causes the Popover unexpectedly close in a second after presenting
+        //
+        shouldClosePopover = true
+        popover.close()
     }
 }

@@ -8,10 +8,15 @@
 
 import Cocoa
 
+protocol OnboardingBackgroundViewDelegate: class {
+    func onboardingBackgroundDidClick(_ sender: OnboardingBackgroundView)
+}
+
 final class OnboardingBackgroundView: NSView {
 
     // MARK: Variable
 
+    weak var delegate: OnboardingBackgroundViewDelegate?
     private lazy var maskLayer = CAShapeLayer()
     private lazy var backgroundColor: NSColor = {
         if #available(OSX 10.13, *) {
@@ -45,6 +50,11 @@ final class OnboardingBackgroundView: NSView {
         path.append(NSBezierPath(rect: bounds))
         maskLayer.path = path.cgPath
         layer?.mask = maskLayer
+    }
+
+    override func mouseUp(with event: NSEvent) {
+        super.mouseUp(with: event)
+        delegate?.onboardingBackgroundDidClick(self)
     }
 }
 
