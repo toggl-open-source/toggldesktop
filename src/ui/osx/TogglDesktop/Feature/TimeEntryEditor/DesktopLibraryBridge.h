@@ -117,6 +117,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Onboarding Actions
 
 - (void)userDidClickOnTimelineTab;
+- (void)userDidTurnOnRecordActivity;
 
 @end
 

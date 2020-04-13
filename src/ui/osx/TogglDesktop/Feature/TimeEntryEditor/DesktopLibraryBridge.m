@@ -383,4 +383,9 @@ void *ctx;
 {
     toggl_user_did_click_on_timeline_tab(ctx);
 }
+
+- (void)userDidTurnOnRecordActivity
+{
+    toggl_user_did_turn_on_record_activity(ctx);
+}
 @end
