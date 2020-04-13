@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using TogglDesktop.AutoCompletion.Items;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.Theming;
 using TogglDesktop.ViewModels;
+using DayOfWeek = System.DayOfWeek;
 
 #if MS_STORE
 using TogglDesktop.Services.Win10;
@@ -30,6 +32,7 @@ namespace TogglDesktop
 
         private Toggl.TogglAutocompleteView selectedDefaultProject;
         private List<Toggl.TogglAutocompleteView> knownProjects;
+        private DayOfWeek lastBeginningOfWeek = DayOfWeek.Monday;
 
         public PreferencesWindow()
         {
@@ -133,13 +136,15 @@ namespace TogglDesktop
             this.reminderStartTimeTextBox.Text = settings.RemindStarts;
             this.reminderEndTimeTextBox.Text = settings.RemindEnds;
 
-            this.remindOnMondayTextBox.IsChecked = settings.RemindMon;
-            this.remindOnTuesdayTextBox.IsChecked = settings.RemindTue;
-            this.remindOnWednesdayTextBox.IsChecked = settings.RemindWed;
-            this.remindOnThursdayTextBox.IsChecked = settings.RemindThu;
-            this.remindOnFridayTextBox.IsChecked = settings.RemindFri;
-            this.remindOnSaturdayTextBox.IsChecked = settings.RemindSat;
-            this.remindOnSundayTextBox.IsChecked = settings.RemindSun;
+            this.remindDay1CheckBox.IsChecked = settings.RemindMon;
+            this.remindDay2CheckBox.IsChecked = settings.RemindTue;
+            this.remindDay3CheckBox.IsChecked = settings.RemindWed;
+            this.remindDay4CheckBox.IsChecked = settings.RemindThu;
+            this.remindDay5CheckBox.IsChecked = settings.RemindFri;
+            this.remindDay6CheckBox.IsChecked = settings.RemindSat;
+            this.remindDay7CheckBox.IsChecked = settings.RemindSun;
+
+            this.SetBeginningOfWeek(Toggl.UserBeginningOfWeek());
 
             #endregion
 
@@ -248,6 +253,8 @@ namespace TogglDesktop
 
         private Settings createSettingsFromUI()
         {
+            var isRemindDayChecked = GetDaysOfWeekCheckboxes().Select(isChecked).ToArray();
+
             var settings = new Toggl.TogglSettingsView
             {
                 #region general
@@ -293,13 +300,13 @@ namespace TogglDesktop
                 RemindStarts = this.reminderStartTimeTextBox.Text,
                 RemindEnds = this.reminderEndTimeTextBox.Text,
 
-                RemindMon = isChecked(this.remindOnMondayTextBox),
-                RemindTue = isChecked(this.remindOnTuesdayTextBox),
-                RemindWed = isChecked(this.remindOnWednesdayTextBox),
-                RemindThu = isChecked(this.remindOnThursdayTextBox),
-                RemindFri = isChecked(this.remindOnFridayTextBox),
-                RemindSat = isChecked(this.remindOnSaturdayTextBox),
-                RemindSun = isChecked(this.remindOnSundayTextBox),
+                RemindMon = isRemindDayChecked[DayOfWeek.Monday.PositionRelativeTo(lastBeginningOfWeek)],
+                RemindTue = isRemindDayChecked[DayOfWeek.Tuesday.PositionRelativeTo(lastBeginningOfWeek)],
+                RemindWed = isRemindDayChecked[DayOfWeek.Wednesday.PositionRelativeTo(lastBeginningOfWeek)],
+                RemindThu = isRemindDayChecked[DayOfWeek.Thursday.PositionRelativeTo(lastBeginningOfWeek)],
+                RemindFri = isRemindDayChecked[DayOfWeek.Friday.PositionRelativeTo(lastBeginningOfWeek)],
+                RemindSat = isRemindDayChecked[DayOfWeek.Saturday.PositionRelativeTo(lastBeginningOfWeek)],
+                RemindSun = isRemindDayChecked[DayOfWeek.Sunday.PositionRelativeTo(lastBeginningOfWeek)],
 
                 #endregion
             };
@@ -394,5 +401,33 @@ namespace TogglDesktop
         }
 
         #endregion
+
+        private void SetBeginningOfWeek(DayOfWeek beginningOfWeek)
+        {
+            var daysOfWeekCheckboxes = GetDaysOfWeekCheckboxes();
+            var isDayOfWeekChecked = daysOfWeekCheckboxes.Select(c => c.IsChecked).ToArray();
+
+            foreach (var dayOfWeek in DayOfWeekExtensions.DaysOfWeek())
+            {
+                var newDayPosition = dayOfWeek.PositionRelativeTo(beginningOfWeek);
+                var oldDayPosition = dayOfWeek.PositionRelativeTo(DayOfWeek.Monday);
+                daysOfWeekCheckboxes[newDayPosition].IsChecked = isDayOfWeekChecked[oldDayPosition];
+
+                daysOfWeekCheckboxes[newDayPosition].Content = Enum.GetName(typeof(DayOfWeek), dayOfWeek);
+            }
+
+            lastBeginningOfWeek = beginningOfWeek;
+        }
+
+        private CheckBox[] GetDaysOfWeekCheckboxes() => new[]
+        {
+            remindDay1CheckBox,
+            remindDay2CheckBox,
+            remindDay3CheckBox,
+            remindDay4CheckBox,
+            remindDay5CheckBox,
+            remindDay6CheckBox,
+            remindDay7CheckBox,
+        };
     }
 }
