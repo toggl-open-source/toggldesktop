@@ -163,6 +163,9 @@ final class TimelineDashboardViewController: NSViewController {
     
     @IBAction func recordSwitchOnChanged(_ sender: Any) {
         DesktopLibraryBridge.shared().enableTimelineRecord(recordSwitcher.isOn)
+        if recordSwitcher.isOn {
+            DesktopLibraryBridge.shared().userDidTurnOnRecordActivity()
+        }
     }
 
     @IBAction func zoomLevelDecreaseOnChange(_ sender: Any) {
