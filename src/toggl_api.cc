@@ -1583,3 +1583,7 @@ void toggl_on_onboarding(
     TogglDisplayOnboarding cb) {
     app(context)->UI()->OnDisplayOnboarding(cb);
 }
+
+void toggl_user_did_click_on_timeline_tab(void *context) {
+    app(context)->UserDidClickOnTimelineTab();
+}
