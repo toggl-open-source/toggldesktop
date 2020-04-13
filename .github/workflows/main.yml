@@ -256,7 +256,7 @@ jobs:
       if: github.event_name == 'release'
       run: |
         cd dist/windows
-        makensis TogglDesktopInstaller-x86.nsi
+        makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglDesktopInstaller-x86.nsi
     - name: Sign the installer
       if: github.event_name == 'release'
       shell: cmd
@@ -322,7 +322,7 @@ jobs:
       if: github.event_name == 'release'
       run: |
         cd dist/windows
-        makensis TogglDesktopInstaller-x64.nsi
+        makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglDesktopInstaller-x64.nsi
     - name: Sign the installer
       if: github.event_name == 'release'
       shell: cmd
