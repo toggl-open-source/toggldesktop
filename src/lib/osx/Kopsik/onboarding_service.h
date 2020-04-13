@@ -111,6 +111,13 @@ private:
     bool isTrackingTimeEntryForLastThreeDays();
     bool hasAtLeastOneTimelineTimeEntryOnCurrentDay();
     void sync();
+
+    bool handleTimelineViewOnboarding();
+    bool handleTimelineTimeEntryOnboarding();
+    bool handleTimelineRecordActivityOnboarding();
+    void handleTimelineActivityOnboarding();
+    bool handleEditTimeEntryOnboarding();
+    void handleTimelineTabOnboarding();
 };
 }
 

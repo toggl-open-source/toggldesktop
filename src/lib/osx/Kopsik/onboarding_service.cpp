@@ -77,16 +77,7 @@ void OnboardingService::OpenApp() {
     if (state == nullptr) {
         return;
     }
-
-    // Present Onboarding on Timeline Tab
-    if (!state->isPresentTimelineTab && state->timeEntryTotal >= 3 && state->openTimelineTabCount == 0) {
-        state->isPresentTimelineTab = true;
-
-        // UI
-        _callback(TimelineTab);
-        sync();
-        return;
-    }
+    handleTimelineTabOnboarding();
 }
 
 void OnboardingService::StopTimeEntry() {
@@ -94,78 +85,30 @@ void OnboardingService::StopTimeEntry() {
         return;
     }
 
-    // Stop the first TE
-    if (state->timeEntryTotal == 0 && !state->isPresentEditTimeEntry) {
-        state->isPresentEditTimeEntry = true;
-        state->timeEntryTotal += 1;
-
-        // UI
-        _callback(EditTimeEntry);
-        sync();
+    if (handleEditTimeEntryOnboarding()) {
+        return;
     }
+
+    // Normal cases
+    state->timeEntryTotal += 1;
+    sync();
 }
 
 void OnboardingService::OpenTimelineTab() {
     state->openTimelineTabCount += 1;
 
     // Onboading on Timeline View
-    // Displayed when entering Timeline tab for the firt time
-    if (!state->isPresentTimelineView && state->openTimelineTabCount == 1) {
-        state->isPresentTimelineView = true;
-
-        // UI
-        _callback(TimelineView);
-        sync();
+    if (handleTimelineViewOnboarding()) {
         return;
     }
 
     // Onboarding on Timeline Time Entry
-    /*
-     Should be displayed if:
-
-     > User visits Timeline tab for the 3rd time
-
-     and
-
-     > Hasn’t been editing or adding entries directly on the Timeline yet
-
-     and
-
-     > There is at least one TE to display on chosen day
-
-     If there is no TEs to display, hint should be shown on next possible occassion when all the conditions are true
-     */
-    if (!state->isPresentTimelineTimeEntry &&
-        state->openTimelineTabCount == 3 &&
-        state->editOnTimelineCount == 0 &&
-        hasAtLeastOneTimelineTimeEntryOnCurrentDay()) {
-        state->isPresentTimelineTimeEntry = true;
-        _callback(TimelineTimeEntry);
-        sync();
+    if (handleTimelineTimeEntryOnboarding()) {
         return;
     }
 
-    /*
-    Displayed if:
-
-    > User has never been using recording functionality
-
-    and
-
-    > They already tracked TEs for 3 days
-    (so they’ve learned some areas of the app already)
-
-    and
-
-    > User is on Timeline tab for at least 3th time
-    */
-    if (!state->isPresentRecordActivity &&
-        !state->isUseTimelineRecord &&
-        state->openTimelineTabCount >= 3 &&
-        isTrackingTimeEntryForLastThreeDays() ) {
-        state->isPresentRecordActivity = true;
-        _callback(RecordActivity);
-        sync();
+    // Recording Activity
+    if (handleTimelineRecordActivityOnboarding()) {
         return;
     }
 
@@ -174,15 +117,8 @@ void OnboardingService::OpenTimelineTab() {
 }
 
 void OnboardingService::TurnOnRecordActivity() {
-    bool isFirstTime = (state->isUseTimelineRecord == false);
+    handleTimelineActivityOnboarding();
     state->isUseTimelineRecord = true;
-
-    // Displayed when user turns on ‘Record activity’ for the fist time
-    if (isFirstTime && !state->isPresentTimelineActivity) {
-        state->isPresentTimelineActivity = true;
-        _callback(TimelineActivity);
-    }
-
     sync();
 }
 
@@ -220,5 +156,108 @@ bool OnboardingService::hasAtLeastOneTimelineTimeEntryOnCurrentDay() {
         }
     }
     return false;
+}
+
+bool OnboardingService::handleTimelineViewOnboarding() {
+    /*
+     Displayed when entering Timeline tab for the firt time
+     */
+    if (!state->isPresentTimelineView &&
+        state->openTimelineTabCount == 1) {
+        state->isPresentTimelineView = true;
+        _callback(TimelineView);
+        sync();
+        return true;
+    }
+    return false;
+}
+
+bool OnboardingService::handleTimelineTimeEntryOnboarding() {
+    /*
+     Should be displayed if:
+
+     > User visits Timeline tab for the 3rd time
+
+     and
+
+     > Hasn’t been editing or adding entries directly on the Timeline yet
+
+     and
+
+     > There is at least one TE to display on chosen day
+
+     If there is no TEs to display, hint should be shown on next possible occassion when all the conditions are true
+     */
+    if (!state->isPresentTimelineTimeEntry &&
+        state->openTimelineTabCount == 3 &&
+        state->editOnTimelineCount == 0 &&
+        hasAtLeastOneTimelineTimeEntryOnCurrentDay()) {
+        state->isPresentTimelineTimeEntry = true;
+        _callback(TimelineTimeEntry);
+        sync();
+        return true;
+    }
+    return false;
+}
+
+bool OnboardingService::handleTimelineRecordActivityOnboarding() {
+    /*
+    Displayed if:
+
+    > User has never been using recording functionality
+
+    and
+
+    > They already tracked TEs for 3 days
+    (so they’ve learned some areas of the app already)
+
+    and
+
+    > User is on Timeline tab for at least 3th time
+    */
+    if (!state->isPresentRecordActivity &&
+        !state->isUseTimelineRecord &&
+        state->openTimelineTabCount >= 3 &&
+        isTrackingTimeEntryForLastThreeDays() ) {
+        state->isPresentRecordActivity = true;
+        _callback(RecordActivity);
+        sync();
+        return true;
+    }
+    return false;
+}
+
+void OnboardingService::handleTimelineActivityOnboarding() {
+    /*
+     Displayed when user turns on ‘Record activity’ for the fist time
+     */
+    if (state->isUseTimelineRecord == false && !state->isPresentTimelineActivity) {
+        state->isPresentTimelineActivity = true;
+        _callback(TimelineActivity);
+    }
+}
+
+bool OnboardingService::handleEditTimeEntryOnboarding() {
+    if (state->timeEntryTotal == 0 &&
+        !state->isPresentEditTimeEntry) {
+        state->isPresentEditTimeEntry = true;
+        _callback(EditTimeEntry);
+        sync();
+        return true;
+    }
+    return false;
+}
+
+void OnboardingService::handleTimelineTabOnboarding() {
+    // Present Onboarding on Timeline Tab
+    /*
+     > For all users who tracked at least 3 TEs and hasn’t opened Timeline tab yet
+     (If user opens Timeline tab before that, standard empty state should be displayed)
+     */
+    if (!state->isPresentTimelineTab && state->timeEntryTotal >= 3 && state->openTimelineTabCount == 0) {
+        state->isPresentTimelineTab = true;
+        _callback(TimelineTab);
+        sync();
+    }
 }
 }
