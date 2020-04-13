@@ -20,6 +20,7 @@ namespace toggl {
 
 class Database;
 class User;
+class Timer;
 
 enum OnboardingType {
     NewUser,
@@ -94,6 +95,7 @@ private:
     OnboardingService() {};
     OnboardingState *state;
     Database *database;
+    Timer *t;
     Logger logger { "Onboarding" };
     Poco::UInt64 userID;
     std::function<void (const OnboardingType)> _callback;

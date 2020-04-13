@@ -9,6 +9,7 @@
 #include "onboarding_service.h"
 #include "database.h"
 #include "user.h"
+#include "timer.h"
 
 namespace toggl {
 
@@ -21,15 +22,32 @@ void OnboardingService::SetDatabase(Database *db) {
 }
 
 void OnboardingService::LoadOnboardingStateFromCurrentUser(User *user) {
-    state = new OnboardingState();
+    if (user == nullptr) {
+        return;
+    }
     userID = user->ID();
 
-    // Load onboarding state from database
-    database->LoadOnboardingState(userID, state);
+    // Initialize Onboarding state if need
+    bool isAtLaunchTime = false;
+    if (state == nullptr) {
+        isAtLaunchTime = true;
+        state = new OnboardingState();
+        database->LoadOnboardingState(userID, state);
+    }
 
     // Load total TE because we don't store it
     state->timeEntryTotal = user->related.TimeEntries.size();
     logger.debug("Onboarding state ", state);
+
+    // If it's the call from the launch
+    // Check condition for onboarding after 2 seconds, after the app is loading successfully
+    if (isAtLaunchTime) {
+        t = new Timer();
+        t->SetTimeout([&]() {
+            OpenApp();
+            t->Stop();
+        }, 2000); // Two seconds
+    }
 }
 
 void OnboardingService::Reset() {
