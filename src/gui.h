@@ -683,6 +683,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
 
     void SetTimelineDateAt(const Poco::LocalDateTime &value) {
         timeline_date_at_ = value;
+        OnboardingService::getInstance()->SetTimelineDateAt(value);
     }
 
     void resetTimeEntryGUID() {
