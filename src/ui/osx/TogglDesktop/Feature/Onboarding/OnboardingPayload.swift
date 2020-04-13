@@ -16,8 +16,8 @@ import Foundation
     case editTimeEntry
     case timelineTimeEntry
     case timelineView
-    case timelineActivity // Use TimelineActivityRecorderViewController instead
-    case recordActivity
+    case timelineActivity
+    case recordActivity // Use TimelineActivityRecorderViewController instead
     case none // compatible to objc since we couldn't expose the type OnboardingHint?
 }
 
