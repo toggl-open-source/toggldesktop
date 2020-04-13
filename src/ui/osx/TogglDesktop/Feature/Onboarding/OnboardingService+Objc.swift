@@ -14,8 +14,7 @@ import Foundation
         return OnboardingHint(rawValue: value) ?? .none
     }
 
-    @objc class func present(hintValue: Int, atView: NSView) {
-        guard let hint = OnboardingHint(rawValue: hintValue) else { return }
+    @objc class func present(hint: OnboardingHint, atView: NSView) {
         OnboardingService.shared.present(hint: hint, view: atView)
     }
 }
