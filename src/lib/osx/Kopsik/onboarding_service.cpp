@@ -10,6 +10,8 @@
 #include "database.h"
 #include "user.h"
 #include "timer.h"
+#include "time_entry.h"
+#include <time.h>
 
 namespace toggl {
 
@@ -35,8 +37,12 @@ void OnboardingService::LoadOnboardingStateFromCurrentUser(User *user) {
         database->LoadOnboardingState(userID, state);
     }
 
-    // Load total TE because we don't store it
+    // Load some states because we don't store it from db
     state->timeEntryTotal = user->related.TimeEntries.size();
+    TimeEntry *firstTimeEntry = user->related.TimeEntries.back();
+    if (firstTimeEntry != nullptr) {
+        state->firstTimeEntryCreatedAt = firstTimeEntry->Start();
+    }
     logger.debug("Onboarding state ", state);
 
     // If it's the call from the launch
@@ -96,12 +102,12 @@ void OnboardingService::StopTimeEntry() {
 }
 
 void OnboardingService::OpenTimelineTab() {
+    state->openTimelineTabCount += 1;
 
     // Onboading on Timeline View
     // Displayed when entering Timeline tab for the firt time
-    if (!state->isPresentTimelineView && state->openTimelineTabCount == 0) {
+    if (!state->isPresentTimelineView && state->openTimelineTabCount == 1) {
         state->isPresentTimelineView = true;
-        state->openTimelineTabCount += 1;
 
         // UI
         _callback(TimelineView);
@@ -110,12 +116,35 @@ void OnboardingService::OpenTimelineTab() {
     }
 
     // Onboarding on Timeline Time Entry
-    if (!state->isPresentTimelineTimeEntry && state->openTimelineTabCount == 2) {
+    if (!state->isPresentTimelineTimeEntry && state->openTimelineTabCount == 3) {
 
     }
 
+    /*
+    Displayed if:
+
+    > User has never been using recording functionality
+
+    and
+
+    > They already tracked TEs for 3 days
+    (so they’ve learned some areas of the app already)
+
+    and
+
+    > User is on Timeline tab for at least 3th time
+    */
+    if (!state->isPresentRecordActivity &&
+        !state->isUseTimelineRecord &&
+        state->openTimelineTabCount >= 3 &&
+        isTrackingTimeEntryForLastThreeDays() ) {
+        state->isPresentRecordActivity = true;
+        _callback(RecordActivity);
+        sync();
+        return;
+    }
+
     // Normal case
-    state->openTimelineTabCount += 1;
     sync();
 }
 
@@ -124,11 +153,22 @@ void OnboardingService::TurnOnRecordActivity() {
     state->isUseTimelineRecord = true;
 
     // Displayed when user turns on ‘Record activity’ for the fist time
-    if (isFirstTime) {
+    if (isFirstTime && !state->isPresentTimelineActivity) {
+        state->isPresentTimelineActivity = true;
         _callback(TimelineActivity);
     }
 
     sync();
 }
 
+bool OnboardingService::isTrackingTimeEntryForLastThreeDays() {
+    if (state == nullptr) {
+        return false;
+    }
+    if (state->firstTimeEntryCreatedAt == 0) {
+        return false;
+    }
+    time_t now = std::time(NULL);
+    return (now - state->firstTimeEntryCreatedAt >= 259200); // 3 days
+}
 }

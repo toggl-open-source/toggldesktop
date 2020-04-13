@@ -39,6 +39,7 @@ public:
     OnboardingState()
         : timeEntryTotal(0)
     , openTimelineTabCount(0)
+    , firstTimeEntryCreatedAt()
     , lastOpenApp(0)
     , editOnTimelineCount(0)
     , isUseTimelineRecord(false)
@@ -54,6 +55,7 @@ public:
     , isPresentRecordActivity(false) {}
 
     Poco::Int64 timeEntryTotal;
+    Poco::Int64 firstTimeEntryCreatedAt;
     Poco::Int64 openTimelineTabCount;
     Poco::Int64 lastOpenApp;
     Poco::Int64 editOnTimelineCount;
@@ -100,6 +102,7 @@ private:
     Poco::UInt64 userID;
     std::function<void (const OnboardingType)> _callback;
 
+    bool isTrackingTimeEntryForLastThreeDays();
     void sync();
 };
 }
