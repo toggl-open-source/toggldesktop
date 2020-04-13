@@ -140,6 +140,9 @@ extern void *ctx;
 
 	[self displayUpdateStatus];
 	[self setDownloadState:DownloadStateRestart];
+
+    // Show notification to quit
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateReady object:nil];
 }
 
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
