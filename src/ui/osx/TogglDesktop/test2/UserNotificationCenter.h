@@ -22,6 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)scheduleAutoTrackerWithProjectName:(NSString *)projectName projectID:(NSNumber *)projectID taskID:(NSNumber *)taskID;
 
+- (void)scheduleUpdateReady;
+
+- (void)removeAllDeliveredNotificationsWithType:(NSString *)type;
+
 - (BOOL)isDoNotDisturbEnabled;
 
 @end

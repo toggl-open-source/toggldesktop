@@ -216,6 +216,10 @@ void *ctx;
                                              selector:@selector(invalidAppleUserCrendentialNotification:)
                                                  name:kInvalidAppleUserCrendential
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateReadyNotification:)
+                                                 name:kUpdateReady
+                                               object:nil];
 
 	if (@available(macOS 10.14, *))
 	{
@@ -378,14 +382,30 @@ void *ctx;
 	// handle user clicking on notification alert
 	if (NSUserNotificationActivationTypeContentsClicked == notification.activationType)
 	{
-		[self onShowMenuItem:self];
+        if (notification.userInfo[@"update-restart"] != nil)
+        {
+            [[UserNotificationCenter share] removeAllDeliveredNotificationsWithType:@"update-restart"];
+            self.aboutWindowController.restart = YES;
+            [[NSApplication sharedApplication] terminate:nil];
+        } else {
+            [self onShowMenuItem:self];
+        }
 		return;
 	}
 
-	// handle autotracker notification
 	if (notification && notification.userInfo)
 	{
+        // handle restart to update notification
+        if (notification.userInfo[@"update-restart"] != nil)
+        {
+            [[UserNotificationCenter share] removeAllDeliveredNotificationsWithType:@"update-restart"];
+            self.aboutWindowController.restart = YES;
+            [[NSApplication sharedApplication] terminate:nil];
+            return;
+        }
+
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            // handle autotracker notification
 			if (notification.userInfo[@"autotracker"] != nil)
 			{
 				NSNumber *project_id = notification.userInfo[@"project_id"];
@@ -1797,5 +1817,10 @@ void on_display_message(const char *title,
     [self onLogoutMenuItem:self];
     [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
                                                                 object:@"Invalid Apple session. Please try login again."];
+}
+
+- (void) updateReadyNotification:(NSNotification *) notification
+{
+    [[UserNotificationCenter share] scheduleUpdateReady];
 }
 @end
