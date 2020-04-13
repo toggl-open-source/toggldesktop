@@ -114,6 +114,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString * _Nullable) formatDurationTimestampt:(NSTimeInterval) duration;
 
+#pragma mark - Onboarding Actions
+
+- (void)userDidClickOnTimelineTab;
+
 @end
 
 NS_ASSUME_NONNULL_END

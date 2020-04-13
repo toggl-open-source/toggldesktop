@@ -378,4 +378,9 @@ void *ctx;
     }
     return nil;
 }
+
+- (void)userDidClickOnTimelineTab
+{
+    toggl_user_did_click_on_timeline_tab(ctx);
+}
 @end

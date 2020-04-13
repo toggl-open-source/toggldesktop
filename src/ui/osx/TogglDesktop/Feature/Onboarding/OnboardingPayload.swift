@@ -32,6 +32,8 @@ struct OnboardingPayload {
         switch hint {
         case .timelineTab:
             return .maxY
+        case .editTimeEntry:
+            return .minY
         default: // Fill more later
             return .maxX
         }
