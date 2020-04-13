@@ -1198,6 +1198,9 @@ extern "C" {
     TOGGL_EXPORT void toggl_user_did_click_on_timeline_tab(
         void *context);
 
+    TOGGL_EXPORT void toggl_user_did_turn_on_record_activity(
+        void *context);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus

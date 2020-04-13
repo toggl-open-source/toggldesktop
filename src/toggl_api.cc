@@ -1587,3 +1587,7 @@ void toggl_on_onboarding(
 void toggl_user_did_click_on_timeline_tab(void *context) {
     app(context)->UserDidClickOnTimelineTab();
 }
+
+void toggl_user_did_turn_on_record_activity(void *context) {
+    app(context)->UserDidTurnOnRecordActivity();
+}

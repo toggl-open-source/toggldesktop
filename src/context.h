@@ -562,7 +562,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     // Onboarding action
     void UserDidClickOnTimelineTab();
-
+    void UserDidTurnOnRecordActivity();
+    
  protected:
     void uiUpdaterActivity();
     void checkReminders();

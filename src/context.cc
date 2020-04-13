@@ -6250,4 +6250,8 @@ error Context::UpdateTimeEntry(
 void Context::UserDidClickOnTimelineTab() {
     OnboardingService::getInstance()->OpenTimelineTab();
 }
+
+void Context::UserDidTurnOnRecordActivity() {
+    OnboardingService::getInstance()->TurnOnRecordActivity();
+}
 }  // namespace toggl
