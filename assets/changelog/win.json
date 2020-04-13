@@ -1,6 +1,18 @@
 {
     "versions": [
         {
+            "version": "7.5.106",
+            "rows": [
+                "Fixed the default project not always applying correctly",
+                "Fixed the taskbar icon not getting gray when timer is inactive",
+                "Various UI tweaks",
+                "Stability improvements"
+            ],
+            "date": "April 13rd 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.92",
             "rows": [
                 "New design of the entire app!",
