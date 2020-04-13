@@ -70,6 +70,8 @@ final class MainDashboardViewController: NSViewController {
     @IBAction func timelineBtnOnTap(_ sender: Any) {
         currentTab = .timeline
         timelineController.scrollToVisibleItem()
+        // Onboarding states
+        DesktopLibraryBridge.shared().userDidClickOnTimelineTab()
     }
 
     @objc func timelineDataNotification(_ noti: Notification) {
