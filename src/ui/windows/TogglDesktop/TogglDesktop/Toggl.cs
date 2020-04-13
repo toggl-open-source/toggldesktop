@@ -586,6 +586,11 @@ public static partial class Toggl
         return toggl_get_user_email(ctx);
     }
 
+    public static DayOfWeek UserBeginningOfWeek()
+    {
+        return (DayOfWeek) toggl_get_user_beginning_of_week(ctx);
+    }
+
     public static void FullSync()
     {
         toggl_fullsync(ctx);

@@ -317,19 +317,19 @@
                         </StackPanel>
 
                         <StackPanel Grid.Row="2" Grid.Column="1">
-                            <CheckBox Name="remindOnMondayTextBox" x:FieldModifier="private"
+                            <CheckBox Name="remindDay1CheckBox" x:FieldModifier="private"
                                       >Monday</CheckBox>
-                            <CheckBox Name="remindOnTuesdayTextBox" x:FieldModifier="private"
+                            <CheckBox Name="remindDay2CheckBox" x:FieldModifier="private"
                                       Margin="0 12 0 0">Tuesday</CheckBox>
-                            <CheckBox Name="remindOnWednesdayTextBox" x:FieldModifier="private"
+                            <CheckBox Name="remindDay3CheckBox" x:FieldModifier="private"
                                       Margin="0 12 0 0">Wednesday</CheckBox>
-                            <CheckBox Name="remindOnThursdayTextBox" x:FieldModifier="private"
+                            <CheckBox Name="remindDay4CheckBox" x:FieldModifier="private"
                                       Margin="0 12 0 0">Thursday</CheckBox>
-                            <CheckBox Name="remindOnFridayTextBox" x:FieldModifier="private"
+                            <CheckBox Name="remindDay5CheckBox" x:FieldModifier="private"
                                       Margin="0 12 0 0">Friday</CheckBox>
-                            <CheckBox Name="remindOnSaturdayTextBox" x:FieldModifier="private"
+                            <CheckBox Name="remindDay6CheckBox" x:FieldModifier="private"
                                       Margin="0 12 0 0">Saturday</CheckBox>
-                            <CheckBox Name="remindOnSundayTextBox" x:FieldModifier="private"
+                            <CheckBox Name="remindDay7CheckBox" x:FieldModifier="private"
                                       Margin="0 12 0 0">Sunday</CheckBox>
                         </StackPanel>
                     </Grid>
