@@ -96,12 +96,39 @@ void OnboardingService::StopTimeEntry() {
 }
 
 void OnboardingService::OpenTimelineTab() {
+
+    // Onboading on Timeline View
+    // Displayed when entering Timeline tab for the firt time
+    if (!state->isPresentTimelineView && state->openTimelineTabCount == 0) {
+        state->isPresentTimelineView = true;
+        state->openTimelineTabCount += 1;
+
+        // UI
+        _callback(TimelineView);
+        sync();
+        return;
+    }
+
+    // Onboarding on Timeline Time Entry
+    if (!state->isPresentTimelineTimeEntry && state->openTimelineTabCount == 2) {
+
+    }
+
+    // Normal case
     state->openTimelineTabCount += 1;
     sync();
 }
 
 void OnboardingService::TurnOnRecordActivity() {
+    bool isFirstTime = (state->isUseTimelineRecord == false);
+    state->isUseTimelineRecord = true;
 
+    // Displayed when user turns on ‘Record activity’ for the fist time
+    if (isFirstTime) {
+        _callback(TimelineActivity);
+    }
+
+    sync();
 }
 
 }
