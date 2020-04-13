@@ -12,6 +12,7 @@
 #include <string>
 #include <Poco/Types.h>
 #include <stdio.h>
+#include <Poco/LocalDateTime.h>
 
 #include "types.h"
 #include "logger.h"
@@ -92,17 +93,23 @@ public:
     void StopTimeEntry();
     void OpenTimelineTab();
     void TurnOnRecordActivity();
-
+    void SetTimelineDateAt(const Poco::LocalDateTime &value) {
+        timeline_date_at_ = value;
+    }
+    
 private:
-    OnboardingService() {};
+    OnboardingService(): timeline_date_at_(Poco::LocalDateTime()) {};
+
     OnboardingState *state;
     Database *database;
     Timer *t;
     Logger logger { "Onboarding" };
-    Poco::UInt64 userID;
+    User *user;
+    Poco::LocalDateTime timeline_date_at_;
     std::function<void (const OnboardingType)> _callback;
 
     bool isTrackingTimeEntryForLastThreeDays();
+    bool hasAtLeastOneTimelineTimeEntryOnCurrentDay();
     void sync();
 };
 }

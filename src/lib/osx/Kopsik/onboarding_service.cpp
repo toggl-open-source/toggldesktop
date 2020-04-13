@@ -11,6 +11,8 @@
 #include "user.h"
 #include "timer.h"
 #include "time_entry.h"
+#include "related_data.h"
+
 #include <time.h>
 
 namespace toggl {
@@ -23,18 +25,18 @@ void OnboardingService::SetDatabase(Database *db) {
     database = db;
 }
 
-void OnboardingService::LoadOnboardingStateFromCurrentUser(User *user) {
-    if (user == nullptr) {
+void OnboardingService::LoadOnboardingStateFromCurrentUser(User *_user) {
+    if (_user == nullptr) {
         return;
     }
-    userID = user->ID();
+    user = _user;
 
     // Initialize Onboarding state if need
     bool isAtLaunchTime = false;
     if (state == nullptr) {
         isAtLaunchTime = true;
         state = new OnboardingState();
-        database->LoadOnboardingState(userID, state);
+        database->LoadOnboardingState(user->ID(), state);
     }
 
     // Load some states because we don't store it from db
@@ -61,11 +63,13 @@ void OnboardingService::Reset() {
         delete state;
         state = nullptr;
     }
-    userID = 0;
 }
 
 void OnboardingService::sync() {
-    database->SetOnboardingState(userID, state);
+    if (user == nullptr) {
+        return;
+    }
+    database->SetOnboardingState(user->ID(), state);
 }
 
 // User actions
@@ -116,8 +120,29 @@ void OnboardingService::OpenTimelineTab() {
     }
 
     // Onboarding on Timeline Time Entry
-    if (!state->isPresentTimelineTimeEntry && state->openTimelineTabCount == 3) {
+    /*
+     Should be displayed if:
 
+     > User visits Timeline tab for the 3rd time
+
+     and
+
+     > Hasn’t been editing or adding entries directly on the Timeline yet
+
+     and
+
+     > There is at least one TE to display on chosen day
+
+     If there is no TEs to display, hint should be shown on next possible occassion when all the conditions are true
+     */
+    if (!state->isPresentTimelineTimeEntry &&
+        state->openTimelineTabCount == 3 &&
+        state->editOnTimelineCount == 0 &&
+        hasAtLeastOneTimelineTimeEntryOnCurrentDay()) {
+        state->isPresentTimelineTimeEntry = true;
+        _callback(TimelineTimeEntry);
+        sync();
+        return;
     }
 
     /*
@@ -170,5 +195,30 @@ bool OnboardingService::isTrackingTimeEntryForLastThreeDays() {
     }
     time_t now = std::time(NULL);
     return (now - state->firstTimeEntryCreatedAt >= 259200); // 3 days
+}
+
+bool OnboardingService::hasAtLeastOneTimelineTimeEntryOnCurrentDay() {
+    if (user == nullptr) {
+        return false;
+    }
+
+    // Get current start/end day
+    int tzd = timeline_date_at_.tzd();
+    time_t start_day = timeline_date_at_.timestamp().epochTime() - tzd;
+    time_t end_day = start_day + 86400; // one day
+
+    // Since we don't store the TimeEntry for each particular day
+    // so we have to iterate and find it
+    for (std::vector<TimeEntry *>::const_iterator it = user->related.TimeEntries.begin();
+         it != user->related.TimeEntries.end(); ++it) {
+        TimeEntry *item = *it;
+        time_t start_time_entry = Poco::Timestamp::fromEpochTime(item->Start()).epochTime();
+
+        // If we have at least one Time Entry in current Timeline day
+        if (start_time_entry >= start_day && start_time_entry <= end_day) {
+            return true;
+        }
+    }
+    return false;
 }
 }
