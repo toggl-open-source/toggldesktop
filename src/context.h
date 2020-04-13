@@ -560,6 +560,9 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     void TrackExpandAllDays();
 
+    // Onboarding action
+    void UserDidClickOnTimelineTab();
+
  protected:
     void uiUpdaterActivity();
     void checkReminders();

@@ -46,7 +46,19 @@ void OnboardingService::sync() {
 
 // User actions
 void OnboardingService::OpenApp() {
+    if (state == nullptr) {
+        return;
+    }
 
+    // Present Onboarding on Timeline Tab
+    if (!state->isPresentTimelineTab && state->timeEntryTotal >= 3 && state->openTimelineTabCount == 0) {
+        state->isPresentTimelineTab = true;
+
+        // UI
+        _callback(TimelineTab);
+        sync();
+        return;
+    }
 }
 
 void OnboardingService::StopTimeEntry() {
@@ -66,7 +78,8 @@ void OnboardingService::StopTimeEntry() {
 }
 
 void OnboardingService::OpenTimelineTab() {
-
+    state->openTimelineTabCount += 1;
+    sync();
 }
 
 void OnboardingService::TurnOnRecordActivity() {

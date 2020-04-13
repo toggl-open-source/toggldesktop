@@ -6246,4 +6246,8 @@ error Context::UpdateTimeEntry(
 
     return displayError(save(true));
 }
+
+void Context::UserDidClickOnTimelineTab() {
+    OnboardingService::getInstance()->OpenTimelineTab();
+}
 }  // namespace toggl
