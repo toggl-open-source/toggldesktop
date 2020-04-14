@@ -118,6 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)userDidClickOnTimelineTab;
 - (void)userDidTurnOnRecordActivity;
+- (void)userDidEditOrAddTimeEntryDirectlyOnTimelineView;
 
 @end
 
