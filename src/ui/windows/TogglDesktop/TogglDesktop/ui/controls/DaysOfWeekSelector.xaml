@@ -1,0 +1,49 @@
+<UserControl x:Class="TogglDesktop.DaysOfWeekSelector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Grid>
+        <TextBlock>
+            <Hyperlink Style="{StaticResource Toggl.AccentHyperlink}"
+                       Click="TogglePopup"
+                       TextDecorations="None">
+                <Run Text="{Binding Text}" />
+            </Hyperlink>
+        </TextBlock>
+        <Popup x:Name="popup" x:FieldModifier="private"
+               AllowsTransparency="True"
+               StaysOpen="False">
+            <Grid Background="Transparent">
+                <Border Margin="4"
+                        BorderBrush="{DynamicResource Toggl.LightGrayBrush}"
+                        BorderThickness="1"
+                        Background="{DynamicResource Toggl.CardBackground}">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.1" Color="Black" />
+                    </Border.Effect>
+
+                    <StackPanel Margin="16 16 24 16">
+                        <CheckBox Name="remindDay1CheckBox" x:FieldModifier="private"
+                        >Monday</CheckBox>
+                        <CheckBox Name="remindDay2CheckBox" x:FieldModifier="private"
+                                  Margin="0 12 0 0">Tuesday</CheckBox>
+                        <CheckBox Name="remindDay3CheckBox" x:FieldModifier="private"
+                                  Margin="0 12 0 0">Wednesday</CheckBox>
+                        <CheckBox Name="remindDay4CheckBox" x:FieldModifier="private"
+                                  Margin="0 12 0 0">Thursday</CheckBox>
+                        <CheckBox Name="remindDay5CheckBox" x:FieldModifier="private"
+                                  Margin="0 12 0 0">Friday</CheckBox>
+                        <CheckBox Name="remindDay6CheckBox" x:FieldModifier="private"
+                                  Margin="0 12 0 0">Saturday</CheckBox>
+                        <CheckBox Name="remindDay7CheckBox" x:FieldModifier="private"
+                                  Margin="0 12 0 0">Sunday</CheckBox>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Popup>
+    </Grid>
+</UserControl>
