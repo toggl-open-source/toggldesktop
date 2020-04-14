@@ -64,6 +64,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 
 @property (weak) IBOutlet FlatButton *continueBtn;
 @property (weak) IBOutlet NSTextField *welcomeToTogglLbl;
+@property (weak) IBOutlet NSTextField *subWelcomeLbl;
 @property (weak) IBOutlet NSStackView *socialButtonStackView;
 @property (weak) IBOutlet NSTextField *orLbl;
 @property (weak) IBOutlet NSBox *leftSeperatorLine;
@@ -171,7 +172,7 @@ extern void *ctx;
 	[self.password resetCursorColor];
 
 	[self.email.window makeFirstResponder:self.email];
-	[self changeTabView:TabViewTypeContinueSignin];
+	[self changeTabView:TabViewTypeLogin];
 }
 
 - (void)textFieldClicked:(id)sender
@@ -233,6 +234,20 @@ extern void *ctx;
             self.donotHaveAccountLbl.hidden = NO;
             self.signUpLink.titleUnderline = YES;
             self.welcomeToTogglLbl.hidden = YES;
+
+            self.welcomeToTogglLbl.hidden = YES;
+            self.subWelcomeLbl.hidden = YES;
+            self.socialButtonStackView.hidden = NO;
+            self.userActionBtn.title = @"Continue";
+            self.email.hidden = NO;
+            self.password.hidden = NO;
+            self.forgotPasswordTextField.hidden = NO;
+            self.leftSeperatorLine.hidden = NO;
+            self.rightSeperatorLine.hidden = NO;
+            self.orLbl.hidden = NO;
+            self.countryStackViewTop.constant = 166;
+            self.signUpLink.hidden = YES;
+
             break;
 
         case TabViewTypeSingup :
@@ -261,6 +276,7 @@ extern void *ctx;
             self.signUpLink.titleUnderline = YES;
 
             self.welcomeToTogglLbl.hidden = NO;
+            self.subWelcomeLbl.hidden = NO;
             self.socialButtonStackView.hidden = YES;
             self.userActionBtn.title = @"Continue";
             self.email.hidden = YES;
@@ -269,8 +285,9 @@ extern void *ctx;
             self.leftSeperatorLine.hidden = YES;
             self.rightSeperatorLine.hidden = YES;
             self.orLbl.hidden = YES;
-            self.countryStackViewTop.constant = 150;
-            
+            self.countryStackViewTop.constant = 190;
+            self.signUpLink.hidden = YES;
+
             break;
     }
 
@@ -573,6 +590,7 @@ extern void *ctx;
             [self clickSignupButton:sender];
             break;
         case TabViewTypeContinueSignin:
+            [self continueBtnOnClick:sender];
             break;
     }
 }
@@ -754,7 +772,7 @@ extern void *ctx;
                                                                 object:error.description];
 }
 
-- (IBAction)continueBtnOnClick:(id)sender
+- (void)continueBtnOnClick:(id)sender
 {
     if (![self validateFormForAction:self.userAction])
     {
