@@ -292,20 +292,14 @@ class TOGGL_INTERNAL_EXPORT Settings {
 
 class TOGGL_INTERNAL_EXPORT AutotrackerRule {
  public:
-    AutotrackerRule()
-        : ID(0)
-    , Terms("")
-    , ProjectName("")
-    , StartTime("")
-    , EndTime("")
-    , DaysOfWeek(0) {}
+    AutotrackerRule() {}
 
-    int64_t ID;
-    std::string Terms;
-    std::string ProjectName;
-    std::string StartTime;
-    std::string EndTime;
-    uint8_t DaysOfWeek;
+    int64_t ID { 0 };
+    std::string Terms { "" };
+    std::string ProjectName { "" };
+    std::string StartTime { "" };
+    std::string EndTime { "" };
+    uint8_t DaysOfWeek { 0 };
 
     bool operator == (const AutotrackerRule& other) const;
 };
