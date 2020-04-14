@@ -66,7 +66,7 @@ void OnboardingService::Reset() {
 }
 
 void OnboardingService::sync() {
-    if (user == nullptr) {
+    if (user == nullptr || state == nullptr) {
         return;
     }
     database->SetOnboardingState(user->ID(), state);
@@ -128,8 +128,15 @@ void OnboardingService::OpenTimelineTab() {
 }
 
 void OnboardingService::TurnOnRecordActivity() {
-    handleTimelineActivityOnboarding();
+    if (handleTimelineActivityOnboarding()) {
+        return;
+    }
     state->isUseTimelineRecord = true;
+    sync();
+}
+
+void OnboardingService::EditOrAddTimeEntryDirectlyToTimelineView() {
+    state->editOnTimelineCount += 1;
     sync();
 }
 
@@ -152,7 +159,6 @@ bool OnboardingService::hasAtLeastOneTimelineTimeEntryOnCurrentDay() {
     // Get current start/end day
     int tzd = timeline_date_at_.tzd();
     time_t start_day = timeline_date_at_.timestamp().epochTime() - tzd;
-    time_t end_day = start_day + 86400; // one day
 
     // Since we don't store the TimeEntry for each particular day
     // so we have to iterate and find it
@@ -162,7 +168,7 @@ bool OnboardingService::hasAtLeastOneTimelineTimeEntryOnCurrentDay() {
         time_t start_time_entry = Poco::Timestamp::fromEpochTime(item->Start()).epochTime();
 
         // If we have at least one Time Entry in current Timeline day
-        if (start_time_entry >= start_day && start_time_entry <= end_day) {
+        if (start_time_entry >= start_day) {
             return true;
         }
     }
@@ -238,20 +244,25 @@ bool OnboardingService::handleTimelineRecordActivityOnboarding() {
     return false;
 }
 
-void OnboardingService::handleTimelineActivityOnboarding() {
+bool OnboardingService::handleTimelineActivityOnboarding() {
     /*
      Displayed when user turns on ‘Record activity’ for the fist time
      */
-    if (state->isUseTimelineRecord == false && !state->isPresentTimelineActivity) {
+    if (state->isUseTimelineRecord == false &&
+        !state->isPresentTimelineActivity) {
         state->isPresentTimelineActivity = true;
         _callback(TimelineActivity);
+        sync();
+        return true;
     }
+    return false;
 }
 
 bool OnboardingService::handleEditTimeEntryOnboarding() {
     if (state->timeEntryTotal == 0 &&
         !state->isPresentEditTimeEntry) {
         state->isPresentEditTimeEntry = true;
+        state->timeEntryTotal += 1;
         _callback(EditTimeEntry);
         sync();
         return true;

@@ -6258,4 +6258,9 @@ void Context::UserDidClickOnTimelineTab() {
 void Context::UserDidTurnOnRecordActivity() {
     OnboardingService::getInstance()->TurnOnRecordActivity();
 }
+
+void Context::UserDidEditOrAddTimeEntryOnTimelineView() {
+    OnboardingService::getInstance()->EditOrAddTimeEntryDirectlyToTimelineView();
+}
+
 }  // namespace toggl

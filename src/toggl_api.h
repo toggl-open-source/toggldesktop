@@ -1201,6 +1201,9 @@ extern "C" {
     TOGGL_EXPORT void toggl_user_did_turn_on_record_activity(
         void *context);
 
+    TOGGL_EXPORT void toggl_user_did_edit_add_timeentry_on_timeline_view(
+        void *context);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus
