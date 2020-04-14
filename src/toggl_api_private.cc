@@ -134,6 +134,12 @@ void autotracker_view_item_clear(TogglAutotrackerRuleView *view) {
     free(view->ProjectAndTaskLabel);
     view->ProjectAndTaskLabel = nullptr;
 
+    free(view->StartTime);
+    view->StartTime = nullptr;
+
+    free(view->EndTime);
+    view->EndTime = nullptr;
+
     delete view;
 }
 
