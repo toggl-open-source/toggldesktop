@@ -96,6 +96,8 @@ extern void *ctx;
 
 	// Touch bar
 	[self initTouchBar];
+
+    [self handleOnboarding];
 }
 
 - (void)initTouchBar
@@ -419,6 +421,14 @@ extern void *ctx;
 - (NSTouchBar *)makeTouchBar
 {
     return [[TouchBarService shared] makeTouchBar];
+}
+
+#pragma mark - Onboarding
+
+-(void) handleOnboarding {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [OnboardingServiceObjc presentWithHint:OnboardingHintTimelineTab atView:self.mainDashboardViewController.timelineBtn];
+    });
 }
 
 @end
