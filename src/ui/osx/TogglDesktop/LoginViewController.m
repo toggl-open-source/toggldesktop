@@ -62,11 +62,21 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (weak) IBOutlet FlatButton *userActionBtn;
 @property (weak) IBOutlet NSTextField *donotHaveAccountLbl;
 
+@property (weak) IBOutlet FlatButton *continueBtn;
+@property (weak) IBOutlet NSTextField *welcomeToTogglLbl;
+@property (weak) IBOutlet NSStackView *socialButtonStackView;
+@property (weak) IBOutlet NSTextField *orLbl;
+@property (weak) IBOutlet NSBox *leftSeperatorLine;
+@property (weak) IBOutlet NSBox *rightSeperatorLine;
+@property (weak) IBOutlet NSLayoutConstraint *countryStackViewTop;
+
 @property (nonatomic, strong) AutocompleteDataSource *countryAutocompleteDataSource;
 @property (nonatomic, assign) NSInteger selectedCountryID;
 @property (nonatomic, assign) TabViewType currentTab;
 @property (nonatomic, assign) UserAction userAction;
 @property (nonatomic, strong) LoginSignupTouchBar *loginTouchBar __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
+@property (nonatomic, copy) NSString *token;
+@property (nonatomic, copy) NSString *fullName;
 
 - (IBAction)userActionButtonOnClick:(id)sender;
 - (IBAction)countrySelected:(id)sender;
@@ -161,7 +171,7 @@ extern void *ctx;
 	[self.password resetCursorColor];
 
 	[self.email.window makeFirstResponder:self.email];
-	[self changeTabView:TabViewTypeLogin];
+	[self changeTabView:TabViewTypeContinueSignin];
 }
 
 - (void)textFieldClicked:(id)sender
@@ -222,6 +232,7 @@ extern void *ctx;
             self.signUpLink.stringValue = @"Sign up for free";
             self.donotHaveAccountLbl.hidden = NO;
             self.signUpLink.titleUnderline = YES;
+            self.welcomeToTogglLbl.hidden = YES;
             break;
 
         case TabViewTypeSingup :
@@ -235,6 +246,7 @@ extern void *ctx;
             self.signUpLink.stringValue = @"Back to Log in";
             self.donotHaveAccountLbl.hidden = YES;
             self.signUpLink.titleUnderline = YES;
+            self.welcomeToTogglLbl.hidden = YES;
             break;
         case TabViewTypeContinueSignin:
             self.appleGoogleGroupViewTop.constant = kSignupAppleViewTop;
@@ -248,6 +260,17 @@ extern void *ctx;
             self.donotHaveAccountLbl.hidden = YES;
             self.signUpLink.titleUnderline = YES;
 
+            self.welcomeToTogglLbl.hidden = NO;
+            self.socialButtonStackView.hidden = YES;
+            self.userActionBtn.title = @"Continue";
+            self.email.hidden = YES;
+            self.password.hidden = YES;
+            self.forgotPasswordTextField.hidden = YES;
+            self.leftSeperatorLine.hidden = YES;
+            self.rightSeperatorLine.hidden = YES;
+            self.orLbl.hidden = YES;
+            self.countryStackViewTop.constant = 150;
+            
             break;
     }
 
@@ -301,6 +324,8 @@ extern void *ctx;
 - (void)handleGoogleToken:(NSString *)token
 {
 	[self showLoaderView:YES];
+    self.token = token;
+
 	switch (self.userAction)
 	{
 		case UserActionGoogleSignup :
@@ -500,9 +525,10 @@ extern void *ctx;
         {
             case TabViewTypeLogin :
                 return [self.loginTouchBar makeTouchBarFor:LoginSignupModeLogin];
-
             case TabViewTypeSingup :
                 return [self.loginTouchBar makeTouchBarFor:LoginSignupModeSignUp];
+            case TabViewTypeContinueSignin:
+                return nil;
         }
     }
     return nil;
@@ -698,6 +724,9 @@ extern void *ctx;
 
 - (void)appleAuthenticationDidCompleteWith:(NSString *)token fullName:(NSString *)fullName
 {
+    self.token = token;
+    self.fullName = fullName;
+
     // Login or Signup
     switch (self.userAction)
     {
@@ -723,6 +752,26 @@ extern void *ctx;
 
     [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
                                                                 object:error.description];
+}
+
+- (IBAction)continueBtnOnClick:(id)sender
+{
+    if (![self validateFormForAction:self.userAction])
+    {
+        return;
+    }
+    [self showLoaderView:YES];
+
+    // Continue by Sign Up for new account
+    switch (self.userAction) {
+        case UserActionAppleLogin:
+            toggl_apple_signup_async(ctx, [self.token UTF8String], self.selectedCountryID, [self.fullName UTF8String]);
+            break;
+        case UserActionGoogleLogin:
+            toggl_google_signup_async(ctx, [self.token UTF8String], self.selectedCountryID);
+        default:
+            break;
+    }
 }
 
 -(void)continueSignIn

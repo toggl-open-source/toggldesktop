@@ -14,19 +14,25 @@
                 <outlet property="boxView" destination="5dJ-p6-cHG" id="VMF-WN-OOL"/>
                 <outlet property="containerViewHeight" destination="dsh-UU-U3O" id="GMA-ic-Z5E"/>
                 <outlet property="countrySelect" destination="4Zx-Jg-kcg" id="5KU-LL-Edx"/>
+                <outlet property="countryStackViewTop" destination="jnc-YX-wZM" id="rd4-36-C1k"/>
                 <outlet property="donotHaveAccountLbl" destination="Nf5-yf-qTk" id="XQ0-eS-6lG"/>
                 <outlet property="email" destination="KGi-ca-Yer" id="PBJ-L7-SlM"/>
                 <outlet property="forgotPasswordTextField" destination="dzR-Wz-TvW" id="RkM-IV-nDU"/>
                 <outlet property="googleBtn" destination="tJn-oc-LUz" id="IkN-sj-6Yv"/>
+                <outlet property="leftSeperatorLine" destination="0ii-WG-Mwe" id="mBP-5k-3Po"/>
                 <outlet property="loginLoaderView" destination="BLv-g2-Q0z" id="WB5-8X-iJh"/>
+                <outlet property="orLbl" destination="tVo-dL-QHu" id="0F1-62-vCq"/>
                 <outlet property="password" destination="es4-S9-8Od" id="mI1-u7-fNs"/>
                 <outlet property="privacyLink" destination="IVx-73-aIM" id="bg4-YH-NLO"/>
+                <outlet property="rightSeperatorLine" destination="b55-m8-HrX" id="Unj-VJ-iNH"/>
                 <outlet property="signUpGroupView" destination="Dqc-J5-qIX" id="u0Z-R2-fUB"/>
                 <outlet property="signUpLink" destination="vHA-Cd-ciE" id="IIF-Rc-Dys"/>
+                <outlet property="socialButtonStackView" destination="NsR-Mq-gmm" id="Vaz-v0-Ezu"/>
                 <outlet property="tosCheckbox" destination="p8r-V5-a0Z" id="Vwo-iN-cni"/>
                 <outlet property="tosLink" destination="fZp-Ag-MGC" id="HmT-m5-edl"/>
                 <outlet property="userActionBtn" destination="IjV-dM-dEc" id="fTf-nU-2Wl"/>
                 <outlet property="view" destination="d50-27-v7r" id="fRE-03-vij"/>
+                <outlet property="welcomeToTogglLbl" destination="TJa-KI-Gbo" id="ETd-Ch-Y1i"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -360,10 +366,19 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TJa-KI-Gbo">
+                                <rect key="frame" x="36" y="337" width="155" height="21"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Welcome to Toggl!" id="Lly-hr-TgR">
+                                    <font key="font" metaFont="system" size="18"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="tVo-dL-QHu" firstAttribute="top" secondItem="NsR-Mq-gmm" secondAttribute="bottom" constant="20" id="01g-7p-9SJ"/>
                             <constraint firstItem="NsR-Mq-gmm" firstAttribute="leading" secondItem="52B-J2-unw" secondAttribute="leading" constant="20" id="0h4-Ub-CCS"/>
+                            <constraint firstItem="TJa-KI-Gbo" firstAttribute="top" secondItem="52B-J2-unw" secondAttribute="top" constant="100" id="3T5-Hh-rzb"/>
                             <constraint firstItem="BLv-g2-Q0z" firstAttribute="centerX" secondItem="IjV-dM-dEc" secondAttribute="centerX" id="5wf-yc-WVa"/>
                             <constraint firstItem="0Z5-Nq-p4o" firstAttribute="top" secondItem="tVo-dL-QHu" secondAttribute="bottom" constant="20" id="81a-Db-Fwu"/>
                             <constraint firstItem="0ii-WG-Mwe" firstAttribute="centerY" secondItem="tVo-dL-QHu" secondAttribute="centerY" id="8x7-1Z-LzB"/>
@@ -378,11 +393,12 @@
                             <constraint firstItem="tVo-dL-QHu" firstAttribute="leading" secondItem="0ii-WG-Mwe" secondAttribute="trailing" constant="8" id="Xg0-Q4-Ytd"/>
                             <constraint firstAttribute="trailing" secondItem="Dqc-J5-qIX" secondAttribute="trailing" constant="20" id="gjJ-eD-3VE"/>
                             <constraint firstAttribute="trailing" secondItem="0Z5-Nq-p4o" secondAttribute="trailing" constant="20" id="if0-yE-Faj"/>
+                            <constraint firstItem="Dqc-J5-qIX" firstAttribute="top" secondItem="52B-J2-unw" secondAttribute="top" constant="66" id="jnc-YX-wZM"/>
                             <constraint firstItem="BLv-g2-Q0z" firstAttribute="centerY" secondItem="IjV-dM-dEc" secondAttribute="centerY" id="pUC-x9-T82"/>
                             <constraint firstItem="0Z5-Nq-p4o" firstAttribute="leading" secondItem="52B-J2-unw" secondAttribute="leading" constant="20" id="tOh-0W-KO4"/>
-                            <constraint firstItem="Dqc-J5-qIX" firstAttribute="top" secondItem="52B-J2-unw" secondAttribute="top" constant="66" id="tUx-cq-ylf"/>
                             <constraint firstAttribute="bottom" secondItem="B3g-en-asq" secondAttribute="bottom" constant="20" id="tZJ-BN-Ozy"/>
                             <constraint firstAttribute="trailing" secondItem="NsR-Mq-gmm" secondAttribute="trailing" constant="20" id="zX3-pt-bqE"/>
+                            <constraint firstItem="TJa-KI-Gbo" firstAttribute="centerX" secondItem="52B-J2-unw" secondAttribute="centerX" id="zjc-xV-3t3"/>
                         </constraints>
                     </view>
                     <constraints>
