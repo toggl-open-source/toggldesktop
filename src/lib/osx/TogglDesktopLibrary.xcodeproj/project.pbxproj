@@ -18,7 +18,6 @@
 		B8B6EC6B244616B10008FA32 /* feedback.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC3B244616AE0008FA32 /* feedback.h */; };
 		B8B6EC6D244616B10008FA32 /* model_change.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC3E244616AF0008FA32 /* model_change.h */; };
 		B8B6EC6E244616B10008FA32 /* get_focused_window_mac.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6EC3F244616AF0008FA32 /* get_focused_window_mac.cc */; };
-		B8B6EC6F244616B10008FA32 /* platforminfo.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6EC40244616AF0008FA32 /* platforminfo.cc */; };
 		B8B6EC70244616B10008FA32 /* types.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC41244616AF0008FA32 /* types.h */; };
 		B8B6EC71244616B10008FA32 /* batch_update_result.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC42244616AF0008FA32 /* batch_update_result.h */; };
 		B8B6EC72244616B10008FA32 /* urls.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC43244616AF0008FA32 /* urls.h */; };
@@ -92,6 +91,7 @@
 		B8B6ECE02446173A0008FA32 /* migrations.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6ECDC2446173A0008FA32 /* migrations.cc */; };
 		B8B6ECE12446173A0008FA32 /* migrations.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6ECDD2446173A0008FA32 /* migrations.h */; };
 		B8B6ECE22446173A0008FA32 /* database.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6ECDE2446173A0008FA32 /* database.h */; };
+		B8B6ECEE244629240008FA32 /* jsoncpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8B6ECED244629240008FA32 /* jsoncpp.cpp */; };
 		BA063C0123B0AF2F003A96FE /* MacOSApplicationInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BA063BFF23B0AF2F003A96FE /* MacOSApplicationInfo.mm */; };
 		BA063C0423B0B761003A96FE /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA063C0323B0B761003A96FE /* AppKit.framework */; };
 		BA1AB53E235DEAD4000433AE /* MacOSVersionChecker.mm in Sources */ = {isa = PBXBuildFile; fileRef = BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */; };
@@ -154,7 +154,6 @@
 		B8B6EC3B244616AE0008FA32 /* feedback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = feedback.h; sourceTree = "<group>"; };
 		B8B6EC3E244616AF0008FA32 /* model_change.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = model_change.h; sourceTree = "<group>"; };
 		B8B6EC3F244616AF0008FA32 /* get_focused_window_mac.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = get_focused_window_mac.cc; sourceTree = "<group>"; };
-		B8B6EC40244616AF0008FA32 /* platforminfo.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = platforminfo.cc; sourceTree = "<group>"; };
 		B8B6EC41244616AF0008FA32 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		B8B6EC42244616AF0008FA32 /* batch_update_result.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = batch_update_result.h; sourceTree = "<group>"; };
 		B8B6EC43244616AF0008FA32 /* urls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = urls.h; sourceTree = "<group>"; };
@@ -228,6 +227,7 @@
 		B8B6ECDC2446173A0008FA32 /* migrations.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = migrations.cc; sourceTree = "<group>"; };
 		B8B6ECDD2446173A0008FA32 /* migrations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = migrations.h; sourceTree = "<group>"; };
 		B8B6ECDE2446173A0008FA32 /* database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = database.h; sourceTree = "<group>"; };
+		B8B6ECED244629240008FA32 /* jsoncpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jsoncpp.cpp; path = ../../../third_party/jsoncpp/dist/jsoncpp.cpp; sourceTree = "<group>"; };
 		BA063BFF23B0AF2F003A96FE /* MacOSApplicationInfo.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MacOSApplicationInfo.mm; path = lib/osx/Kopsik/MacOSApplicationInfo.mm; sourceTree = "<group>"; };
 		BA063C0323B0B761003A96FE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MacOSVersionChecker.mm; path = lib/osx/Kopsik/MacOSVersionChecker.mm; sourceTree = "<group>"; };
@@ -344,6 +344,14 @@
 			path = database;
 			sourceTree = "<group>";
 		};
+		B8B6ECE6244628C70008FA32 /* json */ = {
+			isa = PBXGroup;
+			children = (
+				B8B6ECED244629240008FA32 /* jsoncpp.cpp */,
+			);
+			name = json;
+			sourceTree = "<group>";
+		};
 		BAD233D921D60A4D0039C742 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -378,6 +386,7 @@
 		C55DA59317F06A3B00B42178 = {
 			isa = PBXGroup;
 			children = (
+				B8B6ECE6244628C70008FA32 /* json */,
 				74CAAD0218185A9B001B77BB /* Carbon.framework */,
 				74AA947918091AE10000539F /* WebKit.framework */,
 				C55DA59E17F06A3B00B42178 /* lib */,
@@ -425,7 +434,6 @@
 				B8B6EC3E244616AF0008FA32 /* model_change.h */,
 				B8B6EC4E244616AF0008FA32 /* netconf.cc */,
 				B8B6EC35244616AE0008FA32 /* netconf.h */,
-				B8B6EC40244616AF0008FA32 /* platforminfo.cc */,
 				B8B6EC4B244616AF0008FA32 /* platforminfo.h */,
 				B8B6EC4C244616AF0008FA32 /* proxy.cc */,
 				B8B6EC44244616AF0008FA32 /* proxy.h */,
@@ -596,6 +604,7 @@
 				B8B6ECD82446170D0008FA32 /* custom_error_handler.cc in Sources */,
 				B8B6EC80244616B10008FA32 /* analytics.cc in Sources */,
 				B8B6ECD42446170D0008FA32 /* formatter.cc in Sources */,
+				B8B6ECEE244629240008FA32 /* jsoncpp.cpp in Sources */,
 				B8B6EC77244616B10008FA32 /* toggl_api_private.cc in Sources */,
 				B8B6ECB4244617000008FA32 /* tag.cc in Sources */,
 				B8B6EC79244616B10008FA32 /* related_data.cc in Sources */,
@@ -620,7 +629,6 @@
 				B8B6ECBB244617000008FA32 /* workspace.cc in Sources */,
 				B8B6EC84244616B10008FA32 /* timeline_uploader.cc in Sources */,
 				B8B6EC75244616B10008FA32 /* websocket_client.cc in Sources */,
-				B8B6EC6F244616B10008FA32 /* platforminfo.cc in Sources */,
 				B8B6ECDF2446173A0008FA32 /* database.cc in Sources */,
 				B8B6ECC0244617000008FA32 /* task.cc in Sources */,
 				B8B6ECB0244617000008FA32 /* obm_action.cc in Sources */,
