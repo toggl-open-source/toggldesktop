@@ -1577,3 +1577,9 @@ bool_t toggl_update_time_entry(
 
     return toggl::noError == app(context)->UpdateTimeEntry(_guid, _description, task_id, project_id, _project_guid, _tags, billable);
 }
+
+void toggl_on_continue_sign_in(
+    void *context,
+    TogglContinueSignIn cb) {
+    app(context)->UI()->OnContinueSignIn(cb);
+}

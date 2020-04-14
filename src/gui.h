@@ -388,6 +388,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     , on_display_project_colors_(nullptr)
     , on_display_countries_(nullptr)
     , on_display_obm_experiment_(nullptr)
+    , on_continue_sign_in(nullptr)
     , lastSyncState(-1)
     , lastUnsyncedItemsCount(-1)
     , lastDisplayLoginOpen(false)
@@ -637,6 +638,10 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         on_display_obm_experiment_ = cb;
     }
 
+    void OnContinueSignIn(TogglContinueSignIn cb) {
+        on_continue_sign_in = cb;
+    }
+
     bool CanDisplayUpdate() const {
         return !!on_display_update_;
     }
@@ -688,6 +693,10 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         time_entry_editor_guid_ = "";
     }
 
+    void DisplayOnContinueSignIn() {
+        on_continue_sign_in();
+    }
+
  private:
     error findMissingCallbacks();
 
@@ -724,6 +733,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     TogglDisplayProjectColors on_display_project_colors_;
     TogglDisplayCountries on_display_countries_;
     TogglDisplayObmExperiment on_display_obm_experiment_;
+    TogglContinueSignIn on_continue_sign_in;
 
     // Cached views
     Poco::Int64 lastSyncState;

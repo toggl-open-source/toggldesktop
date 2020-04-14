@@ -209,7 +209,7 @@ bool IsUserError(const error &err) {
     return false;
 }
 
-bool IsAppleAuthenticationError(const error &err) {
+bool IsAuthenticationError(const error &err) {
     if (err.find(kUnauthorizedError) != std::string::npos) {
         return true;
     }

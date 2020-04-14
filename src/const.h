@@ -95,7 +95,6 @@
 #define kMissingWS "You no longer have access to your last workspace"
 #define kOutOfDatePleaseUpgrade "Your version of Toggl Desktop is out of date, please upgrade!"
 #define kThisEntryCantBeSavedPleaseAdd "This entry can't be saved - please add"
-#define kCouldNotFoundTogglAccountWithAppleEmail "Could not find any Toggl Account which associates with this Apple Email.\n\nPlease try \"Sign Up with Apple\" instead!"
 
 #define kModelAutotrackerRule "autotracker_rule"
 #define kModelClient "client"
