@@ -10,5 +10,9 @@ namespace TogglDesktop
 
         public static int PositionRelativeTo(this DayOfWeek day, DayOfWeek beginningOfWeek) =>
             (day - beginningOfWeek + 7) % 7;
+
+        public static bool IsWeekday(this DayOfWeek day) => day >= DayOfWeek.Monday && day <= DayOfWeek.Friday;
+
+        public static DayOfWeek AddDays(this DayOfWeek day, int numberOfDays) => (DayOfWeek) (((int)day + numberOfDays) % 7);
     }
 }
