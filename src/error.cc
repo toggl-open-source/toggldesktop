@@ -213,6 +213,9 @@ bool IsAuthenticationError(const error &err) {
     if (err.find(kUnauthorizedError) != std::string::npos) {
         return true;
     }
+    if (err.find(kForbiddenError) != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
