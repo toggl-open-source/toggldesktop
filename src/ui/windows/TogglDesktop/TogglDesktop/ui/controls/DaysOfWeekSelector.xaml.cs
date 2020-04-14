@@ -73,9 +73,8 @@ namespace TogglDesktop
                 .ToArray();
         }
 
-        private static string GetText(Dictionary<DayOfWeek, bool> isDayChecked)
+        private string GetText(Dictionary<DayOfWeek, bool> isDayChecked)
         {
-            // TODO: use beginning of week for correct order of days
             var checkedCount = isDayChecked.Count(kvp => kvp.Value);
             return isDayChecked switch
             {
@@ -88,14 +87,16 @@ namespace TogglDesktop
                 var x when checkedCount >= 5
                 => "every day except " + string.Join(", ",
                     x.Where(kvp => !kvp.Value)
+                        .OrderBy(kvp => kvp.Key.DaysSince(lastBeginningOfWeek))
                         .Select(kvp => Enum.GetName(typeof(DayOfWeek), kvp.Key))),
                 var x when checkedCount == 4 && !x[DayOfWeek.Sunday] && !x[DayOfWeek.Saturday]
                 => "on weekdays except " +
-                   Enum.GetName(typeof(DayOfWeek), x.Where(kvp => kvp.Key.IsWeekday() && !kvp.Value)),
+                   Enum.GetName(typeof(DayOfWeek), x.First(kvp => kvp.Key.IsWeekday() && !kvp.Value).Key),
                 var x when checkedCount == 2 && x[DayOfWeek.Sunday] && x[DayOfWeek.Saturday]
                 => "on weekend",
                 var x => "on " + string.Join(", ",
                     x.Where(kvp => kvp.Value)
+                        .OrderBy(kvp => kvp.Key.DaysSince(lastBeginningOfWeek))
                         .Select(kvp => Enum.GetName(typeof(DayOfWeek), kvp.Key)))
             };
         }
@@ -130,7 +131,7 @@ namespace TogglDesktop
         {
             var isDayChecked = GetDaysOfWeekCheckboxes()
                 .WithIndex()
-                .ToDictionary(x => lastBeginningOfWeek.AddDays(x.index), x => isChecked(x.item));
+                .ToDictionary(x => lastBeginningOfWeek.Add(x.index), x => isChecked(x.item));
             Text = GetText(isDayChecked);
         }
     }
