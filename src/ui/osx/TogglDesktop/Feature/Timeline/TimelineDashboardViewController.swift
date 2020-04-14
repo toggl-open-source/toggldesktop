@@ -537,6 +537,9 @@ extension TimelineDashboardViewController: TimelineCollectionViewDelegate {
 
         // Create
         startNewTimeEntry(at: startTime, ended: startTime + 1)
+
+        // Onboarding
+        DesktopLibraryBridge.shared().userDidEditOrAddTimeEntryDirectlyOnTimelineView()
     }
 }
 
