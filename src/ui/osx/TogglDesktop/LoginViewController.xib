@@ -55,11 +55,11 @@
                                 <rect key="frame" x="89" y="422" width="50" height="16"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="toggl-logo" id="RqX-fO-r2O"/>
                             </imageView>
-                            <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dqc-J5-qIX">
-                                <rect key="frame" x="20" y="325" width="188" height="67"/>
+                            <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dqc-J5-qIX">
+                                <rect key="frame" x="15" y="325" width="198" height="67"/>
                                 <subviews>
                                     <comboBox focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Zx-Jg-kcg" customClass="NSCustomComboBox">
-                                        <rect key="frame" x="0.0" y="44" width="191" height="25"/>
+                                        <rect key="frame" x="5" y="44" width="191" height="25"/>
                                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" alignment="left" placeholderString="Select country" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="XOG-e3-OcV">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -71,11 +71,11 @@
                                         </connections>
                                     </comboBox>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="hh4-CF-vWz">
-                                        <rect key="frame" x="0.0" y="0.0" width="179" height="38"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="198" height="38"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="p8r-V5-a0Z" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
-                                                <rect key="frame" x="-2" y="20" width="76" height="18"/>
-                                                <buttonCell key="cell" type="check" title="I agree to" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="qm8-nf-Dce">
+                                                <rect key="frame" x="-2" y="20" width="98" height="18"/>
+                                                <buttonCell key="cell" type="check" title="I agree to the" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="qm8-nf-Dce">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="label" size="12"/>
                                                 </buttonCell>
@@ -89,7 +89,7 @@
                                                 </connections>
                                             </button>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZp-Ag-MGC" customClass="NSTextFieldClickablePointer">
-                                                <rect key="frame" x="72" y="22" width="102" height="15"/>
+                                                <rect key="frame" x="94" y="22" width="102" height="15"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Terms of Service" id="yMx-7I-dta">
                                                     <font key="font" metaFont="systemMedium" size="12"/>
                                                     <color key="textColor" name="login-text-color"/>
@@ -126,6 +126,10 @@
                                         </constraints>
                                     </customView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="hh4-CF-vWz" secondAttribute="trailing" id="PTw-XN-4BU"/>
+                                    <constraint firstItem="hh4-CF-vWz" firstAttribute="leading" secondItem="Dqc-J5-qIX" secondAttribute="leading" id="vXw-5W-cJs"/>
+                                </constraints>
                                 <visibilityPriorities>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
@@ -393,7 +397,7 @@
                             <constraint firstItem="0ii-WG-Mwe" firstAttribute="centerY" secondItem="tVo-dL-QHu" secondAttribute="centerY" id="8x7-1Z-LzB"/>
                             <constraint firstItem="NsR-Mq-gmm" firstAttribute="top" secondItem="52B-J2-unw" secondAttribute="top" constant="166" id="9CJ-AW-6GG"/>
                             <constraint firstItem="THc-hA-qiD" firstAttribute="top" secondItem="52B-J2-unw" secondAttribute="top" constant="20" id="BFx-Ss-c8D"/>
-                            <constraint firstItem="Dqc-J5-qIX" firstAttribute="leading" secondItem="52B-J2-unw" secondAttribute="leading" constant="20" id="Bcq-Cb-pT6"/>
+                            <constraint firstItem="Dqc-J5-qIX" firstAttribute="leading" secondItem="52B-J2-unw" secondAttribute="leading" constant="15" id="Bcq-Cb-pT6"/>
                             <constraint firstItem="b55-m8-HrX" firstAttribute="leading" secondItem="tVo-dL-QHu" secondAttribute="trailing" constant="8" id="G1m-85-q6C"/>
                             <constraint firstItem="tVo-dL-QHu" firstAttribute="centerX" secondItem="52B-J2-unw" secondAttribute="centerX" id="MhQ-DV-cyf"/>
                             <constraint firstItem="B3g-en-asq" firstAttribute="centerX" secondItem="52B-J2-unw" secondAttribute="centerX" id="O3O-8x-B8w"/>
@@ -401,7 +405,7 @@
                             <constraint firstItem="b55-m8-HrX" firstAttribute="centerY" secondItem="tVo-dL-QHu" secondAttribute="centerY" id="Rjh-po-iVU"/>
                             <constraint firstItem="tVo-dL-QHu" firstAttribute="leading" secondItem="0ii-WG-Mwe" secondAttribute="trailing" constant="8" id="Xg0-Q4-Ytd"/>
                             <constraint firstItem="cQK-7K-9KT" firstAttribute="top" secondItem="TJa-KI-Gbo" secondAttribute="bottom" constant="4" id="cWa-eF-aOx"/>
-                            <constraint firstAttribute="trailing" secondItem="Dqc-J5-qIX" secondAttribute="trailing" constant="20" id="gjJ-eD-3VE"/>
+                            <constraint firstAttribute="trailing" secondItem="Dqc-J5-qIX" secondAttribute="trailing" constant="15" id="gjJ-eD-3VE"/>
                             <constraint firstAttribute="trailing" secondItem="0Z5-Nq-p4o" secondAttribute="trailing" constant="20" id="if0-yE-Faj"/>
                             <constraint firstItem="Dqc-J5-qIX" firstAttribute="top" secondItem="52B-J2-unw" secondAttribute="top" constant="66" id="jnc-YX-wZM"/>
                             <constraint firstItem="BLv-g2-Q0z" firstAttribute="centerY" secondItem="IjV-dM-dEc" secondAttribute="centerY" id="pUC-x9-T82"/>

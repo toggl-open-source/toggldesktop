@@ -173,6 +173,8 @@ extern void *ctx;
 
 	[self.email.window makeFirstResponder:self.email];
 	[self changeTabView:TabViewTypeLogin];
+    [self changeTabView:TabViewTypeContinueSignin];
+    [self changeTabView:TabViewTypeLogin];
 }
 
 - (void)textFieldClicked:(id)sender
@@ -216,6 +218,7 @@ extern void *ctx;
     }
 
     self.currentTab = type;
+    [self showLoaderView:NO];
 
     // Focus on email when changing mode
     [self.view.window makeFirstResponder:self.email];
@@ -238,16 +241,12 @@ extern void *ctx;
             self.welcomeToTogglLbl.hidden = YES;
             self.subWelcomeLbl.hidden = YES;
             self.socialButtonStackView.hidden = NO;
-            self.userActionBtn.title = @"Continue";
             self.email.hidden = NO;
             self.password.hidden = NO;
-            self.forgotPasswordTextField.hidden = NO;
             self.leftSeperatorLine.hidden = NO;
             self.rightSeperatorLine.hidden = NO;
             self.orLbl.hidden = NO;
-            self.countryStackViewTop.constant = 166;
-            self.signUpLink.hidden = YES;
-
+            self.signUpLink.hidden = NO;
             break;
 
         case TabViewTypeSingup :
@@ -262,7 +261,10 @@ extern void *ctx;
             self.donotHaveAccountLbl.hidden = YES;
             self.signUpLink.titleUnderline = YES;
             self.welcomeToTogglLbl.hidden = YES;
+            self.countryStackViewTop.constant = 66;
+
             break;
+
         case TabViewTypeContinueSignin:
             self.appleGoogleGroupViewTop.constant = kSignupAppleViewTop;
             self.containerViewHeight.constant = kSignupContainerHeight;
@@ -287,7 +289,6 @@ extern void *ctx;
             self.orLbl.hidden = YES;
             self.countryStackViewTop.constant = 190;
             self.signUpLink.hidden = YES;
-
             break;
     }
 
@@ -795,5 +796,6 @@ extern void *ctx;
 -(void)continueSignIn
 {
     [self changeTabView:TabViewTypeContinueSignin];
+    [self.view.window makeFirstResponder:self.countrySelect];
 }
 @end
