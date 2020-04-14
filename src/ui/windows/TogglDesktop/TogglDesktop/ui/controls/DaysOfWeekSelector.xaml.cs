@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,12 +13,12 @@ namespace TogglDesktop
         public DaysOfWeekSelector()
         {
             InitializeComponent();
-            Text = "every day";
             GetDaysOfWeekCheckboxes().ForEach(checkBox =>
             {
                 checkBox.Checked += OnCheckBoxIsCheckedChanged;
                 checkBox.Unchecked += OnCheckBoxIsCheckedChanged;
             });
+            RefreshText();
         }
 
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
@@ -72,31 +73,30 @@ namespace TogglDesktop
                 .ToArray();
         }
 
-        private static string GetText(bool[] daysOfWeek)
+        private static string GetText(Dictionary<DayOfWeek, bool> isDayChecked)
         {
             // TODO: use beginning of week for correct order of days
-            var checkedCount = daysOfWeek.Count(x => x);
-            return daysOfWeek switch
+            var checkedCount = isDayChecked.Count(kvp => kvp.Value);
+            return isDayChecked switch
             {
                 _ when checkedCount == 7
-                    => "every day",
-                var x when checkedCount == 5 && !x[0] && !x[6]
-                    => "on weekdays",
-                var x when checkedCount == 6 && (!x[0] || !x[6])
-                    => "on weekdays and " + (x[0] ? "Sunday" : "Saturday"),
-                _ when checkedCount >= 5
-                    => "every day except " + string.Join(", ",
-                    daysOfWeek.WithIndex()
-                        .Where(x => !x.item)
-                        .Select(x => Enum.GetName(typeof(DayOfWeek), (DayOfWeek)x.index))),
-                var x when checkedCount == 4 && !x[0] && !x[6]
-                    => "on weekdays except " + Enum.GetName(typeof(DayOfWeek), (DayOfWeek)(daysOfWeek.WithIndex().Skip(1).First(d => !d.item).index)),
-                var x when checkedCount == 2 && x[0] && x[6]
-                    => "on weekend",
-                _ => "on " + string.Join(", ",
-                    daysOfWeek.WithIndex()
-                    .Where(x => x.item)
-                    .Select(x => Enum.GetName(typeof(DayOfWeek), (DayOfWeek)x.index)))
+                => "every day",
+                var x when checkedCount == 5 && !x[DayOfWeek.Sunday] && !x[DayOfWeek.Saturday]
+                => "on weekdays",
+                var x when checkedCount == 6 && (!x[DayOfWeek.Sunday] || !x[DayOfWeek.Saturday])
+                => "on weekdays and " + (x[DayOfWeek.Sunday] ? "Sunday" : "Saturday"),
+                var x when checkedCount >= 5
+                => "every day except " + string.Join(", ",
+                    x.Where(kvp => !kvp.Value)
+                        .Select(kvp => Enum.GetName(typeof(DayOfWeek), kvp.Key))),
+                var x when checkedCount == 4 && !x[DayOfWeek.Sunday] && !x[DayOfWeek.Saturday]
+                => "on weekdays except " +
+                   Enum.GetName(typeof(DayOfWeek), x.Where(kvp => kvp.Key.IsWeekday() && !kvp.Value)),
+                var x when checkedCount == 2 && x[DayOfWeek.Sunday] && x[DayOfWeek.Saturday]
+                => "on weekend",
+                var x => "on " + string.Join(", ",
+                    x.Where(kvp => kvp.Value)
+                        .Select(kvp => Enum.GetName(typeof(DayOfWeek), kvp.Key)))
             };
         }
 
@@ -123,8 +123,15 @@ namespace TogglDesktop
 
         private void OnCheckBoxIsCheckedChanged(object sender, RoutedEventArgs e)
         {
-            var isCheckBoxChecked = GetDaysOfWeekCheckboxes().Select(isChecked).ToArray();
-            Text = GetText(isCheckBoxChecked.Skip(6).Concat(isCheckBoxChecked.Take(6)).ToArray());
+            RefreshText();
+        }
+
+        private void RefreshText()
+        {
+            var isDayChecked = GetDaysOfWeekCheckboxes()
+                .WithIndex()
+                .ToDictionary(x => lastBeginningOfWeek.AddDays(x.index), x => isChecked(x.item));
+            Text = GetText(isDayChecked);
         }
     }
 }
