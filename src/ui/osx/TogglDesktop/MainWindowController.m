@@ -78,6 +78,10 @@ extern void *ctx;
                                                  selector:@selector(startDisplayInAppMessage:)
                                                      name:kStartDisplayInAppMessage
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleContinueSignInNotification:)
+                                                     name:kContinueSignIn
+                                                   object:nil];
 	}
 	return self;
 }
@@ -250,7 +254,6 @@ extern void *ctx;
 	if (self.loginViewController.view.superview != nil)
 	{
 		[self.loginViewController resetLoader];
-        [self.loginViewController handleErrorMessage:errorMessage];
 	}
 }
 
@@ -422,4 +425,11 @@ extern void *ctx;
     return [[TouchBarService shared] makeTouchBar];
 }
 
+-(void) handleContinueSignInNotification:(NSNotification *) noti
+{
+    if (self.loginViewController.view.superview != nil)
+    {
+        [self.loginViewController continueSignIn];
+    }
+}
 @end

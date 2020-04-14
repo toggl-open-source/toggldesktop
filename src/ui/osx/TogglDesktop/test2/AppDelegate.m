@@ -1262,6 +1262,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_countries(ctx, on_countries);
 	toggl_on_timeline(ctx, on_timeline);
     toggl_on_message(ctx, on_display_message);
+    toggl_on_continue_sign_in(ctx, on_continue_sign_in);
 
 	NSLog(@"Version %@", self.version);
 
@@ -1797,5 +1798,10 @@ void on_display_message(const char *title,
     [self onLogoutMenuItem:self];
     [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
                                                                 object:@"Invalid Apple session. Please try login again."];
+}
+
+void on_continue_sign_in() {
+    [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kContinueSignIn
+                                                                object:nil];
 }
 @end

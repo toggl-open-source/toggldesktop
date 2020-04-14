@@ -18,6 +18,7 @@ typedef NS_ENUM (NSUInteger, TabViewType)
 {
 	TabViewTypeLogin,
 	TabViewTypeSingup,
+    TabViewTypeContinueSignin
 };
 
 static NSString *const emailMissingError = @"Please enter valid email address";
@@ -234,6 +235,19 @@ extern void *ctx;
             self.signUpLink.stringValue = @"Back to Log in";
             self.donotHaveAccountLbl.hidden = YES;
             self.signUpLink.titleUnderline = YES;
+            break;
+        case TabViewTypeContinueSignin:
+            self.appleGoogleGroupViewTop.constant = kSignupAppleViewTop;
+            self.containerViewHeight.constant = kSignupContainerHeight;
+            self.signUpGroupView.hidden = NO;
+            self.appleBtn.title = @" Sign up with Apple";
+            self.googleBtn.title = @" Sign up with Google";
+            self.userActionBtn.title = @"Sign up with email";
+            self.forgotPasswordTextField.hidden = YES;
+            self.signUpLink.stringValue = @"Back to Log in";
+            self.donotHaveAccountLbl.hidden = YES;
+            self.signUpLink.titleUnderline = YES;
+
             break;
     }
 
@@ -532,6 +546,8 @@ extern void *ctx;
         case TabViewTypeSingup :
             [self clickSignupButton:sender];
             break;
+        case TabViewTypeContinueSignin:
+            break;
     }
 }
 
@@ -602,6 +618,8 @@ extern void *ctx;
         case TabViewTypeSingup :
             [self signupAppleBtnOnTap:sender];
             break;
+        case TabViewTypeContinueSignin:
+            break;
     }
 }
 
@@ -614,6 +632,8 @@ extern void *ctx;
             break;
         case TabViewTypeSingup :
             [self signupGoogleBtnOnTap:sender];
+            break;
+        case TabViewTypeContinueSignin:
             break;
     }
 }
@@ -705,11 +725,8 @@ extern void *ctx;
                                                                 object:error.description];
 }
 
--(void)handleErrorMessage:(NSString *)errorMessage
+-(void)continueSignIn
 {
-    // Switch to Sign Up page when it's error from Sign In Apple
-    if (self.userAction == UserActionAppleLogin && [errorMessage isEqualToString:[NSString stringWithCString:kCouldNotFoundTogglAccountWithAppleEmail encoding:NSUTF8StringEncoding]])  {
-        [self changeTabView:TabViewTypeSingup hideErrorMessage:NO];
-    }
+    [self changeTabView:TabViewTypeContinueSignin];
 }
 @end

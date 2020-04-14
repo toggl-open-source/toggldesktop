@@ -10,5 +10,5 @@
 
 @interface LoginViewController : NSViewController
 - (void)resetLoader;
-- (void)handleErrorMessage:(NSString *) errorMessage;
+- (void)continueSignIn;
 @end
