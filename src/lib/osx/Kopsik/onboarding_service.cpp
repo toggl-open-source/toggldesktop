@@ -77,7 +77,18 @@ void OnboardingService::OpenApp() {
     if (state == nullptr) {
         return;
     }
-    handleTimelineTabOnboarding();
+
+    if (handleNewUserOnboarding()) {
+        return;
+    }
+
+    if (handleOldUserOnboarding()) {
+        return;
+    }
+
+    if (handleTimelineTabOnboarding()) {
+        return;
+    }
 }
 
 void OnboardingService::StopTimeEntry() {
@@ -248,7 +259,7 @@ bool OnboardingService::handleEditTimeEntryOnboarding() {
     return false;
 }
 
-void OnboardingService::handleTimelineTabOnboarding() {
+bool OnboardingService::handleTimelineTabOnboarding() {
     // Present Onboarding on Timeline Tab
     /*
      > For all users who tracked at least 3 TEs and hasn’t opened Timeline tab yet
@@ -258,6 +269,61 @@ void OnboardingService::handleTimelineTabOnboarding() {
         state->isPresentTimelineTab = true;
         _callback(TimelineTab);
         sync();
+        return true;
     }
+    return false;
+}
+
+bool OnboardingService::handleNewUserOnboarding() {
+    /*
+     New Toogl User
+     > When user has never tracked any TEs on Desktop
+     > 5 sec after they open the app
+
+     > Hint disappears when user clicks on the X or outside the blue box (applies to all hints)
+     > It reappears twice:
+         1. when user installs the app
+         2. when users comes back to the app after more than 24 hours and still hasn’t tracked any time
+     */
+    if (user->IsNewUser && state->timeEntryTotal == 0 && !state->isPresentNewUser) {
+        state->isPresentNewUser = true;
+
+        // 5 sec after they open the app
+        t->SetTimeout([&]() {
+            _callback(NewUser);
+            t->Stop();
+        }, 5000);
+
+        sync();
+        return true;
+    }
+    return false;
+}
+
+bool OnboardingService::handleOldUserOnboarding() {
+    /*
+     New Desktop App user and Existing Toggl user
+
+     > When user has never tracked any TEs on Desktop
+     > 5 sec after they open the app
+
+     > Hint disappears when user clicks on the X or outside the blue box (applies to all hints)
+     > It reappears twice:
+         1. when user installs the app
+         2. when users comes back to the app after more than 24 hours and still hasn’t tracked any time
+     */
+    if (!user->IsNewUser && !state->isPresentOldUser) {
+        state->isPresentOldUser = true;
+
+        // 5 sec after they open the app
+        t->SetTimeout([&]() {
+            _callback(OldUser);
+            t->Stop();
+        }, 5000);
+
+        sync();
+        return true;
+    }
+    return false;
 }
 }

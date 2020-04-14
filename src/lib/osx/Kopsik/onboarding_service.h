@@ -117,7 +117,9 @@ private:
     bool handleTimelineRecordActivityOnboarding();
     void handleTimelineActivityOnboarding();
     bool handleEditTimeEntryOnboarding();
-    void handleTimelineTabOnboarding();
+    bool handleTimelineTabOnboarding();
+    bool handleNewUserOnboarding();
+    bool handleOldUserOnboarding();
 };
 }
 
