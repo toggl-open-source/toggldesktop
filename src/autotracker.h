@@ -19,11 +19,7 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
  public:
     AutotrackerRule()
         : BaseModel()
-    , days_of_week_(0)
-    , start_time_("")
-    , end_time_("")
-    , pid_(0)
-    , tid_(0) {}
+    {}
 
     virtual ~AutotrackerRule() {}
 
@@ -64,11 +60,11 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
 
  private:
     std::vector<std::string> terms_;
-    Poco::UInt8 days_of_week_;
-    std::string start_time_;
-    std::string end_time_;
-    Poco::UInt64 pid_;
-    Poco::UInt64 tid_;
+    Poco::UInt8 days_of_week_ { 0 };
+    std::string start_time_ { "" };
+    std::string end_time_ { "" };
+    Poco::UInt64 pid_ { 0 };
+    Poco::UInt64 tid_ { 0 };
 };
 
 };  // namespace toggl
