@@ -93,6 +93,7 @@ public:
     void StopTimeEntry();
     void OpenTimelineTab();
     void TurnOnRecordActivity();
+    void EditOrAddTimeEntryDirectlyToTimelineView();
     void SetTimelineDateAt(const Poco::LocalDateTime &value) {
         timeline_date_at_ = value;
     }
@@ -115,7 +116,7 @@ private:
     bool handleTimelineViewOnboarding();
     bool handleTimelineTimeEntryOnboarding();
     bool handleTimelineRecordActivityOnboarding();
-    void handleTimelineActivityOnboarding();
+    bool handleTimelineActivityOnboarding();
     bool handleEditTimeEntryOnboarding();
     bool handleTimelineTabOnboarding();
     bool handleNewUserOnboarding();

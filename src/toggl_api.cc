@@ -1591,3 +1591,7 @@ void toggl_user_did_click_on_timeline_tab(void *context) {
 void toggl_user_did_turn_on_record_activity(void *context) {
     app(context)->UserDidTurnOnRecordActivity();
 }
+
+void toggl_user_did_edit_add_timeentry_on_timeline_view(void *context) {
+    app(context)->UserDidEditOrAddTimeEntryOnTimelineView();
+}
