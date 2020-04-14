@@ -2573,7 +2573,7 @@ error Context::AppleSignup(
     if (err != noError) {
         return displayError(err);
     }
-    return Login(access_token, kAppleAccessToken);
+    return Login(access_token, kAppleAccessToken, true);
 }
 
 error Context::AsyncApleSignup(
@@ -2693,6 +2693,9 @@ error Context::SetLoggedInUserFromJSON(
 
     User *user = new User();
 
+    // Determine if it's a new user for onboarding check
+    user->IsNewUser = isSignup;
+
     err = db()->LoadUserByID(userID, user);
     if (err != noError) {
         delete user;
@@ -2754,6 +2757,7 @@ error Context::Logout() {
         overlay_visible_ = false;
         setUser(nullptr);
 
+        OnboardingService::getInstance()->Reset();
         UI()->resetFirstLaunch();
         UI()->DisplayApp();
 
