@@ -302,13 +302,13 @@ namespace TogglDesktop
                 RemindStarts = this.reminderStartTimeTextBox.Text,
                 RemindEnds = this.reminderEndTimeTextBox.Text,
 
-                RemindMon = isRemindDayChecked[(int)DayOfWeek.Monday],
-                RemindTue = isRemindDayChecked[(int)DayOfWeek.Tuesday],
-                RemindWed = isRemindDayChecked[(int)DayOfWeek.Wednesday],
-                RemindThu = isRemindDayChecked[(int)DayOfWeek.Thursday],
-                RemindFri = isRemindDayChecked[(int)DayOfWeek.Friday],
-                RemindSat = isRemindDayChecked[(int)DayOfWeek.Saturday],
-                RemindSun = isRemindDayChecked[(int)DayOfWeek.Sunday],
+                RemindMon = isRemindDayChecked[DayOfWeek.Monday],
+                RemindTue = isRemindDayChecked[DayOfWeek.Tuesday],
+                RemindWed = isRemindDayChecked[DayOfWeek.Wednesday],
+                RemindThu = isRemindDayChecked[DayOfWeek.Thursday],
+                RemindFri = isRemindDayChecked[DayOfWeek.Friday],
+                RemindSat = isRemindDayChecked[DayOfWeek.Saturday],
+                RemindSun = isRemindDayChecked[DayOfWeek.Sunday],
 
                 #endregion
             };
