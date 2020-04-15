@@ -49,7 +49,9 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (weak) IBOutlet NSCustomComboBox *countrySelect;
 @property (weak) IBOutlet FlatButton *tosCheckbox;
 @property (weak) IBOutlet NSTextFieldClickablePointer *tosLink;
+@property (weak) IBOutlet NSTextFieldClickablePointer *tosContinueLink;
 @property (weak) IBOutlet NSTextFieldClickablePointer *privacyLink;
+@property (weak) IBOutlet NSTextFieldClickablePointer *privacyContinueLink;
 @property (weak) IBOutlet NSBox *boxView;
 @property (weak) IBOutlet NSProgressIndicator *loginLoaderView;
 
@@ -62,7 +64,6 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (weak) IBOutlet FlatButton *userActionBtn;
 @property (weak) IBOutlet NSTextField *donotHaveAccountLbl;
 
-@property (weak) IBOutlet FlatButton *continueBtn;
 @property (weak) IBOutlet NSTextField *welcomeToTogglLbl;
 @property (weak) IBOutlet NSTextField *subWelcomeLbl;
 @property (weak) IBOutlet NSStackView *socialButtonStackView;
@@ -70,6 +71,8 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (weak) IBOutlet NSBox *leftSeperatorLine;
 @property (weak) IBOutlet NSBox *rightSeperatorLine;
 @property (weak) IBOutlet NSLayoutConstraint *countryStackViewTop;
+@property (weak) IBOutlet NSView *termSignUpContainerView;
+@property (weak) IBOutlet NSView *termContinueSignInView;
 
 @property (nonatomic, strong) AutocompleteDataSource *countryAutocompleteDataSource;
 @property (nonatomic, assign) NSInteger selectedCountryID;
@@ -122,6 +125,10 @@ extern void *ctx;
 	self.signUpLink.titleUnderline = YES;
 	self.tosLink.titleUnderline = YES;
 	self.privacyLink.titleUnderline = YES;
+    self.tosContinueLink.titleUnderline = YES;
+    self.privacyContinueLink.titleUnderline = YES;
+    self.tosContinueLink.delegate = self;
+    self.privacyContinueLink.delegate = self;
 
 	self.boxView.wantsLayer = YES;
 	self.boxView.layer.masksToBounds = NO;
@@ -173,8 +180,6 @@ extern void *ctx;
 
 	[self.email.window makeFirstResponder:self.email];
 	[self changeTabView:TabViewTypeLogin];
-    [self changeTabView:TabViewTypeContinueSignin];
-    [self changeTabView:TabViewTypeLogin];
 }
 
 - (void)textFieldClicked:(id)sender
@@ -187,18 +192,27 @@ extern void *ctx;
 
 	if (sender == self.signUpLink)
 	{
-        TabViewType newType = self.currentTab == TabViewTypeSingup ? TabViewTypeLogin : TabViewTypeSingup;
-		[self changeTabView:newType];
+        switch (self.currentTab) {
+            case TabViewTypeLogin:
+                [self changeTabView:TabViewTypeSingup];
+                break;
+            case TabViewTypeSingup:
+                [self changeTabView:TabViewTypeLogin];
+                break;
+            case TabViewTypeContinueSignin:
+                [self changeTabView:TabViewTypeLogin];
+                break;
+        }
 		return;
 	}
 
-	if (sender == self.tosLink)
+    if (sender == self.tosLink || sender == self.tosContinueLink)
 	{
 		toggl_tos(ctx);
 		return;
 	}
 
-	if (sender == self.privacyLink)
+    if (sender == self.privacyLink || sender == self.privacyContinueLink)
 	{
 		toggl_privacy_policy(ctx);
 		return;
@@ -247,6 +261,8 @@ extern void *ctx;
             self.rightSeperatorLine.hidden = NO;
             self.orLbl.hidden = NO;
             self.signUpLink.hidden = NO;
+            self.termContinueSignInView.hidden = YES;
+            self.termSignUpContainerView.hidden = NO;
             break;
 
         case TabViewTypeSingup :
@@ -262,7 +278,8 @@ extern void *ctx;
             self.signUpLink.titleUnderline = YES;
             self.welcomeToTogglLbl.hidden = YES;
             self.countryStackViewTop.constant = 66;
-
+            self.termContinueSignInView.hidden = YES;
+            self.termSignUpContainerView.hidden = NO;
             break;
 
         case TabViewTypeContinueSignin:
@@ -280,15 +297,18 @@ extern void *ctx;
             self.welcomeToTogglLbl.hidden = NO;
             self.subWelcomeLbl.hidden = NO;
             self.socialButtonStackView.hidden = YES;
-            self.userActionBtn.title = @"Continue";
+            self.userActionBtn.title = @"I agree";
             self.email.hidden = YES;
             self.password.hidden = YES;
             self.forgotPasswordTextField.hidden = YES;
             self.leftSeperatorLine.hidden = YES;
             self.rightSeperatorLine.hidden = YES;
             self.orLbl.hidden = YES;
-            self.countryStackViewTop.constant = 190;
-            self.signUpLink.hidden = YES;
+            self.countryStackViewTop.constant = 170;
+            self.signUpLink.stringValue = @"Back";
+            self.signUpLink.titleUnderline = YES;
+            self.termContinueSignInView.hidden = NO;
+            self.termSignUpContainerView.hidden = YES;
             break;
     }
 
@@ -474,6 +494,8 @@ extern void *ctx;
 	self.userActionBtn.enabled = !show;
 	self.signUpLink.enabled = !show;
     self.forgotPasswordTextField.enabled = !show;
+    self.appleBtn.enabled = !show;
+    self.googleBtn.enabled = !show;
 }
 
 - (void)resetLoader
@@ -797,5 +819,6 @@ extern void *ctx;
 {
     [self changeTabView:TabViewTypeContinueSignin];
     [self.view.window makeFirstResponder:self.countrySelect];
+    self.tosCheckbox.state = NSControlStateValueOn;
 }
 @end
