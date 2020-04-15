@@ -19,7 +19,7 @@ namespace TogglDesktop
 
         private void onGithubLinkClick(object sender, RoutedEventArgs e)
         {
-            Toggl.OpenInBrowser("https://github.com/toggl/toggldesktop");
+            Toggl.OpenInBrowser("https://github.com/toggl-open-source/toggldesktop");
         }
     }
 }

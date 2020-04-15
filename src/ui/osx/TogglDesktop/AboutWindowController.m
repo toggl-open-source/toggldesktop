@@ -15,7 +15,7 @@
 #import "ConvertHexColor.h"
 #import "TogglDesktop-Swift.h"
 
-static NSString *const kTogglDesktopGithubURL = @"https://github.com/toggl/toggldesktop";
+static NSString *const kTogglDesktopGithubURL = @"https://github.com/toggl-open-source/toggldesktop";
 
 typedef enum : NSUInteger
 {

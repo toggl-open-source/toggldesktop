@@ -75,7 +75,7 @@
                        Text="An open source project"/>
              <Label HorizontalAlignment="Center"
                        Margin="0 -2 0 20">
-                <Hyperlink NavigateUri="https://github.com/toggl/toggldesktop"
+                <Hyperlink NavigateUri="https://github.com/toggl-open-source/toggldesktop"
                            Style="{StaticResource Toggl.NormalHyperlink}"
                            Click="onGithubLinkClick"
                            >Find us on GitHub</Hyperlink>
