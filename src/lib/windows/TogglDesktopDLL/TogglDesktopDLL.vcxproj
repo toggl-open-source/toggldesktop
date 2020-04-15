@@ -477,6 +477,7 @@
     <ClInclude Include="..\..\..\model\client.h" />
     <ClInclude Include="..\..\..\const.h" />
     <ClInclude Include="..\..\..\context.h" />
+    <ClInclude Include="..\..\..\model\settings.h" />
     <ClInclude Include="..\..\..\util\custom_error_handler.h" />
     <ClInclude Include="..\..\..\database\database.h" />
     <ClInclude Include="..\..\..\feedback.h" />
