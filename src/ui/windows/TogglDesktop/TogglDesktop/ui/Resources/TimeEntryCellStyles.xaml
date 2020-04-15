@@ -5,7 +5,7 @@
     xmlns:toggl="clr-namespace:TogglDesktop">
 
     <sys:Double x:Key="TimeEntryHeight">60</sys:Double>
-    <sys:Double x:Key="TimeEntryDayHeaderHeight">40</sys:Double>
+    <sys:Double x:Key="TimeEntryDayHeaderHeight">32</sys:Double>
 
     <ContextMenu x:Key="TimeEntryContextMenu">
         <MenuItem Header="Delete time entry"
