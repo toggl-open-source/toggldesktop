@@ -2455,11 +2455,13 @@ error Context::Login(
             //
             // Discussion: https://toggl.slack.com/archives/CSE5U3ZUN/p1586418153111700
             //
+            #if defined(__APPLE__)
             if ((password.compare(kAppleAccessToken) == 0 || password.compare(kGoogleAccessToken) == 0) // Applied for Google and Apple Sign In
                 && IsAuthenticationError(err)) {
                 UI()->DisplayOnContinueSignIn();
                 return err;
             }
+            #endif
 
             if (!IsNetworkingError(err)) {
                 return displayError(err);

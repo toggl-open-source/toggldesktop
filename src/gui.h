@@ -694,7 +694,9 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     }
 
     void DisplayOnContinueSignIn() {
-        on_continue_sign_in();
+        if (on_continue_sign_in) {
+            on_continue_sign_in();
+        }
     }
 
  private:
