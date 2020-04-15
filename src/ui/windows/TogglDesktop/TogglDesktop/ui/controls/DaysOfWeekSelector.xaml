@@ -16,7 +16,8 @@
         </TextBlock>
         <Popup x:Name="popup" x:FieldModifier="private"
                AllowsTransparency="True"
-               StaysOpen="False">
+               StaysOpen="False"
+               HorizontalOffset="-4">
             <Grid Background="Transparent">
                 <Border Margin="4"
                         BorderBrush="{DynamicResource Toggl.LightGrayBrush}"
