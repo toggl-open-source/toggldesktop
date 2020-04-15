@@ -8,10 +8,11 @@
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TogglDesktop.LibraryInteropTests</RootNamespace>
+    <RootNamespace>TogglDesktop.Tests</RootNamespace>
     <AssemblyName>TogglDesktop.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\x86\Debug\</OutputPath>
@@ -44,6 +45,7 @@
     <Compile Include="LibraryIntegrationTests.cs" />
     <Compile Include="LibraryUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UIUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\lib\windows\TogglDesktopDLL\TogglDesktopDLL.vcxproj">
