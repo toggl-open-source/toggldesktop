@@ -820,5 +820,6 @@ extern void *ctx;
     [self changeTabView:TabViewTypeContinueSignin];
     [self.view.window makeFirstResponder:self.countrySelect];
     self.tosCheckbox.state = NSControlStateValueOn;
+    [self setUserSignUp:YES];
 }
 @end
