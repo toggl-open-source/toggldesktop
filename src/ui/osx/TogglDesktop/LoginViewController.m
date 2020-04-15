@@ -244,7 +244,7 @@ extern void *ctx;
             self.containerViewHeight.constant = kLoginContainerHeight;
             self.signUpGroupView.hidden = YES;
             self.appleBtn.title = @" Sign in with Apple";
-            self.googleBtn.title = @" Log in with Google";
+            self.googleBtn.title = @" Sign in with Google";
             self.userActionBtn.title = @"Log in with email";
             self.forgotPasswordTextField.hidden = NO;
             self.signUpLink.stringValue = @"Sign up for free";
