@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 
 namespace TogglDesktop
 {
     public partial class DaysOfWeekSelector : UserControl
     {
-        private DayOfWeek lastBeginningOfWeek = DayOfWeek.Monday;
+        private DayOfWeek _lastBeginningOfWeek = DayOfWeek.Monday;
         public DaysOfWeekSelector()
         {
             InitializeComponent();
@@ -32,7 +31,7 @@ namespace TogglDesktop
 
         public void SetBeginningOfWeek(DayOfWeek beginningOfWeek)
         {
-            if (lastBeginningOfWeek == beginningOfWeek)
+            if (_lastBeginningOfWeek == beginningOfWeek)
             {
                 return;
             }
@@ -43,18 +42,18 @@ namespace TogglDesktop
             foreach (var dayOfWeek in DayOfWeekExtensions.DaysOfWeek())
             {
                 var newDayPosition = dayOfWeek.PositionRelativeTo(beginningOfWeek);
-                var oldDayPosition = dayOfWeek.PositionRelativeTo(lastBeginningOfWeek);
+                var oldDayPosition = dayOfWeek.PositionRelativeTo(_lastBeginningOfWeek);
                 daysOfWeekCheckboxes[newDayPosition].IsChecked = isDayOfWeekChecked[oldDayPosition];
 
                 daysOfWeekCheckboxes[newDayPosition].Content = Enum.GetName(typeof(DayOfWeek), dayOfWeek);
             }
 
-            lastBeginningOfWeek = beginningOfWeek;
+            _lastBeginningOfWeek = beginningOfWeek;
         }
 
         public void Reset(bool mon, bool tue, bool wed, bool thu, bool fri, bool sat, bool sun)
         {
-            lastBeginningOfWeek = DayOfWeek.Monday;
+            _lastBeginningOfWeek = DayOfWeek.Monday;
             remindDay1CheckBox.IsChecked = mon;
             remindDay2CheckBox.IsChecked = tue;
             remindDay3CheckBox.IsChecked = wed;
@@ -64,18 +63,25 @@ namespace TogglDesktop
             remindDay7CheckBox.IsChecked = sun;
         }
 
-        public bool[] GetSelection()
+        public Dictionary<DayOfWeek, bool> GetSelection()
         {
-            var checkBoxes = GetDaysOfWeekCheckboxes();
-
-            return DayOfWeekExtensions.DaysOfWeek()
-                .Select(day => isChecked(checkBoxes[day.PositionRelativeTo(lastBeginningOfWeek)]))
-                .ToArray();
+            return GetDaysOfWeekCheckboxes()
+                .WithIndex()
+                .ToDictionary(x => _lastBeginningOfWeek.Add(x.index), x => x.item.IsChecked == true);
         }
 
-        private static bool isChecked(ToggleButton checkBox)
+        public byte GetSelectionByte()
         {
-            return checkBox.IsChecked ?? false;
+            var selection = GetSelection();
+            return Toggl.DaysOfWeekIntoByte(
+                selection[DayOfWeek.Sunday],
+                selection[DayOfWeek.Monday],
+                selection[DayOfWeek.Tuesday],
+                selection[DayOfWeek.Wednesday],
+                selection[DayOfWeek.Thursday],
+                selection[DayOfWeek.Friday],
+                selection[DayOfWeek.Saturday]
+            );
         }
 
         private void TogglePopup(object sender, RoutedEventArgs e)
@@ -101,10 +107,7 @@ namespace TogglDesktop
 
         private void RefreshText()
         {
-            var isDayChecked = GetDaysOfWeekCheckboxes()
-                .WithIndex()
-                .ToDictionary(x => lastBeginningOfWeek.Add(x.index), x => isChecked(x.item));
-            Text = DayOfWeekExtensions.GetText(isDayChecked, lastBeginningOfWeek);
+            Text = DayOfWeekExtensions.GetText(GetSelection(), _lastBeginningOfWeek);
         }
     }
 }
