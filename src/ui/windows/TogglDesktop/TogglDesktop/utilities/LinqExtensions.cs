@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace TogglDesktop
 {
-static class LinqExtensions
+public static class LinqExtensions
 {
     public static IEnumerable<T> Yield<T>(this T subject)
     {

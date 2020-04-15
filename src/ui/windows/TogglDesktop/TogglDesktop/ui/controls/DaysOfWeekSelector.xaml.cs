@@ -73,34 +73,6 @@ namespace TogglDesktop
                 .ToArray();
         }
 
-        private string GetText(Dictionary<DayOfWeek, bool> isDayChecked)
-        {
-            var checkedCount = isDayChecked.Count(kvp => kvp.Value);
-            return isDayChecked switch
-            {
-                _ when checkedCount == 7
-                => "every day",
-                var x when checkedCount == 5 && !x[DayOfWeek.Sunday] && !x[DayOfWeek.Saturday]
-                => "on weekdays",
-                var x when checkedCount == 6 && (!x[DayOfWeek.Sunday] || !x[DayOfWeek.Saturday])
-                => "on weekdays and " + (x[DayOfWeek.Sunday] ? "Sunday" : "Saturday"),
-                var x when checkedCount >= 5
-                => "every day except " + string.Join(", ",
-                    x.Where(kvp => !kvp.Value)
-                        .OrderBy(kvp => kvp.Key.DaysSince(lastBeginningOfWeek))
-                        .Select(kvp => Enum.GetName(typeof(DayOfWeek), kvp.Key))),
-                var x when checkedCount == 4 && !x[DayOfWeek.Sunday] && !x[DayOfWeek.Saturday]
-                => "on weekdays except " +
-                   Enum.GetName(typeof(DayOfWeek), x.First(kvp => kvp.Key.IsWeekday() && !kvp.Value).Key),
-                var x when checkedCount == 2 && x[DayOfWeek.Sunday] && x[DayOfWeek.Saturday]
-                => "on weekend",
-                var x => "on " + string.Join(", ",
-                    x.Where(kvp => kvp.Value)
-                        .OrderBy(kvp => kvp.Key.DaysSince(lastBeginningOfWeek))
-                        .Select(kvp => Enum.GetName(typeof(DayOfWeek), kvp.Key)))
-            };
-        }
-
         private static bool isChecked(ToggleButton checkBox)
         {
             return checkBox.IsChecked ?? false;
@@ -132,7 +104,7 @@ namespace TogglDesktop
             var isDayChecked = GetDaysOfWeekCheckboxes()
                 .WithIndex()
                 .ToDictionary(x => lastBeginningOfWeek.Add(x.index), x => isChecked(x.item));
-            Text = GetText(isDayChecked);
+            Text = DayOfWeekExtensions.GetText(isDayChecked, lastBeginningOfWeek);
         }
     }
 }
