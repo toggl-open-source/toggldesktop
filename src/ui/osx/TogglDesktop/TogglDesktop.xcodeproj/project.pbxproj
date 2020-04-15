@@ -3000,7 +3000,6 @@
 					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 7.0.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -3093,7 +3092,6 @@
 					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 7.0.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -3269,7 +3267,6 @@
 					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 7.0.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -3357,7 +3354,6 @@
 					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 7.0.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
