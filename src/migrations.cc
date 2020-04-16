@@ -1337,6 +1337,8 @@ error Migrations::migrateOnboardingStates() {
                              "is_use_manual_mode integer not null default 0, "
                              "is_present_new_user_onboarding integer not null default 0, "
                              "is_present_old_user_onboarding integer not null default 0, "
+                             "is_present_new_user_second_time_onboarding integer not null default 0, "
+                             "is_present_old_user_second_time_onboarding integer not null default 0, "
                              "is_present_manual_mode_onboarding integer not null default 0, "
                              "is_present_timeline_tab_onboarding integer not null default 0, "
                              "is_present_edit_timeentry_onboarding integer not null default 0, "
