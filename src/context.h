@@ -673,15 +673,16 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::map<Client *, std::string> &clients,
         const std::string &api_token,
         const TogglClient &toggl_client);
-    error pushProjects(
-        const std::map<Project *, std::string> &projects,
-        const std::map<Client *, std::string> &clients,
+    error pushProjects(const std::map<Project *, std::string> &projects,
         const std::string &api_token,
         const TogglClient &toggl_client);
     error pushEntries(
         const std::map<TimeEntry *, std::string> &time_entries,
         const std::string &api_token,
         const TogglClient &toggl_client);
+    error updateProjectClients(
+        const std::map<Client *, std::string> &clients,
+        const std::map<Project *, std::string> &projects);
     error updateEntryProjects(
         const std::map<Project *, std::string> &projects,
         const std::map<TimeEntry *, std::string> &time_entries);
@@ -831,7 +832,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error updateTimeEntryDescription(
         TimeEntry *te,
-        const std::string &value);
+            const std::string &value);
 };
 
 void on_websocket_message(

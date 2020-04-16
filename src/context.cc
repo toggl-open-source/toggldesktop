@@ -5117,6 +5117,12 @@ error Context::pushChanges(
                     err.find(kClientNameAlreadyExists) == std::string::npos) {
                 return err;
             }
+
+            // Update client id on projects if needed
+            err = updateProjectClients(clients, projects);
+            if (err != noError) {
+                return err;
+            }
             client_stopwatch.stop();
             ss << clients.size() << " clients in "
                << client_stopwatch.elapsed() / 1000 << " ms";
@@ -5128,7 +5134,6 @@ error Context::pushChanges(
             project_stopwatch.start();
             error err = pushProjects(
                 projects,
-                clients,
                 api_token,
                 *toggl_client);
             if (err != noError &&
@@ -5222,21 +5227,10 @@ error Context::pushClients(
 
 error Context::pushProjects(
     const std::map<Project *, std::string> &projects,
-    const std::map<Client *, std::string> &clients,
     const std::string &api_token,
     const TogglClient &toggl_client) {
     error err = noError;
     for (auto it = projects.begin(); it != projects.end(); ++it) {
-        if (!it->first->CID() && !it->first->ClientGUID().empty()) {
-            // Find client id
-            for (auto itc = clients.begin(); itc != clients.end(); ++itc) {
-                if (itc->first->GUID().compare(it->first->ClientGUID()) == 0) {
-                    it->first->SetCID(itc->first->ID());
-                    break;
-                }
-            }
-        }
-
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = it->first->ModelURL();
@@ -5366,6 +5360,21 @@ error Context::pushEntries(
         return error_message;
     }
     return noError;
+}
+
+error Context::updateProjectClients(const std::map<Client *, std::string> &clients,
+                                    const std::map<Project *, std::string> &projects) {
+    for (auto it = projects.begin(); it != projects.end(); ++it) {
+        if (!it->first->CID() && !it->first->ClientGUID().empty()) {
+            // Find client id
+            for (auto itc = clients.begin(); itc != clients.end(); ++itc) {
+                if (itc->first->GUID().compare(it->first->ClientGUID()) == 0) {
+                    it->first->SetCID(itc->first->ID());
+                    break;
+                }
+            }
+        }
+    }
 }
 
 error Context::updateEntryProjects(const std::map<Project *, std::string> &projects,
