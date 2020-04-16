@@ -707,78 +707,6 @@ error Migrations::migrateUsers() {
         return err;
     }
 
-    err = db_->Migrate(
-        "users.is_present_new_user_onboarding",
-        "alter table users"
-        " add column is_present_new_user_onboarding integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = db_->Migrate(
-        "users.is_present_old_user_onboarding",
-        "alter table users"
-        " add column is_present_old_user_onboarding integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = db_->Migrate(
-        "users.is_present_manual_mode_onboarding",
-        "alter table users"
-        " add column is_present_manual_mode_onboarding integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = db_->Migrate(
-        "users.is_present_timeline_tab_onboarding",
-        "alter table users"
-        " add column is_present_timeline_tab_onboarding integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = db_->Migrate(
-        "users.is_present_edit_timeentry_onboarding",
-        "alter table users"
-        " add column is_present_edit_timeentry_onboarding integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = db_->Migrate(
-        "users.is_present_timeline_timeentry_onboarding",
-        "alter table users"
-        " add column is_present_timeline_timeentry_onboarding integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = db_->Migrate(
-        "users.is_present_timeline_view_onboarding",
-        "alter table users"
-        " add column is_present_timeline_view_onboarding integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = db_->Migrate(
-        "users.is_present_timeline_activity_onboarding",
-        "alter table users"
-        " add column is_present_timeline_activity_onboarding integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = db_->Migrate(
-        "users.is_present_recode_activity_onboarding",
-        "alter table users"
-        " add column is_present_recode_activity_onboarding integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
     return err;
 }
 
@@ -1438,6 +1366,33 @@ error Migrations::migrateSettings() {
     return noError;
 }
 
+error Migrations::migrateOnboardingStates() {
+    error err = db_->Migrate(
+                             "onboarding_states",
+                             "create table onboarding_states("
+                             "id integer primary key, "
+                             "user_id integer, "
+                             "last_open_app integer, "
+                             "open_timeline_tab_count integer not null default 0, "
+                             "edit_timeline_tab_count integer not null default 0, "
+                             "is_use_timeline_record integer not null default 0, "
+                             "is_use_manual_mode integer not null default 0, "
+                             "is_present_new_user_onboarding integer not null default 0, "
+                             "is_present_old_user_onboarding integer not null default 0, "
+                             "is_present_manual_mode_onboarding integer not null default 0, "
+                             "is_present_timeline_tab_onboarding integer not null default 0, "
+                             "is_present_edit_timeentry_onboarding integer not null default 0, "
+                             "is_present_timeline_timeentry_onboarding integer not null default 0, "
+                             "is_present_timeline_view_onboarding integer not null default 0, "
+                             "is_present_timeline_activity_onboarding integer not null default 0, "
+                             "is_present_recode_activity_onboarding integer not null default 0, "
+                             "CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES users (id) )");
+    if (err != noError) {
+        return err;
+    }
+    return noError;
+}
+
 error Migrations::Run() {
     error err = noError;
 
@@ -1486,7 +1441,9 @@ error Migrations::Run() {
     if (noError == err) {
         err = migrateObmExperiments();
     }
-
+    if (noError == err) {
+        err = migrateOnboardingStates();
+    }
     return err;
 }
 
