@@ -132,11 +132,11 @@ void AutocompleteComboBox::onDropdownSelected(AutocompleteView *item) {
         case 1:
             emit projectSelected(item->ProjectLabel, item->ProjectID, item->ProjectColor, item->TaskLabel, item->TaskID);
             emit billableChanged(item->Billable);
-            setCurrentText(QString());
+            setCurrentText(item->ProjectLabel + (item->ClientLabel.isEmpty() ? "" : ". " + item->ClientLabel));
             break;
         case 2:
             emit projectSelected(item->Text, item->ProjectID, item->ProjectColor, QString(), 0);
-            setCurrentText(QString());
+            setCurrentText(item->ProjectLabel + (item->ClientLabel.isEmpty() ? "" : ". " + item->ClientLabel));
             break;
         default:
             break;
