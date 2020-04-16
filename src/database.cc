@@ -4068,7 +4068,7 @@ error Database::LoadOnboardingState(const Poco::UInt64 &UID, OnboardingState *st
                   "from onboarding_states "
                   "where user_id = :uid "
                   "limit 1",
-                  into(state->state_id),
+                  into(state->local_id),
                   into(state->user_id),
                   into(state->lastOpenApp),
                   into(state->openTimelineTabCount),
@@ -4103,7 +4103,7 @@ error Database::SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *sta
 
         poco_check_ptr(session_);
 
-        if (state->state_id > 0) {
+        if (state->local_id > 0) {
             *session_ <<
             "update onboarding_states "
             "set last_open_app = :last_open_app, open_timeline_tab_count = :open_timeline_tab_count, "
@@ -4111,7 +4111,7 @@ error Database::SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *sta
             "is_present_new_user_onboarding = :is_present_new_user_onboarding, is_present_old_user_onboarding = :is_present_old_user_onboarding, is_present_manual_mode_onboarding = :is_present_manual_mode_onboarding, is_present_timeline_tab_onboarding = :is_present_timeline_tab_onboarding, "
             "is_present_edit_timeentry_onboarding = :is_present_edit_timeentry_onboarding, is_present_timeline_timeentry_onboarding = :is_present_timeline_timeentry_onboarding, is_present_timeline_view_onboarding = :is_present_timeline_view_onboarding, is_present_timeline_activity_onboarding = :is_present_timeline_activity_onboarding, "
             "is_present_recode_activity_onboarding = :is_present_recode_activity_onboarding "
-            "where id = :id AND user_id = :uid",
+            "where local_id = :local_id AND user_id = :uid",
             useRef(state->lastOpenApp),
             useRef(state->openTimelineTabCount),
             useRef(state->editOnTimelineCount),
@@ -4126,7 +4126,7 @@ error Database::SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *sta
             useRef(state->isPresentTimelineView),
             useRef(state->isPresentTimelineActivity),
             useRef(state->isPresentRecordActivity),
-            useRef(state->state_id),
+            useRef(state->local_id),
             useRef(UID),
             now;
         } else {
@@ -4137,7 +4137,7 @@ error Database::SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *sta
             "is_present_new_user_onboarding, is_present_old_user_onboarding, is_present_manual_mode_onboarding, is_present_timeline_tab_onboarding, "
             "is_present_edit_timeentry_onboarding, is_present_timeline_timeentry_onboarding, is_present_timeline_view_onboarding, is_present_timeline_activity_onboarding, "
             "is_present_recode_activity_onboarding) "
-            "values(:user_id, :last_open_app, :open_timeline_tab_count, :edit_timeline_tab_count, :is_use_timeline_record, :is_use_manual_mode"
+            "values(:user_id, :last_open_app, :open_timeline_tab_count, :edit_timeline_tab_count, :is_use_timeline_record, :is_use_manual_mode, "
             ":is_present_new_user_onboarding, :is_present_old_user_onboarding, :is_present_manual_mode_onboarding, :is_present_timeline_tab_onboarding, "
             ":is_present_edit_timeentry_onboarding, :is_present_timeline_timeentry_onboarding, :is_present_timeline_view_onboarding, :is_present_timeline_activity_onboarding, "
             ":is_present_recode_activity_onboarding) ",
@@ -4162,12 +4162,12 @@ error Database::SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *sta
             if (err != noError) {
                 return err;
             }
-            Poco::Int64 state_id(0);
+            Poco::Int64 local_id(0);
             *session_ <<
                       "select last_insert_rowid()",
-                      into(state_id),
+                      into(local_id),
                       now;
-            state->state_id = state_id;
+            state->local_id = local_id;
         }
 
     } catch(const Poco::Exception& exc) {
