@@ -5109,7 +5109,7 @@ error Context::pushChanges(
         if (clients.size() > 0) {
             Poco::Stopwatch client_stopwatch;
             client_stopwatch.start();
-            error err = pushClients(
+            error err = pushModels(
                 clients,
                 api_token,
                 *toggl_client);
@@ -5132,7 +5132,7 @@ error Context::pushChanges(
         if (projects.size() > 0) {
             Poco::Stopwatch project_stopwatch;
             project_stopwatch.start();
-            error err = pushProjects(
+            error err = pushModels(
                 projects,
                 api_token,
                 *toggl_client);
@@ -5189,12 +5189,13 @@ error Context::pushChanges(
     return noError;
 }
 
-error Context::pushClients(
-    const std::map<Client *, std::string> &clients,
+template <typename T>
+error Context::pushModels(
+    const std::map<T *, std::string> &models,
     const std::string &api_token,
     const TogglClient &toggl_client) {
     error err = noError;
-    for (auto it = clients.begin(); it != clients.end(); ++it) {
+    for (auto it = models.begin(); it != models.end(); ++it) {
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = it->first->ModelURL();
@@ -5216,42 +5217,6 @@ error Context::pushClients(
         Json::Reader reader;
         if (!reader.parse(resp.body, root)) {
             err = error("error parsing client POST response");
-            continue;
-        }
-
-        it->first->LoadFromJSON(root);
-    }
-
-    return err;
-}
-
-error Context::pushProjects(
-    const std::map<Project *, std::string> &projects,
-    const std::string &api_token,
-    const TogglClient &toggl_client) {
-    error err = noError;
-    for (auto it = projects.begin(); it != projects.end(); ++it) {
-        HTTPRequest req;
-        req.host = urls::API();
-        req.relative_url = it->first->ModelURL();
-        req.payload = it->second;
-        req.basic_auth_username = api_token;
-        req.basic_auth_password = "api_token";
-
-        HTTPResponse resp = toggl_client.Post(req);
-
-        if (resp.err != noError) {
-            // if we're able to solve the error
-            if (it->first->ResolveError(resp.body)) {
-                displayError(save(false));
-            }
-            continue;
-        }
-
-        Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
-            err = error("error parsing project POST response");
             continue;
         }
 
