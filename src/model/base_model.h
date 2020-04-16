@@ -129,8 +129,17 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     virtual std::string ModelURL() const = 0;
 
     virtual void LoadFromJSON(Json::Value value) {}
+    virtual void LoadFromJSON(const std::string &json) {
+        Json::Reader r;
+        Json::Value root;
+        r.parse(json, root);
+    }
     virtual Json::Value SaveToJSON() const {
-        return 0;
+        return {};
+    }
+    virtual std::string SaveToJSONString() const {
+        Json::StyledWriter writer;
+        return writer.write(SaveToJSON());
     }
 
     virtual bool DuplicateResource(const toggl::error &err) const {

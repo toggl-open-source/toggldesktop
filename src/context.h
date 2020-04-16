@@ -670,22 +670,21 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         TogglClient *https_client,
         bool *had_something_to_push);
     error pushClients(
-        const std::vector<Client *> &clients,
+        const std::map<Client *, std::string> &clients,
         const std::string &api_token,
         const TogglClient &toggl_client);
     error pushProjects(
-        const std::vector<Project *> &projects,
-        const std::vector<Client *> &clients,
+        const std::map<Project *, std::string> &projects,
+        const std::map<Client *, std::string> &clients,
         const std::string &api_token,
         const TogglClient &toggl_client);
     error pushEntries(
-        const std::map<std::string, BaseModel *> &models,
-        const std::vector<TimeEntry *> &time_entries,
+        const std::map<TimeEntry *, std::string> &time_entries,
         const std::string &api_token,
         const TogglClient &toggl_client);
     error updateEntryProjects(
-        const std::vector<Project *> &projects,
-        const std::vector<TimeEntry *> &time_entries);
+        const std::map<Project *, std::string> &projects,
+        const std::map<TimeEntry *, std::string> &time_entries);
     error signup(
         TogglClient *https_client,
         const std::string &email,
@@ -737,8 +736,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     template<typename T>
     void collectPushableModels(
         const std::vector<T *> &list,
-        std::vector<T *> *result,
-        std::map<std::string, BaseModel *> *models = nullptr) const;
+        std::map<T *, std::string> *result) const;
 
     Poco::Mutex db_m_;
     Database *db_;

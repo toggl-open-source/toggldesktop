@@ -5067,11 +5067,9 @@ error Context::pushChanges(
 
         *had_something_to_push = true;
 
-        std::map<std::string, BaseModel *> models;
-
-        std::vector<TimeEntry *> time_entries;
-        std::vector<Project *> projects;
-        std::vector<Client *> clients;
+        std::map<TimeEntry *, std::string> time_entries;
+        std::map<Project *, std::string> projects;
+        std::map<Client *, std::string> clients;
 
         std::string api_token("");
 
@@ -5089,16 +5087,13 @@ error Context::pushChanges(
 
             collectPushableModels(
                 user_->related.TimeEntries,
-                &time_entries,
-                &models);
+                &time_entries);
             collectPushableModels(
                 user_->related.Projects,
-                &projects,
-                &models);
+                &projects);
             collectPushableModels(
                 user_->related.Clients,
-                &clients,
-                &models);
+                &clients);
             if (time_entries.empty()
                     && projects.empty()
                     && clients.empty()) {
@@ -5158,7 +5153,6 @@ error Context::pushChanges(
             Poco::Stopwatch entry_stopwatch;
             entry_stopwatch.start();
             error err = pushEntries(
-                models,
                 time_entries,
                 api_token,
                 *toggl_client);
@@ -5191,23 +5185,15 @@ error Context::pushChanges(
 }
 
 error Context::pushClients(
-    const std::vector<Client *> &clients,
+    const std::map<Client *, std::string> &clients,
     const std::string &api_token,
     const TogglClient &toggl_client) {
-    std::string client_json("");
     error err = noError;
-    for (std::vector<Client *>::const_iterator it =
-        clients.begin();
-            it != clients.end(); ++it) {
-        Json::Value clientJson = (*it)->SaveToJSON();
-
-        Json::StyledWriter writer;
-        client_json = writer.write(clientJson);
-
+    for (auto it = clients.begin(); it != clients.end(); ++it) {
         HTTPRequest req;
         req.host = urls::API();
-        req.relative_url = (*it)->ModelURL();
-        req.payload = client_json;
+        req.relative_url = it->first->ModelURL();
+        req.payload = it->second;
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
@@ -5215,7 +5201,7 @@ error Context::pushClients(
 
         if (resp.err != noError) {
             // if we're able to solve the error
-            if ((*it)->ResolveError(resp.body)) {
+            if (it->first->ResolveError(resp.body)) {
                 displayError(save(false));
             }
             continue;
@@ -5228,43 +5214,33 @@ error Context::pushClients(
             continue;
         }
 
-        (*it)->LoadFromJSON(root);
+        it->first->LoadFromJSON(root);
     }
 
     return err;
 }
 
 error Context::pushProjects(
-    const std::vector<Project *> &projects,
-    const std::vector<Client *> &clients,
+    const std::map<Project *, std::string> &projects,
+    const std::map<Client *, std::string> &clients,
     const std::string &api_token,
     const TogglClient &toggl_client) {
     error err = noError;
-    std::string project_json("");
-    for (std::vector<Project *>::const_iterator it =
-        projects.begin();
-            it != projects.end(); ++it) {
-        if (!(*it)->CID() && !(*it)->ClientGUID().empty()) {
+    for (auto it = projects.begin(); it != projects.end(); ++it) {
+        if (!it->first->CID() && !it->first->ClientGUID().empty()) {
             // Find client id
-            for (std::vector<Client *>::const_iterator itc =
-                clients.begin();
-                    itc != clients.end(); ++itc) {
-                if ((*itc)->GUID().compare((*it)->ClientGUID()) == 0) {
-                    (*it)->SetCID((*itc)->ID());
+            for (auto itc = clients.begin(); itc != clients.end(); ++itc) {
+                if (itc->first->GUID().compare(it->first->ClientGUID()) == 0) {
+                    it->first->SetCID(itc->first->ID());
                     break;
                 }
             }
         }
 
-        Json::Value projectJson = (*it)->SaveToJSON();
-
-        Json::StyledWriter writer;
-        project_json = writer.write(projectJson);
-
         HTTPRequest req;
         req.host = urls::API();
-        req.relative_url = (*it)->ModelURL();
-        req.payload = project_json;
+        req.relative_url = it->first->ModelURL();
+        req.payload = it->second;
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
@@ -5272,7 +5248,7 @@ error Context::pushProjects(
 
         if (resp.err != noError) {
             // if we're able to solve the error
-            if ((*it)->ResolveError(resp.body)) {
+            if (it->first->ResolveError(resp.body)) {
                 displayError(save(false));
             }
             continue;
@@ -5285,74 +5261,42 @@ error Context::pushProjects(
             continue;
         }
 
-        (*it)->LoadFromJSON(root);
+        it->first->LoadFromJSON(root);
     }
 
     return err;
 }
 
-error Context::updateEntryProjects(const std::vector<Project *> &projects,
-                                   const std::vector<TimeEntry *> &time_entries) {
-    for (std::vector<TimeEntry *>::const_iterator it =
-        time_entries.begin();
-            it != time_entries.end(); ++it) {
-        if (!(*it)->PID() && !(*it)->ProjectGUID().empty()) {
-            // Find project id
-            for (std::vector<Project *>::const_iterator itc =
-                projects.begin();
-                    itc != projects.end(); ++itc) {
-                if ((*itc)->GUID().compare((*it)->ProjectGUID()) == 0) {
-                    (*it)->SetPID((*itc)->ID());
-                    break;
-                }
-            }
-        }
-    }
-
-    return noError;
-}
-
 error Context::pushEntries(
-    const std::map<std::string, BaseModel *>&,
-    const std::vector<TimeEntry *> &time_entries,
+    const std::map<TimeEntry *, std::string> &time_entries,
     const std::string &api_token,
     const TogglClient &toggl_client) {
 
-    std::string entry_json("");
     std::string error_message("");
     bool error_found = false;
     bool offline = false;
 
-    for (std::vector<TimeEntry *>::const_iterator it =
-        time_entries.begin();
-            it != time_entries.end(); ++it) {
+    for (auto it = time_entries.begin(); it != time_entries.end(); ++it) {
         // Avoid trying to POST when we're offline
         if (offline) {
             // Mark the time entry as unsynced now
-            (*it)->SetUnsynced();
+            it->first->SetUnsynced();
             continue;
         }
 
-        Json::Value entryJson = (*it)->SaveToJSON();
-
-        Json::StyledWriter writer;
-        entry_json = writer.write(entryJson);
-
-        // std::cout << entry_json;
-
         HTTPRequest req;
         req.host = urls::API();
-        req.relative_url = (*it)->ModelURL();
-        req.payload = entry_json;
+        req.relative_url = it->first->ModelURL();
+        req.payload = it->second;
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
         HTTPResponse resp;
 
-        if ((*it)->NeedsDELETE()) {
+        if (it->first->NeedsDELETE()) {
             req.payload = "";
             resp = toggl_client.Delete(req);
-        } else if ((*it)->ID()) {
+        } else if (it->first->ID()) {
             resp = toggl_client.Put(req);
         } else {
             resp = toggl_client.Post(req);
@@ -5360,13 +5304,13 @@ error Context::pushEntries(
 
         if (resp.err != noError) {
             // if we're able to solve the error
-            if ((*it)->ResolveError(resp.body)) {
+            if (it->first->ResolveError(resp.body)) {
                 displayError(save(false));
             }
 
             // Not found on server. Probably deleted already.
-            if ((*it)->isNotFound(resp.body)) {
-                (*it)->MarkAsDeletedOnServer();
+            if (it->first->isNotFound(resp.body)) {
+                it->first->MarkAsDeletedOnServer();
                 continue;
             }
             error_found = true;
@@ -5376,7 +5320,7 @@ error Context::pushEntries(
             }
 
             // Mark the time entry as unsynced now
-            (*it)->SetUnsynced();
+            it->first->SetUnsynced();
 
             offline = IsNetworkingError(resp.err);
 
@@ -5387,9 +5331,9 @@ error Context::pushEntries(
             continue;
         }
 
-        if ((*it)->NeedsDELETE()) {
+        if (it->first->NeedsDELETE()) {
             // Successfully deleted entry
-            (*it)->MarkAsDeletedOnServer();
+            it->first->MarkAsDeletedOnServer();
             continue;
         }
 
@@ -5405,22 +5349,39 @@ error Context::pushEntries(
             continue;
         }
 
-        if (!(*it)->ID()) {
-            if (!(user_->SetTimeEntryID(id, (*it)))) {
+        if (!it->first->ID()) {
+            if (!(user_->SetTimeEntryID(id, it->first))) {
                 continue;
             }
         }
 
-        if ((*it)->ID() != id) {
+        if (it->first->ID() != id) {
             return error("Backend has changed the ID of the entry");
         }
 
-        (*it)->LoadFromJSON(root);
+        it->first->LoadFromJSON(root);
     }
 
     if (error_found) {
         return error_message;
     }
+    return noError;
+}
+
+error Context::updateEntryProjects(const std::map<Project *, std::string> &projects,
+                                   const std::map<TimeEntry *, std::string> &time_entries) {
+    for (auto it = time_entries.begin(); it != time_entries.end(); ++it) {
+        if (!it->first->PID() && !it->first->ProjectGUID().empty()) {
+            // Find project id
+            for (auto itc = projects.begin(); itc != projects.end(); ++itc) {
+                if (itc->first->GUID().compare(it->first->ProjectGUID()) == 0) {
+                    it->first->SetPID(itc->first->ID());
+                    break;
+                }
+            }
+        }
+    }
+
     return noError;
 }
 
@@ -6091,8 +6052,7 @@ error Context::PullCountries() {
 template<typename T>
 void Context::collectPushableModels(
     const std::vector<T *> &list,
-    std::vector<T *> *result,
-    std::map<std::string, BaseModel *> *models) const {
+    std::map<T *, std::string> *result) const {
 
     poco_check_ptr(result);
 
@@ -6106,10 +6066,7 @@ void Context::collectPushableModels(
         }
         user_->EnsureWID(model);
         model->EnsureGUID();
-        result->push_back(model);
-        if (models && !model->GUID().empty()) {
-            (*models)[model->GUID()] = model;
-        }
+        result->insert({model, model->SaveToJSONString()});
     }
 }
 
