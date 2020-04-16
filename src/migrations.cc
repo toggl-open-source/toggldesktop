@@ -1330,7 +1330,7 @@ error Migrations::migrateOnboardingStates() {
                              "create table onboarding_states("
                              "local_id integer primary key, "
                              "user_id integer not null, "
-                             "last_open_app integer, "
+                             "created_at integer, "
                              "open_timeline_tab_count integer not null default 0, "
                              "edit_timeline_tab_count integer not null default 0, "
                              "is_use_timeline_record integer not null default 0, "

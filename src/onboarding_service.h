@@ -43,7 +43,7 @@ public:
     , timeEntryTotal(0)
     , openTimelineTabCount(0)
     , firstTimeEntryCreatedAt()
-    , lastOpenApp(0)
+    , createdAt(std::time(NULL))
     , editOnTimelineCount(0)
     , isUseTimelineRecord(false)
     , isUseManualMode(false)
@@ -62,7 +62,7 @@ public:
     Poco::Int64 timeEntryTotal;
     Poco::Int64 firstTimeEntryCreatedAt;
     Poco::Int64 openTimelineTabCount;
-    Poco::Int64 lastOpenApp;
+    Poco::Int64 createdAt;
     Poco::Int64 editOnTimelineCount;
     bool isUseTimelineRecord;
     bool isUseManualMode;
