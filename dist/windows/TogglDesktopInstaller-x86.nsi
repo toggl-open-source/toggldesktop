@@ -181,14 +181,16 @@ Section
   File $%TEMP%\Uninstall.exe
 !endif
 
-  ;Create Desktop shortcut only when shortcut is not present or at first install
-  IfFileExists $DESKTOP\TogglDesktop.lnk 0 ShortcutDoesntExist
+  ;Create Desktop shortcut at first install
+  ${If} $isOldUpdater == 0
+  ${AndIf} $isNewUpdater == 0
     CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$INSTDIR\TogglDesktop.exe" ""
-    ShortcutDoesntExist:
-    ${If} $isOldUpdater == 0
-    ${AndIf} $isNewUpdater == 0
-      CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$INSTDIR\TogglDesktop.exe" ""
-    ${EndIf}
+  ${Else}
+    ; Overwrite the possibly faulty shortcut (#4005)
+    IfFileExists $DESKTOP\TogglDesktop.lnk 0
+      SetOutPath "$LOCALAPPDATA\TogglDesktop"
+      CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$LOCALAPPDATA\TogglDesktop\TogglDesktop.exe" ""
+  ${EndIf}
 
   ${If} $isOldUpdater == 0
   ${AndIf} $isNewUpdater == 0
