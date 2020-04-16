@@ -189,6 +189,7 @@ Section
   ${Else}
     ; Overwrite the possibly faulty shortcut (#4005)
     IfFileExists $DESKTOP\TogglDesktop.lnk 0
+      SetOutPath "$LOCALAPPDATA\TogglDesktop"
       CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$LOCALAPPDATA\TogglDesktop\TogglDesktop.exe" ""
   ${EndIf}
 
