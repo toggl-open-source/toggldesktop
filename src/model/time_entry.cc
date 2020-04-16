@@ -73,11 +73,6 @@ bool TimeEntry::ResolveError(const error &err) {
     }
     return false;
 }
-
-bool TimeEntry::isNotFound(const error &err) const {
-    return std::string::npos != std::string(err).find(
-        "Time entry not found");
-}
 bool TimeEntry::isMissingCreatedWith(const error &err) const {
     return std::string::npos != std::string(err).find(
         "created_with needs to be provided an a valid string");

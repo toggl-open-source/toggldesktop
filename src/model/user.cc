@@ -1051,7 +1051,7 @@ void User::loadUserProjectFromJSON(
     model->LoadFromJSON(data);
 }
 
-bool User::SetTimeEntryID(
+bool User::SetModelID(
     Poco::UInt64 id,
     TimeEntry* timeEntry) {
 
@@ -1078,9 +1078,19 @@ bool User::SetTimeEntryID(
     }
 }
 
+bool User::SetModelID(Poco::UInt64 id, Project *project) {
+    project->SetID(id);
+    return true;
+}
+
+bool User::SetModelID(Poco::UInt64 id, Client *client) {
+    client->SetID(id);
+    return true;
+}
+
 void User::loadUserTimeEntryFromJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
+        Json::Value data,
+        std::set<Poco::UInt64> *alive) {
 
     // alive can be 0, dont assert/check it
 

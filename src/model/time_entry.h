@@ -139,8 +139,6 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
 
     Poco::Int64 RealDurationInSeconds() const;
 
-    bool isNotFound(const error &err) const;
-
     const std::string GroupHash() const;
 
  private:

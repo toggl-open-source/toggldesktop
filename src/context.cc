@@ -5157,7 +5157,7 @@ error Context::pushChanges(
         if (time_entries.size() > 0) {
             Poco::Stopwatch entry_stopwatch;
             entry_stopwatch.start();
-            error err = pushEntries(
+            error err = pushModels(
                 time_entries,
                 api_token,
                 *toggl_client);
@@ -5194,48 +5194,12 @@ error Context::pushModels(
     const std::map<T *, std::string> &models,
     const std::string &api_token,
     const TogglClient &toggl_client) {
-    error err = noError;
-    for (auto it = models.begin(); it != models.end(); ++it) {
-        HTTPRequest req;
-        req.host = urls::API();
-        req.relative_url = it->first->ModelURL();
-        req.payload = it->second;
-        req.basic_auth_username = api_token;
-        req.basic_auth_password = "api_token";
-
-        HTTPResponse resp = toggl_client.Post(req);
-
-        if (resp.err != noError) {
-            // if we're able to solve the error
-            if (it->first->ResolveError(resp.body)) {
-                displayError(save(false));
-            }
-            continue;
-        }
-
-        Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
-            err = error("error parsing client POST response");
-            continue;
-        }
-
-        it->first->LoadFromJSON(root);
-    }
-
-    return err;
-}
-
-error Context::pushEntries(
-    const std::map<TimeEntry *, std::string> &time_entries,
-    const std::string &api_token,
-    const TogglClient &toggl_client) {
 
     std::string error_message("");
     bool error_found = false;
     bool offline = false;
 
-    for (auto it = time_entries.begin(); it != time_entries.end(); ++it) {
+    for (auto it = models.begin(); it != models.end(); ++it) {
         // Avoid trying to POST when we're offline
         if (offline) {
             // Mark the time entry as unsynced now
@@ -5309,7 +5273,7 @@ error Context::pushEntries(
         }
 
         if (!it->first->ID()) {
-            if (!(user_->SetTimeEntryID(id, it->first))) {
+            if (!(user_->SetModelID(id, it->first))) {
                 continue;
             }
         }

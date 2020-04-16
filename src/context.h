@@ -674,10 +674,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::map<T *, std::string> &models,
         const std::string &api_token,
         const TogglClient &toggl_client);
-    error pushEntries(
-        const std::map<TimeEntry *, std::string> &time_entries,
-        const std::string &api_token,
-        const TogglClient &toggl_client);
     error updateProjectClients(
         const std::map<Client *, std::string> &clients,
         const std::map<Project *, std::string> &projects);

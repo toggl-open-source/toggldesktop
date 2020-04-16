@@ -137,9 +137,11 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     virtual Json::Value SaveToJSON() const {
         return {};
     }
-    virtual std::string SaveToJSONString() const {
+    std::string SaveToJSONString() const {
         Json::StyledWriter writer;
-        return writer.write(SaveToJSON());
+        std::string result = writer.write(SaveToJSON());
+        logger().log("RETURNING: ", result);
+        return result;
     }
 
     virtual bool DuplicateResource(const toggl::error &err) const {
@@ -150,6 +152,12 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     }
     virtual bool ResolveError(const toggl::error &err) {
         return false;
+    }
+
+    // FIXME: HACK, this was originally in TimeEntry, added here for compatibility with other models
+    bool isNotFound(const error &err) const {
+        return std::string::npos != std::string(err).find(
+            "Time entry not found");
     }
 
     error LoadFromDataString(const std::string &);

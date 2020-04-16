@@ -210,9 +210,10 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     bool LoadUserPreferencesFromJSON(
         Json::Value data);
 
-    bool SetTimeEntryID(
-        Poco::UInt64 id,
-        TimeEntry* timeEntry);
+    // HACK, doesn't protect for Clients and Projects
+    bool SetModelID(Poco::UInt64 id, TimeEntry* timeEntry);
+    bool SetModelID(Poco::UInt64 id, Project* project);
+    bool SetModelID(Poco::UInt64 id, Client* client);
 
     template<typename T>
     void EnsureWID(T *model) const {
