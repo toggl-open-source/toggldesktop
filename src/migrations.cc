@@ -665,48 +665,6 @@ error Migrations::migrateUsers() {
         return err;
     }
 
-    // Onboarding
-
-    err = db_->Migrate(
-        "users.last_open_app",
-        "alter table users"
-        " add column last_open_app integer;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = db_->Migrate(
-        "users.open_timeline_tab_count",
-        "alter table users"
-        " add column open_timeline_tab_count integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = db_->Migrate(
-        "users.edit_timeline_tab_count",
-        "alter table users"
-        " add column edit_timeline_tab_count integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = db_->Migrate(
-        "users.is_use_timeline_record",
-        "alter table users"
-        " add column is_use_timeline_record integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = db_->Migrate(
-        "users.is_use_manual_mode",
-        "alter table users"
-        " add column is_use_manual_mode integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
     return err;
 }
 
@@ -1370,8 +1328,8 @@ error Migrations::migrateOnboardingStates() {
     error err = db_->Migrate(
                              "onboarding_states",
                              "create table onboarding_states("
-                             "id integer primary key AUTOINCREMENT, "
-                             "user_id integer, "
+                             "local_id integer primary key, "
+                             "user_id integer not null, "
                              "last_open_app integer, "
                              "open_timeline_tab_count integer not null default 0, "
                              "edit_timeline_tab_count integer not null default 0, "
