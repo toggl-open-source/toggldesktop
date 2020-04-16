@@ -22,6 +22,7 @@
 #include "timeline_notifications.h"
 #include "types.h"
 #include "websocket_client.h"
+#include "eventqueue.h"
 
 #include <Poco/Activity.h>
 #include <Poco/LocalDateTime.h>
@@ -46,6 +47,7 @@ class Database;
 class TimelineUploader;
 class WindowChangeRecorder;
 class OnboardingService;
+class EventQueue;
 
 class TOGGL_INTERNAL_EXPORT UIElements {
  public:
@@ -581,6 +583,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     static bool lessThanVersion(const std::string& version1, const std::string& version2);
 
     Logger logger { "context" };
+    EventQueue eventQueue_;
 
     void sync(const bool full_sync);
 
