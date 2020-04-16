@@ -1,6 +1,16 @@
 {
     "versions": [
         {
+            "version": "7.5.109",
+            "rows": [
+                "Fixed the bug causing an incorrect location of the desktop shortcut",
+                "Updated the GitHub link in the About view"
+            ],
+            "date": "April 16th 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.106",
             "rows": [
                 "Fixed the default project not always applying correctly",
