@@ -10,11 +10,17 @@ import Foundation
 
 @objc final class OnboardingServiceObjc: NSObject {
 
-    @objc class func hintFrom(value: Int) -> OnboardingHint {
-        return OnboardingHint(rawValue: value) ?? .none
-    }
+    @objc class func handleOnboardingNotification(_ noti: Notification, atView: (OnboardingHint) -> NSView?) {
+        guard let number = noti.object as? NSNumber else { return }
+        guard let hint = OnboardingHint(rawValue: number.intValue) else {
+            return
+        }
+        guard let view = atView(hint) else {
+            print("[ERROR] Couldn't find the present view at \(hint)")
+            return
+        }
 
-    @objc class func present(hint: OnboardingHint, atView: NSView) {
-        OnboardingService.shared.present(hint: hint, view: atView)
+        print("✅ Present onboarding hint = \(hint)")
+        OnboardingService.shared.present(hint: hint, view: view)
     }
 }
