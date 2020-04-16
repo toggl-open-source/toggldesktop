@@ -86,7 +86,8 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , syncer_(this, &Context::syncerActivity)
 , update_path_("")
 , overlay_visible_(false)
-, last_message_id_("") {
+, last_message_id_("")
+, eventQueue_(this) {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
     }
@@ -123,6 +124,7 @@ Context::Context(const std::string &app_name, const std::string &app_version)
     pomodoro_break_entry_ = nullptr;
 
     // Register event action to trigger UI
+    OnboardingService::getInstance()->RegisterEventQueue(eventQueue_);
     OnboardingService::getInstance()->RegisterEvents([&] (const OnboardingType onboardingType) {
         UI()->DisplayOnboarding(onboardingType);
     });
@@ -257,6 +259,9 @@ error Context::StartEvents() {
         if (HTTPClient::Config.CACertPath.empty()) {
             return displayError("Missing CA cert bundle path!");
         }
+
+        // Queue Event
+        eventQueue_.start();
 
         // Check that UI is wired up
         error err = UI()->VerifyCallbacks();

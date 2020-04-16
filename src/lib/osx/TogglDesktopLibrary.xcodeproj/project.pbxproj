@@ -113,6 +113,8 @@
 		BAA842332403DAE000BCCB67 /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAA8422F2403DAE000BCCB67 /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAB6E99124484A9000ED4515 /* onboarding_service.h in Headers */ = {isa = PBXBuildFile; fileRef = BAB6E98F24484A9000ED4515 /* onboarding_service.h */; };
 		BAB6E99224484A9000ED4515 /* onboarding_service.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAB6E99024484A9000ED4515 /* onboarding_service.cpp */; };
+		BAB6E995244861C100ED4515 /* eventqueue.h in Headers */ = {isa = PBXBuildFile; fileRef = BAB6E993244861C100ED4515 /* eventqueue.h */; };
+		BAB6E996244861C100ED4515 /* eventqueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAB6E994244861C100ED4515 /* eventqueue.cpp */; };
 		C5DA1FAB17F18D7B001C4565 /* database.cc in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FA417F18D7B001C4565 /* database.cc */; };
 		C5DA1FAC17F18D7B001C4565 /* database.h in Headers */ = {isa = PBXBuildFile; fileRef = C5DA1FA517F18D7B001C4565 /* database.h */; };
 		C5DA1FB117F18D7B001C4565 /* types.h in Headers */ = {isa = PBXBuildFile; fileRef = C5DA1FAA17F18D7B001C4565 /* types.h */; };
@@ -244,6 +246,8 @@
 		BAA8422F2403DAE000BCCB67 /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.1.1.dylib; path = ../../ui/osx/TogglDesktop/Library/openssl/libssl.1.1.dylib; sourceTree = "<group>"; };
 		BAB6E98F24484A9000ED4515 /* onboarding_service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = onboarding_service.h; path = ../../../onboarding_service.h; sourceTree = "<group>"; };
 		BAB6E99024484A9000ED4515 /* onboarding_service.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = onboarding_service.cpp; path = ../../../onboarding_service.cpp; sourceTree = "<group>"; };
+		BAB6E993244861C100ED4515 /* eventqueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eventqueue.h; path = ../../../eventqueue.h; sourceTree = "<group>"; };
+		BAB6E994244861C100ED4515 /* eventqueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eventqueue.cpp; path = ../../../eventqueue.cpp; sourceTree = "<group>"; };
 		BAD233DA21D60A4D0039C742 /* libPocoNet.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.dylib; sourceTree = "<group>"; };
 		BAD233DB21D60A4D0039C742 /* libPocoFoundation.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.dylib; sourceTree = "<group>"; };
 		BAD233DC21D60A4D0039C742 /* libPocoUtil.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.dylib; sourceTree = "<group>"; };
@@ -442,6 +446,8 @@
 				BA063BFF23B0AF2F003A96FE /* MacOSApplicationInfo.mm */,
 				BAB6E99024484A9000ED4515 /* onboarding_service.cpp */,
 				BAB6E98F24484A9000ED4515 /* onboarding_service.h */,
+				BAB6E994244861C100ED4515 /* eventqueue.cpp */,
+				BAB6E993244861C100ED4515 /* eventqueue.h */,
 			);
 			name = lib;
 			path = Kopsik;
@@ -471,6 +477,7 @@
 				74B587C318BBC77E00E9F6CE /* time_entry.h in Headers */,
 				74B587C418BBC77E00E9F6CE /* related_data.h in Headers */,
 				748B7DAC1AC5963B00FE01D2 /* settings.h in Headers */,
+				BAB6E995244861C100ED4515 /* eventqueue.h in Headers */,
 				74B587BE18BBC77E00E9F6CE /* task.h in Headers */,
 				74699F6C1A67053600691986 /* analytics.h in Headers */,
 				748B7DAA1AC5963B00FE01D2 /* netconf.h in Headers */,
@@ -618,6 +625,7 @@
 				743024141AEFA819006DC911 /* autotracker.cc in Sources */,
 				7408EDB818C51CEB00CBE8F1 /* feedback.cc in Sources */,
 				74E16831180F26D90026261C /* websocket_client.cc in Sources */,
+				BAB6E996244861C100ED4515 /* eventqueue.cpp in Sources */,
 				74B587CA18BBC77E00E9F6CE /* client.cc in Sources */,
 				BA1AB53E235DEAD4000433AE /* MacOSVersionChecker.mm in Sources */,
 				7408EDB118C51CEB00CBE8F1 /* proxy.cc in Sources */,
