@@ -296,17 +296,29 @@ bool OnboardingService::handleNewUserOnboarding() {
          1. when user installs the app
          2. when users comes back to the app after more than 24 hours and still hasn’t tracked any time
      */
-    if (user->IsNewUser && state->timeEntryTotal == 0 && !state->isPresentNewUser) {
-        state->isPresentNewUser = true;
+    if (user->IsNewUser && state->timeEntryTotal == 0) {
+        bool isTrigger = false;
 
-        // 5 sec after they open the app
-        t->SetTimeout([&]() {
-            _callback(NewUser);
-            t->Stop();
-        }, 5000);
+        // Present twice
+        time_t elapsed = std::time(NULL) - state->createdAt;
+        if (!state->isPresentNewUser) { // first time
+            isTrigger = true;
+            state->isPresentNewUser = true;
+        } else if (!state->isPresentNewUserSecondTime && elapsed > 86400) { // second time
+            isTrigger = true;
+            state->isPresentNewUserSecondTime = true;
+        }
 
-        sync();
-        return true;
+        if (isTrigger) {
+            // 5 sec after they open the app
+            t->SetTimeout([&]() {
+                _callback(NewUser);
+                t->Stop();
+            }, 5000);
+
+            sync();
+            return true;
+        }
     }
     return false;
 }
@@ -323,17 +335,28 @@ bool OnboardingService::handleOldUserOnboarding() {
          1. when user installs the app
          2. when users comes back to the app after more than 24 hours and still hasn’t tracked any time
      */
-    if (!user->IsNewUser && !state->isPresentOldUser) {
-        state->isPresentOldUser = true;
+    if (!user->IsNewUser) {
+        bool isTrigger = false;
+        time_t elapsed = std::time(NULL) - state->createdAt;
 
-        // 5 sec after they open the app
-        t->SetTimeout([&]() {
-            _callback(OldUser);
-            t->Stop();
-        }, 5000);
+        if (!state->isPresentOldUser) { // First time
+            isTrigger = true;
+            state->isPresentOldUser = true;
+        } else if (!state->isPresentOldUserSecondTime && elapsed > 86400 && state->timeEntryTotal == 0) { // Second time
+            isTrigger = true;
+            state->isPresentOldUserSecondTime = true;
+        }
 
-        sync();
-        return true;
+        if (isTrigger) {
+            // 5 sec after they open the app
+            t->SetTimeout([&]() {
+                _callback(OldUser);
+                t->Stop();
+            }, 5000);
+
+            sync();
+            return true;
+        }
     }
     return false;
 }
