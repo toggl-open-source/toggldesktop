@@ -1370,7 +1370,7 @@ error Migrations::migrateOnboardingStates() {
     error err = db_->Migrate(
                              "onboarding_states",
                              "create table onboarding_states("
-                             "id integer primary key, "
+                             "id integer primary key AUTOINCREMENT, "
                              "user_id integer, "
                              "last_open_app integer, "
                              "open_timeline_tab_count integer not null default 0, "
@@ -1386,7 +1386,7 @@ error Migrations::migrateOnboardingStates() {
                              "is_present_timeline_view_onboarding integer not null default 0, "
                              "is_present_timeline_activity_onboarding integer not null default 0, "
                              "is_present_recode_activity_onboarding integer not null default 0, "
-                             "CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES users (id) )");
+                             "CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES users (id) on delete no action on update no action )");
     if (err != noError) {
         return err;
     }

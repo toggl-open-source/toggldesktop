@@ -38,7 +38,9 @@ enum OnboardingType {
 class TOGGL_INTERNAL_EXPORT OnboardingState {
 public:
     OnboardingState()
-        : timeEntryTotal(0)
+        : state_id(0)
+    , user_id(0)
+    , timeEntryTotal(0)
     , openTimelineTabCount(0)
     , firstTimeEntryCreatedAt()
     , lastOpenApp(0)
@@ -55,6 +57,8 @@ public:
     , isPresentTimelineActivity(false)
     , isPresentRecordActivity(false) {}
 
+    Poco::Int64 state_id;
+    Poco::Int64 user_id;
     Poco::Int64 timeEntryTotal;
     Poco::Int64 firstTimeEntryCreatedAt;
     Poco::Int64 openTimelineTabCount;
