@@ -49,6 +49,8 @@ public:
     , isUseManualMode(false)
     , isPresentNewUser(false)
     , isPresentOldUser(false)
+    , isPresentNewUserSecondTime(false)
+    , isPresentOldUserSecondTime(false)
     , isPresentManualMode(false)
     , isPresentTimelineTab(false)
     , isPresentEditTimeEntry(false)
@@ -70,6 +72,8 @@ public:
     // Onboarding
     bool isPresentNewUser;
     bool isPresentOldUser;
+    bool isPresentNewUserSecondTime;
+    bool isPresentOldUserSecondTime;
     bool isPresentManualMode;
     bool isPresentTimelineTab;
     bool isPresentEditTimeEntry;
