@@ -4061,13 +4061,15 @@ error Database::LoadOnboardingState(const Poco::UInt64 &UID, OnboardingState *st
         Poco::Mutex::ScopedLock lock(session_m_);
         poco_check_ptr(session_);
         *session_ <<
-                  "select last_open_app, open_timeline_tab_count, edit_timeline_tab_count, is_use_timeline_record, is_use_manual_mode, "
+                  "select id, user_id, last_open_app, open_timeline_tab_count, edit_timeline_tab_count, is_use_timeline_record, is_use_manual_mode, "
                   "is_present_new_user_onboarding, is_present_old_user_onboarding, is_present_manual_mode_onboarding, is_present_timeline_tab_onboarding, "
                   "is_present_edit_timeentry_onboarding, is_present_timeline_timeentry_onboarding, is_present_timeline_view_onboarding, is_present_timeline_activity_onboarding, "
                   "is_present_recode_activity_onboarding "
-                  "from users "
-                  "where id = :uid "
+                  "from onboarding_states "
+                  "where user_id = :uid "
                   "limit 1",
+                  into(state->state_id),
+                  into(state->user_id),
                   into(state->lastOpenApp),
                   into(state->openTimelineTabCount),
                   into(state->editOnTimelineCount),
@@ -4092,7 +4094,7 @@ error Database::LoadOnboardingState(const Poco::UInt64 &UID, OnboardingState *st
     } catch(const std::string & ex) {
         return ex;
     }
-    return last_error("LoadOnboardingSetting");
+    return last_error("LoadOnboardingState");
 }
 
 error Database::SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *state) {
@@ -4101,30 +4103,72 @@ error Database::SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *sta
 
         poco_check_ptr(session_);
 
-        *session_ <<
-        "update users "
-        "set last_open_app = :last_open_app, open_timeline_tab_count = :open_timeline_tab_count, "
-        "edit_timeline_tab_count = :edit_timeline_tab_count, is_use_timeline_record = :is_use_timeline_record, is_use_manual_mode = :is_use_manual_mode, "
-        "is_present_new_user_onboarding = :is_present_new_user_onboarding, is_present_old_user_onboarding = :is_present_old_user_onboarding, is_present_manual_mode_onboarding = :is_present_manual_mode_onboarding, is_present_timeline_tab_onboarding = :is_present_timeline_tab_onboarding, "
-        "is_present_edit_timeentry_onboarding = :is_present_edit_timeentry_onboarding, is_present_timeline_timeentry_onboarding = :is_present_timeline_timeentry_onboarding, is_present_timeline_view_onboarding = :is_present_timeline_view_onboarding, is_present_timeline_activity_onboarding = :is_present_timeline_activity_onboarding, "
-        "is_present_recode_activity_onboarding = :is_present_recode_activity_onboarding "
-        "where id = :uid",
-        useRef(state->lastOpenApp),
-        useRef(state->openTimelineTabCount),
-        useRef(state->editOnTimelineCount),
-        useRef(state->isUseTimelineRecord),
-        useRef(state->isUseManualMode),
-        useRef(state->isPresentNewUser),
-        useRef(state->isPresentOldUser),
-        useRef(state->isPresentManualMode),
-        useRef(state->isPresentTimelineTab),
-        useRef(state->isPresentEditTimeEntry),
-        useRef(state->isPresentTimelineTimeEntry),
-        useRef(state->isPresentTimelineView),
-        useRef(state->isPresentTimelineActivity),
-        useRef(state->isPresentRecordActivity),
-        useRef(UID),
-        now;
+        if (state->state_id > 0) {
+            *session_ <<
+            "update onboarding_states "
+            "set last_open_app = :last_open_app, open_timeline_tab_count = :open_timeline_tab_count, "
+            "edit_timeline_tab_count = :edit_timeline_tab_count, is_use_timeline_record = :is_use_timeline_record, is_use_manual_mode = :is_use_manual_mode, "
+            "is_present_new_user_onboarding = :is_present_new_user_onboarding, is_present_old_user_onboarding = :is_present_old_user_onboarding, is_present_manual_mode_onboarding = :is_present_manual_mode_onboarding, is_present_timeline_tab_onboarding = :is_present_timeline_tab_onboarding, "
+            "is_present_edit_timeentry_onboarding = :is_present_edit_timeentry_onboarding, is_present_timeline_timeentry_onboarding = :is_present_timeline_timeentry_onboarding, is_present_timeline_view_onboarding = :is_present_timeline_view_onboarding, is_present_timeline_activity_onboarding = :is_present_timeline_activity_onboarding, "
+            "is_present_recode_activity_onboarding = :is_present_recode_activity_onboarding "
+            "where id = :id AND user_id = :uid",
+            useRef(state->lastOpenApp),
+            useRef(state->openTimelineTabCount),
+            useRef(state->editOnTimelineCount),
+            useRef(state->isUseTimelineRecord),
+            useRef(state->isUseManualMode),
+            useRef(state->isPresentNewUser),
+            useRef(state->isPresentOldUser),
+            useRef(state->isPresentManualMode),
+            useRef(state->isPresentTimelineTab),
+            useRef(state->isPresentEditTimeEntry),
+            useRef(state->isPresentTimelineTimeEntry),
+            useRef(state->isPresentTimelineView),
+            useRef(state->isPresentTimelineActivity),
+            useRef(state->isPresentRecordActivity),
+            useRef(state->state_id),
+            useRef(UID),
+            now;
+        } else {
+            *session_ <<
+            "insert into onboarding_states( "
+            "user_id, last_open_app, open_timeline_tab_count, "
+            "edit_timeline_tab_count, is_use_timeline_record, is_use_manual_mode, "
+            "is_present_new_user_onboarding, is_present_old_user_onboarding, is_present_manual_mode_onboarding, is_present_timeline_tab_onboarding, "
+            "is_present_edit_timeentry_onboarding, is_present_timeline_timeentry_onboarding, is_present_timeline_view_onboarding, is_present_timeline_activity_onboarding, "
+            "is_present_recode_activity_onboarding) "
+            "values(:user_id, :last_open_app, :open_timeline_tab_count, :edit_timeline_tab_count, :is_use_timeline_record, :is_use_manual_mode"
+            ":is_present_new_user_onboarding, :is_present_old_user_onboarding, :is_present_manual_mode_onboarding, :is_present_timeline_tab_onboarding, "
+            ":is_present_edit_timeentry_onboarding, :is_present_timeline_timeentry_onboarding, :is_present_timeline_view_onboarding, :is_present_timeline_activity_onboarding, "
+            ":is_present_recode_activity_onboarding) ",
+            useRef(UID),
+            useRef(state->lastOpenApp),
+            useRef(state->openTimelineTabCount),
+            useRef(state->editOnTimelineCount),
+            useRef(state->isUseTimelineRecord),
+            useRef(state->isUseManualMode),
+            useRef(state->isPresentNewUser),
+            useRef(state->isPresentOldUser),
+            useRef(state->isPresentManualMode),
+            useRef(state->isPresentTimelineTab),
+            useRef(state->isPresentEditTimeEntry),
+            useRef(state->isPresentTimelineTimeEntry),
+            useRef(state->isPresentTimelineView),
+            useRef(state->isPresentTimelineActivity),
+            useRef(state->isPresentRecordActivity),
+            now;
+
+            error err = last_error("SetOnboardingState");
+            if (err != noError) {
+                return err;
+            }
+            Poco::Int64 state_id(0);
+            *session_ <<
+                      "select last_insert_rowid()",
+                      into(state_id),
+                      now;
+            state->state_id = state_id;
+        }
 
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -4134,7 +4178,7 @@ error Database::SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *sta
         return ex;
     }
 
-    return last_error("SaveWindowSettings");
+    return last_error("SetOnboardingState");
 }
 
 }   // namespace toggl
