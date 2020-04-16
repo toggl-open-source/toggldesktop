@@ -429,26 +429,9 @@ extern void *ctx;
 
 - (void)startOnboardingNotification:(NSNotification *) noti
 {
-    NSNumber *onboardingTypeNumber = (NSNumber *) noti.object;
-    OnboardingHint hint = [OnboardingServiceObjc hintFromValue:onboardingTypeNumber.integerValue];
-    [self presentOnboardingViewWithHint:hint];
-}
-
-- (void) presentOnboardingViewWithHint:(OnboardingHint) hint
-{
-    if (hint == OnboardingHintNone) {
-        return;
-    }
-    NSView *presentView = [self getOnboardingViewWithHint:hint];
-    if (!presentView) {
-        NSLog(@"[ERROR] Present Hint %ld - nil PresentedView", (long)hint);
-        return;
-    }
-
-    NSLog(@"✅Present Hint %ld at view %@", (long)hint, presentView);
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [OnboardingServiceObjc presentWithHint:hint atView:presentView];
-    });
+    [OnboardingServiceObjc handleOnboardingNotification:noti atView:^NSView * __nullable(enum OnboardingHint hint) {
+        return [self getOnboardingViewWithHint:hint];
+    }];
 }
 
 - (NSView * __nullable) getOnboardingViewWithHint:(OnboardingHint) hint
@@ -472,8 +455,6 @@ extern void *ctx;
             return self.mainDashboardViewController.timelineController.collectionView;
         case OnboardingHintRecordActivity:
             return self.mainDashboardViewController.timelineController.collectionView;
-        case OnboardingHintNone:
-            return nil;
         default:
             return nil;
     }

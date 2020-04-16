@@ -18,7 +18,6 @@ import Foundation
     case timelineView
     case timelineActivity
     case recordActivity // Use TimelineActivityRecorderViewController instead
-    case none // compatible to objc since we couldn't expose the type OnboardingHint?
 }
 
 struct OnboardingPayload {
@@ -53,7 +52,6 @@ struct OnboardingPayload {
         case .timelineTab: self.title = "See your Time Entries on Timeline!"
         case .timelineTimeEntry: self.title = "Add and edit Time Entries in this area"
         case .timelineView: self.title = "See all your Time Entries visualised in chronological order! "
-        case .none: self.title = ""
         }
     }
 }
