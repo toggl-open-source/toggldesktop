@@ -35,6 +35,10 @@ final class OnboardingViewController: NSViewController {
         return popover
     }()
 
+    var isShown: Bool {
+        return popover.isShown
+    }
+
     // MARK: View Cycle
 
     override func viewDidLoad() {
