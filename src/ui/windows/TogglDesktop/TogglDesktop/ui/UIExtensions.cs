@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 using Control = System.Windows.Controls.Control;
 using Panel = System.Windows.Controls.Panel;
@@ -146,13 +147,32 @@ static class UIExtensions
     {
         if (element == null) return null;
 
-        var parent = VisualTreeHelper.GetParent(element);
+        var parent = VisualTreeHelper.GetParent(element.FindVisualTreeRoot());
         while (parent != null && !(parent is T))
         {
             parent = VisualTreeHelper.GetParent(parent);
         }
 
         return parent as T;
+    }
+
+    private static DependencyObject FindVisualTreeRoot(this DependencyObject d)
+    {
+        var current = d;
+        var result = d;
+
+        while (current != null)
+        {
+            result = current;
+            if (current is Visual || current is Visual3D)
+            {
+                break;
+            }
+
+            current = LogicalTreeHelper.GetParent(current);
+        }
+
+        return result;
     }
 }
 }
