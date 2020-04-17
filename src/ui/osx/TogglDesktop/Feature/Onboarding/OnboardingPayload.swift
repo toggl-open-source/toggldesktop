@@ -29,10 +29,17 @@ struct OnboardingPayload {
 
     var preferEdges: NSRectEdge {
         switch hint {
-        case .timelineTab:
-            return .maxY
-        case .editTimeEntry:
+        case .newUser,
+             .oldUser,
+             .editTimeEntry,
+             .timelineTab,
+             .recordActivity:
             return .minY
+        case .timelineView,
+             .timelineTimeEntry:
+            return .maxY
+        case .timelineActivity:
+            return .minX
         default: // Fill more later
             return .maxX
         }

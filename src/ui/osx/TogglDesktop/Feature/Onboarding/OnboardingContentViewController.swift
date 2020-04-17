@@ -22,6 +22,6 @@ final class OnboardingContentViewController: NSViewController {
     }
 
     @IBAction func exitBtnOnClick(_ sender: Any) {
-        popover?.performClose(self)
+        popover?.close()
     }
 }

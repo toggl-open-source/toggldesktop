@@ -52,8 +52,8 @@ final class OnboardingBackgroundView: NSView {
         layer?.mask = maskLayer
     }
 
-    override func mouseUp(with event: NSEvent) {
-        super.mouseUp(with: event)
+    override func mouseDown(with event: NSEvent) {
+        // don't call super to prevent pass the click action to the below view
         delegate?.onboardingBackgroundDidClick(self)
     }
 }
