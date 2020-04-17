@@ -20,6 +20,11 @@ import Foundation
     case recordActivity // Use TimelineActivityRecorderViewController instead
 }
 
+@objc enum OnboardingPresentViewTab: Int {
+    case timeEntry
+    case timeline
+}
+
 struct OnboardingPayload {
 
     // MARK: Variable
@@ -33,10 +38,10 @@ struct OnboardingPayload {
              .oldUser,
              .editTimeEntry,
              .timelineTab,
-             .recordActivity:
+             .recordActivity,
+             .timelineView:
             return .minY
-        case .timelineView,
-             .timelineTimeEntry:
+        case .timelineTimeEntry:
             return .maxY
         case .timelineActivity:
             return .minX
