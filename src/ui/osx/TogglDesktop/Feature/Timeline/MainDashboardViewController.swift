@@ -88,6 +88,16 @@ final class MainDashboardViewController: NSViewController {
         currentTab = .timeline
         timelineController.previousDay()
     }
+
+    @objc func switchToTab(_ presentTab: OnboardingPresentViewTab) {
+        switch presentTab {
+        case .timeEntry:
+            currentTab = .timeEntryList
+        case .timeline:
+            currentTab = .timeline
+            timelineController.scrollToVisibleItem()
+        }
+    }
 }
 
 // MARK: Private

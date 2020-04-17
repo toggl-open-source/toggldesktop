@@ -429,8 +429,13 @@ extern void *ctx;
 
 - (void)startOnboardingNotification:(NSNotification *) noti
 {
-    [OnboardingServiceObjc handleOnboardingNotification:noti atView:^NSView * __nullable(enum OnboardingHint hint) {
+    [OnboardingServiceObjc
+     handleOnboardingNotification:noti
+     atView:^NSView * _Nullable(enum OnboardingHint hint) {
         return [self getOnboardingViewWithHint:hint];
+     }
+     switchTo:^(enum OnboardingPresentViewTab tab) {
+        [self.mainDashboardViewController switchToTab:tab];
     }];
 }
 

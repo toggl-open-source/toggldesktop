@@ -14,7 +14,7 @@ import Foundation
         return OnboardingService.shared.isShown
     }
 
-    @objc class func handleOnboardingNotification(_ noti: Notification, atView: (OnboardingHint) -> NSView?) {
+    @objc class func handleOnboardingNotification(_ noti: Notification, atView: (OnboardingHint) -> NSView?, switchTo: (OnboardingPresentViewTab) -> Void) {
         guard let number = noti.object as? NSNumber else { return }
         guard let hint = OnboardingHint(rawValue: number.intValue) else {
             return
@@ -24,7 +24,28 @@ import Foundation
             return
         }
 
+        // Switch to correct Tab
+        let presentView = self.presentViewTab(for: hint)
+        switchTo(presentView)
+
+        // Present
         print("✅ Present onboarding hint = \(hint)")
         OnboardingService.shared.present(hint: hint, view: view)
+    }
+
+    private class func presentViewTab(for hint: OnboardingHint) -> OnboardingPresentViewTab {
+        switch hint {
+        case .editTimeEntry,
+             .manualMode,
+             .newUser,
+             .oldUser:
+            return .timeEntry
+        case .recordActivity,
+             .timelineActivity,
+             .timelineTab,
+             .timelineTimeEntry,
+             .timelineView:
+            return .timeline
+        }
     }
 }
