@@ -8,34 +8,36 @@ set(BUGSNAG_INCLUDE_DIR
     PARENT_SCOPE
 )
 
-# And include dirs
-include_directories(
-    qt-oauth-lib
-    bugsnag-qt
-)
+if (TOGGL_BUILD_QT_GUI)
+    # And include dirs
+    include_directories(
+        qt-oauth-lib
+        bugsnag-qt
+    )
 
-# OAuth has to be bundled
-set(OAUTH2_SOURCE_FILES
-    qt-oauth-lib/logindialog.cpp
-    qt-oauth-lib/oauth2.cpp
-)
-add_definitions(-DOAUTH2_BUILD_DLL)
-add_library(OAuth2 SHARED ${OAUTH2_SOURCE_FILES})
-target_link_libraries(OAuth2 PRIVATE
-    Qt5::Widgets Qt5::WebEngine Qt5::WebEngineWidgets
-)
-install(TARGETS OAuth2 DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
+    # OAuth has to be bundled
+    set(OAUTH2_SOURCE_FILES
+        qt-oauth-lib/logindialog.cpp
+        qt-oauth-lib/oauth2.cpp
+    )
+    add_definitions(-DOAUTH2_BUILD_DLL)
+    add_library(OAuth2 SHARED ${OAUTH2_SOURCE_FILES})
+    target_link_libraries(OAuth2 PRIVATE
+        Qt5::Widgets Qt5::WebEngine Qt5::WebEngineWidgets
+    )
+    install(TARGETS OAuth2 DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
 
-# Bugsnag has to be bundled
-add_definitions(-DBUGSNAGQT_LIBRARY)
-set(BUGSNAG_SOURCE_FILES
-    bugsnag-qt/bugsnag.cpp
-)
-add_library(Bugsnag SHARED ${BUGSNAG_SOURCE_FILES})
-target_link_libraries(Bugsnag PRIVATE
-    Qt5::Widgets Qt5::Network
-)
-install(TARGETS Bugsnag DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
+    # Bugsnag has to be bundled
+    add_definitions(-DBUGSNAGQT_LIBRARY)
+    set(BUGSNAG_SOURCE_FILES
+        bugsnag-qt/bugsnag.cpp
+    )
+    add_library(Bugsnag SHARED ${BUGSNAG_SOURCE_FILES})
+    target_link_libraries(Bugsnag PRIVATE
+        Qt5::Widgets Qt5::Network
+    )
+    install(TARGETS Bugsnag DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
+endif()
 
 if(NOT Poco_FOUND)
     # to avoid that annoying check
@@ -87,7 +89,7 @@ if(NOT jsoncpp_FOUND)
     install(TARGETS jsoncpp DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
 endif()
 
-if(NOT QXT_CORE_FOUND)
+if(NOT QXT_CORE_FOUND AND TOGGL_BUILD_QT_GUI)
     set(QXT_SOURCE_FILES
         qxtglobalshortcut5/gui/qxtwindowsystem.cpp
         qxtglobalshortcut5/gui/qxtglobalshortcut.cpp

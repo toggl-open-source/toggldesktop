@@ -17,8 +17,9 @@ option(TOGGL_PRODUCTION_BUILD "Use production servers in the app" OFF)
 option(TOGGL_ALLOW_UPDATE_CHECK "Allow the app to check for updates" OFF)
 option(USE_BUNDLED_LIBRARIES "Prefer bundled libraries to bundled ones" OFF)
 option(INSTALL_HIRES_ICONS "Do not install icons over 512x512" OFF)
-option(TOGGL_BUILD_TESTS "Build the Toggl test suite" ON)
+option(TOGGL_BUILD_TESTS "Build the Toggl test suite" OFF)
 
+set(OPENSSL_ROOT_DIR "C:\\Tools\\openssl-1.1.1a-win32-mingw")
 set(ENV{OPENSSL_ROOT_DIR} ${OPENSSL_ROOT_DIR})
 
 if ("${TOGGL_VERSION}" STREQUAL "7.0.0")
@@ -42,17 +43,19 @@ endif()
 include(FindPkgConfig)
 
 # Look for Qt
-find_package(Qt5Widgets CONFIG REQUIRED)
-find_package(Qt5QuickWidgets CONFIG REQUIRED)
-find_package(Qt5DBus CONFIG REQUIRED)
-find_package(Qt5Network CONFIG REQUIRED)
-find_package(Qt5WebEngine CONFIG REQUIRED)
-find_package(Qt5WebEngineWidgets CONFIG REQUIRED)
-if(UNIX AND NOT APPLE)
-    find_package(Qt5X11Extras CONFIG REQUIRED)
+if (TOGGL_BUILD_QT_GUI)
+    find_package(Qt5Widgets CONFIG REQUIRED)
+    find_package(Qt5QuickWidgets CONFIG REQUIRED)
+    find_package(Qt5DBus CONFIG REQUIRED)
+    find_package(Qt5Network CONFIG REQUIRED)
+    find_package(Qt5WebEngine CONFIG REQUIRED)
+    find_package(Qt5WebEngineWidgets CONFIG REQUIRED)
+    if(UNIX AND NOT APPLE)
+        find_package(Qt5X11Extras CONFIG REQUIRED)
+    endif()
+    # We need to include private headers manually
+    include_directories( ${Qt5Widgets_PRIVATE_INCLUDE_DIRS} )
 endif()
-# We need to include private headers manually
-include_directories( ${Qt5Widgets_PRIVATE_INCLUDE_DIRS} )
 
 if(NOT USE_BUNDLED_LIBRARIES)
     # Look for Poco
@@ -65,15 +68,17 @@ if(NOT USE_BUNDLED_LIBRARIES)
     endif()
 
     # Look for Qxt
-    pkg_search_module(QXT_CORE QxtCore-qt5)
-    pkg_search_module(QXT_WIDGETS QxtWidgets-qt5)
-    set(QXT_LIBRARIES
-        ${QXT_CORE_LIBRARIES} 
-        ${QXT_WIDGETS_LIBRARIES}
-    )
-    set(QXT_INCLUDE_DIRS
-        ${QXT_CORE_INCLUDE_DIRS} ${QXT_WIDGETS_INCLUDE_DIRS}
-    )
+    if (TOGGL_BUILD_QT_GUI)
+        pkg_search_module(QXT_CORE QxtCore-qt5)
+        pkg_search_module(QXT_WIDGETS QxtWidgets-qt5)
+        set(QXT_LIBRARIES
+            ${QXT_CORE_LIBRARIES} 
+            ${QXT_WIDGETS_LIBRARIES}
+        )
+        set(QXT_INCLUDE_DIRS
+            ${QXT_CORE_INCLUDE_DIRS} ${QXT_WIDGETS_INCLUDE_DIRS}
+        )
+    endif()
 endif()
 
 
@@ -92,4 +97,9 @@ add_subdirectory(src)
 if (TOGGL_BUILD_TESTS)
     add_subdirectory(src/test)
 endif()
-add_subdirectory(src/ui/linux/TogglDesktop)
+if (TOGGL_BUILD_QT_GUI)
+    add_subdirectory(src/ui/linux/TogglDesktop)
+endif()
+include_external_msproject(
+    TogglDesktop ${CMAKE_CURRENT_SOURCE_DIR}/src/ui/windows/TogglDesktop/TogglDesktop/TogglDesktop.csproj
+    TYPE FAE04EC0-301F-11D3-BF4B-00C04F79EFBC)
