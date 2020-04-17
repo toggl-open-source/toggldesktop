@@ -28,7 +28,7 @@ final class OnboardingService {
         guard let windowContentView = view.window?.contentView else { return }
 
         // Prevent crash if it's already added to the view hierarchy
-        guard controller.view.superview == nil else { return}
+        guard controller.view.superview == nil else { return }
 
         // Add to entire windows
         windowContentView.addSubview(controller.view)
