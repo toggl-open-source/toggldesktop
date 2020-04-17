@@ -123,12 +123,11 @@ void ServerStatus::runActivity() {
         }
 
         // Check server status
-        HTTPClient client;
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/status";
 
-        HTTPResponse resp = client.Get(req);
+        HTTPResponse resp = TogglClient::GetInstance().Get(req, false);
         if (noError != resp.err) {
             logger().error(resp.err);
 
