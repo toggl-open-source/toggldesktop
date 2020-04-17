@@ -143,19 +143,19 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
     virtual ~HTTPClient() {}
 
     HTTPResponse Post(
-        HTTPRequest req) const;
+        HTTPRequest req, bool indicator = true) const;
 
     HTTPResponse Get(
-        HTTPRequest req) const;
+        HTTPRequest req, bool indicator = true) const;
 
     HTTPResponse GetFile(
-        HTTPRequest req) const;
+        HTTPRequest req, bool indicator = true) const;
 
     HTTPResponse Delete(
-        HTTPRequest req) const;
+        HTTPRequest req, bool indicator = true) const;
 
     HTTPResponse Put(
-        HTTPRequest req) const;
+        HTTPRequest req, bool indicator = true) const;
 
     static HTTPClientConfig Config;
 
@@ -164,7 +164,7 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
     
  protected:
     virtual HTTPResponse request(
-        HTTPRequest req) const;
+        HTTPRequest req, bool indicator) const;
 
     virtual Logger logger() const;
 
@@ -206,7 +206,7 @@ public:
     }
 
 protected:
-    virtual HTTPResponse request(HTTPRequest req) const override;
+    virtual HTTPResponse request(HTTPRequest req, bool indicator) const override;
     virtual Logger logger() const override;
 
 private:

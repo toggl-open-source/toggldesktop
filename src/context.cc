@@ -1438,7 +1438,7 @@ error Context::downloadUpdate() {
             req.relative_url = "/toggldesktop/assets/updates-link.txt";
 
             TogglClient client = TogglClient::GetInstance();
-            HTTPResponse resp = client.Get(req);
+            HTTPResponse resp = client.Get(req, false);
             if (resp.err != noError) {
                 return resp.err;
             }
@@ -1446,7 +1446,7 @@ error Context::downloadUpdate() {
             Poco::URI uri(resp.body);
             req.host = uri.getScheme() + "://" + uri.getHost();
             req.relative_url = uri.getPathEtc();
-            resp = client.Get(req);
+            resp = client.Get(req, false);
             if (resp.err != noError) {
                 return resp.err;
             }
@@ -1587,7 +1587,7 @@ error Context::fetchMessage(const bool periodic) {
             }
 
             TogglClient client = TogglClient::GetInstance();
-            HTTPResponse resp = client.Get(req);
+            HTTPResponse resp = client.Get(req, false);
             if (resp.err != noError) {
                 return resp.err;
             }
@@ -5505,7 +5505,7 @@ error Context::pushObmAction() {
 
         logger.debug(req.payload);
 
-        HTTPResponse resp = TogglClient::GetInstance().Post(req);
+        HTTPResponse resp = TogglClient::GetInstance().Post(req, false);
         if (resp.err != noError) {
             // backend responds 204 on success
             if (resp.status_code != 204) {

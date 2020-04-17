@@ -232,38 +232,38 @@ error HTTPClient::statusCodeToError(const Poco::Int64 status_code) const {
 }
 
 HTTPResponse HTTPClient::Post(
-    HTTPRequest req) const {
+    HTTPRequest req, bool indicator) const {
     req.method = Poco::Net::HTTPRequest::HTTP_POST;
-    return request(req);
+    return request(req, indicator);
 }
 
 HTTPResponse HTTPClient::Get(
-    HTTPRequest req) const {
+    HTTPRequest req, bool indicator) const {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
-    return request(req);
+    return request(req, indicator);
 }
 
 HTTPResponse HTTPClient::GetFile(
-    HTTPRequest req) const {
+    HTTPRequest req, bool indicator) const {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
     req.timeout_seconds = kHTTPClientTimeoutSeconds * 10;
-    return request(req);
+    return request(req, indicator);
 }
 
 HTTPResponse HTTPClient::Delete(
-    HTTPRequest req) const {
+    HTTPRequest req, bool indicator) const {
     req.method = Poco::Net::HTTPRequest::HTTP_DELETE;
-    return request(req);
+    return request(req, indicator);
 }
 
 HTTPResponse HTTPClient::Put(
-    HTTPRequest req) const {
+    HTTPRequest req, bool indicator) const {
     req.method = Poco::Net::HTTPRequest::HTTP_PUT;
-    return request(req);
+    return request(req, indicator);
 }
 
 HTTPResponse HTTPClient::request(
-    HTTPRequest req) const {
+    HTTPRequest req, bool indicator) const {
     HTTPResponse resp = makeHttpRequest(req);
 
     if (kCannotConnectError == resp.err && isRedirect(resp.status_code)) {
@@ -514,7 +514,7 @@ Logger TogglClient::logger() const {
 }
 
 HTTPResponse TogglClient::request(
-    HTTPRequest req) const {
+    HTTPRequest req, bool indicator) const {
 
     error err = TogglStatus.Status();
     if (err != noError) {
@@ -524,13 +524,13 @@ HTTPResponse TogglClient::request(
         return resp;
     }
 
-    if (monitor_) {
+    if (monitor_ && indicator) {
         monitor_->DisplaySyncState(kSyncStateWork);
     }
 
-    HTTPResponse resp = HTTPClient::request(req);
+    HTTPResponse resp = HTTPClient::request(req, indicator);
 
-    if (monitor_) {
+    if (monitor_ && indicator) {
         monitor_->DisplaySyncState(kSyncStateIdle);
     }
 
