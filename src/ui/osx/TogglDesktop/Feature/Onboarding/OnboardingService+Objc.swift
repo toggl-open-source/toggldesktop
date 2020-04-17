@@ -10,6 +10,10 @@ import Foundation
 
 @objc final class OnboardingServiceObjc: NSObject {
 
+    @objc class func isOnboardingShown() -> Bool {
+        return OnboardingService.shared.isShown
+    }
+
     @objc class func handleOnboardingNotification(_ noti: Notification, atView: (OnboardingHint) -> NSView?) {
         guard let number = noti.object as? NSNumber else { return }
         guard let hint = OnboardingHint(rawValue: number.intValue) else {

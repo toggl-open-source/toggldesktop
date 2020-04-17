@@ -15,7 +15,10 @@ final class OnboardingService {
     // MARK: Variables
 
     private lazy var controller: OnboardingViewController = OnboardingViewController(nibName: "OnboardingViewController", bundle: nil)
-
+    var isShown: Bool {
+        return controller.isShown
+    }
+    
     // MARK: Init
 
     private init() {
