@@ -49,12 +49,12 @@ void HTTPClient::SetCACertPath(std::string path) {
     Config.SetCACertPath(path);
     resetPocoContext();
 }
-void HTTPClient::setIgnoreCert(bool ignore) {
+void HTTPClient::SetIgnoreCert(bool ignore) {
     if (ignore == Config.IgnoreCert()) {
         return;
     }
     // Re-initialize the Poco Context
-    Config.setIgnoreCert(ignore);
+    Config.SetIgnoreCert(ignore);
     resetPocoContext();
 }
 

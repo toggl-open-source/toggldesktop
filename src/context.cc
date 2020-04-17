@@ -2346,7 +2346,7 @@ void Context::SetEnvironment(const std::string &value) {
     logger.debug("SetEnvironment " + value);
     environment_ = value;
 
-    TogglClient::GetInstance().setIgnoreCert(("development" == environment_));
+    TogglClient::GetInstance().SetIgnoreCert(("development" == environment_));
     urls::SetRequestsAllowed("test" != environment_);
 }
 

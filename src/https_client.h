@@ -94,7 +94,7 @@ class TOGGL_INTERNAL_EXPORT HTTPClientConfig {
     bool IgnoreCert() { return ignoreCert; };
     std::string CACertPath() { return caCertPath; };
     void SetCACertPath(std::string path) { caCertPath = path; }
-    void setIgnoreCert(bool ignore) { ignoreCert = ignore; }
+    void SetIgnoreCert(bool ignore) { ignoreCert = ignore; }
 
 private:
     bool ignoreCert;
@@ -160,7 +160,7 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
     static HTTPClientConfig Config;
 
     void SetCACertPath(std::string path);
-    void setIgnoreCert(bool ignore);
+    void SetIgnoreCert(bool ignore);
     
  protected:
     virtual HTTPResponse request(
