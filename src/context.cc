@@ -2445,9 +2445,29 @@ error Context::Login(
         std::string json("");
         error err = me(&client, email, password, &json, 0);
         if (err != noError) {
+
+            // Workaround to Fulfill Apple Review team
+            // If the apple email doesn't exist on Toggl system
+            // Instead of presenting an error, we have to show a different window to select Country and TOS then creating a new account
+            // Same behavior with Mobile app
+            //
+            // Apple considers that Toggl will create account regardless of "Sign In / Sign Up with Apple"
+            // At the moment, Toggl BE doesn't automatically create new Toggl Account with Apple Email by "Sign In with Apple"
+            //
+            // Discussion: https://toggl.slack.com/archives/CSE5U3ZUN/p1586418153111700
+            //
+            #if defined(__APPLE__)
+            if ((password.compare(kAppleAccessToken) == 0 || password.compare(kGoogleAccessToken) == 0) // Applied for Google and Apple Sign In
+                && IsAuthenticationError(err)) {
+                UI()->DisplayOnContinueSignIn();
+                return err;
+            }
+            #endif
+
             if (!IsNetworkingError(err)) {
                 return displayError(err);
             }
+
             // Indicate we're offline
             displayError(err);
 

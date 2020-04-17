@@ -299,6 +299,8 @@ extern "C" {
     typedef void (*TogglDisplayTimerState)(
         TogglTimeEntryView *te);
 
+    typedef void (*TogglContinueSignIn)(void);
+
     typedef void (*TogglDisplayIdleNotification)(
         const char_t *guid,
         const char_t *since,
@@ -1187,6 +1189,10 @@ extern "C" {
         const char_t *project_guid,
         const char_t *tags,
         const bool_t billable);
+
+TOGGL_EXPORT void toggl_on_continue_sign_in(
+        void *context,
+        TogglContinueSignIn cb);
 
 #undef TOGGL_EXPORT
 

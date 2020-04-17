@@ -67,3 +67,5 @@ const char *kFocusedFieldNameTag = "tag";
 
 NSString *const kStartButtonStateChange = @"kStartButtonStateChange";
 NSString *const kInvalidAppleUserCrendential = @"kInvalidAppleUserCrendential";
+
+NSString *const kContinueSignIn = @"kContinueSignIn";
