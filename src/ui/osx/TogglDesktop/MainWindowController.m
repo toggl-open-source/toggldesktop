@@ -455,7 +455,7 @@ extern void *ctx;
         case OnboardingHintTimelineTimeEntry:
             return self.mainDashboardViewController.timelineController.collectionView; // Need update
         case OnboardingHintTimelineView:
-            return self.mainDashboardViewController.timelineController.collectionView;
+            return self.mainDashboardViewController.timelineController.collectionViewContainerView;
         case OnboardingHintTimelineActivity:
             return self.mainDashboardViewController.timelineController.collectionView;
         case OnboardingHintRecordActivity:

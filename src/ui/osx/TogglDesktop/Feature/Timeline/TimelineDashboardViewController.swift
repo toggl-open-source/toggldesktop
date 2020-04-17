@@ -24,7 +24,7 @@ final class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var emptyActivityLbl: NSTextField!
     @IBOutlet weak var emptyActivityLblPadding: NSLayoutConstraint!
     @IBOutlet weak var zoomContainerView: NSView!
-    @IBOutlet weak var collectionViewContainerView: NSScrollView!
+    @IBOutlet weak var collectionViewContainerView: NSView!
     @IBOutlet weak var mainContainerView: NSView!
     @IBOutlet weak var activityRecorderInfoImageView: HoverImageView!
     @IBOutlet weak var activityPanelWidth: NSLayoutConstraint!
