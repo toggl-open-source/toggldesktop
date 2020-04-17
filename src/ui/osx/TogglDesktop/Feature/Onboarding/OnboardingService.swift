@@ -27,8 +27,8 @@ final class OnboardingService {
 
     // MARK: Public
 
-    func present(hint: OnboardingHint, view: NSView) {
-        guard let windowContentView = view.window?.contentView else { return }
+    func present(_ payload: OnboardingPayload) {
+        guard let windowContentView = payload.view.window?.contentView else { return }
 
         // Prevent crash if it's already added to the view hierarchy
         guard controller.view.superview == nil else { return }
@@ -38,8 +38,7 @@ final class OnboardingService {
         controller.view.edgesToSuperView()
 
         // Present
-        let payload = OnboardingPayload(hint: hint)
-        controller.present(payload: payload, hintView: view)
+        controller.present(payload: payload)
     }
 
     func dismiss() {

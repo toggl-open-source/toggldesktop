@@ -31,6 +31,7 @@ struct OnboardingPayload {
 
     let title: String
     let hint: OnboardingHint
+    let view: NSView
 
     var preferEdges: NSRectEdge {
         switch hint {
@@ -38,10 +39,10 @@ struct OnboardingPayload {
              .oldUser,
              .editTimeEntry,
              .timelineTab,
-             .recordActivity,
-             .timelineView:
+             .recordActivity:
             return .minY
-        case .timelineTimeEntry:
+        case .timelineTimeEntry,
+             .timelineView:
             return .maxY
         case .timelineActivity:
             return .minX
@@ -50,10 +51,23 @@ struct OnboardingPayload {
         }
     }
 
+    var bounds: CGRect {
+        switch hint {
+        case .timelineTimeEntry:
+            var bounds = view.bounds
+            bounds.origin.x = 100
+            bounds.size.width -= 200
+            return bounds
+        default:
+            return view.bounds
+        }
+    }
+
     // MARK: Init
 
-    init(hint: OnboardingHint) {
+    init(hint: OnboardingHint, view: NSView) {
         self.hint = hint
+        self.view = view
         switch hint {
         case .editTimeEntry: self.title = "Click on Time Entry to edit it!"
         case .manualMode: self.title = "It’s also possible to add Time Entries manually!\n\nChange to manual mode there..."

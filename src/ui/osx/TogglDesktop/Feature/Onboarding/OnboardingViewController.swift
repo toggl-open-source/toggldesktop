@@ -23,7 +23,7 @@ final class OnboardingViewController: NSViewController {
 
     weak var delegate: OnboardingViewControllerDelegate?
     private var shouldClosePopover = false
-    private weak var hintView: NSView?
+    private weak var presentView: NSView?
     private lazy var contentController: OnboardingContentViewController = OnboardingContentViewController(nibName: "OnboardingContentViewController", bundle: nil)
     private lazy var popover: NSPopover = {
         let popover = NSPopover()
@@ -53,8 +53,10 @@ final class OnboardingViewController: NSViewController {
 
     // MARK: Public
 
-    func present(payload: OnboardingPayload, hintView: NSView) {
-        self.hintView = hintView
+    func present(payload: OnboardingPayload) {
+        self.presentView = payload.view
+        guard let presentView = presentView else { return }
+
         shouldClosePopover = false
 
         // Force render to get the correct size after autolayout
@@ -62,9 +64,9 @@ final class OnboardingViewController: NSViewController {
         view.displayIfNeeded()
 
         // Render
-        updateMaskLayer(with: hintView)
+        updateMaskLayer(with: presentView)
         contentController.config(with: payload)
-        popover.show(relativeTo: hintView.bounds, of: hintView, preferredEdge: payload.preferEdges)
+        popover.show(relativeTo: payload.bounds, of: presentView, preferredEdge: payload.preferEdges)
     }
 
     func dismiss() {
@@ -90,10 +92,10 @@ extension OnboardingViewController {
     @objc private func windowDidResizeNoti(_ noti: Notification) {
         guard let window = noti.object as? NSWindow,
             window === self.view.window else { return }
-        guard let hintView = hintView, popover.isShown else { return }
+        guard let presentView = presentView, popover.isShown else { return }
 
         // Re-draw the mask layer if the window size is changed
-        updateMaskLayer(with: hintView)
+        updateMaskLayer(with: presentView)
     }
 
     private func updateMaskLayer(with hintView: NSView) {

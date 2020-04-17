@@ -30,7 +30,8 @@ import Foundation
 
         // Present
         print("✅ Present onboarding hint = \(hint)")
-        OnboardingService.shared.present(hint: hint, view: view)
+        let payload = OnboardingPayload(hint: hint, view: view)
+        OnboardingService.shared.present(payload)
     }
 
     private class func presentViewTab(for hint: OnboardingHint) -> OnboardingPresentViewTab {
