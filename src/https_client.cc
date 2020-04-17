@@ -127,7 +127,7 @@ void ServerStatus::runActivity() {
         req.host = urls::API();
         req.relative_url = "/api/v9/status";
 
-        HTTPResponse resp = TogglClient::GetInstance().Get(req, false);
+        HTTPResponse resp = TogglClient::GetInstance().silentGet(req);
         if (noError != resp.err) {
             logger().error(resp.err);
 
@@ -231,34 +231,34 @@ error HTTPClient::statusCodeToError(const Poco::Int64 status_code) const {
 }
 
 HTTPResponse HTTPClient::Post(
-    HTTPRequest req, bool indicator) const {
+    HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_POST;
-    return request(req, indicator);
+    return request(req);
 }
 
 HTTPResponse HTTPClient::Get(
-    HTTPRequest req, bool indicator) const {
+    HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
-    return request(req, indicator);
+    return request(req);
 }
 
 HTTPResponse HTTPClient::GetFile(
-    HTTPRequest req, bool indicator) const {
+    HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
     req.timeout_seconds = kHTTPClientTimeoutSeconds * 10;
-    return request(req, indicator);
+    return request(req);
 }
 
 HTTPResponse HTTPClient::Delete(
-    HTTPRequest req, bool indicator) const {
+    HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_DELETE;
-    return request(req, indicator);
+    return request(req);
 }
 
 HTTPResponse HTTPClient::Put(
-    HTTPRequest req, bool indicator) const {
+    HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_PUT;
-    return request(req, indicator);
+    return request(req);
 }
 
 HTTPResponse HTTPClient::request(
@@ -541,4 +541,34 @@ HTTPResponse TogglClient::request(
     return resp;
 }
 
+HTTPResponse TogglClient::silentPost(
+    HTTPRequest req) const {
+    req.method = Poco::Net::HTTPRequest::HTTP_POST;
+    return request(req, false);
+}
+
+HTTPResponse TogglClient::silentGet(
+    HTTPRequest req) const {
+    req.method = Poco::Net::HTTPRequest::HTTP_GET;
+    return request(req, false);
+}
+
+HTTPResponse TogglClient::silentGetFile(
+    HTTPRequest req) const {
+    req.method = Poco::Net::HTTPRequest::HTTP_GET;
+    req.timeout_seconds = kHTTPClientTimeoutSeconds * 10;
+    return request(req, false);
+}
+
+HTTPResponse TogglClient::silentDelete(
+    HTTPRequest req) const {
+    req.method = Poco::Net::HTTPRequest::HTTP_DELETE;
+    return request(req, false);
+}
+
+HTTPResponse TogglClient::silentPut(
+    HTTPRequest req) const {
+    req.method = Poco::Net::HTTPRequest::HTTP_PUT;
+    return request(req, false);
+}
 }   // namespace toggl

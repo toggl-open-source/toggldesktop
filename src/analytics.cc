@@ -158,7 +158,7 @@ void GoogleAnalyticsEvent::runTask() {
     req.host = "https://ssl.google-analytics.com";
     req.relative_url = relativeURL();
 
-    HTTPResponse resp = TogglClient::GetInstance().Get(req, false);
+    HTTPResponse resp = TogglClient::GetInstance().silentGet(req);
     if (resp.err != noError) {
         Logger("Analytics").error(resp.err);
         return;
@@ -319,7 +319,7 @@ void GoogleAnalyticsSettingsEvent::makeReq() {
     req.host = "https://ssl.google-analytics.com";
     req.relative_url = relativeURL();
 
-    HTTPResponse resp = TogglClient::GetInstance().Get(req, false);
+    HTTPResponse resp = TogglClient::GetInstance().silentGet(req);
     if (resp.err != noError) {
         Logger("Analytics").error(resp.err);
         return;

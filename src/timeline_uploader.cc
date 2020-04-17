@@ -92,7 +92,7 @@ error TimelineUploader::upload(TimelineBatch *batch) {
     req.basic_auth_username = batch->APIToken();
     req.basic_auth_password = "api_token";
 
-    return TogglClient::GetInstance().Post(req, false).err;
+    return TogglClient::GetInstance().silentPost(req).err;
 }
 
 std::string convertTimelineToJSON(

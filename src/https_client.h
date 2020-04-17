@@ -143,19 +143,19 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
     virtual ~HTTPClient() {}
 
     HTTPResponse Post(
-        HTTPRequest req, bool indicator = true) const;
+        HTTPRequest req) const;
 
     HTTPResponse Get(
-        HTTPRequest req, bool indicator = true) const;
+        HTTPRequest req) const;
 
     HTTPResponse GetFile(
-        HTTPRequest req, bool indicator = true) const;
+        HTTPRequest req) const;
 
     HTTPResponse Delete(
-        HTTPRequest req, bool indicator = true) const;
+        HTTPRequest req) const;
 
     HTTPResponse Put(
-        HTTPRequest req, bool indicator = true) const;
+        HTTPRequest req) const;
 
     static HTTPClientConfig Config;
 
@@ -164,7 +164,7 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
     
  protected:
     virtual HTTPResponse request(
-        HTTPRequest req, bool indicator) const;
+        HTTPRequest req, bool indicator = true) const;
 
     virtual Logger logger() const;
 
@@ -197,13 +197,28 @@ class TOGGL_INTERNAL_EXPORT TogglClient : public HTTPClient {
 public:
     static ServerStatus TogglStatus;
     static TogglClient& GetInstance() {
-        static TogglClient instance; // staic is thread-safe in C++11.
+        static TogglClient instance; // static is thread-safe in C++11.
         return instance;
     }
 
     void SetSyncStateMonitor(SyncStateMonitor *monitor = nullptr) {
         monitor_ = monitor;
     }
+
+    HTTPResponse silentPost(
+        HTTPRequest req) const;
+
+    HTTPResponse silentGet(
+        HTTPRequest req) const;
+
+    HTTPResponse silentGetFile(
+        HTTPRequest req) const;
+
+    HTTPResponse silentDelete(
+        HTTPRequest req) const;
+
+    HTTPResponse silentPut(
+        HTTPRequest req) const;
 
 protected:
     virtual HTTPResponse request(HTTPRequest req, bool indicator) const override;
