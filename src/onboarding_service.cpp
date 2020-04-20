@@ -29,6 +29,7 @@ void OnboardingService::SetDatabase(Database *db) {
 }
 
 void OnboardingService::LoadOnboardingStateFromCurrentUser(User *_user) {
+    Poco::Mutex::ScopedLock lock(onboarding_m_);
     if (_user == nullptr) {
         return;
     }
@@ -64,6 +65,7 @@ void OnboardingService::LoadOnboardingStateFromCurrentUser(User *_user) {
 }
 
 void OnboardingService::Reset() {
+    Poco::Mutex::ScopedLock lock(onboarding_m_);
     if (state) {
         delete state;
         state = nullptr;
@@ -71,6 +73,7 @@ void OnboardingService::Reset() {
 }
 
 void OnboardingService::sync() {
+    Poco::Mutex::ScopedLock lock(onboarding_m_);
     if (user == nullptr || state == nullptr) {
         return;
     }
@@ -79,6 +82,7 @@ void OnboardingService::sync() {
 
 // User actions
 void OnboardingService::OpenApp() {
+    Poco::Mutex::ScopedLock lock(onboarding_m_);
     if (state == nullptr) {
         return;
     }
@@ -97,6 +101,7 @@ void OnboardingService::OpenApp() {
 }
 
 void OnboardingService::StopTimeEntry() {
+    Poco::Mutex::ScopedLock lock(onboarding_m_);
     if (state == nullptr) {
         return;
     }
@@ -111,6 +116,7 @@ void OnboardingService::StopTimeEntry() {
 }
 
 void OnboardingService::OpenTimelineTab() {
+    Poco::Mutex::ScopedLock lock(onboarding_m_);
     state->openTimelineTabCount += 1;
 
     // Onboading on Timeline View
@@ -129,10 +135,14 @@ void OnboardingService::OpenTimelineTab() {
     }
 
     // Normal case
-    sync();
+    // Don't store unnecessary counter since all onboardings only consider 3 time at most
+    if (state->openTimelineTabCount <= 5) {
+        sync();
+    }
 }
 
 void OnboardingService::TurnOnRecordActivity() {
+    Poco::Mutex::ScopedLock lock(onboarding_m_);
     if (handleTimelineActivityOnboarding()) {
         return;
     }
@@ -141,6 +151,7 @@ void OnboardingService::TurnOnRecordActivity() {
 }
 
 void OnboardingService::EditOrAddTimeEntryDirectlyToTimelineView() {
+    Poco::Mutex::ScopedLock lock(onboarding_m_);
     state->editOnTimelineCount += 1;
     sync();
 }

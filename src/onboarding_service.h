@@ -118,6 +118,7 @@ private:
     User *user;
     Poco::LocalDateTime timeline_date_at_;
     std::function<void (const OnboardingType)> _callback;
+    Poco::Mutex onboarding_m_;
 
     bool isTrackingTimeEntryForLastThreeDays();
     bool hasAtLeastOneTimelineTimeEntryOnCurrentDay();
