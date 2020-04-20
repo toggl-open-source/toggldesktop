@@ -10,7 +10,7 @@
 #include <chrono>
 #include <functional>
 
-#include "logger.h"
+#include "util/logger.h"
 
 namespace toggl {
 
