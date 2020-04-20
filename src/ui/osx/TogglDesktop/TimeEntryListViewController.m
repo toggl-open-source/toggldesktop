@@ -33,6 +33,7 @@ static NSString *kFrameKey = @"frame";
 @property (nonatomic, strong) TimeEntryEmptyView *emptyView;
 @property (nonatomic, strong) EditorPopover *timeEntrypopover;
 @property (nonatomic, assign) BOOL isOpening;
+@property (weak) IBOutlet NSView *firstCellShadowView; // for onboarding
 @end
 
 @implementation TimeEntryListViewController
@@ -676,6 +677,10 @@ extern void *ctx;
 
 -(NSView * __nullable)firstTimeEntryCellForOnboarding
 {
-    return [self.collectionView itemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]].view;
+    // Return a shadow view for onboarding
+    // Rather than the first cell view [self.collectionView itemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]].view;
+    // Because sometime the cell is reused -> the popover position is incorrect
+    // Test by resizing the window when the onboarding popover is shown
+    return self.firstCellShadowView;
 }
 @end
