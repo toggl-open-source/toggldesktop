@@ -55,12 +55,12 @@ void OnboardingService::LoadOnboardingStateFromCurrentUser(User *_user) {
     logger.debug("Onboarding state ", state);
 
     // If it's the call from the launch
-    // Check condition for onboarding after 2 seconds, after the app is loading successfully
+    // Check condition for onboarding after 1 seconds, after the app is loading successfully
     if (isAtLaunchTime) {
         std::function<void ()> event = [&]() {
             OpenApp();
         };
-        queue->schedule(std::chrono::seconds(2), event);
+        queue->schedule(std::chrono::seconds(1), event);
     }
 }
 
@@ -198,7 +198,7 @@ bool OnboardingService::handleTimelineViewOnboarding() {
     if (!state->isPresentTimelineView &&
         state->openTimelineTabCount == 1) {
         state->isPresentTimelineView = true;
-        _callback(TimelineView);
+        _callback(OnboardingTypeTimelineView);
         sync();
         return true;
     }
@@ -226,7 +226,7 @@ bool OnboardingService::handleTimelineTimeEntryOnboarding() {
         state->editOnTimelineCount == 0 &&
         hasAtLeastOneTimelineTimeEntryOnCurrentDay()) {
         state->isPresentTimelineTimeEntry = true;
-        _callback(TimelineTimeEntry);
+        _callback(OnboardingTypeTimelineTimeEntry);
         sync();
         return true;
     }
@@ -253,7 +253,7 @@ bool OnboardingService::handleTimelineRecordActivityOnboarding() {
         state->openTimelineTabCount >= 3 &&
         isTrackingTimeEntryForLastThreeDays() ) {
         state->isPresentRecordActivity = true;
-        _callback(RecordActivity);
+        _callback(OnboardingTypeRecordActivity);
         sync();
         return true;
     }
@@ -267,7 +267,7 @@ bool OnboardingService::handleTimelineActivityOnboarding() {
     if (state->isUseTimelineRecord == false &&
         !state->isPresentTimelineActivity) {
         state->isPresentTimelineActivity = true;
-        _callback(TimelineActivity);
+        _callback(OnboardingTypeTimelineActivity);
         sync();
         return true;
     }
@@ -279,7 +279,7 @@ bool OnboardingService::handleEditTimeEntryOnboarding() {
         !state->isPresentEditTimeEntry) {
         state->isPresentEditTimeEntry = true;
         state->timeEntryTotal += 1;
-        _callback(EditTimeEntry);
+        _callback(OnboardingTypeEditTimeEntry);
         sync();
         return true;
     }
@@ -294,7 +294,7 @@ bool OnboardingService::handleTimelineTabOnboarding() {
      */
     if (!state->isPresentTimelineTab && state->timeEntryTotal >= 3 && state->openTimelineTabCount == 0) {
         state->isPresentTimelineTab = true;
-        _callback(TimelineTab);
+        _callback(OnboardingTypeTimelineTab);
         sync();
         return true;
     }
@@ -328,7 +328,7 @@ bool OnboardingService::handleNewUserOnboarding() {
         if (isTrigger) {
             // 5 sec after they open the app
             std::function<void ()> event = [&]() {
-                _callback(NewUser);
+                _callback(OnboardingTypeNewUser);
             };
             queue->schedule(std::chrono::seconds(5), event);
             sync();
@@ -365,7 +365,7 @@ bool OnboardingService::handleOldUserOnboarding() {
         if (isTrigger) {
             // 5 sec after they open the app
             std::function<void ()> event = [&]() {
-                _callback(OldUser);
+                _callback(OnboardingTypeOldUser);
             };
             queue->schedule(std::chrono::seconds(5), event);
             sync();

@@ -25,15 +25,15 @@ class User;
 class Timer;
 
 enum OnboardingType {
-    NewUser,
-    OldUser,
-    ManualyMode,
-    TimelineTab,
-    EditTimeEntry,
-    TimelineTimeEntry,
-    TimelineView,
-    TimelineActivity,
-    RecordActivity
+    OnboardingTypeNewUser,
+    OnboardingTypeOldUser,
+    OnboardingTypeManualyMode,
+    OnboardingTypeTimelineTab,
+    OnboardingTypeEditTimeEntry,
+    OnboardingTypeTimelineTimeEntry,
+    OnboardingTypeTimelineView,
+    OnboardingTypeTimelineActivity,
+    OnboardingTypeRecordActivity
 };
 
 class TOGGL_INTERNAL_EXPORT OnboardingState {
