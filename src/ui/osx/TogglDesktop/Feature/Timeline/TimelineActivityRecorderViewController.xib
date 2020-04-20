@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,14 +20,6 @@
             <rect key="frame" x="0.0" y="0.0" width="280" height="194"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="T3n-pW-blV">
-                    <rect key="frame" x="0.0" y="0.0" width="280" height="194"/>
-                    <view key="contentView" id="1AW-eL-rXq">
-                        <rect key="frame" x="0.0" y="0.0" width="280" height="194"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    </view>
-                    <color key="fillColor" name="timeline-record-activity-tooltip-background-color"/>
-                </box>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Kql-9K-WpU">
                     <rect key="frame" x="13" y="147" width="237" height="32"/>
                     <textFieldCell key="cell" selectable="YES" title="Having troubles recalling what you were working on?" id="OwG-GB-Vwe">
@@ -87,7 +79,6 @@ All data is private. Only you can see it.
                 </box>
             </subviews>
             <constraints>
-                <constraint firstItem="T3n-pW-blV" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="2SY-g4-Y5P"/>
                 <constraint firstItem="7Hw-10-QYc" firstAttribute="top" secondItem="nLv-32-T4U" secondAttribute="bottom" id="59S-hl-IgM"/>
                 <constraint firstItem="hbg-8k-tad" firstAttribute="top" secondItem="Kql-9K-WpU" secondAttribute="bottom" constant="15" id="9QX-vb-wqx"/>
                 <constraint firstAttribute="trailing" secondItem="k1d-FN-xrL" secondAttribute="trailing" constant="4" id="HtM-g3-1tC"/>
@@ -96,9 +87,6 @@ All data is private. Only you can see it.
                 <constraint firstItem="Kql-9K-WpU" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="LUE-jU-Njj"/>
                 <constraint firstItem="hbg-8k-tad" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="OmT-hQ-aJ2"/>
                 <constraint firstItem="nLv-32-T4U" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="Swh-BY-SBi"/>
-                <constraint firstAttribute="bottom" secondItem="T3n-pW-blV" secondAttribute="bottom" id="VmW-km-Els"/>
-                <constraint firstItem="T3n-pW-blV" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="aLt-Jn-GFz"/>
-                <constraint firstAttribute="trailing" secondItem="T3n-pW-blV" secondAttribute="trailing" id="g3e-w7-gKz"/>
                 <constraint firstAttribute="trailing" secondItem="Kql-9K-WpU" secondAttribute="trailing" constant="32" id="iQt-Zt-T9U"/>
                 <constraint firstItem="7Hw-10-QYc" firstAttribute="centerX" secondItem="nLv-32-T4U" secondAttribute="centerX" id="kWe-EZ-Dzv"/>
                 <constraint firstAttribute="bottom" secondItem="nLv-32-T4U" secondAttribute="bottom" constant="15" id="pRW-cj-Ibt"/>
@@ -111,9 +99,6 @@ All data is private. Only you can see it.
         <image name="close-button" width="7" height="7"/>
         <namedColor name="green-color">
             <color red="0.15700000524520874" green="0.80400002002716064" blue="0.25499999523162842" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="timeline-record-activity-tooltip-background-color">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
