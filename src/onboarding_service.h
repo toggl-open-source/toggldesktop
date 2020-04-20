@@ -15,7 +15,7 @@
 #include <Poco/LocalDateTime.h>
 
 #include "types.h"
-#include "logger.h"
+#include "util/logger.h"
 #include "eventqueue.h"
 
 namespace toggl {
