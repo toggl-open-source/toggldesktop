@@ -34,6 +34,11 @@ final class OnboardingViewController: NSViewController {
         popover.delegate = self
         return popover
     }()
+    private lazy var activityRecorderController: TimelineActivityRecorderViewController = {
+        let controller = TimelineActivityRecorderViewController(nibName: "TimelineActivityRecorderViewController", bundle: nil)
+        controller.delegate = self
+        return controller
+    }()
 
     var isShown: Bool {
         return popover.isShown
@@ -66,7 +71,10 @@ final class OnboardingViewController: NSViewController {
         // Render
         updateMaskLayer(with: presentView)
         contentController.config(with: payload)
-        popover.show(relativeTo: payload.bounds, of: presentView, preferredEdge: payload.preferEdges)
+
+        // Prepare and show
+        preparePopoverContentView(with: payload)
+        popover.show(relativeTo: payload.view.bounds, of: presentView, preferredEdge: payload.preferEdges)
     }
 
     func dismiss() {
@@ -87,6 +95,15 @@ extension OnboardingViewController {
                                                selector: #selector(self.windowDidResizeNoti(_:)),
                                                name: NSWindow.didResizeNotification,
                                                object: nil)
+    }
+
+    private func preparePopoverContentView(with payload: OnboardingPayload) {
+        switch payload.hint {
+        case .recordActivity:
+            popover.contentViewController = activityRecorderController // Reuse Activity Popover
+        default:
+            popover.contentViewController = contentController
+        }
     }
 
     @objc private func windowDidResizeNoti(_ noti: Notification) {
@@ -128,6 +145,15 @@ extension OnboardingViewController: OnboardingBackgroundViewDelegate {
         // It causes the Popover unexpectedly close in a second after presenting
         //
         shouldClosePopover = true
+        popover.close()
+    }
+}
+
+// MARK: TimelineActivityRecorderViewControllerDelegate
+
+extension OnboardingViewController: TimelineActivityRecorderViewControllerDelegate {
+
+    func timelineActivityRecorderShouldDidClickOnCloseBtn(_ sender: Any) {
         popover.close()
     }
 }

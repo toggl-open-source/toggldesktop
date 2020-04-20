@@ -65,18 +65,6 @@ struct OnboardingPayload {
         }
     }
 
-    var bounds: CGRect {
-        switch hint {
-        case .timelineTimeEntry:
-            var bounds = view.bounds
-            bounds.origin.x = 100
-            bounds.size.width -= 200
-            return bounds
-        default:
-            return view.bounds
-        }
-    }
-
     // MARK: Init
 
     init(hint: OnboardingHint, view: NSView) {
