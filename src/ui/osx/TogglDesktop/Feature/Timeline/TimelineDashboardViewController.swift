@@ -353,6 +353,10 @@ extension TimelineDashboardViewController {
     @objc private func runningTimeEntryNoti(_ noti: Notification) {
         datasource.updateRunningTimeEntry(noti.object)
     }
+
+    private func isPopoversShown() -> Bool {
+        return OnboardingService.shared.isShown || editorPopover.isShown
+    }
 }
 
 // MARK: DatePickerViewDelegate
@@ -408,13 +412,13 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     }
 
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry) {
-        guard !editorPopover.isShown else { return }
+        guard !isPopoversShown() else { return }
         timeEntryHoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         timeEntryHoverController.render(with: timeEntry)
     }
 
     func shouldPresentActivityHover(in view: NSView, activity: TimelineActivity) {
-        guard !editorPopover.isShown else { return }
+        guard !isPopoversShown() else { return }
 
         // Update new content and force render to get fit size
         activityHoverController.render(activity)
