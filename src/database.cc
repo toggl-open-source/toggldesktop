@@ -4061,7 +4061,7 @@ error Database::LoadOnboardingState(const Poco::UInt64 &UID, OnboardingState *st
         Poco::Mutex::ScopedLock lock(session_m_);
         poco_check_ptr(session_);
         *session_ <<
-                  "select id, user_id, created_at, open_timeline_tab_count, edit_timeline_tab_count, is_use_timeline_record, is_use_manual_mode, "
+                  "select local_id, user_id, created_at, open_timeline_tab_count, edit_timeline_tab_count, is_use_timeline_record, is_use_manual_mode, "
                   "is_present_new_user_onboarding, is_present_new_user_second_time_onboarding, is_present_old_user_onboarding, is_present_old_user_second_time_onboarding, is_present_manual_mode_onboarding, is_present_timeline_tab_onboarding, "
                   "is_present_edit_timeentry_onboarding, is_present_timeline_timeentry_onboarding, is_present_timeline_view_onboarding, is_present_timeline_activity_onboarding, "
                   "is_present_recode_activity_onboarding "
@@ -4143,7 +4143,7 @@ error Database::SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *sta
             "is_present_edit_timeentry_onboarding, is_present_timeline_timeentry_onboarding, is_present_timeline_view_onboarding, is_present_timeline_activity_onboarding, "
             "is_present_recode_activity_onboarding) "
             "values(:user_id, :created_at, :open_timeline_tab_count, :edit_timeline_tab_count, :is_use_timeline_record, :is_use_manual_mode, "
-            ":is_present_new_user_onboarding, :is_present_old_user_onboarding, :is_present_manual_mode_onboarding, :is_present_timeline_tab_onboarding, "
+            ":is_present_new_user_onboarding, :is_present_new_user_second_time_onboarding, :is_present_old_user_onboarding, :is_present_old_user_second_time_onboarding, :is_present_manual_mode_onboarding, :is_present_timeline_tab_onboarding, "
             ":is_present_edit_timeentry_onboarding, :is_present_timeline_timeentry_onboarding, :is_present_timeline_view_onboarding, :is_present_timeline_activity_onboarding, "
             ":is_present_recode_activity_onboarding) ",
             useRef(UID),
