@@ -29,7 +29,7 @@ import Foundation
         switchTo(presentView)
 
         // Present
-        print("✅ Present onboarding hint = \(hint)")
+        print("✅ Present onboarding hint = \(hint.debuggingName)")
         let payload = OnboardingPayload(hint: hint, view: view)
         OnboardingService.shared.present(payload)
     }
