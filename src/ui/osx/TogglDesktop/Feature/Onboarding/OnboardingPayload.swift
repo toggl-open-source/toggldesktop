@@ -18,6 +18,20 @@ import Foundation
     case timelineView
     case timelineActivity
     case recordActivity // Use TimelineActivityRecorderViewController instead
+
+    var debuggingName: String {
+        switch self {
+        case .editTimeEntry: return "editTimeEntry"
+        case .manualMode: return "manualMode"
+        case .newUser: return "newUser"
+        case .oldUser: return "oldUser"
+        case .recordActivity: return "recordActivity"
+        case .timelineActivity: return "timelineActivity"
+        case .timelineTab: return "timelineTab"
+        case .timelineTimeEntry: return "timelineTimeEntry"
+        case .timelineView: return "timelineView"
+        }
+    }
 }
 
 @objc enum OnboardingPresentViewTab: Int {
