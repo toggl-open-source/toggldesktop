@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -10,7 +10,7 @@
             <connections>
                 <outlet property="collectionView" destination="96l-2I-0G5" id="P59-lk-PQF"/>
                 <outlet property="emptyViewContainerView" destination="cvV-eB-sdq" id="0ba-Gb-Z90"/>
-                <outlet property="headerView" destination="OXo-Tz-Vbz" id="qr5-Iw-OmB"/>
+                <outlet property="firstCellShadowView" destination="3cn-mF-odh" id="PTm-wF-HJH"/>
                 <outlet property="timeEntryListScrollView" destination="7TM-hH-4yE" id="MrY-aB-U9C"/>
                 <outlet property="view" destination="3" id="Tzl-sf-sWH"/>
             </connections>
@@ -28,6 +28,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                 </box>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="3cn-mF-odh">
+                    <rect key="frame" x="10" y="150" width="232" height="64"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="CxV-dI-yqD"/>
+                    </constraints>
+                </customView>
                 <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="7TM-hH-4yE">
                     <rect key="frame" x="0.0" y="0.0" width="252" height="260"/>
                     <clipView key="contentView" copiesOnScroll="NO" id="x95-7N-Tpm">
@@ -63,6 +69,9 @@
                 <constraint firstAttribute="bottom" secondItem="cvV-eB-sdq" secondAttribute="bottom" id="SVd-RQ-je0"/>
                 <constraint firstItem="7TM-hH-4yE" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="Wo4-Tl-2Dg"/>
                 <constraint firstAttribute="trailing" secondItem="7TM-hH-4yE" secondAttribute="trailing" id="a57-rF-7Ww"/>
+                <constraint firstItem="3cn-mF-odh" firstAttribute="top" secondItem="3" secondAttribute="top" constant="46" id="bFN-39-RdP"/>
+                <constraint firstItem="3cn-mF-odh" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="10" id="c0g-ll-Dpf"/>
+                <constraint firstAttribute="trailing" secondItem="3cn-mF-odh" secondAttribute="trailing" constant="10" id="ggc-7H-Hci"/>
                 <constraint firstAttribute="trailing" secondItem="cvV-eB-sdq" secondAttribute="trailing" id="vNc-6T-ad0"/>
                 <constraint firstItem="cvV-eB-sdq" firstAttribute="top" secondItem="3" secondAttribute="top" id="xn2-5h-goF"/>
             </constraints>
