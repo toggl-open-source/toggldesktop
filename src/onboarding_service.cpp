@@ -9,7 +9,6 @@
 #include "onboarding_service.h"
 #include "database.h"
 #include "user.h"
-#include "timer.h"
 #include "time_entry.h"
 #include "related_data.h"
 
