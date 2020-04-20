@@ -44,10 +44,13 @@ void OnboardingService::LoadOnboardingStateFromCurrentUser(User *_user) {
 
     // Load some states because we don't store it from db
     state->timeEntryTotal = user->related.TimeEntries.size();
-    TimeEntry *firstTimeEntry = user->related.TimeEntries.back();
-    if (firstTimeEntry != nullptr) {
-        state->firstTimeEntryCreatedAt = firstTimeEntry->Start();
+    if (!user->related.TimeEntries.empty()) {
+        TimeEntry *firstTimeEntry = user->related.TimeEntries.back();
+        if (firstTimeEntry != nullptr) {
+            state->firstTimeEntryCreatedAt = firstTimeEntry->Start();
+        }
     }
+
     logger.debug("Onboarding state ", state);
 
     // If it's the call from the launch
