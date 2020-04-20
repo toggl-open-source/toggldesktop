@@ -453,13 +453,13 @@ extern void *ctx;
         case OnboardingHintEditTimeEntry:
             return [self.mainDashboardViewController.timeEntryController firstTimeEntryCellForOnboarding];
         case OnboardingHintTimelineTimeEntry:
-            return self.mainDashboardViewController.timelineController.collectionView; // Need update
+            return self.mainDashboardViewController.timelineController.timelineTimeEntryContainerView;
         case OnboardingHintTimelineView:
             return self.mainDashboardViewController.timelineController.collectionViewContainerView;
         case OnboardingHintTimelineActivity:
-            return self.mainDashboardViewController.timelineController.collectionView;
+            return self.mainDashboardViewController.timelineController.activityContainerView;
         case OnboardingHintRecordActivity:
-            return self.mainDashboardViewController.timelineController.collectionView;
+            return self.mainDashboardViewController.timelineController.recordActivityContainerView;
         default:
             return nil;
     }

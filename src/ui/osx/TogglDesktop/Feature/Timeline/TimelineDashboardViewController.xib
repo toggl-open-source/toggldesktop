@@ -9,17 +9,19 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimelineDashboardViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
+                <outlet property="activityContainerView" destination="5e4-xo-IAU" id="M79-Qg-0bL"/>
                 <outlet property="activityLabelRight" destination="Amy-gg-D4X" id="uWG-1B-1dA"/>
                 <outlet property="activityRecorderInfoImageView" destination="mVu-t2-GXP" id="xO6-01-A5k"/>
                 <outlet property="collectionView" destination="hht-dC-mpO" id="9tS-ho-Ut6"/>
-                <outlet property="collectionViewContainerView" destination="Xu6-6s-ozI" id="n67-qg-Crt"/>
+                <outlet property="collectionViewContainerView" destination="Xu6-6s-ozI" id="hFH-uf-Vlp"/>
                 <outlet property="datePickerContainerView" destination="wlf-0e-ttW" id="86r-YF-M9C"/>
                 <outlet property="emptyActivityLbl" destination="3EE-on-mJF" id="KNp-LN-kiJ"/>
                 <outlet property="emptyActivityLblPadding" destination="ly2-AY-aiO" id="mfW-cZ-gGQ"/>
                 <outlet property="emptyLbl" destination="L7J-Lq-Z7U" id="x1D-xG-9dl"/>
-                <outlet property="mainContainerView" destination="Xu6-6s-ozI" id="ZFI-ck-oSW"/>
                 <outlet property="permissionBtn" destination="6pQ-LK-6Bo" id="7qC-gA-S5x"/>
+                <outlet property="recordActivityContainerView" destination="Jx8-ra-dst" id="nCO-Xa-AfJ"/>
                 <outlet property="recordSwitcher" destination="I6m-RA-gUy" id="Sef-EC-Cn6"/>
+                <outlet property="timelineTimeEntryContainerView" destination="qDO-J1-hja" id="Prh-Tl-68t"/>
                 <outlet property="view" destination="c22-O7-iKe" id="D7F-6m-KJo"/>
                 <outlet property="zoomContainerView" destination="xXU-Yr-nTf" id="jDA-BO-CEK"/>
             </connections>
@@ -41,6 +43,9 @@
                             </view>
                             <color key="fillColor" name="timeline-top-view-background-color"/>
                         </box>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="Jx8-ra-dst">
+                            <rect key="frame" x="0.0" y="44" width="369" height="42"/>
+                        </customView>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oEw-Jd-lIP">
                             <rect key="frame" x="34" y="56" width="101" height="17"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="Record activity" id="x0y-gM-oPn">
@@ -73,7 +78,7 @@ To get the focused application window name properly for the Timeline, TogglDeskt
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="Permission required!" bezelStyle="regularSquare" image="NSCaution" imagePosition="left" alignment="center" controlSize="small" imageScaling="proportionallyDown" inset="2" id="Uj3-3t-CiG">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="menu" size="10"/>
+                                <font key="font" metaFont="system" size="10"/>
                             </buttonCell>
                             <connections>
                                 <action selector="permissionBtnOnClicked:" target="-2" id="z5L-tH-fof"/>
@@ -89,7 +94,10 @@ To get the focused application window name properly for the Timeline, TogglDeskt
                     <constraints>
                         <constraint firstItem="oEw-Jd-lIP" firstAttribute="leading" secondItem="mVu-t2-GXP" secondAttribute="trailing" constant="6" id="0gk-pQ-hvy"/>
                         <constraint firstItem="wlf-0e-ttW" firstAttribute="top" secondItem="oEw-Jd-lIP" secondAttribute="bottom" constant="12" id="0rH-e0-NUk"/>
+                        <constraint firstItem="Jx8-ra-dst" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" id="8VX-fA-5jn"/>
                         <constraint firstAttribute="trailing" secondItem="sGN-8K-7IZ" secondAttribute="trailing" id="8d7-zq-V41"/>
+                        <constraint firstItem="Jx8-ra-dst" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" id="8w3-L0-TrB"/>
+                        <constraint firstAttribute="trailing" secondItem="Jx8-ra-dst" secondAttribute="trailing" id="CcI-e9-5hJ"/>
                         <constraint firstItem="6pQ-LK-6Bo" firstAttribute="top" secondItem="I6m-RA-gUy" secondAttribute="bottom" constant="-13" id="Fkx-PB-KIY"/>
                         <constraint firstItem="sGN-8K-7IZ" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" id="GTe-dy-kVB"/>
                         <constraint firstItem="mVu-t2-GXP" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" constant="12" id="OCz-Wk-a2y"/>
@@ -101,6 +109,7 @@ To get the focused application window name properly for the Timeline, TogglDeskt
                         <constraint firstItem="6pQ-LK-6Bo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="oEw-Jd-lIP" secondAttribute="trailing" constant="4" id="lLk-a1-DzD"/>
                         <constraint firstAttribute="trailing" secondItem="wlf-0e-ttW" secondAttribute="trailing" constant="10" id="mPL-xl-8j9"/>
                         <constraint firstAttribute="trailing" secondItem="I6m-RA-gUy" secondAttribute="trailing" constant="10" id="maq-iT-Fcc"/>
+                        <constraint firstItem="wlf-0e-ttW" firstAttribute="top" secondItem="Jx8-ra-dst" secondAttribute="bottom" id="rwn-Sr-kvD"/>
                         <constraint firstAttribute="height" constant="86" id="wv3-y8-Rz9"/>
                         <constraint firstAttribute="bottom" secondItem="sGN-8K-7IZ" secondAttribute="bottom" id="zqM-he-CUS"/>
                         <constraint firstItem="wlf-0e-ttW" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="zxE-BA-Fdk"/>
@@ -109,6 +118,18 @@ To get the focused application window name properly for the Timeline, TogglDeskt
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="Xu6-6s-ozI">
                     <rect key="frame" x="0.0" y="0.0" width="369" height="440"/>
                     <subviews>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="KcT-SA-KSR">
+                            <rect key="frame" x="0.0" y="0.0" width="54" height="410"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="54" id="vxv-Xd-aLa"/>
+                            </constraints>
+                        </customView>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="5e4-xo-IAU">
+                            <rect key="frame" x="301" y="0.0" width="68" height="410"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="68" id="otL-44-Tkc"/>
+                            </constraints>
+                        </customView>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="oFH-aL-e6h">
                             <rect key="frame" x="0.0" y="410" width="369" height="30"/>
                             <subviews>
@@ -195,6 +216,9 @@ To get the focused application window name properly for the Timeline, TogglDeskt
                                 <constraint firstItem="SbK-rs-cgp" firstAttribute="top" secondItem="oFH-aL-e6h" secondAttribute="top" id="tes-cu-2kp"/>
                             </constraints>
                         </customView>
+                        <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="qDO-J1-hja">
+                            <rect key="frame" x="54" y="0.0" width="247" height="410"/>
+                        </customView>
                         <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJx-ob-wM0">
                             <rect key="frame" x="0.0" y="0.0" width="369" height="410"/>
                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="1RV-Mg-WKj">
@@ -243,16 +267,26 @@ To get the focused application window name properly for the Timeline, TogglDeskt
                     </subviews>
                     <constraints>
                         <constraint firstItem="DJx-ob-wM0" firstAttribute="top" secondItem="oFH-aL-e6h" secondAttribute="bottom" id="0Cw-bZ-Dqs"/>
+                        <constraint firstItem="5e4-xo-IAU" firstAttribute="top" secondItem="oFH-aL-e6h" secondAttribute="bottom" id="1dJ-WE-6h0"/>
+                        <constraint firstAttribute="bottom" secondItem="qDO-J1-hja" secondAttribute="bottom" id="3E2-vS-hmW"/>
                         <constraint firstItem="L7J-Lq-Z7U" firstAttribute="centerX" secondItem="DJx-ob-wM0" secondAttribute="centerX" id="42h-H4-chg"/>
                         <constraint firstItem="oFH-aL-e6h" firstAttribute="top" secondItem="Xu6-6s-ozI" secondAttribute="top" id="8La-EB-bST"/>
                         <constraint firstItem="L7J-Lq-Z7U" firstAttribute="centerY" secondItem="DJx-ob-wM0" secondAttribute="centerY" id="8sZ-ui-KCW"/>
                         <constraint firstAttribute="bottom" secondItem="DJx-ob-wM0" secondAttribute="bottom" id="Gm3-VA-gjl"/>
                         <constraint firstItem="3EE-on-mJF" firstAttribute="centerY" secondItem="DJx-ob-wM0" secondAttribute="centerY" constant="-90" id="NHR-TW-1a4"/>
+                        <constraint firstItem="KcT-SA-KSR" firstAttribute="leading" secondItem="Xu6-6s-ozI" secondAttribute="leading" id="OyX-rt-ZPu"/>
+                        <constraint firstItem="5e4-xo-IAU" firstAttribute="leading" secondItem="qDO-J1-hja" secondAttribute="trailing" id="Uqz-uF-53V"/>
+                        <constraint firstItem="qDO-J1-hja" firstAttribute="top" secondItem="oFH-aL-e6h" secondAttribute="bottom" id="WDl-0C-8ew"/>
                         <constraint firstAttribute="trailing" secondItem="oFH-aL-e6h" secondAttribute="trailing" id="ayb-sU-fX8"/>
                         <constraint firstItem="oFH-aL-e6h" firstAttribute="leading" secondItem="Xu6-6s-ozI" secondAttribute="leading" id="bTG-wc-ODY"/>
+                        <constraint firstAttribute="bottom" secondItem="KcT-SA-KSR" secondAttribute="bottom" id="j9f-pp-va9"/>
                         <constraint firstAttribute="trailing" secondItem="DJx-ob-wM0" secondAttribute="trailing" id="kpN-Z8-B2J"/>
+                        <constraint firstAttribute="bottom" secondItem="5e4-xo-IAU" secondAttribute="bottom" id="lYg-BV-ATv"/>
                         <constraint firstItem="3EE-on-mJF" firstAttribute="leading" secondItem="DJx-ob-wM0" secondAttribute="trailing" constant="-40" id="ly2-AY-aiO"/>
                         <constraint firstItem="DJx-ob-wM0" firstAttribute="leading" secondItem="Xu6-6s-ozI" secondAttribute="leading" id="nER-8p-YqV"/>
+                        <constraint firstItem="KcT-SA-KSR" firstAttribute="top" secondItem="oFH-aL-e6h" secondAttribute="bottom" id="qFB-KN-net"/>
+                        <constraint firstAttribute="trailing" secondItem="5e4-xo-IAU" secondAttribute="trailing" id="s43-b9-tkj"/>
+                        <constraint firstItem="qDO-J1-hja" firstAttribute="leading" secondItem="KcT-SA-KSR" secondAttribute="trailing" id="wqa-Hb-S1U"/>
                     </constraints>
                 </customView>
             </subviews>

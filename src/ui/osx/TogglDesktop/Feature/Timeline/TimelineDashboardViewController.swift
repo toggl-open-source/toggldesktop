@@ -25,11 +25,14 @@ final class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var emptyActivityLblPadding: NSLayoutConstraint!
     @IBOutlet weak var zoomContainerView: NSView!
     @IBOutlet weak var collectionViewContainerView: NSView!
-    @IBOutlet weak var mainContainerView: NSView!
     @IBOutlet weak var activityRecorderInfoImageView: HoverImageView!
-    @IBOutlet weak var activityPanelWidth: NSLayoutConstraint!
     @IBOutlet weak var activityLabelRight: NSLayoutConstraint!
     @IBOutlet weak var permissionBtn: NSButton!
+
+    // Onboarding
+    @IBOutlet weak var activityContainerView: NSView!
+    @IBOutlet weak var timelineTimeEntryContainerView: NSView!
+    @IBOutlet weak var recordActivityContainerView: NSView!
 
     // MARK: Variables
 
@@ -246,11 +249,11 @@ extension TimelineDashboardViewController {
     }
 
     private func initTrackingArea() {
-        let tracking = NSTrackingArea(rect: mainContainerView.bounds,
-                                      options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect],
-                                      owner: mainContainerView,
+        let tracking = NSTrackingArea(rect: collectionViewContainerView.bounds,
+                                      options: [.mouseEnteredAndExited, .activeInKeyWindow],
+                                      owner: collectionViewContainerView,
                                       userInfo: nil)
-        mainContainerView.addTrackingArea(tracking)
+        collectionViewContainerView.addTrackingArea(tracking)
     }
 
     fileprivate func initCollectionView() {

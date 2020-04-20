@@ -52,10 +52,10 @@ struct OnboardingPayload {
         case .newUser,
              .oldUser,
              .editTimeEntry,
-             .timelineTab,
              .recordActivity:
             return .minY
         case .timelineTimeEntry,
+              .timelineTab,
              .timelineView:
             return .maxY
         case .timelineActivity:
