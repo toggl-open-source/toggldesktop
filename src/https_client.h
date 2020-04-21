@@ -164,7 +164,7 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
     
  protected:
     virtual HTTPResponse request(
-        HTTPRequest req, bool indicator = true) const;
+        HTTPRequest req) const;
 
     virtual Logger logger() const;
 
@@ -205,6 +205,10 @@ public:
         monitor_ = monitor;
     }
 
+    // Get/Post/Put/Delete methods of TogglClient
+    // are updating the visual sync state and the backend status of the app.
+    // If these are not needed, use the methods defined below:
+
     HTTPResponse silentPost(
         HTTPRequest req) const;
 
@@ -221,7 +225,7 @@ public:
         HTTPRequest req) const;
 
 protected:
-    virtual HTTPResponse request(HTTPRequest req, bool indicator) const override;
+    virtual HTTPResponse request(HTTPRequest req) const override;
     virtual Logger logger() const override;
 
 private:
