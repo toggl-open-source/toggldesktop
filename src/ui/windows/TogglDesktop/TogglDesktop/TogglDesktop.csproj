@@ -208,6 +208,9 @@
     <Compile Include="ui\Behaviors\NumericInputTextBoxBehavior.cs" />
     <Compile Include="ui\Behaviors\RepositionPopupWithParentWindowBehavior.cs" />
     <Compile Include="ui\Behaviors\TextBoxHelper.cs" />
+    <Compile Include="ui\controls\DaysOfWeekSelector.xaml.cs">
+      <DependentUpon>DaysOfWeekSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\InAppNotification.xaml.cs">
       <DependentUpon>InAppNotification.xaml</DependentUpon>
     </Compile>
@@ -482,6 +485,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\controls\DaysOfWeekSelector.xaml" />
     <Page Include="ui\controls\ErrorBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

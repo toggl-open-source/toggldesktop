@@ -316,22 +316,8 @@
                                      HorizontalContentAlignment="Right" />
                         </StackPanel>
 
-                        <StackPanel Grid.Row="2" Grid.Column="1">
-                            <CheckBox Name="remindDay1CheckBox" x:FieldModifier="private"
-                                      >Monday</CheckBox>
-                            <CheckBox Name="remindDay2CheckBox" x:FieldModifier="private"
-                                      Margin="0 12 0 0">Tuesday</CheckBox>
-                            <CheckBox Name="remindDay3CheckBox" x:FieldModifier="private"
-                                      Margin="0 12 0 0">Wednesday</CheckBox>
-                            <CheckBox Name="remindDay4CheckBox" x:FieldModifier="private"
-                                      Margin="0 12 0 0">Thursday</CheckBox>
-                            <CheckBox Name="remindDay5CheckBox" x:FieldModifier="private"
-                                      Margin="0 12 0 0">Friday</CheckBox>
-                            <CheckBox Name="remindDay6CheckBox" x:FieldModifier="private"
-                                      Margin="0 12 0 0">Saturday</CheckBox>
-                            <CheckBox Name="remindDay7CheckBox" x:FieldModifier="private"
-                                      Margin="0 12 0 0">Sunday</CheckBox>
-                        </StackPanel>
+                        <toggl:DaysOfWeekSelector x:Name="daysOfWeekSelector" x:FieldModifier="private"
+                                                  Grid.Row="2" Grid.Column="1" />
                     </Grid>
                 </StackPanel>
             </TabItem>
