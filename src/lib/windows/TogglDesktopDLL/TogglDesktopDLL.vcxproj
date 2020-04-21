@@ -471,6 +471,7 @@
     <ClInclude Include="..\..\..\context.h" />
     <ClInclude Include="..\..\..\custom_error_handler.h" />
     <ClInclude Include="..\..\..\database.h" />
+    <ClInclude Include="..\..\..\eventqueue.h" />
     <ClInclude Include="..\..\..\feedback.h" />
     <ClInclude Include="..\..\..\formatter.h" />
     <ClInclude Include="..\..\..\get_focused_window.h" />
@@ -482,6 +483,7 @@
     <ClInclude Include="..\..\..\migrations.h" />
     <ClInclude Include="..\..\..\netconf.h" />
     <ClInclude Include="..\..\..\obm_action.h" />
+    <ClInclude Include="..\..\..\onboarding_service.h" />
     <ClInclude Include="..\..\..\random.h" />
     <ClInclude Include="..\..\..\Rectangle.h" />
     <ClInclude Include="..\..\..\toggl_api.h" />
@@ -514,6 +516,7 @@
     <ClCompile Include="..\..\..\context.cc" />
     <ClCompile Include="..\..\..\custom_error_handler.cc" />
     <ClCompile Include="..\..\..\database.cc" />
+    <ClCompile Include="..\..\..\eventqueue.cpp" />
     <ClCompile Include="..\..\..\feedback.cc" />
     <ClCompile Include="..\..\..\formatter.cc" />
     <ClCompile Include="..\..\..\get_focused_window_windows.cc" />
@@ -525,6 +528,7 @@
     <ClCompile Include="..\..\..\migrations.cc" />
     <ClCompile Include="..\..\..\netconf.cc" />
     <ClCompile Include="..\..\..\obm_action.cc" />
+    <ClCompile Include="..\..\..\onboarding_service.cpp" />
     <ClCompile Include="..\..\..\random.cc" />
     <ClCompile Include="..\..\..\Rectangle.cc" />
     <ClCompile Include="..\..\..\settings.cc" />
