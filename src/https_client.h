@@ -148,9 +148,6 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
     HTTPResponse Get(
         HTTPRequest req) const;
 
-    HTTPResponse GetFile(
-        HTTPRequest req) const;
-
     HTTPResponse Delete(
         HTTPRequest req) const;
 
@@ -213,9 +210,6 @@ public:
         HTTPRequest req) const;
 
     HTTPResponse silentGet(
-        HTTPRequest req) const;
-
-    HTTPResponse silentGetFile(
         HTTPRequest req) const;
 
     HTTPResponse silentDelete(
