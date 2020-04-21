@@ -257,9 +257,6 @@ error GUI::findMissingCallbacks() {
     if (!on_display_pomodoro_break_) {
         return error("!on_display_pomodoro_break_");
     }
-    if (!on_display_onboarding_) {
-        return error("!on_display_onboarding_");
-    }
     return noError;
 }
 
