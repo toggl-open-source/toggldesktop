@@ -242,13 +242,6 @@ HTTPResponse HTTPClient::Get(
     return request(req);
 }
 
-HTTPResponse HTTPClient::GetFile(
-    HTTPRequest req) const {
-    req.method = Poco::Net::HTTPRequest::HTTP_GET;
-    req.timeout_seconds = kHTTPClientTimeoutSeconds * 10;
-    return request(req);
-}
-
 HTTPResponse HTTPClient::Delete(
     HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_DELETE;
@@ -550,13 +543,6 @@ HTTPResponse TogglClient::silentPost(
 HTTPResponse TogglClient::silentGet(
     HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
-    return request(req, false);
-}
-
-HTTPResponse TogglClient::silentGetFile(
-    HTTPRequest req) const {
-    req.method = Poco::Net::HTTPRequest::HTTP_GET;
-    req.timeout_seconds = kHTTPClientTimeoutSeconds * 10;
     return request(req, false);
 }
 
