@@ -1195,16 +1195,19 @@ public static partial class Toggl
             Path.Combine(
                 Environment.GetFolderPath(
                     Environment.SpecialFolder.LocalApplicationData), "Onova", "TogglDesktop"));
-        foreach (var file in updatesDir.GetFiles("*.exe", SearchOption.TopDirectoryOnly))
+        if (updatesDir.Exists)
         {
-            try
+            foreach (var file in updatesDir.GetFiles("*.exe", SearchOption.TopDirectoryOnly))
             {
-                Utils.DeleteFile(file.FullName);
-            }
-            catch (Exception e)
-            {
-                BugsnagService.NotifyBugsnag(e);
-                Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
+                try
+                {
+                    Utils.DeleteFile(file.FullName);
+                }
+                catch (Exception e)
+                {
+                    BugsnagService.NotifyBugsnag(e);
+                    Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
+                }
             }
         }
     }
