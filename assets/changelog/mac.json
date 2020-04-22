@@ -1,6 +1,17 @@
 {
     "versions": [
         {
+            "version": "7.5.115",
+            "rows": [
+                "Improve Google Error message and layout",
+                "Eanble Library Validation on Hardened Runtime",
+                "Fixed Menu isn't responsive after launching the app",
+                "Fixed Memory Leaking"
+            ],
+            "date": "April 22nd 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.85",
             "rows": [
                 "Improve the resize area in the Timeline Pill",
