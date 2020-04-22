@@ -76,7 +76,7 @@ void WebSocketClient::Shutdown() {
 error WebSocketClient::createSession() {
     logger().debug("createSession");
 
-    if (HTTPClient::Config.CACertPath.empty()) {
+    if (HTTPClient::Config.CACertPath().empty()) {
         return error("Missing CA certifcate, cannot start Websocket");
     }
 
@@ -101,12 +101,12 @@ error WebSocketClient::createSession() {
 
         Poco::Net::Context::VerificationMode verification_mode =
             Poco::Net::Context::VERIFY_RELAXED;
-        if (HTTPClient::Config.IgnoreCert) {
+        if (HTTPClient::Config.IgnoreCert()) {
             verification_mode = Poco::Net::Context::VERIFY_NONE;
         }
         Poco::Net::Context::Ptr context = new Poco::Net::Context(
             Poco::Net::Context::CLIENT_USE, "", "",
-            HTTPClient::Config.CACertPath,
+            HTTPClient::Config.CACertPath(),
             verification_mode, 9, true, "ALL");
 
         Poco::Net::SSLManager::instance().initializeClient(

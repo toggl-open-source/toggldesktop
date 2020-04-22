@@ -20,7 +20,6 @@
 #include <Poco/InflatingStream.h>
 #include <Poco/Logger.h>
 #include <Poco/Net/AcceptCertificateHandler.h>
-#include <Poco/Net/Context.h>
 #include <Poco/Net/HTMLForm.h>
 #include <Poco/Net/HTTPBasicCredentials.h>
 #include <Poco/Net/HTTPCredentials.h>
@@ -41,6 +40,41 @@
 #include <Poco/UTF8Encoding.h>
 
 namespace toggl {
+
+void HTTPClient::SetCACertPath(std::string path) {
+    if (path.compare(Config.CACertPath()) == 0) {
+        return;
+    }
+    // Re-initialize the Poco Context
+    Config.SetCACertPath(path);
+    resetPocoContext();
+}
+void HTTPClient::SetIgnoreCert(bool ignore) {
+    if (ignore == Config.IgnoreCert()) {
+        return;
+    }
+    // Re-initialize the Poco Context
+    Config.SetIgnoreCert(ignore);
+    resetPocoContext();
+}
+
+void HTTPClient::resetPocoContext() {
+    Poco::SharedPtr<Poco::Net::InvalidCertificateHandler>
+    acceptCertHandler = new Poco::Net::AcceptCertificateHandler(true);
+
+    Poco::Net::Context::VerificationMode verification_mode =
+        Poco::Net::Context::VERIFY_RELAXED;
+    if (HTTPClient::Config.IgnoreCert()) {
+        verification_mode = Poco::Net::Context::VERIFY_NONE;
+    }
+    Poco::Net::Context::Ptr _context = new Poco::Net::Context(
+        Poco::Net::Context::CLIENT_USE, "", "",
+        HTTPClient::Config.CACertPath(),
+        verification_mode, 9, true, "ALL");
+    Poco::Net::SSLManager::instance().initializeClient(
+        nullptr, acceptCertHandler, _context);
+    context = _context;
+}
 
 void ServerStatus::startStatusCheck() {
     logger().debug("startStatusCheck fast_retry=", fast_retry_);
@@ -89,12 +123,11 @@ void ServerStatus::runActivity() {
         }
 
         // Check server status
-        HTTPClient client;
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/status";
 
-        HTTPResponse resp = client.Get(req);
+        HTTPResponse resp = TogglClient::GetInstance().silentGet(req);
         if (noError != resp.err) {
             logger().error(resp.err);
 
@@ -209,13 +242,6 @@ HTTPResponse HTTPClient::Get(
     return request(req);
 }
 
-HTTPResponse HTTPClient::GetFile(
-    HTTPRequest req) const {
-    req.method = Poco::Net::HTTPRequest::HTTP_GET;
-    req.timeout_seconds = kHTTPClientTimeoutSeconds * 10;
-    return request(req);
-}
-
 HTTPResponse HTTPClient::Delete(
     HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_DELETE;
@@ -283,30 +309,13 @@ HTTPResponse HTTPClient::makeHttpRequest(
         resp.err = error("Cannot make a HTTP request without a relative URL");
         return resp;
     }
-    if (HTTPClient::Config.CACertPath.empty()) {
+    if (HTTPClient::Config.CACertPath().empty()) {
         resp.err = error("Cannot make a HTTP request without certificates");
         return resp;
     }
 
     try {
         Poco::URI uri(req.host);
-
-        Poco::SharedPtr<Poco::Net::InvalidCertificateHandler>
-        acceptCertHandler =
-            new Poco::Net::AcceptCertificateHandler(true);
-
-        Poco::Net::Context::VerificationMode verification_mode =
-            Poco::Net::Context::VERIFY_RELAXED;
-        if (HTTPClient::Config.IgnoreCert) {
-            verification_mode = Poco::Net::Context::VERIFY_NONE;
-        }
-        Poco::Net::Context::Ptr context = new Poco::Net::Context(
-            Poco::Net::Context::CLIENT_USE, "", "",
-            HTTPClient::Config.CACertPath,
-            verification_mode, 9, true, "ALL");
-
-        Poco::Net::SSLManager::instance().initializeClient(
-            nullptr, acceptCertHandler, context);
 
         std::shared_ptr<Poco::Net::HTTPClientSession> session;
         if (uri.getScheme() == "http") {
@@ -525,4 +534,27 @@ HTTPResponse TogglClient::request(
     return resp;
 }
 
+HTTPResponse TogglClient::silentPost(
+    HTTPRequest req) const {
+    req.method = Poco::Net::HTTPRequest::HTTP_POST;
+    return HTTPClient::request(req);
+}
+
+HTTPResponse TogglClient::silentGet(
+    HTTPRequest req) const {
+    req.method = Poco::Net::HTTPRequest::HTTP_GET;
+    return HTTPClient::request(req);
+}
+
+HTTPResponse TogglClient::silentDelete(
+    HTTPRequest req) const {
+    req.method = Poco::Net::HTTPRequest::HTTP_DELETE;
+    return HTTPClient::request(req);
+}
+
+HTTPResponse TogglClient::silentPut(
+    HTTPRequest req) const {
+    req.method = Poco::Net::HTTPRequest::HTTP_PUT;
+    return HTTPClient::request(req);
+}
 }   // namespace toggl

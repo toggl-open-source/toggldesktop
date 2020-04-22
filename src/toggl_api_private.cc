@@ -183,6 +183,9 @@ void country_item_clear(TogglCountryView *item) {
     free(item->VatRegex);
     item->VatRegex = nullptr;
 
+    free(item->Code);
+    item->Code = nullptr;
+
     delete item;
 }
 
@@ -190,6 +193,14 @@ void country_list_clear(TogglCountryView *first) {
     while (first) {
         TogglCountryView *next = reinterpret_cast<TogglCountryView *>(first->Next);
         country_item_clear(first);
+        first = next;
+    }
+}
+
+void country_list_delete_item(TogglCountryView *first) {
+    while (first) {
+        TogglCountryView *next = reinterpret_cast<TogglCountryView *>(first->Next);
+        delete first; // Only delete TogglCountryView pointer without deleting its variables because they are holding by other references
         first = next;
     }
 }

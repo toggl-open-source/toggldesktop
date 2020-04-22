@@ -661,58 +661,48 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error applySettingsSaveResultToUI(const error &err);
 
-    error pullAllUserData(TogglClient *https_client);
-    error pullChanges(TogglClient *https_client);
-    error pullUserPreferences(
-        TogglClient* toggl_client);
+    error pullAllUserData();
+    error pullChanges();
+    error pullUserPreferences();
 
     error pushChanges(
-        TogglClient *https_client,
         bool *had_something_to_push);
     error pushClients(
         const std::vector<Client *> &clients,
-        const std::string &api_token,
-        const TogglClient &toggl_client);
+        const std::string &api_token);
     error pushProjects(
         const std::vector<Project *> &projects,
         const std::vector<Client *> &clients,
-        const std::string &api_token,
-        const TogglClient &toggl_client);
+        const std::string &api_token);
     error pushEntries(
         const std::map<std::string, BaseModel *> &models,
         const std::vector<TimeEntry *> &time_entries,
-        const std::string &api_token,
-        const TogglClient &toggl_client);
+        const std::string &api_token);
     error updateEntryProjects(
         const std::vector<Project *> &projects,
         const std::vector<TimeEntry *> &time_entries);
     error signup(
-        TogglClient *https_client,
         const std::string &email,
         const std::string &password,
         std::string *user_data_json,
         const uint64_t country_id);
     error signupGoogle(
-        TogglClient *toggl_client,
         const std::string &access_token,
         std::string *user_data_json,
         const uint64_t country_id);
     error signupApple(
-        TogglClient *toggl_client,
         const std::string &access_token,
         std::string *user_data_json,
         const std::string &full_name,
         const uint64_t country_id);
     error signUpWithProvider(
-        TogglClient *toggl_client,
         const std::string &access_token,
         std::string *user_data_json,
         const uint64_t country_id,
         const std::string &full_name,
         const std::string provider);
 
-    static error me(TogglClient *https_client,
-                    const std::string &email,
+    static error me(const std::string &email,
                     const std::string &password,
                     std::string *user_data,
                     const Poco::Int64 since);
@@ -724,11 +714,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error logAndDisplayUserTriedEditingLockedEntry();
 
-    error pullWorkspaces(TogglClient* toggl_client);
+    error pullWorkspaces();
 
-    error pullWorkspacePreferences(TogglClient* https_client);
-    error pullWorkspacePreferences(TogglClient* https_client,
-                                   Workspace *workspace, std::string* json);
+    error pullWorkspacePreferences();
+    error pullWorkspacePreferences(Workspace *workspace, std::string* json);
 
     error pushObmAction();
 
