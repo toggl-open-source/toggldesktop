@@ -63,6 +63,10 @@ void SetRequestsAllowed(const bool value) {
     requests_allowed_ = value;
 }
 
+std::string SyncAPI() {
+    return "http://localhost:8086";
+}
+
 
 }  // namespace urls
 

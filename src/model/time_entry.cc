@@ -469,25 +469,34 @@ Json::Value TimeEntry::SaveToJSON() const {
     // NULL is not 0
     if (WID()) {
         n["wid"] = Json::UInt64(WID());
+        n["workspace_id"] = Json::UInt64(WID());
     }
     n["guid"] = GUID();
     if (!PID() && !ProjectGUID().empty()) {
         n["pid"] = ProjectGUID();
+        n["project_id"] = ProjectGUID();
     } else {
         n["pid"] = Json::UInt64(PID());
+        n["project_id"] = Json::UInt64(PID());
     }
 
     if (PID()) {
         n["pid"] = Json::UInt64(PID());
+        n["project_id"] = Json::UInt64(PID());
     } else {
         n["pid"] = Json::nullValue;
+        n["project_id"] = Json::nullValue;
     }
 
     if (TID()) {
         n["tid"] = Json::UInt64(TID());
+        n["task_id"] = Json::UInt64(TID());
     } else {
         n["tid"] = Json::nullValue;
+        n["task_id"] = Json::nullValue;
     }
+
+    n["client_id"] = "a07fe8d6-f8be-4a93-a18f-db4f17e05956";
 
     n["start"] = StartString();
     if (Stop()) {

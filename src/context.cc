@@ -51,9 +51,12 @@
 #include <Poco/StreamCopier.h>
 #include <Poco/URI.h>
 #include <Poco/UTF8String.h>
+#include <Poco/UUID.h>
+#include <Poco/UUIDGenerator.h>
 #include <Poco/URIStreamOpener.h>
 #include <Poco/Util/TimerTask.h>
 #include <Poco/Util/TimerTaskAdapter.h>
+
 #include <mutex> // NOLINT
 #include <thread>
 
@@ -82,7 +85,7 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , reminder_(this, &Context::reminderActivity)
-, syncer_(this, &Context::syncerActivity)
+, syncer_(this, &Context::batchedSyncerActivity)
 , update_path_("")
 , overlay_visible_(false)
 , last_message_id_("") {
@@ -4806,6 +4809,77 @@ void Context::reminderActivity() {
     }
 }
 
+void Context::batchedSyncerActivity() {
+    while (true) {
+        // Sleep in increments for faster shutdown.
+        for (int i = 0; i < 4; i++) {
+            if (syncer_.isStopped()) {
+                return;
+            }
+            Poco::Thread::sleep(250);
+        }
+
+        {
+            Poco::Mutex::ScopedLock lock(syncer_m_);
+
+            if (trigger_sync_) {
+
+                error err = pullAllUserData();
+                if (err != noError) {
+                    displayError(err);
+                }
+
+                setOnline("Data pulled");
+
+                err = pushBatchedChanges(&trigger_sync_);
+                trigger_push_ = false;
+                if (err != noError) {
+                    user_->ConfirmLoadedMore();
+                    displayError(err);
+                    return;
+                } else {
+                    setOnline("Data pushed");
+                }
+                trigger_sync_ = false;
+
+                // Push cached OBM action
+                err = pushObmAction();
+                if (err != noError) {
+                    std::cout << "SYNC: sync-pushObm ERROR\n";
+                    logger.error("Error pushing OBM action: " + err);
+                }
+
+                displayError(save(false));
+            }
+
+        }
+
+        {
+            Poco::Mutex::ScopedLock lock(syncer_m_);
+
+            if (trigger_push_) {
+                error err = pushBatchedChanges(&trigger_sync_);
+                if (err != noError) {
+                    user_->ConfirmLoadedMore();
+                    displayError(err);
+                } else {
+                    setOnline("Data pushed");
+                }
+                trigger_push_ = false;
+
+                // Push cached OBM action
+                err = pushObmAction();
+                if (err != noError) {
+                    std::cout << "SYNC: pushObm ERROR\n";
+                    logger.error("Error pushing OBM action: " + err);
+                }
+
+                displayError(save(false));
+            }
+        }
+    }
+}
+
 void Context::syncerActivity() {
     while (true) {
         // Sleep in increments for faster shutdown.
@@ -5052,6 +5126,159 @@ error Context::pullAllUserData() {
 
         stopwatch.stop();
         logger.debug("User with related data JSON fetched and parsed in ", stopwatch.elapsed() / 1000, " ms");
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string & ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Context::pushBatchedChanges(
+    bool *had_something_to_push) {
+    try {
+        Poco::Stopwatch stopwatch;
+        stopwatch.start();
+
+        poco_check_ptr(had_something_to_push);
+
+        *had_something_to_push = true;
+
+        std::map<std::string, BaseModel *> models;
+
+        std::vector<TimeEntry *> time_entries;
+        std::vector<Project *> projects;
+        std::vector<Client *> clients;
+
+        std::string api_token("");
+
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger.warning("cannot push changes when logged out");
+                return noError;
+            }
+
+            api_token = user_->APIToken();
+            if (api_token.empty()) {
+                return error("cannot push changes without API token");
+            }
+
+            collectPushableModels(
+                user_->related.TimeEntries,
+                &time_entries,
+                &models);
+            collectPushableModels(
+                user_->related.Projects,
+                &projects,
+                &models);
+            collectPushableModels(
+                user_->related.Clients,
+                &clients,
+                &models);
+            if (time_entries.empty()
+                    && projects.empty()
+                    && clients.empty()) {
+                *had_something_to_push = false;
+                return noError;
+            }
+        }
+
+        std::stringstream ss;
+        ss << "Sync success (";
+
+        Json::Value request;
+
+        for (auto i : clients) {
+            Json::Value item, meta;
+
+            i->EnsureGUID();
+            meta["client_assigned_id"] = i->GUID();
+            meta["uuid"] = i->GUID();
+            meta["client_id"] = i->GUID();
+
+            if (i->NeedsPOST())
+                item["type"] = "create";
+            else if (i->NeedsPUT())
+                item["type"] = "update";
+            else if (i->NeedsDELETE())
+                item["type"] = "delete";
+
+            item["meta"] = meta;
+            item["payload"] = i->SaveToJSON();
+
+            request["clients"].append(item);
+        }
+
+        for (auto i : projects) {
+            Json::Value item, meta;
+
+            i->EnsureGUID();
+            meta["client_assigned_id"] = i->GUID();
+            meta["uuid"] = i->GUID();
+            meta["client_id"] = i->GUID();
+
+            if (i->NeedsPOST())
+                item["type"] = "create";
+            else if (i->NeedsPUT())
+                item["type"] = "update";
+            else if (i->NeedsDELETE())
+                item["type"] = "delete";
+
+            item["meta"] = meta;
+            item["payload"] = i->SaveToJSON();
+
+            request["projects"].append(item);
+        }
+
+        for (auto i : time_entries) {
+            Json::Value item, meta;
+
+            i->EnsureGUID();
+            user_->EnsureWID(i);
+            meta["client_assigned_id"] = i->GUID();
+            meta["uuid"] = i->GUID();
+            meta["client_id"] = i->GUID();
+
+            if (i->NeedsPOST())
+                item["type"] = "create";
+            else if (i->NeedsPUT())
+                item["type"] = "update";
+            else if (i->NeedsDELETE())
+                item["type"] = "delete";
+
+            item["meta"] = meta;
+            item["payload"] = i->SaveToJSON();
+
+            request["time_entries"].append(item);
+        }
+
+        Json::FastWriter w;
+        std::string payload = w.write(request);
+        std::cerr << "About to write: " << payload << std::endl;
+
+        std::string requestID = Poco::UUIDGenerator().createOne().toString();
+
+        HTTPRequest req;
+        req.payload = payload;
+        req.host = urls::SyncAPI();
+        req.relative_url = "/push/" + requestID;
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
+        req.compress = false;
+
+        HTTPClient client;
+        auto response = client.Post(req);
+
+        std::cerr << "Request ID was: " << requestID << std::endl;
+        std::cerr << "GOT RESPONSE: " << response.status_code << " " << response.err << std::endl;
+        std::cerr << "BODY: " << response.body << std::endl;
+
+        stopwatch.stop();
+        ss << ") Total = " << stopwatch.elapsed() / 1000 << " ms";
+        logger.debug(ss.str());
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {

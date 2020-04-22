@@ -564,6 +564,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     void checkReminders();
     void reminderActivity();
     void syncerActivity();
+    void batchedSyncerActivity();
 
  private:
     static const std::string installerPlatform();
@@ -665,6 +666,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error pullChanges();
     error pullUserPreferences();
 
+    error pushBatchedChanges(
+        bool *had_something_to_push);
     error pushChanges(
         bool *had_something_to_push);
     error pushClients(

@@ -122,6 +122,7 @@ class TOGGL_INTERNAL_EXPORT HTTPRequest {
     std::string basic_auth_password;
     Poco::Net::HTMLForm *form;
     Poco::Int64 timeout_seconds;
+    bool compress { true };
 };
 
 class TOGGL_INTERNAL_EXPORT HTTPResponse {
