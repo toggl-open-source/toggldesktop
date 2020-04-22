@@ -161,7 +161,7 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
     
  protected:
     virtual HTTPResponse request(
-        HTTPRequest req, bool indicator = true) const;
+        HTTPRequest req) const;
 
     virtual Logger logger() const;
 
@@ -215,7 +215,7 @@ public:
         HTTPRequest req) const;
 
 protected:
-    virtual HTTPResponse request(HTTPRequest req, bool indicator) const override;
+    virtual HTTPResponse request(HTTPRequest req) const override;
     virtual Logger logger() const override;
 
 private:

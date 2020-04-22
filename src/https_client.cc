@@ -255,7 +255,7 @@ HTTPResponse HTTPClient::Put(
 }
 
 HTTPResponse HTTPClient::request(
-    HTTPRequest req, bool indicator) const {
+    HTTPRequest req) const {
     HTTPResponse resp = makeHttpRequest(req);
 
     if (kCannotConnectError == resp.err && isRedirect(resp.status_code)) {
@@ -506,7 +506,7 @@ Logger TogglClient::logger() const {
 }
 
 HTTPResponse TogglClient::request(
-    HTTPRequest req, bool indicator) const {
+    HTTPRequest req) const {
 
     error err = TogglStatus.Status();
     if (err != noError) {
@@ -516,13 +516,13 @@ HTTPResponse TogglClient::request(
         return resp;
     }
 
-    if (monitor_ && indicator) {
+    if (monitor_) {
         monitor_->DisplaySyncState(kSyncStateWork);
     }
 
-    HTTPResponse resp = HTTPClient::request(req, indicator);
+    HTTPResponse resp = HTTPClient::request(req);
 
-    if (monitor_ && indicator) {
+    if (monitor_) {
         monitor_->DisplaySyncState(kSyncStateIdle);
     }
 
@@ -537,24 +537,24 @@ HTTPResponse TogglClient::request(
 HTTPResponse TogglClient::silentPost(
     HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_POST;
-    return request(req, false);
+    return HTTPClient::request(req);
 }
 
 HTTPResponse TogglClient::silentGet(
     HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
-    return request(req, false);
+    return HTTPClient::request(req);
 }
 
 HTTPResponse TogglClient::silentDelete(
     HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_DELETE;
-    return request(req, false);
+    return HTTPClient::request(req);
 }
 
 HTTPResponse TogglClient::silentPut(
     HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_PUT;
-    return request(req, false);
+    return HTTPClient::request(req);
 }
 }   // namespace toggl
