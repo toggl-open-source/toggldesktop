@@ -1165,6 +1165,18 @@ public static partial class Toggl
     // (updates are disabled in Debug configuration to allow for proper debugging)
     private static void installPendingUpdates()
     {
+        DeleteOldUpdates();
+
+        var aboutWindowViewModel = mainWindow.GetWindow<AboutWindow>().ViewModel;
+        if (aboutWindowViewModel.InstallPendingUpdate())
+        {
+            // quit, updater will restart the app
+            Environment.Exit(0);
+        }
+    }
+
+    private static void DeleteOldUpdates()
+    {
         Directory.CreateDirectory(UpdatesPath); // make sure the directory exists
         var di = new DirectoryInfo(UpdatesPath);
         foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
@@ -1179,12 +1191,24 @@ public static partial class Toggl
                 Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
             }
         }
-
-        var aboutWindowViewModel = mainWindow.GetWindow<AboutWindow>().ViewModel;
-        if (aboutWindowViewModel.InstallPendingUpdate())
+        var updatesDir = new DirectoryInfo(
+            Path.Combine(
+                Environment.GetFolderPath(
+                    Environment.SpecialFolder.LocalApplicationData), "Onova", "TogglDesktop"));
+        if (updatesDir.Exists)
         {
-            // quit, updater will restart the app
-            Environment.Exit(0);
+            foreach (var file in updatesDir.GetFiles("*.exe", SearchOption.TopDirectoryOnly))
+            {
+                try
+                {
+                    Utils.DeleteFile(file.FullName);
+                }
+                catch (Exception e)
+                {
+                    BugsnagService.NotifyBugsnag(e);
+                    Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
+                }
+            }
         }
     }
 
