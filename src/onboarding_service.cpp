@@ -45,12 +45,7 @@ void OnboardingService::LoadOnboardingStateFromCurrentUser(User *_user) {
 
     // Load some states because we don't store it from db
     state->timeEntryTotal = user->related.TimeEntries.size();
-    if (!user->related.TimeEntries.empty()) {
-        TimeEntry *firstTimeEntry = user->related.TimeEntries.back();
-        if (firstTimeEntry != nullptr) {
-            state->firstTimeEntryCreatedAt = firstTimeEntry->Start();
-        }
-    }
+    getFirstTimeEntryCreatedAtFromUser(user);
 
     logger.debug("Onboarding state ", state);
 
@@ -160,6 +155,9 @@ bool OnboardingService::isTrackingTimeEntryForLastThreeDays() {
     if (state == nullptr) {
         return false;
     }
+    // the app might not quit, so the firstTimeEntryCreatedAt could be out of date
+    // Get new data from user Time Entries
+    getFirstTimeEntryCreatedAtFromUser(user);
     if (state->firstTimeEntryCreatedAt == 0) {
         return false;
     }
@@ -373,5 +371,17 @@ bool OnboardingService::handleOldUserOnboarding() {
         }
     }
     return false;
+}
+
+void OnboardingService::getFirstTimeEntryCreatedAtFromUser(User *user) {
+    if (user == nullptr) {
+        return;
+    }
+    if (!user->related.TimeEntries.empty()) {
+        TimeEntry *firstTimeEntry = user->related.TimeEntries.front();
+        if (firstTimeEntry != nullptr) {
+            state->firstTimeEntryCreatedAt = firstTimeEntry->Start();
+        }
+    }
 }
 }
