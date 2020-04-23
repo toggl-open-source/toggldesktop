@@ -1,12 +1,14 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-                    xmlns:Converters="http://metro.mahapps.com/winfx/xaml/shared">
+                    xmlns:Converters="http://metro.mahapps.com/winfx/xaml/shared"
+                    xmlns:converters="clr-namespace:TogglDesktop.Converters">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.ComboBox.xaml" />
         <ResourceDictionary Source="Typography.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <converters:PopupAlignmentAwareConverter x:Key="PopupAlignmentAwareConverter" />
     <Thickness x:Key="ComboBoxPopupBorderThemeThickness">1</Thickness>
     <Thickness x:Key="ComboBoxPopupBorderThemePadding">0,5</Thickness>
 
@@ -273,8 +275,8 @@
                                IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                Placement="Bottom"
                                PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
-                               HorizontalOffset="-8">
-                            <Grid Background="Transparent">
+                               HorizontalOffset="{Binding Converter={StaticResource PopupAlignmentAwareConverter}, ConverterParameter=-8}">
+                            <Grid Background="Transparent" UseLayoutRounding="True">
                                 <Border x:Name="PopupBorder"
                                         Height="Auto"
                                         MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}"

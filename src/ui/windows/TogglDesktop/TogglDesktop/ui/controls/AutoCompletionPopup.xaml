@@ -222,7 +222,7 @@
     
     <Popup Name="popup" x:FieldModifier="private"
            AllowsTransparency="True"
-           HorizontalOffset="-8"
+           HorizontalOffset="{Binding Converter={StaticResource PopupAlignmentAwareConverter}, ConverterParameter=-8}"
            StaysOpen="False"
            PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
         <Grid Background="Transparent">
