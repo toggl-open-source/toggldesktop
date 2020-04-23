@@ -25,6 +25,7 @@ final class OnboardingBackgroundView: NSView {
             return NSColor(calibratedWhite: 0, alpha: 0.5)
         }
     }()
+    private var maskFrame: CGRect?
 
     // MARK: Init
 
@@ -46,6 +47,7 @@ final class OnboardingBackgroundView: NSView {
     // MARK: Public
 
     func drawMask(at frame: CGRect) {
+        maskFrame = frame
         let path = NSBezierPath(rect: frame)
         path.append(NSBezierPath(rect: bounds))
         maskLayer.path = path.cgPath
@@ -53,7 +55,14 @@ final class OnboardingBackgroundView: NSView {
     }
 
     override func mouseDown(with event: NSEvent) {
-        // don't call super to prevent pass the click action to the below view
+        let clickedPoint = convert(event.locationInWindow, from: nil)
+
+        // pass the click action to the below view if it's in the mask area
+        if let maskFrame = maskFrame,
+            maskFrame.contains(clickedPoint) {
+            super.mouseDown(with: event)
+        }
+
         delegate?.onboardingBackgroundDidClick(self)
     }
 }
