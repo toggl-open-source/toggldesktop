@@ -1234,11 +1234,19 @@ const NSString *appName = @"osx_native_app";
 	[Bugsnag configuration].releaseStage = self.environment;
 
 	self.app_path = [Utils applicationSupportDirectory:self.environment];
-	self.db_path = [self.app_path stringByAppendingPathComponent:@"kopsik.db"];
+	self.db_path = [self.app_path stringByAppendingPathComponent:@"toggldesktop.db"];
 	self.log_path = [self.app_path stringByAppendingPathComponent:@"toggl_desktop.log"];
 	self.log_level = @"debug";
 	self.systemService = [[SystemService alloc] init];
 	self.isAddedTouchBar = NO;
+
+    // Check if kopsik.db exists and rename it
+    NSString *oldDbPath = [self.app_path stringByAppendingPathComponent:@"kopsik.db"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:oldDbPath]){
+        NSError *error = nil;
+        [fileManager moveItemAtPath:oldDbPath toPath:self.db_path error:&error];
+    }
 
 	[self parseCommandLineArguments];
 
