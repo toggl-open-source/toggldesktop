@@ -2,11 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared">
+                    xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+                    xmlns:converters="clr-namespace:TogglDesktop.Converters">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Shared.xaml" />
         <ResourceDictionary Source="Calendar.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
+    <converters:PopupAlignmentAwareConverter x:Key="PopupAlignmentAwareConverter"/>
 
     <Style TargetType="Button" x:Key="Toggl.DateIconButton">
         <Setter Property="Background" Value="Transparent" />
@@ -147,7 +150,8 @@
                                    Placement="Bottom"
                                    PlacementTarget="{Binding ElementName=PART_Root}"
                                    StaysOpen="False"
-                                   HorizontalOffset="-8"/>
+                                   HorizontalOffset="{Binding Converter={StaticResource PopupAlignmentAwareConverter}, ConverterParameter=-8}">
+                            </Popup>
                         </Grid>
                         <Border x:Name="DisabledVisualElement"
                                 Background="{DynamicResource MahApps.Brushes.Controls.Disabled}"

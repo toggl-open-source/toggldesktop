@@ -80,15 +80,11 @@
                                AllowsTransparency="True"
                                StaysOpen="False"
                                IsOpen="False"
-                               HorizontalOffset="-8"
+                               HorizontalOffset="{Binding Converter={StaticResource PopupAlignmentAwareConverter}, ConverterParameter=-8}"
                                Placement="Bottom"
                                PlacementTarget="{Binding ElementName=projectDropDownBorder}"
                                Opened="CreateProjectPopup_OnOpened"
                                Closed="CreateProjectPopup_OnClosed">
-                            <!-- <i:Interaction.Behaviors> -->
-                            <!--     <behaviors:RepositionPopupWithParentWindowBehavior /> -->
-                            <!--     <behaviors:ActivateParentWindowOnMouseClick /> -->
-                            <!-- </i:Interaction.Behaviors> -->
                             <Grid Background="Transparent">
                                 <Border Height="Auto"
                                         HorizontalAlignment="Stretch"
