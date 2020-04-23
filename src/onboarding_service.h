@@ -132,6 +132,7 @@ private:
     bool handleTimelineTabOnboarding();
     bool handleNewUserOnboarding();
     bool handleOldUserOnboarding();
+    void getFirstTimeEntryCreatedAtFromUser(User *user);
 };
 }
 
