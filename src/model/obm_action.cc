@@ -47,7 +47,7 @@ std::string ObmAction::ModelURL() const {
     return "/api/v9/obm/actions";
 }
 
-Json::Value ObmAction::SaveToJSON() const {
+Json::Value ObmAction::SaveToJSON(int apiVersion) const {
     Json::Value n;
     n["experiment_id"] = Json::UInt64(ExperimentID());
     n["key"] = Formatter::EscapeJSONString(Key());

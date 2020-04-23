@@ -6,7 +6,7 @@
 
 namespace toggl {
 
-Json::Value Settings::SaveToJSON() const {
+Json::Value Settings::SaveToJSON(int apiVersion) const {
     Json::Value json;
     json["use_idle_detection"] = use_idle_detection;
     json["menubar_timer"] = menubar_timer;

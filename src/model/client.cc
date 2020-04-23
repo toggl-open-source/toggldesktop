@@ -51,7 +51,7 @@ void Client::LoadFromJSON(Json::Value data) {
     SetWID(data["wid"].asUInt64());
 }
 
-Json::Value Client::SaveToJSON() const {
+Json::Value Client::SaveToJSON(int apiVersion) const {
     Json::Value n;
     if (ID()) {
         n["id"] = Json::UInt64(ID());

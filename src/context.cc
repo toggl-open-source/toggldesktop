@@ -5191,69 +5191,30 @@ error Context::pushBatchedChanges(
 
         Json::Value request;
 
-        for (auto i : clients) {
-            Json::Value item, meta;
+        auto collectJson = [](auto &jsonItem, auto &list) -> void {
+            for (auto i : list) {
+                Json::Value item, meta;
 
-            i->EnsureGUID();
-            meta["client_assigned_id"] = i->GUID();
-            meta["uuid"] = i->GUID();
-            meta["client_id"] = i->GUID();
+                i->EnsureGUID();
+                meta["client_assigned_id"] = i->GUID();
 
-            if (i->NeedsPOST())
-                item["type"] = "create";
-            else if (i->NeedsPUT())
-                item["type"] = "update";
-            else if (i->NeedsDELETE())
-                item["type"] = "delete";
+                if (i->NeedsPOST())
+                    item["type"] = "create";
+                else if (i->NeedsPUT())
+                    item["type"] = "update";
+                else if (i->NeedsDELETE())
+                    item["type"] = "delete";
 
-            item["meta"] = meta;
-            item["payload"] = i->SaveToJSON();
+                item["meta"] = meta;
+                item["payload"] = i->SaveToJSON(9);
 
-            request["clients"].append(item);
-        }
+                jsonItem.append(item);
+            }
+        };
 
-        for (auto i : projects) {
-            Json::Value item, meta;
-
-            i->EnsureGUID();
-            meta["client_assigned_id"] = i->GUID();
-            meta["uuid"] = i->GUID();
-            meta["client_id"] = i->GUID();
-
-            if (i->NeedsPOST())
-                item["type"] = "create";
-            else if (i->NeedsPUT())
-                item["type"] = "update";
-            else if (i->NeedsDELETE())
-                item["type"] = "delete";
-
-            item["meta"] = meta;
-            item["payload"] = i->SaveToJSON();
-
-            request["projects"].append(item);
-        }
-
-        for (auto i : time_entries) {
-            Json::Value item, meta;
-
-            i->EnsureGUID();
-            user_->EnsureWID(i);
-            meta["client_assigned_id"] = i->GUID();
-            meta["uuid"] = i->GUID();
-            meta["client_id"] = i->GUID();
-
-            if (i->NeedsPOST())
-                item["type"] = "create";
-            else if (i->NeedsPUT())
-                item["type"] = "update";
-            else if (i->NeedsDELETE())
-                item["type"] = "delete";
-
-            item["meta"] = meta;
-            item["payload"] = i->SaveToJSON();
-
-            request["time_entries"].append(item);
-        }
+        collectJson(request["clients"], clients);
+        collectJson(request["projects"], projects);
+        collectJson(request["projects"], time_entries);
 
         Json::FastWriter w;
         std::string payload = w.write(request);
@@ -5267,7 +5228,7 @@ error Context::pushBatchedChanges(
         req.relative_url = "/push/" + requestID;
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
-        req.compress = false;
+        req.compress = true;
 
         HTTPClient client;
         auto response = client.Post(req);

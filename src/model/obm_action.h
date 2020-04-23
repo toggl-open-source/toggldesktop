@@ -40,7 +40,7 @@ class TOGGL_INTERNAL_EXPORT ObmAction : public BaseModel {
     std::string String() const override;
     std::string ModelName() const override;
     std::string ModelURL() const override;
-    Json::Value SaveToJSON() const override;
+    Json::Value SaveToJSON(int apiVersion = 8) const override;
 
  private:
     Poco::UInt64 experiment_id_;
