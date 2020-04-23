@@ -39,6 +39,7 @@ final class OnboardingViewController: NSViewController {
         controller.delegate = self
         return controller
     }()
+    private var payload: OnboardingPayload?
 
     var isShown: Bool {
         return popover.isShown
@@ -59,6 +60,7 @@ final class OnboardingViewController: NSViewController {
     // MARK: Public
 
     func present(payload: OnboardingPayload) {
+        self.payload = payload
         self.presentView = payload.view
         guard let presentView = presentView else { return }
 
@@ -143,7 +145,7 @@ extension OnboardingViewController: NSPopoverDelegate {
 
 extension OnboardingViewController: OnboardingBackgroundViewDelegate {
 
-    func onboardingBackgroundDidClick(_ sender: OnboardingBackgroundView) {
+    func onboardingBackgroundDidClick(_ sender: OnboardingBackgroundView, onHighlightedArea: Bool, event: NSEvent) {
         //
         // Manual trigger the close when the user click on the background
         // Because some view that NSPopover presents would be re-cycle (Ex: TimeEntryCell when the Collection View reload)
@@ -151,6 +153,14 @@ extension OnboardingViewController: OnboardingBackgroundViewDelegate {
         //
         shouldClosePopover = true
         popover.close()
+
+        // As the TimeEntry Collection View handle the click differently
+        // So we have to pass the Click Event to the CollectionView
+        // and present the TimeEntry Editor if need
+        if let payload = payload,
+            payload.hint == .editTimeEntry && onHighlightedArea {
+            NotificationCenter.default.post(name: .onboardingDidClick, object: event)
+        }
     }
 }
 
