@@ -104,6 +104,11 @@ extension OnboardingViewController {
         default:
             popover.contentViewController = contentController
         }
+
+        // Update size
+        if let size = popover.contentViewController?.view.frame.size {
+            popover.contentSize = size
+        }
     }
 
     @objc private func windowDidResizeNoti(_ noti: Notification) {
