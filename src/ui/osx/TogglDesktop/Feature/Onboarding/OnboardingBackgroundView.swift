@@ -9,7 +9,7 @@
 import Cocoa
 
 protocol OnboardingBackgroundViewDelegate: class {
-    func onboardingBackgroundDidClick(_ sender: OnboardingBackgroundView)
+    func onboardingBackgroundDidClick(_ sender: OnboardingBackgroundView, onHighlightedArea: Bool, event: NSEvent)
 }
 
 final class OnboardingBackgroundView: NSView {
@@ -58,12 +58,14 @@ final class OnboardingBackgroundView: NSView {
         let clickedPoint = convert(event.locationInWindow, from: nil)
 
         // pass the click action to the below view if it's in the mask area
+        var onHighlightedArea = false
         if let maskFrame = maskFrame,
             maskFrame.contains(clickedPoint) {
+            onHighlightedArea = true
             super.mouseDown(with: event)
         }
 
-        delegate?.onboardingBackgroundDidClick(self)
+        delegate?.onboardingBackgroundDidClick(self, onHighlightedArea: onHighlightedArea, event: event)
     }
 }
 

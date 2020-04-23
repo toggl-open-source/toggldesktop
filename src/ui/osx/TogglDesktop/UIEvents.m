@@ -68,3 +68,4 @@ NSString *const kStartButtonStateChange = @"kStartButtonStateChange";
 NSString *const kInvalidAppleUserCrendential = @"kInvalidAppleUserCrendential";
 
 NSString *const kStartDisplayOnboarding = @"kStartDisplayOnboarding";
+NSString *const kOnboardingDidClickNotification = @"kOnboardingDidClickNotification";
