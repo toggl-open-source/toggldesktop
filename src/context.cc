@@ -2738,7 +2738,12 @@ error Context::SetLoggedInUserFromJSON(
     return noError;
 }
 
-error Context::Logout() {
+error Context::LogoutAndClearCache() {
+    // ClearCache will trigger the logout action too
+    return ClearCache();
+}
+
+error Context::logout() {
     try {
         if (!user_) {
             logger.warning("User is logged out, cannot logout again");
@@ -2791,7 +2796,7 @@ error Context::ClearCache() {
             return displayError(err);
         }
 
-        return Logout();
+        return logout();
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {

@@ -332,7 +332,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error AppleLogin(const std::string &access_token);
     error AsyncAppleLogin(const std::string &access_token);
 
-    error Logout();
+    error LogoutAndClearCache();
 
     error SetLoggedInUserFromJSON(
         const std::string &json,
@@ -823,6 +823,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error updateTimeEntryDescription(
         TimeEntry *te,
         const std::string &value);
+
+    error logout();
 };
 
 void on_websocket_message(

@@ -517,7 +517,7 @@ bool_t toggl_logout(
 
     logger().debug("toggl_logout");
 
-    return toggl::noError == app(context)->Logout();
+    return toggl::noError == app(context)->LogoutAndClearCache();
 }
 
 bool_t toggl_clear_cache(
