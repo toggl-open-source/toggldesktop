@@ -1078,22 +1078,6 @@ void *ctx;
 	toggl_logout(ctx);
 }
 
-- (IBAction)onClearCacheMenuItem:(id)sender
-{
-	NSAlert *alert = [[NSAlert alloc] init];
-
-	[alert addButtonWithTitle:@"OK"];
-	[alert addButtonWithTitle:@"Cancel"];
-	[alert setMessageText:@"Clear local data and log out?"];
-	[alert setInformativeText:@"Deleted unsynced time entries cannot be restored."];
-	[alert setAlertStyle:NSWarningAlertStyle];
-	if ([alert runModal] != NSAlertFirstButtonReturn)
-	{
-		return;
-	}
-	toggl_clear_cache(ctx);
-}
-
 - (IBAction)onAboutMenuItem:(id)sender
 {
 	[self.aboutWindowController showWindowAndFocus];
@@ -1412,7 +1396,6 @@ const NSString *appName = @"osx_native_app";
 		case kMenuItemTagMode :
 		case kMenuItemTagSync :
 		case kMenuItemTagLogout :
-		case kMenuItemTagClearCache :
 		case kMenuItemTagOpenBrowser :
 		case kMenuItemTagNew :
 		case kMenuItemTagSendFeedBack :

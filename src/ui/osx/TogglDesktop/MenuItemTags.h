@@ -12,7 +12,6 @@ static NSInteger const kMenuItemTagLogout = 2;
 static NSInteger const kMenuItemTagNew = 3;
 static NSInteger const kMenuItemTagContinue = 4;
 static NSInteger const kMenuItemTagStop = 5;
-static NSInteger const kMenuItemTagClearCache = 6;
 static NSInteger const kMenuItemTagOpenBrowser = 9;
 static NSInteger const kMenuItemTagEdit = 10;
 static NSInteger const kMenuItemTagMode = 12;
