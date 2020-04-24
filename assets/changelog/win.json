@@ -1,6 +1,15 @@
 {
     "versions": [
         {
+            "version": "7.5.119",
+            "rows": [
+                "Fixed the crash caused by the latest dropdown position fix"
+            ],
+            "date": "April 24th 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.109",
             "rows": [
                 "Fixed the bug causing an incorrect location of the desktop shortcut",
