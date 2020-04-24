@@ -22,7 +22,7 @@
             <subviews>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Kql-9K-WpU">
                     <rect key="frame" x="13" y="147" width="237" height="32"/>
-                    <textFieldCell key="cell" selectable="YES" title="Having troubles recalling what you were working on?" id="OwG-GB-Vwe">
+                    <textFieldCell key="cell" selectable="YES" title="Having trouble recalling what you were working on?" id="OwG-GB-Vwe">
                         <font key="font" metaFont="systemBold"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
