@@ -224,7 +224,6 @@ void MainWindowController::enableMenuActions() {
     ui->actionStop->setEnabled(loggedIn && tracking);
     ui->actionSync->setEnabled(loggedIn);
     ui->actionLogout->setEnabled(loggedIn);
-    ui->actionClear_Cache->setEnabled(loggedIn);
     ui->actionSend_Feedback->setEnabled(loggedIn);
     ui->actionReports->setEnabled(loggedIn);
     ui->actionEmail->setText(TogglApi::instance->userEmail());
@@ -394,7 +393,6 @@ void MainWindowController::connectMenuActions() {
     connect(ui->actionStop,  &QAction::triggered, this, &MainWindowController::onActionStop);
     connect(ui->actionSync,  &QAction::triggered, this, &MainWindowController::onActionSync);
     connect(ui->actionLogout,  &QAction::triggered, this, &MainWindowController::onActionLogout);
-    connect(ui->actionClear_Cache,  &QAction::triggered, this, &MainWindowController::onActionClear_Cache);
     connect(ui->actionSend_Feedback,  &QAction::triggered, this, &MainWindowController::onActionSend_Feedback);
     connect(ui->actionReports,  &QAction::triggered, this, &MainWindowController::onActionReports);
     connect(ui->actionShow,  &QAction::triggered, this, &MainWindowController::onActionShow);
@@ -459,16 +457,6 @@ void MainWindowController::quitApp() {
     TogglApi::instance->shutdown = true;
     TogglApi::instance->clear();
     qApp->exit(0);
-}
-
-void MainWindowController::onActionClear_Cache() {
-    if (QMessageBox::Ok == QMessageBox(
-        QMessageBox::Question,
-        "Clear Cache?",
-        "Clearing cache will delete any unsaved time entries and log you out.",
-        QMessageBox::Ok|QMessageBox::Cancel).exec()) {
-        TogglApi::instance->clearCache();
-    }
 }
 
 void MainWindowController::onActionHelp() {

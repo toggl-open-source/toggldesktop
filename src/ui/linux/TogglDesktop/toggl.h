@@ -78,8 +78,6 @@ class TogglApi : public QObject {
 
     void sync();
 
-    bool clearCache();
-
     void getSupport();
 
     void logout();

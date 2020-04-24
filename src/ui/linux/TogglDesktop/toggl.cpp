@@ -585,10 +585,6 @@ void TogglApi::openInBrowser() {
     toggl_open_in_browser(ctx);
 }
 
-bool TogglApi::clearCache() {
-    return toggl_clear_cache(ctx);
-}
-
 void TogglApi::getSupport() {
     toggl_get_support(ctx, 2);
 }

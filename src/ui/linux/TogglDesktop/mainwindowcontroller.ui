@@ -91,7 +91,6 @@
     <addaction name="actionSend_Feedback"/>
     <addaction name="actionHelp"/>
     <addaction name="actionLogout"/>
-    <addaction name="actionClear_Cache"/>
     <addaction name="actionQuit"/>
    </widget>
    <addaction name="menuToggl_Desktop"/>
@@ -156,11 +155,6 @@
   <action name="actionQuit">
    <property name="text">
     <string>&amp;Quit</string>
-   </property>
-  </action>
-  <action name="actionClear_Cache">
-   <property name="text">
-    <string>Clear Cache</string>
    </property>
   </action>
   <action name="actionHelp">

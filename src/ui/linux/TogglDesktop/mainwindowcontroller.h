@@ -87,7 +87,6 @@ class MainWindowController : public QMainWindow {
     void onActionSend_Feedback();
     void onActionLogout();
     void onActionQuit();
-    void onActionClear_Cache();
     void onActionHelp();
 
     void updateShowHideShortcut();
