@@ -275,7 +275,7 @@
                                IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                Placement="Bottom"
                                PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
-                               HorizontalOffset="{Binding Converter={StaticResource PopupAlignmentAwareConverter}, ConverterParameter=-8}">
+                               HorizontalOffset="{Binding Converter={StaticResource PopupAlignmentAwareConverter}, ConverterParameter='-8'}">
                             <Grid Background="Transparent" UseLayoutRounding="True">
                                 <Border x:Name="PopupBorder"
                                         Height="Auto"

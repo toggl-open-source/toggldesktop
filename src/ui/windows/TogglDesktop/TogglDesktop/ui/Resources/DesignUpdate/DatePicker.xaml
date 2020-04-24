@@ -150,7 +150,7 @@
                                    Placement="Bottom"
                                    PlacementTarget="{Binding ElementName=PART_Root}"
                                    StaysOpen="False"
-                                   HorizontalOffset="{Binding Converter={StaticResource PopupAlignmentAwareConverter}, ConverterParameter=-8}">
+                                   HorizontalOffset="{Binding Converter={StaticResource PopupAlignmentAwareConverter}, ConverterParameter='-8'}">
                             </Popup>
                         </Grid>
                         <Border x:Name="DisabledVisualElement"

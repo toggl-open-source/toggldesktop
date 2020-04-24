@@ -80,7 +80,7 @@
                                AllowsTransparency="True"
                                StaysOpen="False"
                                IsOpen="False"
-                               HorizontalOffset="{Binding Converter={StaticResource PopupAlignmentAwareConverter}, ConverterParameter=-8}"
+                               HorizontalOffset="{Binding Converter={StaticResource PopupAlignmentAwareConverter}, ConverterParameter='-8'}"
                                Placement="Bottom"
                                PlacementTarget="{Binding ElementName=projectDropDownBorder}"
                                Opened="CreateProjectPopup_OnOpened"

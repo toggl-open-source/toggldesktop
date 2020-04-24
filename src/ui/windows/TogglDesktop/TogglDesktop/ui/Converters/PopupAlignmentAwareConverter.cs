@@ -10,7 +10,7 @@ namespace TogglDesktop.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (!(parameter is string str)) return default(double);
-            var input = double.Parse(str);
+            if (!double.TryParse(str, out var input)) return default(double);
             return SystemParameters.MenuDropAlignment ? -input : input;
         }
 
