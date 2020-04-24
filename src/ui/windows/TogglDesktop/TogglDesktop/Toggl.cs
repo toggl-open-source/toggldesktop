@@ -504,12 +504,7 @@ public static partial class Toggl
     {
         return toggl_logout(ctx);
     }
-
-    public static bool ClearCache()
-    {
-        return toggl_clear_cache(ctx);
-    }
-
+    
     public static bool SetLoggedInUser(string json) {
         return testing_set_logged_in_user(ctx, json);
     }

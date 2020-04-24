@@ -307,25 +307,6 @@ namespace TogglDesktop.Tests
         }
 
         [Fact]
-        public void ClearCacheShouldLogTheUserOut()
-        {
-            var assertionExecuted = false;
-            Toggl.OnLogin += Assertion;
-
-            Assert.True(Toggl.Logout());
-
-            void Assertion(bool open, ulong userId)
-            {
-                Assert.True(open);
-                Assert.Equal(0ul, userId);
-                assertionExecuted = true;
-            }
-            Assert.True(assertionExecuted);
-
-            Toggl.OnLogin -= Assertion;
-        }
-
-        [Fact]
         public void AddProjectShouldCreateNewProjectAndAssignItToTimeEntry()
         {
             var projectId = Toggl.AddProject(_firstTimeEntryGuid, 123456789, 0, null,

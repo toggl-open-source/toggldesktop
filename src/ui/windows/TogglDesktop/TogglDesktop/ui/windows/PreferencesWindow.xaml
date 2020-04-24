@@ -246,15 +246,6 @@
                                          Content="end time"
                                          Name="keepDurationFixedCheckbox" x:FieldModifier="private" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource Toggl.TitleText}" Margin="0 32 0 0"
-                                   Text="Clear cache" />
-                        <TextBlock Style="{StaticResource Toggl.CaptionText}" Margin="0 4 0 0"
-                                   Text="This will clear all Toggl local data and log you out. To avoid losing any time entries, please make sure they are successfully synced."/>
-                        <Button Style="{StaticResource Toggl.PrimaryButton}" Margin="0 8 0 0"
-                                Width="136"
-                                HorizontalAlignment="Left"
-                                Content="Clear cache"
-                                Command="{Binding ClearCacheCommand}"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

@@ -29,7 +29,6 @@ namespace TogglDesktop.Tests
                 IsRunning = false;
             };
             Assert.True(Toggl.StartUI("0.0.0", new ulong[0]));
-            Toggl.ClearCache();
             Toggl.SetManualMode(false);
         }
 

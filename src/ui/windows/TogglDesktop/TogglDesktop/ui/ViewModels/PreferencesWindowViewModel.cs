@@ -48,7 +48,6 @@ namespace TogglDesktop.ViewModels
                 onNext => (open, userId) => { onNext(userId != 0); },
                 x => Toggl.OnLogin += x,
                 x => Toggl.OnLogin -= x);
-            ClearCacheCommand = ReactiveCommand.Create(ClearCache, isLoggedIn.ObserveOnDispatcher());
 
             this.WhenAnyValue(x => x.ShowHideToggl)
                 .Buffer(2, 1)
@@ -66,8 +65,6 @@ namespace TogglDesktop.ViewModels
                 hotKey => IsHotKeyValid(hotKey, ContinueStopTimerDescription),
                 hotKey => $"This shortcut is already taken by {_knownShortcuts[hotKey]}");
         }
-
-        public ICommand ClearCacheCommand { get; }
 
         [Reactive]
         public HotKey ShowHideToggl { get; set; }
@@ -126,20 +123,6 @@ namespace TogglDesktop.ViewModels
         {
             var key = getKey();
             return new HotKey(key, key == Key.None ? ModifierKeys.None : getModifiers());
-        }
-
-        private void ClearCache()
-        {
-            var result = _showMessageBox(
-                "This will remove your Toggl user data from this PC and log you out of the Toggl Desktop app. " +
-                "Any unsynced data will be lost.\n\nDo you want to continue?", "Clear Cache",
-                MessageBoxButton.OKCancel, "Clear cache");
-
-            if (result == MessageBoxResult.OK)
-            {
-                Toggl.ClearCache();
-                _closePreferencesWindow();
-            }
         }
     }
 }
