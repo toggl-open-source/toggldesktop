@@ -1,6 +1,15 @@
 {
     "versions": [
         {
+            "version": "7.5.123",
+            "rows": [
+                "Fixed memory leaks",
+                "Improve default vertical position in the Timeline view"
+            ],
+            "date": "April 28th 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.115",
             "rows": [
                 "Improve Google Error message and layout",
