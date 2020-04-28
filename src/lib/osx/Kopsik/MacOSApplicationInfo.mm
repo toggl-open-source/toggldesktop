@@ -10,8 +10,6 @@
 #include <string.h>
 #include <iostream>
 
-static const int kTitleBufferSize = 255;
-
 @interface MacOSApplicationUtility : NSObject
 
 + (NSRunningApplication *) getFrontApplication;
@@ -33,67 +31,59 @@ static const int kTitleBufferSize = 255;
 @end
 
 int macOSGetActiveWindowInfo(std::string *title, std::string *filename) {
-    *title = "";
-    *filename = "";
+    @autoreleasepool {
+        *title = "";
+        *filename = "";
 
-    // Get front app
-    NSRunningApplication *frontApp = [MacOSApplicationUtility getFrontApplication];
-    if (frontApp == nil) {
-        return -1;
-    }
-
-    // window title
-    CFArrayRef windows = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
-    for (int i = 0; i < CFArrayGetCount(windows); i++) {
-        CFDictionaryRef dict = (CFDictionaryRef)CFArrayGetValueAtIndex(
-            windows, i);
-
-        // Get window layer and skip the background
-        CFNumberRef window_layer = (CFNumberRef)CFDictionaryGetValue(dict, kCGWindowLayer);
-        int window_layer_int;
-        CFNumberGetValue(window_layer, kCFNumberIntType, &window_layer_int);
-        if (window_layer_int != 0) {
-            continue;
+        // Get front app
+        NSRunningApplication *frontApp = [MacOSApplicationUtility getFrontApplication];
+        if (frontApp == nil) {
+            return -1;
         }
 
-        CFNumberRef window_owner_pid = (CFNumberRef)CFDictionaryGetValue(
-            dict, kCGWindowOwnerPID);
-        int window_owner_pid_int;
-        CFNumberGetValue(window_owner_pid, kCFNumberIntType,
-                         &window_owner_pid_int);
+        // window title
+        CFArrayRef _windows = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
+        NSArray *windows = CFBridgingRelease(_windows);
 
-        // Get app with pid
-        NSRunningApplication *app = [NSRunningApplication runningApplicationWithProcessIdentifier:window_owner_pid_int];
-        if (app == nil) {
-            continue;
-        }
+        for (int i = 0; i < windows.count; i++) {
+            NSDictionary *dict = windows[i];
 
-        // Compare if it's the same process
-        // We don't compare pid, we use -isEqual
-        // Ref: https://developer.apple.com/documentation/appkit/nsrunningapplication/1526998-processidentifier
-        if ([app isEqual:frontApp]) {
-            CFStringRef window_name = (CFStringRef)CFDictionaryGetValue(dict, kCGWindowName);
-            if (window_name) {
-                char title_buffer[kTitleBufferSize];
-                CFStringGetCString(window_name, title_buffer,
-                                   kTitleBufferSize, kCFStringEncodingUTF8);
-                *title = std::string(title_buffer);
-                // If the title we got is emtpy, keep looking.
-                // This is needed to get the actual tab title.
-                if (!title->empty()) {
-                    break;
+            // Get window layer and skip the background
+            NSNumber *window_layer = (NSNumber *) [dict objectForKey:(__bridge NSString *) kCGWindowLayer];
+            if (window_layer.intValue != 0) {
+                continue;
+            }
+            NSNumber *window_owner_pid = (NSNumber *) [dict objectForKey:(__bridge NSString *) kCGWindowOwnerPID];
+
+            // Get app with pid
+            NSRunningApplication *app = [NSRunningApplication runningApplicationWithProcessIdentifier:window_owner_pid.intValue];
+            if (app == nil) {
+                continue;
+            }
+
+            // Compare if it's the same process
+            // We don't compare pid, we use -isEqual
+            // Ref: https://developer.apple.com/documentation/appkit/nsrunningapplication/1526998-processidentifier
+            if ([app isEqual:frontApp]) {
+                NSString *window_name = (NSString *) [dict objectForKey:(__bridge NSString *) kCGWindowName];
+                if (window_name) {
+                    *title = std::string([window_name UTF8String]);
+                    // If the title we got is emtpy, keep looking.
+                    // This is needed to get the actual tab title.
+                    if (!title->empty()) {
+                        break;
+                    }
                 }
             }
         }
-    }
-    CFRelease(windows);
 
-    // get application filename
-    NSString *appName = frontApp.localizedName;
-    if (appName == nil) {
-        return -1;
-    }
-    *filename = std::string(appName.UTF8String);
+        // get application filename
+        NSString *appName = frontApp.localizedName;
+        if (appName == nil) {
+            return -1;
+        }
+        *filename = std::string(appName.UTF8String);
 
-    return 0;
+        return 0;
+    }
 }
