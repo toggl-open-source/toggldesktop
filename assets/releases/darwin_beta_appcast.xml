@@ -2,13 +2,13 @@
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
         <title>TogglDesktop Changelog</title>
-        <link>darwin_beta_appcast.xml</link>
+        <link>darwin_dev_appcast.xml</link>
         <description>Most recent changes.</description>
         <language>en</language>
         <item>
-            <title>Version 7.5.115</title>
-            <pubDate>2020-04-22-10-19-17</pubDate>
-            <enclosure url="https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.115/TogglDesktop-7_5_115.dmg" sparkle:version="7.5.115" length="12855138" type="application/octet-stream" sparkle:dsaSignature="MCwCFG6ffi7pUdYScHXQHLhHal0bgujxAhQY5Cn0GkWPaYRxL2mCuKXC6PB6mA==" />
+            <title>Version 7.5.123</title>
+            <pubDate>2020-04-28-11-05-18</pubDate>
+            <enclosure url="https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.123/TogglDesktop-7_5_123.dmg" sparkle:version="7.5.123" length="12849981" type="application/octet-stream" sparkle:dsaSignature="MC0CFAcDaqEWKdpXKDaLAc3CKJKY4z2JAhUAl627iXg2U2buSrOVyKhv0uf1ktc=" />
             <description>
                 <![CDATA[
                     <ul>
