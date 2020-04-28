@@ -5237,6 +5237,10 @@ error Context::pushBatchedChanges(
         std::cerr << "GOT RESPONSE: " << response.status_code << " " << response.err << std::endl;
         std::cerr << "BODY: " << response.body << std::endl;
 
+        Json::Reader reader;
+        Json::Value responseJson;
+        reader.parse(response.body, responseJson);
+
         stopwatch.stop();
         ss << ") Total = " << stopwatch.elapsed() / 1000 << " ms";
         logger.debug(ss.str());

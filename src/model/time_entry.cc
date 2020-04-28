@@ -510,14 +510,15 @@ Json::Value TimeEntry::SaveToJSON(int apiVersion) const {
 
     // TODO
     if (apiVersion != 8)
-        n["client_id"] = 0;
+        n["client_id"] = Json::nullValue;
 
     n["start"] = StartString();
     if (Stop()) {
         n["stop"] = StopString();
     }
     n["duration"] = Json::Int64(DurationInSeconds());
-    n["billable"] = Billable();
+    if (apiVersion == 8)
+        n["billable"] = Billable();
     n["duronly"] = DurOnly();
     n["ui_modified_at"] = Json::UInt64(UIModifiedAt());
     n["created_with"] = Formatter::EscapeJSONString(CreatedWith());
