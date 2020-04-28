@@ -92,8 +92,6 @@
 		B8B6ECE12446173A0008FA32 /* migrations.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6ECDD2446173A0008FA32 /* migrations.h */; };
 		B8B6ECE22446173A0008FA32 /* database.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6ECDE2446173A0008FA32 /* database.h */; };
 		B8B6ECEE244629240008FA32 /* jsoncpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8B6ECED244629240008FA32 /* jsoncpp.cpp */; };
-		BA063C0123B0AF2F003A96FE /* MacOSApplicationInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BA063BFF23B0AF2F003A96FE /* MacOSApplicationInfo.mm */; };
-		BA063C0423B0B761003A96FE /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA063C0323B0B761003A96FE /* AppKit.framework */; };
 		BA1AB53E235DEAD4000433AE /* MacOSVersionChecker.mm in Sources */ = {isa = PBXBuildFile; fileRef = BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */; };
 		BA43B32723F680B00007DD99 /* libPocoCrypto.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B31E23F680B00007DD99 /* libPocoCrypto.60.dylib */; };
 		BA43B32923F680B00007DD99 /* libPocoData.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B31F23F680B00007DD99 /* libPocoData.60.dylib */; };
@@ -228,8 +226,6 @@
 		B8B6ECDD2446173A0008FA32 /* migrations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = migrations.h; sourceTree = "<group>"; };
 		B8B6ECDE2446173A0008FA32 /* database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = database.h; sourceTree = "<group>"; };
 		B8B6ECED244629240008FA32 /* jsoncpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jsoncpp.cpp; path = ../../../third_party/jsoncpp/dist/jsoncpp.cpp; sourceTree = "<group>"; };
-		BA063BFF23B0AF2F003A96FE /* MacOSApplicationInfo.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MacOSApplicationInfo.mm; path = lib/osx/Kopsik/MacOSApplicationInfo.mm; sourceTree = "<group>"; };
-		BA063C0323B0B761003A96FE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MacOSVersionChecker.mm; path = lib/osx/Kopsik/MacOSVersionChecker.mm; sourceTree = "<group>"; };
 		BA43B31E23F680B00007DD99 /* libPocoCrypto.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoCrypto.60.dylib; path = ../../ui/osx/TogglDesktop/Library/poco/libPocoCrypto.60.dylib; sourceTree = "<group>"; };
 		BA43B31F23F680B00007DD99 /* libPocoData.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoData.60.dylib; path = ../../ui/osx/TogglDesktop/Library/poco/libPocoData.60.dylib; sourceTree = "<group>"; };
@@ -278,7 +274,6 @@
 				BAA842322403DAE000BCCB67 /* libssl.1.1.dylib in Frameworks */,
 				BA43B33523F680B00007DD99 /* libPocoUtil.60.dylib in Frameworks */,
 				BA43B33123F680B00007DD99 /* libPocoNet.60.dylib in Frameworks */,
-				BA063C0423B0B761003A96FE /* AppKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,7 +350,6 @@
 		BAD233D921D60A4D0039C742 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BA063C0323B0B761003A96FE /* AppKit.framework */,
 				BAD233DE21D60A4D0039C742 /* libPocoCrypto.dylib */,
 				BA43B34F23F681D60007DD99 /* liblua.a */,
 				BAA8422E2403DAE000BCCB67 /* libcrypto.1.1.dylib */,
@@ -457,7 +451,6 @@
 				C55DA5A217F06A3B00B42178 /* KopsikTarget.xcconfig */,
 				C55DA59F17F06A3B00B42178 /* Supporting Files */,
 				BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */,
-				BA063BFF23B0AF2F003A96FE /* MacOSApplicationInfo.mm */,
 			);
 			name = lib;
 			path = ../..;
@@ -614,7 +607,6 @@
 				B8B6EC6E244616B10008FA32 /* get_focused_window_mac.cc in Sources */,
 				B8B6ECC1244617000008FA32 /* timeline_event.cc in Sources */,
 				B8B6EC85244616B10008FA32 /* error.cc in Sources */,
-				BA063C0123B0AF2F003A96FE /* MacOSApplicationInfo.mm in Sources */,
 				B8B6EC93244616B10008FA32 /* context.cc in Sources */,
 				B8B6EC91244616B10008FA32 /* idle.cc in Sources */,
 				B8B6EC7F244616B10008FA32 /* toggl_api.cc in Sources */,
