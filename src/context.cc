@@ -5383,6 +5383,10 @@ error Context::pushEntries(
                 trigger_sync_ = false;
             }
 
+            if (kBadRequestError == resp.err) {
+                error_message = resp.body;
+            }
+
             continue;
         }
 
