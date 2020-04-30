@@ -1013,6 +1013,12 @@ void User::loadUserProjectFromSyncJSON(
     if (addNew) {
         AddProjectToList(model);
     }
+
+    // Clear default project if it was archived
+    if (model->ID() == DefaultPID()
+        && !model->Active()) {
+        SetDefaultPID(0);
+    }
 }
 
 void User::loadUserProjectFromJSON(
