@@ -124,7 +124,7 @@ Context::Context(const std::string &app_name, const std::string &app_version)
     pomodoro_break_entry_ = nullptr;
 
     // Register event action to trigger UI
-    OnboardingService::getInstance()->RegisterEventQueue(eventQueue_);
+    OnboardingService::getInstance()->RegisterEventQueue(&eventQueue_);
     OnboardingService::getInstance()->RegisterEvents([&] (const OnboardingType onboardingType) {
         UI()->DisplayOnboarding(onboardingType);
     });

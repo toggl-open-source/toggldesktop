@@ -16,8 +16,8 @@
 
 namespace toggl {
 
-void OnboardingService::RegisterEventQueue(EventQueue &_queue) {
-    queue = &_queue;
+void OnboardingService::RegisterEventQueue(EventQueue *_queue) {
+    queue = _queue;
 }
 
 void OnboardingService::RegisterEvents(std::function<void (const OnboardingType)> callback) {
