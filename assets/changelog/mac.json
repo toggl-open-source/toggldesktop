@@ -6,6 +6,14 @@
                 "Fixed memory leaks",
                 "Improve default vertical position in the Timeline view"
             ],
+            "date": "May 4th 2020"
+        },
+        {
+            "version": "7.5.123",
+            "rows": [
+                "Fixed memory leaks",
+                "Improve default vertical position in the Timeline view"
+            ],
             "date": "April 28th 2020",
             "beta": "true"
         },
