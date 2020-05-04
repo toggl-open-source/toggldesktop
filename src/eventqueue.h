@@ -20,6 +20,7 @@ class EventQueue
 {
 public:
     EventQueue(Context *parent);
+    ~EventQueue();
 
     void start();
 
@@ -29,7 +30,7 @@ public:
     void schedule(std::function<void(void)> event);
 
 private:
-    [[noreturn]] void threadLoop();
+    void threadLoop();
 
     std::multimap<std::chrono::time_point<std::chrono::system_clock>, std::function<void(void)>> queue;
     std::recursive_mutex queueLock;
@@ -39,6 +40,7 @@ private:
     Context *parent { nullptr };
     Logger logger { "EventQueue" };
 
+    bool terminate { false };
     std::thread workThread;
 };
 
