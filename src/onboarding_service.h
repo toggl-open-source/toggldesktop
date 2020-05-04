@@ -92,7 +92,7 @@ public:
     }
 
     // Register action
-    void RegisterEventQueue(EventQueue &queue);
+    void RegisterEventQueue(EventQueue *queue);
     void RegisterEvents(std::function<void (const OnboardingType)> callback);
     void SetDatabase(Database *db);
     void LoadOnboardingStateFromCurrentUser(User *user);
