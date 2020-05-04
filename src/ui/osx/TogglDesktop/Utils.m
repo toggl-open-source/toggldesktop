@@ -98,15 +98,25 @@ extern void *ctx;
 
 + (NSString *)applicationSupportDirectory:(NSString *)environment
 {
-	NSString *path;
-	NSError *error;
+    NSString *oldPath;
+    NSString *path;
+    NSError *error;
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
 
 	if ([paths count] == 0)
 	{
 		NSLog(@"Unable to access application support directory!");
 	}
-	path = [paths[0] stringByAppendingPathComponent:@"Kopsik"];
+
+    oldPath = [paths[0] stringByAppendingPathComponent:@"Kopsik"];
+    path = [paths[0] stringByAppendingPathComponent:@"Toggl"];
+
+    // Check if Kopsik dir exists and rename it
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:oldPath]){
+        NSError *error = nil;
+        [fileManager moveItemAtPath:oldPath toPath:path error:&error];
+    }
 
 	// Append environment name to path. So we can have
 	// production and development running side by side.
