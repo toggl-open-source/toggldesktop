@@ -251,12 +251,24 @@ TimeEntry *User::Continue(
     time_t now = time(nullptr);
 
     TimeEntry *result = new TimeEntry();
+
+    // Validate that project is not archived
+    Project *p = nullptr;
+    if (existing->PID()) {
+      p = related.ProjectByID(existing->PID());
+    } else if (!existing->ProjectGUID().empty()) {
+      p = related.ProjectByGUID(existing->ProjectGUID());
+    }
+    if (p && p->Active()) {
+      result->SetPID(existing->PID());
+      result->SetProjectGUID(existing->ProjectGUID());
+      result->SetTID(existing->TID());
+    }
+
+    // Set all time entry values
     result->SetCreatedWith(HTTPClient::Config.UserAgent());
     result->SetDescription(existing->Description());
     result->SetWID(existing->WID());
-    result->SetPID(existing->PID());
-    result->SetProjectGUID(existing->ProjectGUID());
-    result->SetTID(existing->TID());
     result->SetBillable(existing->Billable());
     result->SetTags(existing->Tags());
     result->SetUID(ID());
