@@ -667,31 +667,38 @@ const int kUseProxyToConnectToToggl = 2;
 	}
 
 	if ([aNotification object] == self.autotrackerProject)
+    {
+        [self comboBoxFilter:[aNotification object] dataSource:self.autotrackerProjectAutocompleteDataSource];
+    }
+    if ([aNotification object] == self.defaultProject)
 	{
-		NSCustomComboBox *comboBox = [aNotification object];
-		NSString *filter = [comboBox stringValue];
-
-		AutocompleteDataSource *dataSource = self.autotrackerProjectAutocompleteDataSource;
-
-		if (dataSource != nil)
-		{
-			[dataSource setFilter:filter];
-		}
-
-		if (!filter || ![filter length] || (dataSource != nil && !dataSource.count))
-		{
-			if ([comboBox isExpanded] == YES)
-			{
-				[comboBox setExpanded:NO];
-			}
-			return;
-		}
-
-		if ([comboBox isExpanded] == NO)
-		{
-			[comboBox setExpanded:YES];
-		}
+        [self comboBoxFilter:[aNotification object] dataSource:self.defaultProjectAutocompleteDataSource];
 	}
+}
+
+- (void)comboBoxFilter:(NSCustomComboBox*)comboBox
+            dataSource:(AutocompleteDataSource*)dataSource
+{
+    NSString *filter = [comboBox stringValue];
+
+    if (dataSource != nil)
+    {
+        [dataSource setFilter:filter];
+    }
+
+    if (!filter || ![filter length] || (dataSource != nil && !dataSource.count))
+    {
+        if ([comboBox isExpanded] == YES)
+        {
+            [comboBox setExpanded:NO];
+        }
+        return;
+    }
+
+    if ([comboBox isExpanded] == NO)
+    {
+        [comboBox setExpanded:YES];
+    }
 }
 
 // Term autocomplete datasource
