@@ -8,6 +8,16 @@ EventQueue::EventQueue(Context *parent)
 
 }
 
+EventQueue::~EventQueue() {
+    std::unique_lock<std::recursive_mutex> lock(queueLock);
+    if (workThread.get_id() == std::thread::id()) {
+        lock.unlock();
+        terminate = true;
+        cv.notify_all();
+        workThread.join();
+    }
+}
+
 void EventQueue::start() {
     if (workThread.get_id() == std::thread::id())
         workThread = std::thread(&EventQueue::threadLoop, this);
@@ -34,7 +44,11 @@ void EventQueue::threadLoop() {
     while (true) {
         std::unique_lock<std::recursive_mutex> lock(queueLock);
         auto time = std::chrono::system_clock::now();
+        if (terminate)
+            return;
         while (!queue.empty() && queue.begin()->first <= time) {
+            if (terminate)
+                return;
             logger.log("The time is now", std::to_string(time.time_since_epoch().count()));
             logger.log("The event time is", std::to_string(queue.begin()->first.time_since_epoch().count()));
             queue.begin()->second();
