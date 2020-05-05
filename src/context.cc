@@ -5214,7 +5214,7 @@ error Context::pushBatchedChanges(
 
         collectJson(request["clients"], clients);
         collectJson(request["projects"], projects);
-        collectJson(request["projects"], time_entries);
+        collectJson(request["time_entries"], time_entries);
 
         Json::FastWriter w;
         std::string payload = w.write(request);
@@ -5237,9 +5237,48 @@ error Context::pushBatchedChanges(
         std::cerr << "GOT RESPONSE: " << response.status_code << " " << response.err << std::endl;
         std::cerr << "BODY: " << response.body << std::endl;
 
+        auto handleResponse = [](Json::Value &json, auto &list) -> void {
+            auto findByGuid = [](auto &list, auto guid) -> typename std::remove_reference<decltype(list)>::type::value_type {
+                for (auto i : list) {
+                    if (i->GUID() == guid) {
+                        return i;
+                    }
+                }
+                return nullptr;
+            };
+
+            for (auto i : json) {
+                std::cerr << i.toStyledString() << std::endl;
+                if (!i["payload"].empty() && i["payload"]["success"].asBool()) {
+                    auto &root = i["payload"]["result"];
+                    auto model = findByGuid(list, i["meta"]["client_assigned_id"].asString());
+                    if (model) {
+                        auto id = root["id"].asUInt64();
+                        if (!id) {
+                            continue;
+                        }
+
+                        if (!model->ID()) {
+                            model->SetID(id);
+                        }
+
+                        if (model->ID() != id) {
+                            //return error("Backend has changed the ID of the entry");
+                        }
+
+                        model->LoadFromJSON(i["payload"]["result"]);
+                    }
+                }
+            }
+        };
+
         Json::Reader reader;
         Json::Value responseJson;
         reader.parse(response.body, responseJson);
+
+        handleResponse(responseJson["clients"], clients);
+        handleResponse(responseJson["projects"], projects);
+        handleResponse(responseJson["time_entries"], time_entries);
 
         stopwatch.stop();
         ss << ") Total = " << stopwatch.elapsed() / 1000 << " ms";
