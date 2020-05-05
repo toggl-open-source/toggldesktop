@@ -8,27 +8,38 @@
 
 import Foundation
 
+final class ProjectColorPool {
+
+    static let shared = ProjectColorPool()
+
+    // MARK: Variables
+
+    private(set) var colors: [ProjectColor] = []
+    let defaultColor = ProjectColor(hex: "#9e5bd9")
+
+    // MARK: Public
+
+    func updateDefaultColors(_ colors: [String]) {
+        self.colors = colors.map { ProjectColor(hex: $0) }
+    }
+
+    func random() -> ProjectColor {
+        return colors.randomElement() ?? defaultColor
+    }
+}
+
 struct ProjectColor: Equatable {
+    let hex: String
 
-    static let `default` = ProjectColor(colorHex: "#c56bff")
-    static let defaultColors: [ProjectColor] = [ProjectColor(colorHex: "#06aaf5"),
-                                                ProjectColor(colorHex: "#c56bff"),
-                                                ProjectColor(colorHex: "#ea468d"),
-                                                ProjectColor(colorHex: "#fb8b14"),
-                                                ProjectColor(colorHex: "#c7741c"),
-                                                ProjectColor(colorHex: "#f1c33f"),
-                                                ProjectColor(colorHex: "#e20505"),
-                                                ProjectColor(colorHex: "#4bc800"),
-                                                ProjectColor(colorHex: "#04bb9b"),
-                                                ProjectColor(colorHex: "#e19a86"),
-                                                ProjectColor(colorHex: "#3750b5"),
-                                                ProjectColor(colorHex: "#a01aa5"),
-                                                ProjectColor(colorHex: "#205500"),
-                                                ProjectColor(colorHex: "#000000")]
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.hex == rhs.hex
+    }
+}
 
-    let colorHex: String
+@objcMembers
+final class ProjectColorPoolObjc: NSObject {
 
-    static func random() -> ProjectColor {
-        return defaultColors.randomElement() ?? .default
+    class func updateDefaultColors(_ colors: [String]) {
+        ProjectColorPool.shared.updateDefaultColors(colors)
     }
 }

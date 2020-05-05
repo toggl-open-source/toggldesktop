@@ -79,8 +79,8 @@ final class ProjectCreationView: NSView {
     private lazy var workspaceDatasource = WorkspaceDataSource(items: WorkspaceStorage.shared.workspaces,
                                                                updateNotificationName: .WorkspaceStorageChangedNotification)
     weak var delegate: ProjectCreationViewDelegate?
-    private var originalColor = ProjectColor.default
-    private var selectedColor = ProjectColor.default {
+    private var originalColor = ProjectColorPool.shared.defaultColor
+    private var selectedColor = ProjectColorPool.shared.defaultColor {
         didSet {
             updateSelectColorView()
         }
@@ -159,7 +159,7 @@ final class ProjectCreationView: NSView {
         let clientID = clientData.0
         let clientGUID = clientData.1
         let projectName = projectTextField.stringValue
-        let colorHex = selectedColor.colorHex
+        let colorHex = selectedColor.hex
 
         let projectGUID = DesktopLibraryBridge.shared().createProject(withTimeEntryGUID: timeEntryGUID,
                                                                     workspaceID: workspaceID,
@@ -215,7 +215,7 @@ extension ProjectCreationView {
         addBtn.cursor = .pointingHand
         
         // Default value
-        selectedColor = ProjectColor.default
+        selectedColor = ProjectColorPool.shared.defaultColor
         displayMode = .normal
         publicProjectCheckBox.state = .off
 
@@ -242,7 +242,7 @@ extension ProjectCreationView {
     }
 
     fileprivate func getRandomColor() {
-        let color = ProjectColor.random()
+        let color = ProjectColorPool.shared.random()
         originalColor = color
         selectedColor = color
     }
@@ -262,7 +262,7 @@ extension ProjectCreationView {
     }
 
     fileprivate func updateSelectColorView() {
-        colorBtn.layer?.backgroundColor = ConvertHexColor.hexCode(toNSColor: selectedColor.colorHex)!.cgColor
+        colorBtn.layer?.backgroundColor = ConvertHexColor.hexCode(toNSColor: selectedColor.hex)!.cgColor
         colorPickerView.select(selectedColor)
     }
 

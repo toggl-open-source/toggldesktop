@@ -30,7 +30,7 @@ final class ColorPickerView: NSView {
     // MARK: Variables
 
     weak var delegate: ColorPickerViewDelegate?
-    fileprivate lazy var colors: [ProjectColor] = ProjectColor.defaultColors
+    fileprivate lazy var colors: [ProjectColor] = ProjectColorPool.shared.colors
 
     // MARK: View Cycle
 
@@ -131,7 +131,7 @@ extension ColorPickerView: ChangeColorDelegate {
 
     private func notifySelectedColorChange(with color: HSV) {
         let hex = color.toNSColor().hexString.lowercased()
-        let color = ProjectColor(colorHex: hex)
+        let color = ProjectColor(hex: hex)
         delegate?.colorPickerDidSelectColor(color)
     }
 }

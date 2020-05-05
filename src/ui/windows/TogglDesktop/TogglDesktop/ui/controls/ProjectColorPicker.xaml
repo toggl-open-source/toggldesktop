@@ -25,9 +25,7 @@
         <Popup Name="popup" x:FieldModifier="private"
             MaxHeight="300" StaysOpen="True" AllowsTransparency="True"
             PlacementTarget="{Binding ElementName=button}"
-            Placement="Left"
-            HorizontalOffset="{Binding ActualWidth, ElementName=button}"
-            VerticalOffset="{Binding ActualHeight, ElementName=button}"
+            Placement="Bottom"
             PreviewKeyDown="onPopupPreviewKeyDown"
             IsKeyboardFocusWithinChanged="onPopupKeyboardFocusWithinChanged">
 

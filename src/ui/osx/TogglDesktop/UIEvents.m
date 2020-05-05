@@ -47,7 +47,6 @@ NSString *const kFocusTimer = @"kFocusTimer";
 NSString *const kEscapeListing = @"kEscapeListing";
 NSString *const kToggleManualMode = @"kToggleManualMode";
 NSString *const kToggleTimerMode = @"kToggleTimerMode";
-NSString *const kSetProjectColors = @"kSetProjectColors";
 NSString *const kToggleGroup = @"ToggleGroup";
 NSString *const kDisplayCountries = @"kDisplayCountries";
 NSString *const kUpdateIconTooltip = @"kUpdateIconTooltip";

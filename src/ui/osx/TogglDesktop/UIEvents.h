@@ -50,7 +50,6 @@ extern NSString *const kFocusTimer;
 extern NSString *const kEscapeListing;
 extern NSString *const kToggleManualMode;
 extern NSString *const kToggleTimerMode;
-extern NSString *const kSetProjectColors;
 extern NSString *const kToggleGroup;
 extern NSString *const kDisplayCountries;
 extern NSString *const kUpdateIconTooltip;

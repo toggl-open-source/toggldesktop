@@ -1361,6 +1361,8 @@ const NSString *appName = @"osx_native_app";
 		 return theEvent;
 	 }];
 
+    toggl_get_project_colors(ctx);
+
 	NSLog(@"AppDelegate init done");
 
 	return self;
@@ -1752,13 +1754,11 @@ void on_project_colors(
 	const uint64_t count)
 {
 	NSMutableArray *colors = [NSMutableArray array];
-
-	for (int i = 0; i < count; i++)
+	for (NSInteger i = 0; i < count; i++)
 	{
 		[colors addObject:[NSString stringWithUTF8String:list[i]]];
 	}
-	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kSetProjectColors
-																object:colors];
+    [ProjectColorPoolObjc updateDefaultColors:[colors copy]];
 }
 
 void on_countries(TogglCountryView *first)
