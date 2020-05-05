@@ -9,12 +9,18 @@ EventQueue::EventQueue(Context *parent)
 }
 
 EventQueue::~EventQueue() {
-    std::unique_lock<std::recursive_mutex> lock(queueLock);
-    if (workThread.get_id() == std::thread::id()) {
-        lock.unlock();
+    if (workThread.get_id() != std::thread::id()) {
+        std::unique_lock<std::recursive_mutex> lock(queueLock);
         terminate = true;
-        cv.notify_all();
-        workThread.join();
+        // kill the thread from another thread
+        if (workThread.get_id() != std::this_thread::get_id()) {
+            cv.notify_all();
+            workThread.join();
+        }
+        // kill the thread from inside, this is probably going to crash anyway
+        else {
+            std::terminate();
+        }
     }
 }
 
