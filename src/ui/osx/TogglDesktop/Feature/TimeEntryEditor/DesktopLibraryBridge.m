@@ -61,8 +61,11 @@ void *ctx;
 											[projectName UTF8String],
 											!isPublic,
 											[colorHex UTF8String]);
-	NSString *guid = [NSString stringWithUTF8String:projectGUID];
+    if (projectGUID == NULL) {
+        return nil;
+    }
 
+	NSString *guid = [NSString stringWithUTF8String:projectGUID];
 	free(projectGUID);
 	return guid;
 }
