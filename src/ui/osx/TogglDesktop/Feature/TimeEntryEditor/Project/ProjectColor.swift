@@ -10,21 +10,21 @@ import Foundation
 
 struct ProjectColor: Equatable {
 
-    static let `default` = ProjectColor(colorHex: "#c56bff")
-    static let defaultColors: [ProjectColor] = [ProjectColor(colorHex: "#06aaf5"),
-                                                ProjectColor(colorHex: "#c56bff"),
-                                                ProjectColor(colorHex: "#ea468d"),
-                                                ProjectColor(colorHex: "#fb8b14"),
-                                                ProjectColor(colorHex: "#c7741c"),
-                                                ProjectColor(colorHex: "#f1c33f"),
-                                                ProjectColor(colorHex: "#e20505"),
-                                                ProjectColor(colorHex: "#4bc800"),
-                                                ProjectColor(colorHex: "#04bb9b"),
-                                                ProjectColor(colorHex: "#e19a86"),
-                                                ProjectColor(colorHex: "#3750b5"),
-                                                ProjectColor(colorHex: "#a01aa5"),
-                                                ProjectColor(colorHex: "#205500"),
-                                                ProjectColor(colorHex: "#000000")]
+    static let `default` = ProjectColor(colorHex: "#9e5bd9")
+    static let defaultColors: [ProjectColor] = [ProjectColor(colorHex: "#0b83d9"),
+                                                ProjectColor(colorHex: "#9e5bd9"),
+                                                ProjectColor(colorHex: "#d94182"),
+                                                ProjectColor(colorHex: "#e36a00"),
+                                                ProjectColor(colorHex: "#bf7000"),
+                                                ProjectColor(colorHex: "#c7af14"),
+                                                ProjectColor(colorHex: "#d92b2b"),
+                                                ProjectColor(colorHex: "#2da608"),
+                                                ProjectColor(colorHex: "#06a893"),
+                                                ProjectColor(colorHex: "#c9806b"),
+                                                ProjectColor(colorHex: "#465bb3"),
+                                                ProjectColor(colorHex: "#990099"),
+                                                ProjectColor(colorHex: "#566614"),
+                                                ProjectColor(colorHex: "#525266")]
 
     let colorHex: String
 
