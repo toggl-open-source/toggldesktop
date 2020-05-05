@@ -1361,6 +1361,8 @@ const NSString *appName = @"osx_native_app";
 		 return theEvent;
 	 }];
 
+    toggl_get_project_colors(ctx);
+
 	NSLog(@"AppDelegate init done");
 
 	return self;
