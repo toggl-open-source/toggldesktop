@@ -5197,6 +5197,8 @@ error Context::pushBatchedChanges(
 
                 i->EnsureGUID();
                 meta["client_assigned_id"] = i->GUID();
+                if (i->ID())
+                    meta["id"] = static_cast<Json::UInt64>(i->ID());
 
                 if (i->NeedsPOST())
                     item["type"] = "create";
@@ -5267,6 +5269,8 @@ error Context::pushBatchedChanges(
                         }
 
                         model->LoadFromJSON(i["payload"]["result"]);
+                        model->ClearDirty();
+                        model->ClearUnsynced();
                     }
                 }
             }
