@@ -239,6 +239,7 @@
 		BA5AC61623264651007E6C91 /* TimelineCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */; };
 		BA5B0E4E2330E1C6008D1DED /* GoogleAuthenticationServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */; };
 		BA5B0E502330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */; };
+		BA5BDC2C2464079800FF3C28 /* PasswordStrengthValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC2B2464079800FF3C28 /* PasswordStrengthValidation.swift */; };
 		BA5E988923BF496E0089A2C7 /* HoverImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E988823BF496E0089A2C7 /* HoverImageView.swift */; };
 		BA5E988D23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E988B23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift */; };
 		BA5E988F23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5E988C23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib */; };
@@ -901,6 +902,7 @@
 		BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineCollectionView.swift; sourceTree = "<group>"; };
 		BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthenticationServer.swift; sourceTree = "<group>"; };
 		BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleAuthenticationServer+Objc.swift"; sourceTree = "<group>"; };
+		BA5BDC2B2464079800FF3C28 /* PasswordStrengthValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordStrengthValidation.swift; sourceTree = "<group>"; };
 		BA5E988823BF496E0089A2C7 /* HoverImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverImageView.swift; sourceTree = "<group>"; };
 		BA5E988B23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineActivityRecorderViewController.swift; sourceTree = "<group>"; };
 		BA5E988C23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineActivityRecorderViewController.xib; sourceTree = "<group>"; };
@@ -1578,6 +1580,14 @@
 			path = GoogleLogin;
 			sourceTree = "<group>";
 		};
+		BA5BDC2A2464077C00FF3C28 /* PasswordStrength */ = {
+			isa = PBXGroup;
+			children = (
+				BA5BDC2B2464079800FF3C28 /* PasswordStrengthValidation.swift */,
+			);
+			path = PasswordStrength;
+			sourceTree = "<group>";
+		};
 		BA63ABF923829C2B004C70CF /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -1642,6 +1652,7 @@
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				BA5BDC2A2464077C00FF3C28 /* PasswordStrength */,
 				BAB8CA8C240E3EA2002FF62B /* AppleSignIn */,
 				BA65A1FE22B7807300F895FD /* Timeline */,
 				BA47DEAF23966F80005216AD /* InAppMessage */,
@@ -2468,6 +2479,7 @@
 				BAA0104C22CB59ED007C1541 /* Date+Extension.swift in Sources */,
 				BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */,
 				BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */,
+				BA5BDC2C2464079800FF3C28 /* PasswordStrengthValidation.swift in Sources */,
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
 				BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */,
 				BA4791F322F0478A00E24F79 /* String+Search.swift in Sources */,
