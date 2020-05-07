@@ -85,7 +85,9 @@
                       Margin="6 0"
                       Focusable="False"
                       IsTabStop="False"
-                      PreviewKeyDown="UIElement_OnPreviewKeyDown">
+                      PreviewKeyDown="UIElement_OnPreviewKeyDown"
+                      UseLayoutRounding="True"
+                      SnapsToDevicePixels="True">
             <Grid Margin="0 8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
