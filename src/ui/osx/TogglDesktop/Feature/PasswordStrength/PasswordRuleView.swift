@@ -17,6 +17,7 @@ final class PasswordRuleView: NSView {
 
     // MARK: Variable
 
+    private(set) var rule: PasswordStrengthValidation.Rule?
     private static var greenColor: NSColor {
         if #available(OSX 10.13, *) {
             return NSColor(named: NSColor.Name("green-color"))!
@@ -44,6 +45,7 @@ final class PasswordRuleView: NSView {
     // MARK: Public
 
     func config(with rule: PasswordStrengthValidation.Rule, status: PasswordStrengthValidation.MatchStatus) {
+        self.rule = rule
         titleLbl.stringValue = rule.title
         titleLbl.textColor = getTextColor(for: status)
         iconImageView.image = getIconImageView(for: status)

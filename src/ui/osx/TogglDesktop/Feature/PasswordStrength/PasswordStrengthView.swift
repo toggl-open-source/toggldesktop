@@ -12,11 +12,49 @@ final class PasswordStrengthView: NSViewController {
 
     // MARK: OUTLET
 
+    @IBOutlet weak var titleLbl: NSTextField!
+    @IBOutlet weak var stackView: NSStackView!
 
+    // MARK: Variables
+
+    private lazy var validation = PasswordStrengthValidation()
+
+    // MARK: View Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
+
+        renderRulesStackView()
     }
-    
+
+    // MARK: Public
+
+    func updateValidation(for text: String) {
+        let matchedRules = validation.validate(text: text)
+        stackView.arrangedSubviews.forEach { (view) in
+            guard let ruleView = view as? PasswordRuleView,
+                let rule = ruleView.rule else { return }
+            if matchedRules.contains(rule) {
+                ruleView.config(with: rule, status: .match)
+            } else {
+                ruleView.config(with: rule, status: .unmatch)
+            }
+        }
+    }
+}
+
+// MARK: Private
+
+extension PasswordStrengthView {
+
+    private func renderRulesStackView() {
+        let views = PasswordStrengthValidation.Rule.allCases.map { rule -> PasswordRuleView in
+            let view = PasswordRuleView.xibView() as PasswordRuleView
+            view.config(with: rule, status: .none)
+            return view
+        }
+        views.forEach {
+            stackView.addArrangedSubview($0)
+        }
+    }
 }
