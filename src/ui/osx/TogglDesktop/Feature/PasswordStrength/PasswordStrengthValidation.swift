@@ -15,6 +15,14 @@ final class PasswordStrengthValidation {
         case lowerAndUpperCases
         case atLeastOneNumber
 
+        var title: String {
+            switch self {
+            case .atLeastOneNumber: return "at least one number"
+            case .lowerAndUpperCases: return "lowercase and uppercase letters"
+            case .moreThanEightLetters: return "8 letters or more"
+            }
+        }
+        
         func validate(with text: String) -> Bool {
             switch self {
             case .moreThanEightLetters:
