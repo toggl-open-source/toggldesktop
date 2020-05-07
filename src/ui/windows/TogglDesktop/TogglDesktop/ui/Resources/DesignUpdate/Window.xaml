@@ -47,7 +47,7 @@
             </Setter.Value>
         </Setter>
         <Setter Property="Background" Value="{DynamicResource Toggl.Background}" />
-        <Setter Property="ShowMaxRestoreButton" Value="False" />
+        <Setter Property="ShowMaxRestoreButton" Value="True" />
         <Setter Property="ShowIconOnTitleBar" Value="False" />
     </Style>
 
