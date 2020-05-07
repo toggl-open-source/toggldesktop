@@ -36,6 +36,12 @@ final class PasswordStrengthValidation {
         }
     }
 
+    enum MatchStatus {
+        case match
+        case unmatch
+        case none
+    }
+
     // MARK: Variables
 
     static let `default` = PasswordStrengthValidation()
