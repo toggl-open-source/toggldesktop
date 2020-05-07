@@ -253,6 +253,7 @@ namespace TogglDesktop
 
         private void start()
         {
+            var durationString = durationTextBox.Text;
             using (Performance.Measure("starting time entry from timer"))
             {
                 var guid = Toggl.Start(
@@ -264,6 +265,11 @@ namespace TogglDesktop
                     completedProject.Tags,
                     IsMiniTimer
                     );
+
+                if (!string.IsNullOrEmpty(guid) && !string.IsNullOrEmpty(durationString))
+                {
+                    Toggl.SetTimeEntryDuration(guid, durationString);
+                }
 
                 if (completedProject.Billable)
                 {
@@ -307,8 +313,10 @@ namespace TogglDesktop
             this.startStopButton.IsChecked = running;
             this.descriptionTextBox.SetText("");
             this.descriptionTextBox.ShowOnlyIf(!running);
+            this.durationTextBox.Text = "";
             this.timeEntryLabel.ShowOnlyIf(running);
-            this.durationPanel.ShowOnlyIf(running);
+            this.durationLabel.ShowOnlyIf(running);
+            this.durationTextBox.ShowOnlyIf(!running);
             this.editProjectPanel.Visibility = Visibility.Collapsed;
             this.editModeProjectLabel.ViewModel = null;
         }

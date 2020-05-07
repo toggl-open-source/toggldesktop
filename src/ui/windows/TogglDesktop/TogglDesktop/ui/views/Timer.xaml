@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignWidth="500"
              MinWidth="300"
@@ -102,7 +103,7 @@
                                   ProjectLabelMouseDown="onProjectLabelMouseDown"
                                   IconsPanelBackground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Background}"/>
 
-            <Grid Grid.Column="0" Grid.ColumnSpan="2" Name="editModeGrid" x:FieldModifier="private"
+            <Grid Grid.Column="0" Name="editModeGrid" x:FieldModifier="private"
                   Margin="16 -16 0 -14">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -148,18 +149,28 @@
                 </Grid>
             </Grid>
 
-            <Border x:Name="durationPanel" x:FieldModifier="private"
+            <Grid x:Name="durationPanel" x:FieldModifier="private"
                     Grid.Column="1"
                     Background="Transparent"
-                    Width="80"
-                    Margin="3 0 0 0"
+                    Width="88"
                     MouseLeftButtonDown="onTimeLabelMouseDown">
                 <TextBlock Name="durationLabel" x:FieldModifier="private"
                            Style="{StaticResource Toggl.TimerDurationText}"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Text="00:00:00" />
-            </Border>
+                <TextBox x:Name="durationTextBox" x:FieldModifier="private"
+                         Style="{StaticResource Toggl.Timer.DescriptionTextBox}"
+                         mah:TextBoxHelper.Watermark="00:00:00"
+                         HorizontalContentAlignment="Right"
+                         FontWeight="SemiBold"
+                         FontSize="18"
+                         Height="Auto"
+                         MinHeight="28"
+                         MaxHeight="32"
+                         Padding="3 1"
+                         Margin="0 0 0 2"/>
+            </Grid>
 
             <!-- start/stop button -->
             <ToggleButton Name="startStopButton" x:FieldModifier="private"
