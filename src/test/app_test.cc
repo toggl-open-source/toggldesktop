@@ -90,11 +90,11 @@ TEST(TimeEntry, SetDurationUserInput) {
 TEST(Project, ProjectsHaveColorCodes) {
     Project p;
     p.SetColor("1");
-    ASSERT_EQ("#c56bff", p.ColorCode());
+    ASSERT_EQ("#9e5bd9", p.ColorCode());
     p.SetColor("");
     ASSERT_EQ("", p.ColorCode());
     p.SetColor("0");
-    ASSERT_EQ("#06aaf5", p.ColorCode());
+    ASSERT_EQ("#0b83d9", p.ColorCode());
 }
 
 TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {
