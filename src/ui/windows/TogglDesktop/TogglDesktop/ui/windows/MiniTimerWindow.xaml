@@ -22,7 +22,7 @@
         WindowTransitionsEnabled="False"
         SizeToContent="Height"
         WindowStartupLocation="Manual"
-        ResizeBorderThickness="4 0"
+        ResizeBorderThickness="16 0"
         AllowsTransparency="True"
         Background="Transparent">
     <Window.Resources>
