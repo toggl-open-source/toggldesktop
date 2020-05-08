@@ -298,6 +298,8 @@
 		BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */; };
 		BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335922489C8000B953A8 /* ProjectDataSource.swift */; };
 		BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */; };
+		BA7F4D8B24658BDB00DB5058 /* DSFSecureTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7F4D8A24658BDB00DB5058 /* DSFSecureTextField.swift */; };
+		BA7F4D8C24658BDB00DB5058 /* DSFSecureTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7F4D8A24658BDB00DB5058 /* DSFSecureTextField.swift */; };
 		BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
 		BA81896A23016148000710EA /* NSColor+VisibleColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA81896923016148000710EA /* NSColor+VisibleColor.swift */; };
 		BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */; };
@@ -966,6 +968,7 @@
 		BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteViewDataSource.swift; sourceTree = "<group>"; };
 		BA7D335922489C8000B953A8 /* ProjectDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDataSource.swift; sourceTree = "<group>"; };
 		BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteTextField.swift; sourceTree = "<group>"; };
+		BA7F4D8A24658BDB00DB5058 /* DSFSecureTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DSFSecureTextField.swift; sourceTree = "<group>"; };
 		BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ByGroup.swift"; sourceTree = "<group>"; };
 		BA81896923016148000710EA /* NSColor+VisibleColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+VisibleColor.swift"; sourceTree = "<group>"; };
 		BA84363922533A6600EF5830 /* DesktopLibraryBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DesktopLibraryBridge.h; sourceTree = "<group>"; };
@@ -1595,6 +1598,7 @@
 		BA5BDC2A2464077C00FF3C28 /* PasswordStrength */ = {
 			isa = PBXGroup;
 			children = (
+				BA7F4D8A24658BDB00DB5058 /* DSFSecureTextField.swift */,
 				BA5BDC2B2464079800FF3C28 /* PasswordStrengthValidation.swift */,
 				BA5BDC2D24640D8A00FF3C28 /* PasswordStrengthView.swift */,
 				BA5BDC2E24640D8A00FF3C28 /* PasswordStrengthView.xib */,
@@ -2410,6 +2414,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA7F4D8B24658BDB00DB5058 /* DSFSecureTextField.swift in Sources */,
 				74C15796183A8CE600550613 /* AutocompleteItem.m in Sources */,
 				BA787D6D231E58C9003AD3AA /* Array+View.swift in Sources */,
 				7484F622191D92C30038885C /* Settings.m in Sources */,
@@ -2726,6 +2731,7 @@
 				BAE64D9D2368334000244D2B /* TimeDecoratorView.swift in Sources */,
 				BAB5FFD523F13F75003781D3 /* TimelineDraggingSession.swift in Sources */,
 				BAE64D9E2368334000244D2B /* TimeEntryEmptyView.swift in Sources */,
+				BA7F4D8C24658BDB00DB5058 /* DSFSecureTextField.swift in Sources */,
 				BA37AD0923D890940013EE26 /* TimelineDisplayCommand.m in Sources */,
 				BAE64D9F2368334000244D2B /* (null) in Sources */,
 				BAE64DA02368334000244D2B /* TimeEntryCollectionView.m in Sources */,
