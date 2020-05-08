@@ -1165,14 +1165,14 @@ public static partial class Toggl
     // (updates are disabled in Debug configuration to allow for proper debugging)
     private static void installPendingUpdates()
     {
-        DeleteOldUpdates();
-
         var aboutWindowViewModel = mainWindow.GetWindow<AboutWindow>().ViewModel;
         if (aboutWindowViewModel.InstallPendingUpdate())
         {
             // quit, updater will restart the app
             Environment.Exit(0);
         }
+
+        DeleteOldUpdates();
     }
 
     private static void DeleteOldUpdates()
