@@ -23,7 +23,6 @@ final class PasswordStrengthView: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         renderRulesStackView()
     }
 
@@ -34,10 +33,11 @@ final class PasswordStrengthView: NSViewController {
         stackView.arrangedSubviews.forEach { (view) in
             guard let ruleView = view as? PasswordRuleView,
                 let rule = ruleView.rule else { return }
-            if matchedRules.contains(rule) {
-                ruleView.config(with: rule, status: .match)
+            if text.isEmpty {
+                ruleView.updateStatus(.none)
             } else {
-                ruleView.config(with: rule, status: .unmatch)
+                let status: PasswordStrengthValidation.MatchStatus = matchedRules.contains(rule) ? .match : .unmatch
+                ruleView.updateStatus(status)
             }
         }
     }
