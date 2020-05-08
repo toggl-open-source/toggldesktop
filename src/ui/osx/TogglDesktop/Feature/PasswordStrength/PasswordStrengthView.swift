@@ -28,7 +28,7 @@ final class PasswordStrengthView: NSViewController {
 
     // MARK: Public
 
-    func updateValidation(for text: String) {
+    @objc func updateValidation(for text: String) {
         let matchedRules = validation.validate(text: text)
         stackView.arrangedSubviews.forEach { (view) in
             guard let ruleView = view as? PasswordRuleView,

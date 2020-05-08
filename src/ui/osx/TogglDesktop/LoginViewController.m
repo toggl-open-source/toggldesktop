@@ -74,6 +74,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (weak) IBOutlet NSView *termSignUpContainerView;
 @property (weak) IBOutlet NSView *termContinueSignInView;
 
+@property (nonatomic, strong) PasswordStrengthView *passwordStrengthView;
 @property (nonatomic, strong) AutocompleteDataSource *countryAutocompleteDataSource;
 @property (nonatomic, assign) NSInteger selectedCountryID;
 @property (nonatomic, assign) TabViewType currentTab;
@@ -160,6 +161,8 @@ extern void *ctx;
     #else
         self.appleBtn.hidden = YES;
     #endif
+
+    self.passwordStrengthView = [[PasswordStrengthView alloc] initWithNibName:@"PasswordStrengthView" bundle:nil];
 }
 
 - (void)initCountryAutocomplete {
@@ -458,6 +461,10 @@ extern void *ctx;
 			[box setExpanded:YES];
 		}
 	}
+
+    if (aNotification.object == self.password) {
+        [self.passwordStrengthView updateValidationFor:self.password.stringValue];
+    }
 }
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)commandSelector {
@@ -821,5 +828,23 @@ extern void *ctx;
     [self.view.window makeFirstResponder:self.countrySelect];
     self.tosCheckbox.state = NSControlStateValueOn;
     [self setUserSignUp:YES];
+}
+
+- (void)controlTextDidBeginEditing:(NSNotification *)obj
+{
+    if (obj.object == self.password) {
+        if (self.passwordStrengthView.view.superview == nil) {
+            [self.view addSubview:self.passwordStrengthView.view];
+            [self addChildViewController:self.passwordStrengthView];
+        }
+        self.passwordStrengthView.view.hidden = NO;
+    }
+}
+
+- (void)controlTextDidEndEditing:(NSNotification *)obj
+{
+    if (obj.object == self.password) {
+        self.passwordStrengthView.view.hidden = YES;
+    }
 }
 @end
