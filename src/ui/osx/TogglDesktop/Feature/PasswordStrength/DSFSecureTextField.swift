@@ -29,6 +29,8 @@ import AppKit
 @IBDesignable
 public class DSFSecureTextField: NSSecureTextField {
 
+    static let PasswordEyeSize = CGSize(width: 20, height: 20)
+
 	/// Whether to display a toggle button into the control to control the visibility
 	@IBInspectable
 	@objc public dynamic var displayToggleButton: Bool = true {
@@ -79,19 +81,24 @@ private extension DSFSecureTextField {
 
 		if self.allowShowPassword && self.displayToggleButton {
 
-			let button = NSButton(frame: NSRect(x: 0, y: 0, width: 16, height: 16))
+            let button = CursorButton(frame: NSRect(x: 0, y: 0, width: DSFSecureTextField.PasswordEyeSize.width, height: DSFSecureTextField.PasswordEyeSize.height))
 
 			self.visibilityButton = button
 			button.action = #selector(visibilityChanged(_:))
 			button.target = self
-            button.title = "Toggle"
+            button.title = ""
+            button.image = NSImage(named: "password-eye")
+            button.imagePosition = .imageAbove
+            button.isBordered = false
+            button.bezelStyle = .rounded
+            button.cursor = .pointingHand
 
             button.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(button)
             button.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
             button.widthAnchor.constraint(equalToConstant: 20).isActive = true
             button.heightAnchor.constraint(equalToConstant: 20).isActive = true
-            button.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 5).isActive = true
+            button.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5).isActive = true
 
 			button.needsLayout = true
 			self.needsUpdateConstraints = true
@@ -105,11 +112,9 @@ private extension DSFSecureTextField {
 
 
 	func setup() {
-		self.translatesAutoresizingMaskIntoConstraints = false
 
 		// By default, the password should ALWAYS be hidden
 		self.passwordIsVisible = false
-
 		self.configureButtonForState()
 		self.updateForPasswordVisibility()
 	}
@@ -146,6 +151,7 @@ private extension DSFSecureTextField {
 		else {
 			if self.allowShowPassword {
 				newCell = self.passwordIsVisible ? DSFPlainTextFieldCell() : DSFPasswordTextFieldCell()
+                newCell.focusRingType = .none
 				self.cell = newCell
 			}
 			else {
@@ -176,50 +182,27 @@ private extension DSFSecureTextField {
 private class DSFPasswordTextFieldCell: NSSecureTextFieldCell {
 	override func select(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, start selStart: Int, length selLength: Int) {
 		var newRect = rect
-		newRect.size.width -= rect.height * 1.25
+		newRect.size.width -= DSFSecureTextField.PasswordEyeSize.width
 		super.select(withFrame: newRect, in: controlView, editor: textObj, delegate: delegate, start: selStart, length: selLength)
 	}
 
 	override func edit(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, event: NSEvent?) {
 		var newRect = rect
-		newRect.size.width -= rect.height * 1.25
+		newRect.size.width -= DSFSecureTextField.PasswordEyeSize.width
 		super.edit(withFrame: newRect, in: controlView, editor: textObj, delegate: delegate, event: event)
-	}
-
-	override func drawInterior(withFrame cellFrame: NSRect, in controlView: NSView) {
-
-		if self.drawsBackground {
-			NSColor.controlBackgroundColor.setFill()
-			cellFrame.fill()
-		}
-
-		var newRect = cellFrame
-		newRect.size.width -= cellFrame.height * 1.25
-		super.drawInterior(withFrame: newRect, in: controlView)
 	}
 }
 
 private class DSFPlainTextFieldCell: NSTextFieldCell {
 	override func select(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, start selStart: Int, length selLength: Int) {
 		var newRect = rect
-		newRect.size.width -= rect.height * 1.25
+		newRect.size.width -= DSFSecureTextField.PasswordEyeSize.width
 		super.select(withFrame: newRect, in: controlView, editor: textObj, delegate: delegate, start: selStart, length: selLength)
 	}
 
 	override func edit(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, event: NSEvent?) {
 		var newRect = rect
-		newRect.size.width -= rect.height * 1.25
+		newRect.size.width -= DSFSecureTextField.PasswordEyeSize.width
 		super.edit(withFrame: newRect, in: controlView, editor: textObj, delegate: delegate, event: event)
-	}
-
-	override func drawInterior(withFrame cellFrame: NSRect, in controlView: NSView) {
-		if self.drawsBackground {
-			NSColor.controlBackgroundColor.setFill()
-			cellFrame.fill()
-		}
-
-		var newRect = cellFrame
-		newRect.size.width -= cellFrame.height * 1.25
-		super.drawInterior(withFrame: newRect, in: controlView)
 	}
 }
