@@ -12,7 +12,7 @@ final class PasswordStrengthView: NSViewController {
 
     enum DisplayState {
         case success // Show Success state
-        case hasIssues // Show all password requirements
+        case rule // Show all password requirements
     }
 
     // MARK: OUTLET
@@ -26,7 +26,9 @@ final class PasswordStrengthView: NSViewController {
     // MARK: Variables
 
     private lazy var validation = PasswordStrengthValidation()
-    private var displayState = DisplayState.hasIssues {
+    private var widthConstraint: NSLayoutConstraint?
+    private var heightConstraint: NSLayoutConstraint?
+    private var displayState = DisplayState.rule {
         didSet {
             guard displayState != oldValue else { return }
             updateUI()
@@ -47,7 +49,7 @@ final class PasswordStrengthView: NSViewController {
         let matchedRules = validation.validate(text: text)
 
         // If all rules are matched -> Update the UI
-        displayState = matchedRules.count == PasswordStrengthValidation.Rule.allCases.count ? .success : .hasIssues
+        displayState = matchedRules.count == PasswordStrengthValidation.Rule.allCases.count ? .success : .rule
 
         // Update individual state
         stackView.arrangedSubviews.forEach { (view) in
@@ -68,9 +70,17 @@ final class PasswordStrengthView: NSViewController {
 extension PasswordStrengthView {
 
     private func prepareUI() {
+        // Prepare
+        widthConstraint = view.widthAnchor.constraint(equalToConstant: 276)
+        heightConstraint = view.heightAnchor.constraint(equalToConstant: 112)
+        widthConstraint?.isActive = true
+        heightConstraint?.isActive = true
+
+        // Add success rule
         let view = PasswordRuleView.xibView() as PasswordRuleView
         view.updateSuccessStatus()
         successStackView.addArrangedSubview(view)
+
     }
 
     private func renderRulesStackView() {
@@ -85,13 +95,46 @@ extension PasswordStrengthView {
     }
 
     private func updateUI() {
+
+        // Prepare
         switch displayState {
         case .success:
+            successBox.alphaValue = 0
             successBox.isHidden = false
+            ruleBox.alphaValue = 1
             ruleBox.isHidden = true
-        case .hasIssues:
-            successBox.isHidden = true
+        case .rule:
+            ruleBox.alphaValue = 0
             ruleBox.isHidden = false
+            successBox.alphaValue = 1
+            successBox.isHidden = true
         }
+
+        NSAnimationContext.runAnimationGroup({[weak self] (context) in
+            guard let strongSelf = self else { return }
+            context.duration = 0.15
+            context.timingFunction = CAMediaTimingFunction(name: .easeOut)
+
+            // Animation
+            switch displayState {
+            case .success:
+                strongSelf.successBox.animator().alphaValue = 1
+                strongSelf.ruleBox.animator().alphaValue = 0
+                strongSelf.heightConstraint?.animator().constant = 48
+            case .rule:
+                strongSelf.successBox.animator().alphaValue = 0
+                strongSelf.ruleBox.animator().alphaValue = 1
+                strongSelf.heightConstraint?.animator().constant = 112
+            }}, completionHandler: {[weak self] in
+                guard let strongSelf = self else { return }
+                switch strongSelf.displayState {
+                case .success:
+                    strongSelf.successBox.isHidden = false
+                    strongSelf.ruleBox.isHidden = true
+                case .rule:
+                    strongSelf.successBox.isHidden = true
+                    strongSelf.ruleBox.isHidden = false
+                }
+        })
     }
 }
