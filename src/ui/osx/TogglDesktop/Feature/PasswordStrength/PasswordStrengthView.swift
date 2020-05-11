@@ -40,6 +40,10 @@ final class PasswordStrengthView: NSViewController {
         }
     }
 
+    @objc var isMeetAllRequirements: Bool {
+        return displayState == .success
+    }
+
     // MARK: View Cycle
     
     override func viewDidLoad() {

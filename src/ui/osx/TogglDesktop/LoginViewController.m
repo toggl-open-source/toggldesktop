@@ -238,6 +238,7 @@ extern void *ctx;
 
     self.currentTab = type;
     [self showLoaderView:NO];
+    [self displayPasswordView:NO];
 
     // Focus on email when changing mode
     [self.view.window makeFirstResponder:self.email];
@@ -536,7 +537,12 @@ extern void *ctx;
 		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
 																	object:passwordMissingError];
 		return NO;
-	}
+    } else if (self.currentTab == TabViewTypeSingup && ![self.passwordStrengthView isMeetAllRequirements]) {
+        [self.password.window makeFirstResponder:self.password];
+        [self displayPasswordView:YES];
+        return NO;
+    }
+
 	return YES;
 }
 
