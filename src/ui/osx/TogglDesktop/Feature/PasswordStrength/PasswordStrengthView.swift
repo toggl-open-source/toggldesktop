@@ -85,9 +85,18 @@ extension PasswordStrengthView {
         heightConstraint?.isActive = true
 
         // Add success rule
-        let view = PasswordRuleView.xibView() as PasswordRuleView
-        view.updateSuccessStatus()
-        successStackView.addArrangedSubview(view)
+        let successView = PasswordRuleView.xibView() as PasswordRuleView
+        successView.updateSuccessStatus()
+        successStackView.addArrangedSubview(successView)
+
+        // Shadow
+        view.wantsLayer = true
+        view.shadow = NSShadow()
+        view.layer?.cornerRadius = 4.0
+        view.layer?.shadowOpacity = 1.0
+        view.layer?.shadowColor = NSColor(calibratedWhite: 0, alpha: 0.1).cgColor
+        view.layer?.shadowOffset = NSMakeSize(0, -2)
+        view.layer?.shadowRadius = 4
     }
 
     private func renderRulesStackView() {
