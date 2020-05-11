@@ -15,6 +15,12 @@ final class PasswordStrengthView: NSViewController {
         case rule // Show all password requirements
     }
 
+    struct Constants {
+        static let Width: CGFloat = 276
+        static let HeightSuccess: CGFloat = 48
+        static let HeightRule: CGFloat = 112
+    }
+
     // MARK: OUTLET
 
     @IBOutlet weak var titleLbl: NSTextField!
@@ -26,7 +32,6 @@ final class PasswordStrengthView: NSViewController {
     // MARK: Variables
 
     private lazy var validation = PasswordStrengthValidation()
-    private var widthConstraint: NSLayoutConstraint?
     private var heightConstraint: NSLayoutConstraint?
     private var displayState = DisplayState.rule {
         didSet {
@@ -71,16 +76,14 @@ extension PasswordStrengthView {
 
     private func prepareUI() {
         // Prepare
-        widthConstraint = view.widthAnchor.constraint(equalToConstant: 276)
-        heightConstraint = view.heightAnchor.constraint(equalToConstant: 112)
-        widthConstraint?.isActive = true
+        view.widthAnchor.constraint(equalToConstant: Constants.Width).isActive = true
+        heightConstraint = view.heightAnchor.constraint(equalToConstant: Constants.HeightRule)
         heightConstraint?.isActive = true
 
         // Add success rule
         let view = PasswordRuleView.xibView() as PasswordRuleView
         view.updateSuccessStatus()
         successStackView.addArrangedSubview(view)
-
     }
 
     private func renderRulesStackView() {
@@ -120,11 +123,11 @@ extension PasswordStrengthView {
             case .success:
                 strongSelf.successBox.animator().alphaValue = 1
                 strongSelf.ruleBox.animator().alphaValue = 0
-                strongSelf.heightConstraint?.animator().constant = 48
+                strongSelf.heightConstraint?.animator().constant = Constants.HeightSuccess
             case .rule:
                 strongSelf.successBox.animator().alphaValue = 0
                 strongSelf.ruleBox.animator().alphaValue = 1
-                strongSelf.heightConstraint?.animator().constant = 112
+                strongSelf.heightConstraint?.animator().constant = Constants.HeightRule
             }}, completionHandler: {[weak self] in
                 guard let strongSelf = self else { return }
                 switch strongSelf.displayState {

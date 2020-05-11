@@ -40,6 +40,8 @@ typedef NS_ENUM (NSUInteger, UserAction)
 #define kLoginContainerHeight 440.0
 #define kSignupAppleViewTop 166.0
 #define kSignupContainerHeight 460.0
+#define kPasswordViewBottom -4
+#define kPasswordViewCenterX 0
 
 @interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, LoginSignupTouchBarDelegate, AppleAuthenticationServiceDelegate>
 @property (weak) IBOutlet NSTextField *email;
@@ -833,22 +835,34 @@ extern void *ctx;
 - (void)controlTextDidBeginEditing:(NSNotification *)obj
 {
     if (obj.object == self.password) {
-        if (self.passwordStrengthView.view.superview == nil) {
-            self.passwordStrengthView.view.translatesAutoresizingMaskIntoConstraints = NO;
-            [self.view addSubview:self.passwordStrengthView.view];
-            [self.passwordStrengthView.view.bottomAnchor constraintEqualToAnchor:self.password.topAnchor constant:-4].active = YES;
-            [self.passwordStrengthView.view.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0].active = YES;
-
-            [self addChildViewController:self.passwordStrengthView];
-        }
-        self.passwordStrengthView.view.hidden = NO;
+        [self displayPasswordView:YES];
     }
 }
 
 - (void)controlTextDidEndEditing:(NSNotification *)obj
 {
     if (obj.object == self.password) {
+        [self displayPasswordView:NO];
+    }
+}
+
+- (void) displayPasswordView:(BOOL) display {
+    if (display) {
+        if (self.passwordStrengthView.view.superview == nil) {
+            self.passwordStrengthView.view.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.view addSubview:self.passwordStrengthView.view];
+            [self.passwordStrengthView.view.bottomAnchor constraintEqualToAnchor:self.password.topAnchor constant:kPasswordViewBottom].active = YES;
+            [self.passwordStrengthView.view.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:kPasswordViewCenterX].active = YES;
+            [self addChildViewController:self.passwordStrengthView];
+        }
+        self.passwordStrengthView.view.hidden = NO;
+    } else {
         self.passwordStrengthView.view.hidden = YES;
     }
+}
+
+-(void)setUserAction:(UserAction)userAction {
+    _userAction = userAction;
+    [self displayPasswordView:NO];
 }
 @end
