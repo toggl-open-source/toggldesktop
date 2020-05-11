@@ -74,7 +74,7 @@ final class PasswordRuleView: NSView {
     private func getIconImageView(for status: PasswordStrengthValidation.MatchStatus) -> NSImage {
         switch status {
         case .match:
-            return NSImage(named: NSImage.statusAvailableName)!
+            return NSImage(named: "password_green_check")!
         case .unmatch:
             return NSImage(named: NSImage.statusUnavailableName)!
         case .none:

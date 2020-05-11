@@ -466,7 +466,7 @@ extern void *ctx;
 	}
 
     if (aNotification.object == self.password && self.currentTab == TabViewTypeSingup) {
-        [self.passwordStrengthView updateValidationFor:self.password.stringValue];
+        [self validatePasswordStrength];
     }
 }
 
@@ -540,6 +540,7 @@ extern void *ctx;
     } else if (self.currentTab == TabViewTypeSingup && ![self.passwordStrengthView isMeetAllRequirements]) {
         [self.password.window makeFirstResponder:self.password];
         [self displayPasswordView:YES];
+        [self validatePasswordStrength];
         return NO;
     }
 
@@ -870,5 +871,12 @@ extern void *ctx;
 -(void)setUserAction:(UserAction)userAction {
     _userAction = userAction;
     [self displayPasswordView:NO];
+}
+
+- (void)validatePasswordStrength {
+    if (!self.passwordStrengthView.isViewLoaded) {
+        return;
+    }
+    [self.passwordStrengthView updateValidationFor:self.password.stringValue];
 }
 @end
