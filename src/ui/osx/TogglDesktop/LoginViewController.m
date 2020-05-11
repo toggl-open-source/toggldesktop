@@ -834,7 +834,13 @@ extern void *ctx;
 {
     if (obj.object == self.password) {
         if (self.passwordStrengthView.view.superview == nil) {
+            self.passwordStrengthView.view.translatesAutoresizingMaskIntoConstraints = NO;
             [self.view addSubview:self.passwordStrengthView.view];
+            [self.passwordStrengthView.view.widthAnchor constraintEqualToConstant:272].active = YES;
+            [self.passwordStrengthView.view.heightAnchor constraintEqualToConstant:116].active = YES;
+            [self.passwordStrengthView.view.bottomAnchor constraintEqualToAnchor:self.password.topAnchor constant:-4].active = YES;
+            [self.passwordStrengthView.view.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0].active = YES;
+
             [self addChildViewController:self.passwordStrengthView];
         }
         self.passwordStrengthView.view.hidden = NO;
