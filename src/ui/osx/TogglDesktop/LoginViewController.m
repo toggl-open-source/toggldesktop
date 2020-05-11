@@ -464,7 +464,7 @@ extern void *ctx;
 		}
 	}
 
-    if (aNotification.object == self.password) {
+    if (aNotification.object == self.password && self.currentTab == TabViewTypeSingup) {
         [self.passwordStrengthView updateValidationFor:self.password.stringValue];
     }
 }
@@ -834,14 +834,14 @@ extern void *ctx;
 
 - (void)controlTextDidBeginEditing:(NSNotification *)obj
 {
-    if (obj.object == self.password) {
+    if (obj.object == self.password && self.currentTab == TabViewTypeSingup) {
         [self displayPasswordView:YES];
     }
 }
 
 - (void)controlTextDidEndEditing:(NSNotification *)obj
 {
-    if (obj.object == self.password) {
+    if (obj.object == self.password && self.currentTab == TabViewTypeSingup) {
         [self displayPasswordView:NO];
     }
 }
