@@ -326,7 +326,7 @@ extension ProjectCreationView {
     }
 
     fileprivate func updateWorkspacePlanLayout() {
-        colorPickerView.setColorWheelHidden(!isPremiumWorkspace)
+        colorPickerView.setColorWheelHidden(false)
         if displayMode != .normal {
             displayMode = isPremiumWorkspace ? .fullColorPicker : .compactColorPicker
         }

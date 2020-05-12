@@ -19,7 +19,7 @@ protocol ChangeColorDelegate: class {
 final class ColorGraphicsView: NSView {
 
     override func prepareForInterfaceBuilder() {
-        currentColor = HSV(h: 40, s: 0.8, v: 0.7)
+        currentColor = ProjectColorPool.shared.defaultCustomColor
         selectedHSBComponent = .brightness
     }
     
@@ -38,7 +38,7 @@ final class ColorGraphicsView: NSView {
         case Alpha
     }
     
-    var currentColor: HSV = HSV(h: 0, s: 1, v: 1) {
+    var currentColor: HSV = ProjectColorPool.shared.defaultCustomColor {
         didSet {
             needsDisplay = true
         }
