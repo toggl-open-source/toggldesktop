@@ -61,6 +61,10 @@ final class ColorPickerView: NSView {
         resetBtnTop.constant = isHidden ? 0 : 5
         colorWheelContainerView.isHidden = isHidden
     }
+
+    func setDefaultColor() {
+        colorWheelView.currentColor = ProjectColorPool.shared.defaultCustomColor
+    }
 }
 
 // MARK: Private

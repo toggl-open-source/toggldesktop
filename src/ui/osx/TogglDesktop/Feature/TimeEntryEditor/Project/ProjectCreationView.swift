@@ -50,7 +50,7 @@ final class ProjectCreationView: NSView {
 
     var selectedTimeEntry: TimeEntryViewItem! {
         didSet {
-            getRandomColor()
+            setInitialProjectColors()
             resetViews()
         }
     }
@@ -120,7 +120,7 @@ final class ProjectCreationView: NSView {
         super.awakeFromNib()
 
         initCommon()
-        getRandomColor()
+        setInitialProjectColors()
         selectDefaultWorkspace()
         updateLayoutState()
     }
@@ -128,6 +128,7 @@ final class ProjectCreationView: NSView {
     func setTitleAndFocus(_ title: String) {
         projectTextField.stringValue = title
         window?.makeFirstResponder(projectTextField)
+        setInitialProjectColors()
         updateLayoutState()
     }
 
@@ -241,10 +242,14 @@ extension ProjectCreationView {
         isPremiumWorkspace = false
     }
 
-    fileprivate func getRandomColor() {
+    private func setInitialProjectColors() {
+        // random on the color list
         let color = ProjectColorPool.shared.random()
         originalColor = color
         selectedColor = color
+
+        // Default on color wheel
+        colorPickerView.setDefaultColor()
     }
 
     fileprivate func updateLayout() {
@@ -326,7 +331,7 @@ extension ProjectCreationView {
     }
 
     fileprivate func updateWorkspacePlanLayout() {
-        colorPickerView.setColorWheelHidden(false)
+        colorPickerView.setColorWheelHidden(!isPremiumWorkspace)
         if displayMode != .normal {
             displayMode = isPremiumWorkspace ? .fullColorPicker : .compactColorPicker
         }
