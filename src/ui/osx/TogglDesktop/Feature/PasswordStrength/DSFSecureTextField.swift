@@ -87,11 +87,13 @@ private extension DSFSecureTextField {
 			button.action = #selector(visibilityChanged(_:))
 			button.target = self
             button.title = ""
-            button.image = NSImage(named: "password-eye")
+            button.image = NSImage(named: "password-eye-close")
+            button.alternateImage = NSImage(named: "password-eye-open")
             button.imagePosition = .imageAbove
             button.isBordered = false
             button.bezelStyle = .rounded
             button.cursor = .pointingHand
+            button.setButtonType(.toggle)
 
             button.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(button)
