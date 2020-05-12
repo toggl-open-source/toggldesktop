@@ -471,7 +471,7 @@
     <ClInclude Include="..\..\..\context.h" />
     <ClInclude Include="..\..\..\custom_error_handler.h" />
     <ClInclude Include="..\..\..\database.h" />
-    <ClInclude Include="..\..\..\eventqueue.h" />
+    <ClInclude Include="..\..\..\cpptime.h" />
     <ClInclude Include="..\..\..\feedback.h" />
     <ClInclude Include="..\..\..\formatter.h" />
     <ClInclude Include="..\..\..\get_focused_window.h" />
@@ -516,7 +516,6 @@
     <ClCompile Include="..\..\..\context.cc" />
     <ClCompile Include="..\..\..\custom_error_handler.cc" />
     <ClCompile Include="..\..\..\database.cc" />
-    <ClCompile Include="..\..\..\eventqueue.cpp" />
     <ClCompile Include="..\..\..\feedback.cc" />
     <ClCompile Include="..\..\..\formatter.cc" />
     <ClCompile Include="..\..\..\get_focused_window_windows.cc" />
