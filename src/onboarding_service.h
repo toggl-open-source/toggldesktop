@@ -16,7 +16,7 @@
 
 #include "types.h"
 #include "util/logger.h"
-#include "eventqueue.h"
+#include "cpptime.h"
 
 namespace toggl {
 
@@ -92,7 +92,6 @@ public:
     }
 
     // Register action
-    void RegisterEventQueue(EventQueue *queue);
     void RegisterEvents(std::function<void (const OnboardingType)> callback);
     void SetDatabase(Database *db);
     void LoadOnboardingStateFromCurrentUser(User *user);
@@ -109,11 +108,11 @@ public:
     }
     
 private:
-    OnboardingService(): timeline_date_at_(Poco::LocalDateTime()), queue(nullptr) {};
+    OnboardingService(): timeline_date_at_(Poco::LocalDateTime()) {};
 
     OnboardingState *state;
     Database *database;
-    EventQueue *queue;
+    CppTime::Timer timer;
     Logger logger { "Onboarding" };
     User *user;
     Poco::LocalDateTime timeline_date_at_;

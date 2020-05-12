@@ -14,11 +14,9 @@
 
 #include <time.h>
 
-namespace toggl {
+using namespace std::chrono;
 
-void OnboardingService::RegisterEventQueue(EventQueue *_queue) {
-    queue = _queue;
-}
+namespace toggl {
 
 void OnboardingService::RegisterEvents(std::function<void (const OnboardingType)> callback) {
     _callback = callback;
@@ -52,10 +50,10 @@ void OnboardingService::LoadOnboardingStateFromCurrentUser(User *_user) {
     // If it's the call from the launch
     // Check condition for onboarding after 1 seconds, after the app is loading successfully
     if (isAtLaunchTime) {
-        std::function<void ()> event = [&]() {
+        timer.add(seconds(1), [&](CppTime::timer_id id) {
             OpenApp();
-        };
-        queue->schedule(std::chrono::seconds(1), event);
+            timer.remove(id);
+        });
     }
 }
 
@@ -325,10 +323,10 @@ bool OnboardingService::handleNewUserOnboarding() {
 
         if (isTrigger) {
             // 5 sec after they open the app
-            std::function<void ()> event = [&]() {
+            timer.add(seconds(5), [&](CppTime::timer_id id) {
                 _callback(OnboardingTypeNewUser);
-            };
-            queue->schedule(std::chrono::seconds(5), event);
+                timer.remove(id);
+            });
             sync();
             return true;
         }
@@ -362,10 +360,10 @@ bool OnboardingService::handleOldUserOnboarding() {
 
         if (isTrigger) {
             // 5 sec after they open the app
-            std::function<void ()> event = [&]() {
+            timer.add(seconds(5), [&](CppTime::timer_id id) {
                 _callback(OnboardingTypeOldUser);
-            };
-            queue->schedule(std::chrono::seconds(5), event);
+                timer.remove(id);
+            });
             sync();
             return true;
         }
