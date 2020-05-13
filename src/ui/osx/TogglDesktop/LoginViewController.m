@@ -40,6 +40,8 @@ typedef NS_ENUM (NSUInteger, UserAction)
 #define kLoginContainerHeight 440.0
 #define kSignupAppleViewTop 166.0
 #define kSignupContainerHeight 460.0
+#define kPasswordStrengthViewBottom -4
+#define kPasswordStrengthViewCenterX 0
 
 @interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, LoginSignupTouchBarDelegate, AppleAuthenticationServiceDelegate>
 @property (weak) IBOutlet NSTextField *email;
@@ -74,6 +76,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (weak) IBOutlet NSView *termSignUpContainerView;
 @property (weak) IBOutlet NSView *termContinueSignInView;
 
+@property (nonatomic, strong) PasswordStrengthView *passwordStrengthView;
 @property (nonatomic, strong) AutocompleteDataSource *countryAutocompleteDataSource;
 @property (nonatomic, assign) NSInteger selectedCountryID;
 @property (nonatomic, assign) TabViewType currentTab;
@@ -160,6 +163,8 @@ extern void *ctx;
     #else
         self.appleBtn.hidden = YES;
     #endif
+
+    self.passwordStrengthView = [[PasswordStrengthView alloc] initWithNibName:@"PasswordStrengthView" bundle:nil];
 }
 
 - (void)initCountryAutocomplete {
@@ -233,6 +238,7 @@ extern void *ctx;
 
     self.currentTab = type;
     [self showLoaderView:NO];
+    [self displayPasswordStrengthView:NO];
 
     // Focus on email when changing mode
     [self.view.window makeFirstResponder:self.email];
@@ -458,6 +464,10 @@ extern void *ctx;
 			[box setExpanded:YES];
 		}
 	}
+
+    if (aNotification.object == self.password && self.currentTab == TabViewTypeSingup) {
+        [self validatePasswordStrength];
+    }
 }
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)commandSelector {
@@ -527,7 +537,13 @@ extern void *ctx;
 		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
 																	object:passwordMissingError];
 		return NO;
-	}
+    } else if (self.currentTab == TabViewTypeSingup && ![self.passwordStrengthView isMeetAllRequirements]) {
+        [self.password.window makeFirstResponder:self.password];
+        [self displayPasswordStrengthView:YES];
+        [self validatePasswordStrength];
+        return NO;
+    }
+
 	return YES;
 }
 
@@ -821,5 +837,46 @@ extern void *ctx;
     [self.view.window makeFirstResponder:self.countrySelect];
     self.tosCheckbox.state = NSControlStateValueOn;
     [self setUserSignUp:YES];
+}
+
+- (void)controlTextDidBeginEditing:(NSNotification *)obj
+{
+    if (obj.object == self.password && self.currentTab == TabViewTypeSingup) {
+        [self displayPasswordStrengthView:YES];
+    }
+}
+
+- (void)controlTextDidEndEditing:(NSNotification *)obj
+{
+    if (obj.object == self.password && self.currentTab == TabViewTypeSingup) {
+        [self displayPasswordStrengthView:NO];
+    }
+}
+
+- (void) displayPasswordStrengthView:(BOOL) display {
+    if (display) {
+        if (self.passwordStrengthView.view.superview == nil) {
+            self.passwordStrengthView.view.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.view addSubview:self.passwordStrengthView.view];
+            [self.passwordStrengthView.view.bottomAnchor constraintEqualToAnchor:self.password.topAnchor constant:kPasswordStrengthViewBottom].active = YES;
+            [self.passwordStrengthView.view.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:kPasswordStrengthViewCenterX].active = YES;
+            [self addChildViewController:self.passwordStrengthView];
+        }
+        self.passwordStrengthView.view.hidden = NO;
+    } else {
+        self.passwordStrengthView.view.hidden = YES;
+    }
+}
+
+-(void)setUserAction:(UserAction)userAction {
+    _userAction = userAction;
+    [self displayPasswordStrengthView:NO];
+}
+
+- (void)validatePasswordStrength {
+    if (!self.passwordStrengthView.isViewLoaded) {
+        return;
+    }
+    [self.passwordStrengthView updateValidationFor:self.password.stringValue];
 }
 @end
