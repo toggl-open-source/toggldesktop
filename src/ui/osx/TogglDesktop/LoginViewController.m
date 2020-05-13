@@ -40,8 +40,8 @@ typedef NS_ENUM (NSUInteger, UserAction)
 #define kLoginContainerHeight 440.0
 #define kSignupAppleViewTop 166.0
 #define kSignupContainerHeight 460.0
-#define kPasswordViewBottom -4
-#define kPasswordViewCenterX 0
+#define kPasswordStrengthViewBottom -4
+#define kPasswordStrengthViewCenterX 0
 
 @interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, LoginSignupTouchBarDelegate, AppleAuthenticationServiceDelegate>
 @property (weak) IBOutlet NSTextField *email;
@@ -238,7 +238,7 @@ extern void *ctx;
 
     self.currentTab = type;
     [self showLoaderView:NO];
-    [self displayPasswordView:NO];
+    [self displayPasswordStrengthView:NO];
 
     // Focus on email when changing mode
     [self.view.window makeFirstResponder:self.email];
@@ -539,7 +539,7 @@ extern void *ctx;
 		return NO;
     } else if (self.currentTab == TabViewTypeSingup && ![self.passwordStrengthView isMeetAllRequirements]) {
         [self.password.window makeFirstResponder:self.password];
-        [self displayPasswordView:YES];
+        [self displayPasswordStrengthView:YES];
         [self validatePasswordStrength];
         return NO;
     }
@@ -842,24 +842,24 @@ extern void *ctx;
 - (void)controlTextDidBeginEditing:(NSNotification *)obj
 {
     if (obj.object == self.password && self.currentTab == TabViewTypeSingup) {
-        [self displayPasswordView:YES];
+        [self displayPasswordStrengthView:YES];
     }
 }
 
 - (void)controlTextDidEndEditing:(NSNotification *)obj
 {
     if (obj.object == self.password && self.currentTab == TabViewTypeSingup) {
-        [self displayPasswordView:NO];
+        [self displayPasswordStrengthView:NO];
     }
 }
 
-- (void) displayPasswordView:(BOOL) display {
+- (void) displayPasswordStrengthView:(BOOL) display {
     if (display) {
         if (self.passwordStrengthView.view.superview == nil) {
             self.passwordStrengthView.view.translatesAutoresizingMaskIntoConstraints = NO;
             [self.view addSubview:self.passwordStrengthView.view];
-            [self.passwordStrengthView.view.bottomAnchor constraintEqualToAnchor:self.password.topAnchor constant:kPasswordViewBottom].active = YES;
-            [self.passwordStrengthView.view.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:kPasswordViewCenterX].active = YES;
+            [self.passwordStrengthView.view.bottomAnchor constraintEqualToAnchor:self.password.topAnchor constant:kPasswordStrengthViewBottom].active = YES;
+            [self.passwordStrengthView.view.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:kPasswordStrengthViewCenterX].active = YES;
             [self addChildViewController:self.passwordStrengthView];
         }
         self.passwordStrengthView.view.hidden = NO;
@@ -870,7 +870,7 @@ extern void *ctx;
 
 -(void)setUserAction:(UserAction)userAction {
     _userAction = userAction;
-    [self displayPasswordView:NO];
+    [self displayPasswordStrengthView:NO];
 }
 
 - (void)validatePasswordStrength {
