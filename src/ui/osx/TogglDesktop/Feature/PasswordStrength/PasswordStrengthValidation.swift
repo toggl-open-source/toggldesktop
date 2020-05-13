@@ -19,7 +19,7 @@ final class PasswordStrengthValidation {
             switch self {
             case .atLeastOneNumber: return "at least one number"
             case .lowerAndUpperCases: return "lowercase and uppercase letters"
-            case .moreThanEightLetters: return "8 letters or more"
+            case .moreThanEightLetters: return "8 or more characters"
             }
         }
         
