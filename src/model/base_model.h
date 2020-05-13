@@ -129,7 +129,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     virtual std::string ModelURL() const = 0;
 
     virtual void LoadFromJSON(Json::Value value) {}
-    virtual Json::Value SaveToJSON() const {
+    virtual Json::Value SaveToJSON(int apiVersion = 8) const {
         return 0;
     }
 

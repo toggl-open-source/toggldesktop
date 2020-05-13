@@ -52,6 +52,7 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
 
     void Clear();
 
+    template <class T> T *ModelByID(Poco::UInt64 id);
     Task *TaskByID(const Poco::UInt64 id) const;
     Client *ClientByID(const Poco::UInt64 id) const;
     Project *ProjectByID(const Poco::UInt64 id) const;
@@ -133,8 +134,12 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
 
     void mergeGroupedAutocompleteItems(
         std::vector<view::Autocomplete> *result,
-        std::map<std::string, std::vector<view::Autocomplete> > *items) const;
+            std::map<std::string, std::vector<view::Autocomplete> > *items) const;
 };
+
+template<> inline TimeEntry *RelatedData::ModelByID<TimeEntry>(Poco::UInt64 id) { return TimeEntryByID(id); }
+template<> inline Project *RelatedData::ModelByID<Project>(Poco::UInt64 id) { return ProjectByID(id); }
+template<> inline Client *RelatedData::ModelByID<Client>(Poco::UInt64 id) { return ClientByID(id); }
 
 template<typename T>
 void clearList(std::vector<T *> *list);

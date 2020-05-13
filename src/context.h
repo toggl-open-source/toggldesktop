@@ -563,8 +563,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     void uiUpdaterActivity();
     void checkReminders();
     void reminderActivity();
+
     void syncerActivityWrapper();
     void legacySyncerActivity();
+    void batchedSyncerActivity();
 
  private:
     static const std::string installerPlatform();
@@ -666,6 +668,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error pullChanges();
     error pullUserPreferences();
 
+    error pushBatchedChanges(
+        bool *had_something_to_push);
     error pushChanges(
         bool *had_something_to_push);
     error pushClients(
@@ -682,6 +686,9 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error updateEntryProjects(
         const std::vector<Project *> &projects,
         const std::vector<TimeEntry *> &time_entries);
+    error updateProjectClients(
+        const std::vector<Client *> &clients,
+        const std::vector<Project *> &projects);
     error signup(
         const std::string &email,
         const std::string &password,

@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <memory>
+#include <iostream>
 
 #include "util/formatter.h"
 #include "netconf.h"
@@ -368,7 +369,7 @@ HTTPResponse HTTPClient::makeHttpRequest(
         // Request gzip unless downloading files
         poco_req.set("Accept-Encoding", "gzip");
 
-        if (!req.form) {
+        if (!req.form && req.compress) {
             std::istringstream requestStream(req.payload);
 
             Poco::DeflatingInputStream gzipRequest(
@@ -387,6 +388,9 @@ HTTPResponse HTTPClient::makeHttpRequest(
             }
 
             session->sendRequest(poco_req) << pBuff << std::flush;
+        } else if (!req.form) {
+            poco_req.setContentLength(req.payload.size());
+            session->sendRequest(poco_req) << req.payload << std::flush;
         } else {
             req.form->prepareSubmit(poco_req);
             std::ostream& send = session->sendRequest(poco_req);

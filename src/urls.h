@@ -13,6 +13,7 @@ std::string Main();
 std::string API();
 std::string TimelineUpload();
 std::string WebSocket();
+std::string SyncAPI();
 
 void SetUseStagingAsBackend(const bool value);
 

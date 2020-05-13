@@ -458,7 +458,7 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
     ClearUnsynced();
 }
 
-Json::Value TimeEntry::SaveToJSON() const {
+Json::Value TimeEntry::SaveToJSON(int apiVersion) const {
     Json::Value n;
     if (ID()) {
         n["id"] = Json::UInt64(ID());
@@ -469,32 +469,47 @@ Json::Value TimeEntry::SaveToJSON() const {
     // NULL is not 0
     if (WID()) {
         n["wid"] = Json::UInt64(WID());
+        n["workspace_id"] = Json::UInt64(WID());
     }
-    n["guid"] = GUID();
+    if (apiVersion == 8)
+        n["guid"] = GUID();
     if (!PID() && !ProjectGUID().empty()) {
-        n["pid"] = ProjectGUID();
+        if (apiVersion == 8)
+            n["pid"] = ProjectGUID();
+        else
+            n["project_id"] = ProjectGUID();
     } else {
-        n["pid"] = Json::UInt64(PID());
+        if (apiVersion == 8)
+            n["pid"] = Json::UInt64(PID());
     }
 
     if (PID()) {
-        n["pid"] = Json::UInt64(PID());
+        if (apiVersion == 8)
+            n["pid"] = Json::UInt64(PID());
+        else
+            n["project_id"] = Json::UInt64(PID());
     } else {
-        n["pid"] = Json::nullValue;
+        if (apiVersion == 8)
+            n["pid"] = Json::nullValue;
     }
 
     if (TID()) {
-        n["tid"] = Json::UInt64(TID());
+        if (apiVersion == 8)
+            n["tid"] = Json::UInt64(TID());
+        else
+            n["task_id"] = Json::UInt64(TID());
     } else {
-        n["tid"] = Json::nullValue;
+        if (apiVersion == 8)
+            n["tid"] = Json::nullValue;
     }
 
     n["start"] = StartString();
-    if (Stop()) {
+    if (Stop() && apiVersion == 8) {
         n["stop"] = StopString();
     }
     n["duration"] = Json::Int64(DurationInSeconds());
-    n["billable"] = Billable();
+    if (apiVersion == 8)
+        n["billable"] = Billable();
     n["duronly"] = DurOnly();
     n["ui_modified_at"] = Json::UInt64(UIModifiedAt());
     n["created_with"] = Formatter::EscapeJSONString(CreatedWith());

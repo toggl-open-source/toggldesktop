@@ -79,7 +79,7 @@ void TimelineEvent::SetUploaded(const bool value) {
     }
 }
 
-Json::Value TimelineEvent::SaveToJSON() const {
+Json::Value TimelineEvent::SaveToJSON(int apiVersion) const {
     Json::Value n;
     n["guid"] = GUID();
     n["filename"] = Filename();

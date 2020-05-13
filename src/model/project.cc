@@ -140,7 +140,7 @@ void Project::LoadFromJSON(Json::Value data) {
     SetBillable(data["billable"].asBool());
 }
 
-Json::Value Project::SaveToJSON() const {
+Json::Value Project::SaveToJSON(int apiVersion) const {
     Json::Value n;
     if (ID()) {
         n["id"] = Json::UInt64(ID());

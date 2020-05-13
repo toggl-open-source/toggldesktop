@@ -210,9 +210,10 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     bool LoadUserPreferencesFromJSON(
         Json::Value data);
 
-    bool SetTimeEntryID(
+    template<class T>
+    bool SetModelID(
         Poco::UInt64 id,
-        TimeEntry* timeEntry);
+        T *model);
 
     template<typename T>
     void EnsureWID(T *model) const {
@@ -341,6 +342,31 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     Poco::Mutex loadTimeEntries_m_;
 };
+
+template<class T>
+bool User::SetModelID(Poco::UInt64 id, T *model) {
+    poco_check_ptr(model);
+
+    {
+        Poco::Mutex::ScopedLock lock(loadTimeEntries_m_);
+        auto otherModel = related.ModelByID<T>(id);
+        if (otherModel) {
+            // this means that somehow we already have a time entry with the ID
+            // that was just returned from a response to time entry creation request
+            logger().error("There is already a newer version of this entry");
+
+            // clearing the GUID to make sure there's no GUID conflict
+            model->SetGUID("");
+
+            // deleting the duplicate entry
+            // this entry has no ID so the corresponding server entry will not be deleted
+            model->Delete();
+            return false;
+        }
+        model->SetID(id);
+        return true;
+    }
+}
 
 template<class T>
 void deleteZombies(
