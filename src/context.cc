@@ -82,7 +82,7 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , reminder_(this, &Context::reminderActivity)
-, syncer_(this, &Context::syncerActivity)
+, syncer_(this, &Context::syncerActivityWrapper)
 , update_path_("")
 , overlay_visible_(false)
 , last_message_id_("") {
@@ -4806,7 +4806,20 @@ void Context::reminderActivity() {
     }
 }
 
-void Context::syncerActivity() {
+void Context::syncerActivityWrapper() {
+    enum {
+        STARTUP,
+        LEGACY,
+        BATCHED
+    } state
+#if defined(TOGGL_SYNC_FORCE_BATCHED)
+    { BATCHED };
+#elif defined(TOGGL_SYNC_FORCE_LEGACY)
+    { LEGACY };
+#else
+    { STARTUP };
+#endif
+
     while (true) {
         // Sleep in increments for faster shutdown.
         for (int i = 0; i < 4; i++) {
@@ -4816,63 +4829,117 @@ void Context::syncerActivity() {
             Poco::Thread::sleep(250);
         }
 
-        {
-            Poco::Mutex::ScopedLock lock(syncer_m_);
+        switch (state) {
+        case STARTUP: {
+            logger.log("Syncer bootup, will attempt to determine which protocol to use");
 
-            if (trigger_sync_) {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            std::string api_token = user_->APIToken();
 
-                error err = pullAllUserData();
-                if (err != noError) {
-                    displayError(err);
+            HTTPRequest req;
+            req.host = urls::API();
+            req.relative_url = "/api/v9/me/flags";
+            req.basic_auth_username = api_token;
+            req.basic_auth_password = "api_token";
+
+            HTTPResponse resp = TogglClient::GetInstance().Get(req);
+
+            // don't do anything if the error is not noError, that's usually network error and this will try to connect every second
+            if (resp.err == noError) {
+                // if the server doesn't respond OK to this request, fall back to the legacy sync protocol
+                if (resp.status_code != 200) {
+                    logger.log("Syncer - Server didn't respond 200 to /me/flags, fallback to LEGACY");
+                    state = LEGACY;
                 }
-
-                setOnline("Data pulled");
-
-                err = pushChanges(&trigger_sync_);
-                trigger_push_ = false;
-                if (err != noError) {
-                    user_->ConfirmLoadedMore();
-                    displayError(err);
-                    return;
-                } else {
-                    setOnline("Data pushed");
+                else { // is OK - 200
+                    // otherwise, parse the response and see if the desktop_sync_client flag is there
+                    Json::Value root;
+                    Json::Reader reader;
+                    if (!reader.parse(resp.body, root)) {
+                        logger.log("Syncer - /me/flags response couldn't be parsed as JSON, fallback to LEGACY");
+                        state = LEGACY;
+                    }
+                    else {
+                        // there was a typo in the initial set of flags, use both variants to be sure
+                        if (root[kSyncStrategyLegacy1].isBool() && root[kSyncStrategyLegacy1].asBool())
+                            state = BATCHED;
+                        else if (root[kSyncStrategyLegacy2].isBool() && root[kSyncStrategyLegacy2].asBool())
+                            state = BATCHED;
+                        else
+                            state = LEGACY;
+                        logger.log("Syncer - Syncing protocol was selected: ", (state == BATCHED ? "BATCHED" : "LEGACY"));
+                    }
                 }
-                trigger_sync_ = false;
+            }
+            break;
+        }
+        case LEGACY:
+            legacySyncerActivity();
+            break;
+        case BATCHED:
+            // TODO
+            break;
+        }
+    }
+}
 
-                // Push cached OBM action
-                err = pushObmAction();
-                if (err != noError) {
-                    std::cout << "SYNC: sync-pushObm ERROR\n";
-                    logger.error("Error pushing OBM action: " + err);
-                }
+void Context::legacySyncerActivity() {
+    {
+        Poco::Mutex::ScopedLock lock(syncer_m_);
 
-                displayError(save(false));
+        if (trigger_sync_) {
+
+            error err = pullAllUserData();
+            if (err != noError) {
+                displayError(err);
             }
 
+            setOnline("Data pulled");
+
+            err = pushChanges(&trigger_sync_);
+            trigger_push_ = false;
+            if (err != noError) {
+                user_->ConfirmLoadedMore();
+                displayError(err);
+                return;
+            } else {
+                setOnline("Data pushed");
+            }
+            trigger_sync_ = false;
+
+            // Push cached OBM action
+            err = pushObmAction();
+            if (err != noError) {
+                std::cout << "SYNC: sync-pushObm ERROR\n";
+                logger.error("Error pushing OBM action: " + err);
+            }
+
+            displayError(save(false));
         }
 
-        {
-            Poco::Mutex::ScopedLock lock(syncer_m_);
+    }
 
-            if (trigger_push_) {
-                error err = pushChanges(&trigger_sync_);
-                if (err != noError) {
-                    user_->ConfirmLoadedMore();
-                    displayError(err);
-                } else {
-                    setOnline("Data pushed");
-                }
-                trigger_push_ = false;
+    {
+        Poco::Mutex::ScopedLock lock(syncer_m_);
 
-                // Push cached OBM action
-                err = pushObmAction();
-                if (err != noError) {
-                    std::cout << "SYNC: pushObm ERROR\n";
-                    logger.error("Error pushing OBM action: " + err);
-                }
-
-                displayError(save(false));
+        if (trigger_push_) {
+            error err = pushChanges(&trigger_sync_);
+            if (err != noError) {
+                user_->ConfirmLoadedMore();
+                displayError(err);
+            } else {
+                setOnline("Data pushed");
             }
+            trigger_push_ = false;
+
+            // Push cached OBM action
+            err = pushObmAction();
+            if (err != noError) {
+                std::cout << "SYNC: pushObm ERROR\n";
+                logger.error("Error pushing OBM action: " + err);
+            }
+
+            displayError(save(false));
         }
     }
 }

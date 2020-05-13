@@ -563,7 +563,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     void uiUpdaterActivity();
     void checkReminders();
     void reminderActivity();
-    void syncerActivity();
+    void syncerActivityWrapper();
+    void legacySyncerActivity();
 
  private:
     static const std::string installerPlatform();
