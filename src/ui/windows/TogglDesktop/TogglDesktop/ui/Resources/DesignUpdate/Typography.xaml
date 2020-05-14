@@ -44,6 +44,10 @@
     <Style TargetType="TextBlock" x:Key="Toggl.BodyText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="14" />
     </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.TimerDurationText" BasedOn="{StaticResource Toggl.Text}">
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="18" />
+    </Style>
     <Style TargetType="TextBlock" x:Key="Toggl.BodyGrayText">
         <!-- doesn't change foreground when disabled -->
         <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />

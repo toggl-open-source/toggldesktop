@@ -26,7 +26,7 @@ final class ColorViewItem: NSCollectionViewItem {
     // MARK: Public
 
     func render(_ color: ProjectColor) {
-        boxView.fillColor = ConvertHexColor.hexCode(toNSColor: color.colorHex)!
+        boxView.fillColor = ConvertHexColor.hexCode(toNSColor: color.hex)!
     }
 
     override var isSelected: Bool {

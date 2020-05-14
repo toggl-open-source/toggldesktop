@@ -50,7 +50,6 @@ extern NSString *const kFocusTimer;
 extern NSString *const kEscapeListing;
 extern NSString *const kToggleManualMode;
 extern NSString *const kToggleTimerMode;
-extern NSString *const kSetProjectColors;
 extern NSString *const kToggleGroup;
 extern NSString *const kDisplayCountries;
 extern NSString *const kUpdateIconTooltip;
@@ -60,6 +59,7 @@ extern NSString *const kDidAdddManualTimeNotification;
 extern NSString *const kTouchBarSettingChanged;
 extern NSString *const kStartDisplayInAppMessage;
 extern NSString *const kStarTimeEntryWithStartTime;
+extern NSString *const kUpdateReady;
 
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;
@@ -69,5 +69,5 @@ const char *kFocusedFieldNameTag;
 extern NSString *const kStartButtonStateChange;
 extern NSString *const kInvalidAppleUserCrendential;
 extern NSString *const kStartDisplayOnboarding;
-
 extern NSString *const kOnboardingDidClickNotification;
+extern NSString *const kContinueSignIn;

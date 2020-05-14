@@ -6,10 +6,10 @@
 #include <string>
 #include <vector>
 
-#include "autotracker.h"
+#include "model/autotracker.h"
 #include "help_article.h"
 #include "proxy.h"
-#include "settings.h"
+#include "model/settings.h"
 #include "toggl_api.h"
 #include "util/logger.h"
 
@@ -72,6 +72,8 @@ TogglCountryView *country_list_init(
 void country_item_clear(TogglCountryView *item);
 
 void country_list_clear(TogglCountryView *first);
+
+void country_list_delete_item(TogglCountryView *first);
 
 TogglCountryView *country_view_item_init(
     const Json::Value v);

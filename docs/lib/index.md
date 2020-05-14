@@ -7,7 +7,7 @@ The library is the heart of the desktop applications on all platforms. It's main
 
 ## Folder structure
 
-All the library source files are in the `src` directory. The library project is built for each platform separatee according to project files that are located in `src/lib/{$platform}`. For example `src/lib/osx` for OS X. If you are adding new files to the library then the project files should be updated to reference the new files.
+All the library source files are in the `src` directory. The library project is built for each platform separated according to project files that are located in `src/lib/{$platform}`. For example `src/lib/osx` for OS X. If you are adding new files to the library then the project files should be updated to reference the new files.
 
 ## Event flows
 
@@ -49,27 +49,11 @@ The OpenSSL Project is a collaborative effort to develop a robust, commercial-gr
 
 OpenSSL is used under licence described in [https://github.com/openssl/openssl/blob/master/LICENSE](https://github.com/openssl/openssl/blob/master/LICENSE)
 
-
-### Lua
-
-[http://www.lua.org/](http://www.lua.org/)
-
-Lua is mostly used for writing tests on the library.
-
-Description from their homepage:
-```
-Lua is a powerful, fast, lightweight, embeddable scripting language.
-
-Lua combines simple procedural syntax with powerful data description constructs based on associative arrays and extensible semantics. Lua is dynamically typed, runs by interpreting bytecode for a register-based virtual machine, and has automatic memory management with incremental garbage collection, making it ideal for configuration, scripting, and rapid prototyping.
-```
-
-Lua is used under MIT Licende. Full licence available at [http://www.lua.org/license.html](http://www.lua.org/license.html)
-
 ### JsonCpp
 
 [https://github.com/open-source-parsers/jsoncpp](https://github.com/open-source-parsers/jsoncpp)
 
-JsonCpp is used to parse date to and from Json format. All of the messages exchanged between the library and the servers are in JSON format.
+JsonCpp is used to parse data to and from Json format. All of the messages exchanged between the library and the servers are in JSON format.
 
 Description from their homepage:
 ```

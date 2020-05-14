@@ -16,11 +16,11 @@
                              x:Name="Entries"
                              FocusTimer="onFocusTimer"/>
 
-        <Border Grid.Row="0" Height="1" VerticalAlignment="Bottom"
+        <Border Grid.Row="0" Height="4" VerticalAlignment="Bottom"
                 Background="{Binding ElementName=Timer, Path=Background}">
             <Border.Effect>
-                <DropShadowEffect Direction="270" Color="Black" Opacity="0.2"
-                                  BlurRadius="4" ShadowDepth="1" />
+                <DropShadowEffect Direction="270" Color="Black" Opacity="0.22"
+                                  BlurRadius="8" ShadowDepth="2" />
             </Border.Effect>
         </Border>
 

@@ -26,6 +26,7 @@
             <converters:StringFormatIfNotEmptyConverter x:Key="StringFormatIfNotEmptyConverter" />
             <converters:EnumEqualToVisibilityConverter x:Key="EnumEqualToVisibilityConverter" />
             <converters:AndConverter x:Key="AndConverter" />
+            <converters:PopupAlignmentAwareConverter x:Key="PopupAlignmentAwareConverter"/>
 
         </ResourceDictionary>
     </Application.Resources>

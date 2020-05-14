@@ -82,6 +82,10 @@ extern void *ctx;
                                                  selector:@selector(startOnboardingNotification:)
                                                      name:kStartDisplayOnboarding
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+												selector:@selector(handleContinueSignInNotification:)
+                                                     name:kContinueSignIn
+                                                   object:nil];
 	}
 	return self;
 }
@@ -462,6 +466,14 @@ extern void *ctx;
             return self.mainDashboardViewController.timelineController.recordActivityContainerView;
         default:
             return nil;
+	}
+}
+
+-(void) handleContinueSignInNotification:(NSNotification *) noti
+{
+    if (self.loginViewController.view.superview != nil)
+    {
+        [self.loginViewController continueSignIn];
     }
 }
 @end

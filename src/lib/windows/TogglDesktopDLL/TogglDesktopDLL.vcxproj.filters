@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\model">
+      <UniqueIdentifier>{53d79181-e1b3-4395-bb9a-6b5de6434c34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{60ba5948-723d-4784-9201-cddda9349a6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\database">
+      <UniqueIdentifier>{13458f13-e88e-481e-a4e2-2737b1b06f7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\model">
+      <UniqueIdentifier>{c0f17fc5-431d-43ea-82b1-6e6316dbaa5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{1304ad86-8dc3-4f68-bf01-05116902dabe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\database">
+      <UniqueIdentifier>{8574dacb-ef0f-4bc8-92c1-4d09a63e813f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -27,13 +45,7 @@
     <ClInclude Include="..\..\..\autocomplete_item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\base_model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\batch_update_result.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\const.h">
@@ -42,16 +54,7 @@
     <ClInclude Include="..\..\..\context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\custom_error_handler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\database.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\feedback.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\formatter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\get_focused_window.h">
@@ -63,25 +66,10 @@
     <ClInclude Include="..\..\..\toggl_api_private.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\project.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\proxy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\related_data.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\tag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\task.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\time_entry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\timeline_event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\timeline_notifications.h">
@@ -93,16 +81,10 @@
     <ClInclude Include="..\..\..\types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\user.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\websocket_client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\window_change_recorder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\workspace.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui.h">
@@ -120,29 +102,68 @@
     <ClInclude Include="..\..\..\netconf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\autotracker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\urls.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\migrations.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\obm_action.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\help_article.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Rectangle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\toggl_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\random.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\..\model\base_model.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\model\client.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\util\custom_error_handler.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\database\database.h">
+      <Filter>Header Files\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\util\formatter.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\database\migrations.h">
+      <Filter>Header Files\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\model\obm_action.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\util\random.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\util\rectangle.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\model\project.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\model\tag.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\model\task.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\model\timeline_event.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\model\time_entry.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\model\user.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\model\workspace.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\model\autotracker.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\model\settings.h">
+      <Filter>Header Files\model</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\onboarding_service.h">
       <Filter>Header Files</Filter>
@@ -158,28 +179,13 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\base_model.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\batch_update_result.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\client.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\context.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\custom_error_handler.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\database.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\feedback.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\formatter.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\get_focused_window_windows.cc">
@@ -194,37 +200,19 @@
     <ClCompile Include="..\..\..\toggl_api_private.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\project.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\proxy.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\related_data.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\tag.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\task.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\time_entry.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\timeline_uploader.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\user.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\websocket_client.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\window_change_recorder.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\workspace.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui.cc">
@@ -245,32 +233,65 @@
     <ClCompile Include="..\..\..\netconf.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\autotracker.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\settings.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\urls.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\timeline_event.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\migrations.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\obm_action.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\help_article.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Rectangle.cc">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\model\base_model.cc">
+      <Filter>Source Files\model</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\random.cc">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\model\client.cc">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\util\custom_error_handler.cc">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\database\database.cc">
+      <Filter>Source Files\database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\util\formatter.cc">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\database\migrations.cc">
+      <Filter>Source Files\database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\model\obm_action.cc">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\util\random.cc">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\util\rectangle.cc">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\model\settings.cc">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\model\project.cc">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\model\tag.cc">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\model\task.cc">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\model\time_entry.cc">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\model\user.cc">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\model\workspace.cc">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\model\timeline_event.cc">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\model\autotracker.cc">
+      <Filter>Source Files\model</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\onboarding_service.cpp">
       <Filter>Source Files</Filter>

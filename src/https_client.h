@@ -15,10 +15,12 @@
 
 #include <Poco/Activity.h>
 #include <Poco/Timestamp.h>
+#include <Poco/Net/Context.h>
 
 namespace Poco {
 namespace Net {
 class HTMLForm;
+class Context;
 } // namespace Poco::Net
 } // namespace Poco
 
@@ -66,19 +68,16 @@ class TOGGL_INTERNAL_EXPORT HTTPClientConfig {
     , AppVersion("")
     , UseProxy(false)
     , ProxySettings(Proxy())
-    , IgnoreCert(false)
-    , CACertPath("")
-    , AutodetectProxy(true) {}
+    , AutodetectProxy(true)
+    , ignoreCert(false)
+    , caCertPath("") {}
     ~HTTPClientConfig() {}
 
     std::string AppName;
     std::string AppVersion;
     bool UseProxy;
     toggl::Proxy ProxySettings;
-    bool IgnoreCert;
-    std::string CACertPath;
     bool AutodetectProxy;
-
     std::vector<Poco::UInt64> OBMExperimentNrs;
 
     std::string UserAgent() const {
@@ -91,6 +90,15 @@ class TOGGL_INTERNAL_EXPORT HTTPClientConfig {
         }
         return ss.str();
     }
+
+    bool IgnoreCert() { return ignoreCert; };
+    std::string CACertPath() { return caCertPath; };
+    void SetCACertPath(std::string path) { caCertPath = path; }
+    void SetIgnoreCert(bool ignore) { ignoreCert = ignore; }
+
+private:
+    bool ignoreCert;
+    std::string caCertPath;
 };
 
 class TOGGL_INTERNAL_EXPORT HTTPRequest {
@@ -140,9 +148,6 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
     HTTPResponse Get(
         HTTPRequest req) const;
 
-    HTTPResponse GetFile(
-        HTTPRequest req) const;
-
     HTTPResponse Delete(
         HTTPRequest req) const;
 
@@ -151,6 +156,9 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
 
     static HTTPClientConfig Config;
 
+    void SetCACertPath(std::string path);
+    void SetIgnoreCert(bool ignore);
+    
  protected:
     virtual HTTPResponse request(
         HTTPRequest req) const;
@@ -158,6 +166,8 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
     virtual Logger logger() const;
 
  private:
+    Poco::Net::Context::Ptr context; // share context with many Poco session
+
     // We only make requests if this timestamp lies in the past.
     static std::map<std::string, Poco::Timestamp> banned_until_;
 
@@ -169,6 +179,8 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
         HTTPRequest req) const;
 
     std::string clientIDForRefererHeader() const;
+
+    void resetPocoContext();
 };
 
 class TOGGL_INTERNAL_EXPORT SyncStateMonitor {
@@ -179,19 +191,35 @@ class TOGGL_INTERNAL_EXPORT SyncStateMonitor {
 };
 
 class TOGGL_INTERNAL_EXPORT TogglClient : public HTTPClient {
- public:
-    explicit TogglClient(SyncStateMonitor *monitor = nullptr)
-        : monitor_(monitor) {}
-
+public:
     static ServerStatus TogglStatus;
+    static TogglClient& GetInstance() {
+        static TogglClient instance; // static is thread-safe in C++11.
+        return instance;
+    }
 
- protected:
-    virtual HTTPResponse request(
-        HTTPRequest req) const override;
+    void SetSyncStateMonitor(SyncStateMonitor *monitor = nullptr) {
+        monitor_ = monitor;
+    }
 
+    HTTPResponse silentPost(
+        HTTPRequest req) const;
+
+    HTTPResponse silentGet(
+        HTTPRequest req) const;
+
+    HTTPResponse silentDelete(
+        HTTPRequest req) const;
+
+    HTTPResponse silentPut(
+        HTTPRequest req) const;
+
+protected:
+    virtual HTTPResponse request(HTTPRequest req) const override;
     virtual Logger logger() const override;
 
- private:
+private:
+    TogglClient() {};
     SyncStateMonitor *monitor_;
 };
 

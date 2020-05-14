@@ -143,4 +143,19 @@
 	[self scheduleNotification:notification];
 }
 
+- (void)scheduleUpdateReady
+{
+    NSUserNotification *notification = [self defaultUserNotificationWithTitle:@"A new version of Toggl Desktop is ready!"
+                                                              informativeText:@"Click here to restart and install"];
+
+    notification.userInfo = @{ @"update-restart": @"YES" };
+    notification.hasActionButton = YES;
+    notification.actionButtonTitle = @"Restart";
+    notification.otherButtonTitle = @"Close";
+
+    // Delivery
+    [self removeAllDeliveredNotificationsWithType:@"update-restart"];
+    [self scheduleNotification:notification];
+}
+
 @end

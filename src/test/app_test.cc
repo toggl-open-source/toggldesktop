@@ -4,24 +4,24 @@
 
 #include <iostream>  // NOLINT
 
-#include "./../autotracker.h"
-#include "./../client.h"
-#include "./../const.h"
-#include "./../database.h"
-#include "./../formatter.h"
-#include "./../obm_action.h"
-#include "./../project.h"
-#include "./../proxy.h"
-#include "./../settings.h"
-#include "./../tag.h"
-#include "./../task.h"
-#include "./../time_entry.h"
-#include "./../timeline_event.h"
-#include "./../timeline_uploader.h"
-#include "./../user.h"
-#include "./../workspace.h"
+#include "model/autotracker.h"
+#include "model/client.h"
+#include "const.h"
+#include "database/database.h"
+#include "util/formatter.h"
+#include "model/obm_action.h"
+#include "model/project.h"
+#include "proxy.h"
+#include "model/settings.h"
+#include "model/tag.h"
+#include "model/task.h"
+#include "model/time_entry.h"
+#include "model/timeline_event.h"
+#include "timeline_uploader.h"
+#include "model/user.h"
+#include "model/workspace.h"
 
-#include "./test_data.h"
+#include "test_data.h"
 
 #include "Poco/File.h"
 #include "Poco/FileStream.h"
@@ -90,11 +90,11 @@ TEST(TimeEntry, SetDurationUserInput) {
 TEST(Project, ProjectsHaveColorCodes) {
     Project p;
     p.SetColor("1");
-    ASSERT_EQ("#c56bff", p.ColorCode());
+    ASSERT_EQ("#9e5bd9", p.ColorCode());
     p.SetColor("");
     ASSERT_EQ("", p.ColorCode());
     p.SetColor("0");
-    ASSERT_EQ("#06aaf5", p.ColorCode());
+    ASSERT_EQ("#0b83d9", p.ColorCode());
 }
 
 TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {

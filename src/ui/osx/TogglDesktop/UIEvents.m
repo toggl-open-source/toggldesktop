@@ -47,13 +47,13 @@ NSString *const kFocusTimer = @"kFocusTimer";
 NSString *const kEscapeListing = @"kEscapeListing";
 NSString *const kToggleManualMode = @"kToggleManualMode";
 NSString *const kToggleTimerMode = @"kToggleTimerMode";
-NSString *const kSetProjectColors = @"kSetProjectColors";
 NSString *const kToggleGroup = @"ToggleGroup";
 NSString *const kDisplayCountries = @"kDisplayCountries";
 NSString *const kUpdateIconTooltip = @"kUpdateIconTooltip";
 NSString *const kUserHasBeenSignup = @"kUserHasBeenSignup";
 NSString *const kTouchBarSettingChanged = @"kTouchBarSettingChanged";
 NSString *const kStartDisplayInAppMessage = @"kStartDisplayInAppMessage";
+NSString *const kUpdateReady = @"kUpdateReady";
 
 NSString *const kDeselectAllTimeEntryList = @"kDeselectAllTimeEntryList";
 NSString *const kDidAdddManualTimeNotification = @"kDidAdddManualTimeNotification";
@@ -69,3 +69,4 @@ NSString *const kInvalidAppleUserCrendential = @"kInvalidAppleUserCrendential";
 
 NSString *const kStartDisplayOnboarding = @"kStartDisplayOnboarding";
 NSString *const kOnboardingDidClickNotification = @"kOnboardingDidClickNotification";
+NSString *const kContinueSignIn = @"kContinueSignIn";

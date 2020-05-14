@@ -246,7 +246,7 @@ jobs:
     - name: Sign binaries
       if: github.event_name == 'release'
       run: |
-        ./dist/windows/scripts/sign.sh
+        ./dist/windows/scripts/sign.sh cert_password=${{ secrets.CERT_WINDOWS_PASSWORD }}
       shell: bash
     - name: Install NSIS
       if: github.event_name == 'release'
@@ -256,12 +256,12 @@ jobs:
       if: github.event_name == 'release'
       run: |
         cd dist/windows
-        makensis TogglDesktopInstaller-x86.nsi
+        makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglDesktopInstaller-x86.nsi
     - name: Sign the installer
       if: github.event_name == 'release'
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx dist\windows\TogglDesktopInstaller.exe
+        "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx -p "${{ secrets.CERT_WINDOWS_PASSWORD }}" dist\windows\TogglDesktopInstaller.exe
     - name: Upload to GitHub
       if: github.event_name == 'release'
       run: |
@@ -312,7 +312,7 @@ jobs:
     - name: Sign binaries
       if: github.event_name == 'release'
       run: |
-        ./dist/windows/scripts/sign.sh
+        ./dist/windows/scripts/sign.sh cert_password=${{ secrets.CERT_WINDOWS_PASSWORD }}
       shell: bash
     - name: Install NSIS
       if: github.event_name == 'release'
@@ -322,12 +322,12 @@ jobs:
       if: github.event_name == 'release'
       run: |
         cd dist/windows
-        makensis TogglDesktopInstaller-x64.nsi
+        makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglDesktopInstaller-x64.nsi
     - name: Sign the installer
       if: github.event_name == 'release'
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx dist\windows\TogglDesktopInstaller-x64.exe
+        "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx -p "${{ secrets.CERT_WINDOWS_PASSWORD }}" dist\windows\TogglDesktopInstaller-x64.exe
     - name: Upload to GitHub
       if: github.event_name == 'release'
       run: |

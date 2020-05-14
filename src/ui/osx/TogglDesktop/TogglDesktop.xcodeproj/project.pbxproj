@@ -253,6 +253,15 @@
 		BA5AC61623264651007E6C91 /* TimelineCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */; };
 		BA5B0E4E2330E1C6008D1DED /* GoogleAuthenticationServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */; };
 		BA5B0E502330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */; };
+		BA5BDC2C2464079800FF3C28 /* PasswordStrengthValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC2B2464079800FF3C28 /* PasswordStrengthValidation.swift */; };
+		BA5BDC2F24640D8A00FF3C28 /* PasswordStrengthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC2D24640D8A00FF3C28 /* PasswordStrengthView.swift */; };
+		BA5BDC3024640D8A00FF3C28 /* PasswordStrengthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC2D24640D8A00FF3C28 /* PasswordStrengthView.swift */; };
+		BA5BDC3124640D8A00FF3C28 /* PasswordStrengthView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5BDC2E24640D8A00FF3C28 /* PasswordStrengthView.xib */; };
+		BA5BDC3224640D8A00FF3C28 /* PasswordStrengthView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5BDC2E24640D8A00FF3C28 /* PasswordStrengthView.xib */; };
+		BA5BDC342464112100FF3C28 /* PasswordRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC332464112100FF3C28 /* PasswordRuleView.swift */; };
+		BA5BDC352464112100FF3C28 /* PasswordRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC332464112100FF3C28 /* PasswordRuleView.swift */; };
+		BA5BDC372464112D00FF3C28 /* PasswordRuleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5BDC362464112D00FF3C28 /* PasswordRuleView.xib */; };
+		BA5BDC382464112D00FF3C28 /* PasswordRuleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5BDC362464112D00FF3C28 /* PasswordRuleView.xib */; };
 		BA5E988923BF496E0089A2C7 /* HoverImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E988823BF496E0089A2C7 /* HoverImageView.swift */; };
 		BA5E988D23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E988B23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift */; };
 		BA5E988F23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5E988C23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib */; };
@@ -305,6 +314,8 @@
 		BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */; };
 		BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335922489C8000B953A8 /* ProjectDataSource.swift */; };
 		BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */; };
+		BA7F4D8B24658BDB00DB5058 /* DSFSecureTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7F4D8A24658BDB00DB5058 /* DSFSecureTextField.swift */; };
+		BA7F4D8C24658BDB00DB5058 /* DSFSecureTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7F4D8A24658BDB00DB5058 /* DSFSecureTextField.swift */; };
 		BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
 		BA81896A23016148000710EA /* NSColor+VisibleColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA81896923016148000710EA /* NSColor+VisibleColor.swift */; };
 		BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */; };
@@ -924,6 +935,11 @@
 		BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineCollectionView.swift; sourceTree = "<group>"; };
 		BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthenticationServer.swift; sourceTree = "<group>"; };
 		BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleAuthenticationServer+Objc.swift"; sourceTree = "<group>"; };
+		BA5BDC2B2464079800FF3C28 /* PasswordStrengthValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordStrengthValidation.swift; sourceTree = "<group>"; };
+		BA5BDC2D24640D8A00FF3C28 /* PasswordStrengthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordStrengthView.swift; sourceTree = "<group>"; };
+		BA5BDC2E24640D8A00FF3C28 /* PasswordStrengthView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PasswordStrengthView.xib; sourceTree = "<group>"; };
+		BA5BDC332464112100FF3C28 /* PasswordRuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordRuleView.swift; sourceTree = "<group>"; };
+		BA5BDC362464112D00FF3C28 /* PasswordRuleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PasswordRuleView.xib; sourceTree = "<group>"; };
 		BA5E988823BF496E0089A2C7 /* HoverImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverImageView.swift; sourceTree = "<group>"; };
 		BA5E988B23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineActivityRecorderViewController.swift; sourceTree = "<group>"; };
 		BA5E988C23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineActivityRecorderViewController.xib; sourceTree = "<group>"; };
@@ -976,6 +992,7 @@
 		BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteViewDataSource.swift; sourceTree = "<group>"; };
 		BA7D335922489C8000B953A8 /* ProjectDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDataSource.swift; sourceTree = "<group>"; };
 		BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteTextField.swift; sourceTree = "<group>"; };
+		BA7F4D8A24658BDB00DB5058 /* DSFSecureTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DSFSecureTextField.swift; sourceTree = "<group>"; };
 		BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ByGroup.swift"; sourceTree = "<group>"; };
 		BA81896923016148000710EA /* NSColor+VisibleColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+VisibleColor.swift"; sourceTree = "<group>"; };
 		BA84363922533A6600EF5830 /* DesktopLibraryBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DesktopLibraryBridge.h; sourceTree = "<group>"; };
@@ -1617,6 +1634,19 @@
 			path = GoogleLogin;
 			sourceTree = "<group>";
 		};
+		BA5BDC2A2464077C00FF3C28 /* PasswordStrength */ = {
+			isa = PBXGroup;
+			children = (
+				BA7F4D8A24658BDB00DB5058 /* DSFSecureTextField.swift */,
+				BA5BDC2B2464079800FF3C28 /* PasswordStrengthValidation.swift */,
+				BA5BDC2D24640D8A00FF3C28 /* PasswordStrengthView.swift */,
+				BA5BDC2E24640D8A00FF3C28 /* PasswordStrengthView.xib */,
+				BA5BDC332464112100FF3C28 /* PasswordRuleView.swift */,
+				BA5BDC362464112D00FF3C28 /* PasswordRuleView.xib */,
+			);
+			path = PasswordStrength;
+			sourceTree = "<group>";
+		};
 		BA63ABF923829C2B004C70CF /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -1682,6 +1712,7 @@
 			isa = PBXGroup;
 			children = (
 				BA13E5612434728B005244AD /* Onboarding */,
+				BA5BDC2A2464077C00FF3C28 /* PasswordStrength */,
 				BAB8CA8C240E3EA2002FF62B /* AppleSignIn */,
 				BA65A1FE22B7807300F895FD /* Timeline */,
 				BA47DEAF23966F80005216AD /* InAppMessage */,
@@ -2054,6 +2085,7 @@
 			files = (
 				BA24E794230BE50600B1D4B2 /* TimelineActivityHoverController.xib in Resources */,
 				BA7D33532248981200B953A8 /* ProjectHeaderCellView.xib in Resources */,
+				BA5BDC372464112D00FF3C28 /* PasswordRuleView.xib in Resources */,
 				BA05369F225E239600C26E1F /* ProjectWorksapceCellView.xib in Resources */,
 				BAA0105022CB66D0007C1541 /* TimelineEmptyTimeEntryCell.xib in Resources */,
 				BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */,
@@ -2087,6 +2119,7 @@
 				BAB5FFD723F15A65003781D3 /* TimelineBackgroundCell.xib in Resources */,
 				BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */,
 				BA5E988F23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib in Resources */,
+				BA5BDC3124640D8A00FF3C28 /* PasswordStrengthView.xib in Resources */,
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
 				BA8B4C772251FADF00592BC7 /* WorkspaceCellView.xib in Resources */,
@@ -2165,6 +2198,7 @@
 				BA37ACBD23D890050013EE26 /* TimelineActivityRecorderViewController.xib in Resources */,
 				BAE64E1F2368334000244D2B /* FloatingErrorView.xib in Resources */,
 				BAE64E202368334000244D2B /* TimeEntryListViewController.xib in Resources */,
+				BA5BDC382464112D00FF3C28 /* PasswordRuleView.xib in Resources */,
 				BAE64E212368334000244D2B /* (null) in Resources */,
 				BAE64E222368334000244D2B /* TagCellView.xib in Resources */,
 				BAE64E232368334000244D2B /* ProjectCreationView.xib in Resources */,
@@ -2178,6 +2212,7 @@
 				BA37ACB723D890050013EE26 /* MainDashboardViewController.xib in Resources */,
 				BA37ACDE23D8900C0013EE26 /* TimelineTimeEntryHoverViewController.xib in Resources */,
 				BA37ACB523D890050013EE26 /* TimelineDashboardViewController.xib in Resources */,
+				BA5BDC3224640D8A00FF3C28 /* PasswordStrengthView.xib in Resources */,
 				BAE64E282368334000244D2B /* TimerEditViewController.xib in Resources */,
 				BAE64E292368334000244D2B /* dsa_pub.pem in Resources */,
 			);
@@ -2423,6 +2458,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA7F4D8B24658BDB00DB5058 /* DSFSecureTextField.swift in Sources */,
 				74C15796183A8CE600550613 /* AutocompleteItem.m in Sources */,
 				BA787D6D231E58C9003AD3AA /* Array+View.swift in Sources */,
 				7484F622191D92C30038885C /* Settings.m in Sources */,
@@ -2465,6 +2501,7 @@
 				BA01405222571199000E5B91 /* TagTokenView.swift in Sources */,
 				BAF9364C23E8114800EE1076 /* TimelineResizeHoverController.swift in Sources */,
 				BA05367F225E238D00C26E1F /* ProjectWorksapceCellView.swift in Sources */,
+				BA5BDC2F24640D8A00FF3C28 /* PasswordStrengthView.swift in Sources */,
 				BA47DEB223966F9C005216AD /* InAppMessageViewController.swift in Sources */,
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
 				BA412C21224E1189003CA17A /* ClientCellView.swift in Sources */,
@@ -2516,6 +2553,7 @@
 				BAA0104C22CB59ED007C1541 /* Date+Extension.swift in Sources */,
 				BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */,
 				BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */,
+				BA5BDC2C2464079800FF3C28 /* PasswordStrengthValidation.swift in Sources */,
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
 				BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */,
 				BA4791F322F0478A00E24F79 /* String+Search.swift in Sources */,
@@ -2530,6 +2568,7 @@
 				BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */,
 				BA01404622570805000E5B91 /* TagCellView.swift in Sources */,
 				BA5E988D23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift in Sources */,
+				BA5BDC342464112100FF3C28 /* PasswordRuleView.swift in Sources */,
 				BA7D334B2248944C00B953A8 /* AutoCompleteView.swift in Sources */,
 				BAA0102B22CB4D5C007C1541 /* TimelineTimeEntryMenu.swift in Sources */,
 				BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */,
@@ -2744,6 +2783,7 @@
 				BAE64D9D2368334000244D2B /* TimeDecoratorView.swift in Sources */,
 				BAB5FFD523F13F75003781D3 /* TimelineDraggingSession.swift in Sources */,
 				BAE64D9E2368334000244D2B /* TimeEntryEmptyView.swift in Sources */,
+				BA7F4D8C24658BDB00DB5058 /* DSFSecureTextField.swift in Sources */,
 				BA37AD0923D890940013EE26 /* TimelineDisplayCommand.m in Sources */,
 				BAE64D9F2368334000244D2B /* (null) in Sources */,
 				BAE64DA02368334000244D2B /* TimeEntryCollectionView.m in Sources */,
@@ -2756,6 +2796,7 @@
 				BAE64DA62368334000244D2B /* (null) in Sources */,
 				BAE64DA72368334000244D2B /* (null) in Sources */,
 				BAE64DA82368334000244D2B /* DesktopLibraryBridge.m in Sources */,
+				BA5BDC3024640D8A00FF3C28 /* PasswordStrengthView.swift in Sources */,
 				BAE64DA92368334000244D2B /* TimeEntryDatasource.swift in Sources */,
 				BA13E577243476FA005244AD /* OnboardingViewController.swift in Sources */,
 				BAE64DAA2368334000244D2B /* SystemMessageView.swift in Sources */,
@@ -2811,6 +2852,7 @@
 				BA37ACD223D8900C0013EE26 /* TimelineTimeLabelCell.swift in Sources */,
 				BA63ABEF238284DB004C70CF /* LoginSignupTouchBar.swift in Sources */,
 				BAE64DD12368334000244D2B /* UnsupportedNotice.m in Sources */,
+				BA5BDC352464112100FF3C28 /* PasswordRuleView.swift in Sources */,
 				BAE64DD22368334000244D2B /* NSTextFieldWithBackground.m in Sources */,
 				BAE64DD32368334000244D2B /* Array+ByGroup.swift in Sources */,
 				BAE64DD42368334000244D2B /* TogglApplication.m in Sources */,
@@ -3022,6 +3064,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 7.0.0;
 				DEVELOPMENT_TEAM = B227VTMZ94;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3113,6 +3156,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 7.0.0;
 				DEVELOPMENT_TEAM = B227VTMZ94;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3288,6 +3332,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 7.0.0;
 				DEVELOPMENT_TEAM = B227VTMZ94;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3374,6 +3419,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 7.0.0;
 				DEVELOPMENT_TEAM = B227VTMZ94;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (

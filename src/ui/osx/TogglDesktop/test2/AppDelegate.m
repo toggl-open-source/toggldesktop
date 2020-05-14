@@ -116,7 +116,6 @@ void *ctx;
 	self.showMenuBarTimer = NO;
 	self.manualMode = NO;
 	self.onTop = NO;
-	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -216,6 +215,10 @@ void *ctx;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(invalidAppleUserCrendentialNotification:)
                                                  name:kInvalidAppleUserCrendential
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateReadyNotification:)
+                                                 name:kUpdateReady
                                                object:nil];
 
 	if (@available(macOS 10.14, *))
@@ -379,14 +382,30 @@ void *ctx;
 	// handle user clicking on notification alert
 	if (NSUserNotificationActivationTypeContentsClicked == notification.activationType)
 	{
-		[self onShowMenuItem:self];
+        if (notification.userInfo[@"update-restart"] != nil)
+        {
+            [[UserNotificationCenter share] removeAllDeliveredNotificationsWithType:@"update-restart"];
+            self.aboutWindowController.restart = YES;
+            [[NSApplication sharedApplication] terminate:nil];
+        } else {
+            [self onShowMenuItem:self];
+        }
 		return;
 	}
 
-	// handle autotracker notification
 	if (notification && notification.userInfo)
 	{
+        // handle restart to update notification
+        if (notification.userInfo[@"update-restart"] != nil)
+        {
+            [[UserNotificationCenter share] removeAllDeliveredNotificationsWithType:@"update-restart"];
+            self.aboutWindowController.restart = YES;
+            [[NSApplication sharedApplication] terminate:nil];
+            return;
+        }
+
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            // handle autotracker notification
 			if (notification.userInfo[@"autotracker"] != nil)
 			{
 				NSNumber *project_id = notification.userInfo[@"project_id"];
@@ -1215,11 +1234,19 @@ const NSString *appName = @"osx_native_app";
 	[Bugsnag configuration].releaseStage = self.environment;
 
 	self.app_path = [Utils applicationSupportDirectory:self.environment];
-	self.db_path = [self.app_path stringByAppendingPathComponent:@"kopsik.db"];
+	self.db_path = [self.app_path stringByAppendingPathComponent:@"toggldesktop.db"];
 	self.log_path = [self.app_path stringByAppendingPathComponent:@"toggl_desktop.log"];
 	self.log_level = @"debug";
 	self.systemService = [[SystemService alloc] init];
 	self.isAddedTouchBar = NO;
+
+    // Check if kopsik.db exists and rename it
+    NSString *oldDbPath = [self.app_path stringByAppendingPathComponent:@"kopsik.db"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:oldDbPath]){
+        NSError *error = nil;
+        [fileManager moveItemAtPath:oldDbPath toPath:self.db_path error:&error];
+    }
 
 	[self parseCommandLineArguments];
 
@@ -1264,6 +1291,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_timeline(ctx, on_timeline);
     toggl_on_message(ctx, on_display_message);
     toggl_on_onboarding(ctx, on_display_onboarding);
+    toggl_on_continue_sign_in(ctx, on_continue_sign_in);
 
 	NSLog(@"Version %@", self.version);
 
@@ -1333,6 +1361,8 @@ const NSString *appName = @"osx_native_app";
 
 		 return theEvent;
 	 }];
+
+    toggl_get_project_colors(ctx);
 
 	NSLog(@"AppDelegate init done");
 
@@ -1725,13 +1755,11 @@ void on_project_colors(
 	const uint64_t count)
 {
 	NSMutableArray *colors = [NSMutableArray array];
-
-	for (int i = 0; i < count; i++)
+	for (NSInteger i = 0; i < count; i++)
 	{
 		[colors addObject:[NSString stringWithUTF8String:list[i]]];
 	}
-	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kSetProjectColors
-																object:colors];
+    [ProjectColorPoolObjc updateDefaultColors:[colors copy]];
 }
 
 void on_countries(TogglCountryView *first)
@@ -1801,7 +1829,19 @@ void on_display_message(const char *title,
                                                                 object:@"Invalid Apple session. Please try login again."];
 }
 
-void on_display_onboarding(const int64_t onboarding_type) {
+void on_display_onboarding(const int64_t onboarding_type) 
+{
     [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kStartDisplayOnboarding object:[NSNumber numberWithInteger:onboarding_type]];
+}
+
+void on_continue_sign_in() 
+{
+    [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kContinueSignIn
+                                                                object:nil];
+}
+
+- (void) updateReadyNotification:(NSNotification *) notification
+{
+    [[UserNotificationCenter share] scheduleUpdateReady];
 }
 @end

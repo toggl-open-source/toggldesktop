@@ -102,10 +102,6 @@ $ sudo gem install bundler
 
 ### Build
 ```bash
-
-# Build all dependencies
-$ make deps
-
 # Prepare cocoapod
 $ make init_cocoapod
 ```

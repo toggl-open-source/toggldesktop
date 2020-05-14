@@ -12,11 +12,13 @@
 #import "AutocompleteDataSource.h"
 #import "NSCustomComboBox.h"
 #import "TogglDesktop-Swift.h"
+#import "const.h"
 
 typedef NS_ENUM (NSUInteger, TabViewType)
 {
 	TabViewTypeLogin,
 	TabViewTypeSingup,
+    TabViewTypeContinueSignin
 };
 
 static NSString *const emailMissingError = @"Please enter valid email address";
@@ -38,6 +40,8 @@ typedef NS_ENUM (NSUInteger, UserAction)
 #define kLoginContainerHeight 440.0
 #define kSignupAppleViewTop 166.0
 #define kSignupContainerHeight 460.0
+#define kPasswordStrengthViewBottom -4
+#define kPasswordStrengthViewCenterX 0
 
 @interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, LoginSignupTouchBarDelegate, AppleAuthenticationServiceDelegate>
 @property (weak) IBOutlet NSTextField *email;
@@ -47,7 +51,9 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (weak) IBOutlet NSCustomComboBox *countrySelect;
 @property (weak) IBOutlet FlatButton *tosCheckbox;
 @property (weak) IBOutlet NSTextFieldClickablePointer *tosLink;
+@property (weak) IBOutlet NSTextFieldClickablePointer *tosContinueLink;
 @property (weak) IBOutlet NSTextFieldClickablePointer *privacyLink;
+@property (weak) IBOutlet NSTextFieldClickablePointer *privacyContinueLink;
 @property (weak) IBOutlet NSBox *boxView;
 @property (weak) IBOutlet NSProgressIndicator *loginLoaderView;
 
@@ -60,11 +66,24 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (weak) IBOutlet FlatButton *userActionBtn;
 @property (weak) IBOutlet NSTextField *donotHaveAccountLbl;
 
+@property (weak) IBOutlet NSTextField *welcomeToTogglLbl;
+@property (weak) IBOutlet NSTextField *subWelcomeLbl;
+@property (weak) IBOutlet NSStackView *socialButtonStackView;
+@property (weak) IBOutlet NSTextField *orLbl;
+@property (weak) IBOutlet NSBox *leftSeperatorLine;
+@property (weak) IBOutlet NSBox *rightSeperatorLine;
+@property (weak) IBOutlet NSLayoutConstraint *countryStackViewTop;
+@property (weak) IBOutlet NSView *termSignUpContainerView;
+@property (weak) IBOutlet NSView *termContinueSignInView;
+
+@property (nonatomic, strong) PasswordStrengthView *passwordStrengthView;
 @property (nonatomic, strong) AutocompleteDataSource *countryAutocompleteDataSource;
 @property (nonatomic, assign) NSInteger selectedCountryID;
 @property (nonatomic, assign) TabViewType currentTab;
 @property (nonatomic, assign) UserAction userAction;
 @property (nonatomic, strong) LoginSignupTouchBar *loginTouchBar __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
+@property (nonatomic, copy) NSString *token;
+@property (nonatomic, copy) NSString *fullName;
 
 - (IBAction)userActionButtonOnClick:(id)sender;
 - (IBAction)countrySelected:(id)sender;
@@ -109,6 +128,10 @@ extern void *ctx;
 	self.signUpLink.titleUnderline = YES;
 	self.tosLink.titleUnderline = YES;
 	self.privacyLink.titleUnderline = YES;
+    self.tosContinueLink.titleUnderline = YES;
+    self.privacyContinueLink.titleUnderline = YES;
+    self.tosContinueLink.delegate = self;
+    self.privacyContinueLink.delegate = self;
 
 	self.boxView.wantsLayer = YES;
 	self.boxView.layer.masksToBounds = NO;
@@ -140,6 +163,8 @@ extern void *ctx;
     #else
         self.appleBtn.hidden = YES;
     #endif
+
+    self.passwordStrengthView = [[PasswordStrengthView alloc] initWithNibName:@"PasswordStrengthView" bundle:nil];
 }
 
 - (void)initCountryAutocomplete {
@@ -172,18 +197,27 @@ extern void *ctx;
 
 	if (sender == self.signUpLink)
 	{
-        TabViewType newType = self.currentTab == TabViewTypeSingup ? TabViewTypeLogin : TabViewTypeSingup;
-		[self changeTabView:newType];
+        switch (self.currentTab) {
+            case TabViewTypeLogin:
+                [self changeTabView:TabViewTypeSingup];
+                break;
+            case TabViewTypeSingup:
+                [self changeTabView:TabViewTypeLogin];
+                break;
+            case TabViewTypeContinueSignin:
+                [self changeTabView:TabViewTypeLogin];
+                break;
+        }
 		return;
 	}
 
-	if (sender == self.tosLink)
+    if (sender == self.tosLink || sender == self.tosContinueLink)
 	{
 		toggl_tos(ctx);
 		return;
 	}
 
-	if (sender == self.privacyLink)
+    if (sender == self.privacyLink || sender == self.privacyContinueLink)
 	{
 		toggl_privacy_policy(ctx);
 		return;
@@ -192,29 +226,52 @@ extern void *ctx;
 
 - (void)changeTabView:(TabViewType)type
 {
-	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
-																object:nil];
-	self.currentTab = type;
+    [self changeTabView:type hideErrorMessage:YES];
+}
 
-	// Focus on email when changing mode
-	[self.view.window makeFirstResponder:self.email];
+- (void)changeTabView:(TabViewType)type hideErrorMessage:(BOOL) hideErrorMessage
+{
+    if (hideErrorMessage) {
+        [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
+                                                                    object:nil];
+    }
 
-	switch (type)
-	{
-		case TabViewTypeLogin :
+    self.currentTab = type;
+    [self showLoaderView:NO];
+    [self displayPasswordStrengthView:NO];
+
+    // Focus on email when changing mode
+    [self.view.window makeFirstResponder:self.email];
+
+    switch (type)
+    {
+        case TabViewTypeLogin :
             self.appleGoogleGroupViewTop.constant = kLoginAppleViewTop;
             self.containerViewHeight.constant = kLoginContainerHeight;
             self.signUpGroupView.hidden = YES;
-            self.appleBtn.title = @" Log in with Apple";
-            self.googleBtn.title = @" Log in with Google";
+            self.appleBtn.title = @" Sign in with Apple";
+            self.googleBtn.title = @" Sign in with Google";
             self.userActionBtn.title = @"Log in with email";
             self.forgotPasswordTextField.hidden = NO;
             self.signUpLink.stringValue = @"Sign up for free";
             self.donotHaveAccountLbl.hidden = NO;
             self.signUpLink.titleUnderline = YES;
-			break;
+            self.welcomeToTogglLbl.hidden = YES;
 
-		case TabViewTypeSingup :
+            self.welcomeToTogglLbl.hidden = YES;
+            self.subWelcomeLbl.hidden = YES;
+            self.socialButtonStackView.hidden = NO;
+            self.email.hidden = NO;
+            self.password.hidden = NO;
+            self.leftSeperatorLine.hidden = NO;
+            self.rightSeperatorLine.hidden = NO;
+            self.orLbl.hidden = NO;
+            self.signUpLink.hidden = NO;
+            self.termContinueSignInView.hidden = YES;
+            self.termSignUpContainerView.hidden = NO;
+            break;
+
+        case TabViewTypeSingup :
             self.appleGoogleGroupViewTop.constant = kSignupAppleViewTop;
             self.containerViewHeight.constant = kSignupContainerHeight;
             self.signUpGroupView.hidden = NO;
@@ -225,10 +282,43 @@ extern void *ctx;
             self.signUpLink.stringValue = @"Back to Log in";
             self.donotHaveAccountLbl.hidden = YES;
             self.signUpLink.titleUnderline = YES;
-			break;
-	}
+            self.welcomeToTogglLbl.hidden = YES;
+            self.countryStackViewTop.constant = 66;
+            self.termContinueSignInView.hidden = YES;
+            self.termSignUpContainerView.hidden = NO;
+            break;
 
-	// Reset touchbar
+        case TabViewTypeContinueSignin:
+            self.appleGoogleGroupViewTop.constant = kSignupAppleViewTop;
+            self.containerViewHeight.constant = kSignupContainerHeight;
+            self.signUpGroupView.hidden = NO;
+            self.appleBtn.title = @" Sign up with Apple";
+            self.googleBtn.title = @" Sign up with Google";
+            self.userActionBtn.title = @"Sign up with email";
+            self.forgotPasswordTextField.hidden = YES;
+            self.signUpLink.stringValue = @"Back to Log in";
+            self.donotHaveAccountLbl.hidden = YES;
+            self.signUpLink.titleUnderline = YES;
+
+            self.welcomeToTogglLbl.hidden = NO;
+            self.subWelcomeLbl.hidden = NO;
+            self.socialButtonStackView.hidden = YES;
+            self.userActionBtn.title = @"I agree";
+            self.email.hidden = YES;
+            self.password.hidden = YES;
+            self.forgotPasswordTextField.hidden = YES;
+            self.leftSeperatorLine.hidden = YES;
+            self.rightSeperatorLine.hidden = YES;
+            self.orLbl.hidden = YES;
+            self.countryStackViewTop.constant = 170;
+            self.signUpLink.stringValue = @"Back";
+            self.signUpLink.titleUnderline = YES;
+            self.termContinueSignInView.hidden = NO;
+            self.termSignUpContainerView.hidden = YES;
+            break;
+    }
+
+    // Reset touchbar
     if (@available(macOS 10.12.2, *))
     {
         self.touchBar = nil;
@@ -278,6 +368,8 @@ extern void *ctx;
 - (void)handleGoogleToken:(NSString *)token
 {
 	[self showLoaderView:YES];
+    self.token = token;
+
 	switch (self.userAction)
 	{
 		case UserActionGoogleSignup :
@@ -372,6 +464,10 @@ extern void *ctx;
 			[box setExpanded:YES];
 		}
 	}
+
+    if (aNotification.object == self.password && self.currentTab == TabViewTypeSingup) {
+        [self validatePasswordStrength];
+    }
 }
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)commandSelector {
@@ -408,6 +504,8 @@ extern void *ctx;
 	self.userActionBtn.enabled = !show;
 	self.signUpLink.enabled = !show;
     self.forgotPasswordTextField.enabled = !show;
+    self.appleBtn.enabled = !show;
+    self.googleBtn.enabled = !show;
 }
 
 - (void)resetLoader
@@ -439,7 +537,13 @@ extern void *ctx;
 		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
 																	object:passwordMissingError];
 		return NO;
-	}
+    } else if (self.currentTab == TabViewTypeSingup && ![self.passwordStrengthView isMeetAllRequirements]) {
+        [self.password.window makeFirstResponder:self.password];
+        [self displayPasswordStrengthView:YES];
+        [self validatePasswordStrength];
+        return NO;
+    }
+
 	return YES;
 }
 
@@ -477,9 +581,10 @@ extern void *ctx;
         {
             case TabViewTypeLogin :
                 return [self.loginTouchBar makeTouchBarFor:LoginSignupModeLogin];
-
             case TabViewTypeSingup :
                 return [self.loginTouchBar makeTouchBarFor:LoginSignupModeSignUp];
+            case TabViewTypeContinueSignin:
+                return nil;
         }
     }
     return nil;
@@ -522,6 +627,9 @@ extern void *ctx;
             break;
         case TabViewTypeSingup :
             [self clickSignupButton:sender];
+            break;
+        case TabViewTypeContinueSignin:
+            [self continueBtnOnClick:sender];
             break;
     }
 }
@@ -593,6 +701,8 @@ extern void *ctx;
         case TabViewTypeSingup :
             [self signupAppleBtnOnTap:sender];
             break;
+        case TabViewTypeContinueSignin:
+            break;
     }
 }
 
@@ -605,6 +715,8 @@ extern void *ctx;
             break;
         case TabViewTypeSingup :
             [self signupGoogleBtnOnTap:sender];
+            break;
+        case TabViewTypeContinueSignin:
             break;
     }
 }
@@ -669,6 +781,9 @@ extern void *ctx;
 
 - (void)appleAuthenticationDidCompleteWith:(NSString *)token fullName:(NSString *)fullName
 {
+    self.token = token;
+    self.fullName = fullName;
+
     // Login or Signup
     switch (self.userAction)
     {
@@ -694,5 +809,74 @@ extern void *ctx;
 
     [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
                                                                 object:error.description];
+}
+
+- (void)continueBtnOnClick:(id)sender
+{
+    if (![self validateFormForAction:self.userAction])
+    {
+        return;
+    }
+    [self showLoaderView:YES];
+
+    // Continue by Sign Up for new account
+    switch (self.userAction) {
+        case UserActionAppleLogin:
+            toggl_apple_signup_async(ctx, [self.token UTF8String], self.selectedCountryID, [self.fullName UTF8String]);
+            break;
+        case UserActionGoogleLogin:
+            toggl_google_signup_async(ctx, [self.token UTF8String], self.selectedCountryID);
+        default:
+            break;
+    }
+}
+
+-(void)continueSignIn
+{
+    [self changeTabView:TabViewTypeContinueSignin];
+    [self.view.window makeFirstResponder:self.countrySelect];
+    self.tosCheckbox.state = NSControlStateValueOn;
+    [self setUserSignUp:YES];
+}
+
+- (void)controlTextDidBeginEditing:(NSNotification *)obj
+{
+    if (obj.object == self.password && self.currentTab == TabViewTypeSingup) {
+        [self displayPasswordStrengthView:YES];
+    }
+}
+
+- (void)controlTextDidEndEditing:(NSNotification *)obj
+{
+    if (obj.object == self.password && self.currentTab == TabViewTypeSingup) {
+        [self displayPasswordStrengthView:NO];
+    }
+}
+
+- (void) displayPasswordStrengthView:(BOOL) display {
+    if (display) {
+        if (self.passwordStrengthView.view.superview == nil) {
+            self.passwordStrengthView.view.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.view addSubview:self.passwordStrengthView.view];
+            [self.passwordStrengthView.view.bottomAnchor constraintEqualToAnchor:self.password.topAnchor constant:kPasswordStrengthViewBottom].active = YES;
+            [self.passwordStrengthView.view.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:kPasswordStrengthViewCenterX].active = YES;
+            [self addChildViewController:self.passwordStrengthView];
+        }
+        self.passwordStrengthView.view.hidden = NO;
+    } else {
+        self.passwordStrengthView.view.hidden = YES;
+    }
+}
+
+-(void)setUserAction:(UserAction)userAction {
+    _userAction = userAction;
+    [self displayPasswordStrengthView:NO];
+}
+
+- (void)validatePasswordStrength {
+    if (!self.passwordStrengthView.isViewLoaded) {
+        return;
+    }
+    [self.passwordStrengthView updateValidationFor:self.password.stringValue];
 }
 @end

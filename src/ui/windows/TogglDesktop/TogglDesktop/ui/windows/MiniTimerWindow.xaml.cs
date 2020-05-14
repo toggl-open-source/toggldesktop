@@ -21,7 +21,6 @@ namespace TogglDesktop
             this.contextMenu = mainWindow.cogButton.ContextMenu;
             this.InitializeComponent();
             this.Closing += OnClosing;
-            this.WindowStyle = WindowStyle.SingleBorderWindow;
             var sizeChangedObservable = Observable.FromEventPattern<SizeChangedEventHandler, SizeChangedEventArgs>(
                 handler => this.SizeChanged += handler,
                 handler => this.SizeChanged -= handler);
@@ -67,22 +66,30 @@ namespace TogglDesktop
         {
             const double snapLimit = 10;
 
-            if (Math.Abs(this.Left - screenRect.Left) < snapLimit)
+            var rootGridMargin = this.rootGrid.Margin;
+
+            var miniTimerLeft = this.Left + rootGridMargin.Left;
+            var miniTimerWidth = this.ActualWidth - rootGridMargin.Left - rootGridMargin.Right;
+
+            if (Math.Abs(miniTimerLeft - screenRect.Left) < snapLimit)
             {
-                this.Left = screenRect.Left;
+                this.Left = screenRect.Left - rootGridMargin.Left;
             }
-            else if (Math.Abs(this.Left + this.ActualWidth - screenRect.Right) < snapLimit)
+            else if (Math.Abs(miniTimerLeft + miniTimerWidth - screenRect.Right) < snapLimit)
             {
-                this.Left = screenRect.Right - this.ActualWidth;
+                this.Left = screenRect.Right - this.ActualWidth + rootGridMargin.Right;
             }
 
-            if (Math.Abs(this.Top - screenRect.Top) < snapLimit)
+            var miniTimerTop = this.Top + rootGridMargin.Top;
+            var miniTimerHeight = this.ActualHeight - rootGridMargin.Top - rootGridMargin.Bottom;
+
+            if (Math.Abs(miniTimerTop - screenRect.Top) < snapLimit)
             {
-                this.Top = screenRect.Top;
+                this.Top = screenRect.Top - rootGridMargin.Top;
             }
-            else if (Math.Abs(this.Top + this.ActualHeight - screenRect.Bottom) < snapLimit)
+            else if (Math.Abs(miniTimerTop + miniTimerHeight - screenRect.Bottom) < snapLimit)
             {
-                this.Top = screenRect.Bottom - this.ActualHeight;
+                this.Top = screenRect.Bottom - this.ActualHeight + rootGridMargin.Bottom;
             }
         }
 

@@ -22,7 +22,9 @@
         WindowTransitionsEnabled="False"
         SizeToContent="Height"
         WindowStartupLocation="Manual"
-        ResizeBorderThickness="4 0">
+        ResizeBorderThickness="16 0"
+        AllowsTransparency="True"
+        Background="Transparent">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -30,7 +32,14 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="rootGrid" Margin="16">
+        <Grid.Effect>
+            <DropShadowEffect
+                Direction="270"
+                ShadowDepth="5"
+                BlurRadius="14"
+                Opacity="0.28" />
+        </Grid.Effect>
         <toggl:MiniTimer x:Name="timer" x:FieldModifier="private" />
     </Grid>
 </mah:MetroWindow>

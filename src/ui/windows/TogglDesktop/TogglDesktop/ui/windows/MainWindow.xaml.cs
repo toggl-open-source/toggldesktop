@@ -29,7 +29,7 @@ namespace TogglDesktop
     {
         #region fields
 
-        private const int WindowHeaderHeight = 30;
+        private const int WindowHeaderHeight = 32;
         private readonly DispatcherTimer idleDetectionTimer =
             new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
 
@@ -833,7 +833,7 @@ namespace TogglDesktop
                 var x = (double)bounds.Left;
                 var y = (double)bounds.Top;
 
-                var headerHeight = WindowHeaderHeight + this.timerEntryListView.TimerHeight;
+                var headerHeight = WindowHeaderHeight + this.timerEntryListView.TimerHeight + 8;
 
                 y += headerHeight;
                 x += this.ActualWidth;
@@ -906,21 +906,7 @@ namespace TogglDesktop
         private void onMainWindowLoaded(object sender, EventArgs args)
         {
             this.Loaded -= onMainWindowLoaded;
-            this.enableBlurBehindIfSupported();
             this.ShowOnTop();
-        }
-
-        private void enableBlurBehindIfSupported()
-        {
-            var isBlurBehindSupported = Environment.OSVersion.Version >= new Version(10, 0, 17134);
-            if (isBlurBehindSupported)
-            {
-                Win32.EnableBlurBehind(this.interopHelper.Handle);
-            }
-            else
-            {
-                this.SetResourceReference(Window.BackgroundProperty, "Toggl.Background");
-            }
         }
 
         #endregion

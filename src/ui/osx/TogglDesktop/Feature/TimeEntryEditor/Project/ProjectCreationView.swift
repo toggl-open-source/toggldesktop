@@ -50,7 +50,7 @@ final class ProjectCreationView: NSView {
 
     var selectedTimeEntry: TimeEntryViewItem! {
         didSet {
-            getRandomColor()
+            setInitialProjectColors()
             resetViews()
         }
     }
@@ -79,8 +79,8 @@ final class ProjectCreationView: NSView {
     private lazy var workspaceDatasource = WorkspaceDataSource(items: WorkspaceStorage.shared.workspaces,
                                                                updateNotificationName: .WorkspaceStorageChangedNotification)
     weak var delegate: ProjectCreationViewDelegate?
-    private var originalColor = ProjectColor.default
-    private var selectedColor = ProjectColor.default {
+    private var originalColor = ProjectColorPool.shared.defaultColor
+    private var selectedColor = ProjectColorPool.shared.defaultColor {
         didSet {
             updateSelectColorView()
         }
@@ -120,7 +120,7 @@ final class ProjectCreationView: NSView {
         super.awakeFromNib()
 
         initCommon()
-        getRandomColor()
+        setInitialProjectColors()
         selectDefaultWorkspace()
         updateLayoutState()
     }
@@ -128,6 +128,7 @@ final class ProjectCreationView: NSView {
     func setTitleAndFocus(_ title: String) {
         projectTextField.stringValue = title
         window?.makeFirstResponder(projectTextField)
+        setInitialProjectColors()
         updateLayoutState()
     }
 
@@ -159,7 +160,7 @@ final class ProjectCreationView: NSView {
         let clientID = clientData.0
         let clientGUID = clientData.1
         let projectName = projectTextField.stringValue
-        let colorHex = selectedColor.colorHex
+        let colorHex = selectedColor.hex
 
         let projectGUID = DesktopLibraryBridge.shared().createProject(withTimeEntryGUID: timeEntryGUID,
                                                                     workspaceID: workspaceID,
@@ -215,7 +216,7 @@ extension ProjectCreationView {
         addBtn.cursor = .pointingHand
         
         // Default value
-        selectedColor = ProjectColor.default
+        selectedColor = ProjectColorPool.shared.defaultColor
         displayMode = .normal
         publicProjectCheckBox.state = .off
 
@@ -241,10 +242,14 @@ extension ProjectCreationView {
         isPremiumWorkspace = false
     }
 
-    fileprivate func getRandomColor() {
-        let color = ProjectColor.random()
+    private func setInitialProjectColors() {
+        // random on the color list
+        let color = ProjectColorPool.shared.random()
         originalColor = color
         selectedColor = color
+
+        // Default on color wheel
+        colorPickerView.setDefaultColor()
     }
 
     fileprivate func updateLayout() {
@@ -262,7 +267,7 @@ extension ProjectCreationView {
     }
 
     fileprivate func updateSelectColorView() {
-        colorBtn.layer?.backgroundColor = ConvertHexColor.hexCode(toNSColor: selectedColor.colorHex)!.cgColor
+        colorBtn.layer?.backgroundColor = ConvertHexColor.hexCode(toNSColor: selectedColor.hex)!.cgColor
         colorPickerView.select(selectedColor)
     }
 

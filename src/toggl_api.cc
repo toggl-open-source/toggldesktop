@@ -7,19 +7,19 @@
 #include <cstring>
 #include <set>
 
-#include "client.h"
+#include "model/client.h"
 #include "const.h"
 #include "context.h"
-#include "custom_error_handler.h"
+#include "util/custom_error_handler.h"
 #include "feedback.h"
-#include "formatter.h"
+#include "util/formatter.h"
 #include "https_client.h"
-#include "project.h"
+#include "model/project.h"
 #include "proxy.h"
-#include "time_entry.h"
+#include "model/time_entry.h"
 #include "timeline_uploader.h"
 #include "toggl_api_private.h"
-#include "user.h"
+#include "model/user.h"
 #include "websocket_client.h"
 #include "window_change_recorder.h"
 
@@ -365,7 +365,7 @@ void toggl_set_cacert_path(
     void *,
     const char_t *path) {
 
-    toggl::HTTPClient::Config.CACertPath = to_string(path);
+    toggl::TogglClient::GetInstance().SetCACertPath(to_string(path));
 }
 
 bool_t toggl_set_db_path(
@@ -1594,4 +1594,10 @@ void toggl_user_did_turn_on_record_activity(void *context) {
 
 void toggl_user_did_edit_add_timeentry_on_timeline_view(void *context) {
     app(context)->UserDidEditOrAddTimeEntryOnTimelineView();
+}
+
+void toggl_on_continue_sign_in(
+    void *context,
+    TogglContinueSignIn cb) {
+    app(context)->UI()->OnContinueSignIn(cb);
 }

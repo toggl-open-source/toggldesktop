@@ -7,15 +7,15 @@
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              mc:Ignorable="d" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance viewModels:DayHeaderViewModel}"
-             Margin="4"
+             Margin="6"
              AllowDrop="True"
              FocusVisualStyle="{DynamicResource Toggl.ButtonFocusVisualStyle}"
              Focusable="{Binding IsCollapsed}"
              IsTabStop="{Binding IsCollapsed}"
              behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}">
     <UserControl.Effect>
-        <DropShadowEffect Direction="270" Color="{DynamicResource Toggl.BlackColor}" Opacity="0.1"
-                          BlurRadius="3" ShadowDepth="1" />
+        <DropShadowEffect Direction="270" Color="{DynamicResource Toggl.BlackColor}" Opacity="0.16"
+                          BlurRadius="4" ShadowDepth="2" />
     </UserControl.Effect>
     <Grid>
         <Grid.RowDefinitions>

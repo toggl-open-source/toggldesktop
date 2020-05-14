@@ -4,13 +4,13 @@
 
 #include <cstdlib>
 
-#include "client.h"
+#include "model/client.h"
 #include "context.h"
-#include "formatter.h"
-#include "project.h"
-#include "time_entry.h"
-#include "timeline_event.h"
-#include "workspace.h"
+#include "util/formatter.h"
+#include "model/project.h"
+#include "model/time_entry.h"
+#include "model/timeline_event.h"
+#include "model/workspace.h"
 
 #include <Poco/UnicodeConverter.h>
 
@@ -23,7 +23,6 @@ TogglAutocompleteView *autocomplete_item_init(const toggl::view::Autocomplete &i
     result->ProjectLabel = copy_string(item.ProjectLabel);
     result->ClientLabel = copy_string(item.ClientLabel);
     result->ProjectColor = copy_string(item.ProjectColor);
-    result->WorkspaceName = copy_string(item.WorkspaceName);
     result->ProjectGUID = copy_string(item.ProjectGUID);
     result->TaskID = static_cast<unsigned int>(item.TaskID);
     result->ProjectID = static_cast<unsigned int>(item.ProjectID);
@@ -184,6 +183,9 @@ void country_item_clear(TogglCountryView *item) {
     free(item->VatRegex);
     item->VatRegex = nullptr;
 
+    free(item->Code);
+    item->Code = nullptr;
+
     delete item;
 }
 
@@ -191,6 +193,14 @@ void country_list_clear(TogglCountryView *first) {
     while (first) {
         TogglCountryView *next = reinterpret_cast<TogglCountryView *>(first->Next);
         country_item_clear(first);
+        first = next;
+    }
+}
+
+void country_list_delete_item(TogglCountryView *first) {
+    while (first) {
+        TogglCountryView *next = reinterpret_cast<TogglCountryView *>(first->Next);
+        delete first; // Only delete TogglCountryView pointer without deleting its variables because they are holding by other references
         first = next;
     }
 }

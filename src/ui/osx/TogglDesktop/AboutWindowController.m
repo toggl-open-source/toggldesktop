@@ -15,7 +15,7 @@
 #import "ConvertHexColor.h"
 #import "TogglDesktop-Swift.h"
 
-static NSString *const kTogglDesktopGithubURL = @"https://github.com/toggl/toggldesktop";
+static NSString *const kTogglDesktopGithubURL = @"https://github.com/toggl-open-source/toggldesktop";
 
 typedef enum : NSUInteger
 {
@@ -140,6 +140,9 @@ extern void *ctx;
 
 	[self displayUpdateStatus];
 	[self setDownloadState:DownloadStateRestart];
+
+    // Show notification to quit
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateReady object:nil];
 }
 
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update

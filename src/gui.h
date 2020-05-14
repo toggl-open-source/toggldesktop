@@ -10,7 +10,7 @@
 #include "help_article.h"
 #include "https_client.h"
 #include "proxy.h"
-#include "settings.h"
+#include "model/settings.h"
 #include "toggl_api.h"
 #include "toggl_api_private.h"
 #include "types.h"
@@ -389,6 +389,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     , on_display_project_colors_(nullptr)
     , on_display_countries_(nullptr)
     , on_display_obm_experiment_(nullptr)
+    , on_continue_sign_in(nullptr)
     , lastSyncState(-1)
     , lastUnsyncedItemsCount(-1)
     , lastDisplayLoginOpen(false)
@@ -638,6 +639,10 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         on_display_obm_experiment_ = cb;
     }
 
+    void OnContinueSignIn(TogglContinueSignIn cb) {
+        on_continue_sign_in = cb;
+    }
+
     bool CanDisplayUpdate() const {
         return !!on_display_update_;
     }
@@ -691,8 +696,15 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     }
 
     void DisplayOnboarding(const OnboardingType onboarding_type);
+    
     void OnDisplayOnboarding(TogglDisplayOnboarding cb) {
         on_display_onboarding_ = cb;
+    }
+
+    void DisplayOnContinueSignIn() {
+        if (on_continue_sign_in) {
+            on_continue_sign_in();
+        }
     }
 
  private:
@@ -732,6 +744,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     TogglDisplayCountries on_display_countries_;
     TogglDisplayObmExperiment on_display_obm_experiment_;
     TogglDisplayOnboarding on_display_onboarding_;
+    TogglContinueSignIn on_continue_sign_in;
 
     // Cached views
     Poco::Int64 lastSyncState;

@@ -190,7 +190,7 @@ final class TimelineDatasource: NSObject {
             }
             guard let section = visibleSection else { return }
             collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: 0, section: section.rawValue)),
-                                         scrollPosition: [.centeredHorizontally, .centeredVertically])
+                                         scrollPosition: [.centeredHorizontally, .top])
         }
     }
 

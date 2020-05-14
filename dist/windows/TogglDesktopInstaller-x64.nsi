@@ -23,7 +23,7 @@
   ; That will have written an uninstaller binary for us.  Now we sign it with your
   ; favorite code signing tool.
  
-  !system '"C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t "http://timestamp.verisign.com/scripts/timestamp.dll" -f "Certificate.pfx" "$%TEMP%\Uninstall.exe"' = 0
+  !system '"C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t "http://timestamp.verisign.com/scripts/timestamp.dll" -f "Certificate.pfx" -p ${CERT_PASSWORD} "$%TEMP%\Uninstall.exe"' = 0
  
   ; Good.  Now we can carry on writing the real installer.
  
@@ -182,14 +182,16 @@ Section
   File $%TEMP%\Uninstall.exe
 !endif
 
-  ;Create Desktop shortcut only when shortcut is present or at first install
-  IfFileExists $DESKTOP\TogglDesktop.lnk 0 ShortcutDoesntExist
+  ;Create Desktop shortcut at first install
+  ${If} $isOldUpdater == 0
+  ${AndIf} $isNewUpdater == 0
     CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$INSTDIR\TogglDesktop.exe" ""
-    ShortcutDoesntExist:
-    ${If} $isOldUpdater == 0
-    ${AndIf} $isNewUpdater == 0
-      CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$INSTDIR\TogglDesktop.exe" ""
-    ${EndIf}
+  ${Else}
+    ; Overwrite the possibly faulty shortcut (#4005)
+    IfFileExists $DESKTOP\TogglDesktop.lnk 0 +3
+      SetOutPath "$LOCALAPPDATA\TogglDesktop"
+      CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$LOCALAPPDATA\TogglDesktop\TogglDesktop.exe" ""
+  ${EndIf}
 
   ${If} $isOldUpdater == 0
   ${AndIf} $isNewUpdater == 0

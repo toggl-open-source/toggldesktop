@@ -13,23 +13,22 @@
 
 #include <iostream>  // NOLINT
 
-#include "autotracker.h"
-#include "client.h"
+#include "model/autotracker.h"
+#include "model/client.h"
 #include "const.h"
-#include "database.h"
+#include "database/database.h"
 #include "error.h"
-#include "formatter.h"
+#include "util/formatter.h"
 #include "https_client.h"
-#include "obm_action.h"
-#include "project.h"
-#include "random.h"
-#include "settings.h"
-#include "task.h"
-#include "time_entry.h"
+#include "model/obm_action.h"
+#include "model/project.h"
+#include "util/random.h"
+#include "model/settings.h"
+#include "model/task.h"
+#include "model/time_entry.h"
 #include "timeline_uploader.h"
 #include "urls.h"
 #include "window_change_recorder.h"
-#include "workspace.h"
 #include "onboarding_service.h"
 
 #include <Poco/Crypto/OpenSSLInitializer.h>
@@ -126,6 +125,8 @@ Context::Context(const std::string &app_name, const std::string &app_version)
     OnboardingService::getInstance()->RegisterEvents([&] (const OnboardingType onboardingType) {
         UI()->DisplayOnboarding(onboardingType);
     });
+    
+    TogglClient::GetInstance().SetSyncStateMonitor(UI());
 }
 
 Context::~Context() {
@@ -254,7 +255,7 @@ error Context::StartEvents() {
             }
         }
 
-        if (HTTPClient::Config.CACertPath.empty()) {
+        if (HTTPClient::Config.CACertPath().empty()) {
             return displayError("Missing CA cert bundle path!");
         }
 
@@ -770,6 +771,7 @@ void Context::updateUI(const UIElements &what) {
                                 &group_view);
                             group_view.Group = true;
                             group_view.GroupOpen = entry_groups[group_view.GroupName];
+                            group_view.DurationInSeconds = group_durations[view.GroupName];
                             group_view.Duration =
                                 Formatter::FormatDuration(
                                     group_durations[view.GroupName],
@@ -1045,9 +1047,7 @@ error Context::displayError(const error &err) {
 
     if (user_ && (err.find(kRequestIsNotPossible) != std::string::npos
                   || (err.find(kForbiddenError) != std::string::npos))) {
-        TogglClient toggl_client(UI());
-
-        error err = pullWorkspaces(&toggl_client);
+        error err = pullWorkspaces();
         if (err != noError) {
             // Check for missing WS error and
             if (err.find(kMissingWS) != std::string::npos) {
@@ -1447,8 +1447,8 @@ error Context::downloadUpdate() {
             req.host = "https://toggl.github.io";
             req.relative_url = "/toggldesktop/assets/updates-link.txt";
 
-            TogglClient client;
-            HTTPResponse resp = client.Get(req);
+            TogglClient client = TogglClient::GetInstance();
+            HTTPResponse resp = client.silentGet(req);
             if (resp.err != noError) {
                 return resp.err;
             }
@@ -1456,7 +1456,7 @@ error Context::downloadUpdate() {
             Poco::URI uri(resp.body);
             req.host = uri.getScheme() + "://" + uri.getHost();
             req.relative_url = uri.getPathEtc();
-            resp = client.Get(req);
+            resp = client.silentGet(req);
             if (resp.err != noError) {
                 return resp.err;
             }
@@ -1596,8 +1596,8 @@ error Context::fetchMessage(const bool periodic) {
                 req.relative_url = "/toggl-open-source/toggldesktop/master/releases/message.json";
             }
 
-            TogglClient client;
-            HTTPResponse resp = client.Get(req);
+            TogglClient client = TogglClient::GetInstance();
+            HTTPResponse resp = client.silentGet(req);
             if (resp.err != noError) {
                 return resp.err;
             }
@@ -1822,8 +1822,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask&) {  // NOLIN
     req.basic_auth_username = apitoken;
     req.basic_auth_password = "api_token";
 
-    TogglClient client(UI());
-    HTTPResponse resp = client.Post(req);
+    HTTPResponse resp = TogglClient::GetInstance().Post(req);
     if (resp.err != noError) {
         displayError(resp.err);
         logger.error(resp.body);
@@ -1928,8 +1927,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask&) {  // NOLINT
     req.basic_auth_password = api_token_name;
     req.form = &form;
 
-    TogglClient client(UI());
-    HTTPResponse resp = client.Post(req);
+    HTTPResponse resp = TogglClient::GetInstance().Post(req);
     logger.debug("Feedback result: " + resp.err);
     if (resp.err != noError) {
         displayError(resp.err);
@@ -2359,7 +2357,7 @@ void Context::SetEnvironment(const std::string &value) {
     logger.debug("SetEnvironment " + value);
     environment_ = value;
 
-    HTTPClient::Config.IgnoreCert = ("development" == environment_);
+    TogglClient::GetInstance().SetIgnoreCert(("development" == environment_));
     urls::SetRequestsAllowed("test" != environment_);
 }
 
@@ -2452,13 +2450,32 @@ error Context::Login(
     const std::string &password,
     const bool isSignup) {
     try {
-        TogglClient client(UI());
         std::string json("");
-        error err = me(&client, email, password, &json, 0);
+        error err = me(email, password, &json, 0);
         if (err != noError) {
+
+            // Workaround to Fulfill Apple Review team
+            // If the apple email doesn't exist on Toggl system
+            // Instead of presenting an error, we have to show a different window to select Country and TOS then creating a new account
+            // Same behavior with Mobile app
+            //
+            // Apple considers that Toggl will create account regardless of "Sign In / Sign Up with Apple"
+            // At the moment, Toggl BE doesn't automatically create new Toggl Account with Apple Email by "Sign In with Apple"
+            //
+            // Discussion: https://toggl.slack.com/archives/CSE5U3ZUN/p1586418153111700
+            //
+            #if defined(__APPLE__)
+            if ((password.compare(kAppleAccessToken) == 0 || password.compare(kGoogleAccessToken) == 0) // Applied for Google and Apple Sign In
+                && IsAuthenticationError(err)) {
+                UI()->DisplayOnContinueSignIn();
+                return err;
+            }
+            #endif
+
             if (!IsNetworkingError(err)) {
                 return displayError(err);
             }
+
             // Indicate we're offline
             displayError(err);
 
@@ -2472,12 +2489,12 @@ error Context::Login(
             return displayError(err);
         }
 
-        err = pullWorkspacePreferences(&client);
+        err = pullWorkspacePreferences();
         if (err != noError) {
             return displayError(err);
         }
 
-        err = pullUserPreferences(&client);
+        err = pullUserPreferences();
         if (err != noError) {
             return displayError(err);
         }
@@ -2531,9 +2548,8 @@ error Context::Signup(
     const std::string &password,
     const uint64_t country_id) {
 
-    TogglClient client(UI());
     std::string json("");
-    error err = signup(&client, email, password, &json, country_id);
+    error err = signup(email, password, &json, country_id);
     if (err != noError) {
         return displayError(err);
     }
@@ -2545,9 +2561,8 @@ error Context::GoogleSignup(
     const std::string &access_token,
     const uint64_t country_id) {
 
-    TogglClient client(UI());
     std::string json("");
-    error err = signupGoogle(&client, access_token, &json, country_id);
+    error err = signupGoogle(access_token, &json, country_id);
     if (err != noError) {
         return displayError(err);
     }
@@ -2567,9 +2582,8 @@ error Context::AppleSignup(
     const std::string &access_token,
     const uint64_t country_id,
     const std::string full_name) {
-    TogglClient client(UI());
     std::string json("");
-    error err = signupApple(&client, access_token, &json, full_name, country_id);
+    error err = signupApple(access_token, &json, full_name, country_id);
     if (err != noError) {
         return displayError(err);
     }
@@ -4235,8 +4249,7 @@ error Context::OpenReportsInBrowser() {
     req.basic_auth_username = apitoken;
     req.basic_auth_password = "api_token";
 
-    TogglClient client(UI());
-    HTTPResponse resp = client.Post(req);
+    HTTPResponse resp = TogglClient::GetInstance().Post(req);
     if (resp.err != noError) {
         return displayError(resp.err);
     }
@@ -4696,6 +4709,9 @@ error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
 }
 
 error Context::StartTimelineEvent(TimelineEvent *event) {
+    // Prevent a leak in case of an early exit
+    std::unique_ptr<TimelineEvent> handler { event };
+
     try {
         poco_check_ptr(event);
 
@@ -4706,7 +4722,7 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
 
         if (user_ && user_->RecordTimeline()) {
             event->SetUID(static_cast<unsigned int>(user_->ID()));
-            user_->related.TimelineEvents.push_back(event);
+            user_->related.TimelineEvents.push_back(handler.release());
             return displayError(save(false));
         }
     } catch(const Poco::Exception& exc) {
@@ -4822,16 +4838,15 @@ void Context::syncerActivity() {
             Poco::Mutex::ScopedLock lock(syncer_m_);
 
             if (trigger_sync_) {
-                TogglClient client(UI());
 
-                error err = pullAllUserData(&client);
+                error err = pullAllUserData();
                 if (err != noError) {
                     displayError(err);
                 }
 
                 setOnline("Data pulled");
 
-                err = pushChanges(&client, &trigger_sync_);
+                err = pushChanges(&trigger_sync_);
                 trigger_push_ = false;
                 if (err != noError) {
                     user_->ConfirmLoadedMore();
@@ -4858,9 +4873,7 @@ void Context::syncerActivity() {
             Poco::Mutex::ScopedLock lock(syncer_m_);
 
             if (trigger_push_) {
-                TogglClient client(UI());
-
-                error err = pushChanges(&client, &trigger_sync_);
+                error err = pushChanges(&trigger_sync_);
                 if (err != noError) {
                     user_->ConfirmLoadedMore();
                     displayError(err);
@@ -4921,14 +4934,13 @@ void Context::onLoadMore(Poco::Util::TimerTask&) {
 
         logger.debug("loading more: ", ss.str());
 
-        TogglClient client(UI());
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = ss.str();
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPResponse resp = client.Get(req);
+        HTTPResponse resp = TogglClient::GetInstance().Get(req);
         if (resp.err != noError) {
             logger.warning(resp.err);
             return;
@@ -4993,9 +5005,7 @@ void Context::SetLogPath(const std::string &path) {
     log_path_ = path;
 }
 
-error Context::pullAllUserData(
-    TogglClient *toggl_client) {
-
+error Context::pullAllUserData() {
     std::string api_token("");
     Poco::Int64 since(0);
     {
@@ -5020,7 +5030,6 @@ error Context::pullAllUserData(
 
         std::string user_data_json("");
         error err = me(
-            toggl_client,
             api_token,
             "api_token",
             &user_data_json,
@@ -5050,14 +5059,14 @@ error Context::pullAllUserData(
             }
         }
 
-        err = pullWorkspaces(toggl_client);
+        err = pullWorkspaces();
         if (err != noError) {
             return err;
         }
 
-        pullWorkspacePreferences(toggl_client);
+        pullWorkspacePreferences();
 
-        pullUserPreferences(toggl_client);
+        pullUserPreferences();
 
         stopwatch.stop();
         logger.debug("User with related data JSON fetched and parsed in ", stopwatch.elapsed() / 1000, " ms");
@@ -5072,7 +5081,6 @@ error Context::pullAllUserData(
 }
 
 error Context::pushChanges(
-    TogglClient *toggl_client,
     bool *had_something_to_push) {
     try {
         Poco::Stopwatch stopwatch;
@@ -5131,8 +5139,7 @@ error Context::pushChanges(
             client_stopwatch.start();
             error err = pushClients(
                 clients,
-                api_token,
-                *toggl_client);
+                api_token);
             if (err != noError &&
                     err.find(kClientNameAlreadyExists) == std::string::npos) {
                 return err;
@@ -5149,8 +5156,7 @@ error Context::pushChanges(
             error err = pushProjects(
                 projects,
                 clients,
-                api_token,
-                *toggl_client);
+                api_token);
             if (err != noError &&
                     err.find(kProjectNameAlready) == std::string::npos) {
                 return err;
@@ -5175,8 +5181,7 @@ error Context::pushChanges(
             error err = pushEntries(
                 models,
                 time_entries,
-                api_token,
-                *toggl_client);
+                api_token);
             if (err != noError) {
                 // Hide load more button when offline
                 user_->ConfirmLoadedMore();
@@ -5207,8 +5212,7 @@ error Context::pushChanges(
 
 error Context::pushClients(
     const std::vector<Client *> &clients,
-    const std::string &api_token,
-    const TogglClient &toggl_client) {
+    const std::string &api_token) {
     std::string client_json("");
     error err = noError;
     for (std::vector<Client *>::const_iterator it =
@@ -5226,7 +5230,7 @@ error Context::pushClients(
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPResponse resp = toggl_client.Post(req);
+        HTTPResponse resp = TogglClient::GetInstance().Post(req);
 
         if (resp.err != noError) {
             // if we're able to solve the error
@@ -5252,8 +5256,7 @@ error Context::pushClients(
 error Context::pushProjects(
     const std::vector<Project *> &projects,
     const std::vector<Client *> &clients,
-    const std::string &api_token,
-    const TogglClient &toggl_client) {
+    const std::string &api_token) {
     error err = noError;
     std::string project_json("");
     for (std::vector<Project *>::const_iterator it =
@@ -5283,7 +5286,7 @@ error Context::pushProjects(
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPResponse resp = toggl_client.Post(req);
+        HTTPResponse resp = TogglClient::GetInstance().Post(req);
 
         if (resp.err != noError) {
             // if we're able to solve the error
@@ -5330,8 +5333,7 @@ error Context::updateEntryProjects(const std::vector<Project *> &projects,
 error Context::pushEntries(
     const std::map<std::string, BaseModel *>&,
     const std::vector<TimeEntry *> &time_entries,
-    const std::string &api_token,
-    const TogglClient &toggl_client) {
+    const std::string &api_token) {
 
     std::string entry_json("");
     std::string error_message("");
@@ -5366,11 +5368,11 @@ error Context::pushEntries(
 
         if ((*it)->NeedsDELETE()) {
             req.payload = "";
-            resp = toggl_client.Delete(req);
+            resp = TogglClient::GetInstance().Delete(req);
         } else if ((*it)->ID()) {
-            resp = toggl_client.Put(req);
+            resp = TogglClient::GetInstance().Put(req);
         } else {
-            resp = toggl_client.Post(req);
+            resp = TogglClient::GetInstance().Post(req);
         }
 
         if (resp.err != noError) {
@@ -5397,6 +5399,10 @@ error Context::pushEntries(
 
             if (offline) {
                 trigger_sync_ = false;
+            }
+
+            if (kBadRequestError == resp.err) {
+                error_message = resp.body;
             }
 
             continue;
@@ -5464,8 +5470,7 @@ error Context::pullObmExperiments() {
         req.basic_auth_username = apitoken;
         req.basic_auth_password = "api_token";
 
-        TogglClient client(UI());
-        HTTPResponse resp = client.Get(req);
+        HTTPResponse resp = TogglClient::GetInstance().Get(req);
         if (resp.err != noError) {
             return resp.err;
         }
@@ -5542,8 +5547,7 @@ error Context::pushObmAction() {
 
         logger.debug(req.payload);
 
-        TogglClient toggl_client;
-        HTTPResponse resp = toggl_client.Post(req);
+        HTTPResponse resp = TogglClient::GetInstance().silentPost(req);
         if (resp.err != noError) {
             // backend responds 204 on success
             if (resp.status_code != 204) {
@@ -5567,7 +5571,6 @@ error Context::pushObmAction() {
 
 
 error Context::me(
-    TogglClient *toggl_client,
     const std::string &email,
     const std::string &password,
     std::string *user_data_json,
@@ -5583,7 +5586,6 @@ error Context::me(
 
     try {
         poco_check_ptr(user_data_json);
-        poco_check_ptr(toggl_client);
 
         std::stringstream ss;
         ss << "/api/"
@@ -5601,7 +5603,7 @@ error Context::me(
         req.basic_auth_username = email;
         req.basic_auth_password = password;
 
-        HTTPResponse resp = toggl_client->Get(req);
+        HTTPResponse resp = TogglClient::GetInstance().Get(req);
         if (resp.err != noError) {
             return resp.err;
         }
@@ -5649,7 +5651,7 @@ bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
     return t < lockedTime;
 }
 
-error Context::pullWorkspaces(TogglClient* toggl_client) {
+error Context::pullWorkspaces() {
     std::string api_token = user_->APIToken();
 
     if (api_token.empty()) {
@@ -5665,7 +5667,7 @@ error Context::pullWorkspaces(TogglClient* toggl_client) {
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPResponse resp = toggl_client->Get(req);
+        HTTPResponse resp = TogglClient::GetInstance().Get(req);
         if (resp.err != noError) {
             if (resp.err.find(kForbiddenError) != std::string::npos) {
                 // User has no workspaces
@@ -5691,7 +5693,7 @@ error Context::pullWorkspaces(TogglClient* toggl_client) {
     return noError;
 }
 
-error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
+error Context::pullWorkspacePreferences() {
     std::vector<Workspace*> workspaces;
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -5710,7 +5712,7 @@ error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
 
         std::string json("");
 
-        error err = pullWorkspacePreferences(toggl_client, ws, &json);
+        error err = pullWorkspacePreferences(ws, &json);
         if (err != noError) {
             return err;
         }
@@ -5731,7 +5733,6 @@ error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
 }
 
 error Context::pullWorkspacePreferences(
-    TogglClient* toggl_client,
     Workspace* workspace,
     std::string* json) {
 
@@ -5753,7 +5754,7 @@ error Context::pullWorkspacePreferences(
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPResponse resp = toggl_client->Get(req);
+        HTTPResponse resp = TogglClient::GetInstance().Get(req);
         if (resp.err != noError) {
             return resp.err;
         }
@@ -5772,8 +5773,7 @@ error Context::pullWorkspacePreferences(
     return noError;
 }
 
-error Context::pullUserPreferences(
-    TogglClient* toggl_client) {
+error Context::pullUserPreferences() {
     std::string api_token = user_->APIToken();
 
     if (api_token.empty()) {
@@ -5789,7 +5789,7 @@ error Context::pullUserPreferences(
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPResponse resp = toggl_client->Get(req);
+        HTTPResponse resp = TogglClient::GetInstance().Get(req);
         if (resp.err != noError) {
             return resp.err;
         }
@@ -5832,24 +5832,21 @@ error Context::pullUserPreferences(
 }
 
 error Context::signupGoogle(
-    TogglClient *toggl_client,
     const std::string &access_token,
     std::string *user_data_json,
     const uint64_t country_id) {
-    return signUpWithProvider(toggl_client, access_token, user_data_json, country_id, "", kGoogleProvider);
+    return signUpWithProvider(access_token, user_data_json, country_id, "", kGoogleProvider);
 }
 
 error Context::signupApple(
-    TogglClient *toggl_client,
     const std::string &access_token,
     std::string *user_data_json,
     const std::string &full_name,
     const uint64_t country_id) {
-    return signUpWithProvider(toggl_client, access_token, user_data_json, country_id, full_name, kAppleProvider);
+    return signUpWithProvider(access_token, user_data_json, country_id, full_name, kAppleProvider);
 }
 
 error Context::signUpWithProvider(
-    TogglClient *toggl_client,
     const std::string &access_token,
     std::string *user_data_json,
     const uint64_t country_id,
@@ -5857,7 +5854,6 @@ error Context::signUpWithProvider(
     const std::string provider) {
     try {
         poco_check_ptr(user_data_json);
-        poco_check_ptr(toggl_client);
 
         Json::Value user;
         user["token"] = access_token;
@@ -5882,7 +5878,7 @@ error Context::signUpWithProvider(
         req.relative_url = ss.str();
         req.payload = Json::StyledWriter().write(user);
 
-        HTTPResponse resp = toggl_client->Post(req);
+        HTTPResponse resp = TogglClient::GetInstance().Post(req);
         if (resp.err != noError) {
             if (kBadRequestError == resp.err) {
                 return resp.body;
@@ -5913,7 +5909,6 @@ error Context::signUpWithProvider(
 }
 
 error Context::signup(
-    TogglClient *toggl_client,
     const std::string &email,
     const std::string &password,
     std::string *user_data_json,
@@ -5929,7 +5924,6 @@ error Context::signup(
 
     try {
         poco_check_ptr(user_data_json);
-        poco_check_ptr(toggl_client);
 
         Json::Value user;
         user["email"] = email;
@@ -5948,7 +5942,7 @@ error Context::signup(
         req.relative_url = "/api/v9/signup";
         req.payload = Json::StyledWriter().write(user);
 
-        HTTPResponse resp = toggl_client->Post(req);
+        HTTPResponse resp = TogglClient::GetInstance().Post(req);
         if (resp.err != noError) {
             if (kBadRequestError == resp.err) {
                 return resp.body;
@@ -6023,7 +6017,6 @@ error Context::ToSAccept() {
         return error("cannot pull user data without API token");
     }
 
-    TogglClient toggl_client(UI());
     try {
         HTTPRequest req;
         req.host = urls::API();
@@ -6031,7 +6024,7 @@ error Context::ToSAccept() {
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPResponse resp = toggl_client.Post(req);
+        HTTPResponse resp = TogglClient::GetInstance().Post(req);
         if (resp.err != noError) {
             return displayError(resp.err);
         }
@@ -6066,12 +6059,10 @@ error Context::AsyncPullCountries() {
 
 error Context::PullCountries() {
     try {
-        TogglClient toggl_client(UI());
-
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/countries";
-        HTTPResponse resp = toggl_client.Get(req);
+        HTTPResponse resp = TogglClient::GetInstance().Get(req);
         if (resp.err != noError) {
             return resp.err;
         }
@@ -6083,16 +6074,17 @@ error Context::PullCountries() {
         }
 
         std::vector<TogglCountryView> countries;
-
+        TogglCountryView *first = nullptr;
         for (unsigned int i = root.size(); i > 0; i--) {
             TogglCountryView *item = country_view_item_init(root[i - 1]);
             countries.push_back(*item);
+            item->Next = first;
+            first = item;
         }
 
         // update country selectbox
         UI()->DisplayCountries(&countries);
-
-        //country_item_clear(first);
+        country_list_delete_item(first);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {

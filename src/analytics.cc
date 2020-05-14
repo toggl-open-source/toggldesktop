@@ -14,9 +14,9 @@
 #include "const.h"
 #include "https_client.h"
 #include "platforminfo.h"
-#include "settings.h"
+#include "model/settings.h"
 #include "urls.h"
-#include "user.h"
+#include "model/user.h"
 #include "util/logger.h"
 
 namespace toggl {
@@ -158,8 +158,7 @@ void GoogleAnalyticsEvent::runTask() {
     req.host = "https://ssl.google-analytics.com";
     req.relative_url = relativeURL();
 
-    HTTPClient client;
-    HTTPResponse resp = client.Get(req);
+    HTTPResponse resp = TogglClient::GetInstance().silentGet(req);
     if (resp.err != noError) {
         Logger("Analytics").error(resp.err);
         return;
@@ -320,8 +319,7 @@ void GoogleAnalyticsSettingsEvent::makeReq() {
     req.host = "https://ssl.google-analytics.com";
     req.relative_url = relativeURL();
 
-    HTTPClient client;
-    HTTPResponse resp = client.Get(req);
+    HTTPResponse resp = TogglClient::GetInstance().silentGet(req);
     if (resp.err != noError) {
         Logger("Analytics").error(resp.err);
         return;

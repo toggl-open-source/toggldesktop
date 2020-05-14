@@ -299,6 +299,8 @@ extern "C" {
     typedef void (*TogglDisplayTimerState)(
         TogglTimeEntryView *te);
 
+    typedef void (*TogglContinueSignIn)(void);
+
     typedef void (*TogglDisplayIdleNotification)(
         const char_t *guid,
         const char_t *since,
@@ -1203,6 +1205,10 @@ extern "C" {
 
     TOGGL_EXPORT void toggl_user_did_edit_add_timeentry_on_timeline_view(
         void *context);
+
+    TOGGL_EXPORT void toggl_on_continue_sign_in(
+        void *context,
+        TogglContinueSignIn cb);
 
 #undef TOGGL_EXPORT
 

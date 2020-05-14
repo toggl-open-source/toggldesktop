@@ -14,7 +14,7 @@
     <!-- Light Gray -->
     <Color x:Key="Toggl.LightGrayColor">#D9D9D9</Color>
     <!-- Off-white -->
-    <Color x:Key="Toggl.OffWhiteColor">#F8F9FA</Color>
+    <Color x:Key="Toggl.OffWhiteColor">#F3F4F5</Color>
     <!-- White -->
     <Color x:Key="Toggl.WhiteColor">#FFFFFF</Color>
     <!-- White -->
