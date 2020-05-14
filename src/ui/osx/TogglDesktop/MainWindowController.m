@@ -150,9 +150,7 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open)
 	{
-		[self.contentView addSubview:self.loginViewController.view];
-		[self.loginViewController.view setFrame:self.contentView.bounds];
-		self.loginViewController.view.hidden = NO;
+        [self displayLoginViewController:YES];
 
 		[self.mainDashboardViewController.view removeFromSuperview];
 		[self.overlayViewController.view removeFromSuperview];
@@ -187,13 +185,13 @@ extern void *ctx;
 		{
 			// Close error when loging in
 			[self closeError];
-			[self.loginViewController resetLoader];
 
-			self.loginViewController.view.hidden = YES;
+            // Add Main View
 			[self.contentView addSubview:self.mainDashboardViewController.view];
 			[self.mainDashboardViewController.view setFrame:self.contentView.bounds];
 
-			[self.loginViewController.view removeFromSuperview];
+            // Dismiss Login
+            [self displayLoginViewController:NO];
 			[self.overlayViewController.view removeFromSuperview];
 
 			[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kFocusTimer
@@ -237,7 +235,7 @@ extern void *ctx;
 	[self.contentView addSubview:self.overlayViewController.view];
 	[self.overlayViewController.view setFrame:self.contentView.bounds];
 
-	[self.loginViewController.view removeFromSuperview];
+    [self displayLoginViewController:NO];
 	[self.mainDashboardViewController.view removeFromSuperview];
 }
 
@@ -474,6 +472,24 @@ extern void *ctx;
     if (self.loginViewController.view.superview != nil)
     {
         [self.loginViewController continueSignIn];
+    }
+}
+
+-(void) displayLoginViewController:(BOOL) display
+{
+    if (display)
+    {
+        if (self.loginViewController == nil) {
+            self.loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
+            [self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+        }
+        [self.contentView addSubview:self.loginViewController.view];
+        [self.loginViewController.view setFrame:self.contentView.bounds];
+    }
+    else
+    {
+        [self.loginViewController.view removeFromSuperview];
+        self.loginViewController = nil;
     }
 }
 @end
