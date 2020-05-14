@@ -7,9 +7,9 @@
 //
 
 #include "onboarding_service.h"
-#include "database.h"
-#include "user.h"
-#include "time_entry.h"
+#include "database/database.h"
+#include "model/user.h"
+#include "model/time_entry.h"
 #include "related_data.h"
 
 #include <time.h>
