@@ -31,7 +31,7 @@ import Foundation
     }()
 
     // MARK: - Init
-    init(levelOfUndo: Int = 2) {
+    init(levelOfUndo: Int = 10) {
         self.levelOfUndo = levelOfUndo
     }
 
