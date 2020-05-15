@@ -11,22 +11,37 @@
 #include "model/user.h"
 #include "model/time_entry.h"
 #include "related_data.h"
-
 #include <time.h>
+
+#if defined(__APPLE__)
+const bool is_onboarding_enable = true;
+#else
+const bool is_onboarding_enable = false;
+#endif
 
 using namespace std::chrono;
 
 namespace toggl {
 
 void OnboardingService::RegisterEvents(std::function<void (const OnboardingType)> callback) {
+    if (!is_onboarding_enable) {
+        return;
+    }
     _callback = callback;
 }
 
 void OnboardingService::SetDatabase(Database *db) {
+    if (!is_onboarding_enable) {
+        return;
+    }
     database = db;
 }
 
 void OnboardingService::LoadOnboardingStateFromCurrentUser(User *_user) {
+    if (!is_onboarding_enable) {
+        return;
+    }
+
     Poco::Mutex::ScopedLock lock(onboarding_m_);
     if (_user == nullptr) {
         return;
@@ -58,6 +73,10 @@ void OnboardingService::LoadOnboardingStateFromCurrentUser(User *_user) {
 }
 
 void OnboardingService::Reset() {
+    if (!is_onboarding_enable) {
+        return;
+    }
+
     Poco::Mutex::ScopedLock lock(onboarding_m_);
     if (state) {
         delete state;
@@ -66,6 +85,10 @@ void OnboardingService::Reset() {
 }
 
 void OnboardingService::sync() {
+    if (!is_onboarding_enable) {
+        return;
+    }
+
     Poco::Mutex::ScopedLock lock(onboarding_m_);
     if (user == nullptr || state == nullptr) {
         return;
@@ -75,6 +98,10 @@ void OnboardingService::sync() {
 
 // User actions
 void OnboardingService::OpenApp() {
+    if (!is_onboarding_enable) {
+        return;
+    }
+
     Poco::Mutex::ScopedLock lock(onboarding_m_);
     if (state == nullptr) {
         return;
@@ -94,6 +121,10 @@ void OnboardingService::OpenApp() {
 }
 
 void OnboardingService::StopTimeEntry() {
+    if (!is_onboarding_enable) {
+        return;
+    }
+
     Poco::Mutex::ScopedLock lock(onboarding_m_);
     if (state == nullptr) {
         return;
@@ -109,6 +140,10 @@ void OnboardingService::StopTimeEntry() {
 }
 
 void OnboardingService::OpenTimelineTab() {
+    if (!is_onboarding_enable) {
+        return;
+    }
+
     Poco::Mutex::ScopedLock lock(onboarding_m_);
     state->openTimelineTabCount += 1;
 
@@ -135,6 +170,10 @@ void OnboardingService::OpenTimelineTab() {
 }
 
 void OnboardingService::TurnOnRecordActivity() {
+    if (!is_onboarding_enable) {
+        return;
+    }
+
     Poco::Mutex::ScopedLock lock(onboarding_m_);
     if (handleTimelineActivityOnboarding()) {
         return;
@@ -144,6 +183,10 @@ void OnboardingService::TurnOnRecordActivity() {
 }
 
 void OnboardingService::EditOrAddTimeEntryDirectlyToTimelineView() {
+    if (!is_onboarding_enable) {
+        return;
+    }
+
     Poco::Mutex::ScopedLock lock(onboarding_m_);
     state->editOnTimelineCount += 1;
     sync();
