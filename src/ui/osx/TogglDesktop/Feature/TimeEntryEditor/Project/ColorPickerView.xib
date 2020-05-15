@@ -17,35 +17,6 @@
                 <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FZc-LL-v7b">
                     <rect key="frame" x="0.0" y="25" width="220" height="70"/>
                     <subviews>
-                        <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="mxV-pt-2uu">
-                            <rect key="frame" x="0.0" y="0.0" width="220" height="70"/>
-                            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="xTa-DE-szS">
-                                <rect key="frame" x="0.0" y="0.0" width="220" height="70"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <collectionView selectable="YES" id="52y-nX-aep">
-                                        <rect key="frame" x="0.0" y="0.0" width="220" height="70"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                        <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jeB-XW-ECn">
-                                            <size key="itemSize" width="50" height="50"/>
-                                        </collectionViewFlowLayout>
-                                        <color key="primaryBackgroundColor" name="color-picker-background"/>
-                                    </collectionView>
-                                </subviews>
-                                <color key="backgroundColor" name="color-picker-background"/>
-                            </clipView>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="70" id="Ogv-f6-yDi"/>
-                            </constraints>
-                            <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Zo6-MO-MYG">
-                                <rect key="frame" x="-100" y="-100" width="218" height="16"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                            </scroller>
-                            <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="aVa-2w-HKQ">
-                                <rect key="frame" x="204" y="0.0" width="16" height="70"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                            </scroller>
-                        </scrollView>
                         <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bng-FC-0Ya">
                             <rect key="frame" x="0.0" y="-24" width="220" height="94"/>
                             <subviews>
@@ -68,10 +39,8 @@
                     </constraints>
                     <visibilityPriorities>
                         <integer value="1000"/>
-                        <integer value="1000"/>
                     </visibilityPriorities>
                     <customSpacing>
-                        <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                     </customSpacing>
                 </stackView>
@@ -96,18 +65,15 @@
                 <constraint firstAttribute="bottom" secondItem="uIm-iS-FNW" secondAttribute="bottom" constant="5" id="sbd-83-TJc"/>
             </constraints>
             <connections>
-                <outlet property="collectionView" destination="52y-nX-aep" id="B50-ae-Mf3"/>
                 <outlet property="colorWheelContainerView" destination="Bng-FC-0Ya" id="nym-d2-Mu1"/>
                 <outlet property="colorWheelView" destination="ekt-4K-GjN" id="b07-Li-ktA"/>
                 <outlet property="resetBtnTop" destination="A5o-B2-WHQ" id="sgG-7Q-xMa"/>
+                <outlet property="stackView" destination="FZc-LL-v7b" id="EHs-8V-bAy"/>
             </connections>
             <point key="canvasLocation" x="139" y="154"/>
         </customView>
     </objects>
     <resources>
-        <namedColor name="color-picker-background">
-            <color red="0.97600001096725464" green="0.97600001096725464" blue="0.97600001096725464" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="grey-text-color">
             <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
