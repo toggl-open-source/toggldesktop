@@ -815,7 +815,9 @@ void GUI::DisplayIdleNotification(const std::string &guid,
 }
 
 void GUI::DisplayOnboarding(const OnboardingType onboarding_type) {
-    on_display_onboarding_(onboarding_type);
+    if (on_display_onboarding_) {
+        on_display_onboarding_(onboarding_type);
+    }
 }
 
 }  // namespace toggl
