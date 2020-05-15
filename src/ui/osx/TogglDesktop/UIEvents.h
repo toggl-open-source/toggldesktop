@@ -68,5 +68,6 @@ const char *kFocusedFieldNameTag;
 
 extern NSString *const kStartButtonStateChange;
 extern NSString *const kInvalidAppleUserCrendential;
-
+extern NSString *const kStartDisplayOnboarding;
+extern NSString *const kOnboardingDidClickNotification;
 extern NSString *const kContinueSignIn;
