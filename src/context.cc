@@ -2870,7 +2870,11 @@ TimeEntry *Context::Start(
 
     OpenTimeEntryList();
 
-    if (!prevent_on_app && settings_.focus_on_shortcut) {
+    // Don't need to focus on Timer if we create a TimeEntry without running
+    // Avoid glitch
+    // For instance, after undoing the TimeEntry Deletion, we creat an TE
+    // It trigger the DisplayApp() and focus on the Timer -> It prevents the user to do Redo until they click on the Time Entry List
+    if (!prevent_on_app && settings_.focus_on_shortcut && !stop_current_running) {
         // Show app
         UI()->DisplayApp();
     }
