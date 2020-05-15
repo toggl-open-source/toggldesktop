@@ -79,7 +79,11 @@ extern void *ctx;
                                                      name:kStartDisplayInAppMessage
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(handleContinueSignInNotification:)
+                                                 selector:@selector(startOnboardingNotification:)
+                                                     name:kStartDisplayOnboarding
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+												selector:@selector(handleContinueSignInNotification:)
                                                      name:kContinueSignIn
                                                    object:nil];
 	}
@@ -423,6 +427,46 @@ extern void *ctx;
 - (NSTouchBar *)makeTouchBar
 {
     return [[TouchBarService shared] makeTouchBar];
+}
+
+#pragma mark - Onboarding
+
+- (void)startOnboardingNotification:(NSNotification *) noti
+{
+    [OnboardingServiceObjc
+     handleOnboardingNotification:noti
+     atView:^NSView * _Nullable(enum OnboardingHint hint) {
+        return [self getOnboardingViewWithHint:hint];
+     }
+     switchTo:^(enum OnboardingPresentViewTab tab) {
+        [self.mainDashboardViewController switchToTab:tab];
+    }];
+}
+
+- (NSView * __nullable) getOnboardingViewWithHint:(OnboardingHint) hint
+{
+    switch (hint) {
+        case OnboardingHintNewUser:
+            return (NSView *) self.mainDashboardViewController.timerController.mainBox;
+        case OnboardingHintOldUser:
+            return (NSView *) self.mainDashboardViewController.timerController.mainBox;
+        case OnboardingHintManualMode:
+            return (NSView *) self.mainDashboardViewController.timerController.mainBox;
+        case OnboardingHintTimelineTab:
+            return self.mainDashboardViewController.timelineBtn;
+        case OnboardingHintEditTimeEntry:
+            return [self.mainDashboardViewController.timeEntryController firstTimeEntryCellForOnboarding];
+        case OnboardingHintTimelineTimeEntry:
+            return self.mainDashboardViewController.timelineController.timelineTimeEntryContainerView;
+        case OnboardingHintTimelineView:
+            return self.mainDashboardViewController.timelineController.collectionViewContainerView;
+        case OnboardingHintTimelineActivity:
+            return self.mainDashboardViewController.timelineController.activityContainerView;
+        case OnboardingHintRecordActivity:
+            return self.mainDashboardViewController.timelineController.recordActivityContainerView;
+        default:
+            return nil;
+	}
 }
 
 -(void) handleContinueSignInNotification:(NSNotification *) noti
