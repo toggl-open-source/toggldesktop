@@ -154,6 +154,7 @@ void *ctx;
 - (void)deleteTimeEntryItem:(TimeEntryViewItem *)item undoManager:(NSUndoManager *) undoManager
 {
     self.undoManager = undoManager;
+    self.undoManager.levelsOfUndo = 10;
 
 	// If description is empty and duration is less than 15 seconds delete without confirmation
 	if ([item confirmlessDelete])
@@ -187,7 +188,13 @@ void *ctx;
 - (void) registerUndoDeleteItem:(TimeEntryViewItem *)item
 {
     [self.undoManager registerUndoWithTarget:self selector:@selector(createNewTimeEntryWithOldTimeEntry:) object:item];
-    [self.undoManager setActionName:@"Undo Delete Time Entry"];
+    [self.undoManager setActionName:@"Delete item"];
+}
+
+- (void) registerUndoAddItem:(TimeEntryViewItem *)item
+{
+    [self.undoManager registerUndoWithTarget:self selector:@selector(deleteItem:) object:item];
+    [self.undoManager setActionName:@"Delete Item"];
 }
 
 - (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry autocomplete:(AutocompleteItem *)autocomplete
@@ -361,8 +368,12 @@ void *ctx;
     if (guid != nil) {
         NSString *GUID = [NSString stringWithUTF8String:guid];
         free(guid);
-        // Don't support redo
-        [self.undoManager removeAllActions];
+
+        // Update new GUI for redo
+        // As the GUI is changed
+        item.GUID = GUID;
+        [self registerUndoAddItem:item];
+
         return GUID;
     }
     return nil;
