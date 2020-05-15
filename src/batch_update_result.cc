@@ -73,7 +73,7 @@ void BatchUpdateResult::ProcessResponseArray(
         }
         error err = model->ApplyBatchUpdateResult(&result);
         if (err != noError) {
-            model->SetUnsynced();
+            model->Unsynced.Set(true);
             errors->push_back(err);
         }
     }

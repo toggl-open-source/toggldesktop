@@ -45,7 +45,7 @@ void Task::SetActive(const bool value) {
 }
 
 void Task::LoadFromJSON(Json::Value data) {
-    SetID(data["id"].asUInt64());
+    ID.Set(data["id"].asUInt64());
     SetName(data["name"].asString());
     SetPID(data["pid"].asUInt64());
     SetWID(data["wid"].asUInt64());

@@ -66,7 +66,7 @@ TEST(TimeEntry, WillNotPushUnlessValidationErrorIsCleared) {
     ASSERT_TRUE(te.NeedsPush());
 
     // Simulate getting an error from backend
-    te.SetValidationError("All you do is wrong");
+    te.ValidationError.Set("All you do is wrong");
     ASSERT_EQ("All you do is wrong", te.ValidationError());
     ASSERT_FALSE(te.NeedsPush());
 
@@ -120,7 +120,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // Event that happened at least 15 minutes ago,
     // can be uploaded to Toggl backend.
     TimelineEvent *good = new TimelineEvent();
-    good->SetUID(user_id);
+    good->UID.Set(user_id);
     // started yesterday, "16 minutes ago"
     good->SetStart(time(0) - 86400 - 60*16);
     good->SetEndTime(good->Start() + good_duration_seconds);
@@ -133,7 +133,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // Another event that happened at least 15 minutes ago,
     // can be uploaded to Toggl backend.
     TimelineEvent *good2 = new TimelineEvent();
-    good2->SetUID(user_id);
+    good2->UID.Set(user_id);
     good2->SetStart(good->EndTime() + 1);  // started after first event
     good2->SetEndTime(good2->Start() + good2_duration_seconds);
     good2->SetFilename("Notepad.exe");
@@ -143,7 +143,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // Another event that happened at least 15 minutes ago,
     // but has already been uploaded to Toggl backend.
     TimelineEvent *uploaded = new TimelineEvent();;
-    uploaded->SetUID(user_id);
+    uploaded->UID.Set(user_id);
     uploaded->SetStart(good2->EndTime() + 1);  // started after second event
     uploaded->SetEndTime(uploaded->Start() + 10);
     uploaded->SetFilename("Notepad.exe");
@@ -154,7 +154,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // This event happened less than 15 minutes ago,
     // so it must not be uploaded
     TimelineEvent *too_fresh = new TimelineEvent();
-    too_fresh->SetUID(user_id);
+    too_fresh->UID.Set(user_id);
     too_fresh->SetStart(time(0) - 60);  // started 1 minute ago
     too_fresh->SetEndTime(time(0));  // lasted until now
     too_fresh->SetFilename("Notepad.exe");
@@ -164,7 +164,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // This event happened more than 7 days ago,
     // so it must not be uploaded, just deleted
     TimelineEvent *too_old = new TimelineEvent();
-    too_old->SetUID(user_id);
+    too_old->UID.Set(user_id);
     too_old->SetStart(time(0) - kTimelineSecondsToKeep - 1);  // 7 days ago
     too_old->SetEndTime(too_old->EndTime() + 120);  // lasted 2 minutes
     too_old->SetFilename("Notepad.exe");
@@ -689,7 +689,7 @@ TEST(User, TestDeletionSteps) {
     ASSERT_TRUE(te);
     std::vector<ModelChange> changes;
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
-    te->MarkAsDeletedOnServer();
+    te->IsMarkedAsDeletedOnServer.Set(true);
     {
         Poco::UInt64 te_count(0);
         std::stringstream query;
@@ -700,7 +700,7 @@ TEST(User, TestDeletionSteps) {
     }
 
     // now, really delete it
-    te->MarkAsDeletedOnServer();
+    te->IsMarkedAsDeletedOnServer.Set(true);
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
     {
         Poco::UInt64 te_count(0);
@@ -1779,8 +1779,8 @@ TEST(BaseModel, BatchUpdateJSON) {
 TEST(BaseModel, BatchUpdateJSONForDelete) {
     TimeEntry t;
     t.EnsureGUID();
-    t.SetID(123);
-    t.SetDeletedAt(time(0));
+    t.ID.Set(123);
+    t.DeletedAt.Set(time(0));
     Json::Value v;
     error err = t.BatchUpdateJSON(&v);
     ASSERT_EQ(noError, err);
@@ -1789,7 +1789,7 @@ TEST(BaseModel, BatchUpdateJSONForDelete) {
 TEST(BaseModel, BatchUpdateJSONForPut) {
     TimeEntry t;
     t.EnsureGUID();
-    t.SetID(123);
+    t.ID.Set(123);
     t.SetDescription("test");
     Json::Value v;
     error err = t.BatchUpdateJSON(&v);

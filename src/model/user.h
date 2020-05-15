@@ -356,14 +356,14 @@ bool User::SetModelID(Poco::UInt64 id, T *model) {
             logger().error("There is already a newer version of this entry");
 
             // clearing the GUID to make sure there's no GUID conflict
-            model->SetGUID("");
+            model->GUID.Set("");
 
             // deleting the duplicate entry
             // this entry has no ID so the corresponding server entry will not be deleted
             model->Delete();
             return false;
         }
-        model->SetID(id);
+        model->ID.Set(id);
         return true;
     }
 }

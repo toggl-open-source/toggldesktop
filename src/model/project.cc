@@ -132,7 +132,7 @@ void Project::LoadFromJSON(Json::Value data) {
         SetColor(data["color"].asString());
     }
 
-    SetID(data["id"].asUInt64());
+    ID.Set(data["id"].asUInt64());
     SetName(data["name"].asString());
     SetWID(data["wid"].asUInt64());
     SetCID(data["cid"].asUInt64());
@@ -199,7 +199,7 @@ bool Project::ResolveError(const toggl::error &err) {
     }
     if (err.find(kProjectNameAlready) != std::string::npos) {
         // remove duplicate from db
-        MarkAsDeletedOnServer();
+        IsMarkedAsDeletedOnServer.Set(true);
         return true;
     }
     return false;

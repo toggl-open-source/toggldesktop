@@ -63,7 +63,7 @@ error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
         // Autotracker settings are not saved to DB,
         // so the ID will be 0 always. But will have local ID
         if (rule->LocalID() == local_id) {
-            rule->MarkAsDeletedOnServer();
+            rule->IsMarkedAsDeletedOnServer.Set(true);
             rule->Delete();
             break;
         }

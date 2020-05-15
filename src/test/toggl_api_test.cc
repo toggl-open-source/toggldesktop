@@ -169,8 +169,8 @@ void on_time_entry_list(
     TogglTimeEntryView *it = first;
     while (it) {
         TimeEntry te;
-        te.SetGUID(to_string(it->GUID));
-        te.SetID(it->ID);
+        te.GUID.Set(to_string(it->GUID));
+        te.ID.Set(it->ID);
         te.SetDurationInSeconds(it->DurationInSeconds);
         te.SetDescription(to_string(it->Description));
         te.SetStart(it->Started);
@@ -216,7 +216,7 @@ void on_time_entry_editor(
     TogglTimeEntryView *te,
     const char_t *focused_field_name) {
     testing::testresult::editor_state = TimeEntry();
-    testing::testresult::editor_state.SetGUID(to_string(te->GUID));
+    testing::testresult::editor_state.GUID.Set(to_string(te->GUID));
     testing::testresult::editor_open = open;
     testing::testresult::editor_focused_field_name =
         to_string(focused_field_name);
@@ -285,9 +285,9 @@ void on_obm_experiment(
 void on_display_timer_state(TogglTimeEntryView *te) {
     testing::testresult::timer_state = TimeEntry();
     if (te) {
-        testing::testresult::timer_state.SetID(te->ID);
+        testing::testresult::timer_state.ID.Set(te->ID);
         testing::testresult::timer_state.SetStart(te->Started);
-        testing::testresult::timer_state.SetGUID(to_string(te->GUID));
+        testing::testresult::timer_state.GUID.Set(to_string(te->GUID));
         testing::testresult::timer_state.SetDurationInSeconds(
             te->DurationInSeconds);
         testing::testresult::timer_state.SetDescription(to_string(te->Description));

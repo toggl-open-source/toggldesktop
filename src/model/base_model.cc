@@ -27,85 +27,32 @@ bool BaseModel::NeedsPush() const {
 
 bool BaseModel::NeedsPOST() const {
     // No server side ID yet, meaning it's not POSTed yet
-    return !id_ && !(deleted_at_ > 0);
+    return !ID && !(DeletedAt > 0);
 }
 
 bool BaseModel::NeedsPUT() const {
     // Model has been updated and is not deleted, needs a PUT
-    return id_ && ui_modified_at_ > 0 && !(deleted_at_ > 0);
+    return ID && UIModifiedAt > 0 && !(DeletedAt > 0);
 }
 
 bool BaseModel::NeedsDELETE() const {
     // Model is deleted, needs a DELETE on server side
-    return id_ && (deleted_at_ > 0);
+    return ID && (DeletedAt > 0);
 }
 
 bool BaseModel::NeedsToBeSaved() const {
-    return !local_id_ || dirty_;
+    return !LocalID || IsDirty();
 }
 
 void BaseModel::EnsureGUID() {
-    if (!guid_.empty()) {
+    if (!GUID->empty()) {
         return;
     }
-    SetGUID(Database::GenerateGUID());
-}
-
-void BaseModel::ClearValidationError() {
-    SetValidationError(noError);
-}
-
-void BaseModel::SetValidationError(const std::string &value) {
-    if (validation_error_ != value) {
-        validation_error_ = value;
-        SetDirty();
-    }
-}
-
-void BaseModel::SetDeletedAt(const Poco::Int64 value) {
-    if (deleted_at_ != value) {
-        deleted_at_ = value;
-        SetDirty();
-    }
-}
-
-void BaseModel::SetUpdatedAt(const Poco::Int64 value) {
-    if (updated_at_ != value) {
-        updated_at_ = value;
-        SetDirty();
-    }
-}
-
-void BaseModel::SetGUID(const std::string &value) {
-    if (guid_ != value) {
-        guid_ = value;
-        SetDirty();
-    }
-}
-
-void BaseModel::SetUIModifiedAt(const Poco::Int64 value) {
-    if (ui_modified_at_ != value) {
-        ui_modified_at_ = value;
-        SetDirty();
-    }
-}
-
-void BaseModel::SetUID(const Poco::UInt64 value) {
-    if (uid_ != value) {
-        uid_ = value;
-        SetDirty();
-    }
-}
-
-void BaseModel::SetID(const Poco::UInt64 value) {
-    if (id_ != value) {
-        id_ = value;
-        SetDirty();
-    }
+    GUID.Set(Database::GenerateGUID());
 }
 
 void BaseModel::SetUpdatedAtString(const std::string &value) {
-    SetUpdatedAt(Formatter::Parse8601(value));
+    UpdatedAt.Set(Formatter::Parse8601(value));
 }
 
 error BaseModel::LoadFromDataString(const std::string &data_string) {
@@ -119,7 +66,7 @@ error BaseModel::LoadFromDataString(const std::string &data_string) {
 }
 
 void BaseModel::Delete() {
-    SetDeletedAt(time(nullptr));
+    DeletedAt.Set(time(nullptr));
     SetUIModified();
 }
 
@@ -128,14 +75,14 @@ error BaseModel::ApplyBatchUpdateResult(
     poco_check_ptr(update);
 
     if (update->ResourceIsGone()) {
-        MarkAsDeletedOnServer();
+        IsMarkedAsDeletedOnServer.Set(true);
         return noError;
     }
 
     toggl::error err = update->Error();
     if (err != toggl::noError) {
         if (DuplicateResource(err) || ResourceCannotBeCreated(err)) {
-            MarkAsDeletedOnServer();
+            IsMarkedAsDeletedOnServer.Set(true);
             return noError;
         }
 
@@ -143,11 +90,11 @@ error BaseModel::ApplyBatchUpdateResult(
             return noError;
         }
 
-        SetValidationError(err);
+        ValidationError.Set(err);
         return err;
     }
 
-    SetValidationError(noError);
+    ValidationError.Set(noError);
 
     return LoadFromDataString(update->Body);
 }
@@ -198,14 +145,6 @@ error BaseModel::BatchUpdateJSON(Json::Value *result) const {
 
 Logger BaseModel::logger() const {
     return { ModelName() };
-}
-
-void BaseModel::SetDirty() {
-    dirty_ = true;
-}
-
-void BaseModel::SetUnsynced() {
-    unsynced_ = true;
 }
 
 }   // namespace toggl

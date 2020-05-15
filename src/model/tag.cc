@@ -33,7 +33,7 @@ void Tag::SetName(const std::string &value) {
 }
 
 void Tag::LoadFromJSON(Json::Value data) {
-    SetID(data["id"].asUInt64());
+    ID.Set(data["id"].asUInt64());
     SetName(data["name"].asString());
     SetWID(data["wid"].asUInt64());
 }

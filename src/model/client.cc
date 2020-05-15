@@ -46,7 +46,7 @@ void Client::SetWID(const Poco::UInt64 value) {
 }
 
 void Client::LoadFromJSON(Json::Value data) {
-    SetID(data["id"].asUInt64());
+    ID.Set(data["id"].asUInt64());
     SetName(data["name"].asString());
     SetWID(data["wid"].asUInt64());
 }
@@ -70,7 +70,7 @@ bool Client::ResolveError(const toggl::error &err) {
     }
     if (err.find(kClientNameAlreadyExists) != std::string::npos) {
         // remove duplicate from db
-        MarkAsDeletedOnServer();
+        IsMarkedAsDeletedOnServer.Set(true);
         return true;
     }
     return false;

@@ -252,7 +252,7 @@ void TimeEntry::SetStopUserInput(const std::string &value) {
     }
 
     if (Dirty()) {
-        ClearValidationError();
+        ValidationError.Set(noError);
         SetUIModified();
     }
 }
@@ -311,7 +311,7 @@ void TimeEntry::SetStartUserInput(const std::string &value,
     SetStart(start);
 
     if (Dirty()) {
-        ClearValidationError();
+        ValidationError.Set(noError);
         SetUIModified();
     }
 }
@@ -333,7 +333,7 @@ void TimeEntry::SetDurationUserInput(const std::string &value) {
     SetStop(Start() + seconds);
 
     if (Dirty()) {
-        ClearValidationError();
+        ValidationError.Set(noError);
         SetUIModified();
     }
 }
@@ -454,8 +454,8 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
     SetDurOnly(data["duronly"].asBool());
     SetUpdatedAtString(data["at"].asString());
 
-    SetUIModifiedAt(0);
-    ClearUnsynced();
+    UIModifiedAt.Set(0);
+    Unsynced.Set(false);
 }
 
 Json::Value TimeEntry::SaveToJSON(int apiVersion) const {

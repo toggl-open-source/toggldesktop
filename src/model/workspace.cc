@@ -65,7 +65,7 @@ void Workspace::SetLockedTime(const time_t value) {
 }
 
 void Workspace::LoadFromJSON(Json::Value n) {
-    SetID(n["id"].asUInt64());
+    ID.Set(n["id"].asUInt64());
     SetName(n["name"].asString());
     SetPremium(n["premium"].asBool());
     SetOnlyAdminsMayCreateProjects(

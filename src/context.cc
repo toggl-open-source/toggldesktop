@@ -3108,7 +3108,7 @@ error Context::DeleteTimeEntryByGUID(const std::string &GUID) {
             return displayError(err);
         }
     }
-    te->ClearValidationError();
+    te->ValidationError.Set(noError);
     te->Delete();
 
     if ("production" == environment_) {
@@ -3181,7 +3181,7 @@ error Context::SetTimeEntryProject(
             return err;
         }
         if (te->Dirty()) {
-            te->ClearValidationError();
+            te->ValidationError.Set(noError);
             te->SetUIModified();
         }
     } catch(const Poco::Exception& exc) {
@@ -3501,7 +3501,7 @@ error Context::SetTimeEntryTags(
     }
 
     if (te->Dirty()) {
-        te->ClearValidationError();
+        te->ValidationError.Set(noError);
         te->SetUIModified();
     }
 
@@ -3538,7 +3538,7 @@ error Context::SetTimeEntryBillable(
     }
 
     if (te->Dirty()) {
-        te->ClearValidationError();
+        te->ValidationError.Set(noError);
         te->SetUIModified();
     }
 
@@ -3577,7 +3577,7 @@ error Context::SetTimeEntryDescription(
         }
 
         if (te->Dirty()) {
-            te->ClearValidationError();
+            te->ValidationError.Set(noError);
             te->SetUIModified();
         }
     }
@@ -3959,7 +3959,7 @@ error Context::AddAutotrackerRule(
         if (p) {
             rule->SetPID(p->ID());
         }
-        rule->SetUID(user_->ID());
+        rule->UID.Set(user_->ID());
         user_->related.AutotrackerRules.push_back(rule);
     }
 
@@ -4128,7 +4128,7 @@ error Context::AddObmAction(
         }
         ObmAction *action = new ObmAction();
         action->SetExperimentID(experiment_id);
-        action->SetUID(user_->ID());
+        action->UID.Set(user_->ID());
         action->SetKey(trimmed_key);
         action->SetValue(trimmed_value);
         user_->related.ObmActions.push_back(action);
@@ -4706,7 +4706,7 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
         }
 
         if (user_ && user_->RecordTimeline()) {
-            event->SetUID(static_cast<unsigned int>(user_->ID()));
+            event->UID.Set(static_cast<unsigned int>(user_->ID()));
             user_->related.TimelineEvents.push_back(handler.release());
             return displayError(save(false));
         }
@@ -5348,7 +5348,7 @@ error Context::pushBatchedChanges(
 
                         model->LoadFromJSON(i["payload"]["result"]);
                         model->ClearDirty();
-                        model->ClearUnsynced();
+                        model->Unsynced.Set(false);
                     }
                 }
             }
@@ -5655,7 +5655,7 @@ error Context::pushEntries(
         // Avoid trying to POST when we're offline
         if (offline) {
             // Mark the time entry as unsynced now
-            (*it)->SetUnsynced();
+            (*it)->Unsynced.Set(true);
             continue;
         }
 
@@ -5692,7 +5692,7 @@ error Context::pushEntries(
 
             // Not found on server. Probably deleted already.
             if ((*it)->isNotFound(resp.body)) {
-                (*it)->MarkAsDeletedOnServer();
+                (*it)->IsMarkedAsDeletedOnServer.Set(true);
                 continue;
             }
             error_found = true;
@@ -5702,7 +5702,7 @@ error Context::pushEntries(
             }
 
             // Mark the time entry as unsynced now
-            (*it)->SetUnsynced();
+            (*it)->Unsynced.Set(true);
 
             offline = IsNetworkingError(resp.err);
 
@@ -5719,7 +5719,7 @@ error Context::pushEntries(
 
         if ((*it)->NeedsDELETE()) {
             // Successfully deleted entry
-            (*it)->MarkAsDeletedOnServer();
+            (*it)->IsMarkedAsDeletedOnServer.Set(true);
             continue;
         }
 
@@ -5866,7 +5866,7 @@ error Context::pushObmAction() {
 
         // mark as deleted to prevent duplicate uploading
         // (and make sure all other actions are uploaded)
-        for_upload->MarkAsDeletedOnServer();
+        for_upload->IsMarkedAsDeletedOnServer.Set(true);
         for_upload->Delete();
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -6545,7 +6545,7 @@ error Context::UpdateTimeEntry(
     te->SetBillable(billable);
 
     if (te->Dirty()) {
-        te->ClearValidationError();
+        te->ValidationError.Set(noError);
         te->SetUIModified();
     }
 

@@ -54,7 +54,7 @@ Project *User::CreateProject(
     p->SetName(project_name);
     p->SetCID(client_id);
     p->SetClientGUID(client_guid);
-    p->SetUID(ID());
+    p->UID.Set(ID());
     p->SetActive(true);
     p->SetPrivate(is_private);
     p->SetBillable(billable);
@@ -121,7 +121,7 @@ Client *User::CreateClient(
     Client *c = new Client();
     c->SetWID(workspace_id);
     c->SetName(client_name);
-    c->SetUID(ID());
+    c->UID.Set(ID());
 
     AddClientToList(c);
 
@@ -178,7 +178,7 @@ TimeEntry *User::Start(
     TimeEntry *te = new TimeEntry();
     te->SetCreatedWith(HTTPClient::Config.UserAgent());
     te->SetDescription(description);
-    te->SetUID(ID());
+    te->UID.Set(ID());
     te->SetPID(project_id);
     te->SetProjectGUID(project_guid);
     te->SetTID(task_id);
@@ -271,7 +271,7 @@ TimeEntry *User::Continue(
     result->SetWID(existing->WID());
     result->SetBillable(existing->Billable());
     result->SetTags(existing->Tags());
-    result->SetUID(ID());
+    result->UID.Set(ID());
     result->SetStart(now);
 
     if (!manual_mode) {
@@ -455,7 +455,7 @@ TimeEntry *User::DiscardTimeAt(
     if (te && split_into_new_entry) {
         TimeEntry *split = new TimeEntry();
         split->SetCreatedWith(HTTPClient::Config.UserAgent());
-        split->SetUID(ID());
+        split->UID.Set(ID());
         split->SetStart(at);
         split->SetDurationInSeconds(-at);
         split->SetUIModified();
@@ -558,7 +558,7 @@ void User::loadUserTagFromJSON(
 
     if (!data["server_deleted_at"].asString().empty()) {
         if (model) {
-            model->MarkAsDeletedOnServer();
+            model->IsMarkedAsDeletedOnServer.Set(true);
         }
         return;
     }
@@ -570,7 +570,7 @@ void User::loadUserTagFromJSON(
     if (alive) {
         alive->insert(id);
     }
-    model->SetUID(ID());
+    model->UID.Set(ID());
     model->LoadFromJSON(data);
 }
 
@@ -592,7 +592,7 @@ void User::loadUserTaskFromJSON(
 
     if (!data["server_deleted_at"].asString().empty()) {
         if (model) {
-            model->MarkAsDeletedOnServer();
+            model->IsMarkedAsDeletedOnServer.Set(true);
         }
         return;
     }
@@ -605,7 +605,7 @@ void User::loadUserTaskFromJSON(
     if (alive) {
         alive->insert(id);
     }
-    model->SetUID(ID());
+    model->UID.Set(ID());
     model->LoadFromJSON(data);
 }
 
@@ -672,7 +672,7 @@ void User::loadUserWorkspaceFromJSON(
 
     if (!data["server_deleted_at"].asString().empty()) {
         if (model) {
-            model->MarkAsDeletedOnServer();
+            model->IsMarkedAsDeletedOnServer.Set(true);
         }
         return;
     }
@@ -684,7 +684,7 @@ void User::loadUserWorkspaceFromJSON(
     if (alive) {
         alive->insert(id);
     }
-    model->SetUID(ID());
+    model->UID.Set(ID());
     model->LoadFromJSON(data);
 }
 
@@ -786,7 +786,7 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
     }
     if (!model) {
         model = new ObmExperiment();
-        model->SetUID(ID());
+        model->UID.Set(ID());
         model->SetNr(nr);
         related.ObmExperiments.push_back(model);
     }
@@ -803,7 +803,7 @@ void User::loadUserAndRelatedDataFromJSON(
         return;
     }
 
-    SetID(data["id"].asUInt64());
+    ID.Set(data["id"].asUInt64());
     SetDefaultWID(data["default_wid"].asUInt64());
     SetAPIToken(data["api_token"].asString());
     SetEmail(data["email"].asString());
@@ -927,7 +927,7 @@ void User::loadUserClientFromSyncJSON(
 
     if (!data["server_deleted_at"].asString().empty()) {
         if (model) {
-            model->MarkAsDeletedOnServer();
+            model->IsMarkedAsDeletedOnServer.Set(true);
         }
         return;
     }
@@ -940,7 +940,7 @@ void User::loadUserClientFromSyncJSON(
         alive->insert(id);
     }
 
-    model->SetUID(ID());
+    model->UID.Set(ID());
     model->LoadFromJSON(data);
 
     if (addNew) {
@@ -967,7 +967,7 @@ void User::loadUserClientFromJSON(
 
     if (!data["server_deleted_at"].asString().empty()) {
         if (model) {
-            model->MarkAsDeletedOnServer();
+            model->IsMarkedAsDeletedOnServer.Set(true);
         }
         return;
     }
@@ -979,7 +979,7 @@ void User::loadUserClientFromJSON(
     if (alive) {
         alive->insert(id);
     }
-    model->SetUID(ID());
+    model->UID.Set(ID());
     model->LoadFromJSON(data);
 }
 
@@ -1001,7 +1001,7 @@ void User::loadUserProjectFromSyncJSON(
 
     if (!data["server_deleted_at"].asString().empty()) {
         if (model) {
-            model->MarkAsDeletedOnServer();
+            model->IsMarkedAsDeletedOnServer.Set(true);
         }
         return;
     }
@@ -1014,7 +1014,7 @@ void User::loadUserProjectFromSyncJSON(
         alive->insert(id);
     }
 
-    model->SetUID(ID());
+    model->UID.Set(ID());
     model->LoadFromJSON(data);
 
     Client *c = related.clientByProject(model);
@@ -1053,7 +1053,7 @@ void User::loadUserProjectFromJSON(
 
     if (!data["server_deleted_at"].asString().empty()) {
         if (model) {
-            model->MarkAsDeletedOnServer();
+            model->IsMarkedAsDeletedOnServer.Set(true);
         }
         return;
     }
@@ -1065,7 +1065,7 @@ void User::loadUserProjectFromJSON(
     if (alive) {
         alive->insert(id);
     }
-    model->SetUID(ID());
+    model->UID.Set(ID());
     model->LoadFromJSON(data);
 }
 
@@ -1092,27 +1092,27 @@ void User::loadUserTimeEntryFromJSON(
 
         if (!data["server_deleted_at"].asString().empty()) {
             if (model) {
-                model->MarkAsDeletedOnServer();
+                model->IsMarkedAsDeletedOnServer.Set(true);
             }
             return;
         }
 
         if (!model) {
             model = new TimeEntry();
-            model->SetID(id);
+            model->ID.Set(id);
             related.pushBackTimeEntry(model);
         }
 
         if (!model->ID()) {
             // case where model was matched by GUID
-            model->SetID(id);
+            model->ID.Set(id);
         }
     }
 
     if (alive) {
         alive->insert(id);
     }
-    model->SetUID(ID());
+    model->UID.Set(ID());
     model->LoadFromJSON(data);
     model->EnsureGUID();
 }
@@ -1487,7 +1487,7 @@ void deleteZombies(
             continue;
         }
         if (alive.end() == alive.find(model->ID())) {
-            model->MarkAsDeletedOnServer();
+            model->IsMarkedAsDeletedOnServer.Set(true);
         }
     }
 }
@@ -1499,7 +1499,7 @@ void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
     for (iterator it = list->begin(); it != list->end(); ++it) {
         T *model = *it;
         if (model->WID() == wid) {
-            model->MarkAsDeletedOnServer();
+            model->IsMarkedAsDeletedOnServer.Set(true);
         }
     }
 }

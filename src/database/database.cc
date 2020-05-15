@@ -1232,8 +1232,8 @@ error Database::LoadUserByID(
             return noError;
         }
 
-        user->SetLocalID(local_id);
-        user->SetID(id);
+        user->LocalID.Set(local_id, false);
+        user->ID.Set(id);
         user->SetDefaultWID(default_wid);
         user->SetSince(since);
         user->SetFullname(fullname);
@@ -1299,9 +1299,9 @@ error Database::loadWorkspaces(
             bool more = rs.moveFirst();
             while (more) {
                 Workspace *model = new Workspace();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
-                model->SetID(rs[1].convert<Poco::UInt64>());
-                model->SetUID(rs[2].convert<Poco::UInt64>());
+                model->LocalID.Set(rs[0].convert<Poco::Int64>());
+                model->ID.Set(rs[1].convert<Poco::UInt64>());
+                model->UID.Set(rs[2].convert<Poco::UInt64>());
                 model->SetName(rs[3].convert<std::string>());
                 model->SetPremium(rs[4].convert<bool>());
                 model->SetOnlyAdminsMayCreateProjects(rs[5].convert<bool>());
@@ -1357,18 +1357,18 @@ error Database::loadClients(
             bool more = rs.moveFirst();
             while (more) {
                 Client *model = new Client();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
+                model->LocalID.Set(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
-                    model->SetID(0);
+                    model->ID.Set(0);
                 } else {
-                    model->SetID(rs[1].convert<Poco::UInt64>());
+                    model->ID.Set(rs[1].convert<Poco::UInt64>());
                 }
-                model->SetUID(rs[2].convert<Poco::UInt64>());
+                model->UID.Set(rs[2].convert<Poco::UInt64>());
                 model->SetName(rs[3].convert<std::string>());
                 if (rs[4].isEmpty()) {
-                    model->SetGUID("");
+                    model->GUID.Set("");
                 } else {
-                    model->SetGUID(rs[4].convert<std::string>());
+                    model->GUID.Set(rs[4].convert<std::string>());
                 }
                 model->SetWID(rs[5].convert<Poco::UInt64>());
                 model->ClearDirty();
@@ -1425,18 +1425,18 @@ error Database::loadProjects(
             bool more = rs.moveFirst();
             while (more) {
                 Project *model = new Project();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
+                model->LocalID.Set(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
-                    model->SetID(0);
+                    model->ID.Set(0);
                 } else {
-                    model->SetID(rs[1].convert<Poco::UInt64>());
+                    model->ID.Set(rs[1].convert<Poco::UInt64>());
                 }
-                model->SetUID(rs[2].convert<Poco::UInt64>());
+                model->UID.Set(rs[2].convert<Poco::UInt64>());
                 model->SetName(rs[3].convert<std::string>());
                 if (rs[4].isEmpty()) {
-                    model->SetGUID("");
+                    model->GUID.Set("");
                 } else {
-                    model->SetGUID(rs[4].convert<std::string>());
+                    model->GUID.Set(rs[4].convert<std::string>());
                 }
                 model->SetWID(rs[5].convert<Poco::UInt64>());
                 if (rs[6].isEmpty()) {
@@ -1508,13 +1508,13 @@ error Database::loadTasks(
             bool more = rs.moveFirst();
             while (more) {
                 Task *model = new Task();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
+                model->LocalID.Set(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
-                    model->SetID(0);
+                    model->ID.Set(0);
                 } else {
-                    model->SetID(rs[1].convert<Poco::UInt64>());
+                    model->ID.Set(rs[1].convert<Poco::UInt64>());
                 }
-                model->SetUID(rs[2].convert<Poco::UInt64>());
+                model->UID.Set(rs[2].convert<Poco::UInt64>());
                 model->SetName(rs[3].convert<std::string>());
                 model->SetWID(rs[4].convert<Poco::UInt64>());
                 if (rs[5].isEmpty()) {
@@ -1570,19 +1570,19 @@ error Database::loadTags(
             bool more = rs.moveFirst();
             while (more) {
                 Tag *model = new Tag();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
+                model->LocalID.Set(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
-                    model->SetID(0);
+                    model->ID.Set(0);
                 } else {
-                    model->SetID(rs[1].convert<Poco::UInt64>());
+                    model->ID.Set(rs[1].convert<Poco::UInt64>());
                 }
-                model->SetUID(rs[2].convert<Poco::UInt64>());
+                model->UID.Set(rs[2].convert<Poco::UInt64>());
                 model->SetName(rs[3].convert<std::string>());
                 model->SetWID(rs[4].convert<Poco::UInt64>());
                 if (rs[5].isEmpty()) {
-                    model->SetGUID("");
+                    model->GUID.Set("");
                 } else {
-                    model->SetGUID(rs[5].convert<std::string>());
+                    model->GUID.Set(rs[5].convert<std::string>());
                 }
                 model->ClearDirty();
                 list->push_back(model);
@@ -1631,8 +1631,8 @@ error Database::loadAutotrackerRules(
             bool more = rs.moveFirst();
             while (more) {
                 AutotrackerRule *model = new AutotrackerRule();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
-                model->SetUID(rs[1].convert<Poco::UInt64>());
+                model->LocalID.Set(rs[0].convert<Poco::Int64>());
+                model->UID.Set(rs[1].convert<Poco::UInt64>());
                 model->SetTerm(rs[2].convert<std::string>());
                 model->SetPID(rs[3].convert<Poco::UInt64>());
                 if (!rs[4].isEmpty()) {
@@ -1685,8 +1685,8 @@ error Database::loadObmActions(
             bool more = rs.moveFirst();
             while (more) {
                 ObmAction *model = new ObmAction();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
-                model->SetUID(rs[1].convert<Poco::UInt64>());
+                model->LocalID.Set(rs[0].convert<Poco::Int64>());
+                model->UID.Set(rs[1].convert<Poco::UInt64>());
                 model->SetExperimentID(rs[2].convert<Poco::UInt64>());
                 model->SetKey(rs[3].convert<std::string>());
                 model->SetValue(rs[4].convert<std::string>());
@@ -1737,8 +1737,8 @@ error Database::loadObmExperiments(
             bool more = rs.moveFirst();
             while (more) {
                 ObmExperiment *model = new ObmExperiment();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
-                model->SetUID(rs[1].convert<Poco::UInt64>());
+                model->LocalID.Set(rs[0].convert<Poco::Int64>());
+                model->UID.Set(rs[1].convert<Poco::UInt64>());
                 model->SetNr(rs[2].convert<Poco::UInt64>());
                 model->SetIncluded(rs[3].convert<bool>());
                 model->SetHasSeen(rs[4].convert<bool>());
@@ -1791,7 +1791,7 @@ error Database::loadTimelineEvents(
             bool more = rs.moveFirst();
             while (more) {
                 TimelineEvent *model = new TimelineEvent();
-                model->SetLocalID(rs[0].convert<unsigned int>());
+                model->LocalID.Set(rs[0].convert<unsigned int>());
                 if (!rs[1].isEmpty()) {
                     model->SetTitle(rs[1].convert<std::string>());
                 }
@@ -1805,9 +1805,9 @@ error Database::loadTimelineEvents(
                 model->SetIdle(rs[5].convert<bool>());
                 model->SetUploaded(rs[6].convert<bool>());
                 model->SetChunked(rs[7].convert<bool>());
-                model->SetGUID(rs[8].convert<std::string>());
+                model->GUID.Set(rs[8].convert<std::string>());
 
-                model->SetUID(UID);
+                model->UID.Set(UID);
 
                 model->ClearDirty();
 
@@ -1902,20 +1902,20 @@ error Database::loadTimeEntriesFromSQLStatement(
             bool more = rs.moveFirst();
             while (more) {
                 TimeEntry *model = new TimeEntry();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
+                model->LocalID.Set(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
-                    model->SetID(0);
+                    model->ID.Set(0);
                 } else {
-                    model->SetID(rs[1].convert<Poco::UInt64>());
+                    model->ID.Set(rs[1].convert<Poco::UInt64>());
                 }
-                model->SetUID(rs[2].convert<Poco::UInt64>());
+                model->UID.Set(rs[2].convert<Poco::UInt64>());
                 if (rs[3].isEmpty()) {
                     model->SetDescription("");
                 } else {
                     model->SetDescription(rs[3].convert<std::string>());
                 }
                 model->SetWID(rs[4].convert<Poco::UInt64>());
-                model->SetGUID(rs[5].convert<std::string>());
+                model->GUID.Set(rs[5].convert<std::string>());
                 if (rs[6].isEmpty()) {
                     model->SetPID(0);
                 } else {
@@ -1929,9 +1929,9 @@ error Database::loadTimeEntriesFromSQLStatement(
                 model->SetBillable(rs[8].convert<bool>());
                 model->SetDurOnly(rs[9].convert<bool>());
                 if (rs[10].isEmpty()) {
-                    model->SetUIModifiedAt(0);
+                    model->UIModifiedAt.Set(0, false);
                 } else {
-                    model->SetUIModifiedAt(rs[10].convert<Poco::Int64>());
+                    model->UIModifiedAt.Set(rs[10].convert<Poco::Int64>(), false);
                 }
                 model->SetStart(rs[11].convert<Poco::Int64>());
                 if (rs[12].isEmpty()) {
@@ -1951,14 +1951,14 @@ error Database::loadTimeEntriesFromSQLStatement(
                     model->SetCreatedWith(rs[15].convert<std::string>());
                 }
                 if (rs[16].isEmpty()) {
-                    model->SetDeletedAt(0);
+                    model->DeletedAt.Set(0, false);
                 } else {
-                    model->SetDeletedAt(rs[16].convert<Poco::Int64>());
+                    model->DeletedAt.Set(rs[16].convert<Poco::Int64>(), false);
                 }
                 if (rs[17].isEmpty()) {
-                    model->SetUpdatedAt(0);
+                    model->UpdatedAt.Set(0, false);
                 } else {
-                    model->SetUpdatedAt(rs[17].convert<Poco::Int64>());
+                    model->UpdatedAt.Set(rs[17].convert<Poco::Int64>(), false);
                 }
                 if (rs[18].isEmpty()) {
                     model->SetProjectGUID("");
@@ -1966,9 +1966,9 @@ error Database::loadTimeEntriesFromSQLStatement(
                     model->SetProjectGUID(rs[18].convert<std::string>());
                 }
                 if (rs[19].isEmpty()) {
-                    model->SetValidationError("");
+                    model->ValidationError.Set("", false);
                 } else {
-                    model->SetValidationError(rs[19].convert<std::string>());
+                    model->ValidationError.Set(rs[19].convert<std::string>(), false);
                 }
                 model->ClearDirty();
 
@@ -2016,7 +2016,7 @@ error Database::saveRelatedModels(
                 model->GUID()));
             continue;
         }
-        model->SetUID(UID);
+        model->UID.Set(UID);
         error err = saveModel(model, changes);
         if (err != noError) {
             return err;
@@ -2238,7 +2238,7 @@ error Database::saveModel(
             if (err != noError) {
                 return err;
             }
-            model->SetLocalID(local_id);
+            model->LocalID.Set(local_id);
             changes->push_back(ModelChange(
                 model->ModelName(),
                 kChangeTypeInsert,
@@ -2390,7 +2390,7 @@ error Database::saveModel(
             if (err != noError) {
                 return err;
             }
-            model->SetLocalID(local_id);
+            model->LocalID.Set(local_id);
             changes->push_back(ModelChange(
                 model->ModelName(),
                 kChangeTypeInsert,
@@ -2478,7 +2478,7 @@ error Database::saveModel(
             if (err != noError) {
                 return err;
             }
-            model->SetLocalID(local_id);
+            model->LocalID.Set(local_id);
             changes->push_back(ModelChange(
                 model->ModelName(),
                 kChangeTypeInsert,
@@ -2568,7 +2568,7 @@ error Database::saveModel(
             if (err != noError) {
                 return err;
             }
-            model->SetLocalID(local_id);
+            model->LocalID.Set(local_id);
             changes->push_back(ModelChange(
                 model->ModelName(),
                 kChangeTypeInsert,
@@ -2667,7 +2667,7 @@ error Database::saveModel(
             if (err != noError) {
                 return err;
             }
-            model->SetLocalID(local_id);
+            model->LocalID.Set(local_id);
             changes->push_back(ModelChange(
                 model->ModelName(), kChangeTypeInsert, model->ID(), ""));
         }
@@ -2779,7 +2779,7 @@ error Database::saveModel(
             if (err != noError) {
                 return err;
             }
-            model->SetLocalID(local_id);
+            model->LocalID.Set(local_id);
             changes->push_back(ModelChange(
                 model->ModelName(),
                 kChangeTypeInsert,
@@ -3020,7 +3020,7 @@ error Database::saveModel(
             if (err != noError) {
                 return err;
             }
-            model->SetLocalID(local_id);
+            model->LocalID.Set(local_id);
             changes->push_back(ModelChange(
                 model->ModelName(),
                 kChangeTypeInsert,
@@ -3100,7 +3100,7 @@ error Database::saveModel(
             if (err != noError) {
                 return err;
             }
-            model->SetLocalID(local_id);
+            model->LocalID.Set(local_id);
             changes->push_back(ModelChange(
                 model->ModelName(), kChangeTypeInsert, model->ID(), ""));
         }
@@ -3202,7 +3202,7 @@ error Database::saveModel(
             if (err != noError) {
                 return err;
             }
-            model->SetLocalID(local_id);
+            model->LocalID.Set(local_id);
             changes->push_back(ModelChange(
                 model->ModelName(),
                 kChangeTypeInsert,
@@ -3338,7 +3338,7 @@ error Database::SaveUser(
                     session_->rollback();
                     return err;
                 }
-                user->SetLocalID(local_id);
+                user->LocalID.Set(local_id);
                 changes->push_back(ModelChange(
                     user->ModelName(),
                     kChangeTypeInsert,
@@ -4031,7 +4031,7 @@ error Database::saveModel(
             if (err != noError) {
                 return err;
             }
-            model->SetLocalID(local_id);
+            model->LocalID.Set(local_id);
             changes->push_back(ModelChange(
                 model->ModelName(),
                 kChangeTypeInsert,
