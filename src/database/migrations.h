@@ -34,7 +34,6 @@ class TOGGL_INTERNAL_EXPORT Migrations {
     error migrateSettings();
     error migrateObmActions();
     error migrateObmExperiments();
-    error migrateOnboardingStates();
 };
 
 }  // namespace toggl

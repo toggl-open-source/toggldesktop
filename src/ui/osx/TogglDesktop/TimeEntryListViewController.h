@@ -21,6 +21,5 @@
 @property (nonatomic, assign, readonly) BOOL isEditorOpen;
 
 - (void)loadMoreIfNeedAtDate:(NSDate *)date;
-- (NSView * __nullable) firstTimeEntryCellForOnboarding;
 
 @end

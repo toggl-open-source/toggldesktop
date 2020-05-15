@@ -165,12 +165,6 @@
     <ClInclude Include="..\..\..\model\settings.h">
       <Filter>Header Files\model</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\onboarding_service.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\cpptime.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -292,9 +286,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\model\autotracker.cc">
       <Filter>Source Files\model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\onboarding_service.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

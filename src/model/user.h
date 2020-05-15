@@ -37,11 +37,9 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     , default_pid_(0)
     , default_tid_(0)
     , has_loaded_more_(false)
-    , collapse_entries_(false)
-    , IsNewUser(false) {}
+    , collapse_entries_(false) {}
 
     ~User();
-    bool IsNewUser;
 
     error EnableOfflineLogin(
         const std::string &password);

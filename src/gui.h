@@ -15,7 +15,6 @@
 #include "toggl_api_private.h"
 #include "types.h"
 #include "util/logger.h"
-#include "onboarding_service.h"
 
 #include <Poco/LocalDateTime.h>
 
@@ -688,17 +687,10 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
 
     void SetTimelineDateAt(const Poco::LocalDateTime &value) {
         timeline_date_at_ = value;
-        OnboardingService::getInstance()->SetTimelineDateAt(value);
     }
 
     void resetTimeEntryGUID() {
         time_entry_editor_guid_ = "";
-    }
-
-    void DisplayOnboarding(const OnboardingType onboarding_type);
-    
-    void OnDisplayOnboarding(TogglDisplayOnboarding cb) {
-        on_display_onboarding_ = cb;
     }
 
     void DisplayOnContinueSignIn() {
@@ -743,7 +735,6 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     TogglDisplayProjectColors on_display_project_colors_;
     TogglDisplayCountries on_display_countries_;
     TogglDisplayObmExperiment on_display_obm_experiment_;
-    TogglDisplayOnboarding on_display_onboarding_;
     TogglContinueSignIn on_continue_sign_in;
 
     // Cached views

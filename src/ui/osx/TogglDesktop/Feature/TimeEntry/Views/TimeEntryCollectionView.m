@@ -25,25 +25,6 @@ extern void *ctx;
 - (void)awakeFromNib
 {
 	[super awakeFromNib];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                         selector:@selector(onboardingDidClickNotification:)
-                                             name:kOnboardingDidClickNotification
-                                           object:nil];
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void) onboardingDidClickNotification:(NSNotification *) noti
-{
-    if ([noti.object isKindOfClass:[NSEvent class]]) {
-        NSEvent *event = (NSEvent *) noti.object;
-        CGPoint point = [self convertPoint:[event locationInWindow] fromView:nil];
-        [self selectTimeEntryAtPoint:point];
-    }
 }
 
 - (BOOL)isFlipped
@@ -86,52 +67,47 @@ extern void *ctx;
 	}
 
 	NSPoint curPoint = [self convertPoint:[event locationInWindow] fromView:nil];
-    [self selectTimeEntryAtPoint:curPoint];
-}
+	NSIndexPath *index = [self indexPathForItemAtPoint:curPoint];
+	NSCollectionViewItem *item = [self itemAtIndexPath:index];
 
-- (void) selectTimeEntryAtPoint:(CGPoint) point
-{
-    NSIndexPath *index = [self indexPathForItemAtPoint:point];
-    NSCollectionViewItem *item = [self itemAtIndexPath:index];
+	if (index && [item isKindOfClass:[TimeEntryCell class]])
+	{
+		TimeEntryCell *timeCell = (TimeEntryCell *)item;
 
-    if (index && [item isKindOfClass:[TimeEntryCell class]])
-    {
-        TimeEntryCell *timeCell = (TimeEntryCell *)item;
+		// We have to store the click index
+		// so, the displayTimeEntryEditor can detect which cell should be show popover
+		self.clickedIndexPath = index;
 
-        // We have to store the click index
-        // so, the displayTimeEntryEditor can detect which cell should be show popover
-        self.clickedIndexPath = index;
+		// If we're pressing SHIFT and click
+		// Don't show Editor, just select
+		NSUInteger flags = [[NSApp currentEvent] modifierFlags];
+		if (flags & NSShiftKeyMask)
+		{
+			NSSet *set = [NSSet setWithObject:index];
 
-        // If we're pressing SHIFT and click
-        // Don't show Editor, just select
-        NSUInteger flags = [[NSApp currentEvent] modifierFlags];
-        if (flags & NSShiftKeyMask)
-        {
-            NSSet *set = [NSSet setWithObject:index];
+			// Select or deselect
+			if ([self.previousSelectionSet containsObject:index])
+			{
+				[self deselectItemsAtIndexPaths:set];
+			}
+			else
+			{
+				[self selectItemsAtIndexPaths:set scrollPosition:NSCollectionViewScrollPositionLeft];
+			}
 
-            // Select or deselect
-            if ([self.previousSelectionSet containsObject:index])
-            {
-                [self deselectItemsAtIndexPaths:set];
-            }
-            else
-            {
-                [self selectItemsAtIndexPaths:set scrollPosition:NSCollectionViewScrollPositionLeft];
-            }
+			return;
+		}
 
-            return;
-        }
-
-        // Show popover or open group
-        if (timeCell.cellType == CellTypeGroup)
-        {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kToggleGroup object:timeCell.GroupName];
-        }
-        else
-        {
-            [timeCell focusFieldName];
-        }
-    }
+		// Show popover or open group
+		if (timeCell.cellType == CellTypeGroup)
+		{
+			[[NSNotificationCenter defaultCenter] postNotificationName:kToggleGroup object:timeCell.GroupName];
+		}
+		else
+		{
+			[timeCell focusFieldName];
+		}
+	}
 }
 
 - (void)keyDown:(NSEvent *)event {

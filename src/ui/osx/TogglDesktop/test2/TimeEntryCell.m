@@ -76,7 +76,7 @@ extern void *ctx;
 	// We don't need to remove TrackingArea and create with new size after cell's size change
 	bounds.size.width = NSScreen.mainScreen.frame.size.width;
 	NSTrackingArea *tracking = [[NSTrackingArea alloc]initWithRect:bounds
-														   options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveInActiveApp)
+														   options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways)
 															 owner:self
 														  userInfo:nil];
 	[self.view addTrackingArea:tracking];
@@ -106,12 +106,6 @@ extern void *ctx;
 {
 	[super mouseEntered:event];
 
-    // Since there is no way to prevent NSTrackingArea triggers if the Onboarding is shown
-    // Manually check and Don't highlight
-    if ([OnboardingServiceObjc isOnboardingShown]) {
-        return;
-    }
-
 	// Only pply hover color if it's not sub-items
 	if (self.cellType != CellTypeSubItemInGroup)
 	{
@@ -125,10 +119,6 @@ extern void *ctx;
 - (void)mouseExited:(NSEvent *)event
 {
 	[super mouseExited:event];
-
-    if ([OnboardingServiceObjc isOnboardingShown]) {
-        return;
-    }
 
 	if (self.isSelected)
 	{

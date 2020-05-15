@@ -35,6 +35,8 @@ static void *XXContext = &XXContext;
 static NSString *kStateKey = @"state";
 
 @interface TimerEditViewController () <ClickableImageViewDelegate>
+@property (weak) IBOutlet NSBoxClickable *manualBox;
+@property (weak) IBOutlet NSBoxClickable *mainBox;
 @property (weak) IBOutlet NSTextFieldDuration *durationTextField;
 @property (weak) IBOutlet NSHoverButton *startButton;
 @property (weak) IBOutlet ProjectTextField *projectTextField;

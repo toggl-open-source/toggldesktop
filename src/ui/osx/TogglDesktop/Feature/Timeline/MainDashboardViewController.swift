@@ -70,8 +70,6 @@ final class MainDashboardViewController: NSViewController {
     @IBAction func timelineBtnOnTap(_ sender: Any) {
         currentTab = .timeline
         timelineController.scrollToVisibleItem()
-        // Onboarding states
-        DesktopLibraryBridge.shared().userDidClickOnTimelineTab()
     }
 
     @objc func timelineDataNotification(_ noti: Notification) {
@@ -87,16 +85,6 @@ final class MainDashboardViewController: NSViewController {
     @objc func previousDay() {
         currentTab = .timeline
         timelineController.previousDay()
-    }
-
-    @objc func switchToTab(_ presentTab: OnboardingPresentViewTab) {
-        switch presentTab {
-        case .timeEntry:
-            currentTab = .timeEntryList
-        case .timeline:
-            currentTab = .timeline
-            timelineController.scrollToVisibleItem()
-        }
     }
 }
 

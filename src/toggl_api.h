@@ -335,9 +335,6 @@ extern "C" {
     typedef void (*TogglDisplayCountries)(
         TogglCountryView *first);
 
-    typedef void (*TogglDisplayOnboarding)(
-        const int64_t onboarding_type);
-
     // Initialize/destroy an instance of the app
 
     TOGGL_EXPORT void *toggl_context_init(
@@ -1193,20 +1190,7 @@ extern "C" {
         const char_t *tags,
         const bool_t billable);
 
-    TOGGL_EXPORT void toggl_on_onboarding(
-        void *context,
-        TogglDisplayOnboarding cb);
-
-    TOGGL_EXPORT void toggl_user_did_click_on_timeline_tab(
-        void *context);
-
-    TOGGL_EXPORT void toggl_user_did_turn_on_record_activity(
-        void *context);
-
-    TOGGL_EXPORT void toggl_user_did_edit_add_timeentry_on_timeline_view(
-        void *context);
-
-    TOGGL_EXPORT void toggl_on_continue_sign_in(
+TOGGL_EXPORT void toggl_on_continue_sign_in(
         void *context,
         TogglContinueSignIn cb);
 
