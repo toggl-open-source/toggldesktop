@@ -34,7 +34,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     }
     virtual void ClearDirty() {
         Dirty.Set(false);
-        MarkAllPropertiesNotDirty(ValidationError, DeletedAt, UpdatedAt, GUID, UIModifiedAt, UID, ID);
+        AllPropertiesClearDirty(ValidationError, DeletedAt, UpdatedAt, GUID, UIModifiedAt, UID, ID);
     }
 
     Property<bool> Dirty { false };
