@@ -15,44 +15,26 @@ namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Task : public BaseModel {
  public:
-    Task()
-        : BaseModel()
-    , name_("")
-    , wid_(0)
-    , pid_(0)
-    , active_(false) {}
+    Task() : BaseModel() {}
 
-    const std::string &Name() const {
-        return name_;
+    virtual bool IsDirty() const override {
+        return BaseModel::IsDirty() || IsAnyPropertyDirty(Name, WID, PID, Active);
     }
-    void SetName(const std::string &value);
+    virtual void ClearDirty() override {
+        BaseModel::ClearDirty();
+        AllPropertiesClearDirty(Name, WID, PID, Active);
+    }
 
-    const Poco::UInt64 &WID() const {
-        return wid_;
-    }
-    void SetWID(const Poco::UInt64 value);
-
-    const Poco::UInt64 &PID() const {
-        return pid_;
-    }
-    void SetPID(const Poco::UInt64 value);
-
-    const bool &Active() const {
-        return active_;
-    }
-    void SetActive(const bool value);
+    Property<std::string> Name { "" };
+    Property<Poco::UInt64> WID { 0 };
+    Property<Poco::UInt64> PID { 0 };
+    Property<bool> Active { false };
 
     // Override BaseModel
     std::string String() const override;
     std::string ModelName() const override;
     std::string ModelURL() const override;
     void LoadFromJSON(Json::Value value) override;
-
- private:
-    std::string name_;
-    Poco::UInt64 wid_;
-    Poco::UInt64 pid_;
-    bool active_;
 };
 
 }  // namespace toggl

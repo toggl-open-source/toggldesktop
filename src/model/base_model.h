@@ -37,13 +37,15 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
         AllPropertiesClearDirty(ValidationError, DeletedAt, UpdatedAt, GUID, UIModifiedAt, UID, ID);
     }
 
-    Property<bool> Dirty { false };
-
     Property<Poco::Int64> LocalID { 0 };
     Property<Poco::UInt64> ID { 0 };
     Property<guid> GUID { "" };
     Property<Poco::Int64> UIModifiedAt { 0 };
     Property<Poco::UInt64> UID { 0 };
+    Property<Poco::Int64> UpdatedAt { 0 };
+    // If model push to backend results in an error,
+    // the error is attached to the model for later inspection.
+    Property<std::string> ValidationError { "" };
     // Deleting a time entry hides it from
     // UI and flags it for removal from server:
     Property<Poco::Int64> DeletedAt { 0 };
@@ -51,16 +53,14 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     // on server, it will be removed from local
     // DB using this flag:
     Property<bool> IsMarkedAsDeletedOnServer { false };
-    Property<Poco::Int64> UpdatedAt { 0 };
-    // If model push to backend results in an error,
-    // the error is attached to the model for later inspection.
-    Property<std::string> ValidationError { "" };
     // Flag is set only when sync fails.
     // Its for viewing purposes only. It should not
     // be used to check if a model needs to be
     // pushed to backend. It only means that some
     // attempt to push failed somewhere.
     Property<bool> Unsynced { false };
+
+    Property<bool> Dirty { false };
 
     void SetUIModified() {
         UIModifiedAt.Set(time(nullptr));

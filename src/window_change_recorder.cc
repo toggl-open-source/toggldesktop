@@ -77,10 +77,10 @@ void WindowChangeRecorder::inspectFocusedWindow() {
             last_autotracker_title_ = title;
 
             TimelineEvent event;
-            event.SetStart(last_event_started_at_);
-            event.SetEndTime(now);
-            event.SetTitle(title);
-            event.SetIdle(false);
+            event.StartTime.Set(last_event_started_at_);
+            event.EndTime.Set(now);
+            event.Title.Set(title);
+            event.Idle.Set(false);
             timeline_datasource_->StartAutotrackerEvent(event);
         }
     }
@@ -109,11 +109,11 @@ void WindowChangeRecorder::inspectFocusedWindow() {
         // if window was focussed at least X seconds, save it to timeline
         if (time_delta >= kWindowFocusThresholdSeconds && !last_idle_) {
             TimelineEvent *event = new TimelineEvent();
-            event->SetStart(last_event_started_at_);
-            event->SetEndTime(now);
-            event->SetFilename(last_filename_);
-            event->SetTitle(last_title_);
-            event->SetIdle(false);
+            event->StartTime.Set(last_event_started_at_);
+            event->EndTime.Set(now);
+            event->Filename.Set(last_filename_);
+            event->Title.Set(last_title_);
+            event->Idle.Set(false);
             error err = timeline_datasource_->StartTimelineEvent(event);
             if (err != noError) {
                 logger.error(err);

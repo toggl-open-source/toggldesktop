@@ -190,7 +190,7 @@ TimeEntry *RelatedData::LatestTimeEntry() const {
             continue;
         }
 
-        if (!latest || (te->Stop() > latest->Stop())) {
+        if (!latest || (te->StopTime() > latest->StopTime())) {
             latest = te;
         }
     }

@@ -30,65 +30,23 @@ std::string Project::String() const {
     ss  << "ID=" << ID()
         << " local_id=" << LocalID()
         << " guid=" << GUID()
-        << " name=" << name_
-        << " wid=" << wid_
-        << " cid=" << cid_
-        << " client_guid=" << client_guid_
-        << " active=" << active_
-        << " public=" << private_
-        << " color=" << color_
-        << " billable=" << billable_
-        << " client_guid=" << client_guid_;
+        << " name=" << Name()
+        << " wid=" << WID()
+        << " cid=" << CID()
+        << " client_guid=" << ClientGUID()
+        << " active=" << Active()
+        << " public=" << Private()
+        << " color=" << Color()
+        << " billable=" << Billable()
+        << " client_name=" << ClientName();
     return ss.str();
 }
 
 std::string Project::FullName() const {
     std::stringstream ss;
-    ss << client_name_
-       << name_;
+    ss << ClientName()
+       << Name();
     return ss.str();
-}
-
-void Project::SetClientGUID(const std::string &value) {
-    if (client_guid_ != value) {
-        client_guid_ = value;
-        SetDirty();
-    }
-}
-
-void Project::SetActive(const bool value) {
-    if (active_ != value) {
-        active_ = value;
-        SetDirty();
-    }
-}
-
-void Project::SetPrivate(const bool value) {
-    if (private_ != value) {
-        private_ = value;
-        SetDirty();
-    }
-}
-
-void Project::SetName(const std::string &value) {
-    if (name_ != value) {
-        name_ = value;
-        SetDirty();
-    }
-}
-
-void Project::SetBillable(const bool value) {
-    if (billable_ != value) {
-        billable_ = value;
-        SetDirty();
-    }
-}
-
-void Project::SetColor(const std::string &value) {
-    if (color_ != value) {
-        color_ = Poco::UTF8::toLower(value);
-        SetDirty();
-    }
 }
 
 std::string Project::ColorCode() const {
@@ -100,44 +58,23 @@ std::string Project::ColorCode() const {
 }
 
 error Project::SetColorCode(const std::string &color_code) {
-    SetColor(color_code);
+    Color.Set(color_code);
     return noError;
-}
-
-void Project::SetWID(const Poco::UInt64 value) {
-    if (wid_ != value) {
-        wid_ = value;
-        SetDirty();
-    }
-}
-
-void Project::SetCID(const Poco::UInt64 value) {
-    if (cid_ != value) {
-        cid_ = value;
-        SetDirty();
-    }
-}
-
-void Project::SetClientName(const std::string &value) {
-    if (client_name_ != value) {
-        client_name_ = value;
-        SetDirty();
-    }
 }
 
 void Project::LoadFromJSON(Json::Value data) {
     if (data.isMember("hex_color")) {
-        SetColor(data["hex_color"].asString());
+        Color.Set(data["hex_color"].asString());
     } else {
-        SetColor(data["color"].asString());
+        Color.Set(data["color"].asString());
     }
 
     ID.Set(data["id"].asUInt64());
-    SetName(data["name"].asString());
-    SetWID(data["wid"].asUInt64());
-    SetCID(data["cid"].asUInt64());
-    SetActive(data["active"].asBool());
-    SetBillable(data["billable"].asBool());
+    Name.Set(data["name"].asString());
+    WID.Set(data["wid"].asUInt64());
+    CID.Set(data["cid"].asUInt64());
+    Active.Set(data["active"].asBool());
+    Billable.Set(data["billable"].asBool());
 }
 
 Json::Value Project::SaveToJSON(int apiVersion) const {
@@ -154,7 +91,7 @@ Json::Value Project::SaveToJSON(int apiVersion) const {
     }
     // There is no way to set it in UI and free ws gets error when it's sent
     // n["billable"] = Billable();
-    n["is_private"] = IsPrivate();
+    n["is_private"] = Private();
     n["color"] = Poco::UTF8::toLower(Color());
     n["active"] = Active();
 
@@ -186,15 +123,15 @@ bool Project::onlyAdminsCanChangeProjectVisibility(
 
 bool Project::ResolveError(const toggl::error &err) {
     if (userCannotAccessWorkspace(err)) {
-        SetWID(0);
+        WID.Set(0);
         return true;
     }
     if (clientIsInAnotherWorkspace(err)) {
-        SetCID(0);
+        CID.Set(0);
         return true;
     }
-    if (!IsPrivate() && onlyAdminsCanChangeProjectVisibility(err)) {
-        SetPrivate(true);
+    if (!Private() && onlyAdminsCanChangeProjectVisibility(err)) {
+        Private.Set(true);
         return true;
     }
     if (err.find(kProjectNameAlready) != std::string::npos) {

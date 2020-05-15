@@ -89,20 +89,20 @@ TEST(TimeEntry, SetDurationUserInput) {
 
 TEST(Project, ProjectsHaveColorCodes) {
     Project p;
-    p.SetColor("1");
+    p.Color.Set("1");
     ASSERT_EQ("#9e5bd9", p.ColorCode());
-    p.SetColor("");
+    p.Color.Set("");
     ASSERT_EQ("", p.ColorCode());
-    p.SetColor("0");
+    p.Color.Set("0");
     ASSERT_EQ("#0b83d9", p.ColorCode());
 }
 
 TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {
     Project p;
-    p.SetPrivate(false);
+    p.Private.Set(false);
     error err = error("Only admins can change project visibility");
     ASSERT_TRUE(p.ResolveError(err));
-    ASSERT_TRUE(p.IsPrivate());
+    ASSERT_TRUE(p.Private());
 }
 
 TEST(User, CreateCompressedTimelineBatchForUpload) {
@@ -122,10 +122,10 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     TimelineEvent *good = new TimelineEvent();
     good->UID.Set(user_id);
     // started yesterday, "16 minutes ago"
-    good->SetStart(time(0) - 86400 - 60*16);
-    good->SetEndTime(good->Start() + good_duration_seconds);
-    good->SetFilename("Notepad.exe");
-    good->SetTitle("untitled");
+    good->StartTime.Set(time(0) - 86400 - 60*16);
+    good->EndTime.Set(good->Start() + good_duration_seconds);
+    good->Filename.Set("Notepad.exe");
+    good->Title.Set("untitled");
     user.related.TimelineEvents.push_back(good);
 
     Poco::UInt64 good2_duration_seconds(20);
@@ -134,41 +134,41 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // can be uploaded to Toggl backend.
     TimelineEvent *good2 = new TimelineEvent();
     good2->UID.Set(user_id);
-    good2->SetStart(good->EndTime() + 1);  // started after first event
-    good2->SetEndTime(good2->Start() + good2_duration_seconds);
-    good2->SetFilename("Notepad.exe");
-    good2->SetTitle("untitled");
+    good2->StartTime.Set(good->EndTime() + 1);  // started after first event
+    good2->EndTime.Set(good2->Start() + good2_duration_seconds);
+    good2->Filename.Set("Notepad.exe");
+    good2->Title.Set("untitled");
     user.related.TimelineEvents.push_back(good2);
 
     // Another event that happened at least 15 minutes ago,
     // but has already been uploaded to Toggl backend.
     TimelineEvent *uploaded = new TimelineEvent();;
     uploaded->UID.Set(user_id);
-    uploaded->SetStart(good2->EndTime() + 1);  // started after second event
-    uploaded->SetEndTime(uploaded->Start() + 10);
-    uploaded->SetFilename("Notepad.exe");
-    uploaded->SetTitle("untitled");
-    uploaded->SetUploaded(true);
+    uploaded->StartTime.Set(good2->EndTime() + 1);  // started after second event
+    uploaded->EndTime.Set(uploaded->Start() + 10);
+    uploaded->Filename.Set("Notepad.exe");
+    uploaded->Title.Set("untitled");
+    uploaded->Uploaded.Set(true);
     user.related.TimelineEvents.push_back(uploaded);
 
     // This event happened less than 15 minutes ago,
     // so it must not be uploaded
     TimelineEvent *too_fresh = new TimelineEvent();
     too_fresh->UID.Set(user_id);
-    too_fresh->SetStart(time(0) - 60);  // started 1 minute ago
-    too_fresh->SetEndTime(time(0));  // lasted until now
-    too_fresh->SetFilename("Notepad.exe");
-    too_fresh->SetTitle("notes");
+    too_fresh->StartTime.Set(time(0) - 60);  // started 1 minute ago
+    too_fresh->EndTime.Set(time(0));  // lasted until now
+    too_fresh->Filename.Set("Notepad.exe");
+    too_fresh->Title.Set("notes");
     user.related.TimelineEvents.push_back(too_fresh);
 
     // This event happened more than 7 days ago,
     // so it must not be uploaded, just deleted
     TimelineEvent *too_old = new TimelineEvent();
     too_old->UID.Set(user_id);
-    too_old->SetStart(time(0) - kTimelineSecondsToKeep - 1);  // 7 days ago
-    too_old->SetEndTime(too_old->EndTime() + 120);  // lasted 2 minutes
-    too_old->SetFilename("Notepad.exe");
-    too_old->SetTitle("diary");
+    too_old->StartTime.Set(time(0) - kTimelineSecondsToKeep - 1);  // 7 days ago
+    too_old->EndTime.Set(too_old->EndTime() + 120);  // lasted 2 minutes
+    too_old->Filename.Set("Notepad.exe");
+    too_old->Title.Set("diary");
     user.related.TimelineEvents.push_back(too_old);
 
     db.instance()->SaveUser(&user, true, &changes);
@@ -289,15 +289,15 @@ TEST(User, Since) {
     ASSERT_FALSE(u.HasValidSinceDate());
 
     // 0 timestamp should be wrong
-    u.SetSince(0);
+    u.Since.Set(0);
     ASSERT_FALSE(u.HasValidSinceDate());
 
     // current time should be ok
-    u.SetSince(time(0));
+    u.Since.Set(time(0));
     ASSERT_TRUE(u.HasValidSinceDate());
 
     // 1 month ago should be fine
-    u.SetSince(time(0) - 2.62974e6);
+    u.Since.Set(time(0) - 2.62974e6);
     ASSERT_TRUE(u.HasValidSinceDate());
 }
 
@@ -407,7 +407,7 @@ TEST(User, UpdatesTimeEntryFromFullUserJSON) {
     size_t n = json.find("Important things");
     ASSERT_TRUE(n);
 
-    te->SetDescription("Even more important!");
+    te->Description.Set("Even more important!");
 
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(json, true));
@@ -425,7 +425,7 @@ TEST(Database, SavesAndLoadsUserFields) {
 
     ASSERT_TRUE(user.StoreStartAndStopTime());
     // Change fields
-    user.SetStoreStartAndStopTime(false);
+    user.StoreStartAndStopTime.Set(false);
 
     std::vector<ModelChange> changes;
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
@@ -436,7 +436,7 @@ TEST(Database, SavesAndLoadsUserFields) {
     ASSERT_FALSE(user2.StoreStartAndStopTime());
 
     // Change fields, again
-    user.SetStoreStartAndStopTime(true);
+    user.StoreStartAndStopTime.Set(true);
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
 
     // Load user into another instance
@@ -786,8 +786,8 @@ TEST(User, ParsesAndSavesData) {
     //ASSERT_EQ("07fba193-91c4-0ec8-2894-820df0548a8f", user.related.TimeEntries[0]->GUID());
     ASSERT_EQ(uint(2567324), user.related.TimeEntries[0]->PID());
     ASSERT_TRUE(user.related.TimeEntries[0]->Billable());
-    ASSERT_EQ(uint(1378362830), user.related.TimeEntries[0]->Start());
-    ASSERT_EQ(uint(1378369186), user.related.TimeEntries[0]->Stop());
+    ASSERT_EQ(uint(1378362830), user.related.TimeEntries[0]->StartTime());
+    ASSERT_EQ(uint(1378369186), user.related.TimeEntries[0]->StopTime());
     ASSERT_EQ(6356, user.related.TimeEntries[0]->DurationInSeconds());
     ASSERT_EQ("Important things",
               user.related.TimeEntries[0]->Description());
@@ -974,269 +974,269 @@ TEST(TimeEntry, ParsesDurationLikeOnTheWeb) {
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("00:23:15");
     ASSERT_EQ("0:23:15",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("12:34:56");
     ASSERT_EQ("12:34:56",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("0:1");
     ASSERT_EQ("0:01:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1:2");
     ASSERT_EQ("1:02:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1:0");
     ASSERT_EQ("1:00:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("05:22 min");
     ASSERT_EQ("0:05:22",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("00:22 min");
     ASSERT_EQ("0:00:22",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("0 hours");
     ASSERT_EQ("0:00:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("0.5 hours");
     ASSERT_EQ("0:30:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("0,5 hours");
     ASSERT_EQ("0:30:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1 hour");
     ASSERT_EQ("1:00:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1 hr");
     ASSERT_EQ("1:00:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1,5 hours");
     ASSERT_EQ("1:30:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1.5 hours");
     ASSERT_EQ("1:30:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("24 hours");
     ASSERT_EQ(86400, te.DurationInSeconds());
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("0 minutes");
     ASSERT_EQ("0:00:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("0 min");
     ASSERT_EQ("0:00:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("5 minutes");
     ASSERT_EQ("0:05:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("5minutes");
     ASSERT_EQ("0:05:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("0,5 minutes");
     ASSERT_EQ("0:00:30",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1 minute");
     ASSERT_EQ("0:01:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1,5 minutes");
     ASSERT_EQ("0:01:30",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1.5 minutes");
     ASSERT_EQ("0:01:30",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("15");
     ASSERT_EQ("0:15:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("0 seconds");
     ASSERT_EQ("0:00:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1 second");
     ASSERT_EQ("0:00:01",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1.5h");
     ASSERT_EQ("1:30:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1.5 h");
     ASSERT_EQ("1:30:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("3h");
     ASSERT_EQ("3:00:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("3 h");
     ASSERT_EQ("3:00:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("15m");
     ASSERT_EQ("0:15:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("15 m");
     ASSERT_EQ("0:15:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("25s");
     ASSERT_EQ("0:00:25",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("25 s");
     ASSERT_EQ("0:00:25",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1.5");
     ASSERT_EQ("1:30:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1,5");
     ASSERT_EQ("1:30:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("0.25");
     ASSERT_EQ("0:15:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("0.025");
     ASSERT_EQ("0:01:30",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("2h45");
     ASSERT_EQ("2:45:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("2h");
     ASSERT_EQ("2:00:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("2h 18m");
     ASSERT_EQ("2:18:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("2h 18m 50s");
     ASSERT_EQ("2:18:50",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1hr 25min 30sec");
     ASSERT_EQ("1:25:30",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1 hours 25 minutes 30 seconds");
     ASSERT_EQ("1:25:30",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("1 hour 1 minute 1 second");
     ASSERT_EQ("1:01:01",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
@@ -1246,7 +1246,7 @@ TEST(TimeEntry, ParsesDurationLikeOnTheWeb) {
 TEST(TimeEntry, ParseDurationLargerThan24Hours) {
     TimeEntry te;
 
-    te.SetDurationInSeconds(0);
+    te.DurationInSeconds.Set(0);
     te.SetDurationUserInput("90:10:00");
     ASSERT_EQ("90:10:00",
               toggl::Formatter::FormatDuration(te.DurationInSeconds(),
@@ -1260,9 +1260,9 @@ TEST(TimeEntry, InterpretsCrazyStartAndStopAsMissingValues) {
     te.SetStartString("0003-03-16T-7:-19:-24Z");
     ASSERT_EQ(Poco::UInt64(0), te.Start());
 
-    ASSERT_EQ(Poco::UInt64(0), te.Stop());
+    ASSERT_EQ(Poco::UInt64(0), te.StopTime());
     te.SetStopString("0003-03-16T-5:-52:-51Z");
-    ASSERT_EQ(Poco::UInt64(0), te.Stop());
+    ASSERT_EQ(Poco::UInt64(0), te.StopTime());
 }
 
 TEST(User, Continue) {
@@ -1291,15 +1291,15 @@ TEST(TimeEntry, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
     TimeEntry *te = user.related.TimeEntryByID(164891639);
     ASSERT_TRUE(te);
     ASSERT_TRUE(te->IsTracking());
-    ASSERT_LT(te->Start(), te->Stop());
+    ASSERT_LT(te->Start(), te->StopTime());
 
     te->SetDurationUserInput("00:59:47");
     ASSERT_TRUE(te->IsTracking());
-    ASSERT_LT(te->Start(), te->Stop());
+    ASSERT_LT(te->Start(), te->StopTime());
 
     te->StopTracking();
     ASSERT_FALSE(te->IsTracking());
-    ASSERT_LT(te->Start(), te->Stop());
+    ASSERT_LT(te->Start(), te->StopTime());
 }
 
 TEST(Formatter, CollectErrors) {
@@ -1511,20 +1511,20 @@ TEST(Formatter, JoinTaskName) {
     ASSERT_EQ("", res);
 
     Task t;
-    t.SetName("Task name");
+    t.Name.Set("Task name");
     res = Formatter::JoinTaskName(&t, 0);
     ASSERT_EQ("Task name", res);
 
     Project p;
-    p.SetName("Project name");
+    p.Name.Set("Project name");
     res = Formatter::JoinTaskName(0, &p);
     ASSERT_EQ(p.Name(), res);
 
     res = Formatter::JoinTaskName(&t, &p);
     ASSERT_EQ("Task name. Project name", res);
 
-    p.SetCID(1);
-    p.SetClientName("Client name");
+    p.CID.Set(1);
+    p.ClientName.Set("Client name");
     res = Formatter::JoinTaskName(&t, &p);
     ASSERT_EQ("Task name. Project name. Client name", res);
 
@@ -1557,11 +1557,11 @@ TEST(JSON, ConvertTimelineToJSON) {
     const std::string desktop_id("12345");
 
     TimelineEvent event;
-    event.SetStart(time(0) - 10);
-    event.SetEndTime(time(0));
-    event.SetFilename("Is this the real life?");
-    event.SetTitle("Is this just fantasy?");
-    event.SetIdle(true);
+    event.StartTime.Set(time(0) - 10);
+    event.EndTime.Set(time(0));
+    event.Filename.Set("Is this the real life?");
+    event.Title.Set("Is this just fantasy?");
+    event.Idle.Set(true);
     {
         std::vector<TimelineEvent> list;
         list.push_back(event);
@@ -1577,7 +1577,7 @@ TEST(JSON, ConvertTimelineToJSON) {
         ASSERT_EQ(event.EndTime(), v["end_time"].asUInt());
     }
 
-    event.SetIdle(false);
+    event.Idle.Set(false);
     {
         std::vector<TimelineEvent> list;
         list.push_back(event);
@@ -1595,7 +1595,7 @@ TEST(JSON, ConvertTimelineToJSON) {
         ASSERT_EQ(event.Title(), v["title"].asString());
     }
 
-    event.SetTitle("Õhtu jõuab, päev veereb {\"\b\t");
+    event.Title.Set("Õhtu jõuab, päev veereb {\"\b\t");
     {
         std::vector<TimelineEvent> list;
         list.push_back(event);
@@ -1661,7 +1661,7 @@ TEST(JSON, Project) {
     //ASSERT_EQ(p.GUID(), p2.GUID());
     ASSERT_EQ(p.CID(), p2.CID());
     //ASSERT_EQ(p.Billable(), p2.Billable());
-    ASSERT_EQ(p.IsPrivate(), p2.IsPrivate());
+    ASSERT_EQ(p.Private(), p2.Private());
     ASSERT_EQ(p.UIModifiedAt(), p2.UIModifiedAt());
 }
 
@@ -1693,8 +1693,8 @@ TEST(JSON, TimeEntry) {
     ASSERT_EQ(Poco::UInt64(123456789), t.WID());
     //ASSERT_EQ("07fba193-91c4-0ec8-2345-820df0548123", t.GUID());
     ASSERT_TRUE(t.Billable());
-    ASSERT_EQ(Poco::UInt64(1378362830000 / 1000), t.Start());
-    ASSERT_EQ(Poco::UInt64(1378369186000 / 1000), t.Stop());
+    ASSERT_EQ(Poco::UInt64(1378362830000 / 1000), t.StartTime());
+    ASSERT_EQ(Poco::UInt64(1378369186000 / 1000), t.StopTime());
     ASSERT_EQ(Poco::Int64(6356), t.DurationInSeconds());
     ASSERT_EQ("A deleted time entry", t.Description());
     ASSERT_EQ("ahaa", t.Tags());
@@ -1707,8 +1707,8 @@ TEST(JSON, TimeEntry) {
     ASSERT_EQ(t.WID(), t2.WID());
     //ASSERT_EQ(t.GUID(), t2.GUID());
     ASSERT_EQ(t.Billable(), t2.Billable());
-    ASSERT_EQ(t.Start(), t2.Start());
-    ASSERT_EQ(t.Stop(), t2.Stop());
+    ASSERT_EQ(t.StartTime(), t2.StartTime());
+    ASSERT_EQ(t.StopTime(), t2.StopTime());
     ASSERT_EQ(t.DurationInSeconds(), t2.DurationInSeconds());
     ASSERT_EQ(t.Description(), t2.Description());
     ASSERT_EQ(t.Tags(), t2.Tags());
@@ -1717,22 +1717,22 @@ TEST(JSON, TimeEntry) {
 
 TEST(User, TimeOfDayFormat) {
     User u;
-    u.SetTimeOfDayFormat("H:mm");
+    u.TimeOfDayFormat.Set("H:mm");
     ASSERT_EQ("H:mm", u.TimeOfDayFormat());
     ASSERT_EQ("H:mm", Formatter::TimeOfDayFormat);
 
-    u.SetTimeOfDayFormat("h:mm A");
+    u.TimeOfDayFormat.Set("h:mm A");
     ASSERT_EQ("h:mm A", u.TimeOfDayFormat());
     ASSERT_EQ("h:mm A", Formatter::TimeOfDayFormat);
 }
 
 TEST(User, DurationFormat) {
     User u;
-    u.SetDurationFormat("classic");
+    u.DurationFormat.Set("classic");
     ASSERT_EQ("classic", u.DurationFormat());
     ASSERT_EQ("classic", Formatter::DurationFormat);
 
-    u.SetDurationFormat("decimal");
+    u.DurationFormat.Set("decimal");
     ASSERT_EQ("decimal", u.DurationFormat());
     ASSERT_EQ("decimal", Formatter::DurationFormat);
 }
@@ -1790,7 +1790,7 @@ TEST(BaseModel, BatchUpdateJSONForPut) {
     TimeEntry t;
     t.EnsureGUID();
     t.ID.Set(123);
-    t.SetDescription("test");
+    t.Description.Set("test");
     Json::Value v;
     error err = t.BatchUpdateJSON(&v);
     ASSERT_EQ(noError, err);
@@ -1861,19 +1861,19 @@ TEST(Proxy, String) {
 
 TEST(AutotrackerRule, Matches) {
     AutotrackerRule a;
-    a.SetTerm("work");
-    a.SetPID(123);
+    a.Term.Set("work");
+    a.PID.Set(123);
 
     TimelineEvent ev;
     ASSERT_FALSE(a.Matches(ev));
 
-    ev.SetTitle("WORKING");
+    ev.Title.Set("WORKING");
     ASSERT_TRUE(a.Matches(ev));
 
-    ev.SetTitle("I was working late");
+    ev.Title.Set("I was working late");
     ASSERT_TRUE(a.Matches(ev));
 
-    ev.SetTitle("dork");
+    ev.Title.Set("dork");
     ASSERT_FALSE(a.Matches(ev));
 }
 

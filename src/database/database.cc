@@ -410,7 +410,7 @@ error Database::LoadCurrentUser(User *user) {
     if (!uid) {
         return noError;
     }
-    user->SetAPIToken(api_token);
+    user->APIToken.Set(api_token);
     return LoadUserByID(uid, user);
 }
 
@@ -433,37 +433,37 @@ error Database::LoadSettings(Settings *settings) {
                   "pomodoro_break, pomodoro_break_minutes, stop_entry_on_shutdown_sleep, show_touch_bar, active_tab, color_theme "
                   "from settings "
                   "limit 1",
-                  into(settings->use_idle_detection),
-                  into(settings->menubar_timer),
-                  into(settings->menubar_project),
-                  into(settings->dock_icon),
-                  into(settings->on_top),
-                  into(settings->reminder),
-                  into(settings->idle_minutes),
-                  into(settings->focus_on_shortcut),
-                  into(settings->reminder_minutes),
-                  into(settings->manual_mode),
-                  into(settings->autodetect_proxy),
-                  into(settings->remind_starts),
-                  into(settings->remind_ends),
-                  into(settings->remind_mon),
-                  into(settings->remind_tue),
-                  into(settings->remind_wed),
-                  into(settings->remind_thu),
-                  into(settings->remind_fri),
-                  into(settings->remind_sat),
-                  into(settings->remind_sun),
-                  into(settings->autotrack),
-                  into(settings->open_editor_on_shortcut),
-                  into(settings->has_seen_beta_offering),
-                  into(settings->pomodoro),
-                  into(settings->pomodoro_minutes),
-                  into(settings->pomodoro_break),
-                  into(settings->pomodoro_break_minutes),
-                  into(settings->stop_entry_on_shutdown_sleep),
-                  into(settings->show_touch_bar),
-                  into(settings->active_tab),
-                  into(settings->color_theme),
+                  useRef(settings->use_idle_detection()),
+                  useRef(settings->menubar_timer()),
+                  useRef(settings->menubar_project()),
+                  useRef(settings->dock_icon()),
+                  useRef(settings->on_top()),
+                  useRef(settings->reminder()),
+                  useRef(settings->idle_minutes()),
+                  useRef(settings->focus_on_shortcut()),
+                  useRef(settings->reminder_minutes()),
+                  useRef(settings->manual_mode()),
+                  useRef(settings->autodetect_proxy()),
+                  useRef(settings->remind_starts()),
+                  useRef(settings->remind_ends()),
+                  useRef(settings->remind_mon()),
+                  useRef(settings->remind_tue()),
+                  useRef(settings->remind_wed()),
+                  useRef(settings->remind_thu()),
+                  useRef(settings->remind_fri()),
+                  useRef(settings->remind_sat()),
+                  useRef(settings->remind_sun()),
+                  useRef(settings->autotrack()),
+                  useRef(settings->open_editor_on_shortcut()),
+                  useRef(settings->has_seen_beta_offering()),
+                  useRef(settings->pomodoro()),
+                  useRef(settings->pomodoro_minutes()),
+                  useRef(settings->pomodoro_break()),
+                  useRef(settings->pomodoro_break_minutes()),
+                  useRef(settings->stop_entry_on_shutdown_sleep()),
+                  useRef(settings->show_touch_bar()),
+                  useRef(settings->active_tab()),
+                  useRef(settings->color_theme()),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -1084,7 +1084,7 @@ error Database::LoadUserByEmail(
 
         poco_check_ptr(session_);
 
-        model->SetEmail(email);
+        model->Email.Set(email);
 
         *session_ <<
                   "select id from users"
@@ -1234,18 +1234,18 @@ error Database::LoadUserByID(
 
         user->LocalID.Set(local_id, false);
         user->ID.Set(id);
-        user->SetDefaultWID(default_wid);
-        user->SetSince(since);
-        user->SetFullname(fullname);
-        user->SetEmail(email);
-        user->SetRecordTimeline(record_timeline);
-        user->SetStoreStartAndStopTime(store_start_and_stop_time);
-        user->SetTimeOfDayFormat(timeofday_format);
-        user->SetDurationFormat(duration_format);
-        user->SetOfflineData(offline_data);
-        user->SetDefaultPID(default_pid);
-        user->SetDefaultTID(default_tid);
-        user->SetCollapseEntries(collapse_entries);
+        user->DefaultWID.Set(default_wid);
+        user->Since.Set(since);
+        user->Fullname.Set(fullname);
+        user->Email.Set(email);
+        user->RecordTimeline.Set(record_timeline);
+        user->StoreStartAndStopTime.Set(store_start_and_stop_time);
+        user->TimeOfDayFormat.Set(timeofday_format);
+        user->DurationFormat.Set(duration_format);
+        user->OfflineData.Set(offline_data);
+        user->DefaultPID.Set(default_pid);
+        user->DefaultTID.Set(default_tid);
+        user->CollapseEntries.Set(collapse_entries);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -1302,13 +1302,13 @@ error Database::loadWorkspaces(
                 model->LocalID.Set(rs[0].convert<Poco::Int64>());
                 model->ID.Set(rs[1].convert<Poco::UInt64>());
                 model->UID.Set(rs[2].convert<Poco::UInt64>());
-                model->SetName(rs[3].convert<std::string>());
-                model->SetPremium(rs[4].convert<bool>());
-                model->SetOnlyAdminsMayCreateProjects(rs[5].convert<bool>());
-                model->SetAdmin(rs[6].convert<bool>());
-                model->SetProjectsBillableByDefault(rs[7].convert<bool>());
-                model->SetBusiness(rs[8].convert<bool>());
-                model->SetLockedTime(rs[9].convert<time_t>());
+                model->Name.Set(rs[3].convert<std::string>());
+                model->Premium.Set(rs[4].convert<bool>());
+                model->OnlyAdminsMayCreateProjects.Set(rs[5].convert<bool>());
+                model->Admin.Set(rs[6].convert<bool>());
+                model->ProjectsBillableByDefault.Set(rs[7].convert<bool>());
+                model->Business.Set(rs[8].convert<bool>());
+                model->LockedTime.Set(rs[9].convert<time_t>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -1364,13 +1364,13 @@ error Database::loadClients(
                     model->ID.Set(rs[1].convert<Poco::UInt64>());
                 }
                 model->UID.Set(rs[2].convert<Poco::UInt64>());
-                model->SetName(rs[3].convert<std::string>());
+                model->Name.Set(rs[3].convert<std::string>());
                 if (rs[4].isEmpty()) {
                     model->GUID.Set("");
                 } else {
                     model->GUID.Set(rs[4].convert<std::string>());
                 }
-                model->SetWID(rs[5].convert<Poco::UInt64>());
+                model->WID.Set(rs[5].convert<Poco::UInt64>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -1432,34 +1432,34 @@ error Database::loadProjects(
                     model->ID.Set(rs[1].convert<Poco::UInt64>());
                 }
                 model->UID.Set(rs[2].convert<Poco::UInt64>());
-                model->SetName(rs[3].convert<std::string>());
+                model->Name.Set(rs[3].convert<std::string>());
                 if (rs[4].isEmpty()) {
                     model->GUID.Set("");
                 } else {
                     model->GUID.Set(rs[4].convert<std::string>());
                 }
-                model->SetWID(rs[5].convert<Poco::UInt64>());
+                model->WID.Set(rs[5].convert<Poco::UInt64>());
                 if (rs[6].isEmpty()) {
-                    model->SetColor("");
+                    model->Color.Set("");
                 } else {
-                    model->SetColor(rs[6].convert<std::string>());
+                    model->Color.Set(rs[6].convert<std::string>());
                 }
                 if (rs[7].isEmpty()) {
-                    model->SetCID(0);
+                    model->CID.Set(0);
                 } else {
-                    model->SetCID(rs[7].convert<Poco::UInt64>());
+                    model->CID.Set(rs[7].convert<Poco::UInt64>());
                 }
-                model->SetActive(rs[8].convert<bool>());
-                model->SetBillable(rs[9].convert<bool>());
+                model->Active.Set(rs[8].convert<bool>());
+                model->Billable.Set(rs[9].convert<bool>());
                 if (rs[10].isEmpty()) {
-                    model->SetClientGUID("");
+                    model->ClientGUID.Set("");
                 } else {
-                    model->SetClientGUID(rs[10].convert<std::string>());
+                    model->ClientGUID.Set(rs[10].convert<std::string>());
                 }
                 if (rs[11].isEmpty()) {
-                    model->SetClientName("");
+                    model->ClientName.Set("");
                 } else {
-                    model->SetClientName(rs[11].convert<std::string>());
+                    model->ClientName.Set(rs[11].convert<std::string>());
                 }
                 model->ClearDirty();
                 list->push_back(model);
@@ -1515,14 +1515,14 @@ error Database::loadTasks(
                     model->ID.Set(rs[1].convert<Poco::UInt64>());
                 }
                 model->UID.Set(rs[2].convert<Poco::UInt64>());
-                model->SetName(rs[3].convert<std::string>());
-                model->SetWID(rs[4].convert<Poco::UInt64>());
+                model->Name.Set(rs[3].convert<std::string>());
+                model->WID.Set(rs[4].convert<Poco::UInt64>());
                 if (rs[5].isEmpty()) {
-                    model->SetPID(0);
+                    model->PID.Set(0);
                 } else {
-                    model->SetPID(rs[5].convert<Poco::UInt64>());
+                    model->PID.Set(rs[5].convert<Poco::UInt64>());
                 }
-                model->SetActive(rs[6].convert<bool>());
+                model->Active.Set(rs[6].convert<bool>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -1577,8 +1577,8 @@ error Database::loadTags(
                     model->ID.Set(rs[1].convert<Poco::UInt64>());
                 }
                 model->UID.Set(rs[2].convert<Poco::UInt64>());
-                model->SetName(rs[3].convert<std::string>());
-                model->SetWID(rs[4].convert<Poco::UInt64>());
+                model->Name.Set(rs[3].convert<std::string>());
+                model->WID.Set(rs[4].convert<Poco::UInt64>());
                 if (rs[5].isEmpty()) {
                     model->GUID.Set("");
                 } else {
@@ -1633,10 +1633,10 @@ error Database::loadAutotrackerRules(
                 AutotrackerRule *model = new AutotrackerRule();
                 model->LocalID.Set(rs[0].convert<Poco::Int64>());
                 model->UID.Set(rs[1].convert<Poco::UInt64>());
-                model->SetTerm(rs[2].convert<std::string>());
-                model->SetPID(rs[3].convert<Poco::UInt64>());
+                model->Term.Set(rs[2].convert<std::string>());
+                model->PID.Set(rs[3].convert<Poco::UInt64>());
                 if (!rs[4].isEmpty()) {
-                    model->SetTID(rs[4].convert<Poco::UInt64>());
+                    model->TID.Set(rs[4].convert<Poco::UInt64>());
                 }
                 model->ClearDirty();
                 list->push_back(model);
@@ -1687,9 +1687,9 @@ error Database::loadObmActions(
                 ObmAction *model = new ObmAction();
                 model->LocalID.Set(rs[0].convert<Poco::Int64>());
                 model->UID.Set(rs[1].convert<Poco::UInt64>());
-                model->SetExperimentID(rs[2].convert<Poco::UInt64>());
-                model->SetKey(rs[3].convert<std::string>());
-                model->SetValue(rs[4].convert<std::string>());
+                model->ExperimentID.Set(rs[2].convert<Poco::UInt64>());
+                model->Key.Set(rs[3].convert<std::string>());
+                model->Value.Set(rs[4].convert<std::string>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -1739,10 +1739,10 @@ error Database::loadObmExperiments(
                 ObmExperiment *model = new ObmExperiment();
                 model->LocalID.Set(rs[0].convert<Poco::Int64>());
                 model->UID.Set(rs[1].convert<Poco::UInt64>());
-                model->SetNr(rs[2].convert<Poco::UInt64>());
-                model->SetIncluded(rs[3].convert<bool>());
-                model->SetHasSeen(rs[4].convert<bool>());
-                model->SetActions(rs[5].convert<std::string>());
+                model->Nr.Set(rs[2].convert<Poco::UInt64>());
+                model->Included.Set(rs[3].convert<bool>());
+                model->HasSeen.Set(rs[4].convert<bool>());
+                model->Actions.Set(rs[5].convert<std::string>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -1793,18 +1793,18 @@ error Database::loadTimelineEvents(
                 TimelineEvent *model = new TimelineEvent();
                 model->LocalID.Set(rs[0].convert<unsigned int>());
                 if (!rs[1].isEmpty()) {
-                    model->SetTitle(rs[1].convert<std::string>());
+                    model->Title.Set(rs[1].convert<std::string>());
                 }
                 if (!rs[2].isEmpty()) {
-                    model->SetFilename(rs[2].convert<std::string>());
+                    model->Filename.Set(rs[2].convert<std::string>());
                 }
-                model->SetStart(rs[3].convert<int>());
+                model->StartTime.Set(rs[3].convert<int>());
                 if (!rs[4].isEmpty()) {
-                    model->SetEndTime(rs[4].convert<int>());
+                    model->EndTime.Set(rs[4].convert<int>());
                 }
-                model->SetIdle(rs[5].convert<bool>());
-                model->SetUploaded(rs[6].convert<bool>());
-                model->SetChunked(rs[7].convert<bool>());
+                model->Idle.Set(rs[5].convert<bool>());
+                model->Uploaded.Set(rs[6].convert<bool>());
+                model->Chunked.Set(rs[7].convert<bool>());
                 model->GUID.Set(rs[8].convert<std::string>());
 
                 model->UID.Set(UID);
@@ -1910,45 +1910,45 @@ error Database::loadTimeEntriesFromSQLStatement(
                 }
                 model->UID.Set(rs[2].convert<Poco::UInt64>());
                 if (rs[3].isEmpty()) {
-                    model->SetDescription("");
+                    model->Description.Set("");
                 } else {
-                    model->SetDescription(rs[3].convert<std::string>());
+                    model->Description.Set(rs[3].convert<std::string>());
                 }
-                model->SetWID(rs[4].convert<Poco::UInt64>());
+                model->WID.Set(rs[4].convert<Poco::UInt64>());
                 model->GUID.Set(rs[5].convert<std::string>());
                 if (rs[6].isEmpty()) {
-                    model->SetPID(0);
+                    model->PID.Set(0);
                 } else {
-                    model->SetPID(rs[6].convert<Poco::UInt64>());
+                    model->PID.Set(rs[6].convert<Poco::UInt64>());
                 }
                 if (rs[7].isEmpty()) {
-                    model->SetTID(0);
+                    model->TID.Set(0);
                 } else {
-                    model->SetTID(rs[7].convert<Poco::UInt64>());
+                    model->TID.Set(rs[7].convert<Poco::UInt64>());
                 }
-                model->SetBillable(rs[8].convert<bool>());
-                model->SetDurOnly(rs[9].convert<bool>());
+                model->Billable.Set(rs[8].convert<bool>());
+                model->DurOnly.Set(rs[9].convert<bool>());
                 if (rs[10].isEmpty()) {
                     model->UIModifiedAt.Set(0, false);
                 } else {
                     model->UIModifiedAt.Set(rs[10].convert<Poco::Int64>(), false);
                 }
-                model->SetStart(rs[11].convert<Poco::Int64>());
+                model->StartTime.Set(rs[11].convert<Poco::Int64>());
                 if (rs[12].isEmpty()) {
-                    model->SetStop(0);
+                    model->StopTime.Set(0);
                 } else {
-                    model->SetStop(rs[12].convert<Poco::Int64>());
+                    model->StopTime.Set(rs[12].convert<Poco::Int64>());
                 }
-                model->SetDurationInSeconds(rs[13].convert<Poco::Int64>());
+                model->DurationInSeconds.Set(rs[13].convert<Poco::Int64>());
                 if (rs[14].isEmpty()) {
                     model->SetTags("");
                 } else {
                     model->SetTags(rs[14].convert<std::string>());
                 }
                 if (rs[15].isEmpty()) {
-                    model->SetCreatedWith("");
+                    model->CreatedWith.Set("");
                 } else {
-                    model->SetCreatedWith(rs[15].convert<std::string>());
+                    model->CreatedWith.Set(rs[15].convert<std::string>());
                 }
                 if (rs[16].isEmpty()) {
                     model->DeletedAt.Set(0, false);
@@ -1961,9 +1961,9 @@ error Database::loadTimeEntriesFromSQLStatement(
                     model->UpdatedAt.Set(rs[17].convert<Poco::Int64>(), false);
                 }
                 if (rs[18].isEmpty()) {
-                    model->SetProjectGUID("");
+                    model->ProjectGUID.Set("");
                 } else {
-                    model->SetProjectGUID(rs[18].convert<std::string>());
+                    model->ProjectGUID.Set(rs[18].convert<std::string>());
                 }
                 if (rs[19].isEmpty()) {
                     model->ValidationError.Set("", false);
@@ -2090,8 +2090,8 @@ error Database::saveModel(
                           useRef(model->Billable()),
                           useRef(model->DurOnly()),
                           useRef(model->UIModifiedAt()),
-                          useRef(model->Start()),
-                          useRef(model->Stop()),
+                          useRef(model->StartTime()),
+                          useRef(model->StopTime()),
                           useRef(model->DurationInSeconds()),
                           useRef(model->Tags()),
                           useRef(model->CreatedWith()),
@@ -2125,8 +2125,8 @@ error Database::saveModel(
                           useRef(model->Billable()),
                           useRef(model->DurOnly()),
                           useRef(model->UIModifiedAt()),
-                          useRef(model->Start()),
-                          useRef(model->Stop()),
+                          useRef(model->StartTime()),
+                          useRef(model->StopTime()),
                           useRef(model->DurationInSeconds()),
                           useRef(model->Tags()),
                           useRef(model->CreatedWith()),
@@ -2180,8 +2180,8 @@ error Database::saveModel(
                           useRef(model->Billable()),
                           useRef(model->DurOnly()),
                           useRef(model->UIModifiedAt()),
-                          useRef(model->Start()),
-                          useRef(model->Stop()),
+                          useRef(model->StartTime()),
+                          useRef(model->StopTime()),
                           useRef(model->DurationInSeconds()),
                           useRef(model->Tags()),
                           useRef(model->CreatedWith()),
@@ -2214,8 +2214,8 @@ error Database::saveModel(
                           useRef(model->Billable()),
                           useRef(model->DurOnly()),
                           useRef(model->UIModifiedAt()),
-                          useRef(model->Start()),
-                          useRef(model->Stop()),
+                          useRef(model->StartTime()),
+                          useRef(model->StopTime()),
                           useRef(model->DurationInSeconds()),
                           useRef(model->Tags()),
                           useRef(model->CreatedWith()),
@@ -2278,24 +2278,24 @@ error Database::saveModel(
         const int kMaxTimelineStringSize = 300;
 
         if (model->Filename().length() > kMaxTimelineStringSize) {
-            model->SetFilename(
+            model->Filename.Set(
                 model->Filename().substr(0, kMaxTimelineStringSize));
         }
         if (model->Title().length() > kMaxTimelineStringSize) {
-            model->SetTitle(model->Title().substr(0, kMaxTimelineStringSize));
+            model->Title.Set(model->Title().substr(0, kMaxTimelineStringSize));
         }
 
         if (!model->UID()) {
             return error("Cannot save timeline event without an user ID");
         }
-        if (!model->Start()) {
+        if (!model->StartTime()) {
             return error("Cannot save timeline event without start time");
         }
         if (!model->EndTime()) {
             return error("Cannot save timeline event without end time");
         }
 
-        Poco::Int64 start_time(model->Start());
+        Poco::Int64 start_time(model->StartTime());
         Poco::Int64 end_time(model->EndTime());
 
         if (model->LocalID()) {
@@ -2935,7 +2935,7 @@ error Database::saveModel(
                               useRef(model->Color()),
                               useRef(model->CID()),
                               useRef(model->Active()),
-                              useRef(model->IsPrivate()),
+                              useRef(model->Private()),
                               useRef(model->Billable()),
                               useRef(model->ClientGUID()),
                               now;
@@ -2958,7 +2958,7 @@ error Database::saveModel(
                               useRef(model->Color()),
                               useRef(model->CID()),
                               useRef(model->Active()),
-                              useRef(model->IsPrivate()),
+                              useRef(model->Private()),
                               useRef(model->Billable()),
                               useRef(model->ClientGUID()),
                               now;
@@ -2979,7 +2979,7 @@ error Database::saveModel(
                               useRef(model->Color()),
                               useRef(model->CID()),
                               useRef(model->Active()),
-                              useRef(model->IsPrivate()),
+                              useRef(model->Private()),
                               useRef(model->Billable()),
                               useRef(model->ClientGUID()),
                               now;
@@ -3001,7 +3001,7 @@ error Database::saveModel(
                               useRef(model->Color()),
                               useRef(model->CID()),
                               useRef(model->Active()),
-                              useRef(model->IsPrivate()),
+                              useRef(model->Private()),
                               useRef(model->Billable()),
                               useRef(model->ClientGUID()),
                               now;

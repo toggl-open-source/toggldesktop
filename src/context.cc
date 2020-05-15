@@ -281,7 +281,7 @@ error Context::StartEvents() {
         setUser(user);
 
         // Set since param to 0 to force full sync on app start
-        user->SetSince(0);
+        user->Since.Set(0);
         logger.debug("fullSyncOnAppStart");
 
         updateUI(UIElements::Reset());
@@ -1073,7 +1073,7 @@ void Context::scheduleSync() {
 }
 
 void Context::FullSync() {
-    user_->SetSince(0);
+    user_->Since.Set(0);
     Sync();
 }
 
@@ -2716,7 +2716,7 @@ error Context::SetLoggedInUserFromJSON(
 
     setUser(user, true);
     if (isSignup && user_) {
-        user_->ConfirmLoadedMore();
+        user_->HasLoadedMore.Set(true);
     }
 
     updateUI(UIElements::Reset());
@@ -3218,13 +3218,13 @@ error Context::updateTimeEntryProject(
         // billable, // then selected the same project again).
         if (p->ID() != te->PID()
                 || (!project_guid.empty() && p->GUID().compare(te->ProjectGUID()) != 0)) {
-            te->SetBillable(p->Billable());
+            te->Billable.Set(p->Billable());
         }
-        te->SetWID(p->WID());
+        te->WID.Set(p->WID());
     }
-    te->SetTID(task_id);
-    te->SetPID(project_id);
-    te->SetProjectGUID(project_guid);
+    te->TID.Set(task_id);
+    te->PID.Set(project_id);
+    te->ProjectGUID.Set(project_guid);
     return noError;
 }
 
@@ -3436,7 +3436,7 @@ error Context::SetTimeEntryStop(
     }
 
     Poco::LocalDateTime stop(
-        Poco::Timestamp::fromEpochTime(te->Stop()));
+        Poco::Timestamp::fromEpochTime(te->StopTime()));
 
     int hours(0), minutes(0);
     if (!toggl::Formatter::ParseTimeInput(value, &hours, &minutes)) {
@@ -3534,7 +3534,7 @@ error Context::SetTimeEntryBillable(
             return logAndDisplayUserTriedEditingLockedEntry();
         }
 
-        te->SetBillable(value);
+        te->Billable.Set(value);
     }
 
     if (te->Dirty()) {
@@ -3592,7 +3592,7 @@ error Context::updateTimeEntryDescription(
         return displayError(error(kMaximumDescriptionLengthError));
     }
 
-    te->SetDescription(value);
+    te->Description.Set(value);
     return noError;
 }
 
@@ -3726,7 +3726,7 @@ error Context::ToggleTimelineRecording(const bool record_timeline) {
         return noError;
     }
     try {
-        user_->SetRecordTimeline(record_timeline);
+        user_->RecordTimeline.Set(record_timeline);
 
         error err = save(false);
         if (err != noError) {
@@ -3803,15 +3803,15 @@ error Context::SetDefaultProject(
             }
 
             if (p) {
-                user_->SetDefaultPID(p->ID());
+                user_->DefaultPID.Set(p->ID());
             } else {
-                user_->SetDefaultPID(0);
+                user_->DefaultPID.Set(0);
             }
 
             if (t) {
-                user_->SetDefaultTID(t->ID());
+                user_->DefaultTID.Set(t->ID());
             } else {
-                user_->SetDefaultTID(0);
+                user_->DefaultTID.Set(0);
             }
         }
         return displayError(save(false));
@@ -3952,12 +3952,12 @@ error Context::AddAutotrackerRule(
         }
 
         rule = new AutotrackerRule();
-        rule->SetTerm(lowercase);
+        rule->Term.Set(lowercase);
         if (t) {
-            rule->SetTID(t->ID());
+            rule->TID.Set(t->ID());
         }
         if (p) {
-            rule->SetPID(p->ID());
+            rule->PID.Set(p->ID());
         }
         rule->UID.Set(user_->ID());
         user_->related.AutotrackerRules.push_back(rule);
@@ -4127,10 +4127,10 @@ error Context::AddObmAction(
             return noError;
         }
         ObmAction *action = new ObmAction();
-        action->SetExperimentID(experiment_id);
+        action->ExperimentID.Set(experiment_id);
         action->UID.Set(user_->ID());
-        action->SetKey(trimmed_key);
-        action->SetValue(trimmed_value);
+        action->Key.Set(trimmed_key);
+        action->Value.Set(trimmed_value);
         user_->related.ObmActions.push_back(action);
     }
     return displayError(save(false));
@@ -4332,7 +4332,7 @@ error Context::runObmExperiments() {
                 ObmExperiment *model = *it;
                 if (!model->DeletedAt()) {
                     experiments[model->Nr()] = *model;
-                    model->SetHasSeen(true);
+                    model->HasSeen.Set(true);
                 }
             }
         }
@@ -4487,7 +4487,7 @@ void Context::displayReminder() {
     }
 
     // Check if allowed to display reminder at this time
-    if (!settings_.remind_starts.empty()) {
+    if (!settings_.remind_starts->empty()) {
         int h(0), m(0);
         if (toggl::Formatter::ParseTimeInput(settings_.remind_starts, &h, &m)) {
             Poco::LocalDateTime start(
@@ -4498,7 +4498,7 @@ void Context::displayReminder() {
             }
         }
     }
-    if (!settings_.remind_ends.empty()) {
+    if (!settings_.remind_ends->empty()) {
         int h(0), m(0);
         if (toggl::Formatter::ParseTimeInput(settings_.remind_ends, &h, &m)) {
             Poco::LocalDateTime end(now.year(), now.month(), now.day(), h, m, now.second());
@@ -4556,8 +4556,8 @@ void Context::displayPomodoro() {
         const Poco::Int64 pomodoroDuration = settings_.pomodoro_minutes * 60;
         wid = current_te->WID();
         Stop(true);
-        current_te->SetDurationInSeconds(pomodoroDuration);
-        current_te->SetStop(current_te->Start() + pomodoroDuration);
+        current_te->DurationInSeconds.Set(pomodoroDuration);
+        current_te->StopTime.Set(current_te->StartTime() + pomodoroDuration);
     }
     UI()->DisplayPomodoro(settings_.pomodoro_minutes);
 
@@ -4574,7 +4574,7 @@ void Context::displayPomodoro() {
                                              true);  // tags
 
         // Set workspace id to same as the previous entry
-        pomodoro_break_entry_->SetWID(wid);
+        pomodoro_break_entry_->WID.Set(wid);
     }
 }
 
@@ -4607,8 +4607,8 @@ void Context::displayPomodoroBreak() {
         }
         const Poco::Int64 pomodoroDuration = settings_.pomodoro_break_minutes * 60;
         Stop(true);
-        current_te->SetDurationInSeconds(pomodoroDuration);
-        current_te->SetStop(current_te->Start() + pomodoroDuration);
+        current_te->DurationInSeconds.Set(pomodoroDuration);
+        current_te->StopTime.Set(current_te->StartTime() + pomodoroDuration);
     }
     pomodoro_break_entry_ = nullptr;
 
@@ -4911,7 +4911,7 @@ void Context::batchedSyncerActivity() {
                 err = pushBatchedChanges(&trigger_sync_);
                 trigger_push_ = false;
                 if (err != noError) {
-                    user_->ConfirmLoadedMore();
+                    user_->HasLoadedMore.Set(true);
                     displayError(err);
                     return;
                 } else {
@@ -4937,7 +4937,7 @@ void Context::batchedSyncerActivity() {
             if (trigger_push_) {
                 error err = pushBatchedChanges(&trigger_sync_);
                 if (err != noError) {
-                    user_->ConfirmLoadedMore();
+                    user_->HasLoadedMore.Set(true);
                     displayError(err);
                 } else {
                     setOnline("Data pushed");
@@ -4973,7 +4973,7 @@ void Context::legacySyncerActivity() {
             err = pushChanges(&trigger_sync_);
             trigger_push_ = false;
             if (err != noError) {
-                user_->ConfirmLoadedMore();
+                user_->HasLoadedMore.Set(true);
                 displayError(err);
                 return;
             } else {
@@ -4999,7 +4999,7 @@ void Context::legacySyncerActivity() {
         if (trigger_push_) {
             error err = pushChanges(&trigger_sync_);
             if (err != noError) {
-                user_->ConfirmLoadedMore();
+                user_->HasLoadedMore.Set(true);
                 displayError(err);
             } else {
                 setOnline("Data pushed");
@@ -5082,7 +5082,7 @@ void Context::onLoadMore(Poco::Util::TimerTask&) {
                 return;
             }
 
-            user_->ConfirmLoadedMore();
+            user_->HasLoadedMore.Set(true);
 
             // Removes load more button if nothing is to be loaded
             if (needs_render) {
@@ -5487,7 +5487,7 @@ error Context::pushChanges(
                 api_token);
             if (err != noError) {
                 // Hide load more button when offline
-                user_->ConfirmLoadedMore();
+                user_->HasLoadedMore.Set(true);
                 // Reload list to show unsynced icons in items
                 UIElements render;
                 render.display_time_entries = true;
@@ -5612,7 +5612,7 @@ error Context::updateEntryProjects(const std::vector<Project *> &projects,
                 projects.begin();
                     itc != projects.end(); ++itc) {
                 if ((*itc)->GUID().compare((*it)->ProjectGUID()) == 0) {
-                    (*it)->SetPID((*itc)->ID());
+                    (*it)->PID.Set((*itc)->ID());
                     break;
                 }
             }
@@ -5629,7 +5629,7 @@ error Context::updateProjectClients(const std::vector<Client *> &clients,
             // Find client id
             for (auto itc = clients.begin(); itc != clients.end(); ++itc) {
                 if ((*itc)->GUID().compare((*it)->ClientGUID()) == 0) {
-                    (*it)->SetCID((*itc)->ID());
+                    (*it)->CID.Set((*itc)->ID());
                     break;
                 }
             }
@@ -6542,7 +6542,7 @@ error Context::UpdateTimeEntry(
 
     // Tag + billable
     te->SetTags(tags);
-    te->SetBillable(billable);
+    te->Billable.Set(billable);
 
     if (te->Dirty()) {
         te->ValidationError.Set(noError);

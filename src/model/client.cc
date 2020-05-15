@@ -25,30 +25,16 @@ std::string Client::String() const {
     std::stringstream ss;
     ss  << "ID=" << ID()
         << " local_id=" << LocalID()
-        << " name=" << name_
-        << " wid=" << wid_
+        << " name=" << Name()
+        << " wid=" << WID()
         << " guid=" << GUID();
     return ss.str();
 }
 
-void Client::SetName(const std::string &value) {
-    if (name_ != value) {
-        name_ = value;
-        SetDirty();
-    }
-}
-
-void Client::SetWID(const Poco::UInt64 value) {
-    if (wid_ != value) {
-        wid_ = value;
-        SetDirty();
-    }
-}
-
 void Client::LoadFromJSON(Json::Value data) {
     ID.Set(data["id"].asUInt64());
-    SetName(data["name"].asString());
-    SetWID(data["wid"].asUInt64());
+    Name.Set(data["name"].asString());
+    WID.Set(data["wid"].asUInt64());
 }
 
 Json::Value Client::SaveToJSON(int apiVersion) const {
@@ -65,7 +51,7 @@ Json::Value Client::SaveToJSON(int apiVersion) const {
 
 bool Client::ResolveError(const toggl::error &err) {
     if (nameHasAlreadyBeenTaken(err)) {
-        SetName(Name() + " 1");
+        Name.Set(Name() + " 1");
         return true;
     }
     if (err.find(kClientNameAlreadyExists) != std::string::npos) {

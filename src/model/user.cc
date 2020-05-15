@@ -50,15 +50,15 @@ Project *User::CreateProject(
     const bool billable) {
 
     Project *p = new Project();
-    p->SetWID(workspace_id);
-    p->SetName(project_name);
-    p->SetCID(client_id);
-    p->SetClientGUID(client_guid);
+    p->WID.Set(workspace_id);
+    p->Name.Set(project_name);
+    p->CID.Set(client_id);
+    p->ClientGUID.Set(client_guid);
     p->UID.Set(ID());
-    p->SetActive(true);
-    p->SetPrivate(is_private);
-    p->SetBillable(billable);
-    p->SetClientName(client_name);
+    p->Active.Set(true);
+    p->Private.Set(is_private);
+    p->Billable.Set(billable);
+    p->ClientName.Set(client_name);
     if (!project_color.empty()) {
         p->SetColorCode(project_color);
     }
@@ -119,8 +119,8 @@ Client *User::CreateClient(
     const Poco::UInt64 workspace_id,
     const std::string &client_name) {
     Client *c = new Client();
-    c->SetWID(workspace_id);
-    c->SetName(client_name);
+    c->WID.Set(workspace_id);
+    c->Name.Set(client_name);
     c->UID.Set(ID());
 
     AddClientToList(c);
@@ -176,30 +176,30 @@ TimeEntry *User::Start(
     ss << "User::Start now=" << now;
 
     TimeEntry *te = new TimeEntry();
-    te->SetCreatedWith(HTTPClient::Config.UserAgent());
-    te->SetDescription(description);
+    te->CreatedWith.Set(HTTPClient::Config.UserAgent());
+    te->Description.Set(description);
     te->UID.Set(ID());
-    te->SetPID(project_id);
-    te->SetProjectGUID(project_guid);
-    te->SetTID(task_id);
+    te->PID.Set(project_id);
+    te->ProjectGUID.Set(project_guid);
+    te->TID.Set(task_id);
     te->SetTags(tags);
 
     if (started == 0 && ended == 0) {
         if (!duration.empty()) {
             int seconds = Formatter::ParseDurationString(duration);
-            te->SetDurationInSeconds(seconds);
-            te->SetStop(now);
-            te->SetStart(te->Stop() - te->DurationInSeconds());
+            te->DurationInSeconds.Set(seconds);
+            te->StopTime.Set(now);
+            te->StartTime.Set(te->StopTime() - te->DurationInSeconds());
         } else {
-            te->SetDurationInSeconds(-now);
+            te->DurationInSeconds.Set(-now);
             // dont set Stop, TE is running
-            te->SetStart(now);
+            te->StartTime.Set(now);
         }
     } else {
         int seconds = int(ended - started);
-        te->SetDurationInSeconds(seconds);
-        te->SetStop(ended);
-        te->SetStart(started);
+        te->DurationInSeconds.Set(seconds);
+        te->StopTime.Set(ended);
+        te->StartTime.Set(started);
     }
 
     // Try to set workspace ID from project
@@ -210,15 +210,15 @@ TimeEntry *User::Start(
         p = related.ProjectByGUID(te->ProjectGUID());
     }
     if (p) {
-        te->SetWID(p->WID());
-        te->SetBillable(p->Billable());
+        te->WID.Set(p->WID());
+        te->Billable.Set(p->Billable());
     }
 
     // Try to set workspace ID from task
     if (!te->WID() && te->TID()) {
         Task *t = related.TaskByID(te->TID());
         if (t) {
-            te->SetWID(t->WID());
+            te->WID.Set(t->WID());
         }
     }
 
@@ -260,25 +260,25 @@ TimeEntry *User::Continue(
       p = related.ProjectByGUID(existing->ProjectGUID());
     }
     if (p && p->Active()) {
-      result->SetPID(existing->PID());
-      result->SetProjectGUID(existing->ProjectGUID());
-      result->SetTID(existing->TID());
+      result->PID.Set(existing->PID());
+      result->ProjectGUID.Set(existing->ProjectGUID());
+      result->TID.Set(existing->TID());
     }
 
     // Set all time entry values
-    result->SetCreatedWith(HTTPClient::Config.UserAgent());
-    result->SetDescription(existing->Description());
-    result->SetWID(existing->WID());
-    result->SetBillable(existing->Billable());
+    result->CreatedWith.Set(HTTPClient::Config.UserAgent());
+    result->Description.Set(existing->Description());
+    result->WID.Set(existing->WID());
+    result->Billable.Set(existing->Billable());
     result->SetTags(existing->Tags());
     result->UID.Set(ID());
-    result->SetStart(now);
+    result->StartTime.Set(now);
 
     if (!manual_mode) {
-        result->SetDurationInSeconds(-now);
+        result->DurationInSeconds.Set(-now);
     }
 
-    result->SetCreatedWith(HTTPClient::Config.UserAgent());
+    result->CreatedWith.Set(HTTPClient::Config.UserAgent());
 
     related.pushBackTimeEntry(result);
 
@@ -329,98 +329,6 @@ bool User::CanAddProjects() const {
     return true;
 }
 
-void User::SetFullname(const std::string &value) {
-    if (fullname_ != value) {
-        fullname_ = value;
-        SetDirty();
-    }
-}
-
-void User::SetTimeOfDayFormat(const std::string &value) {
-    Formatter::TimeOfDayFormat = value;
-    if (timeofday_format_ != value) {
-        timeofday_format_ = value;
-        SetDirty();
-    }
-}
-
-void User::SetDurationFormat(const std::string &value) {
-    Formatter::DurationFormat = value;
-    if (duration_format_ != value) {
-        duration_format_ = value;
-        SetDirty();
-    }
-}
-
-void User::SetOfflineData(const std::string &value) {
-    if (offline_data_ != value) {
-        offline_data_ = value;
-        SetDirty();
-    }
-}
-
-void User::SetStoreStartAndStopTime(const bool value) {
-    if (store_start_and_stop_time_ != value) {
-        store_start_and_stop_time_ = value;
-        SetDirty();
-    }
-}
-
-void User::SetRecordTimeline(const bool value) {
-    if (record_timeline_ != value) {
-        record_timeline_ = value;
-        SetDirty();
-    }
-}
-
-void User::SetEmail(const std::string &value) {
-    if (email_ != value) {
-        email_ = value;
-        SetDirty();
-    }
-}
-
-void User::SetAPIToken(const std::string &value) {
-    // API token is not saved into DB, so no
-    // no dirty checking needed for it.
-    api_token_ = value;
-}
-
-void User::SetSince(const Poco::Int64 value) {
-    if (since_ != value) {
-        since_ = value;
-        SetDirty();
-    }
-}
-
-void User::SetDefaultWID(const Poco::UInt64 value) {
-    if (default_wid_ != value) {
-        default_wid_ = value;
-        SetDirty();
-    }
-}
-
-void User::SetDefaultPID(const Poco::UInt64 value) {
-    if (default_pid_ != value) {
-        default_pid_ = value;
-        SetDirty();
-    }
-}
-
-void User::SetDefaultTID(const Poco::UInt64 value) {
-    if (default_tid_ != value) {
-        default_tid_ = value;
-        SetDirty();
-    }
-}
-
-void User::SetCollapseEntries(const bool value) {
-    if (collapse_entries_ != value) {
-        collapse_entries_ = value;
-        SetDirty();
-    }
-}
-
 // Stop a time entry, mark it as dirty.
 // Note that there may be multiple TE-s running. If there are,
 // all of them are stopped (multi-tracking is not supported by Toggl).
@@ -454,12 +362,12 @@ TimeEntry *User::DiscardTimeAt(
 
     if (te && split_into_new_entry) {
         TimeEntry *split = new TimeEntry();
-        split->SetCreatedWith(HTTPClient::Config.UserAgent());
+        split->CreatedWith.Set(HTTPClient::Config.UserAgent());
         split->UID.Set(ID());
-        split->SetStart(at);
-        split->SetDurationInSeconds(-at);
+        split->StartTime.Set(at);
+        split->DurationInSeconds.Set(-at);
         split->SetUIModified();
-        split->SetWID(te->WID());
+        split->WID.Set(te->WID());
         related.pushBackTimeEntry(split);
         return split;
     }
@@ -500,10 +408,10 @@ std::string User::String() const {
     std::stringstream ss;
     ss  << "ID=" << ID()
         << " local_id=" << LocalID()
-        << " default_wid=" << default_wid_
-        << " api_token=" << api_token_
-        << " since=" << since_
-        << " record_timeline=" << record_timeline_;
+        << " default_wid=" << DefaultWID()
+        << " api_token=" << APIToken()
+        << " since=" << Since()
+        << " record_timeline=" << RecordTimeline();
     return ss.str();
 }
 
@@ -520,7 +428,7 @@ void User::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
             it != related.Projects.end(); ++it) {
         Project *model = *it;
         if (model->CID() == cid) {
-            model->SetCID(0);
+            model->CID.Set(0);
         }
     }
 }
@@ -533,7 +441,7 @@ void User::RemoveProjectFromRelatedModels(const Poco::UInt64 pid) {
 void User::RemoveTaskFromRelatedModels(const Poco::UInt64 tid) {
     related.forEachTimeEntries([&](TimeEntry *model) {
         if (model->TID() == tid) {
-            model->SetTID(0);
+            model->TID.Set(0);
         }
     });
 }
@@ -703,7 +611,7 @@ error User::LoadUserAndRelatedDataFromJSONString(
         return error("Failed to LoadUserAndRelatedDataFromJSONString");
     }
 
-    SetSince(root["since"].asInt64());
+    Since.Set(root["since"].asInt64());
     Logger("json").debug("User data as of: ", Since());
 
     loadUserAndRelatedDataFromJSON(root["data"], including_related_data);
@@ -787,11 +695,11 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
     if (!model) {
         model = new ObmExperiment();
         model->UID.Set(ID());
-        model->SetNr(nr);
+        model->Nr.Set(nr);
         related.ObmExperiments.push_back(model);
     }
-    model->SetIncluded(obm["included"].asBool());
-    model->SetActions(obm["actions"].asString());
+    model->Included.Set(obm["included"].asBool());
+    model->Actions.Set(obm["actions"].asString());
 }
 
 void User::loadUserAndRelatedDataFromJSON(
@@ -804,14 +712,14 @@ void User::loadUserAndRelatedDataFromJSON(
     }
 
     ID.Set(data["id"].asUInt64());
-    SetDefaultWID(data["default_wid"].asUInt64());
-    SetAPIToken(data["api_token"].asString());
-    SetEmail(data["email"].asString());
-    SetFullname(data["fullname"].asString());
-    SetRecordTimeline(data["record_timeline"].asBool());
-    SetStoreStartAndStopTime(data["store_start_and_stop_time"].asBool());
-    SetTimeOfDayFormat(data["timeofday_format"].asString());
-    SetDurationFormat(data["duration_format"].asString());
+    DefaultWID.Set(data["default_wid"].asUInt64());
+    APIToken.Set(data["api_token"].asString());
+    Email.Set(data["email"].asString());
+    Fullname.Set(data["fullname"].asString());
+    RecordTimeline.Set(data["record_timeline"].asBool());
+    StoreStartAndStopTime.Set(data["store_start_and_stop_time"].asBool());
+    TimeOfDayFormat.Set(data["timeofday_format"].asString());
+    DurationFormat.Set(data["duration_format"].asString());
 
     {
         std::set<Poco::UInt64> alive;
@@ -1019,7 +927,7 @@ void User::loadUserProjectFromSyncJSON(
 
     Client *c = related.clientByProject(model);
     if (c) {
-        model->SetClientName(c->Name());
+        model->ClientName.Set(c->Name());
     }
 
     if (addNew) {
@@ -1029,7 +937,7 @@ void User::loadUserProjectFromSyncJSON(
     // Clear default project if it was archived
     if (model->ID() == DefaultPID()
         && !model->Active()) {
-        SetDefaultPID(0);
+        DefaultPID.Set(0);
     }
 }
 
@@ -1121,7 +1029,7 @@ bool User::LoadUserPreferencesFromJSON(
     Json::Value data) {
     if (data.isMember("CollapseTimeEntries")
             && data["CollapseTimeEntries"].asBool() != CollapseEntries()) {
-        SetCollapseEntries(data["CollapseTimeEntries"].asBool());
+        CollapseEntries.Set(data["CollapseTimeEntries"].asBool());
         return true;
     }
     return false;
@@ -1229,7 +1137,7 @@ error User::SetAPITokenFromOfflineData(const std::string &password) {
         delete pCipher;
         pCipher = nullptr;
 
-        SetAPIToken(decrypted);
+        APIToken.Set(decrypted);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -1280,7 +1188,7 @@ error User::EnableOfflineLogin(
         delete pCipher;
         pCipher = nullptr;
 
-        SetOfflineData(json);
+        OfflineData.Set(json);
 
         std::string token = APIToken();
         error err = SetAPITokenFromOfflineData(password);
@@ -1323,7 +1231,7 @@ void User::MarkTimelineBatchAsUploaded(
             logger().error("Could not find timeline event to mark it as uploaded: ", event.String());
             continue;
         }
-        uploaded->SetUploaded(true);
+        uploaded->Uploaded.Set(true);
     }
 }
 
@@ -1407,13 +1315,13 @@ void User::CompressTimeline() {
             // If chunk is not created yet,
             // turn the timeline event into chunk
             chunk = event;
-            chunk->SetEndTime(chunk->Start() + duration);
-            chunk->SetChunked(true);
+            chunk->EndTime.Set(chunk->Start() + duration);
+            chunk->Chunked.Set(true);
         } else {
             // If chunk already exists, add duration
             // to that junk and delete the original event
             chunk = compressed[key];
-            chunk->SetEndTime(chunk->EndTime() + duration);
+            chunk->EndTime.Set(chunk->EndTime() + duration);
             event->Delete();
         }
         compressed[key] = chunk;
@@ -1511,7 +1419,7 @@ void removeProjectFromRelatedModels(const Poco::UInt64 pid,
     for (iterator it = list->begin(); it != list->end(); ++it) {
         T *model = *it;
         if (model->PID() == pid) {
-            model->SetPID(0);
+            model->PID.Set(0);
         }
     }
 }

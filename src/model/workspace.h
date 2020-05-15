@@ -13,50 +13,23 @@ namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Workspace : public BaseModel {
  public:
-    Workspace()
-        : BaseModel()
-    , name_("")
-    , premium_(false)
-    , only_admins_may_create_projects_(false)
-    , admin_(false)
-    , projects_billable_by_default_(false)
-    , business_(false)
-    , locked_time_(0) {}
+    Workspace() : BaseModel() {}
 
-    const std::string &Name() const {
-        return name_;
+    virtual bool IsDirty() const override {
+        return BaseModel::IsDirty() || IsAnyPropertyDirty(Name, LockedTime, Premium, OnlyAdminsMayCreateProjects, Admin, ProjectsBillableByDefault, Business);
     }
-    void SetName(const std::string &value);
+    virtual void ClearDirty() override {
+        BaseModel::ClearDirty();
+        AllPropertiesClearDirty(Name, LockedTime, Premium, OnlyAdminsMayCreateProjects, Admin, ProjectsBillableByDefault, Business);
+    }
 
-    const bool &Premium() const {
-        return premium_;
-    }
-    void SetPremium(const bool value);
-
-    const bool &OnlyAdminsMayCreateProjects() const {
-        return only_admins_may_create_projects_;
-    }
-    void SetOnlyAdminsMayCreateProjects(const bool);
-
-    const bool &Admin() const {
-        return admin_;
-    }
-    void SetAdmin(const bool);
-
-    const bool &ProjectsBillableByDefault() const {
-        return projects_billable_by_default_;
-    }
-    void SetProjectsBillableByDefault(const bool);
-
-    const bool &Business() const {
-        return business_;
-    }
-    void SetBusiness(const bool value);
-
-    const time_t &LockedTime() const {
-        return locked_time_;
-    }
-    void SetLockedTime(const time_t value);
+    Property<std::string> Name { "" };
+    Property<time_t> LockedTime { 0 };
+    Property<bool> Premium { false };
+    Property<bool> OnlyAdminsMayCreateProjects { false };
+    Property<bool> Admin { false };
+    Property<bool> ProjectsBillableByDefault { false };
+    Property<bool> Business { false };
 
     // Override BaseModel
     std::string String() const override;
@@ -65,15 +38,6 @@ class TOGGL_INTERNAL_EXPORT Workspace : public BaseModel {
     void LoadFromJSON(Json::Value value) override;
 
     void LoadSettingsFromJson(Json::Value value);
-
- private:
-    std::string name_;
-    bool premium_;
-    bool only_admins_may_create_projects_;
-    bool admin_;
-    bool projects_billable_by_default_;
-    bool business_;
-    time_t locked_time_;
 };
 
 }  // namespace toggl

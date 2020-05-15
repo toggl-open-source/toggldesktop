@@ -15,26 +15,19 @@ namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT ObmAction : public BaseModel {
  public:
-    ObmAction()
-        : BaseModel()
-    , experiment_id_(0)
-    , key_("")
-    , value_("") {}
+    ObmAction() : BaseModel() {}
 
-    const std::string &Key() const {
-        return key_;
+    virtual bool IsDirty() const override {
+        return BaseModel::IsDirty() || IsAnyPropertyDirty(ExperimentID, Key, Value);
     }
-    void SetKey(const std::string &value);
+    virtual void ClearDirty() override {
+        BaseModel::ClearDirty();
+        AllPropertiesClearDirty(ExperimentID, Key, Value);
+    }
 
-    const std::string &Value() const {
-        return value_;
-    }
-    void SetValue(const std::string &value);
-
-    const Poco::UInt64 &ExperimentID() const {
-        return experiment_id_;
-    }
-    void SetExperimentID(const Poco::UInt64 value);
+    Property<Poco::UInt64> ExperimentID { 0 };
+    Property<std::string> Key { "" };
+    Property<std::string> Value { "" };
 
     // Override BaseModel
     std::string String() const override;
@@ -43,50 +36,29 @@ class TOGGL_INTERNAL_EXPORT ObmAction : public BaseModel {
     Json::Value SaveToJSON(int apiVersion = 8) const override;
 
  private:
-    Poco::UInt64 experiment_id_;
-    std::string key_;
-    std::string value_;
 };
 
 class TOGGL_INTERNAL_EXPORT ObmExperiment : public BaseModel {
  public:
-    ObmExperiment()
-        : BaseModel()
-    , included_(false)
-    , nr_(0)
-    , has_seen_(false)
-    , actions_("") {}
+    ObmExperiment() : BaseModel() {}
 
-    const bool &Included() const {
-        return included_;
+    virtual bool IsDirty() const override {
+        return BaseModel::IsDirty() || IsAnyPropertyDirty(Included, HasSeen, Nr, Actions);
     }
-    void SetIncluded(const bool value);
+    virtual void ClearDirty() override {
+        BaseModel::ClearDirty();
+        AllPropertiesClearDirty(Included, HasSeen, Nr, Actions);
+    }
 
-    const bool &HasSeen() const {
-        return has_seen_;
-    }
-    void SetHasSeen(const bool value);
-
-    const Poco::UInt64 &Nr() const {
-        return nr_;
-    }
-    void SetNr(const Poco::UInt64 value);
-
-    const std::string &Actions() const {
-        return actions_;
-    }
-    void SetActions(const std::string &value);
+    Property<bool> Included { false };
+    Property<Poco::UInt64> Nr { 0 };
+    Property<bool> HasSeen { false };
+    Property<std::string> Actions { "" };
 
     // Override BaseModel
     std::string String() const override;
     std::string ModelName() const override;
     std::string ModelURL() const override;
-
- private:
-    bool included_;
-    Poco::UInt64 nr_;
-    bool has_seen_;
-    std::string actions_;
 };
 
 }  // namespace toggl

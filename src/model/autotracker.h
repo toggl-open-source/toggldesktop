@@ -16,34 +16,27 @@ namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
  public:
-    AutotrackerRule()
-        : BaseModel()
-    , term_("")
-    , pid_(0)
-    , tid_(0) {}
-
+    AutotrackerRule() : BaseModel() {}
     virtual ~AutotrackerRule() {}
 
+    virtual bool IsDirty() const override {
+        return BaseModel::IsDirty() || IsAnyPropertyDirty(Term, PID, TID);
+    }
+    virtual void ClearDirty() override {
+        BaseModel::ClearDirty();
+        AllPropertiesClearDirty(Term, PID, TID);
+    }
+
+    Property<std::string> Term { "" };
+    Property<Poco::UInt64> PID { 0 };
+    Property<Poco::UInt64> TID { 0 };
+
     bool Matches(const TimelineEvent &event) const;
-
-    const std::string &Term() const;
-    void SetTerm(const std::string &value);
-
-    const Poco::UInt64 &PID() const;
-    void SetPID(const Poco::UInt64 value);
-
-    const Poco::UInt64 &TID() const;
-    void SetTID(const Poco::UInt64 value);
 
     // Override BaseModel
     std::string String() const override;
     std::string ModelName() const override;
     std::string ModelURL() const override;
-
- private:
-    std::string term_;
-    Poco::UInt64 pid_;
-    Poco::UInt64 tid_;
 };
 
 };  // namespace toggl

@@ -171,10 +171,10 @@ void on_time_entry_list(
         TimeEntry te;
         te.GUID.Set(to_string(it->GUID));
         te.ID.Set(it->ID);
-        te.SetDurationInSeconds(it->DurationInSeconds);
-        te.SetDescription(to_string(it->Description));
-        te.SetStart(it->Started);
-        te.SetStop(it->Ended);
+        te.DurationInSeconds.Set(it->DurationInSeconds);
+        te.Description.Set(to_string(it->Description));
+        te.StartTime.Set(it->Started);
+        te.StopTime.Set(it->Ended);
         testing::testresult::time_entries.push_back(te);
         it = reinterpret_cast<TogglTimeEntryView *>(it->Next);
     }
@@ -276,9 +276,9 @@ void on_obm_experiment(
     const bool_t included,
     const bool_t seen) {
     ObmExperiment experiment;
-    experiment.SetNr(nr);
-    experiment.SetIncluded(included);
-    experiment.SetHasSeen(seen);
+    experiment.Nr.Set(nr);
+    experiment.Included.Set(included);
+    experiment.HasSeen.Set(seen);
     testresult::obm_experiments.push_back(experiment);
 }
 
@@ -286,17 +286,17 @@ void on_display_timer_state(TogglTimeEntryView *te) {
     testing::testresult::timer_state = TimeEntry();
     if (te) {
         testing::testresult::timer_state.ID.Set(te->ID);
-        testing::testresult::timer_state.SetStart(te->Started);
+        testing::testresult::timer_state.StartTime.Set(te->Started);
         testing::testresult::timer_state.GUID.Set(to_string(te->GUID));
-        testing::testresult::timer_state.SetDurationInSeconds(
+        testing::testresult::timer_state.DurationInSeconds.Set(
             te->DurationInSeconds);
-        testing::testresult::timer_state.SetDescription(to_string(te->Description));
+        testing::testresult::timer_state.Description.Set(to_string(te->Description));
         if (te->Tags) {
             testing::testresult::timer_state.SetTags(to_string(te->Tags));
         }
-        testing::testresult::timer_state.SetBillable(te->Billable);
-        testing::testresult::timer_state.SetPID(te->PID);
-        testing::testresult::timer_state.SetTID(te->TID);
+        testing::testresult::timer_state.Billable.Set(te->Billable);
+        testing::testresult::timer_state.PID.Set(te->PID);
+        testing::testresult::timer_state.TID.Set(te->TID);
     }
 }
 
@@ -562,15 +562,15 @@ TEST(toggl_api, toggl_set_settings_remind_times) {
 
     ASSERT_TRUE(toggl_set_settings_remind_times(app.ctx(), STR(""), STR("")));
 
-    ASSERT_EQ(std::string(""), testing::testresult::settings.remind_starts);
-    ASSERT_EQ(std::string(""), testing::testresult::settings.remind_ends);
+    ASSERT_EQ(std::string(""), testing::testresult::settings.remind_starts());
+    ASSERT_EQ(std::string(""), testing::testresult::settings.remind_ends());
 
     ASSERT_TRUE(toggl_set_settings_remind_times(app.ctx(), STR("09:30"), STR("17:30")));
 
     ASSERT_EQ(std::string("09:30"),
-              testing::testresult::settings.remind_starts);
+              testing::testresult::settings.remind_starts());
     ASSERT_EQ(std::string("17:30"),
-              testing::testresult::settings.remind_ends);
+              testing::testresult::settings.remind_ends());
 }
 
 TEST(toggl_api, toggl_set_window_settings) {
@@ -1667,8 +1667,8 @@ TEST(toggl_api, toggl_discard_time_at) {
         }
     }
     ASSERT_EQ(guid, te.GUID());
-    ASSERT_TRUE(started == te.Start() || started + 1 == te.Start());
-    ASSERT_TRUE(stopped == te.Stop() || stopped + 1 == te.Stop());
+    ASSERT_TRUE(started == te.StartTime() || started + 1 == te.StartTime());
+    ASSERT_TRUE(stopped == te.StopTime() || stopped + 1 == te.StopTime());
 
     // Start another time entry
 
@@ -1695,8 +1695,8 @@ TEST(toggl_api, toggl_discard_time_at) {
         }
     }
     ASSERT_EQ(guid, te.GUID());
-    ASSERT_TRUE(started == te.Start() || started + 1 == te.Start());
-    ASSERT_TRUE(stopped == te.Stop() || stopped + 1 == te.Stop());
+    ASSERT_TRUE(started == te.StartTime() || started + 1 == te.StartTime());
+    ASSERT_TRUE(stopped == te.StopTime() || stopped + 1 == te.StopTime());
 
     // Check that a new time entry was created
 
@@ -1810,7 +1810,7 @@ TEST(toggl_api, toggl_set_time_entry_end) {
     toggl::TimeEntry te = testing::testresult::time_entry_by_id(89818605);
     std::string guid = te.GUID();
 
-    Poco::DateTime datetime(Poco::Timestamp::fromEpochTime(te.Stop()));
+    Poco::DateTime datetime(Poco::Timestamp::fromEpochTime(te.StopTime()));
     ASSERT_EQ(2013, datetime.year());
     ASSERT_EQ(9, datetime.month());
     ASSERT_EQ(5, datetime.day());
@@ -1822,7 +1822,7 @@ TEST(toggl_api, toggl_set_time_entry_end) {
 
     te = testing::testresult::time_entry_by_id(89818605);
     Poco::LocalDateTime local =
-        Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Stop()));
+        Poco::DateTime(Poco::Timestamp::fromEpochTime(te.StopTime()));
     ASSERT_EQ(2013, local.year());
     ASSERT_EQ(9, local.month());
     ASSERT_EQ(5, local.day());
@@ -1852,8 +1852,8 @@ TEST(toggl_api, toggl_set_time_entry_end_prefers_same_day) {
     // take the updated time entry
     te = testing::testresult::time_entry_by_id(89818605);
 
-    Poco::DateTime start(Poco::Timestamp::fromEpochTime(te.Start()));
-    Poco::DateTime end(Poco::Timestamp::fromEpochTime(te.Stop()));
+    Poco::DateTime start(Poco::Timestamp::fromEpochTime(te.StartTime()));
+    Poco::DateTime end(Poco::Timestamp::fromEpochTime(te.StopTime()));
     ASSERT_EQ(start.year(), end.year());
     ASSERT_EQ(start.month(), end.month());
     ASSERT_EQ(start.day(), end.day());
