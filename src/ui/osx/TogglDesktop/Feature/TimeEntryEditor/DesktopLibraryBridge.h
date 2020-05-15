@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)createClientWithWorkspaceID:(uint64_t)workspaceID
 							   clientName:(NSString *)clientName;
 
-- (NSString *)createProjectWithTimeEntryGUID:(NSString *)timeEntryGUID
+- (NSString * __nullable)createProjectWithTimeEntryGUID:(NSString *)timeEntryGUID
 								 workspaceID:(uint64_t)workspaceID
 									clientID:(uint64_t)clientID
 								  clientGUID:(NSString *_Nullable)clientGUID

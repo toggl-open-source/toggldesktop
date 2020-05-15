@@ -162,13 +162,14 @@ final class ProjectCreationView: NSView {
         let projectName = projectTextField.stringValue
         let colorHex = selectedColor.hex
 
-        let projectGUID = DesktopLibraryBridge.shared().createProject(withTimeEntryGUID: timeEntryGUID,
+        guard let projectGUID = DesktopLibraryBridge.shared().createProject(withTimeEntryGUID: timeEntryGUID,
                                                                     workspaceID: workspaceID,
                                                                     clientID: clientID,
                                                                     clientGUID: clientGUID,
                                                                     projectName: projectName,
                                                                     colorHex: colorHex,
                                                                     isPublic: isPublic)
+            else { return }
         if selectedTimeEntry.billable {
             DesktopLibraryBridge.shared().setBillableForTimeEntryWithTimeEntryGUID(timeEntryGUID,
                                                                                    isBillable: isBillable)
