@@ -1,5 +1,6 @@
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using TogglDesktop.Services.UndoService;
 
 namespace TogglDesktop.ViewModels
 {
@@ -8,7 +9,7 @@ namespace TogglDesktop.ViewModels
         public TimeEntryCellViewModel()
         {
         }
-
+        public TimeEntrySnapshot TimeEntrySnapshot { get; set; }
         [Reactive]
         public TimeEntryLabelViewModel TimeEntryLabel { get; set; }
 

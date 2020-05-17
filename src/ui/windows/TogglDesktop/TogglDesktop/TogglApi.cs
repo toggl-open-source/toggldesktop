@@ -1493,7 +1493,8 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.I1)]
         bool prevent_on_app,
         UInt64 started,
-        UInt64 ended);
+        UInt64 ended,
+        bool stop_current_running);
 
     // Create an Empty Time Entry without stopping the running TE
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]

@@ -19,10 +19,10 @@ namespace TogglDesktop
         {
             if (cell.ConfirmlessDelete())
             {
-                Toggl.DeleteTimeEntry(cell.Guid);
+                Toggl.DeleteTimeEntry(cell.TimeEntrySnapshot);
                 return;
             }
-            Toggl.AskToDeleteEntry(cell.Guid);
+            Toggl.AskToDeleteEntry(cell.TimeEntrySnapshot);
         }
 
         private static bool IsDurationLessThan15Seconds(long durationInSeconds)

@@ -9,6 +9,7 @@ using MahApps.Metro.Controls;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Items;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.Services.UndoService;
 using TogglDesktop.ViewModels;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using TextBox = System.Windows.Controls.TextBox;
@@ -850,10 +851,10 @@ namespace TogglDesktop
         {
             if (this.timeEntry.ConfirmlessDelete())
             {
-                Toggl.DeleteTimeEntry(this.timeEntry.GUID);
+                Toggl.DeleteTimeEntry(this.timeEntry.ToTimeEntrySnapshot());
                 return;
             }
-            Toggl.AskToDeleteEntry(this.timeEntry.GUID);
+            Toggl.AskToDeleteEntry(this.timeEntry.ToTimeEntrySnapshot());
         }
 
         private void clearUndoHistory()

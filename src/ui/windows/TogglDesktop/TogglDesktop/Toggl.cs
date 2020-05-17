@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.Services;
+using TogglDesktop.Services.UndoService;
 
 // ReSharper disable InconsistentNaming
 
@@ -14,8 +15,9 @@ namespace TogglDesktop
 {
 public static partial class Toggl
 {
-    #region constants and static fields
+        #region constants and static fields
 
+    public static UndoDeletionService UndoDeletionService = new UndoDeletionService();
     public const string Project = "project";
     public const string Duration = "duration";
     public const string Description = "description";
@@ -293,14 +295,15 @@ public static partial class Toggl
         return toggl_continue_latest(ctx, preventOnApp);
     }
 
-    public static bool DeleteTimeEntry(string guid)
+    public static bool DeleteTimeEntry(TimeEntrySnapshot timeEntrySnapshot)
     {
-        return toggl_delete_time_entry(ctx, guid);
+        Toggl.UndoDeletionService.SnapshotTimeEntry(timeEntrySnapshot);
+        return toggl_delete_time_entry(ctx, timeEntrySnapshot.GUID);
     }
 
-    #region changing time entry
+        #region changing time entry
 
-    public static bool SetTimeEntryDuration(string guid, string value)
+        public static bool SetTimeEntryDuration(string guid, string value)
     {
         using (Performance.Measure("changing time entry duration"))
         {
@@ -521,7 +524,10 @@ public static partial class Toggl
         UInt64 project_id,
         string project_guid,
         string tags,
-        bool preventOnApp = false)
+        bool preventOnApp = false,
+        ulong started = 0,
+        ulong ended = 0,
+        bool stop_current_running = true)
     {
         OnUserTimeEntryStart();
 
@@ -533,8 +539,9 @@ public static partial class Toggl
                            project_guid,
                            tags,
                            preventOnApp,
-                           0,
-                           0);
+                           started,
+                           ended,
+                           stop_current_running);
     }
 
     public static string AddProject(
@@ -1422,14 +1429,14 @@ public static partial class Toggl
         BugsnagService.NotifyBugsnag(ex);
     }
 
-    public static bool AskToDeleteEntry(string guid)
+    public static bool AskToDeleteEntry(TimeEntrySnapshot timeEntrySnapshot)
     {
         var result = MessageBox.Show(mainWindow, "Deleted time entries cannot be restored.", "Delete time entry?",
                                      MessageBoxButton.OKCancel, "Delete entry");
 
         if (result == MessageBoxResult.OK)
         {
-            return DeleteTimeEntry(guid);
+            return DeleteTimeEntry(timeEntrySnapshot);
         }
         return false;
     }

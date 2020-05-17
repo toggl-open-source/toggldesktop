@@ -986,7 +986,8 @@ extern "C" {
         const char_t *tags,
         const bool_t prevent_on_app,
         const uint64_t started,
-        const uint64_t ended);
+        const uint64_t ended,
+        const bool_t stop_current_running);
 
     // Create an Empty Time Entry without stopping the running TE
     TOGGL_EXPORT char_t *toggl_create_empty_time_entry(
