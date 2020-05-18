@@ -67,6 +67,28 @@
                                  mah:TextBoxHelper.Watermark="Password"
                                  behaviours:PasswordBoxBindingBehavior.Password="{Binding Password, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                                  behaviors:FocusHelper.IsFocused="{Binding IsPasswordFocused}"/>
+                    <mah:CustomValidationPopup PlacementTarget="{Binding ElementName=passwordBox}"
+                                               Placement="Top"
+                                               IsOpen="{Binding ElementName=passwordBox, Path=IsKeyboardFocused, Mode=OneWay}"
+                                               AllowsTransparency="True">
+                        <Grid Background="Transparent">
+                            <Border Width="268"
+                                    Height="112"
+                                    BorderThickness="1"
+                                    BorderBrush="{DynamicResource Toggl.LightGrayBrush}"
+                                    Background="{DynamicResource Toggl.CardBackground}"
+                                    Margin="4 0 4 4">
+                                <Border.Effect>
+                                    <DropShadowEffect Direction="270"
+                                                      Opacity="0.1"
+                                                      BlurRadius="4"
+                                                      ShadowDepth="1" />
+                                </Border.Effect>
+                                <TextBlock Style="{StaticResource Toggl.CaptionText}"
+                                           Text="Please make sure your password includes:" />
+                            </Border>
+                        </Grid>
+                    </mah:CustomValidationPopup>
 
                     <Label HorizontalAlignment="Left"
                            Margin="48 16 0 0"
