@@ -34,6 +34,8 @@ namespace TogglDesktop
         public PreferencesWindow()
         {
             this.InitializeComponent();
+            this.MaxHeight = System.Windows.SystemParameters.WorkArea.Height;
+
             ViewModel = new PreferencesWindowViewModel(MessageBox.Show(this), this.Close);
 
             Toggl.OnSettings += this.onSettings;
