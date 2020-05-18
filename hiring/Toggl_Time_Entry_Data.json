@@ -1,0 +1,66 @@
+{
+	"time_entries": [
+		{
+			"name": "Implement Data",
+			"project": {
+				"name": "Sync project 1",
+				"color": "#389129"
+			},
+			"start": 1589724000,
+			"end": 1589725200,
+			"tags": []
+		},
+		{
+			"name": "Implement UI",
+			"project": {
+				"name": "Sync project 1",
+				"color": "#389129"
+			},
+			"start": 1589725800,
+			"end": 1589729400,
+			"tags": ["Sync", "Data"]
+		},
+		{
+			"name": "Fixing Bug",
+			"start": 1589729700,
+			"end": 1589730000
+		},
+		{
+			"name": "Support Onboarding Login",
+			"project": {
+				"name": "Onboarding",
+				"color": "#1482a3"
+			},
+			"start": 1589730600,
+			"end": 1589731200,
+			"tags": ["Sync"]
+		},
+		{
+			"name": "Onboarding UI",
+			"project": {
+				"name": "Onboarding",
+				"color": "#1482a3"
+			},
+			"start": 1589732100,
+			"end": 1589733900
+		},
+		{
+			"name": "Memory Leak",
+			"project": {
+				"name": "Fix Bug",
+				"color": "#c48612"
+			},
+			"start": 1589734200,
+			"end": 1589736600
+		},
+		{
+			"name": "Yesterday - UI Broken",
+			"project": {
+				"name": "Fix Bug",
+				"color": "#c48612"
+			},
+			"start": 1589639400,
+			"end": 1589650200
+		},
+	]
+}
