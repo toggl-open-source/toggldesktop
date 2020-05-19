@@ -816,7 +816,7 @@ void Context::updateUI(const UIElements &what) {
 
             HTTPClient::Config.UseProxy = use_proxy;
             HTTPClient::Config.ProxySettings = proxy;
-            HTTPClient::Config.AutodetectProxy = settings_.autodetect_proxy;
+            HTTPClient::Config.AutodetectProxy = settings_.autodetect_proxy();
         }
 
         if (what.display_unsynced_items && user_) {
@@ -2873,13 +2873,13 @@ TimeEntry *Context::Start(
 
     OpenTimeEntryList();
 
-    if (!prevent_on_app && settings_.focus_on_shortcut) {
+    if (!prevent_on_app && settings_.focus_on_shortcut()) {
         // Show app
         UI()->DisplayApp();
     }
 
-    if (te && settings_.open_editor_on_shortcut) {
-        if (!prevent_on_app && !settings_.focus_on_shortcut) {
+    if (te && settings_.open_editor_on_shortcut()) {
+        if (!prevent_on_app && !settings_.focus_on_shortcut()) {
             // Show app
             UI()->DisplayApp();
         }
@@ -2976,7 +2976,7 @@ TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
 
         result = user_->Continue(
             latest->GUID(),
-            settings_.manual_mode);
+            settings_.manual_mode());
     }
 
 
@@ -2987,7 +2987,7 @@ TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
         return nullptr;
     }
 
-    if (settings_.manual_mode && result) {
+    if (settings_.manual_mode() && result) {
         UIElements render;
         render.open_time_entry_editor = true;
         render.display_time_entry_editor = true;
@@ -2995,13 +2995,13 @@ TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
         updateUI(render);
     }
 
-    if (!prevent_on_app && settings_.focus_on_shortcut) {
+    if (!prevent_on_app && settings_.focus_on_shortcut()) {
         // Show app
         UI()->DisplayApp();
     }
 
-    if (result && settings_.open_editor_on_shortcut) {
-        if (!prevent_on_app && !settings_.focus_on_shortcut) {
+    if (result && settings_.open_editor_on_shortcut()) {
+        if (!prevent_on_app && !settings_.focus_on_shortcut()) {
             // Show app
             UI()->DisplayApp();
         }
@@ -3044,7 +3044,7 @@ TimeEntry *Context::Continue(
 
         result = user_->Continue(
             GUID,
-            settings_.manual_mode);
+            settings_.manual_mode());
     }
 
     error err = save(true);
@@ -3053,7 +3053,7 @@ TimeEntry *Context::Continue(
         return nullptr;
     }
 
-    if (settings_.manual_mode && result) {
+    if (settings_.manual_mode() && result) {
         UIElements render;
         render.open_time_entry_editor = true;
         render.display_time_entry_editor = true;
@@ -3615,7 +3615,7 @@ error Context::Stop(const bool prevent_on_app) {
         return noError;
     }
 
-    if (!prevent_on_app && settings_.focus_on_shortcut) {
+    if (!prevent_on_app && settings_.focus_on_shortcut()) {
         UI()->DisplayApp();
     }
 
@@ -4275,7 +4275,7 @@ error Context::offerBetaChannel(bool *did_offer) {
             return noError;
         }
 
-        if (settings_.has_seen_beta_offering) {
+        if (settings_.has_seen_beta_offering()) {
             return noError;
         }
 
@@ -4442,7 +4442,7 @@ void Context::osShutdown() {
 const bool Context::handleStopRunningEntry() {
 
     // Skip if this feature is not enable
-    if (!settings_.stop_entry_on_shutdown_sleep) {
+    if (!settings_.stop_entry_on_shutdown_sleep()) {
         return false;
     }
 
@@ -4451,7 +4451,7 @@ const bool Context::handleStopRunningEntry() {
 }
 
 void Context::displayReminder() {
-    if (!settings_.reminder) {
+    if (!settings_.reminder()) {
         return;
     }
 
@@ -4466,7 +4466,7 @@ void Context::displayReminder() {
         }
 
         if (time(nullptr) - last_tracking_reminder_time_
-                < settings_.reminder_minutes * 60) {
+                < settings_.reminder_minutes() * 60) {
             return;
         }
     }
@@ -4475,13 +4475,13 @@ void Context::displayReminder() {
     Poco::LocalDateTime now;
     int wday = now.dayOfWeek();
     if (
-        (Poco::DateTime::MONDAY == wday && !settings_.remind_mon) ||
-        (Poco::DateTime::TUESDAY == wday && !settings_.remind_tue) ||
-        (Poco::DateTime::WEDNESDAY == wday && !settings_.remind_wed) ||
-        (Poco::DateTime::THURSDAY == wday && !settings_.remind_thu) ||
-        (Poco::DateTime::FRIDAY == wday && !settings_.remind_fri) ||
-        (Poco::DateTime::SATURDAY == wday && !settings_.remind_sat) ||
-        (Poco::DateTime::SUNDAY == wday && !settings_.remind_sun)) {
+        (Poco::DateTime::MONDAY == wday && !settings_.remind_mon()) ||
+        (Poco::DateTime::TUESDAY == wday && !settings_.remind_tue()) ||
+        (Poco::DateTime::WEDNESDAY == wday && !settings_.remind_wed()) ||
+        (Poco::DateTime::THURSDAY == wday && !settings_.remind_thu()) ||
+        (Poco::DateTime::FRIDAY == wday && !settings_.remind_fri()) ||
+        (Poco::DateTime::SATURDAY == wday && !settings_.remind_sat()) ||
+        (Poco::DateTime::SUNDAY == wday && !settings_.remind_sun())) {
         logger.debug("reminder is not enabled on this weekday");
         return;
     }
@@ -4489,7 +4489,7 @@ void Context::displayReminder() {
     // Check if allowed to display reminder at this time
     if (!settings_.remind_starts->empty()) {
         int h(0), m(0);
-        if (toggl::Formatter::ParseTimeInput(settings_.remind_starts, &h, &m)) {
+        if (toggl::Formatter::ParseTimeInput(settings_.remind_starts(), &h, &m)) {
             Poco::LocalDateTime start(
                 now.year(), now.month(), now.day(), h, m, now.second());
             if (now < start) {
@@ -4500,7 +4500,7 @@ void Context::displayReminder() {
     }
     if (!settings_.remind_ends->empty()) {
         int h(0), m(0);
-        if (toggl::Formatter::ParseTimeInput(settings_.remind_ends, &h, &m)) {
+        if (toggl::Formatter::ParseTimeInput(settings_.remind_ends(), &h, &m)) {
             Poco::LocalDateTime end(now.year(), now.month(), now.day(), h, m, now.second());
             if (now > end) {
                 logger.debug("Reminder - its too late for reminders", " [", now.hour(), ":", now.minute(), "]", " (allowed until ", h, ":", m, ")");
@@ -4519,7 +4519,7 @@ void Context::resetLastTrackingReminderTime() {
 }
 
 void Context::displayPomodoro() {
-    if (!settings_.pomodoro) {
+    if (!settings_.pomodoro()) {
         return;
     }
 
@@ -4544,24 +4544,24 @@ void Context::displayPomodoro() {
 
         if (current_te->DurOnly() && current_te->LastStartAt() != 0) {
             if (time(nullptr) - current_te->LastStartAt()
-                    < settings_.pomodoro_minutes * 60) {
+                    < settings_.pomodoro_minutes() * 60) {
                 return;
             }
         } else {
             if (time(nullptr) - current_te->Start()
-                    < settings_.pomodoro_minutes * 60) {
+                    < settings_.pomodoro_minutes() * 60) {
                 return;
             }
         }
-        const Poco::Int64 pomodoroDuration = settings_.pomodoro_minutes * 60;
+        const Poco::Int64 pomodoroDuration = settings_.pomodoro_minutes() * 60;
         wid = current_te->WID();
         Stop(true);
         current_te->DurationInSeconds.Set(pomodoroDuration);
         current_te->StopTime.Set(current_te->StartTime() + pomodoroDuration);
     }
-    UI()->DisplayPomodoro(settings_.pomodoro_minutes);
+    UI()->DisplayPomodoro(settings_.pomodoro_minutes());
 
-    if (settings_.pomodoro_break) {
+    if (settings_.pomodoro_break()) {
         //  Start a new task with the tag "pomodoro-break"
         pomodoro_break_entry_ = user_->Start("Pomodoro Break",  // description
                                              "",  // duration
@@ -4579,7 +4579,7 @@ void Context::displayPomodoro() {
 }
 
 void Context::displayPomodoroBreak() {
-    if (!settings_.pomodoro_break) {
+    if (!settings_.pomodoro_break()) {
         return;
     }
 
@@ -4602,17 +4602,17 @@ void Context::displayPomodoroBreak() {
         }
 
         if (time(nullptr) - current_te->Start()
-                < settings_.pomodoro_break_minutes * 60) {
+                < settings_.pomodoro_break_minutes() * 60) {
             return;
         }
-        const Poco::Int64 pomodoroDuration = settings_.pomodoro_break_minutes * 60;
+        const Poco::Int64 pomodoroDuration = settings_.pomodoro_break_minutes() * 60;
         Stop(true);
         current_te->DurationInSeconds.Set(pomodoroDuration);
         current_te->StopTime.Set(current_te->StartTime() + pomodoroDuration);
     }
     pomodoro_break_entry_ = nullptr;
 
-    UI()->DisplayPomodoroBreak(settings_.pomodoro_break_minutes);
+    UI()->DisplayPomodoroBreak(settings_.pomodoro_break_minutes());
 }
 
 error Context::StartAutotrackerEvent(const TimelineEvent &event) {
@@ -4621,7 +4621,7 @@ error Context::StartAutotrackerEvent(const TimelineEvent &event) {
         return noError;
     }
 
-    if (!settings_.autotrack) {
+    if (!settings_.autotrack()) {
         return noError;
     }
 

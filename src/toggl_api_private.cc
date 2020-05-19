@@ -443,19 +443,19 @@ TogglSettingsView *settings_view_item_init(
 
     view->RecordTimeline = record_timeline;
 
-    view->DockIcon = settings.dock_icon;
-    view->MenubarTimer = settings.menubar_timer;
-    view->MenubarProject = settings.menubar_project;
-    view->OnTop = settings.on_top;
-    view->Reminder = settings.reminder;
-    view->UseIdleDetection = settings.use_idle_detection;
-    view->IdleMinutes = settings.idle_minutes;
-    view->FocusOnShortcut = settings.focus_on_shortcut;
-    view->ReminderMinutes = settings.reminder_minutes;
-    view->ManualMode = settings.manual_mode;
-    view->AutodetectProxy = settings.autodetect_proxy;
-    view->Autotrack = settings.autotrack;
-    view->OpenEditorOnShortcut = settings.open_editor_on_shortcut;
+    view->DockIcon = settings.dock_icon();
+    view->MenubarTimer = settings.menubar_timer();
+    view->MenubarProject = settings.menubar_project();
+    view->OnTop = settings.on_top();
+    view->Reminder = settings.reminder();
+    view->UseIdleDetection = settings.use_idle_detection();
+    view->IdleMinutes = settings.idle_minutes();
+    view->FocusOnShortcut = settings.focus_on_shortcut();
+    view->ReminderMinutes = settings.reminder_minutes();
+    view->ManualMode = settings.manual_mode();
+    view->AutodetectProxy = settings.autodetect_proxy();
+    view->Autotrack = settings.autotrack();
+    view->OpenEditorOnShortcut = settings.open_editor_on_shortcut();
 
     view->UseProxy = use_proxy;
 
@@ -464,25 +464,25 @@ TogglSettingsView *settings_view_item_init(
     view->ProxyUsername = copy_string(proxy.Username());
     view->ProxyPassword = copy_string(proxy.Password());
 
-    view->RemindMon = settings.remind_mon;
-    view->RemindTue = settings.remind_tue;
-    view->RemindWed = settings.remind_wed;
-    view->RemindThu = settings.remind_thu;
-    view->RemindFri = settings.remind_fri;
-    view->RemindSat = settings.remind_sat;
-    view->RemindSun = settings.remind_sun;
+    view->RemindMon = settings.remind_mon();
+    view->RemindTue = settings.remind_tue();
+    view->RemindWed = settings.remind_wed();
+    view->RemindThu = settings.remind_thu();
+    view->RemindFri = settings.remind_fri();
+    view->RemindSat = settings.remind_sat();
+    view->RemindSun = settings.remind_sun();
 
-    view->RemindStarts = copy_string(settings.remind_starts);
-    view->RemindEnds = copy_string(settings.remind_ends);
+    view->RemindStarts = copy_string(settings.remind_starts());
+    view->RemindEnds = copy_string(settings.remind_ends());
 
-    view->Pomodoro = settings.pomodoro;
-    view->PomodoroMinutes = settings.pomodoro_minutes;
-    view->PomodoroBreak = settings.pomodoro_break;
-    view->PomodoroBreakMinutes = settings.pomodoro_break_minutes;
-    view->StopEntryOnShutdownSleep = settings.stop_entry_on_shutdown_sleep;
-    view->ShowTouchBar = settings.show_touch_bar;
-    view->ActiveTab = settings.active_tab;
-    view->ColorTheme = settings.color_theme;
+    view->Pomodoro = settings.pomodoro();
+    view->PomodoroMinutes = settings.pomodoro_minutes();
+    view->PomodoroBreak = settings.pomodoro_break();
+    view->PomodoroBreakMinutes = settings.pomodoro_break_minutes();
+    view->StopEntryOnShutdownSleep = settings.stop_entry_on_shutdown_sleep();
+    view->ShowTouchBar = settings.show_touch_bar();
+    view->ActiveTab = settings.active_tab();
+    view->ColorTheme = settings.color_theme();
     return view;
 }
 

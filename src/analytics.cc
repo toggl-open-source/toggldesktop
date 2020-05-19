@@ -187,104 +187,104 @@ void GoogleAnalyticsSettingsEvent::runTask() {
     // Settings struct
 
     if (uses_proxy) {
-        setActionBool("autodetect_proxy-", settings.autodetect_proxy);
+        setActionBool("autodetect_proxy-", settings.autodetect_proxy());
         makeReq();
     }
 
-    setActionBool("dock_icon-", settings.dock_icon);
+    setActionBool("dock_icon-", settings.dock_icon());
     makeReq();
 
-    setActionBool("menubar_timer-", settings.menubar_timer);
+    setActionBool("menubar_timer-", settings.menubar_timer());
     makeReq();
 
-    setActionBool("menubar_project-", settings.menubar_project);
+    setActionBool("menubar_project-", settings.menubar_project());
     makeReq();
 
-    setActionBool("on_top-", settings.on_top);
+    setActionBool("on_top-", settings.on_top());
     makeReq();
 
 
-    setActionBool("use_idle_detection-", settings.use_idle_detection);
+    setActionBool("use_idle_detection-", settings.use_idle_detection());
     makeReq();
 
-    if (settings.use_idle_detection) {
-        setActionInt("idle_minutes-", settings.idle_minutes);
+    if (settings.use_idle_detection()) {
+        setActionInt("idle_minutes-", settings.idle_minutes());
         makeReq();
     }
 
-    setActionBool("focus_on_shortcut-", settings.focus_on_shortcut);
+    setActionBool("focus_on_shortcut-", settings.focus_on_shortcut());
     makeReq();
 
-    setActionBool("manual_mode-", settings.manual_mode);
+    setActionBool("manual_mode-", settings.manual_mode());
     makeReq();
 
-    setActionBool("autotrack-", settings.autotrack);
+    setActionBool("autotrack-", settings.autotrack());
     makeReq();
 
-    setActionBool("open_editor_on_shortcut-", settings.open_editor_on_shortcut);
+    setActionBool("open_editor_on_shortcut-", settings.open_editor_on_shortcut());
     makeReq();
 
-    setActionBool("reminder-", settings.reminder);
+    setActionBool("reminder-", settings.reminder());
     makeReq();
 
-    if (settings.reminder) {
-        setActionBool("reminder_day_mon-", settings.remind_mon);
+    if (settings.reminder()) {
+        setActionBool("reminder_day_mon-", settings.remind_mon());
         makeReq();
 
-        setActionBool("reminder_day_tue-", settings.remind_tue);
+        setActionBool("reminder_day_tue-", settings.remind_tue());
         makeReq();
 
-        setActionBool("reminder_day_wed-", settings.remind_wed);
+        setActionBool("reminder_day_wed-", settings.remind_wed());
         makeReq();
 
-        setActionBool("reminder_day_thu-", settings.remind_thu);
+        setActionBool("reminder_day_thu-", settings.remind_thu());
         makeReq();
 
-        setActionBool("reminder_day_fri-", settings.remind_fri);
+        setActionBool("reminder_day_fri-", settings.remind_fri());
         makeReq();
 
-        setActionBool("reminder_day_sat-", settings.remind_sat);
+        setActionBool("reminder_day_sat-", settings.remind_sat());
         makeReq();
 
-        setActionBool("reminder_day_sun-", settings.remind_sun);
+        setActionBool("reminder_day_sun-", settings.remind_sun());
         makeReq();
 
-        setActionInt("reminder_minutes-", settings.reminder_minutes);
+        setActionInt("reminder_minutes-", settings.reminder_minutes());
         makeReq();
 
-        setActionString("remind_starts-", settings.remind_starts);
+        setActionString("remind_starts-", settings.remind_starts());
         makeReq();
 
-        setActionString("remind_ends-", settings.remind_ends);
+        setActionString("remind_ends-", settings.remind_ends());
         makeReq();
     }
 
-    setActionBool("pomodoro-", settings.pomodoro);
+    setActionBool("pomodoro-", settings.pomodoro());
     makeReq();
 
-    if (settings.pomodoro) {
-        setActionInt("pomodoro_minutes-", settings.pomodoro_minutes);
+    if (settings.pomodoro()) {
+        setActionInt("pomodoro_minutes-", settings.pomodoro_minutes());
         makeReq();
     }
 
-    setActionBool("pomodoro_break-", settings.pomodoro_break);
+    setActionBool("pomodoro_break-", settings.pomodoro_break());
     makeReq();
 
-    if (settings.pomodoro_break) {
-        setActionInt("pomodoro_break_minutes-", settings.pomodoro_break_minutes);
+    if (settings.pomodoro_break()) {
+        setActionInt("pomodoro_break_minutes-", settings.pomodoro_break_minutes());
         makeReq();
     }
 
-    setActionBool("stop_entry_on_shutdown_sleep-", settings.stop_entry_on_shutdown_sleep);
+    setActionBool("stop_entry_on_shutdown_sleep-", settings.stop_entry_on_shutdown_sleep());
     makeReq();
 
-    setActionBool("show_touch_bar-", settings.show_touch_bar);
+    setActionBool("show_touch_bar-", settings.show_touch_bar());
     makeReq();
 
-    setActionBool("active_tab-", settings.active_tab);
+    setActionBool("active_tab-", settings.active_tab());
     makeReq();
 
-    setActionInt("color_theme-", settings.color_theme);
+    setActionInt("color_theme-", settings.color_theme());
     makeReq();
 }
 

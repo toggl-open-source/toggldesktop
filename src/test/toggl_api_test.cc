@@ -437,78 +437,77 @@ TEST(toggl_api, toggl_set_settings) {
     // set to false/null
 
     ASSERT_TRUE(toggl_set_settings_menubar_project(app.ctx(), false));
-    ASSERT_FALSE(testing::testresult::settings.menubar_project);
+    ASSERT_FALSE(testing::testresult::settings.menubar_project());
 
     ASSERT_TRUE(toggl_set_settings_autodetect_proxy(app.ctx(), false));
-    ASSERT_FALSE(testing::testresult::settings.autodetect_proxy);
+    ASSERT_FALSE(testing::testresult::settings.autodetect_proxy());
 
     ASSERT_TRUE(toggl_set_settings_use_idle_detection(app.ctx(), false));
-    ASSERT_FALSE(testing::testresult::settings.use_idle_detection);
+    ASSERT_FALSE(testing::testresult::settings.use_idle_detection());
 
     ASSERT_TRUE(toggl_set_settings_menubar_timer(app.ctx(), false));
-    ASSERT_FALSE(testing::testresult::settings.menubar_timer);
+    ASSERT_FALSE(testing::testresult::settings.menubar_timer());
 
     ASSERT_TRUE(toggl_set_settings_dock_icon(app.ctx(), false));
-    ASSERT_FALSE(testing::testresult::settings.dock_icon);
+    ASSERT_FALSE(testing::testresult::settings.dock_icon());
 
     ASSERT_TRUE(toggl_set_settings_on_top(app.ctx(), false));
-    ASSERT_FALSE(testing::testresult::settings.on_top);
+    ASSERT_FALSE(testing::testresult::settings.on_top());
 
     ASSERT_TRUE(toggl_set_settings_reminder(app.ctx(), false));
-    ASSERT_FALSE(testing::testresult::settings.reminder);
+    ASSERT_FALSE(testing::testresult::settings.reminder());
 
     ASSERT_TRUE(toggl_set_settings_idle_minutes(app.ctx(), 0));
-    ASSERT_EQ(Poco::UInt64(1), testing::testresult::settings.idle_minutes);
+    ASSERT_EQ(Poco::UInt64(1), testing::testresult::settings.idle_minutes());
 
     ASSERT_TRUE(toggl_set_settings_reminder_minutes(app.ctx(), 0));
-    ASSERT_EQ(Poco::UInt64(1), testing::testresult::settings.reminder_minutes);
+    ASSERT_EQ(Poco::UInt64(1), testing::testresult::settings.reminder_minutes());
 
     ASSERT_TRUE(toggl_set_settings_focus_on_shortcut(app.ctx(), false));
-    ASSERT_FALSE(testing::testresult::settings.focus_on_shortcut);
+    ASSERT_FALSE(testing::testresult::settings.focus_on_shortcut());
 
     ASSERT_TRUE(toggl_set_settings_manual_mode(app.ctx(), false));
-    ASSERT_FALSE(testing::testresult::settings.manual_mode);
+    ASSERT_FALSE(testing::testresult::settings.manual_mode());
 
     // set to true / not null
 
     ASSERT_TRUE(toggl_set_settings_menubar_project(app.ctx(), true));
-    ASSERT_TRUE(testing::testresult::settings.menubar_project);
+    ASSERT_TRUE(testing::testresult::settings.menubar_project());
 
     ASSERT_TRUE(toggl_set_settings_autodetect_proxy(app.ctx(), true));
-    ASSERT_TRUE(testing::testresult::settings.autodetect_proxy);
+    ASSERT_TRUE(testing::testresult::settings.autodetect_proxy());
 
     ASSERT_TRUE(toggl_set_settings_use_idle_detection(app.ctx(), true));
-    ASSERT_TRUE(testing::testresult::settings.use_idle_detection);
+    ASSERT_TRUE(testing::testresult::settings.use_idle_detection());
 
     ASSERT_TRUE(toggl_set_settings_menubar_timer(app.ctx(), true));
-    ASSERT_TRUE(testing::testresult::settings.menubar_timer);
+    ASSERT_TRUE(testing::testresult::settings.menubar_timer());
 
     ASSERT_TRUE(toggl_set_settings_dock_icon(app.ctx(), true));
-    ASSERT_TRUE(testing::testresult::settings.dock_icon);
+    ASSERT_TRUE(testing::testresult::settings.dock_icon());
 
     ASSERT_TRUE(toggl_set_settings_on_top(app.ctx(), true));
-    ASSERT_TRUE(testing::testresult::settings.on_top);
+    ASSERT_TRUE(testing::testresult::settings.on_top());
 
     ASSERT_TRUE(toggl_set_settings_reminder(app.ctx(), true));
-    ASSERT_TRUE(testing::testresult::settings.reminder);
+    ASSERT_TRUE(testing::testresult::settings.reminder());
 
     ASSERT_TRUE(toggl_set_settings_idle_minutes(app.ctx(), 123));
-    ASSERT_EQ(Poco::UInt64(123), testing::testresult::settings.idle_minutes);
+    ASSERT_EQ(Poco::UInt64(123), testing::testresult::settings.idle_minutes());
 
     ASSERT_TRUE(toggl_set_settings_reminder_minutes(app.ctx(), 222));
-    ASSERT_EQ(Poco::UInt64(222),
-              testing::testresult::settings.reminder_minutes);
+    ASSERT_EQ(Poco::UInt64(222), testing::testresult::settings.reminder_minutes());
 
     ASSERT_TRUE(toggl_set_settings_focus_on_shortcut(app.ctx(), true));
-    ASSERT_TRUE(testing::testresult::settings.focus_on_shortcut);
+    ASSERT_TRUE(testing::testresult::settings.focus_on_shortcut());
 
     ASSERT_TRUE(toggl_set_settings_manual_mode(app.ctx(), true));
-    ASSERT_TRUE(testing::testresult::settings.manual_mode);
+    ASSERT_TRUE(testing::testresult::settings.manual_mode());
 
     testing::testresult::error = noError;
     ASSERT_TRUE(toggl_set_settings_autotrack(app.ctx(), true));
     ASSERT_EQ(noError, testing::testresult::error);
-    ASSERT_TRUE(testing::testresult::settings.autotrack);
+    ASSERT_TRUE(testing::testresult::settings.autotrack());
 }
 
 TEST(toggl_api, toggl_set_proxy_settings) {
@@ -537,24 +536,24 @@ TEST(toggl_api, toggl_set_settings_remind_days) {
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(res);
 
-    ASSERT_TRUE(testing::testresult::settings.remind_mon);
-    ASSERT_TRUE(testing::testresult::settings.remind_tue);
-    ASSERT_TRUE(testing::testresult::settings.remind_wed);
-    ASSERT_TRUE(testing::testresult::settings.remind_thu);
-    ASSERT_TRUE(testing::testresult::settings.remind_fri);
-    ASSERT_TRUE(testing::testresult::settings.remind_sat);
-    ASSERT_TRUE(testing::testresult::settings.remind_sun);
+    ASSERT_TRUE(testing::testresult::settings.remind_mon());
+    ASSERT_TRUE(testing::testresult::settings.remind_tue());
+    ASSERT_TRUE(testing::testresult::settings.remind_wed());
+    ASSERT_TRUE(testing::testresult::settings.remind_thu());
+    ASSERT_TRUE(testing::testresult::settings.remind_fri());
+    ASSERT_TRUE(testing::testresult::settings.remind_sat());
+    ASSERT_TRUE(testing::testresult::settings.remind_sun());
 
     ASSERT_TRUE(toggl_set_settings_remind_days(
         app.ctx(), false, false, false, false, false, false, false));
 
-    ASSERT_FALSE(testing::testresult::settings.remind_mon);
-    ASSERT_FALSE(testing::testresult::settings.remind_tue);
-    ASSERT_FALSE(testing::testresult::settings.remind_wed);
-    ASSERT_FALSE(testing::testresult::settings.remind_thu);
-    ASSERT_FALSE(testing::testresult::settings.remind_fri);
-    ASSERT_FALSE(testing::testresult::settings.remind_sat);
-    ASSERT_FALSE(testing::testresult::settings.remind_sun);
+    ASSERT_FALSE(testing::testresult::settings.remind_mon());
+    ASSERT_FALSE(testing::testresult::settings.remind_tue());
+    ASSERT_FALSE(testing::testresult::settings.remind_wed());
+    ASSERT_FALSE(testing::testresult::settings.remind_thu());
+    ASSERT_FALSE(testing::testresult::settings.remind_fri());
+    ASSERT_FALSE(testing::testresult::settings.remind_sat());
+    ASSERT_FALSE(testing::testresult::settings.remind_sun());
 }
 
 TEST(toggl_api, toggl_set_settings_remind_times) {
@@ -1051,7 +1050,7 @@ TEST(toggl_api, toggl_continue_in_manual_mode) {
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     ASSERT_TRUE(toggl_set_settings_manual_mode(app.ctx(), true));
-    ASSERT_TRUE(testing::testresult::settings.manual_mode);
+    ASSERT_TRUE(testing::testresult::settings.manual_mode());
 
     auto te = testing::testresult::time_entry_by_id(89833438);
     std::string guid = te.GUID();
@@ -1174,7 +1173,7 @@ TEST(toggl_api, toggl_continue_latest_with_manual_mode) {
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     ASSERT_TRUE(toggl_set_settings_manual_mode(app.ctx(), true));
-    ASSERT_TRUE(testing::testresult::settings.manual_mode);
+    ASSERT_TRUE(testing::testresult::settings.manual_mode());
 
     testing::testresult::error = noError;
     testing::testresult::editor_state = TimeEntry();

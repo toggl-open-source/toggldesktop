@@ -59,10 +59,6 @@ public:
     const T& operator()() const {
         return current_;
     }
-    // TODO remove? confusing syntax with conversion operator
-    operator const T() const {
-        return current_;
-    }
     const T& Get() const {
         return current_;
     }

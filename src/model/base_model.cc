@@ -27,21 +27,21 @@ bool BaseModel::NeedsPush() const {
 
 bool BaseModel::NeedsPOST() const {
     // No server side ID yet, meaning it's not POSTed yet
-    return !ID && !(DeletedAt > 0);
+    return !ID() && !(DeletedAt() > 0);
 }
 
 bool BaseModel::NeedsPUT() const {
     // Model has been updated and is not deleted, needs a PUT
-    return ID && UIModifiedAt > 0 && !(DeletedAt > 0);
+    return ID() && UIModifiedAt() > 0 && !(DeletedAt() > 0);
 }
 
 bool BaseModel::NeedsDELETE() const {
     // Model is deleted, needs a DELETE on server side
-    return ID && (DeletedAt > 0);
+    return ID() && (DeletedAt() > 0);
 }
 
 bool BaseModel::NeedsToBeSaved() const {
-    return !LocalID || IsDirty();
+    return !LocalID() || IsDirty();
 }
 
 void BaseModel::EnsureGUID() {
