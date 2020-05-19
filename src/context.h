@@ -823,8 +823,9 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error updateTimeEntryDescription(
         TimeEntry *te,
         const std::string &value);
-};
 
+    bool checkIfSkipPomodoro(TimeEntry *te);
+};
 void on_websocket_message(
     void *context,
     std::string json);

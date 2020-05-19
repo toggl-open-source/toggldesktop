@@ -3148,6 +3148,12 @@ error Context::SetTimeEntryDuration(
     }
 
     te->SetDurationUserInput(duration);
+
+    // Skip checking Pomodoro if it's current running TE and the total time is > pomodoro
+    if (checkIfSkipPomodoro(te)) {
+        te->SetSkipPomodoro(true);
+    }
+
     return displayError(save(true));
 }
 
@@ -3377,6 +3383,11 @@ error Context::SetTimeEntryStart(
         dt, Poco::DateTimeFormat::ISO8601_FORMAT);
 
     te->SetStartUserInput(s, GetKeepEndTimeFixed());
+
+    // Skip checking Pomodoro if it's current running TE and the total time is > pomodoro
+    if (checkIfSkipPomodoro(te)) {
+        te->SetSkipPomodoro(true);
+    }
 
     return displayError(save(true));
 }
@@ -4554,6 +4565,12 @@ void Context::displayPomodoro() {
                 return;
             }
         }
+
+        // We should skip if the user manually update start / duration time
+        if (current_te->SkipPomodoro()) {
+            return;
+        }
+
         const Poco::Int64 pomodoroDuration = settings_.pomodoro_minutes * 60;
         wid = current_te->WID();
         Stop(true);
@@ -6228,4 +6245,18 @@ error Context::UpdateTimeEntry(
 
     return displayError(save(true));
 }
+
+bool Context::checkIfSkipPomodoro(TimeEntry *te) {
+    // Skip checking Pomodoro if it's current running TE and the total time is > pomodoro
+    if (settings_.pomodoro) {
+        TimeEntry *current_te = user_->RunningTimeEntry();
+        if (current_te && current_te->GUID().compare(te->GUID()) == 0) {
+            if (time(nullptr) - te->Start() >= settings_.pomodoro_minutes * 60) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 }  // namespace toggl
