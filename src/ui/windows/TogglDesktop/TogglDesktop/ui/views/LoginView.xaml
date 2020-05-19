@@ -69,8 +69,17 @@
                                  behaviors:FocusHelper.IsFocused="{Binding IsPasswordFocused}"/>
                     <mah:CustomValidationPopup PlacementTarget="{Binding ElementName=passwordBox}"
                                                Placement="Top"
-                                               IsOpen="{Binding ElementName=passwordBox, Path=IsKeyboardFocused, Mode=OneWay}"
                                                AllowsTransparency="True">
+                        <Popup.IsOpen>
+                            <MultiBinding Converter="{StaticResource AndConverter}">
+                                <Binding ElementName="passwordBox"
+                                         Path="IsKeyboardFocused"
+                                         Mode="OneWay" />
+                                <Binding Path="SelectedConfirmAction"
+                                         Converter="{StaticResource EnumEqualConverter}"
+                                         ConverterParameter="{x:Static viewModels:ConfirmAction.SignUp}" />
+                            </MultiBinding>
+                        </Popup.IsOpen>
                         <Grid Background="Transparent">
                             <Border Width="268"
                                     Height="112"
