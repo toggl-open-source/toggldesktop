@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TogglDesktop.Services.UndoService;
 using Xunit;
+using static TogglDesktop.Toggl;
 
 namespace TogglDesktop.Tests
 {
     public class LibraryIntegrationTests : IClassFixture<LibraryFixture>
     {
         private readonly LibraryFixture _state;
-        private readonly TimeEntrySnapshot _timeEntrySnapshot;
+        private readonly TogglTimeEntryView _timeEntrySnapshot;
         private readonly string _firstTimeEntryGuid;
 
         public LibraryIntegrationTests(LibraryFixture libraryFixture)
         {
             _state = libraryFixture;
             Assert.True(Toggl.SetLoggedInUser(_state.MeJson));
-            _timeEntrySnapshot = _state.TimeEntries[0].ToTimeEntrySnapshot();
+            _timeEntrySnapshot = _state.TimeEntries[0];
             _firstTimeEntryGuid = _state.TimeEntries[0].GUID;
         }
 

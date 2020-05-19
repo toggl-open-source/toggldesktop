@@ -194,9 +194,7 @@
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
     <Compile Include="Services\NsisPackageExtractor.cs" />
-    <Compile Include="Services\UndoService\TimeEntrySnapshot.cs" />
-    <Compile Include="Services\UndoService\TogglTimeEntryViewToSnapshotExtension.cs" />
-    <Compile Include="Services\UndoService\UndoDeletionService.cs" />
+    <Compile Include="Services\UndoDeletionService.cs" />
     <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Services\UpdateStatus.cs" />
     <Compile Include="Services\Win10\RunOnStartup.cs" />

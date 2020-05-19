@@ -7,13 +7,12 @@ using System.Windows;
 using System.Windows.Input;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.Services;
-using TogglDesktop.Services.UndoService;
 
 // ReSharper disable InconsistentNaming
 
 namespace TogglDesktop
 {
-public static partial class Toggl
+    public static partial class Toggl
 {
         #region constants and static fields
 
@@ -295,10 +294,10 @@ public static partial class Toggl
         return toggl_continue_latest(ctx, preventOnApp);
     }
 
-    public static bool DeleteTimeEntry(TimeEntrySnapshot timeEntrySnapshot)
+    public static bool DeleteTimeEntry(TogglTimeEntryView timeEntry)
     {
-        Toggl.UndoDeletionService.SnapshotTimeEntry(timeEntrySnapshot);
-        return toggl_delete_time_entry(ctx, timeEntrySnapshot.GUID);
+        Toggl.UndoDeletionService.SnapshotTimeEntry(timeEntry);
+        return toggl_delete_time_entry(ctx, timeEntry.GUID);
     }
 
         #region changing time entry
@@ -1429,14 +1428,14 @@ public static partial class Toggl
         BugsnagService.NotifyBugsnag(ex);
     }
 
-    public static bool AskToDeleteEntry(TimeEntrySnapshot timeEntrySnapshot)
+    public static bool AskToDeleteEntry(TogglTimeEntryView timeEntry)
     {
         var result = MessageBox.Show(mainWindow, "Deleted time entries cannot be restored.", "Delete time entry?",
                                      MessageBoxButton.OKCancel, "Delete entry");
 
         if (result == MessageBoxResult.OK)
         {
-            return DeleteTimeEntry(timeEntrySnapshot);
+            return DeleteTimeEntry(timeEntry);
         }
         return false;
     }
