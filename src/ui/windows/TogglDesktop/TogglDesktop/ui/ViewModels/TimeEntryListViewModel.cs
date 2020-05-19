@@ -1,4 +1,6 @@
+using System.Reactive;
 using System.Reactive.Linq;
+using System.Windows.Input;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -11,8 +13,13 @@ namespace TogglDesktop.ViewModels
             this.WhenAnyValue(x => x.IsLoading)
                 .Select(x => !x)
                 .ToPropertyEx(this, x => x.IsViewEnabled);
+
+            UndoCommand = ReactiveCommand.Create(()=>OnUndo());
         }
 
+        public void OnUndo() =>
+            Toggl.UndoDeletionService.UndoDeletion();
+        public ReactiveCommand<Unit, Unit> UndoCommand { get; set; }
         [Reactive]
         public bool ShowLoadMore { get; private set; }
 

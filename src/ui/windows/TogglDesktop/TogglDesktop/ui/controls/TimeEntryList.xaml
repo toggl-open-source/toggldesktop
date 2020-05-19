@@ -60,6 +60,7 @@
     </UserControl.CommandBindings>
 
     <UserControl.InputBindings>
+        <KeyBinding Key="Z" Modifiers="Ctrl" Command="{Binding UndoCommand}"/>
         <KeyBinding Key="Down" Command="{StaticResource HighlightDown}" />
         <KeyBinding Key="Up" Command="{StaticResource HighlightUp}" />
         <KeyBinding Key="Tab" Command="{StaticResource HighlightDown}" />
