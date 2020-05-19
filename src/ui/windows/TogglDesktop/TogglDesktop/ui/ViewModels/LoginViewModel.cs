@@ -61,6 +61,15 @@ namespace TogglDesktop.ViewModels
             IsLoginSignupExecuting
                 .Select(x => !x)
                 .ToPropertyEx(this, x => x.IsViewEnabled);
+
+            // password rules
+            var passwordObservable = this.WhenAnyValue(x => x.Password).Where(x => x != null);
+            passwordObservable.Select(x => x.Length >= 8)
+                .ToPropertyEx(this, x => x.IsEightCharactersOrMore);
+            passwordObservable.Select(x => x != null && x.Any(char.IsUpper) && x.Any(char.IsLower))
+                .ToPropertyEx(this, x => x.IsLowercaseAndUppercase);
+            passwordObservable.Select(x => x != null && x.Any(char.IsDigit))
+                .ToPropertyEx(this, x => x.IsAtLeastOneNumber);
         }
         public ReactiveCommand<Unit, bool> ConfirmLoginSignupCommand { get; }
         public ReactiveCommand<Unit, Unit> ConfirmGoogleLoginSignupCommand { get; }
@@ -104,6 +113,9 @@ namespace TogglDesktop.ViewModels
         public string SignupLoginToggleText { [ObservableAsProperty] get; }
         public bool IsLoading { [ObservableAsProperty] get; }
         public bool IsViewEnabled { [ObservableAsProperty] get; }
+        public bool IsEightCharactersOrMore { [ObservableAsProperty] get; }
+        public bool IsLowercaseAndUppercase { [ObservableAsProperty] get; }
+        public bool IsAtLeastOneNumber { [ObservableAsProperty] get; }
 
         private void EnsureValidationApplied()
         {

@@ -93,8 +93,43 @@
                                                       BlurRadius="4"
                                                       ShadowDepth="1" />
                                 </Border.Effect>
-                                <TextBlock Style="{StaticResource Toggl.CaptionText}"
-                                           Text="Please make sure your password includes:" />
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Style="{StaticResource Toggl.CaptionText}"
+                                               Text="Please make sure your password includes:" />
+                                        <TextBlock Text="8 characters or more" >
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsEightCharactersOrMore}" Value="True">
+                                                        <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <TextBlock Text="lowercase and uppercase letters" >
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsLowercaseAndUppercase}" Value="True">
+                                                        <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <TextBlock Text="at least one number">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsAtLeastOneNumber}" Value="True">
+                                                        <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
                             </Border>
                         </Grid>
                     </mah:CustomValidationPopup>
