@@ -4,6 +4,7 @@
 #define PROPERTY_H
 
 #include <memory>
+#include <string>
 
 namespace toggl {
 
@@ -22,6 +23,9 @@ public:
         current_ = std::move(value);
         previous_ = current_;
     }
+    // on some beautiful day in the future, we could also be able to delete the copy assignment operator
+    // it's required for settings, obmexperiments and timeline for now
+    // Property& operator=(const Property &o) = delete;
     /* Dirtiness implementation */
     // Property is dirty when the current and previous versions of it are different.
     //     I opted for comparing these two instead of a bool flag because most of the strings
@@ -79,6 +83,19 @@ template<typename... Args> static bool IsAnyPropertyDirty(Args&... args) { retur
 /* A helper method to clear the dirty flag for more properties at once */
 template<typename... Args> static void AllPropertiesClearDirty(Args&... args) { (... , args.SetNotDirty()); }
 
+template <class T>
+struct PropertyMetadata {
+    PropertyMetadata(Property<T> &data, std::string database_name, std::string backend_name = {})
+        : Data(data)
+        , DatabaseName(database_name)
+        , BackendName(backend_name.empty() ? database_name : backend_name)
+    {
+
+    }
+    Property<T> &Data;
+    std::string DatabaseName;
+    std::string BackendName;
+};
 
 } // namespace toggl
 

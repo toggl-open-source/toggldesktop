@@ -7,6 +7,7 @@
 #include <vector>
 #include <cstring>
 #include <ctime>
+#include <utility>
 
 #include <json/json.h>  // NOLINT
 
@@ -14,6 +15,7 @@
 #include "types.h"
 #include "util/logger.h"
 #include "util/property.h"
+#include "util/json.h"
 
 #include <Poco/Types.h>
 
@@ -26,6 +28,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     BaseModel() {}
     virtual ~BaseModel() {}
 
+
     virtual bool IsDirty() const {
         return Dirty() || IsAnyPropertyDirty(ValidationError, DeletedAt, UpdatedAt, GUID, UIModifiedAt, UID, ID);
     }
@@ -35,6 +38,30 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     virtual void ClearDirty() {
         Dirty.Set(false);
         AllPropertiesClearDirty(ValidationError, DeletedAt, UpdatedAt, GUID, UIModifiedAt, UID, ID);
+    }
+
+    // Not virtual because the return type will be different in child classes
+    // Be sure to be vary of which variant are you using
+    auto GetProperties() {
+        return std::make_tuple(
+            PropertyMetadata(ValidationError, "validation_error"),
+            PropertyMetadata(DeletedAt, "deleted_at"),
+            PropertyMetadata(UpdatedAt, "updated_at"),
+            PropertyMetadata(GUID, "guid"),
+            PropertyMetadata(UIModifiedAt, "ui_modified_at"),
+            PropertyMetadata(UID, "uid"),
+            PropertyMetadata(ID, "id")
+        );
+    }
+    virtual std::string GetPropertyJson() {
+        Json::Value root;
+        std::apply([&root](auto... params) {
+            auto insert = [](auto &where, auto &name, auto &value) {
+                where[name] = JsonConvert(value);
+            };
+            (... , insert(root, params.DatabaseName, params.Data.Get()));
+        }, GetProperties());
+        return root.toStyledString();
     }
 
     Property<Poco::Int64> LocalID { 0 };
