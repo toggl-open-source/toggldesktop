@@ -66,9 +66,9 @@ namespace TogglDesktop.ViewModels
             var passwordObservable = this.WhenAnyValue(x => x.Password).Where(x => x != null);
             passwordObservable.Select(x => x.Length >= 8)
                 .ToPropertyEx(this, x => x.IsEightCharactersOrMore);
-            passwordObservable.Select(x => x != null && x.Any(char.IsUpper) && x.Any(char.IsLower))
+            passwordObservable.Select(x => x.Any(char.IsUpper) && x.Any(char.IsLower))
                 .ToPropertyEx(this, x => x.IsLowercaseAndUppercase);
-            passwordObservable.Select(x => x != null && x.Any(char.IsDigit))
+            passwordObservable.Select(x => x.Any(char.IsDigit))
                 .ToPropertyEx(this, x => x.IsAtLeastOneNumber);
         }
         public ReactiveCommand<Unit, bool> ConfirmLoginSignupCommand { get; }
