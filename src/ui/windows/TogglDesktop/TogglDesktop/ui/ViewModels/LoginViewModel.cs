@@ -97,7 +97,7 @@ namespace TogglDesktop.ViewModels
         public bool IsTosChecked { get; set; }
 
         [Reactive]
-        public bool ShowLoginError { get; private set; }
+        public bool ShowLoginError { get; set; }
 
         public string ConfirmButtonText { [ObservableAsProperty] get; }
         public string GoogleLoginButtonText { [ObservableAsProperty] get; }
@@ -191,7 +191,6 @@ namespace TogglDesktop.ViewModels
                     throw new ArgumentOutOfRangeException();
             }
 
-            ShowLoginError = !success;
             return success;
         }
 

@@ -146,9 +146,15 @@ namespace TogglDesktop
             this.IsEnabled = false;
         }
 
-        public bool HandlesError(string errorMessage)
+        public bool TryShowErrorInsideView(string errorMessage)
         {
-            return errorMessage == "Invalid e-mail or password!" && ViewModel.SelectedConfirmAction == ConfirmAction.LogIn;
+            if (errorMessage == "Invalid e-mail or password!" && ViewModel.SelectedConfirmAction == ConfirmAction.LogIn)
+            {
+                ViewModel.ShowLoginError = true;
+                return true;
+            }
+
+            return false;
         }
 
         public Brush TitleBarBrush => this.Background;
