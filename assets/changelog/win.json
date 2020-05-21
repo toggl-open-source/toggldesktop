@@ -1,6 +1,26 @@
 {
     "versions": [
         {
+            "version": "7.5.146",
+            "rows": [
+                "Updated project colors list",
+                "Added duration text field to the mini-timer",
+                "Fixed blurriness of the elements in the time entry list",
+                "Fixed broken window snapping",
+                "Add duration textbox to the mini timer",
+                "Fixed the color picker popup position",
+                "Show better error message in case of 400 errors",
+                "Fixed 'Continue does not attach archived project'",
+                "Clear default project if it has been archived",
+                "Do not create a shortcut if it doesn't exist",
+                "Fixes to Pomodoro workflow",
+                "Fixed the issue when Preferences window didn't fit the screen vertically"
+            ],
+            "date": "May 21st 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.119",
             "rows": [
                 "Fixed the crash caused by the latest dropdown position fix"
