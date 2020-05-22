@@ -226,12 +226,12 @@ extern "C" {
         double v;
     } HsvColor;
 
-    typedef enum ConvertType {
-        ConvertTypeShapeOnLightBackground,
-        ConvertTypeShapeOnDarkBackground,
-        ConvertTypeTextOnLightBackground,
-        ConvertTypeTextOnDarkBackground
-    } ConvertType;
+    typedef enum AdaptiveColor {
+        AdaptiveColorShapeOnLightBackground,
+        AdaptiveColorShapeOnDarkBackground,
+        AdaptiveColorTextOnLightBackground,
+        AdaptiveColorTextOnDarkBackground
+    } AdaptiveColor;
 
     // Callbacks that need to be implemented in UI
 
@@ -1217,7 +1217,7 @@ TOGGL_EXPORT void toggl_on_continue_sign_in(
 
 TOGGL_EXPORT HsvColor toggl_get_adaptive_hsv_color(
        RgbColor rgbColor,
-       ConvertType type);
+       AdaptiveColor type);
 
 #undef TOGGL_EXPORT
 

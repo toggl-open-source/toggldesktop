@@ -13,25 +13,25 @@
 
 namespace toggl {
 
-HsvColor ColorConverter::getAdaptiveColor(std::string hexColor, ConvertType type) {
+HsvColor ColorConverter::getAdaptiveColor(std::string hexColor, AdaptiveColor type) {
     RgbColor rbg = hexToRgb(hexColor);
     return getAdaptiveColor(rbg, type);
 }
 
-HsvColor ColorConverter::getAdaptiveColor(RgbColor rgbColor, ConvertType type) {
+HsvColor ColorConverter::getAdaptiveColor(RgbColor rgbColor, AdaptiveColor type) {
     HsvColor hsvColor = rgbToHsv(rgbColor);
     return adjustColor(hsvColor, type);
 }
 
-HsvColor ColorConverter::adjustColor(HsvColor hsvColor, ConvertType type) {
+HsvColor ColorConverter::adjustColor(HsvColor hsvColor, AdaptiveColor type) {
     switch (type) {
-        case ConvertTypeShapeOnLightBackground:
+        case AdaptiveColorShapeOnLightBackground:
             return { hsvColor.h, hsvColor.s, hsvColor.v };
-        case ConvertTypeTextOnLightBackground:
+        case AdaptiveColorTextOnLightBackground:
             return { hsvColor.h, hsvColor.s, hsvColor.v - 0.15 };
-        case ConvertTypeShapeOnDarkBackground:
+        case AdaptiveColorShapeOnDarkBackground:
             return { hsvColor.h, hsvColor.s * hsvColor.v, (hsvColor.v + 2.0) / 3.0 };
-        case ConvertTypeTextOnDarkBackground:
+        case AdaptiveColorTextOnDarkBackground:
             return { hsvColor.h, hsvColor.s * hsvColor.v, 0.05 + (hsvColor.v + 2.0) / 3.0 };
         default:
             return hsvColor;
