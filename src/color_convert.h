@@ -14,35 +14,15 @@
 #include <stdio.h>
 
 #include "types.h"
+#include "toggl_api.h"
 
 namespace toggl {
-
-enum ConvertType {
-    ConvertTypeShapeOnLightBackground,
-    ConvertTypeShapeOnDarkBackground,
-    ConvertTypeTextOnLightBackground,
-    ConvertTypeTextOnDarkBackground
-};
-
-// Range values from [0..1]
-struct RgbColor {
-    double r;
-    double g;
-    double b;
-};
-
-// Range values from [0..1]
-struct HsvColor {
-    double h;
-    double s;
-    double v;
-};
 
 class TOGGL_INTERNAL_EXPORT ColorConverter {
 public:
 
-    static HsvColor Convert(std::string hexColor, ConvertType type);
-    static HsvColor Convert(RgbColor rgbColor, ConvertType type);
+    static HsvColor getAdaptiveColor(std::string hexColor, ConvertType type);
+    static HsvColor getAdaptiveColor(RgbColor rgbColor, ConvertType type);
 
 private:
     static HsvColor adjustColor(HsvColor hsvColor, ConvertType type);

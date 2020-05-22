@@ -212,6 +212,27 @@ extern "C" {
         void *Next;
     } TogglCountryView;
 
+    // Range values from [0..1]
+    typedef struct RgbColor {
+        double r;
+        double g;
+        double b;
+    } RgbColor;
+
+    // Range values from [0..1]
+    typedef struct HsvColor {
+        double h;
+        double s;
+        double v;
+    } HsvColor;
+
+    typedef enum ConvertType {
+        ConvertTypeShapeOnLightBackground,
+        ConvertTypeShapeOnDarkBackground,
+        ConvertTypeTextOnLightBackground,
+        ConvertTypeTextOnDarkBackground
+    } ConvertType;
+
     // Callbacks that need to be implemented in UI
 
     typedef void (*TogglDisplayApp)(
@@ -1193,6 +1214,10 @@ extern "C" {
 TOGGL_EXPORT void toggl_on_continue_sign_in(
         void *context,
         TogglContinueSignIn cb);
+
+TOGGL_EXPORT HsvColor toggl_get_adaptive_hsv_color(
+       RgbColor rgbColor,
+       ConvertType type);
 
 #undef TOGGL_EXPORT
 
