@@ -324,6 +324,7 @@
     <Compile Include="ui\ViewModels\DayHeaderViewModel.cs" />
     <Compile Include="ui\ViewModels\FeedbackWindowViewModel.cs" />
     <Compile Include="ui\ViewModels\LoginViewModel.cs" />
+    <Compile Include="ui\ViewModels\PasswordEx.cs" />
     <Compile Include="ui\ViewModels\PreferencesWindowViewModel.cs" />
     <Compile Include="ui\ViewModels\ProjectLabelViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryCellViewModel.cs" />

@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -17,6 +19,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
+using static TogglDesktop.ViewModels.PasswordEx;
 
 namespace TogglDesktop.ViewModels
 {
@@ -64,12 +67,22 @@ namespace TogglDesktop.ViewModels
 
             // password rules
             var passwordObservable = this.WhenAnyValue(x => x.Password).Where(x => x != null);
-            passwordObservable.Select(x => x.Length >= 8)
+            passwordObservable.Select(PasswordEx.IsEightCharactersOrMore)
                 .ToPropertyEx(this, x => x.IsEightCharactersOrMore);
-            passwordObservable.Select(x => x.Any(char.IsUpper) && x.Any(char.IsLower))
+            passwordObservable.Select(PasswordEx.IsLowercaseAndUppercase)
                 .ToPropertyEx(this, x => x.IsLowercaseAndUppercase);
-            passwordObservable.Select(x => x.Any(char.IsDigit))
+            passwordObservable.Select(PasswordEx.IsAtLeastOneNumber)
                 .ToPropertyEx(this, x => x.IsAtLeastOneNumber);
+            var canShowPasswordStrength = this.WhenAnyValue(x => x.IsPasswordFocused,
+                    x => x.SelectedConfirmAction,
+                    (isFocused, confirmAction) => isFocused && confirmAction == ConfirmAction.SignUp)
+                .Do(x => Debug.WriteLine("can show = " + x));
+            var allRulesSatisfied = passwordObservable.Select(PasswordEx.AllRulesSatisfied);
+            var shouldHidePasswordStrength = allRulesSatisfied
+                .Delay(TimeSpan.FromSeconds(1))
+                .Do(x => Debug.WriteLine("should hide = " + x));
+            canShowPasswordStrength.Zip(shouldHidePasswordStrength, (canShow, shouldHide) => canShow && !shouldHide)
+                .ToPropertyEx(this, x => x.ShowPasswordStrength);
         }
         public ReactiveCommand<Unit, bool> ConfirmLoginSignupCommand { get; }
         public ReactiveCommand<Unit, Unit> ConfirmGoogleLoginSignupCommand { get; }
@@ -90,17 +103,10 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public string Password { get; set; }
 
-        [Reactive]
-        public bool IsEmailFocused { get; set; }
-
-        [Reactive]
-        public bool IsPasswordFocused { get; set; }
-
-        [Reactive]
-        public bool IsCountrySelectionFocused { get; set; }
-
-        [Reactive]
-        public bool IsTosCheckboxFocused { get; set; }
+        public Subject<Unit> FocusEmail { get; } = new Subject<Unit>();
+        public Subject<Unit> FocusPassword { get; } = new Subject<Unit>();
+        public Subject<Unit> FocusCountrySelection { get; } = new Subject<Unit>();
+        public Subject<Unit> FocusTosCheckbox { get; } = new Subject<Unit>();
 
         [Reactive]
         public bool IsTosChecked { get; set; }
@@ -108,6 +114,10 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public bool ShowLoginError { get; private set; }
 
+        [Reactive]
+        public bool IsPasswordFocused { get; set; }
+
+        public bool ShowPasswordStrength { [ObservableAsProperty] get; }
         public string ConfirmButtonText { [ObservableAsProperty] get; }
         public string GoogleLoginButtonText { [ObservableAsProperty] get; }
         public string SignupLoginToggleText { [ObservableAsProperty] get; }
@@ -144,26 +154,22 @@ namespace TogglDesktop.ViewModels
         {
             ShowLoginError = false;
             EnsureValidationApplied();
-            IsEmailFocused = false;
-            IsPasswordFocused = false;
-            IsCountrySelectionFocused = false;
-            IsTosCheckboxFocused = false;
 
             if (!isGoogleLogin && !_emailValidation.IsValid)
             {
-                IsEmailFocused = true;
+                FocusEmail.OnNext(Unit.Default);
             }
             else if (!isGoogleLogin && !_passwordValidation.IsValid)
             {
-                IsPasswordFocused = true;
+                FocusPassword.OnNext(Unit.Default);
             }
             else if (SelectedConfirmAction == ConfirmAction.SignUp && !_selectedCountryValidation.IsValid)
             {
-                IsCountrySelectionFocused = true;
+                FocusCountrySelection.OnNext(Unit.Default);
             }
             else if (SelectedConfirmAction == ConfirmAction.SignUp && !_isTosCheckedValidation.IsValid)
             {
-                IsTosCheckboxFocused = true;
+                FocusTosCheckbox.OnNext(Unit.Default);
             }
             else
             {
