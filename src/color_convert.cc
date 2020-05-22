@@ -15,7 +15,7 @@ namespace toggl {
 
 HsvColor ColorConverter::getAdaptiveColor(std::string hexColor, ConvertType type) {
     RgbColor rbg = hexToRgb(hexColor);
-    return Convert(rbg, type);
+    return getAdaptiveColor(rbg, type);
 }
 
 HsvColor ColorConverter::getAdaptiveColor(RgbColor rgbColor, ConvertType type) {

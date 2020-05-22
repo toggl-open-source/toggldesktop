@@ -114,6 +114,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString * _Nullable) formatDurationTimestampt:(NSTimeInterval) duration;
 
+#pragma mark - Colors
+
+- (NSColor *) getAdaptiveColorOnShapeFromHexColor:(NSString *) hexColor;
+- (NSColor *) getAdaptiveColorOnTextFromHexColor:(NSString *) hexColor;
+
 @end
 
 NS_ASSUME_NONNULL_END

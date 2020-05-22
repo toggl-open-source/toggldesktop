@@ -392,4 +392,31 @@ void *ctx;
     }
     return nil;
 }
+
+- (NSColor *) getAdaptiveColorOnShapeFromHexColor:(NSString *) hexColor {
+    ConvertType type = [self isDarkTheme] ? ConvertTypeShapeOnDarkBackground : ConvertTypeShapeOnLightBackground;
+    return [self getAdaptiveColorFromHexColor:hexColor type:type];
+}
+
+- (NSColor *) getAdaptiveColorOnTextFromHexColor:(NSString *) hexColor {
+    ConvertType type = [self isDarkTheme] ? ConvertTypeTextOnDarkBackground : ConvertTypeTextOnLightBackground;
+    return [self getAdaptiveColorFromHexColor:hexColor type:type];
+}
+
+- (NSColor *) getAdaptiveColorFromHexColor:(NSString *) hexColor type:(ConvertType) type {
+    NSColor *color = [ConvertHexColor hexCodeToNSColor:hexColor];
+    RgbColor rgbColor = { color.redComponent, color.greenComponent, color.blueComponent};
+    HsvColor hsvColor = toggl_get_adaptive_hsv_color(rgbColor, type);
+    return [NSColor colorWithHue:hsvColor.h saturation:hsvColor.s brightness:hsvColor.v alpha:1.0];
+}
+
+-(BOOL) isDarkTheme {
+    if (@available(macOS 10.14, *)) {
+        if ([NSApp.effectiveAppearance.name containsString:@"Dark"]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 @end
