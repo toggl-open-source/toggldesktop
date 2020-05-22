@@ -150,7 +150,7 @@ extern void *ctx;
     NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
     if (cmd.open)
     {
-        [self displayLoginViewController:YES];
+        [self displayLoginViewController];
 
         [self.mainDashboardViewController.view removeFromSuperview];
         [self.overlayViewController.view removeFromSuperview];
@@ -191,7 +191,7 @@ extern void *ctx;
             [self.mainDashboardViewController.view setFrame:self.contentView.bounds];
 
             // Dismiss Login
-            [self displayLoginViewController:NO];
+            [self dismissLoginViewController];
             [self.overlayViewController.view removeFromSuperview];
 
             [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kFocusTimer
@@ -235,7 +235,7 @@ extern void *ctx;
     [self.contentView addSubview:self.overlayViewController.view];
     [self.overlayViewController.view setFrame:self.contentView.bounds];
 
-    [self displayLoginViewController:NO];
+    [self dismissLoginViewController];
     [self.mainDashboardViewController.view removeFromSuperview];
 }
 
@@ -475,21 +475,19 @@ extern void *ctx;
     }
 }
 
--(void) displayLoginViewController:(BOOL) display
+-(void) displayLoginViewController
 {
-    if (display)
-    {
-        if (self.loginViewController == nil) {
-            self.loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
-            [self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-        }
-        [self.contentView addSubview:self.loginViewController.view];
-        [self.loginViewController.view setFrame:self.contentView.bounds];
+    if (self.loginViewController == nil) {
+        self.loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
+        [self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     }
-    else
-    {
-        [self.loginViewController.view removeFromSuperview];
-        self.loginViewController = nil;
-    }
+    [self.contentView addSubview:self.loginViewController.view];
+    [self.loginViewController.view setFrame:self.contentView.bounds];
+}
+
+-(void) dismissLoginViewController
+{
+    [self.loginViewController.view removeFromSuperview];
+    self.loginViewController = nil;
 }
 @end
