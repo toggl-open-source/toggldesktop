@@ -102,6 +102,8 @@
 		BA43B33323F680B00007DD99 /* libPocoNetSSL.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B32423F680B00007DD99 /* libPocoNetSSL.60.dylib */; };
 		BA43B33523F680B00007DD99 /* libPocoUtil.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B32523F680B00007DD99 /* libPocoUtil.60.dylib */; };
 		BA43B33723F680B00007DD99 /* libPocoXML.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B32623F680B00007DD99 /* libPocoXML.60.dylib */; };
+		BAA2C31B2477AF23005FBBE9 /* color_convert.cc in Sources */ = {isa = PBXBuildFile; fileRef = BAA2C3192477AF23005FBBE9 /* color_convert.cc */; };
+		BAA2C31C2477AF23005FBBE9 /* color_convert.h in Headers */ = {isa = PBXBuildFile; fileRef = BAA2C31A2477AF23005FBBE9 /* color_convert.h */; };
 		BAA842252403D99800BCCB67 /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B31E23F680B00007DD99 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAA842262403D99800BCCB67 /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B31F23F680B00007DD99 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAA842272403D99800BCCB67 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B32023F680B00007DD99 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -239,6 +241,8 @@
 		BA43B34B23F681CF0007DD99 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../../ui/osx/TogglDesktop/Library/openssl/libcrypto.a; sourceTree = "<group>"; };
 		BA43B34C23F681CF0007DD99 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../../ui/osx/TogglDesktop/Library/openssl/libssl.a; sourceTree = "<group>"; };
 		BA43B34F23F681D60007DD99 /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua.a; path = ../../ui/osx/TogglDesktop/Library/lua/liblua.a; sourceTree = "<group>"; };
+		BAA2C3192477AF23005FBBE9 /* color_convert.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = color_convert.cc; sourceTree = "<group>"; };
+		BAA2C31A2477AF23005FBBE9 /* color_convert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = color_convert.h; sourceTree = "<group>"; };
 		BAA8422E2403DAE000BCCB67 /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.1.dylib; path = ../../ui/osx/TogglDesktop/Library/openssl/libcrypto.1.1.dylib; sourceTree = "<group>"; };
 		BAA8422F2403DAE000BCCB67 /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.1.1.dylib; path = ../../ui/osx/TogglDesktop/Library/openssl/libssl.1.1.dylib; sourceTree = "<group>"; };
 		BAD233DA21D60A4D0039C742 /* libPocoNet.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.dylib; sourceTree = "<group>"; };
@@ -451,6 +455,8 @@
 				C55DA5A217F06A3B00B42178 /* KopsikTarget.xcconfig */,
 				C55DA59F17F06A3B00B42178 /* Supporting Files */,
 				BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */,
+				BAA2C3192477AF23005FBBE9 /* color_convert.cc */,
+				BAA2C31A2477AF23005FBBE9 /* color_convert.h */,
 			);
 			name = lib;
 			path = ../..;
@@ -501,6 +507,7 @@
 				B8B6EC76244616B10008FA32 /* context.h in Headers */,
 				B8B6EC8C244616B10008FA32 /* window_change_recorder.h in Headers */,
 				B8B6ECB3244617000008FA32 /* task.h in Headers */,
+				BAA2C31C2477AF23005FBBE9 /* color_convert.h in Headers */,
 				B8B6ECD32446170D0008FA32 /* formatter.h in Headers */,
 				B8B6ECE22446173A0008FA32 /* database.h in Headers */,
 				B8B6EC74244616B10008FA32 /* help_article.h in Headers */,
@@ -600,6 +607,7 @@
 				B8B6ECEE244629240008FA32 /* jsoncpp.cpp in Sources */,
 				B8B6EC77244616B10008FA32 /* toggl_api_private.cc in Sources */,
 				B8B6ECB4244617000008FA32 /* tag.cc in Sources */,
+				BAA2C31B2477AF23005FBBE9 /* color_convert.cc in Sources */,
 				B8B6EC79244616B10008FA32 /* related_data.cc in Sources */,
 				B8B6EC69244616B10008FA32 /* model_change.cc in Sources */,
 				B8B6EC8B244616B10008FA32 /* batch_update_result.cc in Sources */,
