@@ -24,12 +24,14 @@ enum ConvertType {
     ConvertTypeTextOnDarkBackground
 };
 
+// Range values from [0..1]
 struct RgbColor {
     double r;
     double g;
     double b;
 };
 
+// Range values from [0..1]
 struct HsvColor {
     double h;
     double s;
@@ -38,10 +40,14 @@ struct HsvColor {
 
 class TOGGL_INTERNAL_EXPORT ColorConverter {
 public:
+
+    static HsvColor Convert(std::string hexColor, ConvertType type);
     static HsvColor Convert(RgbColor rgbColor, ConvertType type);
 
 private:
     static HsvColor adjustColor(HsvColor hsvColor, ConvertType type);
+    static HsvColor rgbToHsv(RgbColor rgbColor);
+    static RgbColor hexToRgb(std::string hex);
 };
 
 }
