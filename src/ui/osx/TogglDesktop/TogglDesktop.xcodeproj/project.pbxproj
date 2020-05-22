@@ -241,13 +241,9 @@
 		BA5B0E502330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */; };
 		BA5BDC2C2464079800FF3C28 /* PasswordStrengthValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC2B2464079800FF3C28 /* PasswordStrengthValidation.swift */; };
 		BA5BDC2F24640D8A00FF3C28 /* PasswordStrengthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC2D24640D8A00FF3C28 /* PasswordStrengthView.swift */; };
-		BA5BDC3024640D8A00FF3C28 /* PasswordStrengthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC2D24640D8A00FF3C28 /* PasswordStrengthView.swift */; };
 		BA5BDC3124640D8A00FF3C28 /* PasswordStrengthView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5BDC2E24640D8A00FF3C28 /* PasswordStrengthView.xib */; };
-		BA5BDC3224640D8A00FF3C28 /* PasswordStrengthView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5BDC2E24640D8A00FF3C28 /* PasswordStrengthView.xib */; };
 		BA5BDC342464112100FF3C28 /* PasswordRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC332464112100FF3C28 /* PasswordRuleView.swift */; };
-		BA5BDC352464112100FF3C28 /* PasswordRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC332464112100FF3C28 /* PasswordRuleView.swift */; };
 		BA5BDC372464112D00FF3C28 /* PasswordRuleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5BDC362464112D00FF3C28 /* PasswordRuleView.xib */; };
-		BA5BDC382464112D00FF3C28 /* PasswordRuleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5BDC362464112D00FF3C28 /* PasswordRuleView.xib */; };
 		BA5E988923BF496E0089A2C7 /* HoverImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E988823BF496E0089A2C7 /* HoverImageView.swift */; };
 		BA5E988D23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E988B23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift */; };
 		BA5E988F23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5E988C23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib */; };
@@ -374,6 +370,11 @@
 		BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */; };
 		BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */; };
 		BAD307D3229C1BD000C727DB /* KeyboardDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */; };
+		BAD4F9C4246D392C0032F0C7 /* PasswordStrengthValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC2B2464079800FF3C28 /* PasswordStrengthValidation.swift */; };
+		BAD4F9C5246D392C0032F0C7 /* PasswordStrengthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC2D24640D8A00FF3C28 /* PasswordStrengthView.swift */; };
+		BAD4F9C6246D392C0032F0C7 /* PasswordStrengthView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5BDC2E24640D8A00FF3C28 /* PasswordStrengthView.xib */; };
+		BAD4F9C7246D392C0032F0C7 /* PasswordRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC332464112100FF3C28 /* PasswordRuleView.swift */; };
+		BAD4F9C8246D392C0032F0C7 /* PasswordRuleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5BDC362464112D00FF3C28 /* PasswordRuleView.xib */; };
 		BAD858CC228EAE7C00226C71 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD858CB228EAE7C00226C71 /* libz.tbd */; };
 		BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAE007DD21FAF00D00404379 /* Media.xcassets */; };
 		BAE6379A22B225C70024DD08 /* AddTagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE6379922B225C70024DD08 /* AddTagButton.swift */; };
@@ -2154,7 +2155,7 @@
 				BA37ACBD23D890050013EE26 /* TimelineActivityRecorderViewController.xib in Resources */,
 				BAE64E1F2368334000244D2B /* FloatingErrorView.xib in Resources */,
 				BAE64E202368334000244D2B /* TimeEntryListViewController.xib in Resources */,
-				BA5BDC382464112D00FF3C28 /* PasswordRuleView.xib in Resources */,
+				BAD4F9C8246D392C0032F0C7 /* PasswordRuleView.xib in Resources */,
 				BAE64E212368334000244D2B /* (null) in Resources */,
 				BAE64E222368334000244D2B /* TagCellView.xib in Resources */,
 				BAE64E232368334000244D2B /* ProjectCreationView.xib in Resources */,
@@ -2168,7 +2169,7 @@
 				BA37ACB723D890050013EE26 /* MainDashboardViewController.xib in Resources */,
 				BA37ACDE23D8900C0013EE26 /* TimelineTimeEntryHoverViewController.xib in Resources */,
 				BA37ACB523D890050013EE26 /* TimelineDashboardViewController.xib in Resources */,
-				BA5BDC3224640D8A00FF3C28 /* PasswordStrengthView.xib in Resources */,
+				BAD4F9C6246D392C0032F0C7 /* PasswordStrengthView.xib in Resources */,
 				BAE64E282368334000244D2B /* TimerEditViewController.xib in Resources */,
 				BAE64E292368334000244D2B /* dsa_pub.pem in Resources */,
 			);
@@ -2740,11 +2741,11 @@
 				BAE64DA32368334000244D2B /* ProjectColor.swift in Sources */,
 				BAE64DA42368334000244D2B /* TagCellView.swift in Sources */,
 				BAE64DA52368334000244D2B /* AutoCompleteView.swift in Sources */,
+				BAD4F9C7246D392C0032F0C7 /* PasswordRuleView.swift in Sources */,
 				BABB85AA23882D7C0084DEAC /* SystemPermissionManager.swift in Sources */,
 				BAE64DA62368334000244D2B /* (null) in Sources */,
 				BAE64DA72368334000244D2B /* (null) in Sources */,
 				BAE64DA82368334000244D2B /* DesktopLibraryBridge.m in Sources */,
-				BA5BDC3024640D8A00FF3C28 /* PasswordStrengthView.swift in Sources */,
 				BAE64DA92368334000244D2B /* TimeEntryDatasource.swift in Sources */,
 				BAE64DAA2368334000244D2B /* SystemMessageView.swift in Sources */,
 				BA37ACBC23D890050013EE26 /* TimelineActivityRecorderViewController.swift in Sources */,
@@ -2797,7 +2798,6 @@
 				BA37ACD223D8900C0013EE26 /* TimelineTimeLabelCell.swift in Sources */,
 				BA63ABEF238284DB004C70CF /* LoginSignupTouchBar.swift in Sources */,
 				BAE64DD12368334000244D2B /* UnsupportedNotice.m in Sources */,
-				BA5BDC352464112100FF3C28 /* PasswordRuleView.swift in Sources */,
 				BAE64DD22368334000244D2B /* NSTextFieldWithBackground.m in Sources */,
 				BAE64DD32368334000244D2B /* Array+ByGroup.swift in Sources */,
 				BAE64DD42368334000244D2B /* TogglApplication.m in Sources */,
@@ -2815,9 +2815,11 @@
 				BAE64DE02368334000244D2B /* GoogleAuthenticationServer.swift in Sources */,
 				BAE64DE12368334000244D2B /* WorkspaceCellView.swift in Sources */,
 				BA37ACD823D8900C0013EE26 /* TimelineActivityCell.swift in Sources */,
+				BAD4F9C4246D392C0032F0C7 /* PasswordStrengthValidation.swift in Sources */,
 				BAE64DE32368334000244D2B /* idler.c in Sources */,
 				BAE64DE42368334000244D2B /* ProjectCreationView.swift in Sources */,
 				BAE64DE52368334000244D2B /* ClientStorage.swift in Sources */,
+				BAD4F9C5246D392C0032F0C7 /* PasswordStrengthView.swift in Sources */,
 				BA37ACD423D8900C0013EE26 /* TimelineTimeEntryCell.swift in Sources */,
 				BA37ACE023D8900C0013EE26 /* TimelineActivityHoverController.swift in Sources */,
 				BAE64DE62368334000244D2B /* String+Optional.swift in Sources */,
