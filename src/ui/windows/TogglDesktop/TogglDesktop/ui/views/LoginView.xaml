@@ -78,17 +78,32 @@
                                         BorderThickness="1"
                                         BorderBrush="{DynamicResource Toggl.LightGrayBrush}"
                                         Background="{DynamicResource Toggl.CardBackground}"
-                                        Margin="4 0 4 4">
+                                        Margin="4 0 4 4"
+                                        Padding="16 16 16 20">
                                     <Border.Effect>
                                         <DropShadowEffect Direction="270"
                                                           Opacity="0.1"
                                                           BlurRadius="4"
                                                           ShadowDepth="1" />
                                     </Border.Effect>
-                                    <StackPanel Orientation="Vertical">
-                                        <TextBlock Style="{StaticResource Toggl.CaptionText}"
-                                                   Text="Please make sure your password includes:" />
-                                            <TextBlock Text="8 characters or more" >
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="16" />
+                                            <ColumnDefinition Width="8" /> <!-- margin -->
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.ColumnSpan="3"
+                                                   Style="{StaticResource Toggl.CaptionText}"
+                                                   Text="Please make sure your password includes:"/>
+                                        <TextBlock Grid.Row="1"
+                                                   Grid.Column="2"
+                                                   Text="8 characters or more" >
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
                                                     <Style.Triggers>
@@ -99,7 +114,16 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                        <TextBlock Text="lowercase and uppercase letters" >
+                                        <Ellipse Grid.Row="1" Grid.Column="0"
+                                                 Width="6" Height="6"
+                                                 Fill="{DynamicResource Toggl.DisabledTextBrush}" />
+                                        <ContentControl Grid.Row="1" Grid.Column="0"
+                                                        Content="{StaticResource Toggl.PasswordRules.Checkmark}"
+                                                        Visibility="{Binding IsEightCharactersOrMore, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                        <TextBlock Grid.Row="2"
+                                                   Grid.Column="2"
+                                                   Text="lowercase and uppercase letters" >
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
                                                     <Style.Triggers>
@@ -110,7 +134,16 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                        <TextBlock Text="at least one number">
+                                        <Ellipse Grid.Row="2" Grid.Column="0"
+                                                 Width="6" Height="6"
+                                                 Fill="{DynamicResource Toggl.DisabledTextBrush}" />
+                                        <ContentControl Grid.Row="2" Grid.Column="0"
+                                                        Content="{StaticResource Toggl.PasswordRules.Checkmark}"
+                                                        Visibility="{Binding IsLowercaseAndUppercase, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                        <TextBlock Grid.Row="3"
+                                                   Grid.Column="2"
+                                                   Text="at least one number">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
                                                     <Style.Triggers>
@@ -121,7 +154,13 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                    </StackPanel>
+                                        <Ellipse Grid.Row="3" Grid.Column="0"
+                                                 Width="6" Height="6"
+                                                 Fill="{DynamicResource Toggl.DisabledTextBrush}" />
+                                        <ContentControl Grid.Row="3" Grid.Column="0"
+                                                        Content="{StaticResource Toggl.PasswordRules.Checkmark}"
+                                                        Visibility="{Binding IsAtLeastOneNumber, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                    </Grid>
                                 </Border>
                             </Grid>
                         </mah:CustomValidationPopup>
