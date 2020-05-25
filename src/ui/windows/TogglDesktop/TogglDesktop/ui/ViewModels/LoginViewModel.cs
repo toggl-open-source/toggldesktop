@@ -74,14 +74,11 @@ namespace TogglDesktop.ViewModels
             passwordObservable.Select(PasswordEx.IsAtLeastOneNumber)
                 .ToPropertyEx(this, x => x.IsAtLeastOneNumber);
             var canShowPasswordStrength = this.WhenAnyValue(x => x.IsPasswordFocused,
-                    x => x.SelectedConfirmAction,
-                    (isFocused, confirmAction) => isFocused && confirmAction == ConfirmAction.SignUp)
-                .Do(x => Debug.WriteLine("can show = " + x));
-            var allRulesSatisfied = passwordObservable.Select(PasswordEx.AllRulesSatisfied);
-            var shouldHidePasswordStrength = allRulesSatisfied
-                .Delay(TimeSpan.FromSeconds(1))
-                .Do(x => Debug.WriteLine("should hide = " + x));
-            canShowPasswordStrength.Zip(shouldHidePasswordStrength, (canShow, shouldHide) => canShow && !shouldHide)
+                x => x.SelectedConfirmAction,
+                (isFocused, confirmAction) => isFocused && confirmAction == ConfirmAction.SignUp);
+            var shouldHidePasswordStrength = passwordObservable.Select(PasswordEx.AllRulesSatisfied)
+                .Delay(satisfied => satisfied ? Observable.Timer(TimeSpan.FromSeconds(1)) : Observable.Return(0L));
+            canShowPasswordStrength.CombineLatest(shouldHidePasswordStrength, (canShow, shouldHide) => canShow && !shouldHide)
                 .ToPropertyEx(this, x => x.ShowPasswordStrength);
         }
         public ReactiveCommand<Unit, bool> ConfirmLoginSignupCommand { get; }
