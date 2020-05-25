@@ -29,6 +29,7 @@ namespace TogglDesktop.ViewModels
         private readonly Action _refreshSignupBindings;
         private ValidationHelper _emailValidation;
         private ValidationHelper _passwordValidation;
+        private ValidationHelper _passwordSignupValidation;
         private ValidationHelper _selectedCountryValidation;
         private ValidationHelper _isTosCheckedValidation;
         private HttpClientFactory _httpClientFactory;
@@ -136,6 +137,10 @@ namespace TogglDesktop.ViewModels
                     x => x.Password,
                     password => !string.IsNullOrEmpty(password),
                     "A password is required");
+                _passwordSignupValidation = this.ValidationRule(
+                    x => x.Password,
+                    PasswordEx.AllRulesSatisfied,
+                    string.Empty);
                 _selectedCountryValidation = this.ValidationRule(
                     x => x.SelectedCountry,
                     selectedCountry => selectedCountry != null,
@@ -157,6 +162,10 @@ namespace TogglDesktop.ViewModels
                 FocusEmail.OnNext(Unit.Default);
             }
             else if (!isGoogleLogin && !_passwordValidation.IsValid)
+            {
+                FocusPassword.OnNext(Unit.Default);
+            }
+            else if (SelectedConfirmAction == ConfirmAction.SignUp && !isGoogleLogin && !_passwordSignupValidation.IsValid)
             {
                 FocusPassword.OnNext(Unit.Default);
             }

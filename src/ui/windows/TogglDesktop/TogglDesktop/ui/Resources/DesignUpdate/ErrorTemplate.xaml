@@ -104,4 +104,15 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
+    <ControlTemplate x:Key="Toggl.Templates.ValidationError.BorderOnly">
+        <AdornedElementPlaceholder x:Name="placeholder">
+            <Grid SnapsToDevicePixels="True">
+                <Border x:Name="ValidationErrorElement"
+                        BorderBrush="{DynamicResource Toggl.ValidationErrorBackground}"
+                        BorderThickness="1"
+                        DataContext="{Binding ElementName=placeholder}">
+                </Border>
+            </Grid>
+        </AdornedElementPlaceholder>
+    </ControlTemplate>
 </ResourceDictionary>

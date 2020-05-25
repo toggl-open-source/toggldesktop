@@ -59,70 +59,73 @@
                              Width="200"
                              mah:TextBoxHelper.Watermark="Email address"
                              Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
-                    <PasswordBox x:Name="passwordBox" x:FieldModifier="private"
-                                 PasswordChar="*"
-                                 Margin="0 12 0 0"
-                                 Width="200"
-                                 mah:TextBoxHelper.Watermark="Password"
-                                 behaviours:PasswordBoxBindingBehavior.Password="{Binding Password, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
-                    <mah:CustomValidationPopup PlacementTarget="{Binding ElementName=passwordBox}"
-                                               Placement="Top"
-                                               AllowsTransparency="True"
-                                               IsOpen="{Binding ShowPasswordStrength, Mode=OneWay}">
-                        <Grid Background="Transparent">
-                            <Border Width="268"
-                                    Height="112"
-                                    BorderThickness="1"
-                                    BorderBrush="{DynamicResource Toggl.LightGrayBrush}"
-                                    Background="{DynamicResource Toggl.CardBackground}"
-                                    Margin="4 0 4 4">
-                                <Border.Effect>
-                                    <DropShadowEffect Direction="270"
-                                                      Opacity="0.1"
-                                                      BlurRadius="4"
-                                                      ShadowDepth="1" />
-                                </Border.Effect>
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Style="{StaticResource Toggl.CaptionText}"
-                                               Text="Please make sure your password includes:" />
-                                        <TextBlock Text="8 characters or more" >
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsEightCharactersOrMore}" Value="True">
-                                                        <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                    <TextBlock Text="lowercase and uppercase letters" >
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsLowercaseAndUppercase}" Value="True">
-                                                        <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                    <TextBlock Text="at least one number">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsAtLeastOneNumber}" Value="True">
-                                                        <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </StackPanel>
-                            </Border>
-                        </Grid>
-                    </mah:CustomValidationPopup>
-
+                    <Grid x:Name="passwordBoxContainer" x:FieldModifier="private"
+                          Width="268"
+                          Margin="0 12 0 0">
+                        <PasswordBox x:Name="passwordBox" x:FieldModifier="private"
+                                     PasswordChar="*"
+                                     Width="200"
+                                     mah:TextBoxHelper.Watermark="Password"
+                                     behaviours:PasswordBoxBindingBehavior.Password="{Binding Password, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                                     Validation.ErrorTemplate="{StaticResource Toggl.Templates.ValidationError.BorderOnly}"/>
+                            <mah:CustomValidationPopup PlacementTarget="{Binding ElementName=passwordBoxContainer}"
+                                                       Placement="Top"
+                                                       AllowsTransparency="True"
+                                                       IsOpen="{Binding ShowPasswordStrength, Mode=OneWay}">
+                            <Grid Background="Transparent">
+                                <Border Width="268"
+                                        Height="112"
+                                        BorderThickness="1"
+                                        BorderBrush="{DynamicResource Toggl.LightGrayBrush}"
+                                        Background="{DynamicResource Toggl.CardBackground}"
+                                        Margin="4 0 4 4">
+                                    <Border.Effect>
+                                        <DropShadowEffect Direction="270"
+                                                          Opacity="0.1"
+                                                          BlurRadius="4"
+                                                          ShadowDepth="1" />
+                                    </Border.Effect>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Style="{StaticResource Toggl.CaptionText}"
+                                                   Text="Please make sure your password includes:" />
+                                            <TextBlock Text="8 characters or more" >
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsEightCharactersOrMore}" Value="True">
+                                                            <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        <TextBlock Text="lowercase and uppercase letters" >
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsLowercaseAndUppercase}" Value="True">
+                                                            <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        <TextBlock Text="at least one number">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsAtLeastOneNumber}" Value="True">
+                                                            <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </mah:CustomValidationPopup>
+                    </Grid>
                     <Label HorizontalAlignment="Left"
                            Margin="48 16 0 0"
                            Visibility="{Binding SelectedConfirmAction, Converter={StaticResource EnumEqualToVisibilityConverter}, ConverterParameter={x:Static viewModels:ConfirmAction.LogIn}}">
