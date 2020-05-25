@@ -70,9 +70,22 @@
                                      Validation.ErrorTemplate="{StaticResource Toggl.Templates.ValidationError.BorderOnly}"/>
                             <mah:CustomValidationPopup PlacementTarget="{Binding ElementName=passwordBoxContainer}"
                                                        Placement="Top"
+                                                       PopupAnimation="Fade"
                                                        AllowsTransparency="True"
                                                        IsOpen="{Binding ShowPasswordStrength, Mode=OneWay}">
-                            <Grid Background="Transparent">
+                                <Popup.Resources>
+                                    <Style TargetType="Ellipse" x:Key="BulletPoint" >
+                                        <Setter Property="Height" Value="6" />
+                                        <Setter Property="Width" Value="6" />
+                                        <Setter Property="Fill" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=passwordBox, Path=(Validation.HasError)}" Value="True">
+                                                <Setter Property="Fill" Value="{StaticResource Toggl.ValidationErrorBackground}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Popup.Resources>
+                                <Grid Background="Transparent">
                                 <Border Width="268"
                                         Height="112"
                                         BorderThickness="1"
@@ -107,6 +120,9 @@
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
                                                     <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ElementName=passwordBox, Path=(Validation.HasError)}" Value="True">
+                                                            <Setter Property="Foreground" Value="{DynamicResource Toggl.ValidationErrorBackground}" />
+                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding IsEightCharactersOrMore}" Value="True">
                                                             <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
                                                         </DataTrigger>
@@ -114,9 +130,7 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                        <Ellipse Grid.Row="1" Grid.Column="0"
-                                                 Width="6" Height="6"
-                                                 Fill="{DynamicResource Toggl.DisabledTextBrush}" />
+                                        <Ellipse Grid.Row="1" Grid.Column="0" Style="{StaticResource BulletPoint}" />
                                         <ContentControl Grid.Row="1" Grid.Column="0"
                                                         Content="{StaticResource Toggl.PasswordRules.Checkmark}"
                                                         Visibility="{Binding IsEightCharactersOrMore, Converter={StaticResource BooleanToVisibilityConverter}}"/>
@@ -127,6 +141,9 @@
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
                                                     <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ElementName=passwordBox, Path=(Validation.HasError)}" Value="True">
+                                                            <Setter Property="Foreground" Value="{DynamicResource Toggl.ValidationErrorBackground}" />
+                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding IsLowercaseAndUppercase}" Value="True">
                                                             <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
                                                         </DataTrigger>
@@ -134,9 +151,7 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                        <Ellipse Grid.Row="2" Grid.Column="0"
-                                                 Width="6" Height="6"
-                                                 Fill="{DynamicResource Toggl.DisabledTextBrush}" />
+                                        <Ellipse Grid.Row="2" Grid.Column="0" Style="{StaticResource BulletPoint}" />
                                         <ContentControl Grid.Row="2" Grid.Column="0"
                                                         Content="{StaticResource Toggl.PasswordRules.Checkmark}"
                                                         Visibility="{Binding IsLowercaseAndUppercase, Converter={StaticResource BooleanToVisibilityConverter}}"/>
@@ -147,6 +162,9 @@
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
                                                     <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ElementName=passwordBox, Path=(Validation.HasError)}" Value="True">
+                                                            <Setter Property="Foreground" Value="{DynamicResource Toggl.ValidationErrorBackground}" />
+                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding IsAtLeastOneNumber}" Value="True">
                                                             <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
                                                         </DataTrigger>
@@ -154,9 +172,7 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                        <Ellipse Grid.Row="3" Grid.Column="0"
-                                                 Width="6" Height="6"
-                                                 Fill="{DynamicResource Toggl.DisabledTextBrush}" />
+                                        <Ellipse Grid.Row="3" Grid.Column="0" Style="{StaticResource BulletPoint}" />
                                         <ContentControl Grid.Row="3" Grid.Column="0"
                                                         Content="{StaticResource Toggl.PasswordRules.Checkmark}"
                                                         Visibility="{Binding IsAtLeastOneNumber, Converter={StaticResource BooleanToVisibilityConverter}}"/>
