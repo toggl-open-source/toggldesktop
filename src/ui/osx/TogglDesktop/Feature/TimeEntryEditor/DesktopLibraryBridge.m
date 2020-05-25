@@ -403,7 +403,15 @@ void *ctx;
     return [self getAdaptiveColorFromColor:color type:type];
 }
 
-- (NSColor *) getAdaptiveColorFromColor:(NSColor *) color type:(AdaptiveColor) type {
+- (NSColor *) getAdaptiveColorFromColor:(NSColor *) originalColor type:(AdaptiveColor) type {
+    // Convert to RGB color space
+    // Because some part of the app uses grey color space
+    NSColor *color = [originalColor colorUsingColorSpace:NSColorSpace.deviceRGBColorSpace];
+    if (color == NULL) {
+        return originalColor;
+    }
+
+    // adjust color
     RgbColor rgbColor = { color.redComponent, color.greenComponent, color.blueComponent};
     HsvColor hsvColor = toggl_get_adaptive_hsv_color(rgbColor, type);
     return [NSColor colorWithHue:hsvColor.h saturation:hsvColor.s brightness:hsvColor.v alpha:1.0];
