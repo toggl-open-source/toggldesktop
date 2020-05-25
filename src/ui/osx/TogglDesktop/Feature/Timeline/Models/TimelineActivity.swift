@@ -57,7 +57,9 @@ struct TimelineActivity {
         self.events = events
         self.ended = started + duration
         let ratio = CGFloat(duration / 900.0)
-        self.color = TimelineActivity.getColor(from: TimelineActivity.LightestBlueColor, darkest: TimelineActivity.DarkestBlueColor, ratio: ratio)
+        self.color = TimelineActivity.getColor(from: TimelineActivity.LightestBlueColor.getAdaptiveColorForShape(),
+                                               darkest: TimelineActivity.DarkestBlueColor.getAdaptiveColorForShape(),
+                                               ratio: ratio)
     }
 
     // MARK: Public
