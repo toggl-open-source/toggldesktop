@@ -212,6 +212,9 @@
       <DependentUpon>InAppNotification.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\CheckBoxHelper.cs" />
+    <Compile Include="ui\controls\PasswordRuleView.xaml.cs">
+      <DependentUpon>PasswordRuleView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\ProgressBar.xaml.cs">
       <DependentUpon>ProgressBar.xaml</DependentUpon>
     </Compile>
@@ -489,6 +492,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\controls\InAppNotification.xaml" />
+    <Page Include="ui\controls\PasswordRuleView.xaml" />
     <Page Include="ui\controls\ProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

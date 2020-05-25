@@ -7,6 +7,7 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
+             xmlns:togglDesktop="clr-namespace:TogglDesktop"
              mc:Ignorable="d" 
              MinHeight="428" MinWidth="300"
              Background="{DynamicResource Toggl.CardBackground}"
@@ -73,109 +74,35 @@
                                                        PopupAnimation="Fade"
                                                        AllowsTransparency="True"
                                                        IsOpen="{Binding ShowPasswordStrength, Mode=OneWay}">
-                                <Popup.Resources>
-                                    <Style TargetType="Ellipse" x:Key="BulletPoint" >
-                                        <Setter Property="Height" Value="6" />
-                                        <Setter Property="Width" Value="6" />
-                                        <Setter Property="Fill" Value="{DynamicResource Toggl.DisabledTextBrush}" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=passwordBox, Path=(Validation.HasError)}" Value="True">
-                                                <Setter Property="Fill" Value="{StaticResource Toggl.ValidationErrorBackground}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                    <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}" x:Key="Toggl.RuleText">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=passwordBox, Path=(Validation.HasError)}" Value="True">
-                                                <Setter Property="Foreground" Value="{DynamicResource Toggl.ValidationErrorBackground}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Popup.Resources>
                                 <Grid Background="Transparent">
-                                <Border Width="268"
-                                        Height="112"
-                                        BorderThickness="1"
-                                        BorderBrush="{DynamicResource Toggl.LightGrayBrush}"
-                                        Background="{DynamicResource Toggl.CardBackground}"
-                                        Margin="4 0 4 4"
-                                        Padding="16 16 16 20">
-                                    <Border.Effect>
-                                        <DropShadowEffect Direction="270"
-                                                          Opacity="0.1"
-                                                          BlurRadius="4"
-                                                          ShadowDepth="1" />
-                                    </Border.Effect>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="16" />
-                                            <ColumnDefinition Width="8" /> <!-- margin -->
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.ColumnSpan="3"
-                                                   Style="{StaticResource Toggl.CaptionText}"
-                                                   Text="Please make sure your password includes:"/>
-                                        <TextBlock Grid.Row="1"
-                                                   Grid.Column="2"
-                                                   Text="8 characters or more" >
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.RuleText}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsEightCharactersOrMore}" Value="True">
-                                                            <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                        <Ellipse Grid.Row="1" Grid.Column="0" Style="{StaticResource BulletPoint}" />
-                                        <ContentControl Grid.Row="1" Grid.Column="0"
-                                                        Content="{StaticResource Toggl.PasswordRules.Checkmark}"
-                                                        Visibility="{Binding IsEightCharactersOrMore, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-                                        <TextBlock Grid.Row="2"
-                                                   Grid.Column="2"
-                                                   Text="lowercase and uppercase letters" >
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.RuleText}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsLowercaseAndUppercase}" Value="True">
-                                                            <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                        <Ellipse Grid.Row="2" Grid.Column="0" Style="{StaticResource BulletPoint}" />
-                                        <ContentControl Grid.Row="2" Grid.Column="0"
-                                                        Content="{StaticResource Toggl.PasswordRules.Checkmark}"
-                                                        Visibility="{Binding IsLowercaseAndUppercase, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-                                        <TextBlock Grid.Row="3"
-                                                   Grid.Column="2"
-                                                   Text="at least one number">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.RuleText}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsAtLeastOneNumber}" Value="True">
-                                                            <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                        <Ellipse Grid.Row="3" Grid.Column="0" Style="{StaticResource BulletPoint}" />
-                                        <ContentControl Grid.Row="3" Grid.Column="0"
-                                                        Content="{StaticResource Toggl.PasswordRules.Checkmark}"
-                                                        Visibility="{Binding IsAtLeastOneNumber, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                    </Grid>
-                                </Border>
+                                    <Border Width="268"
+                                            Height="112"
+                                            BorderThickness="1"
+                                            BorderBrush="{DynamicResource Toggl.LightGrayBrush}"
+                                            Background="{DynamicResource Toggl.CardBackground}"
+                                            Margin="4 0 4 4"
+                                            Padding="16">
+                                        <Border.Effect>
+                                            <DropShadowEffect Direction="270"
+                                                              Opacity="0.1"
+                                                              BlurRadius="4"
+                                                              ShadowDepth="1" />
+                                        </Border.Effect>
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource Toggl.CaptionText}"
+                                                       Text="Please make sure your password includes:"
+                                                       Margin="0 0 0 4"/>
+                                            <togglDesktop:PasswordRuleView Text="8 characters or more"
+                                                                           IsRuleSatisfied="{Binding IsEightCharactersOrMore}"
+                                                                           IsValidationFailed="{Binding ElementName=passwordBox, Path=(Validation.HasError)}"/>
+                                            <togglDesktop:PasswordRuleView Text="lowercase and uppercase letters"
+                                                                           IsRuleSatisfied="{Binding IsLowercaseAndUppercase}"
+                                                                           IsValidationFailed="{Binding ElementName=passwordBox, Path=(Validation.HasError)}"/>
+                                            <togglDesktop:PasswordRuleView Text="at least one number"
+                                                                           IsRuleSatisfied="{Binding IsAtLeastOneNumber}"
+                                                                           IsValidationFailed="{Binding ElementName=passwordBox, Path=(Validation.HasError)}"/>
+                                        </StackPanel>
+                                    </Border>
                             </Grid>
                         </mah:CustomValidationPopup>
                     </Grid>
