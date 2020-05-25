@@ -244,7 +244,6 @@
     <Compile Include="ui\Converters\AndConverter.cs" />
     <Compile Include="ui\Converters\CapitalizeConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
-    <Compile Include="ui\Converters\EnumEqualConverter.cs" />
     <Compile Include="ui\Converters\IsSelectableItemConverter.cs" />
     <Compile Include="ui\Converters\PopupAlignmentAwareConverter.cs" />
     <Compile Include="ui\Converters\StringFormatIfNotEmptyConverter.cs" />
