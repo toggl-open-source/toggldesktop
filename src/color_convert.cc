@@ -13,12 +13,12 @@
 
 namespace toggl {
 
-HsvColor ColorConverter::getAdaptiveColor(std::string hexColor, AdaptiveColor type) {
+HsvColor ColorConverter::GetAdaptiveColor(std::string hexColor, AdaptiveColor type) {
     RgbColor rbg = hexToRgb(hexColor);
-    return getAdaptiveColor(rbg, type);
+    return GetAdaptiveColor(rbg, type);
 }
 
-HsvColor ColorConverter::getAdaptiveColor(RgbColor rgbColor, AdaptiveColor type) {
+HsvColor ColorConverter::GetAdaptiveColor(RgbColor rgbColor, AdaptiveColor type) {
     HsvColor hsvColor = rgbToHsv(rgbColor);
     return adjustColor(hsvColor, type);
 }
