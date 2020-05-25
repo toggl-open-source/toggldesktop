@@ -759,16 +759,16 @@
       <Version>2.5.2</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.Fody">
-      <Version>11.1.23</Version>
+      <Version>11.4.1</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.Validation">
-      <Version>1.4.10</Version>
+      <Version>1.4.15</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.WPF">
-      <Version>11.1.23</Version>
+      <Version>11.4.1</Version>
     </PackageReference>
     <PackageReference Include="System.Reactive">
-      <Version>4.3.2</Version>
+      <Version>4.4.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
