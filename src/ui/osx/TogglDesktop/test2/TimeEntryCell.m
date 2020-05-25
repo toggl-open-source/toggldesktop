@@ -249,9 +249,9 @@ extern void *ctx;
 	// Time entry has a project
 	if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0)
 	{
-		NSColor *projectColor = [ConvertHexColor hexCodeToNSColor:view_item.ProjectColor];
+        NSColor *projectShapeColor = [[DesktopLibraryBridge shared] getAdaptiveColorOnShapeFromHexColor:view_item.ProjectColor];
 		self.dotView.hidden = NO;
-		[self.dotView fillWith:projectColor];
+		[self.dotView fillWith:projectShapeColor];
 		[self.projectTextField setTitleWithTimeEntry:view_item];
 		self.projectTextField.toolTip = view_item.ProjectAndTaskLabel;
 		self.projectConstrainLeading.constant = 16;
