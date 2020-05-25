@@ -116,8 +116,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Colors
 
-- (NSColor *) getAdaptiveColorOnShapeFromHexColor:(NSString *) hexColor;
-- (NSColor *) getAdaptiveColorOnTextFromHexColor:(NSString *) hexColor;
+- (NSColor *) getAdaptiveColorForShapeFromColor:(NSColor *) color;
+- (NSColor *) getAdaptiveColorForTextFromColor:(NSColor *) color;
 
 @end
 

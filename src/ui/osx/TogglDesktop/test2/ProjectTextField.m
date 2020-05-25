@@ -48,8 +48,7 @@
 
 - (void)setTitleWithTimeEntry:(TimeEntryViewItem *)item
 {
-    NSColor *projectTextColor = [[DesktopLibraryBridge shared] getAdaptiveColorOnTextFromHexColor:item.ProjectColor];
-    self.textColor = projectTextColor;
+	self.textColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
 	self.attributedStringValue = [self attributeStringWithItem:item];
 }
 
@@ -141,9 +140,8 @@
 
 - (void)setTextColor:(NSColor *)textColor
 {
-	NSColor *visibleColor = [textColor visibleColor];
-
-	[super setTextColor:visibleColor];
+    NSColor *adaptiveColor = [textColor getAdaptiveColorForText];
+	[super setTextColor:adaptiveColor];
 }
 
 @end

@@ -393,18 +393,17 @@ void *ctx;
     return nil;
 }
 
-- (NSColor *) getAdaptiveColorOnShapeFromHexColor:(NSString *) hexColor {
+- (NSColor *) getAdaptiveColorForShapeFromColor:(NSColor *) color {
     AdaptiveColor type = [self isDarkTheme] ? AdaptiveColorShapeOnDarkBackground : AdaptiveColorShapeOnLightBackground;
-    return [self getAdaptiveColorFromHexColor:hexColor type:type];
+    return [self getAdaptiveColorFromColor:color type:type];
 }
 
-- (NSColor *) getAdaptiveColorOnTextFromHexColor:(NSString *) hexColor {
+- (NSColor *) getAdaptiveColorForTextFromColor:(NSColor *) color {
     AdaptiveColor type = [self isDarkTheme] ? AdaptiveColorTextOnDarkBackground : AdaptiveColorTextOnLightBackground;
-    return [self getAdaptiveColorFromHexColor:hexColor type:type];
+    return [self getAdaptiveColorFromColor:color type:type];
 }
 
-- (NSColor *) getAdaptiveColorFromHexColor:(NSString *) hexColor type:(AdaptiveColor) type {
-    NSColor *color = [ConvertHexColor hexCodeToNSColor:hexColor];
+- (NSColor *) getAdaptiveColorFromColor:(NSColor *) color type:(AdaptiveColor) type {
     RgbColor rgbColor = { color.redComponent, color.greenComponent, color.blueComponent};
     HsvColor hsvColor = toggl_get_adaptive_hsv_color(rgbColor, type);
     return [NSColor colorWithHue:hsvColor.h saturation:hsvColor.s brightness:hsvColor.v alpha:1.0];
