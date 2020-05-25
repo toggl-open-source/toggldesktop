@@ -77,6 +77,7 @@ set(LIBRARY_SOURCE_FILES
     urls.cc
     websocket_client.cc
     window_change_recorder.cc
+    color_convert.cc
 )
 
 # Set up compilation targets

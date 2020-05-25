@@ -331,6 +331,9 @@ build/timeline_uploader.o: src/timeline_uploader.cc
 build/window_change_recorder.o: src/window_change_recorder.cc
 	$(cxx) $(cflags) -c src/window_change_recorder.cc -o build/window_change_recorder.o
 
+build/color_convert.o: src/color_convert.cc
+	$(cxx) $(cflags) -c src/color_convert.cc -o build/color_convert.o
+
 build/test/gtest-all.o: $(GTEST_ROOT)/src/gtest-all.cc
 	$(cxx) $(cflags) -c $(GTEST_ROOT)/src/gtest-all.cc -o build/test/gtest-all.o
 
@@ -370,6 +373,7 @@ objects: build/jsoncpp.o \
 	build/toggl_api.o \
 	build/get_focused_window_$(osname).o \
 	build/timeline_uploader.o \
+	build/color_convert.o \
 	build/window_change_recorder.o
 
 test_objects: build/test/gtest-all.o \
