@@ -84,6 +84,13 @@
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}" x:Key="Toggl.RuleText">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=passwordBox, Path=(Validation.HasError)}" Value="True">
+                                                <Setter Property="Foreground" Value="{DynamicResource Toggl.ValidationErrorBackground}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
                                 </Popup.Resources>
                                 <Grid Background="Transparent">
                                 <Border Width="268"
@@ -118,11 +125,8 @@
                                                    Grid.Column="2"
                                                    Text="8 characters or more" >
                                             <TextBlock.Style>
-                                                <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.RuleText}">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ElementName=passwordBox, Path=(Validation.HasError)}" Value="True">
-                                                            <Setter Property="Foreground" Value="{DynamicResource Toggl.ValidationErrorBackground}" />
-                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding IsEightCharactersOrMore}" Value="True">
                                                             <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
                                                         </DataTrigger>
@@ -139,11 +143,8 @@
                                                    Grid.Column="2"
                                                    Text="lowercase and uppercase letters" >
                                             <TextBlock.Style>
-                                                <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.RuleText}">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ElementName=passwordBox, Path=(Validation.HasError)}" Value="True">
-                                                            <Setter Property="Foreground" Value="{DynamicResource Toggl.ValidationErrorBackground}" />
-                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding IsLowercaseAndUppercase}" Value="True">
                                                             <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
                                                         </DataTrigger>
@@ -160,11 +161,8 @@
                                                    Grid.Column="2"
                                                    Text="at least one number">
                                             <TextBlock.Style>
-                                                <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.RuleText}">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ElementName=passwordBox, Path=(Validation.HasError)}" Value="True">
-                                                            <Setter Property="Foreground" Value="{DynamicResource Toggl.ValidationErrorBackground}" />
-                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding IsAtLeastOneNumber}" Value="True">
                                                             <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
                                                         </DataTrigger>
