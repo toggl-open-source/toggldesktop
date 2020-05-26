@@ -549,4 +549,8 @@ std::string TimeEntry::ModelURL() const {
     return relative_url.str();
 }
 
+void TimeEntry::SetSkipPomodoro(const bool value) {
+    skipPomodoro = value;
+}
+
 }   // namespace toggl

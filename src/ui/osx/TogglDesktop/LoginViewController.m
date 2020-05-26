@@ -16,8 +16,8 @@
 
 typedef NS_ENUM (NSUInteger, TabViewType)
 {
-	TabViewTypeLogin,
-	TabViewTypeSingup,
+    TabViewTypeLogin,
+    TabViewTypeSingup,
     TabViewTypeContinueSignin
 };
 
@@ -28,10 +28,10 @@ static NSString *const tosAgreeError = @"You must agree to the terms of service 
 
 typedef NS_ENUM (NSUInteger, UserAction)
 {
-	UserActionAccountLogin,
-	UserActionAccountSignup,
-	UserActionGoogleLogin,
-	UserActionGoogleSignup,
+    UserActionAccountLogin,
+    UserActionAccountSignup,
+    UserActionGoogleLogin,
+    UserActionGoogleSignup,
     UserActionAppleLogin,
     UserActionAppleSignup,
 };
@@ -95,23 +95,23 @@ extern void *ctx;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-	if (self)
-	{
-		self.countryAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayCountries];
-	}
-	return self;
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self)
+    {
+        self.countryAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayCountries];
+    }
+    return self;
 }
 
 - (void)viewDidLoad
 {
-	[super viewDidLoad];
+    [super viewDidLoad];
 
-	[self initCommon];
-	[self initCountryAutocomplete];
+    [self initCommon];
+    [self initCountryAutocomplete];
 
-	// Default
-	[self changeTabView:TabViewTypeLogin];
+    // Default
+    [self changeTabView:TabViewTypeLogin];
 
     // Load countries in signup view
     toggl_get_countries_async(ctx);
@@ -119,32 +119,32 @@ extern void *ctx;
 
 - (void)initCommon
 {
-	self.signUpLink.delegate = self;
-	self.countrySelect.delegate = self;
-	self.email.delegate = self;
-	self.password.delegate = self;
+    self.signUpLink.delegate = self;
+    self.countrySelect.delegate = self;
+    self.email.delegate = self;
+    self.password.delegate = self;
 
-	self.forgotPasswordTextField.titleUnderline = YES;
-	self.signUpLink.titleUnderline = YES;
-	self.tosLink.titleUnderline = YES;
-	self.privacyLink.titleUnderline = YES;
+    self.forgotPasswordTextField.titleUnderline = YES;
+    self.signUpLink.titleUnderline = YES;
+    self.tosLink.titleUnderline = YES;
+    self.privacyLink.titleUnderline = YES;
     self.tosContinueLink.titleUnderline = YES;
     self.privacyContinueLink.titleUnderline = YES;
     self.tosContinueLink.delegate = self;
     self.privacyContinueLink.delegate = self;
 
-	self.boxView.wantsLayer = YES;
-	self.boxView.layer.masksToBounds = NO;
-	self.boxView.shadow = [[NSShadow alloc] init];
-	self.boxView.layer.shadowColor = [NSColor colorWithWhite:0 alpha:0.1].CGColor;
-	self.boxView.layer.shadowOpacity = 1.0;
-	self.boxView.layer.shadowOffset = CGSizeMake(0, -2);
-	self.boxView.layer.shadowRadius = 6;
+    self.boxView.wantsLayer = YES;
+    self.boxView.layer.masksToBounds = NO;
+    self.boxView.shadow = [[NSShadow alloc] init];
+    self.boxView.layer.shadowColor = [NSColor colorWithWhite:0 alpha:0.1].CGColor;
+    self.boxView.layer.shadowOpacity = 1.0;
+    self.boxView.layer.shadowOffset = CGSizeMake(0, -2);
+    self.boxView.layer.shadowRadius = 6;
 
-	self.view.wantsLayer = YES;
-	self.view.layer.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]].CGColor;
+    self.view.wantsLayer = YES;
+    self.view.layer.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]].CGColor;
 
-	self.userAction = UserActionAccountLogin;
+    self.userAction = UserActionAccountLogin;
 
     if (@available(macOS 10.12.2, *))
     {
@@ -152,7 +152,7 @@ extern void *ctx;
         self.loginTouchBar.delegate = self;
     }
 
-    #ifdef APP_STORE
+#ifdef APP_STORE
     if (@available(macOS 10.15, *))
     {
         [AppleAuthenticationService shared].delegate = self;
@@ -160,43 +160,43 @@ extern void *ctx;
     } else {
         self.appleBtn.hidden = YES;
     }
-    #else
-        self.appleBtn.hidden = YES;
-    #endif
+#else
+    self.appleBtn.hidden = YES;
+#endif
 
     self.passwordStrengthView = [[PasswordStrengthView alloc] initWithNibName:@"PasswordStrengthView" bundle:nil];
 }
 
 - (void)initCountryAutocomplete {
-	self.countryAutocompleteDataSource.combobox = self.countrySelect;
-	self.countryAutocompleteDataSource.combobox.dataSource = self.countryAutocompleteDataSource;
-	[self.countryAutocompleteDataSource setFilter:@""];
-	self.selectedCountryID = -1;
+    self.countryAutocompleteDataSource.combobox = self.countrySelect;
+    self.countryAutocompleteDataSource.combobox.dataSource = self.countryAutocompleteDataSource;
+    [self.countryAutocompleteDataSource setFilter:@""];
+    self.selectedCountryID = -1;
 }
 
 - (void)viewDidAppear
 {
-	[super viewDidAppear];
+    [super viewDidAppear];
 
-	// As we change the cursor's color to white
-	// so, we have to reset cursor color
-	[self.email resetCursorColor];
-	[self.password resetCursorColor];
+    // As we change the cursor's color to white
+    // so, we have to reset cursor color
+    [self.email resetCursorColor];
+    [self.password resetCursorColor];
 
-	[self.email.window makeFirstResponder:self.email];
-	[self changeTabView:TabViewTypeLogin];
+    [self.email.window makeFirstResponder:self.email];
+    [self changeTabView:TabViewTypeLogin];
 }
 
 - (void)textFieldClicked:(id)sender
 {
-	if (sender == self.forgotPasswordTextField)
-	{
-		toggl_password_forgot(ctx);
-		return;
-	}
+    if (sender == self.forgotPasswordTextField)
+    {
+        toggl_password_forgot(ctx);
+        return;
+    }
 
-	if (sender == self.signUpLink)
-	{
+    if (sender == self.signUpLink)
+    {
         switch (self.currentTab) {
             case TabViewTypeLogin:
                 [self changeTabView:TabViewTypeSingup];
@@ -208,20 +208,20 @@ extern void *ctx;
                 [self changeTabView:TabViewTypeLogin];
                 break;
         }
-		return;
-	}
+        return;
+    }
 
     if (sender == self.tosLink || sender == self.tosContinueLink)
-	{
-		toggl_tos(ctx);
-		return;
-	}
+    {
+        toggl_tos(ctx);
+        return;
+    }
 
     if (sender == self.privacyLink || sender == self.privacyContinueLink)
-	{
-		toggl_privacy_policy(ctx);
-		return;
-	}
+    {
+        toggl_privacy_policy(ctx);
+        return;
+    }
 }
 
 - (void)changeTabView:(TabViewType)type
@@ -327,143 +327,143 @@ extern void *ctx;
 
 - (void)startGoogleAuthentication
 {
-	__weak typeof(self) weakSelf = self;
-	[GoogleAuthenticationServerHelper authorize:^(NSString *token, NSError *error) {
-		 typeof(self) strongSelf = weakSelf;
-		 if (error != nil)
-		 {
-			 [strongSelf handleGoogleError:error];
-		 }
-		 else if (token != nil)
-		 {
-			 [strongSelf handleGoogleToken:token];
-		 }
-	 }];
-	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
-																object:nil];
+    __weak typeof(self) weakSelf = self;
+    [GoogleAuthenticationServerHelper authorize:^(NSString *token, NSError *error) {
+        typeof(self) strongSelf = weakSelf;
+        if (error != nil)
+        {
+            [strongSelf handleGoogleError:error];
+        }
+        else if (token != nil)
+        {
+            [strongSelf handleGoogleToken:token];
+        }
+    }];
+    [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
+                                                                object:nil];
 }
 
 - (void)handleGoogleError:(NSError *)error
 {
-	NSString *errorStr = [error localizedDescription];
+    NSString *errorStr = [error localizedDescription];
 
-	NSLog(@"Login error: %@", errorStr);
+    NSLog(@"Login error: %@", errorStr);
 
-	if ([errorStr isEqualToString:@"access_denied"])
-	{
-		errorStr = @"Google login access was denied to app.";
-	} else if ([errorStr isEqualToString:@"The operation couldn’t be completed. (com.google.GTMOAuth2 error -1000.)"])
-	{
-		errorStr = @"Window was closed before login completed.";
+    if ([errorStr isEqualToString:@"access_denied"])
+    {
+        errorStr = @"Google login access was denied to app.";
+    } else if ([errorStr isEqualToString:@"The operation couldn’t be completed. (com.google.GTMOAuth2 error -1000.)"])
+    {
+        errorStr = @"Window was closed before login completed.";
     } else if (error.code == -1009) {
         errorStr = @"The Internet connection appears to be offline.";
     } else {
         errorStr = [NSString stringWithFormat:@"Google Authorization Failed. Code %ld", (long)error.code];
     }
 
-	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																object:errorStr];
+    [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+                                                                object:errorStr];
 }
 
 - (void)handleGoogleToken:(NSString *)token
 {
-	[self showLoaderView:YES];
+    [self showLoaderView:YES];
     self.token = token;
 
-	switch (self.userAction)
-	{
-		case UserActionGoogleSignup :
-			toggl_google_signup_async(ctx, [token UTF8String], self.selectedCountryID);
-			break;
-		case UserActionGoogleLogin :
-			toggl_google_login_async(ctx, [token UTF8String]);
-			break;
-		default :
-			break;
-	}
+    switch (self.userAction)
+    {
+        case UserActionGoogleSignup :
+            toggl_google_signup_async(ctx, [token UTF8String], self.selectedCountryID);
+            break;
+        case UserActionGoogleLogin :
+            toggl_google_login_async(ctx, [token UTF8String]);
+            break;
+        default :
+            break;
+    }
 }
 
 - (BOOL)validateFormForAction:(UserAction)action
 {
-	switch (action)
-	{
-		case UserActionAccountLogin :
-			if (![self isEmalValid])
-			{
-				return NO;
-			}
-			if (![self isPasswordValid])
-			{
-				return NO;
-			}
-			return YES;
+    switch (action)
+    {
+        case UserActionAccountLogin :
+            if (![self isEmalValid])
+            {
+                return NO;
+            }
+            if (![self isPasswordValid])
+            {
+                return NO;
+            }
+            return YES;
 
-		case UserActionAccountSignup :
-			if (![self isEmalValid])
-			{
-				return NO;
-			}
-			if (![self isPasswordValid])
-			{
-				return NO;
-			}
-			if (![self isCountryValid])
-			{
-				return NO;
-			}
-			if (![self isTOSValid])
-			{
-				return NO;
-			}
-			return YES;
+        case UserActionAccountSignup :
+            if (![self isEmalValid])
+            {
+                return NO;
+            }
+            if (![self isPasswordValid])
+            {
+                return NO;
+            }
+            if (![self isCountryValid])
+            {
+                return NO;
+            }
+            if (![self isTOSValid])
+            {
+                return NO;
+            }
+            return YES;
 
-		case UserActionGoogleLogin :
+        case UserActionGoogleLogin :
         case UserActionAppleLogin :
-			return YES;
+            return YES;
 
-		case UserActionGoogleSignup :
+        case UserActionGoogleSignup :
         case UserActionAppleSignup :
-			if (![self isCountryValid])
-			{
-				return NO;
-			}
-			if (![self isTOSValid])
-			{
-				return NO;
-			}
-			return YES;
+            if (![self isCountryValid])
+            {
+                return NO;
+            }
+            if (![self isTOSValid])
+            {
+                return NO;
+            }
+            return YES;
 
-		default :
-			break;
-	}
+        default :
+            break;
+    }
 
-	return NO;
+    return NO;
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification
 {
-	if ([[aNotification object] isKindOfClass:[NSCustomComboBox class]])
-	{
-		NSCustomComboBox *box = [aNotification object];
-		NSString *filter = [box stringValue];
+    if ([[aNotification object] isKindOfClass:[NSCustomComboBox class]])
+    {
+        NSCustomComboBox *box = [aNotification object];
+        NSString *filter = [box stringValue];
 
-		[self.countryAutocompleteDataSource setFilter:filter];
+        [self.countryAutocompleteDataSource setFilter:filter];
 
-		// Hide dropdown if filter is empty or nothing was found
-		if (!filter || ![filter length] || !self.countryAutocompleteDataSource.count)
-		{
-			if ([box isExpanded] == YES)
-			{
-				[box setExpanded:NO];
-			}
-			return;
-		}
+        // Hide dropdown if filter is empty or nothing was found
+        if (!filter || ![filter length] || !self.countryAutocompleteDataSource.count)
+        {
+            if ([box isExpanded] == YES)
+            {
+                [box setExpanded:NO];
+            }
+            return;
+        }
 
-		if ([box isExpanded] == NO)
-		{
-			[box setExpanded:YES];
-		}
-	}
+        if ([box isExpanded] == NO)
+        {
+            [box setExpanded:YES];
+        }
+    }
 
     if (aNotification.object == self.password && self.currentTab == TabViewTypeSingup) {
         [self validatePasswordStrength];
@@ -471,38 +471,38 @@ extern void *ctx;
 }
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)commandSelector {
-	if (control == self.email || control == self.password)
-	{
-		if (commandSelector == @selector(insertNewline:))
-		{
+    if (control == self.email || control == self.password)
+    {
+        if (commandSelector == @selector(insertNewline:))
+        {
             [self userActionButtonOnClick:control];
-		}
-	}
-	return NO;
+        }
+    }
+    return NO;
 }
 
 - (void)setUserSignUp:(BOOL)isSignUp
 {
-	[[NSUserDefaults standardUserDefaults] setBool:isSignUp forKey:kUserHasBeenSignup];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSUserDefaults standardUserDefaults] setBool:isSignUp forKey:kUserHasBeenSignup];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)showLoaderView:(BOOL)show
 {
-	self.loginLoaderView.hidden = !show;
-	if (show)
-	{
-		[self.loginLoaderView startAnimation:self];
-	}
-	else
-	{
-		[self.loginLoaderView stopAnimation:self];
-	}
+    self.loginLoaderView.hidden = !show;
+    if (show)
+    {
+        [self.loginLoaderView startAnimation:self];
+    }
+    else
+    {
+        [self.loginLoaderView stopAnimation:self];
+    }
 
-	self.email.enabled = !show;
-	self.password.enabled = !show;
-	self.userActionBtn.enabled = !show;
-	self.signUpLink.enabled = !show;
+    self.email.enabled = !show;
+    self.password.enabled = !show;
+    self.userActionBtn.enabled = !show;
+    self.signUpLink.enabled = !show;
     self.forgotPasswordTextField.enabled = !show;
     self.appleBtn.enabled = !show;
     self.googleBtn.enabled = !show;
@@ -510,33 +510,33 @@ extern void *ctx;
 
 - (void)resetLoader
 {
-	[self showLoaderView:NO];
+    [self showLoaderView:NO];
 }
 
 - (BOOL)isEmalValid
 {
-	NSString *email = [self.email stringValue];
+    NSString *email = [self.email stringValue];
 
-	if (email == nil || !email.length)
-	{
-		[self.email.window makeFirstResponder:self.email];
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																	object:emailMissingError];
-		return NO;
-	}
-	return YES;
+    if (email == nil || !email.length)
+    {
+        [self.email.window makeFirstResponder:self.email];
+        [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+                                                                    object:emailMissingError];
+        return NO;
+    }
+    return YES;
 }
 
 - (BOOL)isPasswordValid
 {
-	NSString *pass = [self.password stringValue];
+    NSString *pass = [self.password stringValue];
 
-	if (pass == nil || !pass.length)
-	{
-		[self.password.window makeFirstResponder:self.password];
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																	object:passwordMissingError];
-		return NO;
+    if (pass == nil || !pass.length)
+    {
+        [self.password.window makeFirstResponder:self.password];
+        [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+                                                                    object:passwordMissingError];
+        return NO;
     } else if (self.currentTab == TabViewTypeSingup && ![self.passwordStrengthView isMeetAllRequirements]) {
         [self.password.window makeFirstResponder:self.password];
         [self displayPasswordStrengthView:YES];
@@ -544,33 +544,33 @@ extern void *ctx;
         return NO;
     }
 
-	return YES;
+    return YES;
 }
 
 - (BOOL)isCountryValid
 {
-	if (self.selectedCountryID == -1 || self.countrySelect.stringValue.length == 0)
-	{
-		[self.countrySelect.window makeFirstResponder:self.countrySelect];
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																	object:countryNotSelectedError];
-		return NO;
-	}
-	return YES;
+    if (self.selectedCountryID == -1 || self.countrySelect.stringValue.length == 0)
+    {
+        [self.countrySelect.window makeFirstResponder:self.countrySelect];
+        [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+                                                                    object:countryNotSelectedError];
+        return NO;
+    }
+    return YES;
 }
 
 - (BOOL)isTOSValid
 {
-	BOOL tosChecked = [Utils stateToBool:[self.tosCheckbox state]];
+    BOOL tosChecked = [Utils stateToBool:[self.tosCheckbox state]];
 
-	if (!tosChecked)
-	{
-		[self.tosCheckbox.window makeFirstResponder:self.tosCheckbox];
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																	object:tosAgreeError];
-		return NO;
-	}
-	return YES;
+    if (!tosChecked)
+    {
+        [self.tosCheckbox.window makeFirstResponder:self.tosCheckbox];
+        [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+                                                                    object:tosAgreeError];
+        return NO;
+    }
+    return YES;
 }
 
 - (NSTouchBar *)makeTouchBar
@@ -592,28 +592,28 @@ extern void *ctx;
 
 - (void)loginSignupTouchBarOn:(enum LoginSignupAction)action
 {
-	switch (action)
-	{
-		case LoginSignupActionLogin :
-			[self clickLoginButton:self];
-			break;
-		case LoginSignupActionLoginGoogle :
-			[self loginGoogleOnTap:self];
-			break;
-		case LoginSignupActionSignUp :
-			[self clickSignupButton:self];
-			break;
-		case LoginSignupActionSignUpGoogle :
-			[self signupGoogleBtnOnTap:self];
-			break;
+    switch (action)
+    {
+        case LoginSignupActionLogin :
+            [self clickLoginButton:self];
+            break;
+        case LoginSignupActionLoginGoogle :
+            [self loginGoogleOnTap:self];
+            break;
+        case LoginSignupActionSignUp :
+            [self clickSignupButton:self];
+            break;
+        case LoginSignupActionSignUpGoogle :
+            [self signupGoogleBtnOnTap:self];
+            break;
         case LoginSignupActionLoginApple:
             [self loginAppleBtnOnTap:self];
             break;
         case LoginSignupActionSignUpApple:
             [self signupAppleBtnOnTap:self];
-		default :
-			break;
-	}
+        default :
+            break;
+    }
 }
 
 #pragma mark - User action
@@ -742,7 +742,7 @@ extern void *ctx;
 
 - (void)signupAppleBtnOnTap:(id)sender
 {
-    #ifdef APP_STORE
+#ifdef APP_STORE
     if (@available(macOS 10.15, *))
     {
         // Validate all values inserted
@@ -756,12 +756,12 @@ extern void *ctx;
         [self showLoaderView:YES];
         [[AppleAuthenticationService shared] requestAuth];
     }
-    #endif
+#endif
 }
 
 - (void)loginAppleBtnOnTap:(id)sender
 {
-    #ifdef APP_STORE
+#ifdef APP_STORE
     if (@available(macOS 10.15, *))
     {
         self.userAction = UserActionAppleLogin;
@@ -769,7 +769,7 @@ extern void *ctx;
         [self showLoaderView:YES];
         [[AppleAuthenticationService shared] requestAuth];
     }
-    #endif
+#endif
 }
 
 #pragma mark - AppleAuthenticationServiceDelegate

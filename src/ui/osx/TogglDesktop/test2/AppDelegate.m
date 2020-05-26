@@ -238,6 +238,8 @@ void *ctx;
 		 if ([[NSApplication sharedApplication] isActive] && [strongSelf.mainWindowController.window isVisible])
 		 {
 			 [self.mainWindowController.window close];
+             [NSApp setActivationPolicy:NSApplicationActivationPolicyProhibited];
+             [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
 		 }
 		 else
 		 {

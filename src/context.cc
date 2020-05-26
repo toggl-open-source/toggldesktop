@@ -911,7 +911,7 @@ void Context::updateUI(const UIElements &what) {
             what.time_entry_editor_field);
     }
 
-    if (what.display_time_entries) {
+    if (what.display_time_entries && user_) {
         UI()->DisplayTimeEntryList(
             what.open_time_entry_list,
             time_entry_views,
@@ -2464,13 +2464,13 @@ error Context::Login(
             //
             // Discussion: https://toggl.slack.com/archives/CSE5U3ZUN/p1586418153111700
             //
-            #if defined(__APPLE__)
+#if defined(__APPLE__)
             if ((password.compare(kAppleAccessToken) == 0 || password.compare(kGoogleAccessToken) == 0) // Applied for Google and Apple Sign In
-                && IsAuthenticationError(err)) {
+                    && IsAuthenticationError(err)) {
                 UI()->DisplayOnContinueSignIn();
                 return err;
             }
-            #endif
+#endif
 
             if (!IsNetworkingError(err)) {
                 return displayError(err);
@@ -3166,6 +3166,12 @@ error Context::SetTimeEntryDuration(
     }
 
     te->SetDurationUserInput(duration);
+
+    // Skip checking Pomodoro if it's current running TE and the total time is > pomodoro
+    if (checkIfSkipPomodoro(te)) {
+        te->SetSkipPomodoro(true);
+    }
+
     return displayError(save(true));
 }
 
@@ -3395,6 +3401,11 @@ error Context::SetTimeEntryStart(
         dt, Poco::DateTimeFormat::ISO8601_FORMAT);
 
     te->SetStartUserInput(s, GetKeepEndTimeFixed());
+
+    // Skip checking Pomodoro if it's current running TE and the total time is > pomodoro
+    if (checkIfSkipPomodoro(te)) {
+        te->SetSkipPomodoro(true);
+    }
 
     return displayError(save(true));
 }
@@ -4572,6 +4583,12 @@ void Context::displayPomodoro() {
                 return;
             }
         }
+
+        // We should skip if the user manually update start / duration time
+        if (current_te->SkipPomodoro()) {
+            return;
+        }
+
         const Poco::Int64 pomodoroDuration = settings_.pomodoro_minutes * 60;
         wid = current_te->WID();
         Stop(true);
@@ -6257,6 +6274,19 @@ void Context::UserDidTurnOnRecordActivity() {
 
 void Context::UserDidEditOrAddTimeEntryOnTimelineView() {
     OnboardingService::getInstance()->EditOrAddTimeEntryDirectlyToTimelineView();
+}
+
+bool Context::checkIfSkipPomodoro(TimeEntry *te) {
+    // Skip checking Pomodoro if it's current running TE and the total time is > pomodoro
+    if (settings_.pomodoro) {
+        TimeEntry *current_te = user_->RunningTimeEntry();
+        if (current_te && current_te->GUID().compare(te->GUID()) == 0) {
+            if (time(nullptr) - te->Start() >= settings_.pomodoro_minutes * 60) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 }  // namespace toggl
