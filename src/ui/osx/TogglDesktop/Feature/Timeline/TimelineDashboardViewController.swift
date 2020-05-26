@@ -24,12 +24,15 @@ final class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var emptyActivityLbl: NSTextField!
     @IBOutlet weak var emptyActivityLblPadding: NSLayoutConstraint!
     @IBOutlet weak var zoomContainerView: NSView!
-    @IBOutlet weak var collectionViewContainerView: NSScrollView!
-    @IBOutlet weak var mainContainerView: NSView!
+    @IBOutlet weak var collectionViewContainerView: NSView!
     @IBOutlet weak var activityRecorderInfoImageView: HoverImageView!
-    @IBOutlet weak var activityPanelWidth: NSLayoutConstraint!
     @IBOutlet weak var activityLabelRight: NSLayoutConstraint!
     @IBOutlet weak var permissionBtn: NSButton!
+
+    // Onboarding
+    @IBOutlet weak var activityContainerView: NSView!
+    @IBOutlet weak var timelineTimeEntryContainerView: NSView!
+    @IBOutlet weak var recordActivityContainerView: NSView!
 
     // MARK: Variables
 
@@ -163,6 +166,9 @@ final class TimelineDashboardViewController: NSViewController {
     
     @IBAction func recordSwitchOnChanged(_ sender: Any) {
         DesktopLibraryBridge.shared().enableTimelineRecord(recordSwitcher.isOn)
+        if recordSwitcher.isOn {
+            DesktopLibraryBridge.shared().userDidTurnOnRecordActivity()
+        }
     }
 
     @IBAction func zoomLevelDecreaseOnChange(_ sender: Any) {
@@ -243,11 +249,11 @@ extension TimelineDashboardViewController {
     }
 
     private func initTrackingArea() {
-        let tracking = NSTrackingArea(rect: mainContainerView.bounds,
-                                      options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect],
-                                      owner: mainContainerView,
+        let tracking = NSTrackingArea(rect: collectionViewContainerView.bounds,
+                                      options: [.mouseEnteredAndExited, .activeInKeyWindow],
+                                      owner: collectionViewContainerView,
                                       userInfo: nil)
-        mainContainerView.addTrackingArea(tracking)
+        collectionViewContainerView.addTrackingArea(tracking)
     }
 
     fileprivate func initCollectionView() {
@@ -347,6 +353,10 @@ extension TimelineDashboardViewController {
     @objc private func runningTimeEntryNoti(_ noti: Notification) {
         datasource.updateRunningTimeEntry(noti.object)
     }
+
+    private func isPopoversShown() -> Bool {
+        return OnboardingService.shared.isShown || editorPopover.isShown
+    }
 }
 
 // MARK: DatePickerViewDelegate
@@ -402,13 +412,13 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     }
 
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry) {
-        guard !editorPopover.isShown else { return }
+        guard !isPopoversShown() else { return }
         timeEntryHoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         timeEntryHoverController.render(with: timeEntry)
     }
 
     func shouldPresentActivityHover(in view: NSView, activity: TimelineActivity) {
-        guard !editorPopover.isShown else { return }
+        guard !isPopoversShown() else { return }
 
         // Update new content and force render to get fit size
         activityHoverController.render(activity)
@@ -534,6 +544,9 @@ extension TimelineDashboardViewController: TimelineCollectionViewDelegate {
 
         // Create
         startNewTimeEntry(at: startTime, ended: startTime + 1)
+
+        // Onboarding
+        DesktopLibraryBridge.shared().userDidEditOrAddTimeEntryDirectlyOnTimelineView()
     }
 }
 

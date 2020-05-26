@@ -29,7 +29,7 @@
 #include "timeline_uploader.h"
 #include "urls.h"
 #include "window_change_recorder.h"
-#include "model/workspace.h"
+#include "onboarding_service.h"
 
 #include <Poco/Crypto/OpenSSLInitializer.h>
 #include <Poco/DateTimeFormat.h>
@@ -121,6 +121,11 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 
     pomodoro_break_entry_ = nullptr;
 
+    // Register event action to trigger UI
+    OnboardingService::getInstance()->RegisterEvents([&] (const OnboardingType onboardingType) {
+        UI()->DisplayOnboarding(onboardingType);
+    });
+    
     TogglClient::GetInstance().SetSyncStateMonitor(UI());
 }
 
@@ -159,6 +164,11 @@ Context::~Context() {
             delete user_;
             user_ = nullptr;
         }
+    }
+
+    {
+        Poco::Mutex::ScopedLock lock(onboarding_service_m_);
+        OnboardingService::getInstance()->Reset();
     }
 
     Poco::Net::uninitializeSSL();
@@ -2326,6 +2336,7 @@ error Context::SetDBPath(
             db_ = nullptr;
         }
         db_ = new Database(path);
+        OnboardingService::getInstance()->SetDatabase(db());
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -2576,7 +2587,7 @@ error Context::AppleSignup(
     if (err != noError) {
         return displayError(err);
     }
-    return Login(access_token, kAppleAccessToken);
+    return Login(access_token, kAppleAccessToken, true);
 }
 
 error Context::AsyncApleSignup(
@@ -2671,6 +2682,9 @@ void Context::setUser(User *value, const bool logged_in) {
     if (err != noError) {
         displayError(err);
     }
+
+    // Setup the Onboarding state when the user data is initialized
+    OnboardingService::getInstance()->LoadOnboardingStateFromCurrentUser(user_);
 }
 
 error Context::SetLoggedInUserFromJSON(
@@ -2692,6 +2706,9 @@ error Context::SetLoggedInUserFromJSON(
     }
 
     User *user = new User();
+
+    // Determine if it's a new user for onboarding check
+    user->IsNewUser = isSignup;
 
     err = db()->LoadUserByID(userID, user);
     if (err != noError) {
@@ -2754,6 +2771,7 @@ error Context::Logout() {
         overlay_visible_ = false;
         setUser(nullptr);
 
+        OnboardingService::getInstance()->Reset();
         UI()->resetFirstLaunch();
         UI()->DisplayApp();
 
@@ -6244,6 +6262,18 @@ error Context::UpdateTimeEntry(
     }
 
     return displayError(save(true));
+}
+
+void Context::UserDidClickOnTimelineTab() {
+    OnboardingService::getInstance()->OpenTimelineTab();
+}
+
+void Context::UserDidTurnOnRecordActivity() {
+    OnboardingService::getInstance()->TurnOnRecordActivity();
+}
+
+void Context::UserDidEditOrAddTimeEntryOnTimelineView() {
+    OnboardingService::getInstance()->EditOrAddTimeEntryDirectlyToTimelineView();
 }
 
 bool Context::checkIfSkipPomodoro(TimeEntry *te) {
