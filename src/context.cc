@@ -4877,7 +4877,8 @@ void Context::syncerActivityWrapper() {
             legacySyncerActivity();
             break;
         case BATCHED:
-            // TODO
+            // TODO, legacy fallback for now
+            legacySyncerActivity();
             break;
         }
     }
