@@ -22,7 +22,9 @@ final class ColorPickerView: NSView {
 
     // MARK: OUTLET
 
-    @IBOutlet weak var collectionView: NSCollectionView!
+    @IBOutlet weak var stackView: NSStackView!
+    private lazy var scrollView = NSScrollView()
+    private lazy var collectionView: NSCollectionView = NSCollectionView()
     @IBOutlet weak var colorWheelView: ColorGraphicsView!
     @IBOutlet weak var colorWheelContainerView: NSView!
     @IBOutlet weak var resetBtnTop: NSLayoutConstraint!
@@ -44,12 +46,9 @@ final class ColorPickerView: NSView {
     // MARK: Public
 
     func select(_ color: ProjectColor) {
-
-        // Deselect
-        collectionView.deselectAll(collectionView)
-
         // Select color if it's possible
         guard let index = colors.firstIndex(where: { $0 == color }) else { return }
+        collectionView.deselectAll(nil)
         collectionView.selectItems(at: Set<IndexPath>.init(arrayLiteral: IndexPath.init(item: index, section: 0)), scrollPosition: [])
     }
 
@@ -78,20 +77,25 @@ extension ColorPickerView {
         wantsLayer = true
         layer?.masksToBounds = true
         layer?.cornerRadius = 8
+
+        scrollView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        scrollView.documentView = collectionView
+        stackView.addArrangedSubview(scrollView)
     }
 
     fileprivate func initCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
-        let nib = NSNib(nibNamed: "ColorViewItem", bundle: nil)
-        collectionView.register(nib, forItemWithIdentifier: Constants.ColorViewItemID)
-
         let flow = NSCollectionViewFlowLayout()
         flow.itemSize = CGSize(width: 24.0, height: 24.0)
         flow.sectionInset = NSEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         flow.minimumLineSpacing = 7.0
         flow.minimumInteritemSpacing = 7.0
         collectionView.collectionViewLayout = flow
+        collectionView.backgroundColors = [.clear]
+        collectionView.allowsMultipleSelection = false
+        collectionView.isSelectable = true
+        collectionView.register(ColorViewItem.self, forItemWithIdentifier: NSUserInterfaceItemIdentifier("ColorViewItem"))
     }
 }
 
@@ -107,8 +111,8 @@ extension ColorPickerView: NSCollectionViewDelegate, NSCollectionViewDataSource,
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
+        guard let view = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier("ColorViewItem"), for: indexPath) as? ColorViewItem else { return NSCollectionViewItem() }
         let color = colors[indexPath.item]
-        let view = collectionView.makeItem(withIdentifier: Constants.ColorViewItemID, for: indexPath) as! ColorViewItem
         view.render(color)
         return view
     }

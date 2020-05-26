@@ -307,7 +307,6 @@
 		BA9C2DFC224C8235002AD2A1 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */; };
 		BA9C2DFE224C823C002AD2A1 /* ColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2DFD224C823C002AD2A1 /* ColorPickerView.xib */; };
 		BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E03224C84E7002AD2A1 /* ColorViewItem.swift */; };
-		BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */; };
 		BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */; };
 		BA9C2E0C224C8F58002AD2A1 /* KeyboardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */; };
 		BAA0102B22CB4D5C007C1541 /* TimelineTimeEntryMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0102A22CB4D5C007C1541 /* TimelineTimeEntryMenu.swift */; };
@@ -546,7 +545,6 @@
 		BAE64E052368334000244D2B /* SystemMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA3E75D722293576009AD291 /* SystemMessageView.xib */; };
 		BAE64E062368334000244D2B /* TimeEntryEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */; };
 		BAE64E072368334000244D2B /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
-		BAE64E082368334000244D2B /* ColorViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */; };
 		BAE64E092368334000244D2B /* OverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CD30F421F58B02C006FAA0D /* OverlayViewController.xib */; };
 		BAE64E0A2368334000244D2B /* ProjectContentCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D3354224898E400B953A8 /* ProjectContentCellView.xib */; };
 		BAE64E0B2368334000244D2B /* TagTokenView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA014053225711A3000E5B91 /* TagTokenView.xib */; };
@@ -982,7 +980,6 @@
 		BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
 		BA9C2DFD224C823C002AD2A1 /* ColorPickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorPickerView.xib; sourceTree = "<group>"; };
 		BA9C2E03224C84E7002AD2A1 /* ColorViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorViewItem.swift; sourceTree = "<group>"; };
-		BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorViewItem.xib; sourceTree = "<group>"; };
 		BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectColor.swift; sourceTree = "<group>"; };
 		BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardTableView.swift; sourceTree = "<group>"; };
 		BAA0102A22CB4D5C007C1541 /* TimelineTimeEntryMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntryMenu.swift; sourceTree = "<group>"; };
@@ -1807,7 +1804,6 @@
 				BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */,
 				BA9C2DFD224C823C002AD2A1 /* ColorPickerView.xib */,
 				BA9C2E03224C84E7002AD2A1 /* ColorViewItem.swift */,
-				BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */,
 				BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */,
 			);
 			path = Project;
@@ -2059,7 +2055,6 @@
 				BA65A22522B7823200F895FD /* MainDashboardViewController.xib in Resources */,
 				BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */,
 				BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */,
-				BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */,
 				3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */,
 				BA7D3355224898E400B953A8 /* ProjectContentCellView.xib in Resources */,
 				BA65A25222B7A66A00F895FD /* DatePickerView.xib in Resources */,
@@ -2126,6 +2121,7 @@
 				BA43B25523F525F30007DD99 /* TimelineLineView.xib in Resources */,
 				BAE64E072368334000244D2B /* DateCellViewItem.xib in Resources */,
 				BAE64E082368334000244D2B /* ColorViewItem.xib in Resources */,
+				BA13E57F24347716005244AD /* OnboardingContentViewController.xib in Resources */,
 				BAE64E092368334000244D2B /* OverlayViewController.xib in Resources */,
 				BAE64E0A2368334000244D2B /* ProjectContentCellView.xib in Resources */,
 				BAE64E0B2368334000244D2B /* TagTokenView.xib in Resources */,
