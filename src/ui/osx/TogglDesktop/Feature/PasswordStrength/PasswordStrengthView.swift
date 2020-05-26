@@ -10,14 +10,8 @@ import Cocoa
 
 final class PasswordStrengthView: NSViewController {
 
-    enum DisplayState {
-        case success // Show Success state
-        case rule // Show all password requirements
-    }
-
     struct Constants {
         static let Width: CGFloat = 276
-        static let HeightSuccess: CGFloat = 48
         static let HeightRule: CGFloat = 112
     }
 
@@ -25,24 +19,12 @@ final class PasswordStrengthView: NSViewController {
 
     @IBOutlet weak var titleLbl: NSTextField!
     @IBOutlet weak var stackView: NSStackView!
-    @IBOutlet weak var successStackView: NSStackView!
-    @IBOutlet weak var successBox: NSBox!
     @IBOutlet weak var ruleBox: NSBox!
 
     // MARK: Variables
 
     private lazy var validation = PasswordStrengthValidation()
-    private var heightConstraint: NSLayoutConstraint?
-    private var displayState = DisplayState.rule {
-        didSet {
-            guard displayState != oldValue else { return }
-            updateUI()
-        }
-    }
-
-    @objc var isMeetAllRequirements: Bool {
-        return displayState == .success
-    }
+    @objc var isMeetAllRequirements = false
 
     // MARK: View Cycle
     
@@ -56,9 +38,7 @@ final class PasswordStrengthView: NSViewController {
 
     @objc func updateValidation(for text: String) {
         let matchedRules = validation.validate(text: text)
-
-        // If all rules are matched -> Update the UI
-        displayState = matchedRules.count == PasswordStrengthValidation.Rule.allCases.count ? .success : .rule
+        isMeetAllRequirements = matchedRules.count == PasswordStrengthValidation.Rule.allCases.count
 
         // Update individual state
         stackView.arrangedSubviews.forEach { (view) in
@@ -81,13 +61,7 @@ extension PasswordStrengthView {
     private func prepareUI() {
         // Prepare
         view.widthAnchor.constraint(equalToConstant: Constants.Width).isActive = true
-        heightConstraint = view.heightAnchor.constraint(equalToConstant: Constants.HeightRule)
-        heightConstraint?.isActive = true
-
-        // Add success rule
-        let successView = PasswordRuleView.xibView() as PasswordRuleView
-        successView.updateSuccessStatus()
-        successStackView.addArrangedSubview(successView)
+        view.heightAnchor.constraint(equalToConstant: Constants.HeightRule).isActive = true
 
         // Shadow
         view.wantsLayer = true
@@ -108,49 +82,5 @@ extension PasswordStrengthView {
         views.forEach {
             stackView.addArrangedSubview($0)
         }
-    }
-
-    private func updateUI() {
-
-        // Prepare
-        switch displayState {
-        case .success:
-            successBox.alphaValue = 0
-            successBox.isHidden = false
-            ruleBox.alphaValue = 1
-            ruleBox.isHidden = true
-        case .rule:
-            ruleBox.alphaValue = 0
-            ruleBox.isHidden = false
-            successBox.alphaValue = 1
-            successBox.isHidden = true
-        }
-
-        NSAnimationContext.runAnimationGroup({[weak self] (context) in
-            guard let strongSelf = self else { return }
-            context.duration = 0.15
-            context.timingFunction = CAMediaTimingFunction(name: .easeOut)
-
-            // Animation
-            switch displayState {
-            case .success:
-                strongSelf.successBox.animator().alphaValue = 1
-                strongSelf.ruleBox.animator().alphaValue = 0
-                strongSelf.heightConstraint?.animator().constant = Constants.HeightSuccess
-            case .rule:
-                strongSelf.successBox.animator().alphaValue = 0
-                strongSelf.ruleBox.animator().alphaValue = 1
-                strongSelf.heightConstraint?.animator().constant = Constants.HeightRule
-            }}, completionHandler: {[weak self] in
-                guard let strongSelf = self else { return }
-                switch strongSelf.displayState {
-                case .success:
-                    strongSelf.successBox.isHidden = false
-                    strongSelf.ruleBox.isHidden = true
-                case .rule:
-                    strongSelf.successBox.isHidden = true
-                    strongSelf.ruleBox.isHidden = false
-                }
-        })
     }
 }
