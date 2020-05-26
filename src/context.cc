@@ -901,7 +901,7 @@ void Context::updateUI(const UIElements &what) {
             what.time_entry_editor_field);
     }
 
-    if (what.display_time_entries) {
+    if (what.display_time_entries && user_) {
         UI()->DisplayTimeEntryList(
             what.open_time_entry_list,
             time_entry_views,
