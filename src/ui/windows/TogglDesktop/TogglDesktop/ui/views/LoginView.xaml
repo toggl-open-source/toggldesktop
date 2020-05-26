@@ -91,7 +91,7 @@
                                         <StackPanel>
                                             <TextBlock Style="{StaticResource Toggl.CaptionText}"
                                                        Text="Please make sure your password includes:"
-                                                       Margin="0 0 0 4"/>
+                                                       Margin="0 0 0 7"/>
                                             <togglDesktop:PasswordRuleView Text="8 characters or more"
                                                                            IsRuleSatisfied="{Binding IsEightCharactersOrMore}"
                                                                            IsValidationFailed="{Binding ElementName=passwordBox, Path=(Validation.HasError)}"/>
