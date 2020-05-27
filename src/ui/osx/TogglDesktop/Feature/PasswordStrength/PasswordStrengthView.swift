@@ -10,6 +10,11 @@ import Cocoa
 
 final class PasswordStrengthView: NSViewController {
 
+    enum DisplayState {
+        case success // Show Success state
+        case rule // Show all password requirements
+    }
+
     struct Constants {
         static let Width: CGFloat = 276
         static let HeightRule: CGFloat = 112
@@ -24,7 +29,16 @@ final class PasswordStrengthView: NSViewController {
     // MARK: Variables
 
     private lazy var validation = PasswordStrengthValidation()
-    @objc var isMeetAllRequirements = false
+    private var displayState = DisplayState.rule {
+        didSet {
+            guard displayState != oldValue else { return }
+            updateUI()
+        }
+    }
+
+    @objc var isMeetAllRequirements: Bool {
+        return displayState == .success
+    }
 
     // MARK: View Cycle
     
@@ -38,7 +52,9 @@ final class PasswordStrengthView: NSViewController {
 
     @objc func updateValidation(for text: String) {
         let matchedRules = validation.validate(text: text)
-        isMeetAllRequirements = matchedRules.count == PasswordStrengthValidation.Rule.allCases.count
+
+        // If all rules are matched -> Update the UI
+        displayState = matchedRules.count == PasswordStrengthValidation.Rule.allCases.count ? .success : .rule
 
         // Update individual state
         stackView.arrangedSubviews.forEach { (view) in
@@ -81,6 +97,30 @@ extension PasswordStrengthView {
         }
         views.forEach {
             stackView.addArrangedSubview($0)
+        }
+    }
+
+    private func updateUI() {
+        let action = {
+            NSAnimationContext.runAnimationGroup({[weak self] (context) in
+                guard let strongSelf = self else { return }
+                context.duration = 0.15
+                context.timingFunction = CAMediaTimingFunction(name: .easeOut)
+
+                // Animation
+                switch strongSelf.displayState {
+                case .success:
+                    strongSelf.view.animator().alphaValue = 0
+                case .rule:
+                    strongSelf.view.animator().alphaValue = 1
+                }}, completionHandler: nil)
+        }
+
+        switch displayState {
+        case .success:
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: action)
+        case .rule:
+            action()
         }
     }
 }
