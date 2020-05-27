@@ -337,6 +337,9 @@ build/color_convert.o: src/color_convert.cc
 build/test/gtest-all.o: $(GTEST_ROOT)/src/gtest-all.cc
 	$(cxx) $(cflags) -c $(GTEST_ROOT)/src/gtest-all.cc -o build/test/gtest-all.o
 
+build/onboarding_service.o: src/onboarding_service.cpp
+	$(cxx) $(cflags) -c src/onboarding_service.cpp -o build/onboarding_service.o
+
 objects: build/jsoncpp.o \
 	build/related_data.o \
 	build/proxy.o \
@@ -374,7 +377,8 @@ objects: build/jsoncpp.o \
 	build/get_focused_window_$(osname).o \
 	build/timeline_uploader.o \
 	build/color_convert.o \
-	build/window_change_recorder.o
+	build/window_change_recorder.o \
+	build/onboarding_service.o
 
 test_objects: build/test/gtest-all.o \
 	build/test/test_data.o \

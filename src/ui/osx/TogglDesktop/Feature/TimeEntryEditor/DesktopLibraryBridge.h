@@ -119,6 +119,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSColor *) getAdaptiveColorForShapeFromColor:(NSColor *) color;
 - (NSColor *) getAdaptiveColorForTextFromColor:(NSColor *) color;
 
+#pragma mark - Onboarding Actions
+
+- (void)userDidClickOnTimelineTab;
+- (void)userDidTurnOnRecordActivity;
+- (void)userDidEditOrAddTimeEntryDirectlyOnTimelineView;
+
 @end
 
 NS_ASSUME_NONNULL_END

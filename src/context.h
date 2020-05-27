@@ -45,6 +45,7 @@ namespace toggl {
 class Database;
 class TimelineUploader;
 class WindowChangeRecorder;
+class OnboardingService;
 
 class TOGGL_INTERNAL_EXPORT UIElements {
  public:
@@ -559,11 +560,17 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     void TrackExpandAllDays();
 
+    // Onboarding action
+    void UserDidClickOnTimelineTab();
+    void UserDidTurnOnRecordActivity();
+    void UserDidEditOrAddTimeEntryOnTimelineView();
+
  protected:
     void uiUpdaterActivity();
     void checkReminders();
     void reminderActivity();
-    void syncerActivity();
+    void syncerActivityWrapper();
+    void legacySyncerActivity();
 
  private:
     static const std::string installerPlatform();
@@ -823,6 +830,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error updateTimeEntryDescription(
         TimeEntry *te,
         const std::string &value);
+
+    Poco::Mutex onboarding_service_m_;
 
     bool checkIfSkipPomodoro(TimeEntry *te);
 };

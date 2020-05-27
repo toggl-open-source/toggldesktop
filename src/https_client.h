@@ -91,12 +91,20 @@ class TOGGL_INTERNAL_EXPORT HTTPClientConfig {
         return ss.str();
     }
 
-    bool IgnoreCert() { return ignoreCert; };
-    std::string CACertPath() { return caCertPath; };
-    void SetCACertPath(std::string path) { caCertPath = path; }
-    void SetIgnoreCert(bool ignore) { ignoreCert = ignore; }
+    bool IgnoreCert() {
+        return ignoreCert;
+    };
+    std::string CACertPath() {
+        return caCertPath;
+    };
+    void SetCACertPath(std::string path) {
+        caCertPath = path;
+    }
+    void SetIgnoreCert(bool ignore) {
+        ignoreCert = ignore;
+    }
 
-private:
+ private:
     bool ignoreCert;
     std::string caCertPath;
 };
@@ -158,7 +166,7 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
 
     void SetCACertPath(std::string path);
     void SetIgnoreCert(bool ignore);
-    
+
  protected:
     virtual HTTPResponse request(
         HTTPRequest req) const;
@@ -191,7 +199,7 @@ class TOGGL_INTERNAL_EXPORT SyncStateMonitor {
 };
 
 class TOGGL_INTERNAL_EXPORT TogglClient : public HTTPClient {
-public:
+ public:
     static ServerStatus TogglStatus;
     static TogglClient& GetInstance() {
         static TogglClient instance; // static is thread-safe in C++11.
@@ -214,11 +222,11 @@ public:
     HTTPResponse silentPut(
         HTTPRequest req) const;
 
-protected:
+ protected:
     virtual HTTPResponse request(HTTPRequest req) const override;
     virtual Logger logger() const override;
 
-private:
+ private:
     TogglClient() {};
     SyncStateMonitor *monitor_;
 };

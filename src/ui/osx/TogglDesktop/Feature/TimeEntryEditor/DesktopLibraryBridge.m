@@ -426,4 +426,19 @@ void *ctx;
     return NO;
 }
 
+- (void)userDidClickOnTimelineTab
+{
+    toggl_user_did_click_on_timeline_tab(ctx);
+}
+
+- (void)userDidTurnOnRecordActivity
+{
+    toggl_user_did_turn_on_record_activity(ctx);
+}
+
+- (void)userDidEditOrAddTimeEntryDirectlyOnTimelineView
+{
+    toggl_user_did_edit_add_timeentry_on_timeline_view(ctx);
+}
+
 @end

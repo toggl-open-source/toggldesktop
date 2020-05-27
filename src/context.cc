@@ -29,7 +29,7 @@
 #include "timeline_uploader.h"
 #include "urls.h"
 #include "window_change_recorder.h"
-#include "model/workspace.h"
+#include "onboarding_service.h"
 
 #include <Poco/Crypto/OpenSSLInitializer.h>
 #include <Poco/DateTimeFormat.h>
@@ -82,7 +82,7 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , reminder_(this, &Context::reminderActivity)
-, syncer_(this, &Context::syncerActivity)
+, syncer_(this, &Context::syncerActivityWrapper)
 , update_path_("")
 , overlay_visible_(false)
 , last_message_id_("") {
@@ -121,6 +121,11 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 
     pomodoro_break_entry_ = nullptr;
 
+    // Register event action to trigger UI
+    OnboardingService::getInstance()->RegisterEvents([&] (const OnboardingType onboardingType) {
+        UI()->DisplayOnboarding(onboardingType);
+    });
+    
     TogglClient::GetInstance().SetSyncStateMonitor(UI());
 }
 
@@ -159,6 +164,11 @@ Context::~Context() {
             delete user_;
             user_ = nullptr;
         }
+    }
+
+    {
+        Poco::Mutex::ScopedLock lock(onboarding_service_m_);
+        OnboardingService::getInstance()->Reset();
     }
 
     Poco::Net::uninitializeSSL();
@@ -901,7 +911,7 @@ void Context::updateUI(const UIElements &what) {
             what.time_entry_editor_field);
     }
 
-    if (what.display_time_entries) {
+    if (what.display_time_entries && user_) {
         UI()->DisplayTimeEntryList(
             what.open_time_entry_list,
             time_entry_views,
@@ -2326,6 +2336,7 @@ error Context::SetDBPath(
             db_ = nullptr;
         }
         db_ = new Database(path);
+        OnboardingService::getInstance()->SetDatabase(db());
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -2453,13 +2464,13 @@ error Context::Login(
             //
             // Discussion: https://toggl.slack.com/archives/CSE5U3ZUN/p1586418153111700
             //
-            #if defined(__APPLE__)
+#if defined(__APPLE__)
             if ((password.compare(kAppleAccessToken) == 0 || password.compare(kGoogleAccessToken) == 0) // Applied for Google and Apple Sign In
-                && IsAuthenticationError(err)) {
+                    && IsAuthenticationError(err)) {
                 UI()->DisplayOnContinueSignIn();
                 return err;
             }
-            #endif
+#endif
 
             if (!IsNetworkingError(err)) {
                 return displayError(err);
@@ -2576,7 +2587,7 @@ error Context::AppleSignup(
     if (err != noError) {
         return displayError(err);
     }
-    return Login(access_token, kAppleAccessToken);
+    return Login(access_token, kAppleAccessToken, true);
 }
 
 error Context::AsyncApleSignup(
@@ -2671,6 +2682,9 @@ void Context::setUser(User *value, const bool logged_in) {
     if (err != noError) {
         displayError(err);
     }
+
+    // Setup the Onboarding state when the user data is initialized
+    OnboardingService::getInstance()->LoadOnboardingStateFromCurrentUser(user_);
 }
 
 error Context::SetLoggedInUserFromJSON(
@@ -2692,6 +2706,9 @@ error Context::SetLoggedInUserFromJSON(
     }
 
     User *user = new User();
+
+    // Determine if it's a new user for onboarding check
+    user->IsNewUser = isSignup;
 
     err = db()->LoadUserByID(userID, user);
     if (err != noError) {
@@ -2754,6 +2771,7 @@ error Context::Logout() {
         overlay_visible_ = false;
         setUser(nullptr);
 
+        OnboardingService::getInstance()->Reset();
         UI()->resetFirstLaunch();
         UI()->DisplayApp();
 
@@ -4827,7 +4845,20 @@ void Context::reminderActivity() {
     }
 }
 
-void Context::syncerActivity() {
+void Context::syncerActivityWrapper() {
+    enum {
+        STARTUP,
+        LEGACY,
+        BATCHED
+    } state
+#if defined(TOGGL_SYNC_FORCE_BATCHED)
+    { BATCHED };
+#elif defined(TOGGL_SYNC_FORCE_LEGACY)
+    { LEGACY };
+#else
+    { STARTUP };
+#endif
+
     while (true) {
         // Sleep in increments for faster shutdown.
         for (int i = 0; i < 4; i++) {
@@ -4837,63 +4868,118 @@ void Context::syncerActivity() {
             Poco::Thread::sleep(250);
         }
 
-        {
-            Poco::Mutex::ScopedLock lock(syncer_m_);
+        switch (state) {
+        case STARTUP: {
+            logger.log("Syncer bootup, will attempt to determine which protocol to use");
 
-            if (trigger_sync_) {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            std::string api_token = user_->APIToken();
 
-                error err = pullAllUserData();
-                if (err != noError) {
-                    displayError(err);
+            HTTPRequest req;
+            req.host = urls::API();
+            req.relative_url = "/api/v9/me/flags";
+            req.basic_auth_username = api_token;
+            req.basic_auth_password = "api_token";
+
+            HTTPResponse resp = TogglClient::GetInstance().Get(req);
+
+            // don't do anything if the error is not noError, that's usually network error and this will try to connect every second
+            if (resp.err == noError) {
+                // if the server doesn't respond OK to this request, fall back to the legacy sync protocol
+                if (resp.status_code != 200) {
+                    logger.log("Syncer - Server didn't respond 200 to /me/flags, fallback to LEGACY");
+                    state = LEGACY;
                 }
-
-                setOnline("Data pulled");
-
-                err = pushChanges(&trigger_sync_);
-                trigger_push_ = false;
-                if (err != noError) {
-                    user_->ConfirmLoadedMore();
-                    displayError(err);
-                    return;
-                } else {
-                    setOnline("Data pushed");
+                else { // is OK - 200
+                    // otherwise, parse the response and see if the desktop_sync_client flag is there
+                    Json::Value root;
+                    Json::Reader reader;
+                    if (!reader.parse(resp.body, root)) {
+                        logger.log("Syncer - /me/flags response couldn't be parsed as JSON, fallback to LEGACY");
+                        state = LEGACY;
+                    }
+                    else {
+                        // there was a typo in the initial set of flags, use both variants to be sure
+                        if (root[kSyncStrategyLegacy1].isBool() && root[kSyncStrategyLegacy1].asBool())
+                            state = BATCHED;
+                        else if (root[kSyncStrategyLegacy2].isBool() && root[kSyncStrategyLegacy2].asBool())
+                            state = BATCHED;
+                        else
+                            state = LEGACY;
+                        logger.log("Syncer - Syncing protocol was selected: ", (state == BATCHED ? "BATCHED" : "LEGACY"));
+                    }
                 }
-                trigger_sync_ = false;
+            }
+            break;
+        }
+        case LEGACY:
+            legacySyncerActivity();
+            break;
+        case BATCHED:
+            // TODO, legacy fallback for now
+            legacySyncerActivity();
+            break;
+        }
+    }
+}
 
-                // Push cached OBM action
-                err = pushObmAction();
-                if (err != noError) {
-                    std::cout << "SYNC: sync-pushObm ERROR\n";
-                    logger.error("Error pushing OBM action: " + err);
-                }
+void Context::legacySyncerActivity() {
+    {
+        Poco::Mutex::ScopedLock lock(syncer_m_);
 
-                displayError(save(false));
+        if (trigger_sync_) {
+
+            error err = pullAllUserData();
+            if (err != noError) {
+                displayError(err);
             }
 
+            setOnline("Data pulled");
+
+            err = pushChanges(&trigger_sync_);
+            trigger_push_ = false;
+            if (err != noError) {
+                user_->ConfirmLoadedMore();
+                displayError(err);
+                return;
+            } else {
+                setOnline("Data pushed");
+            }
+            trigger_sync_ = false;
+
+            // Push cached OBM action
+            err = pushObmAction();
+            if (err != noError) {
+                std::cout << "SYNC: sync-pushObm ERROR\n";
+                logger.error("Error pushing OBM action: " + err);
+            }
+
+            displayError(save(false));
         }
 
-        {
-            Poco::Mutex::ScopedLock lock(syncer_m_);
+    }
 
-            if (trigger_push_) {
-                error err = pushChanges(&trigger_sync_);
-                if (err != noError) {
-                    user_->ConfirmLoadedMore();
-                    displayError(err);
-                } else {
-                    setOnline("Data pushed");
-                }
-                trigger_push_ = false;
+    {
+        Poco::Mutex::ScopedLock lock(syncer_m_);
 
-                // Push cached OBM action
-                err = pushObmAction();
-                if (err != noError) {
-                    std::cout << "SYNC: pushObm ERROR\n";
-                    logger.error("Error pushing OBM action: " + err);
-                }
-
-                displayError(save(false));
+        if (trigger_push_) {
+            error err = pushChanges(&trigger_sync_);
+            if (err != noError) {
+                user_->ConfirmLoadedMore();
+                displayError(err);
+            } else {
+                setOnline("Data pushed");
             }
+            trigger_push_ = false;
+
+            // Push cached OBM action
+            err = pushObmAction();
+            if (err != noError) {
+                std::cout << "SYNC: pushObm ERROR\n";
+                logger.error("Error pushing OBM action: " + err);
+            }
+
+            displayError(save(false));
         }
     }
 }
@@ -6244,6 +6330,18 @@ error Context::UpdateTimeEntry(
     }
 
     return displayError(save(true));
+}
+
+void Context::UserDidClickOnTimelineTab() {
+    OnboardingService::getInstance()->OpenTimelineTab();
+}
+
+void Context::UserDidTurnOnRecordActivity() {
+    OnboardingService::getInstance()->TurnOnRecordActivity();
+}
+
+void Context::UserDidEditOrAddTimeEntryOnTimelineView() {
+    OnboardingService::getInstance()->EditOrAddTimeEntryDirectlyToTimelineView();
 }
 
 bool Context::checkIfSkipPomodoro(TimeEntry *te) {

@@ -126,4 +126,8 @@
 #define kGoogleAccessToken "google_access_token"
 #define kAppleAccessToken "apple_token"
 
+// there was a typo in the initial set of flags, use both variants
+#define kSyncStrategyLegacy1 "dekstop_sync_client"
+#define kSyncStrategyLegacy2 "desktop_sync_client"
+
 #endif  // SRC_CONST_H_

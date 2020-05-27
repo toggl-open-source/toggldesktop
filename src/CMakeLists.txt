@@ -78,6 +78,7 @@ set(LIBRARY_SOURCE_FILES
     websocket_client.cc
     window_change_recorder.cc
     color_convert.cc
+    onboarding_service.cpp
 )
 
 # Set up compilation targets

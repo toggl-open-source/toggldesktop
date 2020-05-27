@@ -12,19 +12,21 @@ final class ColorViewItem: NSCollectionViewItem {
 
     // MARK: OUTLET
 
-    @IBOutlet weak var boxView: NSBox!
-    @IBOutlet weak var colorCheckImageView: NSImageView!
-
-    // MARK: View Cycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        initCommon()
-    }
+    private lazy var boxView = NSBox(frame: NSRect.zero)
+    private lazy var colorCheckImageView = NSImageView(frame: NSRect.zero)
 
     // MARK: Public
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        initCommon()
+    }
+
+    override func loadView() {
+      self.view = NSView()
+      self.view.wantsLayer = true
+    }
+    
     func render(_ color: ProjectColor) {
         guard let color = ConvertHexColor.hexCode(toNSColor: color.hex) else {
             return
@@ -37,8 +39,21 @@ final class ColorViewItem: NSCollectionViewItem {
             colorCheckImageView.isHidden = !isSelected
         }
     }
+}
+
+extension ColorViewItem {
 
     private func initCommon() {
+        boxView.boxType = .custom
+        boxView.cornerRadius = 12
+        boxView.borderType = .noBorder
+        view.addSubview(boxView)
+        boxView.edgesToSuperView()
 
+        colorCheckImageView.imageAlignment = .alignCenter
+        colorCheckImageView.image = NSImage(named: "color-check")!
+        colorCheckImageView.isHidden = true
+        view.addSubview(colorCheckImageView)
+        colorCheckImageView.edgesToSuperView()
     }
 }
