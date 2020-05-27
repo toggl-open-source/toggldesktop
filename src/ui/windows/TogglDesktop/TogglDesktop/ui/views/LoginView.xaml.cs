@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -74,7 +75,7 @@ namespace TogglDesktop
                 }
             });
             ViewModel.ConfirmLoginSignupCommand.IsExecuting.Subscribe(isExecuting => { isLoggingIn = isExecuting; });
-            var subscription = ViewModel.ConfirmLoginSignupCommand.Subscribe(isLoggedIn =>
+            ViewModel.ConfirmLoginSignupCommand.Subscribe(isLoggedIn =>
             {
                 if (isLoggedIn && this.onLogin != null)
                 {
@@ -82,8 +83,14 @@ namespace TogglDesktop
                     this.onLogin = null;
                     action();
                 }
-            });
-            _disposable.Add(subscription);
+            }).DisposeWith(_disposable);
+            this.WhenAnyValue(x => x.passwordBox.IsKeyboardFocused)
+                .BindTo(this, x => x.ViewModel.IsPasswordFocused)
+                .DisposeWith(_disposable);
+            ViewModel.FocusEmail.Subscribe(_ => this.emailTextBox.Focus()).DisposeWith(_disposable);
+            ViewModel.FocusPassword.Subscribe(_ => this.passwordBox.Focus()).DisposeWith(_disposable);
+            ViewModel.FocusCountrySelection.Subscribe(_ => this.countryComboBox.Focus()).DisposeWith(_disposable);
+            ViewModel.FocusTosCheckbox.Subscribe(_ => this.tosCheckBox.Focus()).DisposeWith(_disposable);
         }
 
         #region fade in/out
@@ -108,7 +115,7 @@ namespace TogglDesktop
             this.Visibility = Visibility.Visible;
 
             // this isn't guaranteed to work when running without dispatcher:
-            var focusEmailFieldAction = new Action(() => { this.ViewModel.IsEmailFocused = true; });
+            var focusEmailFieldAction = new Action(() => { this.emailTextBox.Focus(); });
             this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, focusEmailFieldAction);
         }
 

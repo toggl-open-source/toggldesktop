@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -26,6 +27,7 @@ namespace TogglDesktop.ViewModels
         private readonly Action _refreshSignupBindings;
         private ValidationHelper _emailValidation;
         private ValidationHelper _passwordValidation;
+        private ValidationHelper _passwordSignupValidation;
         private ValidationHelper _selectedCountryValidation;
         private ValidationHelper _isTosCheckedValidation;
         private HttpClientFactory _httpClientFactory;
@@ -61,6 +63,22 @@ namespace TogglDesktop.ViewModels
             IsLoginSignupExecuting
                 .Select(x => !x)
                 .ToPropertyEx(this, x => x.IsViewEnabled);
+
+            // password rules
+            var passwordObservable = this.WhenAnyValue(x => x.Password).Where(x => x != null);
+            passwordObservable.Select(PasswordEx.IsEightCharactersOrMore)
+                .ToPropertyEx(this, x => x.IsEightCharactersOrMore);
+            passwordObservable.Select(PasswordEx.IsLowercaseAndUppercase)
+                .ToPropertyEx(this, x => x.IsLowercaseAndUppercase);
+            passwordObservable.Select(PasswordEx.IsAtLeastOneNumber)
+                .ToPropertyEx(this, x => x.IsAtLeastOneNumber);
+            var canShowPasswordStrength = this.WhenAnyValue(x => x.IsPasswordFocused,
+                x => x.SelectedConfirmAction,
+                (isFocused, confirmAction) => isFocused && confirmAction == ConfirmAction.SignUp);
+            var shouldHidePasswordStrength = passwordObservable.Select(PasswordEx.AllRulesSatisfied)
+                .Delay(satisfied => satisfied ? Observable.Timer(TimeSpan.FromSeconds(1)) : Observable.Return(0L));
+            canShowPasswordStrength.CombineLatest(shouldHidePasswordStrength, (canShow, shouldHide) => canShow && !shouldHide)
+                .ToPropertyEx(this, x => x.ShowPasswordStrength);
         }
         public ReactiveCommand<Unit, bool> ConfirmLoginSignupCommand { get; }
         public ReactiveCommand<Unit, Unit> ConfirmGoogleLoginSignupCommand { get; }
@@ -81,17 +99,10 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public string Password { get; set; }
 
-        [Reactive]
-        public bool IsEmailFocused { get; set; }
-
-        [Reactive]
-        public bool IsPasswordFocused { get; set; }
-
-        [Reactive]
-        public bool IsCountrySelectionFocused { get; set; }
-
-        [Reactive]
-        public bool IsTosCheckboxFocused { get; set; }
+        public Subject<Unit> FocusEmail { get; } = new Subject<Unit>();
+        public Subject<Unit> FocusPassword { get; } = new Subject<Unit>();
+        public Subject<Unit> FocusCountrySelection { get; } = new Subject<Unit>();
+        public Subject<Unit> FocusTosCheckbox { get; } = new Subject<Unit>();
 
         [Reactive]
         public bool IsTosChecked { get; set; }
@@ -99,11 +110,18 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public bool ShowLoginError { get; private set; }
 
+        [Reactive]
+        public bool IsPasswordFocused { get; set; }
+
+        public bool ShowPasswordStrength { [ObservableAsProperty] get; }
         public string ConfirmButtonText { [ObservableAsProperty] get; }
         public string GoogleLoginButtonText { [ObservableAsProperty] get; }
         public string SignupLoginToggleText { [ObservableAsProperty] get; }
         public bool IsLoading { [ObservableAsProperty] get; }
         public bool IsViewEnabled { [ObservableAsProperty] get; }
+        public bool IsEightCharactersOrMore { [ObservableAsProperty] get; }
+        public bool IsLowercaseAndUppercase { [ObservableAsProperty] get; }
+        public bool IsAtLeastOneNumber { [ObservableAsProperty] get; }
 
         private void EnsureValidationApplied()
         {
@@ -117,6 +135,10 @@ namespace TogglDesktop.ViewModels
                     x => x.Password,
                     password => !string.IsNullOrEmpty(password),
                     "A password is required");
+                _passwordSignupValidation = this.ValidationRule(
+                    x => x.Password,
+                    PasswordEx.AllRulesSatisfied,
+                    string.Empty);
                 _selectedCountryValidation = this.ValidationRule(
                     x => x.SelectedCountry,
                     selectedCountry => selectedCountry != null,
@@ -132,26 +154,26 @@ namespace TogglDesktop.ViewModels
         {
             ShowLoginError = false;
             EnsureValidationApplied();
-            IsEmailFocused = false;
-            IsPasswordFocused = false;
-            IsCountrySelectionFocused = false;
-            IsTosCheckboxFocused = false;
 
             if (!isGoogleLogin && !_emailValidation.IsValid)
             {
-                IsEmailFocused = true;
+                FocusEmail.OnNext(Unit.Default);
             }
             else if (!isGoogleLogin && !_passwordValidation.IsValid)
             {
-                IsPasswordFocused = true;
+                FocusPassword.OnNext(Unit.Default);
+            }
+            else if (SelectedConfirmAction == ConfirmAction.SignUp && !isGoogleLogin && !_passwordSignupValidation.IsValid)
+            {
+                FocusPassword.OnNext(Unit.Default);
             }
             else if (SelectedConfirmAction == ConfirmAction.SignUp && !_selectedCountryValidation.IsValid)
             {
-                IsCountrySelectionFocused = true;
+                FocusCountrySelection.OnNext(Unit.Default);
             }
             else if (SelectedConfirmAction == ConfirmAction.SignUp && !_isTosCheckedValidation.IsValid)
             {
-                IsTosCheckboxFocused = true;
+                FocusTosCheckbox.OnNext(Unit.Default);
             }
             else
             {
