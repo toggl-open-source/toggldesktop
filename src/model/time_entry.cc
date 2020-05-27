@@ -434,16 +434,22 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
 
     if (data.isMember("wid")) {
         SetWID(data["wid"].asUInt64());
+    } else if (data.isMember("workspace_id")) {
+        SetWID(data["workspace_id"].asUInt64());
     } else {
         SetWID(0);
     }
     if (data.isMember("pid")) {
         SetPID(data["pid"].asUInt64());
+    } else if (data.isMember("project_id")) {
+        SetPID(data["project_id"].asUInt64());
     } else {
         SetPID(0);
     }
     if (data.isMember("tid")) {
         SetTID(data["tid"].asUInt64());
+    } else if (data.isMember("project_id")) {
+        SetTID(data["project_id"].asUInt64());
     } else {
         SetTID(0);
     }

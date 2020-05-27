@@ -19,6 +19,10 @@ void SetUseStagingAsBackend(const bool value) {
     use_staging_as_backend = value;
 }
 
+bool IsUsingStagingAsBackend() {
+    return use_staging_as_backend;
+}
+
 std::string Main() {
     if (use_staging_as_backend) {
         return "https://toggl.space";
@@ -31,6 +35,13 @@ std::string API() {
         return "https://toggl.space";
     }
     return "https://desktop.toggl.com";
+}
+
+std::string SyncAPI() {
+    if (use_staging_as_backend) {
+        // TODO
+    }
+    return "http://localhost:8080";
 }
 
 std::string TimelineUpload() {
