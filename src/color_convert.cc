@@ -13,6 +13,10 @@
 
 namespace toggl {
 
+#define min_f(a, b, c)  (fminf(a, fminf(b, c)))
+#define max_f(a, b, c)  (fmaxf(a, fmaxf(b, c)))
+#define safe_range_f(value, min, max) (fmin(max, fmax(value, min)))
+
 HsvColor ColorConverter::GetAdaptiveColor(std::string hexColor, AdaptiveColor type) {
     RgbColor rbg = hexToRgb(hexColor);
     return GetAdaptiveColor(rbg, type);
@@ -28,19 +32,16 @@ HsvColor ColorConverter::adjustColor(HsvColor hsvColor, AdaptiveColor type) {
         case AdaptiveColorShapeOnLightBackground:
             return { hsvColor.h, hsvColor.s, hsvColor.v };
         case AdaptiveColorTextOnLightBackground:
-            return { hsvColor.h, hsvColor.s, hsvColor.v - 0.15 };
+            return { hsvColor.h, hsvColor.s, safe_range_f(hsvColor.v - 0.15, 0.0f, 1.0f) };
         case AdaptiveColorShapeOnDarkBackground:
-            return { hsvColor.h, hsvColor.s * hsvColor.v, (hsvColor.v + 2.0) / 3.0 };
+            return { hsvColor.h, hsvColor.s * hsvColor.v, safe_range_f((hsvColor.v + 2.0) / 3.0, 0.0f, 1.0f) };
         case AdaptiveColorTextOnDarkBackground:
-            return { hsvColor.h, hsvColor.s * hsvColor.v, 0.05 + (hsvColor.v + 2.0) / 3.0 };
+            return { hsvColor.h, hsvColor.s * hsvColor.v, safe_range_f(0.05 + (hsvColor.v + 2.0) / 3.0, 0.0f, 1.0f) };
         default:
             return hsvColor;
     }
     return hsvColor;
 }
-
-#define min_f(a, b, c)  (fminf(a, fminf(b, c)))
-#define max_f(a, b, c)  (fmaxf(a, fmaxf(b, c)))
 
 HsvColor ColorConverter::rgbToHsv(RgbColor rgbColor)
 {
