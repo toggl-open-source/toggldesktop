@@ -18,24 +18,6 @@
             "date": "May 27th 2020"
         },
         {
-            "version": "7.5.146",
-            "rows": [
-                "Introduce Password Strength View on Login and Signup View",
-                "Update new Project Color list",
-                "Set default color on Color Picker",
-                "Rename Toggl Folders in Application Support",
-                "Use error messages from the Response in case of required fields error",
-                "Support multiple Undo and Redo for deleting Time Entry",
-                "Added simple filtering to default project combobox in Preference",
-                "Fixed When continuing an entry with archived project the project should not be included",
-                "Fixed Toggl desktop allows tracking to an archived project",
-                "Fixed Crash if creating a project that already exist",
-                "Fixed Remove focus from app after closing with global shortcut"
-            ],
-            "date": "May 20th 2020",
-            "beta": "true"
-        },
-        {
             "version": "7.5.123",
             "rows": [
                 "Improve default vertical position in the Timeline view",
