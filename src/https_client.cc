@@ -230,6 +230,17 @@ error HTTPClient::statusCodeToError(const Poco::Int64 status_code) const {
     return kCannotConnectError;
 }
 
+error HTTPClient::accountLockingError(int remainingLogins) const {
+    switch (remainingLogins){
+    case 1:
+        return kOneLoginAttemptLeft;
+    case 0:
+        return kAccountIsLocked;
+    default:
+        return kIncorrectEmailOrPassword;
+    }
+}
+
 HTTPResponse HTTPClient::Post(
     HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_POST;
@@ -468,6 +479,15 @@ HTTPResponse HTTPClient::makeHttpRequest(
         }
 
         resp.err = statusCodeToError(resp.status_code);
+
+        if (resp.status_code == 401 || resp.status_code == 403) {
+            if (response.has("X-Remaining-Login-Attempts")) {
+                int remainingLogins;
+                if (Poco::NumberParser::tryParse(response.get("X-Remaining-Login-Attempts"), remainingLogins)) {
+                    resp.err = accountLockingError(remainingLogins);
+                }
+            }
+        }
 
         // Parse human-readable error message from response if Content Type JSON
         if (resp.err != noError &&

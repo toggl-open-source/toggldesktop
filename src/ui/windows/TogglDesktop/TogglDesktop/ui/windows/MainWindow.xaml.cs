@@ -412,7 +412,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onError, errmsg, userError))
                 return;
 
-            if (this.activeView?.HandlesError(errmsg) != true)
+            if (this.activeView?.TryShowErrorInsideView(errmsg) != true)
             {
                 this.errorBar.ShowError(errmsg);
             }

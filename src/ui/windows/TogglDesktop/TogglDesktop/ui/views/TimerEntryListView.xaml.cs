@@ -178,7 +178,7 @@ namespace TogglDesktop
             this.IsEnabled = false;
         }
 
-        public bool HandlesError(string errorMessage)
+        public bool TryShowErrorInsideView(string errorMessage)
         {
             return false;
         }

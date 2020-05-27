@@ -181,6 +181,8 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
 
     error statusCodeToError(const Poco::Int64 status_code) const;
 
+    error accountLockingError(int remainingLogins) const;
+
     bool isRedirect(const Poco::Int64 status_code) const;
 
     virtual HTTPResponse makeHttpRequest(

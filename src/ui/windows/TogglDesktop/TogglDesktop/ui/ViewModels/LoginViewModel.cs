@@ -108,7 +108,7 @@ namespace TogglDesktop.ViewModels
         public bool IsTosChecked { get; set; }
 
         [Reactive]
-        public bool ShowLoginError { get; private set; }
+        public bool ShowLoginError { get; set; }
 
         [Reactive]
         public bool IsPasswordFocused { get; set; }
@@ -213,7 +213,6 @@ namespace TogglDesktop.ViewModels
                     throw new ArgumentOutOfRangeException();
             }
 
-            ShowLoginError = !success;
             return success;
         }
 
