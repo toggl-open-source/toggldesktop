@@ -55,11 +55,6 @@ final class PasswordRuleView: NSView {
         iconImageView.image = getIconImageView(for: status)
     }
 
-    func updateSuccessStatus() {
-        titleLbl.stringValue = "Your password is secure!"
-        updateStatus(.match)
-    }
-
     private func getTextColor(for status: PasswordStrengthValidation.MatchStatus) -> NSColor {
         switch status {
         case .match:
