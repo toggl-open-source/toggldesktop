@@ -84,6 +84,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (nonatomic, strong) LoginSignupTouchBar *loginTouchBar __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
 @property (nonatomic, copy) NSString *token;
 @property (nonatomic, copy) NSString *fullName;
+@property (nonatomic, assign) BOOL isCountryLoaded;
 
 - (IBAction)userActionButtonOnClick:(id)sender;
 - (IBAction)countrySelected:(id)sender;
@@ -112,9 +113,6 @@ extern void *ctx;
 
     // Default
     [self changeTabView:TabViewTypeLogin];
-
-    // Load countries in signup view
-    toggl_get_countries_async(ctx);
 }
 
 - (void)initCommon
@@ -123,6 +121,7 @@ extern void *ctx;
     self.countrySelect.delegate = self;
     self.email.delegate = self;
     self.password.delegate = self;
+    self.isCountryLoaded = NO;
 
     self.forgotPasswordTextField.titleUnderline = YES;
     self.signUpLink.titleUnderline = YES;
@@ -239,7 +238,8 @@ extern void *ctx;
     self.currentTab = type;
     [self showLoaderView:NO];
     [self displayPasswordStrengthView:NO];
-
+    [self loadCountryListIfNeed];
+    
     // Focus on email when changing mode
     [self.view.window makeFirstResponder:self.email];
 
@@ -878,5 +878,23 @@ extern void *ctx;
         return;
     }
     [self.passwordStrengthView updateValidationFor:self.password.stringValue];
+}
+
+-(void) loadCountryListIfNeed
+{
+    if (self.isCountryLoaded) {
+        return;
+    }
+
+    // Only load if it's sign up view
+    switch (self.currentTab) {
+        case TabViewTypeSingup:
+        case TabViewTypeContinueSignin:
+            self.isCountryLoaded = YES;
+            toggl_get_countries_async(ctx);
+            break;
+        default:
+            break;
+    }
 }
 @end
