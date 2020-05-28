@@ -8,13 +8,16 @@
 
 import Foundation
 
+/// Responsible for
 final class PasswordStrengthValidation {
 
+    /// Rule types
     enum Rule: CaseIterable {
         case moreThanEightLetters
         case lowerAndUpperCases
         case atLeastOneNumber
 
+        /// String for UI
         var title: String {
             switch self {
             case .atLeastOneNumber: return "at least one number"
@@ -22,7 +25,10 @@ final class PasswordStrengthValidation {
             case .moreThanEightLetters: return "8 or more characters"
             }
         }
-        
+
+        /// Determine if the text is match with given rule
+        /// - Parameter text: Raw Text
+        /// - Returns: Boolean determine if it's matched
         func validate(with text: String) -> Bool {
             switch self {
             case .moreThanEightLetters:
@@ -36,6 +42,7 @@ final class PasswordStrengthValidation {
         }
     }
 
+    /// Status
     enum MatchStatus {
         case match
         case unmatch
@@ -55,6 +62,9 @@ final class PasswordStrengthValidation {
 
     // MARK: Public
 
+    /// Find matched rules with given text
+    /// - Parameter text: User's password
+    /// - Returns: the matched rules
     func validate(text: String) -> [Rule] {
         // Return all matched rules
         return rules.compactMap { rule -> Rule? in
