@@ -185,7 +185,7 @@ bool HTTPClient::isRedirect(const Poco::Int64 status_code) const {
     return (status_code >= 300 && status_code < 400);
 }
 
-error HTTPClient::statusCodeToError(const Poco::Int64 status_code) const {
+error HTTPClient::StatusCodeToError(const Poco::Int64 status_code) {
     switch (status_code) {
     case 200:
     case 201:
@@ -225,7 +225,7 @@ error HTTPClient::statusCodeToError(const Poco::Int64 status_code) const {
         return kBackendIsDownError;
     }
 
-    logger().error("Unexpected HTTP status code: ", status_code);
+    Logger("HTTPClient").error("Unexpected HTTP status code: ", status_code);
 
     return kCannotConnectError;
 }
@@ -478,7 +478,7 @@ HTTPResponse HTTPClient::makeHttpRequest(
                            ". So we cannot make new requests until ", Formatter::Format8601(ts));
         }
 
-        resp.err = statusCodeToError(resp.status_code);
+        resp.err = StatusCodeToError(resp.status_code);
 
         if (resp.status_code == 401 || resp.status_code == 403) {
             if (response.has("X-Remaining-Login-Attempts")) {
