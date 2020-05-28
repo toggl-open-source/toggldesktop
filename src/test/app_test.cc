@@ -28,6 +28,10 @@
 #include "Poco/FileStream.h"
 #include "Poco/Logger.h"
 #include "Poco/LocalDateTime.h"
+#include <Poco/SimpleFileChannel.h>
+#include <Poco/FormattingChannel.h>
+#include <Poco/PatternFormatter.h>
+#include <Poco/ConsoleChannel.h>
 
 namespace toggl {
 
@@ -1984,10 +1988,106 @@ TEST(ColorConverter_RGB_2DA608, IsCorrect) {
     ASSERT_NEAR(0.35, color_4.b, 0.01);
 }
 
+TEST(Sync, LegacyFormat) {
+    testing::Database db;
+    std::string json { "{\"data\" : {\"achievements_enabled\" : true,\"api_token\" : \"token\",\"at\" : \"2019-04-08T11:08:37+00:00\",\"beginning_of_week\" : 1,\"clients\" : [{\"at\" : \"2018-11-07T20:52:31+00:00\",\"id\" : 43289164,\"name\" : \"client\",\"wid\" : 2817276}],\"created_at\" : \"2018-06-24T17:56:16+00:00\",\"date_format\" : \"MM/DD/YYYY\",\"default_wid\" : 2817276,\"duration_format\" : \"improved\",\"email\" : \"m@rtinbriza.cz\",\"fullname\" : \"M\",\"id\" : 4187712,\"image_url\" : \"https://assets.toggl.space/images/profile.png\",\"invitation\" : {},\"jquery_date_format\" : \"m/d/Y\",\"jquery_timeofday_format\" : \"h:i A\",\"language\" : \"en_US\",\"last_blog_entry\" : \"\",\"new_blog_post\" : {},\"openid_email\" : \"m@rtinbriza.cz\",\"openid_enabled\" : true,\"projects\" : [{\"active\" : true,\"actual_hours\" : 362,\"at\" : \"2019-09-18T12:31:25+00:00\",\"auto_estimates\" : false,\"billable\" : false,\"cid\" : 43289164,\"color\" : \"0\",\"created_at\" : \"2019-09-18T12:31:25+00:00\",\"hex_color\" : \"#06aaf5\",\"id\" : 154073509,\"is_private\" : true,\"name\" : \"project\",\"template\" : false,\"wid\" : 2817276}],\"record_timeline\" : true,\"render_timeline\" : true,\"retention\" : 9,\"send_product_emails\" : true,\"send_timer_notifications\" : true,\"send_weekly_report\" : true,\"should_upgrade\" : true,\"sidebar_piechart\" : true,\"store_start_and_stop_time\" : true,\"tags\" : [{\"at\" : \"2019-10-18T10:08:01+00:00\",\"id\" : 6892625,\"name\" : \"tag\",\"wid\" : 2817276}],\"time_entries\": [{\"at\" : \"2020-05-27T15:40:37+00:00\",\"billable\" : false,\"description\" : \"time entry\",\"duration\" : 415,\"duronly\" : false,\"guid\" : \"a28b9092ec9055edea7af710fcd72459\",\"id\" : 1563187599,\"pid\" : 154073509,\"start\" : \"2020-05-27T15:33:42+00:00\",\"stop\" : \"2020-05-27T15:40:37+00:00\",\"uid\" : 4187712,\"wid\" : 2817276}],\"timeline_enabled\" : true,\"timeline_experiment\" : false,\"timeofday_format\" : \"h:mm A\",\"timezone\" : \"Europe/Warsaw\",\"workspaces\" : [{\"admin\" : true,\"api_token\" : \"token\",\"at\" : \"2018-09-01T08:27:56+00:00\",\"default_currency\" : \"USD\",\"default_hourly_rate\" : 0,\"ical_enabled\" : true,\"id\" : 2817276,\"name\" : \"workspace\",\"only_admins_may_create_projects\" : false,\"only_admins_see_billable_rates\" : false,\"only_admins_see_team_dashboard\" : false,\"premium\" : true,\"profile\" : 0,\"projects_billable_by_default\" : true,\"rounding\" : 1,\"rounding_minutes\" : 0}]},\"since\" : 1590592101}" };
+    User user;
+    error err = user.LoadUserAndRelatedDataFromJSONString(json, false);
+    ASSERT_EQ(err, noError);
+
+    ASSERT_EQ(user.Email(), "m@rtinbriza.cz");
+    ASSERT_EQ(user.Fullname(), "M");
+    ASSERT_EQ(user.ID(), 4187712);
+
+    ASSERT_EQ(user.related.Clients.size(), 1);
+    ASSERT_EQ(user.related.Projects.size(), 1);
+    ASSERT_EQ(user.related.Tags.size(), 1);
+    ASSERT_EQ(user.related.TimeEntries.size(), 1);
+    ASSERT_EQ(user.related.Workspaces.size(), 1);
+
+    ASSERT_EQ(user.related.Clients[0]->ID(), 43289164);
+    ASSERT_EQ(user.related.Clients[0]->Name(), "client");
+    ASSERT_EQ(user.related.Clients[0]->WID(), 2817276);
+
+    ASSERT_EQ(user.related.Projects[0]->ID(), 154073509);
+    ASSERT_EQ(user.related.Projects[0]->Name(), "project");
+    ASSERT_EQ(user.related.Projects[0]->WID(), 2817276);
+    ASSERT_EQ(user.related.Projects[0]->CID(), 43289164);
+    ASSERT_EQ(user.related.Projects[0]->Active(), true);
+    ASSERT_EQ(user.related.Projects[0]->Billable(), false);
+
+    ASSERT_EQ(user.related.Tags[0]->ID(), 6892625);
+    ASSERT_EQ(user.related.Tags[0]->Name(), "tag");
+    ASSERT_EQ(user.related.Tags[0]->WID(), 2817276);
+
+    ASSERT_EQ(user.related.TimeEntries[0]->ID(), 1563187599);
+    ASSERT_EQ(user.related.TimeEntries[0]->Description(), "time entry");
+    ASSERT_EQ(user.related.TimeEntries[0]->WID(), 2817276);
+    ASSERT_EQ(user.related.TimeEntries[0]->UID(), 4187712);
+    ASSERT_EQ(user.related.TimeEntries[0]->Start(), 1590593622);
+    ASSERT_EQ(user.related.TimeEntries[0]->Stop(), 1590594037);
+    ASSERT_EQ(user.related.TimeEntries[0]->Duration(), 415);
+
+    ASSERT_EQ(user.related.Workspaces[0]->ID(), 2817276);
+    ASSERT_EQ(user.related.Workspaces[0]->Name(), "workspace");
+    ASSERT_EQ(user.related.Workspaces[0]->Admin(), true);
+    ASSERT_EQ(user.related.Workspaces[0]->Premium(), true);
+}
+
+TEST(Sync, BatchedFormat) {
+    testing::Database db;
+    std::string json { "{\"clients\" : [{\"at\" : \"2018-11-07T20:52:31+00:00\",\"id\" : 43289164,\"name\" : \"client\",\"wid\" : 2817276}],\"flags\" : {\"badges.master_seen\" : \"2019-10-21T08:53:51.051Z\",\"has_seen_toggl_master_campaign\" : true,\"notifications.snowball_weekly_report_rollout\" : true,\"shopify_discount_enabled\" : false,\"snowball_detailed_report_rollout\" : true,\"snowball_summary_report_rollout\" : true},\"preferences\" : {\"CollapseTimeEntries\" : true,\"alpha_features\" : [{\"code\" : \"snowball_projects_list\",\"enabled\" : true},{\"code\" : \"snowball_teams\",\"enabled\" : true},{\"code\" : \"snowball_project_teams\",\"enabled\" : true},{\"code\" : \"snowball_saved_reports\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_general\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_owner\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_alerts\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_reminders\",\"enabled\" : true},{\"code\" : \"snowball_workspace_creation\",\"enabled\" : true},{\"code\" : \"snowball_view_shared_report\",\"enabled\" : true},{\"code\" : \"snowball_project_edit\",\"enabled\" : true},{\"code\" : \"snowball_settings\",\"enabled\" : true},{\"code\" : \"snowball_weekly_report\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_integrations\",\"enabled\" : false},{\"code\" : \"snowball_detailed_report\",\"enabled\" : false},{\"code\" : \"snowball_clients\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_import\",\"enabled\" : false},{\"code\" : \"snowball_profile\",\"enabled\" : true},{\"code\" : \"mobile_sync_client\",\"enabled\" : false},{\"code\" : \"snowball_dashboard\",\"enabled\" : false},{\"code\" : \"new_react_router\",\"enabled\" : false},{\"code\" : \"web_sync_client\",\"enabled\" : false},{\"code\" : \"alpha_program\",\"enabled\" : false},{\"code\" : \"dekstop_sync_client\",\"enabled\" : false},{\"code\" : \"snowball_tags\",\"enabled\" : true},{\"code\" : \"single_sign_on\",\"enabled\" : false},{\"code\" : \"calendar_view\",\"enabled\" : false},{\"code\" : \"snowball_project_tasks\",\"enabled\" : true},{\"code\" : \"snowball_i18n\",\"enabled\" : false}],\"date_format\" : \"MM/DD/YYYY\",\"duration_format\" : \"improved\",\"record_timeline\" : true,\"send_product_emails\" : true,\"send_timer_notifications\" : true,\"send_weekly_report\" : true,\"timeofday_format\" : \"h:mm A\"},\"projects\" : [{\"active\" : true,\"actual_hours\" : 362,\"at\" : \"2019-09-18T12:31:25+00:00\",\"auto_estimates\" : null,\"billable\" : null,\"cid\" : 43289164,\"client_id\" : 43289164,\"color\" : \"#06aaf5\",\"created_at\" : \"2019-09-18T12:31:25+00:00\",\"currency\" : null,\"estimated_hours\" : null,\"id\" : 154073509,\"is_private\" : true,\"name\" : \"project\",\"rate\" : null,\"server_deleted_at\" : null,\"template\" : null,\"wid\" : 2817276,\"workspace_id\" : 2817276}],\"server_time\" : 1590592101,\"tags\" : [{\"at\" : \"2019-10-18T10:08:01.693372Z\",\"id\" : 6892625,\"name\" : \"tag\",\"workspace_id\" : 2817276}],\"tasks\" : [],\"time_entries\" : [{\"at\" : \"2020-05-27T15:40:37+00:00\",\"billable\" : false,\"description\" : \"time entry\",\"duration\" : 415,\"duronly\" : false,\"id\" : 1563187599,\"project_id\" : null,\"server_deleted_at\" : null,\"start\" : \"2020-05-27T15:33:42+00:00\",\"stop\" : \"2020-05-27T15:40:37.000000Z\",\"tag_ids\" : null,\"tags\" : null,\"task_id\" : null,\"uid\" : 4187712,\"user_id\" : 4187712,\"wid\" : 2817276,\"workspace_id\" : 2817276}],\"user\" : {\"api_token\" : \"token\",\"at\" : \"2020-05-27T15:08:21.468625Z\",\"beginning_of_week\" : 1,\"country_id\" : 59,\"created_at\" : \"2018-06-24T17:56:16.075815Z\",\"default_workspace_id\" : 2817276,\"email\" : \"m@rtinbriza.cz\",\"fullname\" : \"M\",\"has_password\" : true,\"id\" : 4187712,\"image_url\" : \"https://assets.toggl.com/images/profile.png\",\"intercom_hash\" : \"33ad107c55cc9f8e89b0b1940812194b9441f742771f0f3be14bf329f41f8f9b\",\"oauth_providers\" : [ \"google\" ],\"openid_email\" : \"m@rtinbriza.cz\",\"openid_enabled\" : true,\"timezone\" : \"Europe/Warsaw\",\"updated_at\" : \"2019-04-08T11:08:37.90838Z\"},\"workspace_features\" : [{\"features\" : [{\"enabled\" : true,\"feature_id\" : 0,\"name\" : \"free\"},{\"enabled\" : false,\"feature_id\" : 13,\"name\" : \"pro\"},{\"enabled\" : false,\"feature_id\" : 15,\"name\" : \"business\"},{\"enabled\" : false,\"feature_id\" : 50,\"name\" : \"scheduled_reports\"},{\"enabled\" : false,\"feature_id\" : 51,\"name\" : \"time_audits\"},{\"enabled\" : false,\"feature_id\" : 52,\"name\" : \"locking_time_entries\"},{\"enabled\" : false,\"feature_id\" : 53,\"name\" : \"edit_team_member_time_entries\"},{\"enabled\" : false,\"feature_id\" : 54,\"name\" : \"edit_team_member_profile\"},{\"enabled\" : false,\"feature_id\" : 55,\"name\" : \"tracking_reminders\"},{\"enabled\" : false,\"feature_id\" : 56,\"name\" : \"time_entry_constraints\"},{\"enabled\" : false,\"feature_id\" : 57,\"name\" : \"priority_support\"},{\"enabled\" : false,\"feature_id\" : 58,\"name\" : \"labour_cost\"},{\"enabled\" : false,\"feature_id\" : 59,\"name\" : \"report_employee_profitability\"},{\"enabled\" : false,\"feature_id\" : 60,\"name\" : \"report_project_profitability\"},{\"enabled\" : false,\"feature_id\" : 61,\"name\" : \"report_comparative\"},{\"enabled\" : false,\"feature_id\" : 62,\"name\" : \"report_data_trends\"},{\"enabled\" : false,\"feature_id\" : 63,\"name\" : \"report_export_xlsx\"},{\"enabled\" : false,\"feature_id\" : 64,\"name\" : \"tasks\"},{\"enabled\" : false,\"feature_id\" : 65,\"name\" : \"project_dashboard\"}],\"workspace_id\" : 2817276}],\"workspaces\" : [{\"admin\" : true,\"api_token\" : \"token\",\"at\" : \"2018-09-01T08:27:56+00:00\",\"business_ws\" : false,\"csv_upload\" : null,\"default_currency\" : \"USD\",\"default_hourly_rate\" : 0,\"ical_enabled\" : true,\"ical_url\" : \"/ical/workspace_user/cf8775d2110d5d874ffa633434c901bd\",\"id\" : 2817276,\"logo_url\" : \"https://assets.toggl.com/images/workspace.jpg\",\"name\" : \"workspace\",\"only_admins_may_create_projects\" : false,\"only_admins_see_billable_rates\" : false,\"only_admins_see_team_dashboard\" : false,\"premium\" : true,\"profile\" : 0,\"projects_billable_by_default\" : true,\"rounding\" : 1,\"rounding_minutes\" : 0,\"server_deleted_at\" : null,\"subscription\" : null,\"suspended_at\" : null}]}" };
+    User user;
+    error err = user.LoadUserAndRelatedDataFromJSONString(json, false);
+    ASSERT_EQ(err, noError);
+
+    ASSERT_EQ(user.Email(), "m@rtinbriza.cz");
+    ASSERT_EQ(user.Fullname(), "M");
+    ASSERT_EQ(user.ID(), 4187712);
+
+    ASSERT_EQ(user.related.Clients.size(), 1);
+    ASSERT_EQ(user.related.Projects.size(), 1);
+    ASSERT_EQ(user.related.Tags.size(), 1);
+    ASSERT_EQ(user.related.TimeEntries.size(), 1);
+    ASSERT_EQ(user.related.Workspaces.size(), 1);
+
+    ASSERT_EQ(user.related.Clients[0]->ID(), 43289164);
+    ASSERT_EQ(user.related.Clients[0]->Name(), "client");
+    ASSERT_EQ(user.related.Clients[0]->WID(), 2817276);
+
+    ASSERT_EQ(user.related.Projects[0]->ID(), 154073509);
+    ASSERT_EQ(user.related.Projects[0]->Name(), "project");
+    ASSERT_EQ(user.related.Projects[0]->WID(), 2817276);
+    ASSERT_EQ(user.related.Projects[0]->CID(), 43289164);
+    ASSERT_EQ(user.related.Projects[0]->Active(), true);
+    ASSERT_EQ(user.related.Projects[0]->Billable(), false);
+
+    ASSERT_EQ(user.related.Tags[0]->ID(), 6892625);
+    ASSERT_EQ(user.related.Tags[0]->Name(), "tag");
+    ASSERT_EQ(user.related.Tags[0]->WID(), 2817276);
+
+    ASSERT_EQ(user.related.TimeEntries[0]->ID(), 1563187599);
+    ASSERT_EQ(user.related.TimeEntries[0]->Description(), "time entry");
+    ASSERT_EQ(user.related.TimeEntries[0]->WID(), 2817276);
+    ASSERT_EQ(user.related.TimeEntries[0]->UID(), 4187712);
+    ASSERT_EQ(user.related.TimeEntries[0]->Start(), 1590593622);
+    ASSERT_EQ(user.related.TimeEntries[0]->Stop(), 1590594037);
+    ASSERT_EQ(user.related.TimeEntries[0]->Duration(), 415);
+
+    ASSERT_EQ(user.related.Workspaces[0]->ID(), 2817276);
+    ASSERT_EQ(user.related.Workspaces[0]->Name(), "workspace");
+    ASSERT_EQ(user.related.Workspaces[0]->Admin(), true);
+    ASSERT_EQ(user.related.Workspaces[0]->Premium(), true);
+}
+
 }  // namespace toggl
 
 int main(int argc, char **argv) {
     Poco::Logger &logger = Poco::Logger::get("");
+#ifdef unix
+    // log straight to stderr
+    //logger.setChannel(new Poco::ConsoleChannel());
+#endif
     logger.setLevel(Poco::Message::PRIO_DEBUG);
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
