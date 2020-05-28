@@ -5,13 +5,13 @@ The documentation for the Toggl Desktop code base is currently work in progress.
 
 ## Introduction
 
-Toggl Desktop is a crossplatform native desktop application that is an extension of the madly simple time tracking tool Toggl. The app is developed in three big C-s: C++, Objective-C and C#.
+Toggl Desktop is a crossplatform native desktop application that is an extension of the madly simple time tracking tool Toggl. 
 
 Toggl Desktop is composed by 4 bigger parts:
-  - Library
-  - Windows User Interface
-  - OS X User Interface
-  - Linux User Interface
+  - Library: Written in C and C++
+  - Windows: C# and WPF
+  - OS X: Swift, Obj-C and AppKit 
+  - Linux: C++ and QT
 
 ### Library
 Library is developed in C++ and this is the heart and soul of the whole application. Library is the one that connects to the servers, saves data into local database and syncs data between local database and the online one. Most of the actions done in Toggl Desktop are either triggered from the library or will trigger something in the library.
