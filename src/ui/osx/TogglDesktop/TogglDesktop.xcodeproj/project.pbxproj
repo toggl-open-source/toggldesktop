@@ -314,6 +314,7 @@
 		BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */; };
 		BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */; };
 		BA9C2E0C224C8F58002AD2A1 /* KeyboardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */; };
+		BA9E934A247FE72F006FFCB7 /* PasswordStrengthValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BDC2B2464079800FF3C28 /* PasswordStrengthValidation.swift */; };
 		BAA0102B22CB4D5C007C1541 /* TimelineTimeEntryMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0102A22CB4D5C007C1541 /* TimelineTimeEntryMenu.swift */; };
 		BAA0104C22CB59ED007C1541 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0104B22CB59ED007C1541 /* Date+Extension.swift */; };
 		BAA0104F22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0104D22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift */; };
@@ -2639,6 +2640,7 @@
 				BAE64D5A2368334000244D2B /* UIEvents.m in Sources */,
 				BA37ACB823D890050013EE26 /* OGSwitch.swift in Sources */,
 				BAE64D5B2368334000244D2B /* Date+Utils.swift in Sources */,
+				BA9E934A247FE72F006FFCB7 /* PasswordStrengthValidation.swift in Sources */,
 				BAE64D5C2368334000244D2B /* GoogleAuthenticationServer+Objc.swift in Sources */,
 				BAE64D5D2368334000244D2B /* VertificalTimeEntryFlowLayout.swift in Sources */,
 				BAE64D5E2368334000244D2B /* ClickableImageView.m in Sources */,
