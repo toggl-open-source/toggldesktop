@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Represent the start and end timestamp
+/// It tends for drawing on the CollectionViewFlowLayout
 struct TimeChunk {
 
     let start: TimeInterval

@@ -19,6 +19,7 @@ import AuthenticationServices
     func appleAuthenticationPresentOnWindow() -> NSWindow
 }
 
+/// Handle Apple Authentication logic
 @available(OSX 10.15, *)
 @objc
 final class AppleAuthenticationService: NSObject {
@@ -35,6 +36,7 @@ final class AppleAuthenticationService: NSObject {
 
     // MARK: Public
 
+    /// Request authentication with Apple Service
     @objc func requestAuth() {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         let request = appleIDProvider.createRequest()
@@ -46,6 +48,8 @@ final class AppleAuthenticationService: NSObject {
         authorizationController.performRequests()
     }
 
+    /// It's crucial to validate the state
+    /// Some users can revork the permission, thus they must be logged out
     @objc func validateCredentialState() {
         guard let userID = UserDefaults.standard.string(forKey: Constants.UserAppleID) else { return }
 
@@ -65,6 +69,7 @@ final class AppleAuthenticationService: NSObject {
         }
     }
 
+    /// Reset all caching data
     @objc func reset() {
         UserDefaults.standard.removeObject(forKey: Constants.UserAppleID)
     }

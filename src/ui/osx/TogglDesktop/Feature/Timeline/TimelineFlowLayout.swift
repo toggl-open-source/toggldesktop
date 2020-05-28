@@ -17,6 +17,9 @@ protocol TimelineFlowLayoutDelegate: class {
     func flowLayoutDidUpdateLayout(with activityFrame: CGRect)
 }
 
+/// Responsible for drawing all Timeline elements
+/// Includes: Time Lable, Time Entry (Overlap), Gap Time Entry, Current Moment Line, Running Time Entry and Activity
+/// Support Zoom
 final class TimelineFlowLayout: NSCollectionViewFlowLayout {
 
     struct Constants {
