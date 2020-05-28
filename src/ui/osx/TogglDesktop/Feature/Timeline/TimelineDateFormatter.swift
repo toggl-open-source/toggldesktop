@@ -26,7 +26,12 @@ final class TimelineDateFormatter {
 
     // MARK: Public
 
+    /// Convert the date into human-readable text
+    /// - Parameter date: Date
+    /// - Returns: Date text with hh:mm a format
     func convertToHours(_ date: Date) -> String {
+        //TODO: Use use's preference to convert time/date properly
+        // https://github.com/toggl-open-source/toggldesktop/issues/4110
         formatter.dateFormat = "hh:mm a"
         return formatter.string(from: date)
     }

@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Represent the Time Label on the Timeline View
+/// Ex: 7:00, 7:15, 7:30
 struct TimelineTimestamp {
 
     let label: String
