@@ -13,6 +13,7 @@ protocol TimelineActivityCellDelegate: class {
     func timelineActivityPresentPopover(_ sender: TimelineActivityCell)
 }
 
+/// A CollectionView cell that presents the Timeline Activity
 final class TimelineActivityCell: NSCollectionViewItem {
 
     // MARK: OUTLET
@@ -31,6 +32,8 @@ final class TimelineActivityCell: NSCollectionViewItem {
         initTrackingArea()
     }
 
+    /// Populate the color with given the activity
+    /// - Parameter activity: Timeline Activity
     func config(for activity: TimelineActivity) {
         self.activity = activity
         let fgColor = activity.color

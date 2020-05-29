@@ -12,6 +12,7 @@ protocol OnboardingBackgroundViewDelegate: class {
     func onboardingBackgroundDidClick(_ sender: OnboardingBackgroundView, onHighlightedArea: Bool, event: NSEvent)
 }
 
+/// Responsible for the background of the onboarding view
 final class OnboardingBackgroundView: NSView {
 
     // MARK: Variable
@@ -46,10 +47,20 @@ final class OnboardingBackgroundView: NSView {
 
     // MARK: Public
 
+    /// Draw the grey background, except the view that the Onboarding is pointing to
+    /// - Parameter frame: the frame of the view
     func drawMask(at frame: CGRect) {
         maskFrame = frame
+
+        // Create a bezier path
         let path = NSBezierPath(rect: frame)
         path.append(NSBezierPath(rect: bounds))
+
+        //TODO: Find the way to support 4 rounded corners
+        // For some reasons, the NSBezierPath is skew
+        // https://github.com/toggl-open-source/toggldesktop/issues/4106
+
+        // Set mask
         maskLayer.path = path.cgPath
         layer?.mask = maskLayer
     }

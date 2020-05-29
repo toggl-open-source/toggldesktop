@@ -8,6 +8,7 @@
 
 import Cocoa
 
+/// Responsible for drawing the rounded corner View in the Timeline Entry View
 @IBDesignable
 final class CornerBoxView: NSView {
 

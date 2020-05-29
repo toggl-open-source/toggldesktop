@@ -17,6 +17,11 @@ protocol TimelineTimeEntryCellDelegate: class {
     func timeEntryCellShouldChangeLastEntryStartTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
 }
 
+/// Responsible for presenting the basic Timeline Time Entry
+/// According to the design, there is three types of TimelineTimeEntryCell
+/// 1 - Nomal Time Entry (single column, no Info bubble)
+/// 2 - Expanded Time Entry (Has single column and Info Bubble)
+/// 3 - Current Running Time Entry (It's the second one, but only have top rounded corners)
 final class TimelineTimeEntryCell: TimelineBaseCell {
 
     // MARK: Variables
@@ -25,10 +30,13 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     private(set) var timeEntry: TimelineTimeEntry!
     private lazy var timeEntryMenu = TimelineTimeEntryMenu()
 
+    /// Determine if the size of the Time Entry is small
+    /// It's essential to reduce the radius corner
     private var isSmallSize: Bool {
         return view.frame.height <= 10
     }
 
+    /// The view that the NSPopover should be presents
     var popoverView: NSView {
         if isSmallSize {
             return foregroundBox
@@ -37,6 +45,8 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         return backgroundBox.isHidden ? foregroundBox : view
     }
 
+    /// Update the border for highlight items
+    /// Hightlight items will have lighter color than the background
     var isHighlight: Bool = false {
         didSet {
             backgroundBox?.borderColor = (isHighlight ? foregroundBox.backgroundColor : backgroundColor) ?? foregroundBox.backgroundColor
@@ -75,6 +85,8 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
     // MARK: Public
 
+    /// Main func to populate all information Time Entry
+    /// - Parameter timeEntry: Current Time Entry
     func config(for timeEntry: TimelineTimeEntry) {
         self.timeEntry = timeEntry
         renderColor(with: timeEntry.color, isSmallEntry: timeEntry.isSmall)
@@ -82,6 +94,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         handleRunningTimeEntry()
     }
 
+    /// Populate the Time Entry data
     private func populateInfo() {
         guard let timeEntry = timeEntry else { return }
         backgroundBox?.isHidden = !timeEntry.hasDetailInfo
@@ -94,6 +107,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         }
      }
 
+    /// Handle logic to dismiss the Info Bubble
     private func hideOutOfBoundControls() {
         guard let timeEntry = timeEntry,
             timeEntry.hasDetailInfo else { return }
@@ -124,6 +138,8 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         }
     }
 
+    /// Update all lables
+    /// - Parameter item: Time Entry
     private func updateLabels(_ item: TimeEntryViewItem) {
         iconStackView.isHidden = false
         durationLbl.stringValue = item.dateDuration
@@ -165,6 +181,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         }
     }
 
+    /// Update the corners for the running Time Entry
     private func handleRunningTimeEntry() {
         let isRunning = timeEntry?.timeEntry.isRunning() ?? false
         let corner: Corners = isRunning ? [.topLeft, .topRight] : [.bottomLeft, .bottomRight, .topLeft, .topRight]

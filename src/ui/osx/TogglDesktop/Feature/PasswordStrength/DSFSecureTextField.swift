@@ -26,6 +26,7 @@
 
 import AppKit
 
+/// Customize TextField with Eye Feature
 @IBDesignable
 public class DSFSecureTextField: NSSecureTextField {
 

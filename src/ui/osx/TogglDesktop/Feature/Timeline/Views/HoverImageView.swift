@@ -14,6 +14,8 @@ protocol HoverImageViewDelegate: class {
     func hoverImageViewDidMouseExit(_ sender: HoverImageView)
 }
 
+/// Helper class to show the Info Record Activity Icon
+/// Support hover effect by using NSTrackingArea
 final class HoverImageView: NSImageView {
 
     // MARK: Variables

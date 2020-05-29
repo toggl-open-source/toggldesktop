@@ -8,6 +8,8 @@
 
 import Cocoa
 
+/// Main Button [Time Entry | Timeline ]
+/// Support Hover Effect
 final class PanelSwitcherButton: FlatButton {
 
     // MARK: Variables

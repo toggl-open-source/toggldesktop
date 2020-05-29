@@ -18,6 +18,8 @@ protocol TimelineBaseCellDelegate: class {
     func timelineCellOpenEditor(_ sender: TimelineBaseCell)
 }
 
+/// Parent cellof the Timeline Time Entry Cell
+/// TODO: Remove this class, since there is only one subclass
 class TimelineBaseCell: NSCollectionViewItem {
 
     private struct Constants {
@@ -91,13 +93,20 @@ class TimelineBaseCell: NSCollectionViewItem {
 
     // MARK: Public
 
+    /// Render proper color for TimeEntry Cell
+    /// - Parameters:
+    ///   - foregroundColor: Foreground Color
+    ///   - isSmallEntry: isSmallEntry
     func renderColor(with foregroundColor: NSColor, isSmallEntry: Bool) {
+        // Get the lighter color like the design
         backgroundColor = foregroundColor.lighten(by: 0.2)
 
+        // Set color and border
         foregroundBox.backgroundColor = foregroundColor
         backgroundBox?.backgroundColor = backgroundColor ?? foregroundColor
         backgroundBox?.borderColor = backgroundColor ?? foregroundColor
 
+        // Find the suitable corner radius
         let cornerRadius = TimelineBaseCell.suitableCornerRadius(isSmallEntry, height: view.frame.height)
         foregroundBox.cornerRadius = cornerRadius
         backgroundBox?.cornerRadius = cornerRadius
@@ -114,6 +123,12 @@ class TimelineBaseCell: NSCollectionViewItem {
 
 extension TimelineBaseCell {
 
+    /// Helper class to determine the best radius corner by the current height
+    /// If the height is too small, but the radius corner is heigh, the result is bad
+    /// - Parameters:
+    ///   - isSmallEntry: Determine if it's small size
+    ///   - height: Current height
+    /// - Returns: Suitable corner radius
     class func suitableCornerRadius(_ isSmallEntry: Bool, height: CGFloat) -> CGFloat {
         if isSmallEntry {
             return 1
@@ -159,6 +174,8 @@ extension TimelineBaseCell {
         }
     }
 
+    /// Start dragging session
+    /// - Parameter event: Mouse Event
     private func handleMouseEntered(_ event: NSEvent) {
         guard isResizable else { return }
 
@@ -171,6 +188,8 @@ extension TimelineBaseCell {
         super.mouseEntered(with: event)
     }
 
+    /// Determine the mouse position depend on it position
+    /// - Parameter event: Mouse Event
     override func mouseMoved(with event: NSEvent) {
         guard isResizable else { return }
 
@@ -192,6 +211,8 @@ extension TimelineBaseCell {
         }
     }
 
+    /// Reset dragging session
+    /// - Parameter event: Mouse Event
     private func handleMouseExit(_ event: NSEvent) {
 
         // Skip exit if the user is resizing
@@ -203,6 +224,8 @@ extension TimelineBaseCell {
         super.mouseExited(with: event)
     }
 
+    /// Determine the user action when the mouse is down
+    /// - Parameter event: Mouse Event
     private func handleMouseDownForResize(_ event: NSEvent) {
         guard isResizable, isUserResizing else {
             super.mouseDown(with: event)
@@ -221,6 +244,9 @@ extension TimelineBaseCell {
         }
     }
 
+    /// Dragging session is starting
+    /// Notify the UI to update the size
+    /// - Parameter event: Mouse Event
     private func handleMouseDraggedForResize(_ event: NSEvent) {
         guard isResizable, isUserResizing, userAction != .none else {
             super.mouseDragged(with: event)
@@ -238,6 +264,9 @@ extension TimelineBaseCell {
         }
     }
 
+    /// Dragging session is end
+    /// Time to notify the View to update in the library
+    /// - Parameter event: Mouse Event
     private func handleMouseUpForResize(_ event: NSEvent) {
         let localPosition = convertToLocalPoint(for: event)
 
@@ -267,6 +296,8 @@ extension TimelineBaseCell {
         return (view.frame.height - Constants.SideHit * 3)  <= 0
     }
 
+    /// Determine the middle area of the Time Entry to present the hover cursor
+    /// - Returns: Frame of the middle area
     private func suitableHoverRect() -> CGRect {
         if isResizable {
             if isSmallEntry {
@@ -277,6 +308,8 @@ extension TimelineBaseCell {
         return foregroundBox.bounds
     }
 
+    /// Determine the top area of the Time Entry
+    /// - Returns: Frame of the top area
     private func suitableTopResizeRect() -> CGRect {
         guard isResizable else { return .zero }
         if isSmallEntry {
@@ -285,6 +318,8 @@ extension TimelineBaseCell {
         return NSRect(x: 0, y: foregroundBox.frame.height - Constants.SideHit, width: resizeView.frame.width, height: Constants.SideHit)
     }
 
+    /// Determine the top area of the Time Entry
+    /// - Returns: Frame of the top area
     private func suitableBottomResizeRect() -> CGRect {
         guard isResizable else { return .zero }
         if isSmallEntry {
@@ -293,6 +328,9 @@ extension TimelineBaseCell {
         return NSRect(x: 0, y: 0, width: resizeView.frame.width, height: Constants.SideHit)
     }
 
+    /// Helper method to conver the mouse position to current cell
+    /// - Parameter event: Mouse event
+    /// - Returns: local position
     private func convertToLocalPoint(for event: NSEvent) -> CGPoint {
         // Convert mouse location to local
         let position = event.locationInWindow

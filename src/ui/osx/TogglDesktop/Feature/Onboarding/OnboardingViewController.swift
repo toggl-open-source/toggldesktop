@@ -13,6 +13,7 @@ protocol OnboardingViewControllerDelegate: class {
     func onboardingViewControllerDidClose()
 }
 
+/// OnboardingViewController
 final class OnboardingViewController: NSViewController {
 
     // MARK: OUTLET
@@ -25,6 +26,8 @@ final class OnboardingViewController: NSViewController {
     private var shouldClosePopover = false
     private weak var presentView: NSView?
     private lazy var contentController: OnboardingContentViewController = OnboardingContentViewController(nibName: "OnboardingContentViewController", bundle: nil)
+
+    /// The inner popover to present the onboard
     private lazy var popover: NSPopover = {
         let popover = NSPopover()
         popover.animates = true
@@ -34,6 +37,9 @@ final class OnboardingViewController: NSViewController {
         popover.delegate = self
         return popover
     }()
+
+    /// Reuse the popover from activityRecorderController
+    /// Tends for recordActivity onboard
     private lazy var activityRecorderController: TimelineActivityRecorderViewController = {
         let controller = TimelineActivityRecorderViewController(nibName: "TimelineActivityRecorderViewController", bundle: nil)
         controller.delegate = self
@@ -41,6 +47,7 @@ final class OnboardingViewController: NSViewController {
     }()
     private var payload: OnboardingPayload?
 
+    /// Determine if the onboard is shown
     var isShown: Bool {
         return popover.isShown
     }
@@ -59,6 +66,8 @@ final class OnboardingViewController: NSViewController {
 
     // MARK: Public
 
+    /// Present the onboarding with given Payload
+    /// - Parameter payload: OnboardingPayload
     func present(payload: OnboardingPayload) {
         self.payload = payload
         self.presentView = payload.view
@@ -79,6 +88,7 @@ final class OnboardingViewController: NSViewController {
         popover.show(relativeTo: payload.view.bounds, of: presentView, preferredEdge: payload.preferEdges)
     }
 
+    /// Dismiss all onboard view
     func dismiss() {
         popover.close()
     }
@@ -93,12 +103,16 @@ extension OnboardingViewController {
         _ = popover
         _ = contentController.view
         backgroundView.delegate = self
+
+        // Observe the window size to redraw the mask view
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.windowDidResizeNoti(_:)),
                                                name: NSWindow.didResizeNotification,
                                                object: nil)
     }
 
+    /// Present the Onboarding view
+    /// - Parameter payload: OnboardingPayload
     private func preparePopoverContentView(with payload: OnboardingPayload) {
         switch payload.hint {
         case .recordActivity:
@@ -122,6 +136,8 @@ extension OnboardingViewController {
         updateMaskLayer(with: presentView)
     }
 
+    /// Re-draw the mask view to fit with new window's size
+    /// - Parameter hintView: Current Hint View
     private func updateMaskLayer(with hintView: NSView) {
         let hintFrame = view.convert(hintView.frame, from: hintView.superview)
         backgroundView.drawMask(at: hintFrame)

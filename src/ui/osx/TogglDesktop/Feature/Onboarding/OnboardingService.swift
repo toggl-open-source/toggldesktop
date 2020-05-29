@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Handle all Onboarding feature
 final class OnboardingService {
 
     static let shared = OnboardingService()
@@ -27,6 +28,8 @@ final class OnboardingService {
 
     // MARK: Public
 
+    /// Present certain onboarding payload to the UI
+    /// - Parameter payload: Onboarding Payload
     func present(_ payload: OnboardingPayload) {
         guard let windowContentView = payload.view.window?.contentView else { return }
 
@@ -41,6 +44,7 @@ final class OnboardingService {
         controller.present(payload: payload)
     }
 
+    /// Dismiss all onboarding and this view
     func dismiss() {
         guard controller.view.superview != nil else { return }
         controller.dismiss()

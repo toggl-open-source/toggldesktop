@@ -8,6 +8,8 @@
 
 import Cocoa
 
+/// A Supplementary view that draw the Seperator of each Timeline Section
+/// It's a dashed line that dividing Time Lable, Time Entry and Activity sections
 final class TimelineDividerView: NSView {
 
     enum Mode {

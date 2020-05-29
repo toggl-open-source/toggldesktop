@@ -17,6 +17,9 @@ protocol TimelineTimeEntryMenuDelegate: class {
     func timelineMenuChangeLastEntryStartTime(_ timeEntry: TimelineTimeEntry)
 }
 
+/// Menu Contextual on the Timeline Time Entry
+/// It will be shown by right-click on the cell
+/// Support some resolve conflict funcs
 final class TimelineTimeEntryMenu: NSMenu {
 
     // MARK: Variables

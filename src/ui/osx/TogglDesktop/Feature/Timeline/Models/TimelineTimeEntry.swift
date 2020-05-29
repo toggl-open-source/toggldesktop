@@ -8,11 +8,14 @@
 
 import Foundation
 
+/// Represent the base Timeline Time Entry
 class TimelineBaseTimeEntry {
 
     struct Constant {
         static let MinimumSecondOverlap: Double = 60 // seconds
     }
+
+    // MARK: Variables
 
     var start: TimeInterval
     var end: TimeInterval
@@ -23,21 +26,35 @@ class TimelineBaseTimeEntry {
     // The number column of the Timeline Entry. The first col is 0
     private(set) var col: Int = 0
 
+    /// Determine if this TimeEntry is overlap with another TEs
     var isOverlap: Bool {
         return col > 0
     }
 
+    /// Some TEs has a detail bubble
     private(set) var hasDetailInfo = false
 
+    // MARK: Init
+
+    /// Init from given time range
+    /// - Parameters:
+    ///   - start: The start timestamp
+    ///   - end: The start timestamp
+    ///   - offset: The offset, which is depends on the Zoom level
     init(start: TimeInterval, end: TimeInterval, offset: TimeInterval = 0) {
         self.start = start + offset
         self.end = end - offset
     }
 
+    /// Get a time chunck, which consists of the Start and End timestamp
+    /// - Returns: TimeChunk
     func timechunk() -> TimeChunk {
         return TimeChunk(start: start, end: end)
     }
 
+    /// Check whether or not this TimeEntry intersects with the given Time Entry
+    /// - Parameter entry: Test Time Entry
+    /// - Returns: isIntersect
     func isIntersected(with entry: TimelineBaseTimeEntry) -> Bool {
 
         // Skip overlap if the diff is less than 60s
@@ -67,6 +84,7 @@ class TimelineBaseTimeEntry {
     }
 }
 
+/// Main Timeline Time Entry
 final class TimelineTimeEntry: TimelineBaseTimeEntry {
 
     // MARK: Variables
@@ -75,6 +93,8 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
     let color: NSColor
     let name: String
 
+    /// It's required from the design
+    /// Small Time Entry has some different configs
     var isSmall: Bool {
         // It's small bar if duration less than 1 min
         return abs(timeEntry.duration_in_seconds) <= 60
@@ -85,6 +105,8 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
     init(_ timeEntry: TimeEntryViewItem) {
         self.timeEntry = timeEntry
         self.name = timeEntry.descriptionName
+
+        // Get the color from TimeEntryViewItem or fallback to the default
         if let color = timeEntry.projectColor, !color.isEmpty {
             self.color = ConvertHexColor.hexCode(toNSColor: timeEntry.projectColor) ?? TimeEntryViewItem.defaultProjectColor()
         } else {

@@ -13,6 +13,9 @@ protocol TimelineCollectionViewDelegate: class {
     func timelineShouldCreateEmptyEntry(with startTime: TimeInterval)
 }
 
+/// Main View of the Timline
+/// Responsible for handling the Click Action on the cell
+/// We don't use didSelection on CollectionView because we couldn't select twice on the selected view
 final class TimelineCollectionView: NSCollectionView {
 
     // MARK: Variables

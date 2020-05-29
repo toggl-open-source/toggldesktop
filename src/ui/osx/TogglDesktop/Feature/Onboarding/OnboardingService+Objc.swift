@@ -8,12 +8,22 @@
 
 import Foundation
 
+/// Expose all Onboarding swift class to Objc world
+/// We dont' directly expose OnboardingService class
 @objc final class OnboardingServiceObjc: NSObject {
 
+    /// Determine if there is any onboarding is shown
+    /// - Returns: Onboarding is shown
     @objc class func isOnboardingShown() -> Bool {
         return OnboardingService.shared.isShown
     }
 
+    /// Helper func to handle the Onboarding Notification from MainWindowController.m
+    /// It will initialize the Onboarding Hint and present on view if need
+    /// - Parameters:
+    ///   - noti: The onboarding notification from the library
+    ///   - atView: A block to get the view that onboarding sticks on
+    ///   - switchTo: A block to ask the view controller switch to the certain tab
     @objc class func handleOnboardingNotification(_ noti: Notification, atView: (OnboardingHint) -> NSView?, switchTo: (OnboardingPresentViewTab) -> Void) {
         guard let number = noti.object as? NSNumber else { return }
         guard let hint = OnboardingHint(rawValue: number.intValue) else {
@@ -34,6 +44,10 @@ import Foundation
         OnboardingService.shared.present(payload)
     }
 
+    /// Get the parent view that the onboarding should be shown
+    /// It could be a Timeline or Time Entry List
+    /// - Parameter hint: Onboarding Hint
+    /// - Returns: The view that the onboarding should be shown
     private class func presentViewTab(for hint: OnboardingHint) -> OnboardingPresentViewTab {
         switch hint {
         case .editTimeEntry,

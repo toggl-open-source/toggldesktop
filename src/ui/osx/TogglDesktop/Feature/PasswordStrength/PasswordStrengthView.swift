@@ -8,6 +8,7 @@
 
 import Cocoa
 
+/// Password Strength Popover View
 final class PasswordStrengthView: NSViewController {
 
     enum DisplayState {
@@ -50,6 +51,8 @@ final class PasswordStrengthView: NSViewController {
 
     // MARK: Public
 
+    /// Main func to handle the validation and present the Match/Unmatch rule
+    /// - Parameter text: The evaludated text
     @objc func updateValidation(for text: String) {
         let matchedRules = validation.validate(text: text)
 
@@ -89,6 +92,7 @@ extension PasswordStrengthView {
         view.layer?.shadowRadius = 4
     }
 
+    /// Map all model rules to Rule View
     private func renderRulesStackView() {
         let views = PasswordStrengthValidation.Rule.allCases.map { rule -> PasswordRuleView in
             let view = PasswordRuleView.xibView() as PasswordRuleView
@@ -100,6 +104,7 @@ extension PasswordStrengthView {
         }
     }
 
+    /// <#Description#>
     private func updateUI() {
         let action = {
             NSAnimationContext.runAnimationGroup({[weak self] (context) in
@@ -118,6 +123,7 @@ extension PasswordStrengthView {
 
         switch displayState {
         case .success:
+            // Delay 1 second before dismissing the Success view
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: action)
         case .rule:
             action()

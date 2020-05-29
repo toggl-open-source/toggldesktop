@@ -8,13 +8,15 @@
 
 import Foundation
 
+/// Responsible for presenting the Resize Info Content on the Timeline Time Entry
+/// It's a root controller of the NSPopover
+/// This view should be shown during the resize session
 final class TimelineResizeHoverController: NSViewController {
 
     // MARK: OUTLET
 
     @IBOutlet weak var timeLabel: NSTextField!
     @IBOutlet weak var durationLabel: NSTextField!
-
 
     // MARK: View Cycle
 
@@ -24,6 +26,10 @@ final class TimelineResizeHoverController: NSViewController {
 
     // MARK: Public
 
+    /// Update resize infomation
+    /// - Parameters:
+    ///   - startTime: The start time of the Entry
+    ///   - endTime: The End time of the Entry
     func updateLabels(with startTime: TimeInterval, endTime: TimeInterval) {
         let startTimeStr = TimelineDateFormatter.shared.convertToHours(Date(timeIntervalSince1970: startTime))
         let endTimeStr = TimelineDateFormatter.shared.convertToHours(Date(timeIntervalSince1970: endTime))
