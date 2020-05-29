@@ -8,4 +8,5 @@
 
 import Foundation
 
+/// A decoration View of the line, which presents the current time line
 final class TimelineLineView: NSView {}

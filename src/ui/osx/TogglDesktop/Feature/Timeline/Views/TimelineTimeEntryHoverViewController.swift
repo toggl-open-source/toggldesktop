@@ -8,6 +8,8 @@
 
 import Cocoa
 
+/// Responsible for presenting the Hover Content on the Time Entry Cell
+/// It's a root view controller of the NSPopover
 final class TimelineTimeEntryHoverViewController: LayerBackedViewController {
 
     // MARK: OUTLET
@@ -35,6 +37,8 @@ final class TimelineTimeEntryHoverViewController: LayerBackedViewController {
 
     // MARK: Public
 
+    /// Populate all data for the hover view
+    /// - Parameter timeEntry: An TimeEntry instance
     func render(with timeEntry: TimelineTimeEntry) {
         self.timeEntry = timeEntry
         let item = timeEntry.timeEntry
@@ -77,6 +81,7 @@ final class TimelineTimeEntryHoverViewController: LayerBackedViewController {
         sizeToFit()
     }
 
+    /// Compute the fit size depend on the inner contents
     private func sizeToFit() {
         guard let popover = popover else { return }
         let isAllIconsHidden = tagImageView.isHidden && billableImageView.isHidden

@@ -8,6 +8,8 @@
 
 import Cocoa
 
+/// Responsible for rendering the Empty Time Entry
+/// It's a dashed border view, which presents between each Time Entry in the first row (See design for better visualization)
 class TimelineEmptyTimeEntryCell: NSCollectionViewItem {
 
     // MARK: OUTLET
@@ -27,7 +29,12 @@ class TimelineEmptyTimeEntryCell: NSCollectionViewItem {
         initDashedView()
     }
 
+    /// Draw Dashed line with given Time Entry
+    /// - Parameters:
+    ///   - timeEntry: TimeEntry
+    ///   - zoomLevel: Zoom Level
     func config(for timeEntry: TimelineBaseTimeEntry, at zoomLevel: TimelineDatasource.ZoomLevel) {
+        // Small tweak to make sure two entries is not overlap depend on the current zoom level
         var gap = zoomLevel.minimumGap
         if (gap * 2.0) >= view.frame.height {
             gap = 1.0
