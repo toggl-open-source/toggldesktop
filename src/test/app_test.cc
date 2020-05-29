@@ -20,6 +20,7 @@
 #include "timeline_uploader.h"
 #include "model/user.h"
 #include "model/workspace.h"
+#include "color_convert.h"
 
 #include "test_data.h"
 
@@ -1893,6 +1894,14 @@ TEST(Settings, IsSame) {
     ASSERT_TRUE(s1.IsSame(s3));
     ASSERT_FALSE(s3.IsSame(s2));
     ASSERT_FALSE(s2.IsSame(s3));
+}
+
+TEST(ColorConverter, IsCorrect) {
+    RgbColor rbg = { 11, 131, 217};
+    HsvColor hsvColor = toggl::ColorConverter::GetAdaptiveColor(rbg, AdaptiveColorShapeOnLightBackground);
+    ASSERT_EQ(hsvColor.h, 0.57);
+    ASSERT_EQ(hsvColor.s, 0.95);
+    ASSERT_EQ(hsvColor.v, 0.85);
 }
 
 }  // namespace toggl
