@@ -27,6 +27,12 @@ HsvColor ColorConverter::GetAdaptiveColor(RgbColor rgbColor, AdaptiveColor type)
     return adjustColor(hsvColor, type);
 }
 
+std::string ColorConverter::GetHexAdaptiveColor(std::string hexColor, AdaptiveColor type) {
+    HsvColor hsv = GetAdaptiveColor(hexColor, type);
+    RgbColor rgb = hsvToRgb(hsv);
+    return rgbToHex(rgb);
+}
+
 HsvColor ColorConverter::adjustColor(HsvColor hsvColor, AdaptiveColor type) {
     switch (type) {
         case AdaptiveColorShapeOnLightBackground:
@@ -96,6 +102,69 @@ RgbColor ColorConverter::hexToRgb(std::string hex)
     float b = ((hexValue) & 0xFF) / 255.0;
 
     return { r, g, b };
+}
+
+std::string ColorConverter::rgbToHex(RgbColor rbg) {
+    int r = (int) rbg.r * 255.0;
+    int g = (int) rbg.g * 255.0;
+    int b = (int) rbg.b * 255.0;
+    long hex = ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
+    std::stringstream sstream;
+    sstream << std::hex << hex;
+    return sstream.str();
+}
+
+RgbColor ColorConverter::hsvToRgb(HsvColor hsvColor) {
+    double h = hsvColor.h;
+    double s = hsvColor.s;
+    double v = hsvColor.v;
+    double r, g, b;
+
+    int i = int(h * 6);
+    double f = h * 6 - i;
+    double p = v * (1 - s);
+    double q = v * (1 - f * s);
+    double t = v * (1 - (1 - f) * s);
+
+    switch(i % 6) {
+        case 0: {
+            r = v;
+            g = t;
+            b = p;
+            break;
+        }
+        case 1: {
+            r = q;
+            g = v;
+            b = p;
+            break;
+        }
+        case 2: {
+            r = p;
+            g = v;
+            b = t;
+            break;
+        }
+        case 3: {
+            r = p;
+            g = q;
+            b = v;
+            break;
+        }
+        case 4: {
+            r = t;
+            g = p;
+            b = v;
+            break;
+        }
+        case 5: {
+            r = v;
+            g = p;
+            b = q;
+            break;
+        }
+    }
+    return { r , g, b };
 }
 
 }
