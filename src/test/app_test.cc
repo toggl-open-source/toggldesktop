@@ -1896,12 +1896,26 @@ TEST(Settings, IsSame) {
     ASSERT_FALSE(s2.IsSame(s3));
 }
 
-TEST(ColorConverter, IsCorrect) {
-    RgbColor rbg = { 11, 131, 217};
-    HsvColor hsvColor = toggl::ColorConverter::GetAdaptiveColor(rbg, AdaptiveColorShapeOnLightBackground);
-    ASSERT_EQ(hsvColor.h, 0.57);
-    ASSERT_EQ(hsvColor.s, 0.95);
-    ASSERT_EQ(hsvColor.v, 0.85);
+TEST(ColorConverter_HSV_0B83D9, IsCorrect) {
+    HsvColor color_1 = toggl::ColorConverter::GetAdaptiveColor("0B83D9", AdaptiveColorShapeOnLightBackground);
+    ASSERT_NEAR(0.57, color_1.h, 0.01);
+    ASSERT_NEAR(0.95, color_1.s, 0.01);
+    ASSERT_NEAR(0.85, color_1.v, 0.01);
+
+    HsvColor color_2 = toggl::ColorConverter::GetAdaptiveColor("0B83D9", AdaptiveColorTextOnLightBackground);
+    ASSERT_NEAR(0.57, color_2.h, 0.01);
+    ASSERT_NEAR(0.95, color_2.s, 0.01);
+    ASSERT_NEAR(0.7, color_2.v, 0.01);
+
+    HsvColor color_3 = toggl::ColorConverter::GetAdaptiveColor("0B83D9", AdaptiveColorShapeOnDarkBackground);
+    ASSERT_NEAR(0.57, color_3.h, 0.01);
+    ASSERT_NEAR(0.81, color_3.s, 0.01);
+    ASSERT_NEAR(0.95, color_3.v, 0.01);
+
+    HsvColor color_4 = toggl::ColorConverter::GetAdaptiveColor("0B83D9", AdaptiveColorTextOnDarkBackground);
+    ASSERT_NEAR(0.57, color_4.h, 0.01);
+    ASSERT_NEAR(0.81, color_4.s, 0.01);
+    ASSERT_NEAR(1.0, color_4.v, 0.01);
 }
 
 }  // namespace toggl
