@@ -27,25 +27,25 @@ bool BaseModel::NeedsPush() const {
 
 bool BaseModel::NeedsPOST() const {
     // No server side ID yet, meaning it's not POSTed yet
-    return !id_ && !(deleted_at_ > 0);
+    return !ID() && !(DeletedAt() > 0);
 }
 
 bool BaseModel::NeedsPUT() const {
     // Model has been updated and is not deleted, needs a PUT
-    return id_ && ui_modified_at_ > 0 && !(deleted_at_ > 0);
+    return ID() && UIModifiedAt() > 0 && !(DeletedAt() > 0);
 }
 
 bool BaseModel::NeedsDELETE() const {
     // Model is deleted, needs a DELETE on server side
-    return id_ && (deleted_at_ > 0);
+    return ID() && (DeletedAt() > 0);
 }
 
 bool BaseModel::NeedsToBeSaved() const {
-    return !local_id_ || dirty_;
+    return !LocalID() || Dirty();
 }
 
 void BaseModel::EnsureGUID() {
-    if (!guid_.empty()) {
+    if (!GUID().empty()) {
         return;
     }
     SetGUID(Database::GenerateGUID());
@@ -56,56 +56,17 @@ void BaseModel::ClearValidationError() {
 }
 
 void BaseModel::SetValidationError(const std::string &value) {
-    if (validation_error_ != value) {
-        validation_error_ = value;
-        SetDirty();
-    }
-}
-
-void BaseModel::SetDeletedAt(const Poco::Int64 value) {
-    if (deleted_at_ != value) {
-        deleted_at_ = value;
-        SetDirty();
-    }
-}
-
-void BaseModel::SetUpdatedAt(const Poco::Int64 value) {
-    if (updated_at_ != value) {
-        updated_at_ = value;
-        SetDirty();
-    }
-}
-
-void BaseModel::SetGUID(const std::string &value) {
-    if (guid_ != value) {
-        guid_ = value;
-        SetDirty();
-    }
-}
-
-void BaseModel::SetUIModifiedAt(const Poco::Int64 value) {
-    if (ui_modified_at_ != value) {
-        ui_modified_at_ = value;
-        SetDirty();
-    }
-}
-
-void BaseModel::SetUID(const Poco::UInt64 value) {
-    if (uid_ != value) {
-        uid_ = value;
-        SetDirty();
-    }
-}
-
-void BaseModel::SetID(const Poco::UInt64 value) {
-    if (id_ != value) {
-        id_ = value;
-        SetDirty();
-    }
+    ValidationError.Set(value);
+    SetDirty();
 }
 
 void BaseModel::SetUpdatedAtString(const std::string &value) {
     SetUpdatedAt(Formatter::Parse8601(value));
+}
+
+void BaseModel::MarkAsDeletedOnServer() {
+    IsMarkedAsDeletedOnServer.Set(true);
+    SetDirty();
 }
 
 error BaseModel::LoadFromDataString(const std::string &data_string) {
@@ -200,12 +161,50 @@ Logger BaseModel::logger() const {
     return { ModelName() };
 }
 
+void BaseModel::SetID(const Poco::UInt64 value) {
+    ID.Set(value);
+    SetDirty();
+}
+
+void BaseModel::SetUIModifiedAt(const Poco::Int64 value) {
+    UIModifiedAt.Set(value);
+    SetDirty();
+}
+
+void BaseModel::SetGUID(const std::string &value) {
+    GUID.Set(value);
+    SetDirty();
+}
+
+void BaseModel::SetUID(const Poco::UInt64 value) {
+    UID.Set(value);
+    SetDirty();
+}
+
 void BaseModel::SetDirty() {
-    dirty_ = true;
+    Dirty.Set(true);
+}
+
+void BaseModel::ClearDirty() {
+    Dirty.Set(false);
 }
 
 void BaseModel::SetUnsynced() {
-    unsynced_ = true;
+    Unsynced.Set(true);
+}
+
+void BaseModel::ClearUnsynced() {
+    Unsynced.Set(false);
+}
+
+void BaseModel::SetDeletedAt(const Poco::Int64 value) {
+    DeletedAt.Set(value);
+    SetDirty();
+}
+
+void BaseModel::SetUpdatedAt(const Poco::Int64 value) {
+    UpdatedAt.Set(value);
+    SetDirty();
 }
 
 }   // namespace toggl
