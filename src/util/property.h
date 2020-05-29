@@ -79,6 +79,12 @@ public:
     bool operator ==(const T &o) const {
         return current_ == o;
     }
+    bool operator !=(const Property<T> &o) const {
+        return current_ != o.current_;
+    }
+    bool operator !=(const T &o) const {
+        return current_ != o;
+    }
 private:
     T current_;
     T previous_;

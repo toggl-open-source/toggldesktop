@@ -12,22 +12,22 @@ std::string Tag::String() const {
     std::stringstream ss;
     ss  << "ID=" << ID()
         << " local_id=" << LocalID()
-        << " name=" << name_
-        << " wid=" << wid_
+        << " name=" << Name()
+        << " wid=" << WID()
         << " guid=" << GUID();
     return ss.str();
 }
 
 void Tag::SetWID(const Poco::UInt64 value) {
-    if (wid_ != value) {
-        wid_ = value;
+    if (WID() != value) {
+        WID.Set(value);
         SetDirty();
     }
 }
 
 void Tag::SetName(const std::string &value) {
-    if (name_ != value) {
-        name_ = value;
+    if (Name() != value) {
+        Name.Set(value);
         SetDirty();
     }
 }

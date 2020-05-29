@@ -144,7 +144,7 @@ std::vector<TimeEntry *> RelatedData::VisibleTimeEntries() const {
 }
 
 Poco::Int64 RelatedData::TotalDurationForDate(const TimeEntry *match) const {
-    std::string date_header = Formatter::FormatDateHeader(match->Start());
+    std::string date_header = Formatter::FormatDateHeader(match->StartTime());
     Poco::Int64 duration(0);
     for (std::vector<TimeEntry *>::const_iterator it =
         TimeEntries.begin();
@@ -156,7 +156,7 @@ Poco::Int64 RelatedData::TotalDurationForDate(const TimeEntry *match) const {
         if (te->DeletedAt() > 0) {
             continue;
         }
-        if (Formatter::FormatDateHeader(te->Start()) == date_header) {
+        if (Formatter::FormatDateHeader(te->StartTime()) == date_header) {
             duration += Formatter::AbsDuration(te->Duration());
         }
     }
@@ -190,7 +190,7 @@ TimeEntry *RelatedData::LatestTimeEntry() const {
             continue;
         }
 
-        if (!latest || (te->Stop() > latest->Stop())) {
+        if (!latest || (te->StopTime() > latest->StopTime())) {
             latest = te;
         }
     }

@@ -1934,11 +1934,11 @@ error Database::loadTimeEntriesFromSQLStatement(
                 } else {
                     model->SetUIModifiedAt(rs[10].convert<Poco::Int64>());
                 }
-                model->SetStart(rs[11].convert<Poco::Int64>());
+                model->SetStartTime(rs[11].convert<Poco::Int64>());
                 if (rs[12].isEmpty()) {
-                    model->SetStop(0);
+                    model->SetStopTime(0);
                 } else {
-                    model->SetStop(rs[12].convert<Poco::Int64>());
+                    model->SetStopTime(rs[12].convert<Poco::Int64>());
                 }
                 model->SetDurationInSeconds(rs[13].convert<Poco::Int64>());
                 if (rs[14].isEmpty()) {
@@ -2091,8 +2091,8 @@ error Database::saveModel(
                           useRef(model->Billable()),
                           useRef(model->DurOnly()),
                           useRef(model->UIModifiedAt()),
-                          useRef(model->Start()),
-                          useRef(model->Stop()),
+                          useRef(model->StartTime()),
+                          useRef(model->StopTime()),
                           useRef(model->DurationInSeconds()),
                           useRef(model->Tags()),
                           useRef(model->CreatedWith()),
@@ -2126,8 +2126,8 @@ error Database::saveModel(
                           useRef(model->Billable()),
                           useRef(model->DurOnly()),
                           useRef(model->UIModifiedAt()),
-                          useRef(model->Start()),
-                          useRef(model->Stop()),
+                          useRef(model->StartTime()),
+                          useRef(model->StopTime()),
                           useRef(model->DurationInSeconds()),
                           useRef(model->Tags()),
                           useRef(model->CreatedWith()),
@@ -2181,8 +2181,8 @@ error Database::saveModel(
                           useRef(model->Billable()),
                           useRef(model->DurOnly()),
                           useRef(model->UIModifiedAt()),
-                          useRef(model->Start()),
-                          useRef(model->Stop()),
+                          useRef(model->StartTime()),
+                          useRef(model->StopTime()),
                           useRef(model->DurationInSeconds()),
                           useRef(model->Tags()),
                           useRef(model->CreatedWith()),
@@ -2215,8 +2215,8 @@ error Database::saveModel(
                           useRef(model->Billable()),
                           useRef(model->DurOnly()),
                           useRef(model->UIModifiedAt()),
-                          useRef(model->Start()),
-                          useRef(model->Stop()),
+                          useRef(model->StartTime()),
+                          useRef(model->StopTime()),
                           useRef(model->DurationInSeconds()),
                           useRef(model->Tags()),
                           useRef(model->CreatedWith()),
@@ -2936,7 +2936,7 @@ error Database::saveModel(
                               useRef(model->Color()),
                               useRef(model->CID()),
                               useRef(model->Active()),
-                              useRef(model->IsPrivate()),
+                              useRef(model->Private()),
                               useRef(model->Billable()),
                               useRef(model->ClientGUID()),
                               now;
@@ -2959,7 +2959,7 @@ error Database::saveModel(
                               useRef(model->Color()),
                               useRef(model->CID()),
                               useRef(model->Active()),
-                              useRef(model->IsPrivate()),
+                              useRef(model->Private()),
                               useRef(model->Billable()),
                               useRef(model->ClientGUID()),
                               now;
@@ -2980,7 +2980,7 @@ error Database::saveModel(
                               useRef(model->Color()),
                               useRef(model->CID()),
                               useRef(model->Active()),
-                              useRef(model->IsPrivate()),
+                              useRef(model->Private()),
                               useRef(model->Billable()),
                               useRef(model->ClientGUID()),
                               now;
@@ -3002,7 +3002,7 @@ error Database::saveModel(
                               useRef(model->Color()),
                               useRef(model->CID()),
                               useRef(model->Active()),
-                              useRef(model->IsPrivate()),
+                              useRef(model->Private()),
                               useRef(model->Billable()),
                               useRef(model->ClientGUID()),
                               now;

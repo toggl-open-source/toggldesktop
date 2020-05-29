@@ -189,18 +189,18 @@ TimeEntry *User::Start(
         if (!duration.empty()) {
             int seconds = Formatter::ParseDurationString(duration);
             te->SetDurationInSeconds(seconds);
-            te->SetStop(now);
-            te->SetStart(te->Stop() - te->DurationInSeconds());
+            te->SetStopTime(now);
+            te->SetStartTime(te->StopTime() - te->DurationInSeconds());
         } else {
             te->SetDurationInSeconds(-now);
             // dont set Stop, TE is running
-            te->SetStart(now);
+            te->SetStartTime(now);
         }
     } else {
         int seconds = int(ended - started);
         te->SetDurationInSeconds(seconds);
-        te->SetStop(ended);
-        te->SetStart(started);
+        te->SetStopTime(ended);
+        te->SetStartTime(started);
     }
 
     // Try to set workspace ID from project
@@ -273,7 +273,7 @@ TimeEntry *User::Continue(
     result->SetBillable(existing->Billable());
     result->SetTags(existing->Tags());
     result->SetUID(ID());
-    result->SetStart(now);
+    result->SetStartTime(now);
 
     if (!manual_mode) {
         result->SetDurationInSeconds(-now);
@@ -288,13 +288,13 @@ TimeEntry *User::Continue(
 
 std::string User::DateDuration(TimeEntry * const te) const {
     Poco::Int64 date_duration(0);
-    std::string date_header = Formatter::FormatDateHeader(te->Start());
+    std::string date_header = Formatter::FormatDateHeader(te->StartTime());
     for (std::vector<TimeEntry *>::const_iterator it =
         related.TimeEntries.begin();
             it != related.TimeEntries.end();
             ++it) {
         TimeEntry *n = *it;
-        if (Formatter::FormatDateHeader(n->Start()) == date_header) {
+        if (Formatter::FormatDateHeader(n->StartTime()) == date_header) {
             Poco::Int64 duration = n->DurationInSeconds();
             if (duration > 0) {
                 date_duration += duration;
@@ -331,52 +331,52 @@ bool User::CanAddProjects() const {
 }
 
 void User::SetFullname(const std::string &value) {
-    if (fullname_ != value) {
-        fullname_ = value;
+    if (Fullname() != value) {
+        Fullname.Set(value);
         SetDirty();
     }
 }
 
 void User::SetTimeOfDayFormat(const std::string &value) {
     Formatter::TimeOfDayFormat = value;
-    if (timeofday_format_ != value) {
-        timeofday_format_ = value;
+    if (TimeOfDayFormat() != value) {
+        TimeOfDayFormat.Set(value);
         SetDirty();
     }
 }
 
 void User::SetDurationFormat(const std::string &value) {
     Formatter::DurationFormat = value;
-    if (duration_format_ != value) {
-        duration_format_ = value;
+    if (DurationFormat() != value) {
+        DurationFormat.Set(value);
         SetDirty();
     }
 }
 
 void User::SetOfflineData(const std::string &value) {
-    if (offline_data_ != value) {
-        offline_data_ = value;
+    if (OfflineData() != value) {
+        OfflineData.Set(value);
         SetDirty();
     }
 }
 
 void User::SetStoreStartAndStopTime(const bool value) {
-    if (store_start_and_stop_time_ != value) {
-        store_start_and_stop_time_ = value;
+    if (StoreStartAndStopTime() != value) {
+        StoreStartAndStopTime.Set(value);
         SetDirty();
     }
 }
 
 void User::SetRecordTimeline(const bool value) {
-    if (record_timeline_ != value) {
-        record_timeline_ = value;
+    if (RecordTimeline() != value) {
+        RecordTimeline.Set(value);
         SetDirty();
     }
 }
 
 void User::SetEmail(const std::string &value) {
-    if (email_ != value) {
-        email_ = value;
+    if (Email() != value) {
+        Email.Set(value);
         SetDirty();
     }
 }
@@ -384,40 +384,40 @@ void User::SetEmail(const std::string &value) {
 void User::SetAPIToken(const std::string &value) {
     // API token is not saved into DB, so no
     // no dirty checking needed for it.
-    api_token_ = value;
+    APIToken.Set(value);
 }
 
 void User::SetSince(const Poco::Int64 value) {
-    if (since_ != value) {
-        since_ = value;
+    if (Since() != value) {
+        Since.Set(value);
         SetDirty();
     }
 }
 
 void User::SetDefaultWID(const Poco::UInt64 value) {
-    if (default_wid_ != value) {
-        default_wid_ = value;
+    if (DefaultWID() != value) {
+        DefaultWID.Set(value);
         SetDirty();
     }
 }
 
 void User::SetDefaultPID(const Poco::UInt64 value) {
-    if (default_pid_ != value) {
-        default_pid_ = value;
+    if (DefaultPID() != value) {
+        DefaultPID.Set(value);
         SetDirty();
     }
 }
 
 void User::SetDefaultTID(const Poco::UInt64 value) {
-    if (default_tid_ != value) {
-        default_tid_ = value;
+    if (DefaultTID() != value) {
+        DefaultTID.Set(value);
         SetDirty();
     }
 }
 
 void User::SetCollapseEntries(const bool value) {
-    if (collapse_entries_ != value) {
-        collapse_entries_ = value;
+    if (CollapseEntries() != value) {
+        CollapseEntries.Set(value);
         SetDirty();
     }
 }
@@ -464,7 +464,7 @@ TimeEntry *User::DiscardTimeAt(
         TimeEntry *split = new TimeEntry();
         split->SetCreatedWith(HTTPClient::Config.UserAgent());
         split->SetUID(ID());
-        split->SetStart(at);
+        split->SetStartTime(at);
         split->SetDurationInSeconds(-at);
         split->SetUIModified();
         split->SetWID(te->WID());
@@ -508,10 +508,10 @@ std::string User::String() const {
     std::stringstream ss;
     ss  << "ID=" << ID()
         << " local_id=" << LocalID()
-        << " default_wid=" << default_wid_
-        << " api_token=" << api_token_
-        << " since=" << since_
-        << " record_timeline=" << record_timeline_;
+        << " default_wid=" << DefaultWID()
+        << " api_token=" << APIToken()
+        << " since=" << Since()
+        << " record_timeline=" << RecordTimeline();
     return ss.str();
 }
 

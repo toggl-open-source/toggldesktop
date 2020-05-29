@@ -10,46 +10,34 @@
 namespace toggl {
 
 bool AutotrackerRule::Matches(const TimelineEvent &event) const {
-    if (Poco::UTF8::toLower(event.Filename()).find(term_)
+    if (Poco::UTF8::toLower(event.Filename()).find(Term())
             != std::string::npos) {
         return true;
     }
-    if (Poco::UTF8::toLower(event.Title()).find(term_)
+    if (Poco::UTF8::toLower(event.Title()).find(Term())
             != std::string::npos) {
         return true;
     }
     return false;
 }
 
-const std::string &AutotrackerRule::Term() const {
-    return term_;
-}
-
 void AutotrackerRule::SetTerm(const std::string &value) {
-    if (term_ != value) {
-        term_ = value;
+    if (Term() != value) {
+        Term.Set(value);
         SetDirty();
     }
-}
-
-const Poco::UInt64 &AutotrackerRule::PID() const {
-    return pid_;
 }
 
 void AutotrackerRule::SetPID(const Poco::UInt64 value) {
-    if (pid_ != value) {
-        pid_ = value;
+    if (PID()  != value) {
+        PID.Set(value);
         SetDirty();
     }
 }
 
-const Poco::UInt64 &AutotrackerRule::TID() const {
-    return tid_;
-}
-
 void AutotrackerRule::SetTID(const Poco::UInt64 value) {
-    if (tid_ != value) {
-        tid_ = value;
+    if (TID() != value) {
+        TID.Set(value);
         SetDirty();
     }
 }
@@ -57,10 +45,10 @@ void AutotrackerRule::SetTID(const Poco::UInt64 value) {
 std::string AutotrackerRule::String() const {
     std::stringstream ss;
     ss << " local_id=" << LocalID()
-       << " term=" << term_
+       << " term=" << Term()
        << " uid=" << UID()
-       << " pid=" << pid_
-       << " tid=" << tid_;
+       << " pid=" << PID()
+       << " tid=" << TID();
     return ss.str();
 }
 

@@ -30,63 +30,62 @@ std::string Project::String() const {
     ss  << "ID=" << ID()
         << " local_id=" << LocalID()
         << " guid=" << GUID()
-        << " name=" << name_
-        << " wid=" << wid_
-        << " cid=" << cid_
-        << " client_guid=" << client_guid_
-        << " active=" << active_
-        << " public=" << private_
-        << " color=" << color_
-        << " billable=" << billable_
-        << " client_guid=" << client_guid_;
+        << " name=" << Name()
+        << " wid=" << WID()
+        << " cid=" << CID()
+        << " client_guid=" << ClientGUID()
+        << " active=" << Active()
+        << " public=" << Private()
+        << " color=" << Color()
+        << " billable=" << Billable();
     return ss.str();
 }
 
 std::string Project::FullName() const {
     std::stringstream ss;
-    ss << client_name_
-       << name_;
+    ss << ClientName()
+       << Name();
     return ss.str();
 }
 
 void Project::SetClientGUID(const std::string &value) {
-    if (client_guid_ != value) {
-        client_guid_ = value;
+    if (ClientGUID() != value) {
+        ClientGUID.Set(value);
         SetDirty();
     }
 }
 
 void Project::SetActive(const bool value) {
-    if (active_ != value) {
-        active_ = value;
+    if (Active() != value) {
+        Active.Set(value);
         SetDirty();
     }
 }
 
 void Project::SetPrivate(const bool value) {
-    if (private_ != value) {
-        private_ = value;
+    if (Private() != value) {
+        Private.Set(value);
         SetDirty();
     }
 }
 
 void Project::SetName(const std::string &value) {
-    if (name_ != value) {
-        name_ = value;
+    if (Name() != value) {
+        Name.Set(value);
         SetDirty();
     }
 }
 
 void Project::SetBillable(const bool value) {
-    if (billable_ != value) {
-        billable_ = value;
+    if (Billable() != value) {
+        Billable.Set(value);
         SetDirty();
     }
 }
 
 void Project::SetColor(const std::string &value) {
-    if (color_ != value) {
-        color_ = Poco::UTF8::toLower(value);
+    if (Color() != value) {
+        Color.Set(Poco::UTF8::toLower(value));
         SetDirty();
     }
 }
@@ -105,22 +104,22 @@ error Project::SetColorCode(const std::string &color_code) {
 }
 
 void Project::SetWID(const Poco::UInt64 value) {
-    if (wid_ != value) {
-        wid_ = value;
+    if (WID() != value) {
+        WID.Set(value);
         SetDirty();
     }
 }
 
 void Project::SetCID(const Poco::UInt64 value) {
-    if (cid_ != value) {
-        cid_ = value;
+    if (CID() != value) {
+        CID.Set(value);
         SetDirty();
     }
 }
 
 void Project::SetClientName(const std::string &value) {
-    if (client_name_ != value) {
-        client_name_ = value;
+    if (ClientName() != value) {
+        ClientName.Set(value);
         SetDirty();
     }
 }
@@ -160,7 +159,7 @@ Json::Value Project::SaveToJSON() const {
     }
     // There is no way to set it in UI and free ws gets error when it's sent
     // n["billable"] = Billable();
-    n["is_private"] = IsPrivate();
+    n["is_private"] = Private();
     n["color"] = Poco::UTF8::toLower(Color());
     n["active"] = Active();
 
@@ -199,7 +198,7 @@ bool Project::ResolveError(const toggl::error &err) {
         SetCID(0);
         return true;
     }
-    if (!IsPrivate() && onlyAdminsCanChangeProjectVisibility(err)) {
+    if (!Private() && onlyAdminsCanChangeProjectVisibility(err)) {
         SetPrivate(true);
         return true;
     }

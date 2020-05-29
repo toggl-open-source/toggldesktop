@@ -29,52 +29,52 @@ std::string TimelineEvent::ModelURL() const {
 }
 
 void TimelineEvent::SetTitle(const std::string &value) {
-    if (title_ != value) {
-        title_ = value;
+    if (Title() != value) {
+        Title.Set(value);
         SetDirty();
     }
 }
 
 void TimelineEvent::SetStart(const Poco::Int64 value) {
-    if (start_time_ != value) {
-        start_time_ = value;
+    if (StartTime() != value) {
+        StartTime.Set(value);
         updateDuration();
         SetDirty();
     }
 }
 
 void TimelineEvent::SetEndTime(const Poco::Int64 value) {
-    if (end_time_ != value) {
-        end_time_ = value;
+    if (EndTime() != value) {
+        EndTime.Set(value);
         updateDuration();
         SetDirty();
     }
 }
 
 void TimelineEvent::SetIdle(const bool value) {
-    if (idle_ != value) {
-        idle_ = value;
+    if (Idle() != value) {
+        Idle.Set(value);
         SetDirty();
     }
 }
 
 void TimelineEvent::SetFilename(const std::string &value) {
-    if (filename_ != value) {
-        filename_ = value;
+    if (Filename() != value) {
+        Filename.Set(value);
         SetDirty();
     }
 }
 
 void TimelineEvent::SetChunked(const bool value) {
-    if (chunked_ != value) {
-        chunked_ = value;
+    if (Chunked() != value) {
+        Chunked.Set(value);
         SetDirty();
     }
 }
 
 void TimelineEvent::SetUploaded(const bool value) {
-    if (uploaded_ != value) {
-        uploaded_ = value;
+    if (Uploaded() != value) {
+        Uploaded.Set(value);
         SetDirty();
     }
 }
@@ -91,8 +91,8 @@ Json::Value TimelineEvent::SaveToJSON() const {
 }
 
 void TimelineEvent::updateDuration() {
-    Poco::Int64 value = end_time_ - start_time_;
-    duration_ = value < 0 ? 0 : value;
+    Poco::Int64 value = EndTime() - StartTime();
+    DurationInSeconds.Set(value < 0 ? 0 : value);
 }
 
 }   // namespace toggl

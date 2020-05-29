@@ -12,29 +12,29 @@ std::string ObmAction::String() const {
     std::stringstream ss;
     ss  << "ID=" << ID()
         << " local_id=" << LocalID()
-        << " experiment_id=" << experiment_id_
-        << " key=" << key_
-        << " value=" << value_;
+        << " experiment_id=" << ExperimentID()
+        << " key=" << Key()
+        << " value=" << Value();
     return ss.str();
 }
 
 void ObmAction::SetExperimentID(const Poco::UInt64 value) {
-    if (experiment_id_ != value) {
-        experiment_id_ = value;
+    if (ExperimentID() != value) {
+        ExperimentID.Set(value);
         SetDirty();
     }
 }
 
 void ObmAction::SetKey(const std::string &value) {
-    if (key_ != value) {
-        key_ = value;
+    if (Key() != value) {
+        Key.Set(value);
         SetDirty();
     }
 }
 
 void ObmAction::SetValue(const std::string &value) {
-    if (value_ != value) {
-        value_ = value;
+    if (Value() != value) {
+        Value.Set(value);
         SetDirty();
     }
 }
@@ -59,37 +59,37 @@ std::string ObmExperiment::String() const {
     std::stringstream ss;
     ss  << "ID=" << ID()
         << " local_id=" << LocalID()
-        << " nr=" << nr_
-        << " has seen=" << has_seen_
-        << " included=" << included_
-        << " actions=" << actions_;
+        << " nr=" << Nr()
+        << " has seen=" << HasSeen()
+        << " included=" << Included()
+        << " actions=" << Actions();
     return ss.str();
 }
 
 void ObmExperiment::SetNr(const Poco::UInt64 value) {
-    if (nr_ != value) {
-        nr_ = value;
+    if (Nr() != value) {
+        Nr.Set(value);
         SetDirty();
     }
 }
 
 void ObmExperiment::SetHasSeen(const bool value) {
-    if (has_seen_ != value) {
-        has_seen_ = value;
+    if (HasSeen() != value) {
+        HasSeen.Set(value);
         SetDirty();
     }
 }
 
 void ObmExperiment::SetIncluded(const bool value) {
-    if (included_ != value) {
-        included_ = value;
+    if (Included() != value) {
+        Included.Set(value);
         SetDirty();
     }
 }
 
 void ObmExperiment::SetActions(const std::string &value) {
-    if (actions_ != value) {
-        actions_ = value;
+    if (Actions() != value) {
+        Actions.Set(value);
         SetDirty();
     }
 }
