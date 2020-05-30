@@ -165,7 +165,7 @@ Section
   File "${redist}\*.dll"
   File "${srcdir}\*.dll"
   File "${srcdir}\*.exe"
-  File "${srcdir}\cacert.pem"
+  File "${srcdir}\ssl\cacert.pem"
   File "${srcdir}\TogglDesktop.exe.config"
   File "..\..\src\ui\windows\TogglDesktop\TogglDesktop\Resources\toggl.ico"
 
