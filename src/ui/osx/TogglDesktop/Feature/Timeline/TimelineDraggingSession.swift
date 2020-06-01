@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Represent all state of the dragging session
 struct TimelineDraggingSession {
 
     // Selected indexpath for dragging item
@@ -25,6 +26,7 @@ struct TimelineDraggingSession {
         return indexPath != nil
     }
 
+    /// Reset to the initial state
     mutating func reset() {
         indexPath = nil
         mouseDistanceFromTop = nil

@@ -185,7 +185,7 @@ bool HTTPClient::isRedirect(const Poco::Int64 status_code) const {
     return (status_code >= 300 && status_code < 400);
 }
 
-error HTTPClient::statusCodeToError(const Poco::Int64 status_code) const {
+error HTTPClient::StatusCodeToError(const Poco::Int64 status_code) {
     switch (status_code) {
     case 200:
     case 201:
@@ -225,9 +225,20 @@ error HTTPClient::statusCodeToError(const Poco::Int64 status_code) const {
         return kBackendIsDownError;
     }
 
-    logger().error("Unexpected HTTP status code: ", status_code);
+    Logger("HTTPClient").error("Unexpected HTTP status code: ", status_code);
 
     return kCannotConnectError;
+}
+
+error HTTPClient::accountLockingError(int remainingLogins) const {
+    switch (remainingLogins){
+    case 1:
+        return kOneLoginAttemptLeft;
+    case 0:
+        return kAccountIsLocked;
+    default:
+        return kIncorrectEmailOrPassword;
+    }
 }
 
 HTTPResponse HTTPClient::Post(
@@ -467,7 +478,16 @@ HTTPResponse HTTPClient::makeHttpRequest(
                            ". So we cannot make new requests until ", Formatter::Format8601(ts));
         }
 
-        resp.err = statusCodeToError(resp.status_code);
+        resp.err = StatusCodeToError(resp.status_code);
+
+        if (resp.status_code == 401 || resp.status_code == 403) {
+            if (response.has("X-Remaining-Login-Attempts")) {
+                int remainingLogins;
+                if (Poco::NumberParser::tryParse(response.get("X-Remaining-Login-Attempts"), remainingLogins)) {
+                    resp.err = accountLockingError(remainingLogins);
+                }
+            }
+        }
 
         // Parse human-readable error message from response if Content Type JSON
         if (resp.err != noError &&

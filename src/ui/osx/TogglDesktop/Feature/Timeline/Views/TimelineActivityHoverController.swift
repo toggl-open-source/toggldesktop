@@ -8,6 +8,8 @@
 
 import Cocoa
 
+/// Responsible for presenting the Timeline Activity Hover Content
+/// It's a root controller of the NSPopover
 final class TimelineActivityHoverController: LayerBackedViewController {
 
     private struct Constants {
@@ -32,11 +34,15 @@ final class TimelineActivityHoverController: LayerBackedViewController {
 
     // MARK: Public
 
+    /// Populate activity contents into events and sub-events
+    /// - Parameter activity: A main Activity
     func render(_ activity: TimelineActivity) {
         timeLbl.stringValue = "\(activity.startTimeStr) - \(activity.endTimeStr)"
         renderEvents(activity.events)
     }
 
+    /// Populate to event and subevent
+    /// - Parameter events: An array of TimelineEvent
     private func renderEvents(_ events: [TimelineEvent]) {
 
         // Remove all
@@ -66,6 +72,11 @@ final class TimelineActivityHoverController: LayerBackedViewController {
         updateContentSize()
     }
 
+    /// Build a single TextField with given event
+    /// - Parameters:
+    ///   - event: The event instance
+    ///   - isSubEvent: Determine if it's sub-event or main-event
+    /// - Returns: An NSTextField
     private func buildLabel(from event: TimelineEvent, isSubEvent: Bool) -> NSTextField {
         let textField = NSTextField(frame: NSRect.zero)
         textField.isEditable = false

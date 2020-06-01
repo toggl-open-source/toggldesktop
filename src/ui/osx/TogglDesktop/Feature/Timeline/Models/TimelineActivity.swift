@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Represent a single Timline event
 struct TimelineEvent {
 
     // MARK: Variables
@@ -31,6 +32,8 @@ struct TimelineEvent {
     }
 }
 
+/// Represent the one big Activity within 15 mins
+/// It might consist of many sub-events (TimelineEvent)
 struct TimelineActivity {
 
     private static let LightestBlueColor = NSColor(red:0.020, green:0.667, blue:0.961, alpha:1.0)
@@ -64,11 +67,19 @@ struct TimelineActivity {
 
     // MARK: Public
 
+    /// Get time chunk for the ColelctionViewFlowLayout
+    /// - Returns: TimeChunk
     func timechunk() -> TimeChunk? {
         let newEnded = min(started + 900, ended) // Draw at max 15 mins 
         return TimeChunk(start: started, end: newEnded)
     }
 
+    /// Small func to determine the color with given ratio
+    /// - Parameters:
+    ///   - lightest: The Lightest color
+    ///   - darkest: The Darkest
+    ///   - ratio: The current ratio (0...1.0)
+    /// - Returns: The proper color
     private static func getColor(from lightest: NSColor, darkest: NSColor, ratio: CGFloat) -> NSColor {
         let red = darkest.redComponent + (lightest.redComponent - darkest.redComponent) * ratio
         let blue = darkest.blueComponent + (lightest.blueComponent - darkest.blueComponent) * ratio

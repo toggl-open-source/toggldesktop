@@ -8,6 +8,7 @@
 
 import Cocoa
 
+/// Represent a single Rule View
 final class PasswordRuleView: NSView {
 
     // MARK: Variables
@@ -44,22 +45,26 @@ final class PasswordRuleView: NSView {
 
     // MARK: Public
 
+    /// Update UI with given rule
+    /// - Parameters:
+    ///   - rule: Password Rule
+    ///   - status: Status
     func config(with rule: PasswordStrengthValidation.Rule, status: PasswordStrengthValidation.MatchStatus) {
         self.rule = rule
         titleLbl.stringValue = rule.title
         updateStatus(status)
     }
 
+    /// Update UI for current rule
+    /// - Parameter status: A new status
     func updateStatus(_ status: PasswordStrengthValidation.MatchStatus) {
         titleLbl.textColor = getTextColor(for: status)
         iconImageView.image = getIconImageView(for: status)
     }
 
-    func updateSuccessStatus() {
-        titleLbl.stringValue = "Your password is secure!"
-        updateStatus(.match)
-    }
-
+    /// Get proper color for given status
+    /// - Parameter status: Match status
+    /// - Returns: Text Color
     private func getTextColor(for status: PasswordStrengthValidation.MatchStatus) -> NSColor {
         switch status {
         case .match:
@@ -71,6 +76,9 @@ final class PasswordRuleView: NSView {
         }
     }
 
+    /// Get proper Icon for given status
+    /// - Parameter status: Password Status
+    /// - Returns: An Image
     private func getIconImageView(for status: PasswordStrengthValidation.MatchStatus) -> NSImage {
         switch status {
         case .match:

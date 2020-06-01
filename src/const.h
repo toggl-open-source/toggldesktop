@@ -95,6 +95,9 @@
 #define kMissingWS "You no longer have access to your last workspace"
 #define kOutOfDatePleaseUpgrade "Your version of Toggl Desktop is out of date, please upgrade!"
 #define kThisEntryCantBeSavedPleaseAdd "This entry can't be saved - please add"
+#define kOneLoginAttemptLeft "Incorrect email or password. One more try before account gets locked for 5 minutes."
+#define kAccountIsLocked "Incorrect email or password. Account is locked for 5 minutes. Account owner has been notified."
+#define kIncorrectEmailOrPassword "Incorrect email or password. Please try again."
 
 #define kModelAutotrackerRule "autotracker_rule"
 #define kModelClient "client"

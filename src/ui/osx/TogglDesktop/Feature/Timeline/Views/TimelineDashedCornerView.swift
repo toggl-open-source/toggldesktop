@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Helper View to draw a dash rounded rectangle
+/// It tends for the Empty Time Entry
 final class TimelineDashedCornerView: NSView {
 
     // MARK: Variables

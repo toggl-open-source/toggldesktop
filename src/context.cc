@@ -4910,6 +4910,11 @@ void Context::syncerActivityWrapper() {
                     }
                 }
             }
+            // it is a HTTP error in disguise which means the server is alive, fallback to LEGACY
+            else if (resp.err == HTTPClient::StatusCodeToError(resp.status_code)) {
+                logger.log("Syncer - Server didn't respond 200 to /me/flags, fallback to LEGACY");
+                state = LEGACY;
+            }
             break;
         }
         case LEGACY:

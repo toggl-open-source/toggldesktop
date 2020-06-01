@@ -8,8 +8,10 @@
 
 import Foundation
 
+/// Represent all Timeline Data
 final class TimelineData {
 
+    /// Represent the section on the Timeline View
     enum Section: Int, CaseIterable {
         case timeLabel = 0
         case timeEntry
@@ -38,6 +40,11 @@ final class TimelineData {
 
     // MARK: Init
 
+    /// Initialize all data need to render on the Timeline View
+    /// - Parameters:
+    ///   - cmd: TimelineDisplayCommand from Objc
+    ///   - zoomLevel: Zoom Level
+    ///   - runningTimeEntry: Running Time Entry
     init(cmd: TimelineDisplayCommand, zoomLevel: TimelineDatasource.ZoomLevel, runningTimeEntry: TimeEntryViewItem?) {
         self.zoomLevel = zoomLevel
         self.start = cmd.start
@@ -55,6 +62,8 @@ final class TimelineData {
             return lhs.start < rhs.start
         })
         numberOfSections = Section.allCases.count
+
+        // Accumulate all subevent and generate to Activity
         activities = cmd.activities.compactMap { (activity) -> TimelineActivity? in
             // Map event and sub event
             let events = activity.events.map { event -> TimelineEvent in
@@ -72,9 +81,13 @@ final class TimelineData {
                                     endTimeStr: activity.endedTimeString,
                                     events: events)
         }
+
+        // Init Time Label
         timeChunks = generateTimelineLabel(for: start,
                                            endDate: end,
                                            zoomLevel: zoomLevel)
+
+        // Calcualte the position, group, overlap state, ...
         calculateColumnsPositionForTimeline()
     }
 
@@ -99,7 +112,6 @@ final class TimelineData {
             return false
         })
         if !isContains {
-            print("----------------------------- append to timeline data")
             timeEntries.append(entry)
             timeEntries.sort { (lhs, rhs) -> Bool in
                 return lhs.start < rhs.start
@@ -225,6 +237,12 @@ final class TimelineData {
 
 extension TimelineData {
 
+    /// Helper func to generate all Timeline Time Labels
+    /// - Parameters:
+    ///   - startDate: Timestamp of the start of this day
+    ///   - endDate: Timestampt of the end of this day
+    ///   - zoomLevel: Current zoom level
+    /// - Returns: Array of TimelineTimestamp
     fileprivate func generateTimelineLabel(for startDate: TimeInterval,
                                                  endDate: TimeInterval,
                                                  zoomLevel: TimelineDatasource.ZoomLevel) -> [TimelineTimestamp] {
@@ -238,6 +256,9 @@ extension TimelineData {
         return times.map { TimelineTimestamp($0) }.dropLast() // don't render the last hour of next day
     }
 
+    /// Helper func to to determine some states (Group, isIntersected) of the current TimeEntries
+    /// It's essential for drawing those TEs to the View by CollectionViewFlowLayout
+    /// Check the design to know how it looks like
     fileprivate func calculateColumnsPositionForTimeline() {
         var calculatedEntries: [TimelineBaseTimeEntry] = []
         var group = -1
@@ -292,8 +313,10 @@ extension TimelineData {
         }
     }
 
+    /// // Get all conflicted entry in same group
+    /// - Parameter entry: Given TimeEntry
+    /// - Returns: An array of conflicted entry
     private func getAllConflictedTimeEntries(at entry: TimelineTimeEntry) -> [TimelineTimeEntry] {
-        // Get all conflicted entry in same group
         return timeEntries
             .filter { $0 is TimelineTimeEntry && $0.group == entry.group }
             .sorted { (lhs, rhs) -> Bool in
@@ -304,6 +327,11 @@ extension TimelineData {
             }
     }
 
+    /// Calculate and append Gap Entry to the given TimeEntry
+    /// Gap Entry is a dashed border view. When clicking on it, it will generate a Empty Time Entry
+    /// Gap Entry only appears in the first Column
+    /// - Parameter firstRowEntries: Given first Column TimeEntry
+    /// - Returns: an array of Empty TE
     private func calculateGapEntry(from firstRowEntries: [TimelineBaseTimeEntry]) -> [TimelineBaseTimeEntry]? {
         guard firstRowEntries.count > 1 else { return nil }
 

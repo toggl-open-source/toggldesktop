@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Represent type of each onboarding
 @objc enum OnboardingHint: Int {
     case newUser = 0
     case oldUser
@@ -34,11 +35,13 @@ import Foundation
     }
 }
 
+/// Represent the Tab that the onboarding view will show
 @objc enum OnboardingPresentViewTab: Int {
     case timeEntry
     case timeline
 }
 
+/// Represent all info that the Onboarding need
 struct OnboardingPayload {
 
     // MARK: Variable
@@ -47,6 +50,7 @@ struct OnboardingPayload {
     let hint: OnboardingHint
     let view: NSView
 
+    /// Determine the position of the Popover arrow
     var preferEdges: NSRectEdge {
         switch hint {
         case .newUser,

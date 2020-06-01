@@ -212,6 +212,9 @@
       <DependentUpon>InAppNotification.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\CheckBoxHelper.cs" />
+    <Compile Include="ui\controls\PasswordRuleView.xaml.cs">
+      <DependentUpon>PasswordRuleView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\ProgressBar.xaml.cs">
       <DependentUpon>ProgressBar.xaml</DependentUpon>
     </Compile>
@@ -323,6 +326,7 @@
     <Compile Include="ui\ViewModels\DayHeaderViewModel.cs" />
     <Compile Include="ui\ViewModels\FeedbackWindowViewModel.cs" />
     <Compile Include="ui\ViewModels\LoginViewModel.cs" />
+    <Compile Include="ui\ViewModels\PasswordEx.cs" />
     <Compile Include="ui\ViewModels\PreferencesWindowViewModel.cs" />
     <Compile Include="ui\ViewModels\ProjectLabelViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryCellViewModel.cs" />
@@ -487,6 +491,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\controls\InAppNotification.xaml" />
+    <Page Include="ui\controls\PasswordRuleView.xaml" />
     <Page Include="ui\controls\ProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -757,16 +762,16 @@
       <Version>2.5.2</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.Fody">
-      <Version>11.1.23</Version>
+      <Version>11.4.1</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.Validation">
-      <Version>1.4.10</Version>
+      <Version>1.4.15</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.WPF">
-      <Version>11.1.23</Version>
+      <Version>11.4.1</Version>
     </PackageReference>
     <PackageReference Include="System.Reactive">
-      <Version>4.3.2</Version>
+      <Version>4.4.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

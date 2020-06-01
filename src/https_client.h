@@ -167,6 +167,8 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
     void SetCACertPath(std::string path);
     void SetIgnoreCert(bool ignore);
 
+    static error StatusCodeToError(const Poco::Int64 status_code);
+
  protected:
     virtual HTTPResponse request(
         HTTPRequest req) const;
@@ -179,7 +181,7 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
     // We only make requests if this timestamp lies in the past.
     static std::map<std::string, Poco::Timestamp> banned_until_;
 
-    error statusCodeToError(const Poco::Int64 status_code) const;
+    error accountLockingError(int remainingLogins) const;
 
     bool isRedirect(const Poco::Int64 status_code) const;
 
