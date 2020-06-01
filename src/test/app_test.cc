@@ -1897,6 +1897,9 @@ TEST(Settings, IsSame) {
 }
 
 TEST(ColorConverter_HSV_0B83D9, IsCorrect) {
+    std::string color_1_str = toggl::ColorConverter::GetHexAdaptiveColor("991102", AdaptiveColorTextOnLightBackground);
+    ASSERT_EQ(color_1_str, "720C01");
+
     HsvColor color_1 = toggl::ColorConverter::GetAdaptiveColor("0B83D9", AdaptiveColorShapeOnLightBackground);
     ASSERT_NEAR(0.57, color_1.h, 0.01);
     ASSERT_NEAR(0.95, color_1.s, 0.01);
