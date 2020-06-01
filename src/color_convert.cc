@@ -28,6 +28,12 @@ HsvColor ColorConverter::GetAdaptiveColor(RgbColor rgbColor, AdaptiveColor type)
     return adjustColor(hsvColor, type);
 }
 
+std::string ColorConverter::GetHexAdaptiveColor(std::string hexColor, AdaptiveColor type) {
+    HsvColor hsv = GetAdaptiveColor(hexColor, type);
+    RgbColor rgb = hsvToRgb(hsv);
+    return rgbToHex(rgb);
+}
+
 RgbColor ColorConverter::GetRgbAdaptiveColor(std::string hexColor, AdaptiveColor type) {
     HsvColor hsv = GetAdaptiveColor(hexColor, type);
     return hsvToRgb(hsv);
@@ -102,6 +108,16 @@ RgbColor ColorConverter::hexToRgb(std::string hex)
     float b = ((hexValue) & 0xFF) / 255.0;
 
     return { r, g, b };
+}
+
+std::string ColorConverter::rgbToHex(RgbColor rbg) {
+    int r = (int) rbg.r * 255.0;
+    int g = (int) rbg.g * 255.0;
+    int b = (int) rbg.b * 255.0;
+    long hex = ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
+    std::stringstream sstream;
+    sstream << std::hex << hex;
+    return sstream.str();
 }
 
 RgbColor ColorConverter::hsvToRgb(HsvColor hsvColor) {

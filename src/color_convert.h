@@ -23,6 +23,7 @@ public:
 
     static HsvColor GetAdaptiveColor(std::string hexColor, AdaptiveColor type);
     static HsvColor GetAdaptiveColor(RgbColor rgbColor, AdaptiveColor type);
+    static std::string GetHexAdaptiveColor(std::string hexColor, AdaptiveColor type);
     static RgbColor GetRgbAdaptiveColor(std::string hexColor, AdaptiveColor type);
 
 private:
