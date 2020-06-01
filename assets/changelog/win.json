@@ -1,6 +1,15 @@
 {
     "versions": [
         {
+            "version": "7.5.162",
+            "rows": [
+                "Update CA certificates bundle",
+                "Password strength requirements during signup"
+            ],
+            "date": "June 1st 2020",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.146",
             "rows": [
                 "Updated project colors list",
