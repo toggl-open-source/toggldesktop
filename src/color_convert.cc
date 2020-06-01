@@ -111,9 +111,9 @@ RgbColor ColorConverter::hexToRgb(std::string hex)
 }
 
 std::string ColorConverter::rgbToHex(RgbColor rbg) {
-    int r = (int) rbg.r * 255.0;
-    int g = (int) rbg.g * 255.0;
-    int b = (int) rbg.b * 255.0;
+    int r = (int) std::round(rbg.r * 255.0);
+    int g = (int) std::round(rbg.g * 255.0);
+    int b = (int) std::round(rbg.b * 255.0);
     long hex = ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
     std::stringstream sstream;
     sstream << std::hex << hex;
