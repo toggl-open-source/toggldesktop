@@ -44,10 +44,3 @@ The Linux version has many different packages `tar.gz` for all Linux distributio
 Linux application only works with 64 bit architecture
 
 _More detailed description is available some time at [Linux UI Documentation](linux/index.md) (Not ready yet)_
-
-## Various
-
-- [Folder structure](various/folders.md)
-- [Format and Lint](various/fmt.md)
-- [Make commands](various/make.md)
-- [Tests](various/tests.md)
