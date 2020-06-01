@@ -2708,7 +2708,7 @@ error Context::SetLoggedInUserFromJSON(
     User *user = new User();
 
     // Determine if it's a new user for onboarding check
-    user->IsNewUser = isSignup;
+    user->IsNewUser.Set(isSignup);
 
     err = db()->LoadUserByID(userID, user);
     if (err != noError) {

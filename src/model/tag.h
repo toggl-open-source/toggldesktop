@@ -19,7 +19,7 @@ class TOGGL_INTERNAL_EXPORT Tag : public BaseModel {
     Property<Poco::UInt64> WID { 0 };
 
     void SetName(const std::string &value);
-    void SetWID(const Poco::UInt64 value);
+    void SetWID(Poco::UInt64 value);
 
     // Override BaseModel
     std::string String() const override;

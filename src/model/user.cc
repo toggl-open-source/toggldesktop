@@ -41,14 +41,14 @@ User::~User() {
 }
 
 Project *User::CreateProject(
-    const Poco::UInt64 workspace_id,
-    const Poco::UInt64 client_id,
+    Poco::UInt64 workspace_id,
+    Poco::UInt64 client_id,
     const std::string &client_guid,
     const std::string &client_name,
     const std::string &project_name,
-    const bool is_private,
+    bool is_private,
     const std::string &project_color,
-    const bool billable) {
+    bool billable) {
 
     Project *p = new Project();
     p->SetWID(workspace_id);
@@ -117,7 +117,7 @@ void User::AddProjectToList(Project *p) {
 }
 
 Client *User::CreateClient(
-    const Poco::UInt64 workspace_id,
+    Poco::UInt64 workspace_id,
     const std::string &client_name) {
     Client *c = new Client();
     c->SetWID(workspace_id);
@@ -159,13 +159,13 @@ void User::AddClientToList(Client *c) {
 TimeEntry *User::Start(
     const std::string &description,
     const std::string &duration,
-    const Poco::UInt64 task_id,
-    const Poco::UInt64 project_id,
+    Poco::UInt64 task_id,
+    Poco::UInt64 project_id,
     const std::string project_guid,
     const std::string tags,
-    const time_t started,
-    const time_t ended,
-    const bool stop_current_running) {
+    time_t started,
+    time_t ended,
+    bool stop_current_running) {
 
     if (stop_current_running) {
         Stop();
@@ -233,12 +233,12 @@ TimeEntry *User::Start(
 }
 
 TimeEntry *User::Continue(
-    const std::string &GUID,
-    const bool manual_mode) {
+    const std::string &guid,
+    bool manual_mode) {
 
-    TimeEntry *existing = related.TimeEntryByGUID(GUID);
+    TimeEntry *existing = related.TimeEntryByGUID(guid);
     if (!existing) {
-        logger().warning("Time entry not found: ", GUID);
+        logger().warning("Time entry not found: ", guid);
         return nullptr;
     }
 
@@ -360,14 +360,18 @@ void User::SetOfflineData(const std::string &value) {
     }
 }
 
-void User::SetStoreStartAndStopTime(const bool value) {
+void User::SetStoreStartAndStopTime(bool value) {
     if (StoreStartAndStopTime() != value) {
         StoreStartAndStopTime.Set(value);
         SetDirty();
     }
 }
 
-void User::SetRecordTimeline(const bool value) {
+void User::ConfirmLoadedMore() {
+    HasLoadedMore.Set(true);
+}
+
+void User::SetRecordTimeline(bool value) {
     if (RecordTimeline() != value) {
         RecordTimeline.Set(value);
         SetDirty();
@@ -387,35 +391,35 @@ void User::SetAPIToken(const std::string &value) {
     APIToken.Set(value);
 }
 
-void User::SetSince(const Poco::Int64 value) {
+void User::SetSince(Poco::Int64 value) {
     if (Since() != value) {
         Since.Set(value);
         SetDirty();
     }
 }
 
-void User::SetDefaultWID(const Poco::UInt64 value) {
+void User::SetDefaultWID(Poco::UInt64 value) {
     if (DefaultWID() != value) {
         DefaultWID.Set(value);
         SetDirty();
     }
 }
 
-void User::SetDefaultPID(const Poco::UInt64 value) {
+void User::SetDefaultPID(Poco::UInt64 value) {
     if (DefaultPID() != value) {
         DefaultPID.Set(value);
         SetDirty();
     }
 }
 
-void User::SetDefaultTID(const Poco::UInt64 value) {
+void User::SetDefaultTID(Poco::UInt64 value) {
     if (DefaultTID() != value) {
         DefaultTID.Set(value);
         SetDirty();
     }
 }
 
-void User::SetCollapseEntries(const bool value) {
+void User::SetCollapseEntries(bool value) {
     if (CollapseEntries() != value) {
         CollapseEntries.Set(value);
         SetDirty();
@@ -445,8 +449,8 @@ void User::Stop(std::vector<TimeEntry *> *stopped) {
 
 TimeEntry *User::DiscardTimeAt(
     const std::string &guid,
-    const Poco::Int64 at,
-    const bool split_into_new_entry) {
+    Poco::Int64 at,
+    bool split_into_new_entry) {
 
     if (!(at > 0)) {
         logger().error("Cannot discard without valid timestamp");
@@ -515,7 +519,7 @@ std::string User::String() const {
     return ss.str();
 }
 
-void User::DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid) {
+void User::DeleteRelatedModelsWithWorkspace(Poco::UInt64 wid) {
     deleteRelatedModelsWithWorkspace(wid, &related.Clients);
     deleteRelatedModelsWithWorkspace(wid, &related.Projects);
     deleteRelatedModelsWithWorkspace(wid, &related.Tasks);
@@ -523,7 +527,7 @@ void User::DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid) {
     deleteRelatedModelsWithWorkspace(wid, &related.Tags);
 }
 
-void User::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
+void User::RemoveClientFromRelatedModels(Poco::UInt64 cid) {
     for (std::vector<Project *>::iterator it = related.Projects.begin();
             it != related.Projects.end(); ++it) {
         Project *model = *it;
@@ -533,12 +537,12 @@ void User::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
     }
 }
 
-void User::RemoveProjectFromRelatedModels(const Poco::UInt64 pid) {
+void User::RemoveProjectFromRelatedModels(Poco::UInt64 pid) {
     removeProjectFromRelatedModels(pid, &related.Tasks);
     removeProjectFromRelatedModels(pid, &related.TimeEntries);
 }
 
-void User::RemoveTaskFromRelatedModels(const Poco::UInt64 tid) {
+void User::RemoveTaskFromRelatedModels(Poco::UInt64 tid) {
     related.forEachTimeEntries([&](TimeEntry *model) {
         if (model->TID() == tid) {
             model->SetTID(0);
@@ -696,9 +700,8 @@ void User::loadUserWorkspaceFromJSON(
     model->LoadFromJSON(data);
 }
 
-error User::LoadUserAndRelatedDataFromJSONString(
-    const std::string &json,
-    const bool &including_related_data) {
+error User::LoadUserAndRelatedDataFromJSONString(const std::string &json,
+    bool including_related_data) {
 
     if (json.empty()) {
         Logger("json").warning("cannot load empty JSON");
@@ -1560,7 +1563,7 @@ void deleteZombies(
 }
 
 template <typename T>
-void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
+void deleteRelatedModelsWithWorkspace(Poco::UInt64 wid,
                                       std::vector<T *> *list) {
     typedef typename std::vector<T *>::iterator iterator;
     for (iterator it = list->begin(); it != list->end(); ++it) {
@@ -1572,7 +1575,7 @@ void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
 }
 
 template <typename T>
-void removeProjectFromRelatedModels(const Poco::UInt64 pid,
+void removeProjectFromRelatedModels(Poco::UInt64 pid,
                                     std::vector<T *> *list) {
     typedef typename std::vector<T *>::iterator iterator;
     for (iterator it = list->begin(); it != list->end(); ++it) {

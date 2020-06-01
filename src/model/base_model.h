@@ -47,17 +47,17 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     // attempt to push failed somewhere.
     Property<bool> Unsynced { false };
 
-    void SetLocalID(const Poco::Int64 value) {
+    void SetLocalID(Poco::Int64 value) {
         LocalID.Set(value);
     }
-    void SetID(const Poco::UInt64 value);
-    void SetUIModifiedAt(const Poco::Int64 value);
+    void SetID(Poco::UInt64 value);
+    void SetUIModifiedAt(Poco::Int64 value);
     void SetUIModified() {
         SetUIModifiedAt(time(nullptr));
     }
 
     void SetGUID(const std::string &value);
-    void SetUID(const Poco::UInt64 value);
+    void SetUID(Poco::UInt64 value);
 
     void SetDirty();
     void ClearDirty();
@@ -67,9 +67,9 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
 
     // Deleting a time entry hides it from
     // UI and flags it for removal from server:
-    void SetDeletedAt(const Poco::Int64 value);
+    void SetDeletedAt(Poco::Int64 value);
 
-    void SetUpdatedAt(const Poco::Int64 value);
+    void SetUpdatedAt(Poco::Int64 value);
 
     std::string UpdatedAtString() const;
     void SetUpdatedAtString(const std::string &value);

@@ -28,14 +28,14 @@ void AutotrackerRule::SetTerm(const std::string &value) {
     }
 }
 
-void AutotrackerRule::SetPID(const Poco::UInt64 value) {
+void AutotrackerRule::SetPID(Poco::UInt64 value) {
     if (PID()  != value) {
         PID.Set(value);
         SetDirty();
     }
 }
 
-void AutotrackerRule::SetTID(const Poco::UInt64 value) {
+void AutotrackerRule::SetTID(Poco::UInt64 value) {
     if (TID() != value) {
         TID.Set(value);
         SetDirty();

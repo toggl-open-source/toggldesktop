@@ -38,7 +38,7 @@ void Client::SetName(const std::string &value) {
     }
 }
 
-void Client::SetWID(const Poco::UInt64 value) {
+void Client::SetWID(Poco::UInt64 value) {
     if (WID() != value) {
         WID.Set(value);
         SetDirty();

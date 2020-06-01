@@ -171,27 +171,27 @@ std::string TimeEntry::String() const {
     return ss.str();
 }
 
-void TimeEntry::SetLastStartAt(const Poco::Int64 value) {
+void TimeEntry::SetLastStartAt(Poco::Int64 value) {
     if (LastStartAt() != value) {
         LastStartAt.Set(value);
     }
 }
 
-void TimeEntry::SetDurOnly(const bool value) {
+void TimeEntry::SetDurOnly(bool value) {
     if (DurOnly() != value) {
         DurOnly.Set(value);
         SetDirty();
     }
 }
 
-void TimeEntry::SetStartTime(const Poco::Int64 value) {
+void TimeEntry::SetStartTime(Poco::Int64 value) {
     if (StartTime() != value) {
         StartTime.Set(value);
         SetDirty();
     }
 }
 
-void TimeEntry::SetStopTime(const Poco::Int64 value) {
+void TimeEntry::SetStopTime(Poco::Int64 value) {
     if (StopTime() != value) {
         StopTime.Set(value);
         SetDirty();
@@ -217,14 +217,14 @@ void TimeEntry::SetCreatedWith(const std::string &value) {
     }
 }
 
-void TimeEntry::SetBillable(const bool value) {
+void TimeEntry::SetBillable(bool value) {
     if (Billable() != value) {
         Billable.Set(value);
         SetDirty();
     }
 }
 
-void TimeEntry::SetWID(const Poco::UInt64 value) {
+void TimeEntry::SetWID(Poco::UInt64 value) {
     if (WID() != value) {
         WID.Set(value);
         SetDirty();
@@ -257,7 +257,7 @@ void TimeEntry::SetStopUserInput(const std::string &value) {
     }
 }
 
-void TimeEntry::SetTID(const Poco::UInt64 value) {
+void TimeEntry::SetTID(Poco::UInt64 value) {
     if (TID() != value) {
         TID.Set(value);
         SetDirty();
@@ -281,14 +281,14 @@ void TimeEntry::SetTags(const std::string &tags) {
     }
 }
 
-void TimeEntry::SetPID(const Poco::UInt64 value) {
+void TimeEntry::SetPID(Poco::UInt64 value) {
     if (PID() != value) {
         PID.Set(value);
         SetDirty();
     }
 }
 
-void TimeEntry::SetDurationInSeconds(const Poco::Int64 value) {
+void TimeEntry::SetDurationInSeconds(Poco::Int64 value) {
     if (DurationInSeconds() != value) {
         DurationInSeconds.Set(value);
         SetDirty();
@@ -296,7 +296,7 @@ void TimeEntry::SetDurationInSeconds(const Poco::Int64 value) {
 }
 
 void TimeEntry::SetStartUserInput(const std::string &value,
-                                  const bool keepEndTimeFixed) {
+                                  bool keepEndTimeFixed) {
     Poco::Int64 start = Formatter::Parse8601(value);
     if (IsTracking()) {
         SetDurationInSeconds(-start);
@@ -555,7 +555,7 @@ std::string TimeEntry::ModelURL() const {
     return relative_url.str();
 }
 
-void TimeEntry::SetSkipPomodoro(const bool value) {
+void TimeEntry::SetSkipPomodoro(bool value) {
     SkipPomodoro.Set(value);
 }
 

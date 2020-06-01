@@ -35,7 +35,7 @@ void TimelineEvent::SetTitle(const std::string &value) {
     }
 }
 
-void TimelineEvent::SetStart(const Poco::Int64 value) {
+void TimelineEvent::SetStartTime(Poco::Int64 value) {
     if (StartTime() != value) {
         StartTime.Set(value);
         updateDuration();
@@ -43,7 +43,7 @@ void TimelineEvent::SetStart(const Poco::Int64 value) {
     }
 }
 
-void TimelineEvent::SetEndTime(const Poco::Int64 value) {
+void TimelineEvent::SetEndTime(Poco::Int64 value) {
     if (EndTime() != value) {
         EndTime.Set(value);
         updateDuration();
@@ -51,7 +51,7 @@ void TimelineEvent::SetEndTime(const Poco::Int64 value) {
     }
 }
 
-void TimelineEvent::SetIdle(const bool value) {
+void TimelineEvent::SetIdle(bool value) {
     if (Idle() != value) {
         Idle.Set(value);
         SetDirty();
@@ -65,14 +65,14 @@ void TimelineEvent::SetFilename(const std::string &value) {
     }
 }
 
-void TimelineEvent::SetChunked(const bool value) {
+void TimelineEvent::SetChunked(bool value) {
     if (Chunked() != value) {
         Chunked.Set(value);
         SetDirty();
     }
 }
 
-void TimelineEvent::SetUploaded(const bool value) {
+void TimelineEvent::SetUploaded(bool value) {
     if (Uploaded() != value) {
         Uploaded.Set(value);
         SetDirty();

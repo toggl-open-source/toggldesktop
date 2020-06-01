@@ -27,12 +27,12 @@ class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
     Property<bool> Private { false };
     Property<bool> Billable { false };
 
-    void SetWID(const Poco::UInt64 value);
-    void SetCID(const Poco::UInt64 value);
-    void SetClientGUID(const std::string &);
-    void SetActive(const bool value);
-    void SetPrivate(const bool value);
-    void SetBillable(const bool value);
+    void SetWID(Poco::UInt64 value);
+    void SetCID(Poco::UInt64 value);
+    void SetClientGUID(const std::string &value);
+    void SetActive(bool value);
+    void SetPrivate(bool value);
+    void SetBillable(bool value);
     void SetClientName(const std::string &value);
 
     void SetColor(const std::string &value);

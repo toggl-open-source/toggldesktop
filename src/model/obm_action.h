@@ -23,7 +23,7 @@ class TOGGL_INTERNAL_EXPORT ObmAction : public BaseModel {
 
     void SetKey(const std::string &value);
     void SetValue(const std::string &value);
-    void SetExperimentID(const Poco::UInt64 value);
+    void SetExperimentID(Poco::UInt64 value);
 
     // Override BaseModel
     std::string String() const override;
@@ -42,9 +42,9 @@ class TOGGL_INTERNAL_EXPORT ObmExperiment : public BaseModel {
     Property<bool> HasSeen { false };
 
     void SetActions(const std::string &value);
-    void SetNr(const Poco::UInt64 value);
-    void SetIncluded(const bool value);
-    void SetHasSeen(const bool value);
+    void SetNr(Poco::UInt64 value);
+    void SetIncluded(bool value);
+    void SetHasSeen(bool value);
 
     // Override BaseModel
     std::string String() const override;

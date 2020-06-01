@@ -26,8 +26,8 @@ class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
     bool Matches(const TimelineEvent &event) const;
 
     void SetTerm(const std::string &value);
-    void SetPID(const Poco::UInt64 value);
-    void SetTID(const Poco::UInt64 value);
+    void SetPID(Poco::UInt64 value);
+    void SetTID(Poco::UInt64 value);
 
     // Override BaseModel
     std::string String() const override;

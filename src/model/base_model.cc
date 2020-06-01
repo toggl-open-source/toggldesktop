@@ -161,12 +161,12 @@ Logger BaseModel::logger() const {
     return { ModelName() };
 }
 
-void BaseModel::SetID(const Poco::UInt64 value) {
+void BaseModel::SetID(Poco::UInt64 value) {
     ID.Set(value);
     SetDirty();
 }
 
-void BaseModel::SetUIModifiedAt(const Poco::Int64 value) {
+void BaseModel::SetUIModifiedAt(Poco::Int64 value) {
     UIModifiedAt.Set(value);
     SetDirty();
 }
@@ -176,7 +176,7 @@ void BaseModel::SetGUID(const std::string &value) {
     SetDirty();
 }
 
-void BaseModel::SetUID(const Poco::UInt64 value) {
+void BaseModel::SetUID(Poco::UInt64 value) {
     UID.Set(value);
     SetDirty();
 }
@@ -197,12 +197,12 @@ void BaseModel::ClearUnsynced() {
     Unsynced.Set(false);
 }
 
-void BaseModel::SetDeletedAt(const Poco::Int64 value) {
+void BaseModel::SetDeletedAt(Poco::Int64 value) {
     DeletedAt.Set(value);
     SetDirty();
 }
 
-void BaseModel::SetUpdatedAt(const Poco::Int64 value) {
+void BaseModel::SetUpdatedAt(Poco::Int64 value) {
     UpdatedAt.Set(value);
     SetDirty();
 }

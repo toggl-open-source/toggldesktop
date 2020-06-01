@@ -18,7 +18,7 @@ std::string Tag::String() const {
     return ss.str();
 }
 
-void Tag::SetWID(const Poco::UInt64 value) {
+void Tag::SetWID(Poco::UInt64 value) {
     if (WID() != value) {
         WID.Set(value);
         SetDirty();

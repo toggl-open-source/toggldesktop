@@ -36,30 +36,30 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
 
     void SetDescription(const std::string &value);
     void SetCreatedWith(const std::string &value);
-    void SetProjectGUID(const std::string &);
+    void SetProjectGUID(const std::string &value);
 
     const std::string Tags() const;
     void SetTags(const std::string &tags);
     const std::string TagsHash() const;
 
-    void SetWID(const Poco::UInt64 value);
-    void SetPID(const Poco::UInt64 value);
-    void SetTID(const Poco::UInt64 value);
+    void SetWID(Poco::UInt64 value);
+    void SetPID(Poco::UInt64 value);
+    void SetTID(Poco::UInt64 value);
 
     std::string StartString() const;
     void SetStartString(const std::string &value);
-    void SetStartTime(const Poco::Int64 value);
+    void SetStartTime(Poco::Int64 value);
 
     std::string StopString() const;
     void SetStopString(const std::string &value);
-    void SetStopTime(const Poco::Int64 value);
+    void SetStopTime(Poco::Int64 value);
 
     void SetDurationInSeconds(const Poco::Int64 value);
-    void SetLastStartAt(const Poco::Int64 value);
+    void SetLastStartAt(Poco::Int64 value);
 
-    void SetBillable(const bool value);
-    void SetDurOnly(const bool value);
-    void SetSkipPomodoro(const bool value);
+    void SetBillable(bool value);
+    void SetDurOnly(bool value);
+    void SetSkipPomodoro(bool value);
 
     // Derived information and modifiers
     bool IsToday() const;

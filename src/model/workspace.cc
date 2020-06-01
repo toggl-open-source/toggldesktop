@@ -22,42 +22,42 @@ void Workspace::SetName(const std::string &value) {
     }
 }
 
-void Workspace::SetPremium(const bool value) {
+void Workspace::SetPremium(bool value) {
     if (Premium() != value) {
         Premium.Set(value);
         SetDirty();
     }
 }
 
-void Workspace::SetOnlyAdminsMayCreateProjects(const bool value) {
+void Workspace::SetOnlyAdminsMayCreateProjects(bool value) {
     if (OnlyAdminsMayCreateProjects() != value) {
         OnlyAdminsMayCreateProjects.Set(value);
         SetDirty();
     }
 }
 
-void Workspace::SetAdmin(const bool value) {
+void Workspace::SetAdmin(bool value) {
     if (Admin() != value) {
         Admin.Set(value);
         SetDirty();
     }
 }
 
-void Workspace::SetProjectsBillableByDefault(const bool value) {
+void Workspace::SetProjectsBillableByDefault(bool value) {
     if (ProjectsBillableByDefault() != value) {
         ProjectsBillableByDefault.Set(value);
         SetDirty();
     }
 }
 
-void Workspace::SetBusiness(const bool value) {
+void Workspace::SetBusiness(bool value) {
     if (Business() != value) {
         Business.Set(value);
         SetDirty();
     }
 }
 
-void Workspace::SetLockedTime(const time_t value) {
+void Workspace::SetLockedTime(time_t value) {
     if (LockedTime() != value) {
         LockedTime.Set(value);
         SetDirty();

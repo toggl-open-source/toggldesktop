@@ -127,7 +127,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     TimelineEvent *good = new TimelineEvent();
     good->SetUID(user_id);
     // started yesterday, "16 minutes ago"
-    good->SetStart(time(0) - 86400 - 60*16);
+    good->SetStartTime(time(0) - 86400 - 60*16);
     good->SetEndTime(good->Start() + good_duration_seconds);
     good->SetFilename("Notepad.exe");
     good->SetTitle("untitled");
@@ -139,7 +139,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // can be uploaded to Toggl backend.
     TimelineEvent *good2 = new TimelineEvent();
     good2->SetUID(user_id);
-    good2->SetStart(good->EndTime() + 1);  // started after first event
+    good2->SetStartTime(good->EndTime() + 1);  // started after first event
     good2->SetEndTime(good2->Start() + good2_duration_seconds);
     good2->SetFilename("Notepad.exe");
     good2->SetTitle("untitled");
@@ -149,7 +149,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // but has already been uploaded to Toggl backend.
     TimelineEvent *uploaded = new TimelineEvent();;
     uploaded->SetUID(user_id);
-    uploaded->SetStart(good2->EndTime() + 1);  // started after second event
+    uploaded->SetStartTime(good2->EndTime() + 1);  // started after second event
     uploaded->SetEndTime(uploaded->Start() + 10);
     uploaded->SetFilename("Notepad.exe");
     uploaded->SetTitle("untitled");
@@ -160,7 +160,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // so it must not be uploaded
     TimelineEvent *too_fresh = new TimelineEvent();
     too_fresh->SetUID(user_id);
-    too_fresh->SetStart(time(0) - 60);  // started 1 minute ago
+    too_fresh->SetStartTime(time(0) - 60);  // started 1 minute ago
     too_fresh->SetEndTime(time(0));  // lasted until now
     too_fresh->SetFilename("Notepad.exe");
     too_fresh->SetTitle("notes");
@@ -170,7 +170,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // so it must not be uploaded, just deleted
     TimelineEvent *too_old = new TimelineEvent();
     too_old->SetUID(user_id);
-    too_old->SetStart(time(0) - kTimelineSecondsToKeep - 1);  // 7 days ago
+    too_old->SetStartTime(time(0) - kTimelineSecondsToKeep - 1);  // 7 days ago
     too_old->SetEndTime(too_old->EndTime() + 120);  // lasted 2 minutes
     too_old->SetFilename("Notepad.exe");
     too_old->SetTitle("diary");
@@ -1562,7 +1562,7 @@ TEST(JSON, ConvertTimelineToJSON) {
     const std::string desktop_id("12345");
 
     TimelineEvent event;
-    event.SetStart(time(0) - 10);
+    event.SetStartTime(time(0) - 10);
     event.SetEndTime(time(0));
     event.SetFilename("Is this the real life?");
     event.SetTitle("Is this just fantasy?");

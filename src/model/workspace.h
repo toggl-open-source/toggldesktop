@@ -24,12 +24,12 @@ class TOGGL_INTERNAL_EXPORT Workspace : public BaseModel {
     Property<bool> Business { false };
 
     void SetName(const std::string &value);
-    void SetPremium(const bool value);
-    void SetOnlyAdminsMayCreateProjects(const bool);
-    void SetAdmin(const bool);
-    void SetProjectsBillableByDefault(const bool);
-    void SetBusiness(const bool value);
-    void SetLockedTime(const time_t value);
+    void SetPremium(bool value);
+    void SetOnlyAdminsMayCreateProjects(bool);
+    void SetAdmin(bool);
+    void SetProjectsBillableByDefault(bool);
+    void SetBusiness(bool value);
+    void SetLockedTime(time_t value);
 
     // Override BaseModel
     std::string String() const override;

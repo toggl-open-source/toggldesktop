@@ -23,9 +23,9 @@ class TOGGL_INTERNAL_EXPORT Task : public BaseModel {
     Property<bool> Active { false };
 
     void SetName(const std::string &value);
-    void SetWID(const Poco::UInt64 value);
-    void SetPID(const Poco::UInt64 value);
-    void SetActive(const bool value);
+    void SetWID(Poco::UInt64 value);
+    void SetPID(Poco::UInt64 value);
+    void SetActive(bool value);
 
     // Override BaseModel
     std::string String() const override;

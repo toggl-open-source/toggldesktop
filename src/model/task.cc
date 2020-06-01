@@ -16,14 +16,14 @@ std::string Task::String() const {
     return ss.str();
 }
 
-void Task::SetPID(const Poco::UInt64 value) {
+void Task::SetPID(Poco::UInt64 value) {
     if (PID() != value) {
         PID.Set(value);
         SetDirty();
     }
 }
 
-void Task::SetWID(const Poco::UInt64 value) {
+void Task::SetWID(Poco::UInt64 value) {
     if (WID() != value) {
         WID.Set(value);
         SetDirty();
@@ -37,7 +37,7 @@ void Task::SetName(const std::string &value) {
     }
 }
 
-void Task::SetActive(const bool value) {
+void Task::SetActive(bool value) {
     if (Active() != value) {
         Active.Set(value);
         SetDirty();

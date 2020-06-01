@@ -28,12 +28,12 @@ class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent 
     Property<bool> Uploaded { false };
 
     void SetTitle(const std::string &value);
-    void SetStart(const Poco::Int64 value);
-    void SetEndTime(const Poco::Int64 value);
-    void SetIdle(const bool value);
     void SetFilename(const std::string &value);
-    void SetChunked(const bool value);
-    void SetUploaded(const bool value);
+    void SetStartTime(Poco::Int64 value);
+    void SetEndTime(Poco::Int64 value);
+    void SetIdle(bool value);
+    void SetChunked(bool value);
+    void SetUploaded(bool value);
 
     // Derived data
     bool VisibleToUser() const {

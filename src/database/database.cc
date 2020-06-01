@@ -1799,7 +1799,7 @@ error Database::loadTimelineEvents(
                 if (!rs[2].isEmpty()) {
                     model->SetFilename(rs[2].convert<std::string>());
                 }
-                model->SetStart(rs[3].convert<int>());
+                model->SetStartTime(rs[3].convert<int>());
                 if (!rs[4].isEmpty()) {
                     model->SetEndTime(rs[4].convert<int>());
                 }

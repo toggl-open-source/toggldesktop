@@ -18,7 +18,7 @@ std::string ObmAction::String() const {
     return ss.str();
 }
 
-void ObmAction::SetExperimentID(const Poco::UInt64 value) {
+void ObmAction::SetExperimentID(Poco::UInt64 value) {
     if (ExperimentID() != value) {
         ExperimentID.Set(value);
         SetDirty();
@@ -66,21 +66,21 @@ std::string ObmExperiment::String() const {
     return ss.str();
 }
 
-void ObmExperiment::SetNr(const Poco::UInt64 value) {
+void ObmExperiment::SetNr(Poco::UInt64 value) {
     if (Nr() != value) {
         Nr.Set(value);
         SetDirty();
     }
 }
 
-void ObmExperiment::SetHasSeen(const bool value) {
+void ObmExperiment::SetHasSeen(bool value) {
     if (HasSeen() != value) {
         HasSeen.Set(value);
         SetDirty();
     }
 }
 
-void ObmExperiment::SetIncluded(const bool value) {
+void ObmExperiment::SetIncluded(bool value) {
     if (Included() != value) {
         Included.Set(value);
         SetDirty();

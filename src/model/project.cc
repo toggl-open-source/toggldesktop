@@ -55,14 +55,14 @@ void Project::SetClientGUID(const std::string &value) {
     }
 }
 
-void Project::SetActive(const bool value) {
+void Project::SetActive(bool value) {
     if (Active() != value) {
         Active.Set(value);
         SetDirty();
     }
 }
 
-void Project::SetPrivate(const bool value) {
+void Project::SetPrivate(bool value) {
     if (Private() != value) {
         Private.Set(value);
         SetDirty();
@@ -76,7 +76,7 @@ void Project::SetName(const std::string &value) {
     }
 }
 
-void Project::SetBillable(const bool value) {
+void Project::SetBillable(bool value) {
     if (Billable() != value) {
         Billable.Set(value);
         SetDirty();
@@ -103,14 +103,14 @@ error Project::SetColorCode(const std::string &color_code) {
     return noError;
 }
 
-void Project::SetWID(const Poco::UInt64 value) {
+void Project::SetWID(Poco::UInt64 value) {
     if (WID() != value) {
         WID.Set(value);
         SetDirty();
     }
 }
 
-void Project::SetCID(const Poco::UInt64 value) {
+void Project::SetCID(Poco::UInt64 value) {
     if (CID() != value) {
         CID.Set(value);
         SetDirty();
