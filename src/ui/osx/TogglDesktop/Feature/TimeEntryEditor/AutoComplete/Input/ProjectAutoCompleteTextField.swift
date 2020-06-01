@@ -84,13 +84,13 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
 
     private func applyColor(with hex: String) {
         guard let color = ConvertHexColor.hexCode(toNSColor: hex) else { return }
-        let visibleColor = color.visibleColor()
-        dotImageView?.fill(with: visibleColor)
+        dotImageView?.fill(with: color)
+        let textColor = color.getAdaptiveColorForText()
         let font = self.font ?? NSFont.systemFont(ofSize: 14.0)
         let parap = NSMutableParagraphStyle()
         parap.lineBreakMode = .byTruncatingTail
         let att: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: font,
-                                                  NSAttributedString.Key.foregroundColor: visibleColor,
+                                                  NSAttributedString.Key.foregroundColor: textColor,
                                                   NSAttributedString.Key.paragraphStyle: parap]
         attributedStringValue = NSAttributedString(string: stringValue, attributes: att)
     }

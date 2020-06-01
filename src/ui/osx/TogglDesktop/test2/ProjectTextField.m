@@ -140,9 +140,8 @@
 
 - (void)setTextColor:(NSColor *)textColor
 {
-	NSColor *visibleColor = [textColor visibleColor];
-
-	[super setTextColor:visibleColor];
+    NSColor *adaptiveColor = [textColor getAdaptiveColorForText];
+	[super setTextColor:adaptiveColor];
 }
 
 @end

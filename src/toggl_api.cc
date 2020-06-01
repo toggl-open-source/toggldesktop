@@ -22,6 +22,7 @@
 #include "model/user.h"
 #include "websocket_client.h"
 #include "window_change_recorder.h"
+#include "color_convert.h"
 
 #include <Poco/Bugcheck.h>
 #include <Poco/Path.h>
@@ -1600,4 +1601,10 @@ void toggl_on_continue_sign_in(
     void *context,
     TogglContinueSignIn cb) {
     app(context)->UI()->OnContinueSignIn(cb);
+}
+
+HsvColor toggl_get_adaptive_hsv_color(
+    RgbColor rgbColor,
+    AdaptiveColor type) {
+    return toggl::ColorConverter::GetAdaptiveColor(rgbColor, type);
 }

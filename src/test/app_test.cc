@@ -20,6 +20,7 @@
 #include "timeline_uploader.h"
 #include "model/user.h"
 #include "model/workspace.h"
+#include "color_convert.h"
 
 #include "test_data.h"
 
@@ -1893,6 +1894,94 @@ TEST(Settings, IsSame) {
     ASSERT_TRUE(s1.IsSame(s3));
     ASSERT_FALSE(s3.IsSame(s2));
     ASSERT_FALSE(s2.IsSame(s3));
+}
+
+TEST(ColorConverter_HSV_0B83D9, IsCorrect) {
+    HsvColor color_1 = toggl::ColorConverter::GetAdaptiveColor("0B83D9", AdaptiveColorShapeOnLightBackground);
+    ASSERT_NEAR(0.57, color_1.h, 0.01);
+    ASSERT_NEAR(0.95, color_1.s, 0.01);
+    ASSERT_NEAR(0.85, color_1.v, 0.01);
+
+    HsvColor color_2 = toggl::ColorConverter::GetAdaptiveColor("0B83D9", AdaptiveColorTextOnLightBackground);
+    ASSERT_NEAR(0.57, color_2.h, 0.01);
+    ASSERT_NEAR(0.95, color_2.s, 0.01);
+    ASSERT_NEAR(0.7, color_2.v, 0.01);
+
+    HsvColor color_3 = toggl::ColorConverter::GetAdaptiveColor("0B83D9", AdaptiveColorShapeOnDarkBackground);
+    ASSERT_NEAR(0.57, color_3.h, 0.01);
+    ASSERT_NEAR(0.81, color_3.s, 0.01);
+    ASSERT_NEAR(0.95, color_3.v, 0.01);
+
+    HsvColor color_4 = toggl::ColorConverter::GetAdaptiveColor("0B83D9", AdaptiveColorTextOnDarkBackground);
+    ASSERT_NEAR(0.57, color_4.h, 0.01);
+    ASSERT_NEAR(0.81, color_4.s, 0.01);
+    ASSERT_NEAR(1.0, color_4.v, 0.01);
+}
+
+TEST(ColorConverter_RGB_0B83D9, IsCorrect) {
+    RgbColor color_1 = toggl::ColorConverter::GetRgbAdaptiveColor("0B83D9", AdaptiveColorShapeOnLightBackground);
+    ASSERT_NEAR(0.04, color_1.r, 0.01);
+    ASSERT_NEAR(0.51, color_1.g, 0.01);
+    ASSERT_NEAR(0.85, color_1.b, 0.01);
+
+    RgbColor color_2 = toggl::ColorConverter::GetRgbAdaptiveColor("0B83D9", AdaptiveColorTextOnLightBackground);
+    ASSERT_NEAR(0.03, color_2.r, 0.01);
+    ASSERT_NEAR(0.42, color_2.g, 0.01);
+    ASSERT_NEAR(0.70, color_2.b, 0.01);
+
+    RgbColor color_3 = toggl::ColorConverter::GetRgbAdaptiveColor("0B83D9", AdaptiveColorShapeOnDarkBackground);
+    ASSERT_NEAR(0.18, color_3.r, 0.01);
+    ASSERT_NEAR(0.63, color_3.g, 0.01);
+    ASSERT_NEAR(0.95, color_3.b, 0.01);
+
+    RgbColor color_4 = toggl::ColorConverter::GetRgbAdaptiveColor("0B83D9", AdaptiveColorTextOnDarkBackground);
+    ASSERT_NEAR(0.19, color_4.r, 0.01);
+    ASSERT_NEAR(0.66, color_4.g, 0.01);
+    ASSERT_NEAR(1.0, color_4.b, 0.01);
+}
+
+TEST(ColorConverter_RGB_991102, IsCorrect) {
+    RgbColor color_1 = toggl::ColorConverter::GetRgbAdaptiveColor("991102", AdaptiveColorShapeOnLightBackground);
+    ASSERT_NEAR(0.60, color_1.r, 0.01);
+    ASSERT_NEAR(0.07, color_1.g, 0.01);
+    ASSERT_NEAR(0.01, color_1.b, 0.01);
+
+    RgbColor color_2 = toggl::ColorConverter::GetRgbAdaptiveColor("991102", AdaptiveColorTextOnLightBackground);
+    ASSERT_NEAR(0.45, color_2.r, 0.01);
+    ASSERT_NEAR(0.05, color_2.g, 0.01);
+    ASSERT_NEAR(0.0, color_2.b, 0.01);
+
+    RgbColor color_3 = toggl::ColorConverter::GetRgbAdaptiveColor("991102", AdaptiveColorShapeOnDarkBackground);
+    ASSERT_NEAR(0.86, color_3.r, 0.01);
+    ASSERT_NEAR(0.40, color_3.g, 0.01);
+    ASSERT_NEAR(0.35, color_3.b, 0.01);
+
+    RgbColor color_4 = toggl::ColorConverter::GetRgbAdaptiveColor("991102", AdaptiveColorTextOnDarkBackground);
+    ASSERT_NEAR(0.91, color_4.r, 0.01);
+    ASSERT_NEAR(0.43, color_4.g, 0.01);
+    ASSERT_NEAR(0.37, color_4.b, 0.01);
+}
+
+TEST(ColorConverter_RGB_2DA608, IsCorrect) {
+    RgbColor color_1 = toggl::ColorConverter::GetRgbAdaptiveColor("2DA608", AdaptiveColorShapeOnLightBackground);
+    ASSERT_NEAR(0.17, color_1.r, 0.01);
+    ASSERT_NEAR(0.65, color_1.g, 0.01);
+    ASSERT_NEAR(0.04, color_1.b, 0.01);
+
+    RgbColor color_2 = toggl::ColorConverter::GetRgbAdaptiveColor("2DA608", AdaptiveColorTextOnLightBackground);
+    ASSERT_NEAR(0.14, color_2.r, 0.01);
+    ASSERT_NEAR(0.50, color_2.g, 0.01);
+    ASSERT_NEAR(0.03, color_2.b, 0.01);
+
+    RgbColor color_3 = toggl::ColorConverter::GetRgbAdaptiveColor("2DA608", AdaptiveColorShapeOnDarkBackground);
+    ASSERT_NEAR(0.46, color_3.r, 0.01);
+    ASSERT_NEAR(0.88, color_3.g, 0.01);
+    ASSERT_NEAR(0.33, color_3.b, 0.01);
+
+    RgbColor color_4 = toggl::ColorConverter::GetRgbAdaptiveColor("2DA608", AdaptiveColorTextOnDarkBackground);
+    ASSERT_NEAR(0.49, color_4.r, 0.01);
+    ASSERT_NEAR(0.93, color_4.g, 0.01);
+    ASSERT_NEAR(0.35, color_4.b, 0.01);
 }
 
 }  // namespace toggl

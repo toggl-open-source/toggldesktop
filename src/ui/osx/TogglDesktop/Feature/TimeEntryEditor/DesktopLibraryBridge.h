@@ -114,6 +114,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString * _Nullable) formatDurationTimestampt:(NSTimeInterval) duration;
 
+#pragma mark - Colors
+
+- (NSColor *) getAdaptiveColorForShapeFromColor:(NSColor *) color;
+- (NSColor *) getAdaptiveColorForTextFromColor:(NSColor *) color;
+
 #pragma mark - Onboarding Actions
 
 - (void)userDidClickOnTimelineTab;

@@ -474,6 +474,7 @@
     <ClInclude Include="..\..\..\model\user.h" />
     <ClInclude Include="..\..\..\websocket_client.h" />
     <ClInclude Include="..\..\..\window_change_recorder.h" />
+    <ClInclude Include="..\..\..\color_convert.h" />
     <ClInclude Include="..\..\..\model\workspace.h" />
     <ClCompile Include="..\..\..\onboarding_service.h" />
     <ClCompile Include="..\..\..\cpptime.h" />
@@ -518,6 +519,7 @@
     <ClCompile Include="..\..\..\model\user.cc" />
     <ClCompile Include="..\..\..\websocket_client.cc" />
     <ClCompile Include="..\..\..\window_change_recorder.cc" />
+    <ClCompile Include="..\..\..\color_convert.cc" />
     <ClCompile Include="..\..\..\model\workspace.cc" />
     <ClCompile Include="..\..\..\onboarding_service.cpp" />
     <ClCompile Include="dllmain.cpp">

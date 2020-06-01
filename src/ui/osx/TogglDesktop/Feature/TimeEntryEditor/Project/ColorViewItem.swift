@@ -28,8 +28,10 @@ final class ColorViewItem: NSCollectionViewItem {
     }
     
     func render(_ color: ProjectColor) {
-        guard let color = ConvertHexColor.hexCode(toNSColor: color.hex) else { return }
-        boxView.fillColor = color
+        guard let color = ConvertHexColor.hexCode(toNSColor: color.hex) else {
+            return
+        }
+        boxView.fillColor = color.getAdaptiveColorForShape()
     }
 
     override var isSelected: Bool {
