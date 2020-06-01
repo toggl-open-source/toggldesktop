@@ -36,9 +36,11 @@ namespace TogglDesktop.ViewModels
 
         private HotKey _continueStopTimerSaved;
         private HotKey _showHideTogglSaved;
+        private String _proxyHostSaved;
 
         private readonly ValidationHelper _showHideTogglValidation;
         private readonly ValidationHelper _continueStopTimerValidation;
+        private readonly ValidationHelper _proxyHostValidation;
 
         public PreferencesWindowViewModel(ShowMessageBoxDelegate showMessageBox, Action closePreferencesWindow)
         {
@@ -65,6 +67,10 @@ namespace TogglDesktop.ViewModels
                 vm => vm.ContinueStopTimer,
                 hotKey => IsHotKeyValid(hotKey, ContinueStopTimerDescription),
                 hotKey => $"This shortcut is already taken by {_knownShortcuts[hotKey]}");
+            _proxyHostValidation = this.ValidationRule(
+                x => x.ProxyHost,
+                proxyHost => Uri.CheckHostName(proxyHost) != UriHostNameType.Unknown,
+                "Please, enter a valid host");
         }
 
         public ICommand ClearCacheCommand { get; }
@@ -79,10 +85,14 @@ namespace TogglDesktop.ViewModels
         public HotKey GetContinueStopTimerIfChanged() =>
             !object.Equals(ContinueStopTimer, _continueStopTimerSaved) ? (ContinueStopTimer ?? new HotKey(Key.None)) : null;
 
+        [Reactive]
+        public string ProxyHost { get; set; }
+
         public void ResetRecordedShortcuts()
         {
             ShowHideToggl = _showHideTogglSaved;
             ContinueStopTimer = _continueStopTimerSaved;
+            ProxyHost = _proxyHostSaved;
         }
 
         public void LoadShortcutsFromSettings()
@@ -93,10 +103,16 @@ namespace TogglDesktop.ViewModels
             ContinueStopTimer = _continueStopTimerSaved;
         }
 
+        public void SetSavedProxyHost(String savedProxyHost)
+        {
+            _proxyHostSaved = savedProxyHost;
+        }
+
         public void ResetPropsWithErrorsToPreviousValues()
         {
             if (!_showHideTogglValidation.IsValid) ShowHideToggl = _showHideTogglSaved;
             if (!_continueStopTimerValidation.IsValid) ContinueStopTimer = _continueStopTimerSaved;
+            if (!_proxyHostValidation.IsValid) ProxyHost = _proxyHostSaved;
         }
 
         private bool IsHotKeyValid(HotKey hotKey, string hotKeyDescription)
