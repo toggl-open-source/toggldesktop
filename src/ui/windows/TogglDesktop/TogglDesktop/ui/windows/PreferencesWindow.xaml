@@ -396,7 +396,8 @@
                                        VerticalAlignment="Center"
                                        Text="Password"/>
                             <TextBox Grid.Row="0" Grid.Column="1"
-                                     Name="proxyHostTextBox" x:FieldModifier="private"/>
+                                     Name="proxyHostTextBox" x:FieldModifier="private"
+                                     Text="{Binding ProxyHost, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
                             <TextBox Grid.Row="1" Grid.Column="1" Margin="0 8 0 0"
                                      Name="proxyPortTextBox" x:FieldModifier="private"/>
                             <TextBox Grid.Row="2" Grid.Column="1" Margin="0 8 0 0"
