@@ -213,20 +213,20 @@ extern "C" {
     } TogglCountryView;
 
     // Range values from [0..1]
-    typedef struct RgbColor {
+    typedef struct {
         double r;
         double g;
         double b;
     } RgbColor;
 
     // Range values from [0..1]
-    typedef struct HsvColor {
+    typedef struct {
         double h;
         double s;
         double v;
     } HsvColor;
 
-    typedef enum AdaptiveColor {
+    typedef enum {
         AdaptiveColorShapeOnLightBackground,
         AdaptiveColorShapeOnDarkBackground,
         AdaptiveColorTextOnLightBackground,
@@ -320,7 +320,8 @@ extern "C" {
     typedef void (*TogglDisplayTimerState)(
         TogglTimeEntryView *te);
 
-    typedef void (*TogglContinueSignIn)(void);
+    typedef void (*TogglContinueSignIn)(
+    );
 
     typedef void (*TogglDisplayIdleNotification)(
         const char_t *guid,
@@ -1248,9 +1249,9 @@ extern "C" {
         void *context,
         TogglContinueSignIn cb);
 
-TOGGL_EXPORT HsvColor toggl_get_adaptive_hsv_color(
-       RgbColor rgbColor,
-       AdaptiveColor type);
+    TOGGL_EXPORT HsvColor toggl_get_adaptive_hsv_color(
+        RgbColor rgbColor,
+        AdaptiveColor type);
 
 #undef TOGGL_EXPORT
 
