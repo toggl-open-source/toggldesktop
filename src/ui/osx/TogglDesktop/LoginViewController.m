@@ -18,7 +18,10 @@ typedef NS_ENUM (NSUInteger, TabViewType)
 {
     TabViewTypeLogin,
     TabViewTypeSingup,
-    TabViewTypeContinueSignin
+    TabViewTypeContinueSignin,
+    TabViewTypeInputSSO,
+    TabViewTypeEmailExistsSSO,
+    TabViewTypeLoginEnableSSO
 };
 
 static NSString *const emailMissingError = @"Please enter valid email address";
@@ -87,6 +90,13 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (nonatomic, copy) NSString *fullName;
 @property (nonatomic, assign) BOOL isCountryLoaded;
 
+@property (weak) IBOutlet NSTabView *tabView;
+@property (weak) IBOutlet NSTabViewItem *loginAndSignUpTabItem;
+@property (weak) IBOutlet NSTabViewItem *inputSSOTabItem;
+
+// SSO
+@property (weak) IBOutlet NSTextFieldClickablePointer *loginWithDifferentMethodBtn;
+
 - (IBAction)userActionButtonOnClick:(id)sender;
 - (IBAction)countrySelected:(id)sender;
 
@@ -124,7 +134,9 @@ extern void *ctx;
     self.password.delegate = self;
     self.isCountryLoaded = NO;
     self.loginWithSSOBtn.delegate = self;
+    self.loginWithDifferentMethodBtn.delegate = self;
 
+    self.loginWithDifferentMethodBtn.titleUnderline = YES;
     self.forgotPasswordTextField.titleUnderline = YES;
     self.signUpLink.titleUnderline = YES;
     self.loginWithSSOBtn.titleUnderline = YES;
@@ -209,6 +221,12 @@ extern void *ctx;
             case TabViewTypeContinueSignin:
                 [self changeTabView:TabViewTypeLogin];
                 break;
+            case TabViewTypeInputSSO:
+                break;
+            case TabViewTypeEmailExistsSSO:
+                break;
+            case TabViewTypeLoginEnableSSO:
+                break;
         }
         return;
     }
@@ -222,6 +240,16 @@ extern void *ctx;
     if (sender == self.privacyLink || sender == self.privacyContinueLink)
     {
         toggl_privacy_policy(ctx);
+        return;
+    }
+
+    if (sender == self.loginWithSSOBtn) {
+        [self changeTabView:TabViewTypeInputSSO];
+        return;
+    }
+
+    if (sender == self.loginWithDifferentMethodBtn) {
+        [self changeTabView:TabViewTypeLogin];
         return;
     }
 }
@@ -242,13 +270,11 @@ extern void *ctx;
     [self showLoaderView:NO];
     [self displayPasswordStrengthView:NO];
     [self loadCountryListIfNeed];
-    
-    // Focus on email when changing mode
-    [self.view.window makeFirstResponder:self.email];
 
     switch (type)
     {
         case TabViewTypeLogin :
+            [self.tabView selectTabViewItem:self.loginAndSignUpTabItem];
             self.appleGoogleGroupViewTop.constant = kLoginAppleViewTop;
             self.containerViewHeight.constant = kLoginContainerHeight;
             self.signUpGroupView.hidden = YES;
@@ -273,9 +299,14 @@ extern void *ctx;
             self.signUpLink.hidden = NO;
             self.termContinueSignInView.hidden = YES;
             self.termSignUpContainerView.hidden = NO;
+
+            // Focus on email when changing mode
+            [self.view.window makeFirstResponder:self.email];
+
             break;
 
         case TabViewTypeSingup :
+            [self.tabView selectTabViewItem:self.loginAndSignUpTabItem];
             self.appleGoogleGroupViewTop.constant = kSignupAppleViewTop;
             self.containerViewHeight.constant = kSignupContainerHeight;
             self.signUpGroupView.hidden = NO;
@@ -291,9 +322,14 @@ extern void *ctx;
             self.termContinueSignInView.hidden = YES;
             self.termSignUpContainerView.hidden = NO;
             self.loginWithSSOBtn.hidden = YES;
+
+            // Focus on email when changing mode
+            [self.view.window makeFirstResponder:self.email];
+
             break;
 
         case TabViewTypeContinueSignin:
+            [self.tabView selectTabViewItem:self.loginAndSignUpTabItem];
             self.appleGoogleGroupViewTop.constant = kSignupAppleViewTop;
             self.containerViewHeight.constant = kSignupContainerHeight;
             self.signUpGroupView.hidden = NO;
@@ -322,6 +358,9 @@ extern void *ctx;
             self.termSignUpContainerView.hidden = YES;
             self.loginWithSSOBtn.hidden = YES;
             break;
+        case TabViewTypeInputSSO:
+            [self.tabView selectTabViewItem:self.inputSSOTabItem];
+
     }
 
     // Reset touchbar
@@ -709,6 +748,12 @@ extern void *ctx;
             break;
         case TabViewTypeContinueSignin:
             break;
+        case TabViewTypeInputSSO:
+            break;
+        case TabViewTypeEmailExistsSSO:
+            break;
+        case TabViewTypeLoginEnableSSO:
+            break;
     }
 }
 
@@ -723,6 +768,12 @@ extern void *ctx;
             [self signupGoogleBtnOnTap:sender];
             break;
         case TabViewTypeContinueSignin:
+            break;
+        case TabViewTypeInputSSO:
+            break;
+        case TabViewTypeEmailExistsSSO:
+            break;
+        case TabViewTypeLoginEnableSSO:
             break;
     }
 }
