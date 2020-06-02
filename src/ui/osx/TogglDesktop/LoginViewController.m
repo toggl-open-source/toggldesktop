@@ -19,9 +19,9 @@ typedef NS_ENUM (NSUInteger, TabViewType)
     TabViewTypeLogin,
     TabViewTypeSingup,
     TabViewTypeContinueSignin,
-    TabViewTypeInputSSO,
+    TabViewTypeEmailInputSSO,
     TabViewTypeEmailExistsSSO,
-    TabViewTypeLoginEnableSSO
+    TabViewTypeLoginSSO
 };
 
 static NSString *const emailMissingError = @"Please enter valid email address";
@@ -94,10 +94,12 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSTabViewItem *loginAndSignUpTabItem;
 @property (weak) IBOutlet NSTabViewItem *inputSSOTabItem;
+@property (weak) IBOutlet NSTabViewItem *emailExistSSOTabItem;
 
 // SSO
 @property (weak) IBOutlet NSTextFieldClickablePointer *loginWithDifferentMethodBtn;
 @property (weak) IBOutlet NSTextField *emailSSOTextField;
+@property (weak) IBOutlet NSTextFieldClickablePointer *backToSSOBtn;
 
 - (IBAction)userActionButtonOnClick:(id)sender;
 - (IBAction)countrySelected:(id)sender;
@@ -137,7 +139,9 @@ extern void *ctx;
     self.isCountryLoaded = NO;
     self.loginWithSSOBtn.delegate = self;
     self.loginWithDifferentMethodBtn.delegate = self;
+    self.backToSSOBtn.delegate = self;
 
+    self.backToSSOBtn.titleUnderline = YES;
     self.loginWithDifferentMethodBtn.titleUnderline = YES;
     self.forgotPasswordTextField.titleUnderline = YES;
     self.signUpLink.titleUnderline = YES;
@@ -223,11 +227,11 @@ extern void *ctx;
             case TabViewTypeContinueSignin:
                 [self changeTabView:TabViewTypeLogin];
                 break;
-            case TabViewTypeInputSSO:
+            case TabViewTypeEmailInputSSO:
                 break;
             case TabViewTypeEmailExistsSSO:
                 break;
-            case TabViewTypeLoginEnableSSO:
+            case TabViewTypeLoginSSO:
                 break;
         }
         return;
@@ -246,12 +250,17 @@ extern void *ctx;
     }
 
     if (sender == self.loginWithSSOBtn) {
-        [self changeTabView:TabViewTypeInputSSO];
+        [self changeTabView:TabViewTypeEmailInputSSO];
         return;
     }
 
     if (sender == self.loginWithDifferentMethodBtn) {
         [self changeTabView:TabViewTypeLogin];
+        return;
+    }
+
+    if (sender == self.backToSSOBtn) {
+        [self changeTabView:TabViewTypeEmailInputSSO];
         return;
     }
 }
@@ -301,6 +310,7 @@ extern void *ctx;
             self.signUpLink.hidden = NO;
             self.termContinueSignInView.hidden = YES;
             self.termSignUpContainerView.hidden = NO;
+            self.welcomeToTogglLbl.stringValue = @"Welcome to Toggl!";
 
             // Focus on email when changing mode
             [self.view.window makeFirstResponder:self.email];
@@ -360,9 +370,19 @@ extern void *ctx;
             self.termSignUpContainerView.hidden = YES;
             self.loginWithSSOBtn.hidden = YES;
             break;
-        case TabViewTypeInputSSO:
+        case TabViewTypeEmailInputSSO:
             [self.tabView selectTabViewItem:self.inputSSOTabItem];
+            break;
 
+        case TabViewTypeEmailExistsSSO:
+            [self.tabView selectTabViewItem:self.emailExistSSOTabItem];
+            break;
+
+        case TabViewTypeLoginSSO:
+            [self.tabView selectTabViewItem:self.loginAndSignUpTabItem];
+            self.welcomeToTogglLbl.stringValue = @"Log in to enable SSO";
+
+            break;
     }
 
     // Reset touchbar
@@ -484,6 +504,7 @@ extern void *ctx;
             {
                 return NO;
             }
+            return YES;
     }
 
     return NO;
@@ -632,11 +653,11 @@ extern void *ctx;
                 return [self.loginTouchBar makeTouchBarFor:LoginSignupModeSignUp];
             case TabViewTypeContinueSignin:
                 return nil;
-            case TabViewTypeInputSSO:
+            case TabViewTypeEmailInputSSO:
                 return nil;
             case TabViewTypeEmailExistsSSO:
                 return nil;
-            case TabViewTypeLoginEnableSSO:
+            case TabViewTypeLoginSSO:
                 return nil;
         }
     }
@@ -684,11 +705,11 @@ extern void *ctx;
         case TabViewTypeContinueSignin:
             [self continueBtnOnClick:sender];
             break;
-        case TabViewTypeInputSSO:
+        case TabViewTypeEmailInputSSO:
             break;
         case TabViewTypeEmailExistsSSO:
             break;
-        case TabViewTypeLoginEnableSSO:
+        case TabViewTypeLoginSSO:
             break;
     }
 }
@@ -762,11 +783,11 @@ extern void *ctx;
             break;
         case TabViewTypeContinueSignin:
             break;
-        case TabViewTypeInputSSO:
+        case TabViewTypeEmailInputSSO:
             break;
         case TabViewTypeEmailExistsSSO:
             break;
-        case TabViewTypeLoginEnableSSO:
+        case TabViewTypeLoginSSO:
             break;
     }
 }
@@ -783,11 +804,11 @@ extern void *ctx;
             break;
         case TabViewTypeContinueSignin:
             break;
-        case TabViewTypeInputSSO:
+        case TabViewTypeEmailInputSSO:
             break;
         case TabViewTypeEmailExistsSSO:
             break;
-        case TabViewTypeLoginEnableSSO:
+        case TabViewTypeLoginSSO:
             break;
     }
 }
@@ -983,6 +1004,13 @@ extern void *ctx;
 
     NSString *email = [self.email stringValue];
     [self showLoaderView:YES];
+
+    // Test
+    [self changeTabView:TabViewTypeEmailExistsSSO];
 }
 
+- (IBAction)loginToEnableSSLOnClick:(id)sender
+{
+    [self changeTabView:TabViewTypeLoginSSO];
+}
 @end
