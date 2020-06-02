@@ -17,6 +17,7 @@
                 <outlet property="countryStackViewTop" destination="cGN-SQ-JsO" id="uWp-71-QZn"/>
                 <outlet property="donotHaveAccountLbl" destination="Nf5-yf-qTk" id="XQ0-eS-6lG"/>
                 <outlet property="email" destination="KGi-ca-Yer" id="PBJ-L7-SlM"/>
+                <outlet property="emailSSOTextField" destination="Fe5-9z-a69" id="7fC-Mo-8bV"/>
                 <outlet property="forgotPasswordTextField" destination="dzR-Wz-TvW" id="RkM-IV-nDU"/>
                 <outlet property="googleBtn" destination="tJn-oc-LUz" id="IkN-sj-6Yv"/>
                 <outlet property="inputSSOTabItem" destination="bwX-Cn-Dy6" id="Fh8-YA-TL3"/>
@@ -535,7 +536,7 @@
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="51R-gT-AXP"/>
                                                             </constraints>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" placeholderString="Email address" bezelStyle="round" id="9Xg-dE-6Nu">
+                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" placeholderString="Work email address" bezelStyle="round" id="9Xg-dE-6Nu">
                                                                 <font key="font" metaFont="controlContent"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -549,7 +550,7 @@
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="Hut-rw-rIR"/>
                                                             </constraints>
-                                                            <buttonCell key="cell" type="bevel" title="Log in" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="le9-v8-77Y">
+                                                            <buttonCell key="cell" type="bevel" title="Continue" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="le9-v8-77Y">
                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                 <font key="font" metaFont="systemMedium" size="12"/>
                                                             </buttonCell>
@@ -571,7 +572,7 @@
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
-                                                                <action selector="userActionButtonOnClick:" target="-2" id="gqW-CE-beL"/>
+                                                                <action selector="emailSSOContinueBtnOnClick:" target="-2" id="z9N-rm-kJg"/>
                                                                 <outlet property="nextKeyView" destination="vHA-Cd-ciE" id="AJN-SU-hEJ"/>
                                                             </connections>
                                                         </button>

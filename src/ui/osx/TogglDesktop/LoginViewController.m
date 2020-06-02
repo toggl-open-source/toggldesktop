@@ -37,6 +37,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
     UserActionGoogleSignup,
     UserActionAppleLogin,
     UserActionAppleSignup,
+    UserActionContinueSSO
 };
 
 #define kLoginAppleViewTop 86.0
@@ -96,6 +97,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 
 // SSO
 @property (weak) IBOutlet NSTextFieldClickablePointer *loginWithDifferentMethodBtn;
+@property (weak) IBOutlet NSTextField *emailSSOTextField;
 
 - (IBAction)userActionButtonOnClick:(id)sender;
 - (IBAction)countrySelected:(id)sender;
@@ -433,7 +435,7 @@ extern void *ctx;
     switch (action)
     {
         case UserActionAccountLogin :
-            if (![self isEmalValid])
+            if (![self isValidEmail:self.email.stringValue])
             {
                 return NO;
             }
@@ -444,7 +446,7 @@ extern void *ctx;
             return YES;
 
         case UserActionAccountSignup :
-            if (![self isEmalValid])
+            if (![self isValidEmail:self.email.stringValue])
             {
                 return NO;
             }
@@ -477,9 +479,11 @@ extern void *ctx;
                 return NO;
             }
             return YES;
-
-        default :
-            break;
+        case UserActionContinueSSO:
+            if (![self isValidEmail:self.emailSSOTextField.stringValue])
+            {
+                return NO;
+            }
     }
 
     return NO;
@@ -558,10 +562,8 @@ extern void *ctx;
     [self showLoaderView:NO];
 }
 
-- (BOOL)isEmalValid
+- (BOOL)isValidEmail:(NSString *) email
 {
-    NSString *email = [self.email stringValue];
-
     if (email == nil || !email.length)
     {
         [self.email.window makeFirstResponder:self.email];
@@ -630,6 +632,12 @@ extern void *ctx;
                 return [self.loginTouchBar makeTouchBarFor:LoginSignupModeSignUp];
             case TabViewTypeContinueSignin:
                 return nil;
+            case TabViewTypeInputSSO:
+                return nil;
+            case TabViewTypeEmailExistsSSO:
+                return nil;
+            case TabViewTypeLoginEnableSSO:
+                return nil;
         }
     }
     return nil;
@@ -675,6 +683,12 @@ extern void *ctx;
             break;
         case TabViewTypeContinueSignin:
             [self continueBtnOnClick:sender];
+            break;
+        case TabViewTypeInputSSO:
+            break;
+        case TabViewTypeEmailExistsSSO:
+            break;
+        case TabViewTypeLoginEnableSSO:
             break;
     }
 }
@@ -954,4 +968,21 @@ extern void *ctx;
             break;
     }
 }
+
+#pragma mark - SSO
+
+- (IBAction)emailSSOContinueBtnOnClick:(id)sender
+{
+    self.userAction = UserActionContinueSSO;
+
+    // Validate all values inserted
+    if (![self validateFormForAction:self.userAction])
+    {
+        return;
+    }
+
+    NSString *email = [self.email stringValue];
+    [self showLoaderView:YES];
+}
+
 @end
