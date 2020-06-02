@@ -48,11 +48,14 @@ final class TimelineDashboardViewController: NSViewController {
     private var isFirstTime = true
     lazy var datePickerView: DatePickerView = DatePickerView.xibView()
     private lazy var datasource = TimelineDatasource(collectionView)
+
     private var zoomLevel: TimelineDatasource.ZoomLevel = .x1 {
         didSet {
             datasource.update(zoomLevel)
         }
     }
+    private var zoomGestureDelta: CGFloat = 0
+
     private lazy var timeEntryHoverController: TimelineTimeEntryHoverViewController = {
         return TimelineTimeEntryHoverViewController(nibName: "TimelineTimeEntryHoverViewController", bundle: nil)
     }()
@@ -171,16 +174,6 @@ final class TimelineDashboardViewController: NSViewController {
         }
     }
 
-    @IBAction func zoomLevelDecreaseOnChange(_ sender: Any) {
-        guard let next = zoomLevel.nextLevel else { return }
-        zoomLevel = next
-    }
-
-    @IBAction func zoomLevelIncreaseOnChange(_ sender: Any) {
-        guard let previous = zoomLevel.previousLevel else { return }
-        zoomLevel = previous
-    }
-
     @IBAction func permissionBtnOnClicked(_ sender: Any) {
         SystemPermissionManager.shared.grant(.screenRecording)
     }
@@ -201,6 +194,38 @@ final class TimelineDashboardViewController: NSViewController {
 
     func previousDay() {
         datePickerView.previousDateBtnOnTap(self)
+    }
+
+    // MARK: Zoom
+
+    @IBAction func zoomLevelDecreaseOnChange(_ sender: Any) {
+        guard let next = zoomLevel.nextLevel else { return }
+        zoomLevel = next
+    }
+
+    @IBAction func zoomLevelIncreaseOnChange(_ sender: Any) {
+        guard let previous = zoomLevel.previousLevel else { return }
+        zoomLevel = previous
+    }
+
+    override func magnify(with event: NSEvent) {
+        super.magnify(with: event)
+
+        let location = view.convert(event.locationInWindow, from: nil)
+        guard collectionViewContainerView.frame.contains(location) else {
+            return
+        }
+
+        if event.phase == .began {
+            zoomGestureDelta = zoomLevel.gestureDelta
+        } else if event.phase == .changed {
+            zoomGestureDelta += event.deltaZ
+
+            let newZoomLevel = TimelineDatasource.ZoomLevel(gestureDelta: zoomGestureDelta)
+            if newZoomLevel != zoomLevel {
+                zoomLevel = newZoomLevel
+            }
+        }
     }
 }
 
