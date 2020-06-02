@@ -639,7 +639,7 @@ char_t *toggl_format_tracked_time_duration(
     return copy_string(formatted);
 }
 
-char_t *toggl_start(
+char_t *toggl_start_with_current_running(
     void *context,
     const char_t *description,
     const char_t *duration,
@@ -649,7 +649,8 @@ char_t *toggl_start(
     const char_t *tags,
     const bool_t prevent_on_app,
     const uint64_t started,
-    const uint64_t ended) {
+    const uint64_t ended,
+    const bool_t stop_current_running) {
 
     logger().debug("toggl_start");
 
@@ -683,11 +684,36 @@ char_t *toggl_start(
         prevent_on_app,
         started,
         ended,
-        true);
+        stop_current_running);
     if (te) {
         return copy_string(te->GUID());
     }
     return nullptr;
+}
+
+char_t *toggl_start(
+    void *context,
+    const char_t *description,
+    const char_t *duration,
+    const uint64_t task_id,
+    const uint64_t project_id,
+    const char_t *project_guid,
+    const char_t *tags,
+    const bool_t prevent_on_app,
+    const uint64_t started,
+    const uint64_t ended) {
+
+    return toggl_start_with_current_running(context,
+                                            description,
+                                            duration,
+                                            task_id,
+                                            project_id,
+                                            project_guid,
+                                            tags,
+                                            prevent_on_app,
+                                            started,
+                                            ended,
+                                            true); // stopping current tasks by default
 }
 
 char_t *toggl_create_empty_time_entry(
