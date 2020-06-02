@@ -217,21 +217,21 @@ extern "C" {
         double r;
         double g;
         double b;
-    } RgbColor;
+    } TogglRgbColor;
 
     // Range values from [0..1]
     typedef struct {
         double h;
         double s;
         double v;
-    } HsvColor;
+    } TogglHsvColor;
 
     typedef enum {
         AdaptiveColorShapeOnLightBackground,
         AdaptiveColorShapeOnDarkBackground,
         AdaptiveColorTextOnLightBackground,
         AdaptiveColorTextOnDarkBackground
-    } AdaptiveColor;
+    } TogglAdaptiveColor;
 
     // Callbacks that need to be implemented in UI
 
@@ -1249,9 +1249,9 @@ extern "C" {
         void *context,
         TogglContinueSignIn cb);
 
-    TOGGL_EXPORT HsvColor toggl_get_adaptive_hsv_color(
-        RgbColor rgbColor,
-        AdaptiveColor type);
+    TOGGL_EXPORT TogglHsvColor toggl_get_adaptive_hsv_color(
+        TogglRgbColor rgbColor,
+        TogglAdaptiveColor type);
 
 #undef TOGGL_EXPORT
 
