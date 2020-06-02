@@ -75,6 +75,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (weak) IBOutlet NSLayoutConstraint *countryStackViewTop;
 @property (weak) IBOutlet NSView *termSignUpContainerView;
 @property (weak) IBOutlet NSView *termContinueSignInView;
+@property (weak) IBOutlet NSTextFieldClickablePointer *loginWithSSOBtn;
 
 @property (nonatomic, strong) PasswordStrengthView *passwordStrengthView;
 @property (nonatomic, strong) AutocompleteDataSource *countryAutocompleteDataSource;
@@ -122,9 +123,11 @@ extern void *ctx;
     self.email.delegate = self;
     self.password.delegate = self;
     self.isCountryLoaded = NO;
+    self.loginWithSSOBtn.delegate = self;
 
     self.forgotPasswordTextField.titleUnderline = YES;
     self.signUpLink.titleUnderline = YES;
+    self.loginWithSSOBtn.titleUnderline = YES;
     self.tosLink.titleUnderline = YES;
     self.privacyLink.titleUnderline = YES;
     self.tosContinueLink.titleUnderline = YES;
@@ -258,6 +261,7 @@ extern void *ctx;
             self.signUpLink.titleUnderline = YES;
             self.welcomeToTogglLbl.hidden = YES;
 
+            self.loginWithSSOBtn.hidden = NO;
             self.welcomeToTogglLbl.hidden = YES;
             self.subWelcomeLbl.hidden = YES;
             self.socialButtonStackView.hidden = NO;
@@ -286,6 +290,7 @@ extern void *ctx;
             self.countryStackViewTop.constant = 66;
             self.termContinueSignInView.hidden = YES;
             self.termSignUpContainerView.hidden = NO;
+            self.loginWithSSOBtn.hidden = YES;
             break;
 
         case TabViewTypeContinueSignin:
@@ -315,6 +320,7 @@ extern void *ctx;
             self.signUpLink.titleUnderline = YES;
             self.termContinueSignInView.hidden = NO;
             self.termSignUpContainerView.hidden = YES;
+            self.loginWithSSOBtn.hidden = YES;
             break;
     }
 
