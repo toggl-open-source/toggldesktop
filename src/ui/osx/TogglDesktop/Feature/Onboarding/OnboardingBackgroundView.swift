@@ -28,6 +28,8 @@ final class OnboardingBackgroundView: NSView {
     }()
     private var maskFrame: CGRect?
 
+    private let maskCornerRadius: CGFloat = 4
+
     // MARK: Init
 
     override init(frame frameRect: NSRect) {
@@ -53,12 +55,13 @@ final class OnboardingBackgroundView: NSView {
         maskFrame = frame
 
         // Create a bezier path
-        let path = NSBezierPath(rect: frame)
-        path.append(NSBezierPath(rect: bounds))
+        let path = NSBezierPath(
+            roundedRect: frame,
+            xRadius: maskCornerRadius,
+            yRadius: maskCornerRadius
+        ).flattened
 
-        //TODO: Find the way to support 4 rounded corners
-        // For some reasons, the NSBezierPath is skew
-        // https://github.com/toggl-open-source/toggldesktop/issues/4106
+        path.append(NSBezierPath(rect: bounds))
 
         // Set mask
         maskLayer.path = path.cgPath
