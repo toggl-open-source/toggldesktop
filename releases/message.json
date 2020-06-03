@@ -1,11 +1,11 @@
 {
 	"id": 2,
 	"from": 1576573200,
-	"to": 1591190835,
+	"to": 1591747200,
 	"type": 0,
   "appversion": "7.5.46",
 	"title": "Update your app to continue using Toggl",
-	"text": "Please update your app by clicking cogwheel -> About -> Restart&Update or download and install the updated app manually",
+	"text": "To ensure that your Toggl app continues to sync entries, please update the app by clicking on the cogwheel menu icon -> About -> Restart now. Alternatively, download and install the latest version manually.",
 	"button": "Download here",
 	"url-mac": "https://toggl.com/toggl-desktop/",
 	"url-win": "https://toggl.com/toggl-desktop/",
