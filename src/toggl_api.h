@@ -958,6 +958,20 @@ extern "C" {
         void *context);
 
     // returns GUID of the started time entry. you must free() the result
+    TOGGL_EXPORT char_t *toggl_start_with_current_running(
+        void *context,
+        const char_t *description,
+        const char_t *duration,
+        const uint64_t task_id,
+        const uint64_t project_id,
+        const char_t *project_guid,
+        const char_t *tags,
+        const bool_t prevent_on_app,
+        const uint64_t started,
+        const uint64_t ended,
+        const bool_t stop_current_running);
+
+    // returns GUID of the started time entry. you must free() the result
     TOGGL_EXPORT char_t *toggl_start(
         void *context,
         const char_t *description,

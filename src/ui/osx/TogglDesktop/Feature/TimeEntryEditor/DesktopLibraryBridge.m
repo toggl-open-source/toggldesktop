@@ -358,7 +358,7 @@ void *ctx;
     if (tags == nil) {
         tags = @"";
     }
-    char *guid = toggl_start(ctx,
+    char *guid = toggl_start_with_current_running(ctx,
                              [item.Description UTF8String],
                              [item.duration UTF8String],
                              item.TaskID,
@@ -367,7 +367,8 @@ void *ctx;
                              [tags UTF8String],
                              false,
                              [item.started timeIntervalSince1970],
-                             [item.ended timeIntervalSince1970]);
+                             [item.ended timeIntervalSince1970],
+                             false);
     if (guid != nil) {
         NSString *GUID = [NSString stringWithUTF8String:guid];
         free(guid);
