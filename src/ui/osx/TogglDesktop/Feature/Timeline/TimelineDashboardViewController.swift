@@ -114,6 +114,10 @@ final class TimelineDashboardViewController: NSViewController {
             !datePickerView.isShown
     }
 
+    private var initialDateProvider = TimelineInitialDateProvider { proposedDate in
+        DesktopLibraryBridge.shared().timelineSetDate(proposedDate)
+    }
+
     // MARK: View
     
     override func viewDidLoad() {
@@ -127,6 +131,12 @@ final class TimelineDashboardViewController: NSViewController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+
+    override func viewWillAppear() {
+        super.viewWillAppear()
+
+        initialDateProvider.timelineOpened()
     }
 
     override func viewDidAppear() {
@@ -147,6 +157,8 @@ final class TimelineDashboardViewController: NSViewController {
     override func viewWillDisappear() {
         super.viewWillDisappear()
         isOpening = false
+
+        initialDateProvider.timelineClosed()
     }
 
     func scrollToVisibleItem() {
