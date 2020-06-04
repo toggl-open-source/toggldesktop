@@ -88,12 +88,18 @@ void Idle::computeIdleState(
             logger.debug(since.str());
             logger.debug(duration.str());
 
+            view::TimeEntry entry_view;
+            current_user->related.ProjectLabelAndColorCode(te, &entry_view);
+
             poco_check_ptr(ui_);
             ui_->DisplayIdleNotification(te->GUID(),
                                          since.str(),
                                          duration.str(),
                                          last_idle_started_,
-                                         te->Description());
+                                         te->Description(),
+                                         entry_view.ProjectLabel,
+                                         entry_view.TaskLabel,
+                                         entry_view.Color);
         }
 
         logger.debug("User is not idle since ", now);

@@ -327,7 +327,10 @@ extern "C" {
         const char_t *since,
         const char_t *duration,
         const int64_t started,
-        const char_t *description);
+        const char_t *description,
+        const char_t *project,
+        const char_t *task,
+        const char_t *projectColor);
 
     typedef void (*TogglDisplayUpdate)(
         const char_t *url);

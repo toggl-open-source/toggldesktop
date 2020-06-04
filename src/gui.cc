@@ -798,20 +798,32 @@ void GUI::DisplayIdleNotification(const std::string &guid,
                                   const std::string &since,
                                   const std::string &duration,
                                   const int64_t started,
-                                  const std::string &description) {
+                                  const std::string &description,
+                                  const std::string &project,
+                                  const std::string &task,
+                                  const std::string &projectColor) {
     char_t *guid_s = copy_string(guid);
     char_t *since_s = copy_string(since);
     char_t *duration_s = copy_string(duration);
     char_t *description_s = copy_string(description);
+    char_t *projectName_s = copy_string(project);
+    char_t *task_s = copy_string(task);
+    char_t *projectColor_s = copy_string(projectColor);
     on_display_idle_notification_(guid_s,
                                   since_s,
                                   duration_s,
                                   started,
-                                  description_s);
+                                  description_s,
+                                  projectName_s,
+                                  task_s,
+                                  projectColor_s);
     free(guid_s);
     free(since_s);
     free(duration_s);
     free(description_s);
+    free(projectName_s);
+    free(task_s);
+    free(projectColor_s);
 }
 
 void GUI::DisplayOnboarding(const OnboardingType onboarding_type) {
