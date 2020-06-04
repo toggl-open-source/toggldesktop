@@ -134,8 +134,14 @@ void Project::LoadFromJSON(Json::Value data) {
 
     SetID(data["id"].asUInt64());
     SetName(data["name"].asString());
-    SetWID(data["wid"].asUInt64());
-    SetCID(data["cid"].asUInt64());
+    if (data.isMember("wid"))
+        SetWID(data["wid"].asUInt64());
+    else
+        SetWID(data["workspace_id"].asUInt64());
+    if (data.isMember("cid"))
+        SetCID(data["cid"].asUInt64());
+    else
+        SetCID(data["client_id"].asUInt64());
     SetActive(data["active"].asBool());
     SetBillable(data["billable"].asBool());
 }

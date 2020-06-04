@@ -571,6 +571,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     void reminderActivity();
     void syncerActivityWrapper();
     void legacySyncerActivity();
+    void batchedSyncerActivity();
 
  private:
     static const std::string installerPlatform();
@@ -669,6 +670,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error applySettingsSaveResultToUI(const error &err);
 
     error pullAllUserData();
+    error pullBatchedUserData();
     error pullChanges();
     error pullUserPreferences();
 
@@ -713,6 +715,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
                     const std::string &password,
                     std::string *user_data,
                     const Poco::Int64 since);
+    static error syncPull(const std::string &email,
+                         const std::string &password,
+                         std::string *user_data,
+                         const Poco::Int64 since);
 
     bool isTimeEntryLocked(TimeEntry* te);
     bool isTimeLockedInWorkspace(time_t t, Workspace* ws);

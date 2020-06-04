@@ -48,7 +48,10 @@ void Client::SetWID(const Poco::UInt64 value) {
 void Client::LoadFromJSON(Json::Value data) {
     SetID(data["id"].asUInt64());
     SetName(data["name"].asString());
-    SetWID(data["wid"].asUInt64());
+    if (data.isMember("wid"))
+        SetWID(data["wid"].asUInt64());
+    else
+        SetWID(data["workspace_id"].asUInt64());
 }
 
 Json::Value Client::SaveToJSON() const {

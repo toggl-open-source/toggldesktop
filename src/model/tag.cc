@@ -35,7 +35,10 @@ void Tag::SetName(const std::string &value) {
 void Tag::LoadFromJSON(Json::Value data) {
     SetID(data["id"].asUInt64());
     SetName(data["name"].asString());
-    SetWID(data["wid"].asUInt64());
+    if (data.isMember("wid"))
+        SetWID(data["wid"].asUInt64());
+    else
+        SetWID(data["workspace_id"].asUInt64());
 }
 
 std::string Tag::ModelName() const {

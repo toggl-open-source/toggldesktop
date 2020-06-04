@@ -47,8 +47,14 @@ void Task::SetActive(const bool value) {
 void Task::LoadFromJSON(Json::Value data) {
     SetID(data["id"].asUInt64());
     SetName(data["name"].asString());
-    SetPID(data["pid"].asUInt64());
-    SetWID(data["wid"].asUInt64());
+    if (data.isMember("pid"))
+        SetPID(data["pid"].asUInt64());
+    else
+        SetPID(data["project_id"].asUInt64());
+    if (data.isMember("wid"))
+        SetWID(data["wid"].asUInt64());
+    else
+        SetWID(data["workspace_id"].asUInt64());
     SetActive(data["active"].asBool());
 }
 

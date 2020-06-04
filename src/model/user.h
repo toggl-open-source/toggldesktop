@@ -265,8 +265,15 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         std::set<Poco::UInt64> *alive = nullptr);
 
     void loadUserAndRelatedDataFromJSON(
-        Json::Value node,
-        const bool &including_related_data);
+        const Json::Value &root,
+        bool including_related_data);
+
+    error loadUserFromJSON(
+        const Json::Value &node);
+
+    error loadRelatedDataFromJSON(
+        const Json::Value &node,
+        bool including_related_data);
 
     void loadUserUpdateFromJSON(
         Json::Value list);

@@ -711,10 +711,7 @@ error User::LoadUserAndRelatedDataFromJSONString(
         return error("Failed to LoadUserAndRelatedDataFromJSONString");
     }
 
-    SetSince(root["since"].asInt64());
-    Logger("json").debug("User data as of: ", Since());
-
-    loadUserAndRelatedDataFromJSON(root["data"], including_related_data);
+    loadUserAndRelatedDataFromJSON(root, including_related_data);
     return noError;
 }
 
@@ -803,12 +800,38 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
 }
 
 void User::loadUserAndRelatedDataFromJSON(
-    Json::Value data,
-    const bool &including_related_data) {
+    const Json::Value &root,
+    bool including_related_data) {
+
+    // if the root of the json contains "data", then we're using /v8/me
+    // otherwise, it's Sync API
+    bool syncApi { !root.isMember("data") };
+
+    if (root.isMember("since")) {
+        SetSince(root["since"].asInt64());
+        Logger("json").debug("User data as of: ", Since());
+    }
+    else if (root.isMember("server_time")) {
+        SetSince(root["server_time"].asInt64());
+        Logger("json").debug("User data as of: ", Since());
+    }
+
+    // legacy API sends the data in a "data" nested member
+    const Json::Value &data { syncApi ? root : root["data"] };
+
+    // user is contained in Sync API but it is in root of data in v8
+    error err = loadUserFromJSON(syncApi ? data["user"] : data);
+    // other entities are contained about the same
+    if (err == noError) {
+        loadRelatedDataFromJSON(data, including_related_data);
+    }
+}
+
+error User::loadUserFromJSON(const Json::Value &data) {
 
     if (!data["id"].asUInt64()) {
         logger().error("Backend is sending invalid data: ignoring update without an ID");
-        return;
+        return kBackendIsSendingInvalidData;
     }
 
     SetID(data["id"].asUInt64());
@@ -820,6 +843,13 @@ void User::loadUserAndRelatedDataFromJSON(
     SetStoreStartAndStopTime(data["store_start_and_stop_time"].asBool());
     SetTimeOfDayFormat(data["timeofday_format"].asString());
     SetDurationFormat(data["duration_format"].asString());
+
+    return noError;
+}
+
+error User::loadRelatedDataFromJSON(
+    const Json::Value &data,
+    bool including_related_data) {
 
     {
         std::set<Poco::UInt64> alive;
@@ -916,6 +946,8 @@ void User::loadUserAndRelatedDataFromJSON(
             deleteZombies(related.TimeEntries, alive);
         }
     }
+
+    return noError;
 }
 
 void User::loadUserClientFromSyncJSON(
