@@ -24,6 +24,12 @@ target 'TogglDesktop-AppStore' do
   essential_pods
 end
 
+target 'TogglDesktopTests' do
+  project 'TogglDesktop/TogglDesktop.xcodeproj'
+  essential_pods
+  pod 'Sparkle'
+end
+
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|

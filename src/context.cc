@@ -2359,6 +2359,16 @@ void Context::SetEnvironment(const std::string &value) {
 
     TogglClient::GetInstance().SetIgnoreCert(("development" == environment_));
     urls::SetRequestsAllowed("test" != environment_);
+
+    // stopping heavy tasks for better unit tests performance/speed
+    if (value == "test") {
+        if (ui_updater_.isRunning()) {
+            ui_updater_.stop();
+        }
+        if (reminder_.isRunning()) {
+            reminder_.stop();
+        }
+    }
 }
 
 Database *Context::db() const {
