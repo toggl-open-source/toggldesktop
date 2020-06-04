@@ -14,4 +14,9 @@
 @property (nonatomic, copy) NSString *since;
 @property (nonatomic, copy) NSString *duration;
 @property (nonatomic, copy) NSString *timeEntryDescription;
+@property (nonatomic, copy) NSString *projectName;
+@property (nonatomic, copy) NSString *taskName;
+@property (nonatomic, copy) NSColor *projectColor;
+
+-(BOOL)hasProject;
 @end

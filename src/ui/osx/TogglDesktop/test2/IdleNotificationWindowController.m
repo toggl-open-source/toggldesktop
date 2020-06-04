@@ -17,6 +17,9 @@
 @property (weak) IBOutlet NSTextField *idleSinceTextField;
 @property (weak) IBOutlet NSTextField *idleAmountTextField;
 @property (weak) IBOutlet NSTextField *timeentryDescriptionTextField;
+@property (weak) IBOutlet DotImageView *projectColorView;
+@property (weak) IBOutlet ProjectTextField *projectNameTextField;
+@property (weak) IBOutlet NSStackView *projectInfoContainerView;
 @property (weak) IBOutlet FlatButton *addIdleTimeButton;
 @property (weak) IBOutlet NSButton *cancelButton;
 @property (weak) IBOutlet FlatButton *discardAndContinueButton;
@@ -132,6 +135,13 @@ extern void *ctx;
 	[self.idleAmountTextField setHidden:NO];
 
 	self.timeentryDescriptionTextField.stringValue = self.idleEvent.timeEntryDescription;
+
+	BOOL hasProject = [self.idleEvent hasProject];
+	if (hasProject) {
+		[self.projectColorView fillWith:self.idleEvent.projectColor];
+		[self.projectNameTextField setTitleWithIdleEvent:self.idleEvent];
+	}
+	[self.projectInfoContainerView setHidden:!hasProject];
 
 	if ([[UserNotificationCenter share] isDoNotDisturbEnabled])
 	{

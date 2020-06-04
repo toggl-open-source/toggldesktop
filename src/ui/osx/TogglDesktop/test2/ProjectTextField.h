@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class TimeEntryViewItem;
 @class AutocompleteItem;
+@class IdleEvent;
 
 @interface ProjectTextField : NSTextField
 
@@ -22,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setTitleWithTimeEntry:(TimeEntryViewItem *)item;
 - (void)setTitleWithAutoCompleteItem:(AutocompleteItem *)item;
+- (void)setTitleWithIdleEvent:(IdleEvent *)item;
 
 @end
 

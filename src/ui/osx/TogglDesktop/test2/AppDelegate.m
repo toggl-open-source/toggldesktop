@@ -1739,7 +1739,10 @@ void on_idle_notification(
 	const char *since,
 	const char *duration,
 	const int64_t started,
-	const char *description)
+	const char *description,
+	const char *project,
+	const char *task,
+	const char *projectColor)
 {
 	IdleEvent *idleEvent = [[IdleEvent alloc] init];
 
@@ -1748,6 +1751,15 @@ void on_idle_notification(
 	idleEvent.duration = [NSString stringWithUTF8String:duration];
 	idleEvent.started = started;
 	idleEvent.timeEntryDescription = [NSString stringWithUTF8String:description];
+
+	idleEvent.projectName = [NSString stringWithUTF8String:project];
+	idleEvent.taskName = [NSString stringWithUTF8String:task];
+
+	NSString *colorStr = [NSString stringWithUTF8String:projectColor];
+	if (colorStr.length) {
+		idleEvent.projectColor = [ConvertHexColor hexCodeToNSColor:colorStr];
+	}
+
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayIdleNotification
 																object:idleEvent];
 }
