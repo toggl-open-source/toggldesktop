@@ -674,6 +674,15 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error pullChanges();
     error pullUserPreferences();
 
+    template <typename T>
+    void syncCollectJSON(Json::Value &array, const std::vector<T*> &source, bool isPremium);
+    void syncStripPremiumDataFromModelJSON(Json::Value &item);
+    void syncTranslateGUIDToLocalID(Json::Value &item);
+    template <typename T>
+    error syncHandleResponse(Json::Value &array, const std::vector<T*> &source);
+
+    error pushBatchedChanges(
+            bool *had_something_to_push);
     error pushChanges(
         bool *had_something_to_push);
     error pushClients(
@@ -687,6 +696,9 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::map<std::string, BaseModel *> &models,
         const std::vector<TimeEntry *> &time_entries,
         const std::string &api_token);
+    error updateProjectClients(
+        const std::vector<Client *> &clients,
+        const std::vector<Project *> &projects);
     error updateEntryProjects(
         const std::vector<Project *> &projects,
         const std::vector<TimeEntry *> &time_entries);
@@ -803,6 +815,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     Poco::Mutex syncer_m_;
     Poco::Activity<Context> syncer_;
+    std::string lastRequestUUID_;
 
     Analytics analytics_;
 

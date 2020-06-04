@@ -60,6 +60,16 @@ void BaseModel::SetValidationError(const std::string &value) {
     SetDirty();
 }
 
+std::string BaseModel::SyncType() const {
+    if (NeedsPOST())
+        return "create";
+    else if (NeedsPUT())
+        return "update";
+    else if (NeedsDELETE())
+        return "delete";
+    return {};
+}
+
 void BaseModel::SetUpdatedAtString(const std::string &value) {
     SetUpdatedAt(Formatter::Parse8601(value));
 }
