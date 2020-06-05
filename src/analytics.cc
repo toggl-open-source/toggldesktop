@@ -381,7 +381,7 @@ void Analytics::TrackUserAuthentication(const std::string &client_id, const std:
 void Analytics::trackTimelineMenuContext(const std::string &client_id,
                                          const std::string &view) {
     std::stringstream ss;
-    ss << "/" << "click" << "/" << view;
+    ss << "click" << "/" << view;
     Track(client_id, "timeline-menu-context", ss.str());
 }
 

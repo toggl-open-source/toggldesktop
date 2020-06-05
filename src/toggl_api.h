@@ -1253,9 +1253,9 @@ extern "C" {
         TogglRgbColor rgbColor,
         TogglAdaptiveColor type);
 
-    TOGGL_EXPORT HsvColor toggl_get_adaptive_hsv_color(
-        RgbColor rgbColor,
-        AdaptiveColor type);
+    TOGGL_EXPORT TogglHsvColor toggl_get_adaptive_hsv_color(
+        TogglRgbColor rgbColor,
+        TogglAdaptiveColor type);
 
     TOGGL_EXPORT void toggl_track_timeline_menu_context_continue_entry(
         void *context);
