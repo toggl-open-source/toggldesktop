@@ -448,8 +448,8 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
     }
     if (data.isMember("tid")) {
         SetTID(data["tid"].asUInt64());
-    } else if (data.isMember("project_id")) {
-        SetTID(data["project_id"].asUInt64());
+    } else if (data.isMember("task_id")) {
+        SetTID(data["task_id"].asUInt64());
     } else {
         SetTID(0);
     }
