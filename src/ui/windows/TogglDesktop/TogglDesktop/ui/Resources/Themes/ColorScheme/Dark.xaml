@@ -8,15 +8,15 @@
     <!-- Gray -->
     <Color x:Key="Toggl.GrayColor">#A5A5A8</Color>
     <!-- Grayish -->
-    <Color x:Key="Toggl.Grayish1Color">#5A5B5C</Color>
+    <Color x:Key="Toggl.Grayish1Color">#696A6B</Color>
     <!-- Grayish -->
     <Color x:Key="Toggl.Grayish2Color">#858585</Color>
     <!-- Light Gray -->
     <Color x:Key="Toggl.LightGrayColor">#3B3B3B</Color>
     <!-- Off-white -->
-    <Color x:Key="Toggl.OffWhiteColor">#141414</Color>
+    <Color x:Key="Toggl.OffWhiteColor">#0F0F0F</Color>
     <!-- White -->
-    <Color x:Key="Toggl.WhiteColor">#262626</Color>
+    <Color x:Key="Toggl.WhiteColor">#1F1F1F</Color>
     <!-- Off-white -->
     <Color x:Key="Toggl.SelectionElements.BackgroundColor">#141414</Color>
 
