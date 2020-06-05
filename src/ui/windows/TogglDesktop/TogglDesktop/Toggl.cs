@@ -954,7 +954,7 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_idle_notification(ctx, (guid, since, duration, started, description) =>
+        toggl_on_idle_notification(ctx, (guid, since, duration, started, description, project, task, projectColor) =>
         {
             using (Performance.Measure("Calling OnIdleNotification"))
             {
