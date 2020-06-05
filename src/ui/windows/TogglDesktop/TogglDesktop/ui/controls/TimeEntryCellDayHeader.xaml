@@ -14,7 +14,7 @@
              IsTabStop="{Binding IsCollapsed}"
              behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}">
     <UserControl.Effect>
-        <DropShadowEffect Direction="270" Color="{DynamicResource Toggl.BlackColor}" Opacity="0.16"
+        <DropShadowEffect Direction="270" Opacity="0.16"
                           BlurRadius="4" ShadowDepth="2" />
     </UserControl.Effect>
     <Grid>
