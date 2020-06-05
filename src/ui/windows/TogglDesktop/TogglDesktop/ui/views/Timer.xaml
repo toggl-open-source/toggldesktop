@@ -85,7 +85,7 @@
             </Button>
         </Grid>
         <Grid Name="timerPanel" x:FieldModifier="private"  Visibility="Visible"
-              Margin="0 16 0 14"
+              Margin="0 14 0 13"
               MouseLeftButtonDown="onGridMouseDown"
               KeyDown="onGridKeyDown"
               Background="Transparent">

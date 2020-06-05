@@ -60,7 +60,7 @@
                 Margin="3 0 0 0"
                 MouseLeftButtonDown="labelDuration_MouseDown">
             <TextBlock Name="durationLabel" x:FieldModifier="private"
-                       Style="{StaticResource Toggl.CaptionBlackText}"
+                       Style="{StaticResource Toggl.BodyText}"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Center"
                        Text="00:00:00" />
