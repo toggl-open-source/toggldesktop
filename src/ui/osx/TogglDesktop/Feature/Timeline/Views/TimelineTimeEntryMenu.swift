@@ -20,7 +20,7 @@ protocol TimelineTimeEntryMenuDelegate: class {
 /// Menu Contextual on the Timeline Time Entry
 /// It will be shown by right-click on the cell
 /// Support some resolve conflict funcs
-final class TimelineTimeEntryMenu: NSMenu {
+@objc final class TimelineTimeEntryMenu: NSMenu {
 
     // MARK: Variables
 
@@ -84,26 +84,31 @@ extension TimelineTimeEntryMenu {
 
     @objc private func continueMenuOnTap() {
         guard let timeEntry = timeEntry else { return }
+        DesktopLibraryBridge.shared().trackTimelineMenuContextContinue()
         menuDelegate?.timelineMenuContinue(timeEntry)
     }
 
     @objc private func startEntryOnTap() {
         guard let timeEntry = timeEntry else { return }
+        DesktopLibraryBridge.shared().trackTimelineMenuContextStart()
         menuDelegate?.timelineMenuStartEntry(timeEntry)
     }
 
     @objc private func deleteEntryOnTap() {
         guard let timeEntry = timeEntry else { return }
+        DesktopLibraryBridge.shared().trackTimelineMenuContextDelete()
         menuDelegate?.timelineMenuDelete(timeEntry)
     }
 
     @objc private func changeFirstEntryStopTimeOnTap() {
         guard let timeEntry = timeEntry else { return }
+        DesktopLibraryBridge.shared().trackTimelineMenuContextChangeFirst()
         menuDelegate?.timelineMenuChangeFirstEntryStopTime(timeEntry)
     }
 
     @objc private func changeLastEntryStartTimeOnTap() {
         guard let timeEntry = timeEntry else { return }
+        DesktopLibraryBridge.shared().trackTimelineMenuContextChangeLast()
         menuDelegate?.timelineMenuChangeLastEntryStartTime(timeEntry)
     }
 }

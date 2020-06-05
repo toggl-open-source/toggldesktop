@@ -125,6 +125,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)userDidTurnOnRecordActivity;
 - (void)userDidEditOrAddTimeEntryDirectlyOnTimelineView;
 
+#pragma mark - Tracking
+
+-(void) trackTimelineMenuContextContinue;
+-(void) trackTimelineMenuContextStart;
+-(void) trackTimelineMenuContextDelete;
+-(void) trackTimelineMenuContextChangeFirst;
+-(void) trackTimelineMenuContextChangeLast;
+
 @end
 
 NS_ASSUME_NONNULL_END
