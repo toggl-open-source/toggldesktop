@@ -16,4 +16,11 @@
 			self.since, self.duration, (long)self.started];
 }
 
+-(BOOL)hasProject {
+	if (self.projectName.length && self.projectColor != nil) {
+		return YES;
+	}
+	return NO;
+}
+
 @end

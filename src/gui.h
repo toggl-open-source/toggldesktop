@@ -490,7 +490,10 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
                                  const std::string &since,
                                  const std::string &duration,
                                  const int64_t started,
-                                 const std::string &description);
+                                 const std::string &description,
+                                 const std::string &project,
+                                 const std::string &task,
+                                 const std::string &projectColor);
 
     void DisplayUpdate(const std::string &URL);
 

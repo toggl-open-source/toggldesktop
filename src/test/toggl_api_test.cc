@@ -305,7 +305,10 @@ void on_display_idle_notification(
     const char_t *since,
     const char_t *duration,
     const int64_t started,
-    const char_t *description) {
+    const char_t *description,
+    const char_t *project,
+    const char_t *task,
+    const char_t *projectColor) {
     testing::testresult::idle_since = to_string(since);
     testing::testresult::idle_started = started;
     testing::testresult::idle_duration = to_string(duration);

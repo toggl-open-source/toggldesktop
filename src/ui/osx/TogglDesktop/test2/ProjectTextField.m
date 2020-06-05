@@ -10,6 +10,7 @@
 #import "TimeEntryViewItem.h"
 #import "ConvertHexColor.h"
 #import "AutocompleteItem.h"
+#import "IdleEvent.h"
 #import "TogglDesktop-Swift.h"
 
 @implementation ProjectTextField
@@ -58,10 +59,15 @@
 	self.attributedStringValue = [self attributeStringWithAutoCompleteItem:item];
 }
 
+- (void)setTitleWithIdleEvent:(IdleEvent *)item
+{
+	self.textColor = item.projectColor;
+	self.attributedStringValue = [self attributeStringWithIdleEvent:item];
+}
+
 - (NSAttributedString *)attributeStringWithItem:(TimeEntryViewItem *)view_item
 {
 	return [self attributeStringWithClient:view_item.ClientLabel
-									taskID:view_item.TaskID
 									  task:view_item.TaskLabel
 								   project:view_item.ProjectLabel];
 }
@@ -69,12 +75,18 @@
 - (NSAttributedString *)attributeStringWithAutoCompleteItem:(AutocompleteItem *)item
 {
 	return [self attributeStringWithClient:item.ClientLabel
-									taskID:item.TaskID
 									  task:item.TaskLabel
 								   project:item.ProjectLabel];
 }
 
-- (NSAttributedString *)attributeStringWithClient:(NSString *)client taskID:(NSInteger)taskID task:(NSString *)task project:(NSString *)project
+- (NSAttributedString *)attributeStringWithIdleEvent:(IdleEvent *)item
+{
+	return [self attributeStringWithClient:nil
+									  task:item.taskName
+								   project:item.projectName];
+}
+
+- (NSAttributedString *)attributeStringWithClient:(NSString *)client task:(nullable NSString *)task project:(NSString *)project
 {
 	NSMutableAttributedString *string;
 	NSMutableParagraphStyle *parStyle = [[NSMutableParagraphStyle alloc] init];
@@ -88,7 +100,7 @@
 	};
 	string = [[NSMutableAttributedString alloc] initWithString:project attributes:baseAttribute];
 
-	if (taskID != 0)
+	if (task.length > 0)
 	{
 		NSMutableAttributedString *taskName;
 		if (self.renderTask)
