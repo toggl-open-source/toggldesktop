@@ -377,7 +377,10 @@ void on_display_idle_notification(
     const char *guid,
     const char *since,
     const char *duration,
-    const int64_t started);
+    const int64_t started,
+    const char *project,
+    const char *task,
+    const char *projectColor);
 void on_project_colors(
     const char_t *list[],
     const uint64_t count);
