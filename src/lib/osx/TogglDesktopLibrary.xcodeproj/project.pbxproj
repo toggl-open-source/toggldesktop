@@ -542,11 +542,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C55DA5A917F06A3B00B42178 /* Build configuration list for PBXNativeTarget "TogglDesktopLibrary" */;
 			buildPhases = (
+				BAA842212403D96100BCCB67 /* CopyFiles */,
 				C55DA59817F06A3B00B42178 /* Sources */,
 				C55DA59917F06A3B00B42178 /* Frameworks */,
 				C55DA59A17F06A3B00B42178 /* Headers */,
 				C5DA1FB317F19052001C4565 /* ShellScript */,
-				BAA842212403D96100BCCB67 /* CopyFiles */,
 			);
 			buildRules = (
 			);
