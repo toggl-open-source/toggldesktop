@@ -9,6 +9,6 @@ namespace TogglDesktop.ViewModels
         public static bool IsAtLeastOneNumber(this string s) => s.Any(char.IsDigit);
 
         public static bool AllRulesSatisfied(this string s) =>
-            IsEightCharactersOrMore(s) && IsLowercaseAndUppercase(s) && IsAtLeastOneNumber(s);
+            s != null && IsEightCharactersOrMore(s) && IsLowercaseAndUppercase(s) && IsAtLeastOneNumber(s);
     }
 }
