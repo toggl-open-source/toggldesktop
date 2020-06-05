@@ -1634,3 +1634,23 @@ TogglHsvColor toggl_get_adaptive_hsv_color(
     TogglAdaptiveColor type) {
     return toggl::ColorConverter::GetAdaptiveColor(rgbColor, type);
 }
+
+void toggl_track_timeline_menu_context_continue_entry(void *context) {
+    app(context)->TrackTimelineMenuContext(toggl::TimelineMenuContextTypeContinueEntry);
+}
+
+void toggl_track_timeline_menu_context_start_entry_from_end(void *context) {
+    app(context)->TrackTimelineMenuContext(toggl::TimelineMenuContextTypeStartEntryFromEnd);
+}
+
+void toggl_track_timeline_menu_context_delete(void *context) {
+    app(context)->TrackTimelineMenuContext(toggl::TimelineMenuContextTypeDelete);
+}
+
+void toggl_track_timeline_menu_context_change_first_entry(void *context) {
+    app(context)->TrackTimelineMenuContext(toggl::TimelineMenuContextTypeChangeFirstEntryStopTime);
+}
+
+void toggl_track_timeline_menu_context_change_last_entry(void *context) {
+    app(context)->TrackTimelineMenuContext(toggl::TimelineMenuContextTypeChangeLastEntryStartTime);
+}

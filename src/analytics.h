@@ -91,7 +91,7 @@ class Analytics : public Poco::TaskManager {
     void TrackSignupWithApple(const std::string &client_id);
     void TrackLoginWithApple(const std::string &client_id);
 
-    void TrackTimelineMenuContext(const std::string &client_id, const std::string& os, const TimelineMenuContextType type);
+    void TrackTimelineMenuContext(const std::string &client_id, const TimelineMenuContextType type);
 
  private:
     Poco::LocalDateTime settings_sync_date;
@@ -111,7 +111,6 @@ class Analytics : public Poco::TaskManager {
                                  const std::string &from);
 
     void trackTimelineMenuContext(const std::string &client_id,
-                                  const std::string &os,
                                   const std::string &view);
 };
 
