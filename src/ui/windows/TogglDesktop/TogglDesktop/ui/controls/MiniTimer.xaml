@@ -22,7 +22,7 @@
                             <Grid>
                                 <Rectangle Name="BackgroundRectangle"
                                            Fill="{DynamicResource Toggl.AccentBrush}"
-                                           Width="44"/>
+                                           Width="47"/>
                                 <Path Name="StartButton"
                                       Width="36"
                                       Height="36"

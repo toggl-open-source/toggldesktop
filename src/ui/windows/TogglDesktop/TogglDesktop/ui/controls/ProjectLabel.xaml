@@ -9,7 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance viewModels:ProjectLabelViewModel}">
     <UserControl.Resources>
-        <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionBlackText}">
+        <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.BodyText}">
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="TextWrapping" Value="NoWrap" />
         </Style>
