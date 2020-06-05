@@ -378,4 +378,32 @@ void Analytics::TrackUserAuthentication(const std::string &client_id, const std:
     Track(client_id, "user", ss.str());
 }
 
+void Analytics::trackTimelineMenuContext(const std::string &client_id,
+                                         const std::string &os,
+                                         const std::string &view) {
+    std::stringstream ss;
+    ss << os << "/" << "click" << "/" << view;
+    Track(client_id, "timeline-menu-context", ss.str());
+}
+
+void Analytics::TrackTimelineMenuContext(const std::string &client_id, const std::string& os, const TimelineMenuContextType type) {
+    switch (type) {
+        case TimelineMenuContextTypeContinueEntry:
+            trackTimelineMenuContext(client_id, os, "continue-this-entry");
+            break;
+        case TimelineMenuContextTypeStartEntryFromEnd:
+            trackTimelineMenuContext(client_id, os, "start-entry-from-the-end-of-this-entry");
+            break;
+        case TimelineMenuContextTypeDelete:
+            trackTimelineMenuContext(client_id, os, "delete");
+            break;
+        case TimelineMenuContextTypeChangeFirstEntryStopTime:
+            trackTimelineMenuContext(client_id, os, "change-first-entry-stop-time");
+            break;
+        case TimelineMenuContextTypeChangeLastEntryStartTime:
+            trackTimelineMenuContext(client_id, os, "change-last-entry-start-time");
+            break;
+    }
+}
+
 }  // namespace toggl
