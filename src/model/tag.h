@@ -13,30 +13,19 @@ namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Tag : public BaseModel {
  public:
-    Tag()
-        : BaseModel()
-    , wid_(0)
-    , name_("") {}
+    Tag() : BaseModel() {}
 
-    const Poco::UInt64 &WID() const {
-        return wid_;
-    }
-    void SetWID(const Poco::UInt64 value);
+    Property<std::string> Name { "" };
+    Property<Poco::UInt64> WID { 0 };
 
-    const std::string &Name() const {
-        return name_;
-    }
     void SetName(const std::string &value);
+    void SetWID(Poco::UInt64 value);
 
     // Override BaseModel
     std::string String() const override;
     std::string ModelName() const override;
     std::string ModelURL() const override;
     void LoadFromJSON(Json::Value data) override;
-
- private:
-    Poco::UInt64 wid_;
-    std::string name_;
 };
 
 }  // namespace toggl

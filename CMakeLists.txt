@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 project(TogglDesktop)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 # Set up automatic resource generation to make Qt development easier
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

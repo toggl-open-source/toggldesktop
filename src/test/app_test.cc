@@ -107,7 +107,7 @@ TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {
     p.SetPrivate(false);
     error err = error("Only admins can change project visibility");
     ASSERT_TRUE(p.ResolveError(err));
-    ASSERT_TRUE(p.IsPrivate());
+    ASSERT_TRUE(p.Private());
 }
 
 TEST(User, CreateCompressedTimelineBatchForUpload) {
@@ -127,7 +127,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     TimelineEvent *good = new TimelineEvent();
     good->SetUID(user_id);
     // started yesterday, "16 minutes ago"
-    good->SetStart(time(0) - 86400 - 60*16);
+    good->SetStartTime(time(0) - 86400 - 60*16);
     good->SetEndTime(good->Start() + good_duration_seconds);
     good->SetFilename("Notepad.exe");
     good->SetTitle("untitled");
@@ -139,7 +139,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // can be uploaded to Toggl backend.
     TimelineEvent *good2 = new TimelineEvent();
     good2->SetUID(user_id);
-    good2->SetStart(good->EndTime() + 1);  // started after first event
+    good2->SetStartTime(good->EndTime() + 1);  // started after first event
     good2->SetEndTime(good2->Start() + good2_duration_seconds);
     good2->SetFilename("Notepad.exe");
     good2->SetTitle("untitled");
@@ -149,7 +149,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // but has already been uploaded to Toggl backend.
     TimelineEvent *uploaded = new TimelineEvent();;
     uploaded->SetUID(user_id);
-    uploaded->SetStart(good2->EndTime() + 1);  // started after second event
+    uploaded->SetStartTime(good2->EndTime() + 1);  // started after second event
     uploaded->SetEndTime(uploaded->Start() + 10);
     uploaded->SetFilename("Notepad.exe");
     uploaded->SetTitle("untitled");
@@ -160,7 +160,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // so it must not be uploaded
     TimelineEvent *too_fresh = new TimelineEvent();
     too_fresh->SetUID(user_id);
-    too_fresh->SetStart(time(0) - 60);  // started 1 minute ago
+    too_fresh->SetStartTime(time(0) - 60);  // started 1 minute ago
     too_fresh->SetEndTime(time(0));  // lasted until now
     too_fresh->SetFilename("Notepad.exe");
     too_fresh->SetTitle("notes");
@@ -170,7 +170,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // so it must not be uploaded, just deleted
     TimelineEvent *too_old = new TimelineEvent();
     too_old->SetUID(user_id);
-    too_old->SetStart(time(0) - kTimelineSecondsToKeep - 1);  // 7 days ago
+    too_old->SetStartTime(time(0) - kTimelineSecondsToKeep - 1);  // 7 days ago
     too_old->SetEndTime(too_old->EndTime() + 120);  // lasted 2 minutes
     too_old->SetFilename("Notepad.exe");
     too_old->SetTitle("diary");
@@ -791,12 +791,12 @@ TEST(User, ParsesAndSavesData) {
     //ASSERT_EQ("07fba193-91c4-0ec8-2894-820df0548a8f", user.related.TimeEntries[0]->GUID());
     ASSERT_EQ(uint(2567324), user.related.TimeEntries[0]->PID());
     ASSERT_TRUE(user.related.TimeEntries[0]->Billable());
-    ASSERT_EQ(uint(1378362830), user.related.TimeEntries[0]->Start());
-    ASSERT_EQ(uint(1378369186), user.related.TimeEntries[0]->Stop());
+    ASSERT_EQ(uint(1378362830), user.related.TimeEntries[0]->StartTime());
+    ASSERT_EQ(uint(1378369186), user.related.TimeEntries[0]->StopTime());
     ASSERT_EQ(6356, user.related.TimeEntries[0]->DurationInSeconds());
     ASSERT_EQ("Important things",
               user.related.TimeEntries[0]->Description());
-    ASSERT_EQ(uint(0), user.related.TimeEntries[0]->TagNames.size());
+    ASSERT_EQ(uint(0), user.related.TimeEntries[0]->TagNames->size());
     ASSERT_FALSE(user.related.TimeEntries[0]->DurOnly());
     ASSERT_EQ(user.ID(), user.related.TimeEntries[0]->UID());
 
@@ -1261,13 +1261,13 @@ TEST(TimeEntry, ParseDurationLargerThan24Hours) {
 TEST(TimeEntry, InterpretsCrazyStartAndStopAsMissingValues) {
     TimeEntry te;
 
-    ASSERT_EQ(Poco::UInt64(0), te.Start());
+    ASSERT_EQ(Poco::UInt64(0), te.StartTime());
     te.SetStartString("0003-03-16T-7:-19:-24Z");
-    ASSERT_EQ(Poco::UInt64(0), te.Start());
+    ASSERT_EQ(Poco::UInt64(0), te.StartTime());
 
-    ASSERT_EQ(Poco::UInt64(0), te.Stop());
+    ASSERT_EQ(Poco::UInt64(0), te.StopTime());
     te.SetStopString("0003-03-16T-5:-52:-51Z");
-    ASSERT_EQ(Poco::UInt64(0), te.Stop());
+    ASSERT_EQ(Poco::UInt64(0), te.StopTime());
 }
 
 TEST(User, Continue) {
@@ -1296,15 +1296,15 @@ TEST(TimeEntry, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
     TimeEntry *te = user.related.TimeEntryByID(164891639);
     ASSERT_TRUE(te);
     ASSERT_TRUE(te->IsTracking());
-    ASSERT_LT(te->Start(), te->Stop());
+    ASSERT_LT(te->StartTime(), te->StopTime());
 
     te->SetDurationUserInput("00:59:47");
     ASSERT_TRUE(te->IsTracking());
-    ASSERT_LT(te->Start(), te->Stop());
+    ASSERT_LT(te->StartTime(), te->StopTime());
 
     te->StopTracking();
     ASSERT_FALSE(te->IsTracking());
-    ASSERT_LT(te->Start(), te->Stop());
+    ASSERT_LT(te->StartTime(), te->StopTime());
 }
 
 TEST(Formatter, CollectErrors) {
@@ -1562,7 +1562,7 @@ TEST(JSON, ConvertTimelineToJSON) {
     const std::string desktop_id("12345");
 
     TimelineEvent event;
-    event.SetStart(time(0) - 10);
+    event.SetStartTime(time(0) - 10);
     event.SetEndTime(time(0));
     event.SetFilename("Is this the real life?");
     event.SetTitle("Is this just fantasy?");
@@ -1666,7 +1666,7 @@ TEST(JSON, Project) {
     //ASSERT_EQ(p.GUID(), p2.GUID());
     ASSERT_EQ(p.CID(), p2.CID());
     //ASSERT_EQ(p.Billable(), p2.Billable());
-    ASSERT_EQ(p.IsPrivate(), p2.IsPrivate());
+    ASSERT_EQ(p.Private(), p2.Private());
     ASSERT_EQ(p.UIModifiedAt(), p2.UIModifiedAt());
 }
 
@@ -1698,8 +1698,8 @@ TEST(JSON, TimeEntry) {
     ASSERT_EQ(Poco::UInt64(123456789), t.WID());
     //ASSERT_EQ("07fba193-91c4-0ec8-2345-820df0548123", t.GUID());
     ASSERT_TRUE(t.Billable());
-    ASSERT_EQ(Poco::UInt64(1378362830000 / 1000), t.Start());
-    ASSERT_EQ(Poco::UInt64(1378369186000 / 1000), t.Stop());
+    ASSERT_EQ(Poco::UInt64(1378362830000 / 1000), t.StartTime());
+    ASSERT_EQ(Poco::UInt64(1378369186000 / 1000), t.StopTime());
     ASSERT_EQ(Poco::Int64(6356), t.DurationInSeconds());
     ASSERT_EQ("A deleted time entry", t.Description());
     ASSERT_EQ("ahaa", t.Tags());
@@ -1712,8 +1712,8 @@ TEST(JSON, TimeEntry) {
     ASSERT_EQ(t.WID(), t2.WID());
     //ASSERT_EQ(t.GUID(), t2.GUID());
     ASSERT_EQ(t.Billable(), t2.Billable());
-    ASSERT_EQ(t.Start(), t2.Start());
-    ASSERT_EQ(t.Stop(), t2.Stop());
+    ASSERT_EQ(t.StartTime(), t2.StartTime());
+    ASSERT_EQ(t.StopTime(), t2.StopTime());
     ASSERT_EQ(t.DurationInSeconds(), t2.DurationInSeconds());
     ASSERT_EQ(t.Description(), t2.Description());
     ASSERT_EQ(t.Tags(), t2.Tags());
@@ -2024,8 +2024,8 @@ TEST(Sync, LegacyFormat) {
     ASSERT_EQ(user.related.TimeEntries[0]->Description(), "time entry");
     ASSERT_EQ(user.related.TimeEntries[0]->WID(), 2817276);
     ASSERT_EQ(user.related.TimeEntries[0]->UID(), 4187712);
-    ASSERT_EQ(user.related.TimeEntries[0]->Start(), 1590593622);
-    ASSERT_EQ(user.related.TimeEntries[0]->Stop(), 1590594037);
+    ASSERT_EQ(user.related.TimeEntries[0]->StartTime(), 1590593622);
+    ASSERT_EQ(user.related.TimeEntries[0]->StopTime(), 1590594037);
     ASSERT_EQ(user.related.TimeEntries[0]->Duration(), 415);
 
     ASSERT_EQ(user.related.Workspaces[0]->ID(), 2817276);
@@ -2070,8 +2070,8 @@ TEST(Sync, BatchedFormat) {
     ASSERT_EQ(user.related.TimeEntries[0]->Description(), "time entry");
     ASSERT_EQ(user.related.TimeEntries[0]->WID(), 2817276);
     ASSERT_EQ(user.related.TimeEntries[0]->UID(), 4187712);
-    ASSERT_EQ(user.related.TimeEntries[0]->Start(), 1590593622);
-    ASSERT_EQ(user.related.TimeEntries[0]->Stop(), 1590594037);
+    ASSERT_EQ(user.related.TimeEntries[0]->StartTime(), 1590593622);
+    ASSERT_EQ(user.related.TimeEntries[0]->StopTime(), 1590594037);
     ASSERT_EQ(user.related.TimeEntries[0]->Duration(), 415);
 
     ASSERT_EQ(user.related.Workspaces[0]->ID(), 2817276);

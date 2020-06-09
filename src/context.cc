@@ -691,7 +691,7 @@ void Context::updateUI(const UIElements &what) {
                 TimeEntry *te = time_entries[i];
 
                 std::string date_header =
-                    toggl::Formatter::FormatDateHeader(te->Start());
+                    toggl::Formatter::FormatDateHeader(te->StartTime());
 
                 // Calculate total duration for each date:
                 // will be displayed in date header
@@ -880,7 +880,7 @@ void Context::updateUI(const UIElements &what) {
                     continue;
                 }
 
-                Poco::LocalDateTime te_date(Poco::Timestamp::fromEpochTime(te->Start()));
+                Poco::LocalDateTime te_date(Poco::Timestamp::fromEpochTime(te->StartTime()));
                 if (te_date.year() == UI()->TimelineDateAt().year()
                         && te_date.month() == UI()->TimelineDateAt().month()
                         && te_date.day() == UI()->TimelineDateAt().day()) {
@@ -1530,7 +1530,7 @@ error Context::downloadUpdate() {
                     kDownloadStatusStarted);
             }
 
-            std::auto_ptr<std::istream> stream(
+            std::unique_ptr<std::istream> stream(
                 Poco::URIStreamOpener::defaultOpener().open(uri));
             Poco::FileOutputStream fos(file, std::ios::binary);
             Poco::StreamCopier::copyStream(*stream.get(), fos);
@@ -2708,7 +2708,7 @@ error Context::SetLoggedInUserFromJSON(
     User *user = new User();
 
     // Determine if it's a new user for onboarding check
-    user->IsNewUser = isSignup;
+    user->IsNewUser.Set(isSignup);
 
     err = db()->LoadUserByID(userID, user);
     if (err != noError) {
@@ -3285,7 +3285,7 @@ error Context::SetTimeEntryDate(
             Poco::Timestamp::fromEpochTime(unix_timestamp));
 
         Poco::LocalDateTime time_part(
-            Poco::Timestamp::fromEpochTime(te->Start()));
+            Poco::Timestamp::fromEpochTime(te->StartTime()));
 
         // Validate date input
         if (date_part.year() < kMinimumAllowedYear || date_part.year() > kMaximumAllowedYear) {
@@ -3374,7 +3374,7 @@ error Context::SetTimeEntryStart(
         }
     }
 
-    Poco::LocalDateTime local(Poco::Timestamp::fromEpochTime(te->Start()));
+    Poco::LocalDateTime local(Poco::Timestamp::fromEpochTime(te->StartTime()));
 
     // Validate time input
     if (local.year() < kMinimumAllowedYear || local.year() > kMaximumAllowedYear) {
@@ -3466,7 +3466,7 @@ error Context::SetTimeEntryStop(
     }
 
     Poco::LocalDateTime stop(
-        Poco::Timestamp::fromEpochTime(te->Stop()));
+        Poco::Timestamp::fromEpochTime(te->StopTime()));
 
     int hours(0), minutes(0);
     if (!toggl::Formatter::ParseTimeInput(value, &hours, &minutes)) {
@@ -3483,7 +3483,7 @@ error Context::SetTimeEntryStop(
 // but is not less than start by hour & minute, then
 // assume that the end must be on same date as start.
     Poco::LocalDateTime start(
-        Poco::Timestamp::fromEpochTime(te->Start()));
+        Poco::Timestamp::fromEpochTime(te->StartTime()));
     if (new_stop.day() != start.day()) {
         if (new_stop.hour() >= start.hour()) {
             new_stop = Poco::LocalDateTime(
@@ -4578,7 +4578,7 @@ void Context::displayPomodoro() {
                 return;
             }
         } else {
-            if (time(nullptr) - current_te->Start()
+            if (time(nullptr) - current_te->StartTime()
                     < settings_.pomodoro_minutes * 60) {
                 return;
             }
@@ -4593,7 +4593,7 @@ void Context::displayPomodoro() {
         wid = current_te->WID();
         Stop(true);
         current_te->SetDurationInSeconds(pomodoroDuration);
-        current_te->SetStop(current_te->Start() + pomodoroDuration);
+        current_te->SetStopTime(current_te->StartTime() + pomodoroDuration);
     }
     UI()->DisplayPomodoro(settings_.pomodoro_minutes);
 
@@ -4637,14 +4637,14 @@ void Context::displayPomodoroBreak() {
             return;
         }
 
-        if (time(nullptr) - current_te->Start()
+        if (time(nullptr) - current_te->StartTime()
                 < settings_.pomodoro_break_minutes * 60) {
             return;
         }
         const Poco::Int64 pomodoroDuration = settings_.pomodoro_break_minutes * 60;
         Stop(true);
         current_te->SetDurationInSeconds(pomodoroDuration);
-        current_te->SetStop(current_te->Start() + pomodoroDuration);
+        current_te->SetStopTime(current_te->StartTime() + pomodoroDuration);
     }
     pomodoro_break_entry_ = nullptr;
 
@@ -5916,7 +5916,7 @@ error Context::syncPull(
 }
 
 bool Context::isTimeEntryLocked(TimeEntry* te) {
-    return isTimeLockedInWorkspace(te->Start(),
+    return isTimeLockedInWorkspace(te->StartTime(),
                                    user_->related.WorkspaceByID(te->WID()));
 }
 
@@ -5925,7 +5925,7 @@ bool Context::canChangeStartTimeTo(TimeEntry* te, time_t t) {
 }
 
 bool Context::canChangeProjectTo(TimeEntry* te, Project* p) {
-    return !isTimeLockedInWorkspace(te->Start(),
+    return !isTimeLockedInWorkspace(te->StartTime(),
                                     user_->related.WorkspaceByID(p->WID()));
 }
 
@@ -6556,7 +6556,7 @@ bool Context::checkIfSkipPomodoro(TimeEntry *te) {
     if (settings_.pomodoro) {
         TimeEntry *current_te = user_->RunningTimeEntry();
         if (current_te && current_te->GUID().compare(te->GUID()) == 0) {
-            if (time(nullptr) - te->Start() >= settings_.pomodoro_minutes * 60) {
+            if (time(nullptr) - te->StartTime() >= settings_.pomodoro_minutes * 60) {
                 return true;
             }
         }

@@ -17,19 +17,12 @@ namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Client : public BaseModel {
  public:
-    Client()
-        : BaseModel()
-    , wid_(0)
-    , name_("") {}
+    Client() : BaseModel() {}
 
-    const Poco::UInt64 &WID() const {
-        return wid_;
-    }
-    void SetWID(const Poco::UInt64 value);
+    Property<Poco::UInt64> WID { 0 };
+    Property<std::string> Name { "" };
 
-    const std::string &Name() const {
-        return name_;
-    }
+    void SetWID(Poco::UInt64 value);
     void SetName(const std::string &value);
 
     // Override BaseModel
@@ -42,9 +35,6 @@ class TOGGL_INTERNAL_EXPORT Client : public BaseModel {
     bool ResourceCannotBeCreated(const toggl::error &err) const override;
 
  private:
-    Poco::UInt64 wid_;
-    std::string name_;
-
     static bool nameHasAlreadyBeenTaken(const error &err);
 };
 

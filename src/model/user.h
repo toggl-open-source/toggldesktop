@@ -23,25 +23,46 @@ namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT User : public BaseModel {
  public:
-    User()
-        : api_token_("")
-    , default_wid_(0)
-    , since_(0)
-    , fullname_("")
-    , email_("")
-    , record_timeline_(false)
-    , store_start_and_stop_time_(true)
-    , timeofday_format_("")
-    , duration_format_("")
-    , offline_data_("")
-    , default_pid_(0)
-    , default_tid_(0)
-    , has_loaded_more_(false)
-    , collapse_entries_(false)
-    , IsNewUser(false) {}
-
+    User() : BaseModel() {}
     ~User();
-    bool IsNewUser;
+
+    Property<std::string> APIToken { "" };
+    Property<std::string> Fullname { "" };
+    Property<std::string> Email { "" };
+    Property<std::string> TimeOfDayFormat { "" };
+    Property<std::string> DurationFormat { "" };
+    Property<std::string> OfflineData { "" };
+    Property<Poco::UInt64> DefaultWID { 0 };
+    Property<Poco::UInt64> DefaultPID { 0 };
+    Property<Poco::UInt64> DefaultTID { 0 };
+    // Unix timestamp of the user data; returned from API
+    Property<Poco::Int64> Since { 0 };
+    Property<bool> RecordTimeline { false };
+    Property<bool> StoreStartAndStopTime { false };
+
+    Property<bool> HasLoadedMore { false };
+    Property<bool> CollapseEntries { false };
+
+    Property<bool> IsNewUser { false };
+
+    void SetAPIToken(const std::string &api_token);
+    void SetFullname(const std::string &value);
+    void SetEmail(const std::string &value);
+    void SetTimeOfDayFormat(const std::string &value);
+    void SetDurationFormat(const std::string &value);
+    void SetOfflineData(const std::string &value);
+    void SetDefaultWID(Poco::UInt64 value);
+    void SetDefaultPID(Poco::UInt64 value);
+    void SetDefaultTID(Poco::UInt64 value);
+    // Unix timestamp of the user data; returned from API
+    void SetSince(Poco::Int64 value);
+    void SetRecordTimeline(bool value);
+    void SetStoreStartAndStopTime(bool value);
+    void ConfirmLoadedMore();
+    void SetCollapseEntries(bool value);
+
+    // Derived data and modifiers
+    bool HasValidSinceDate() const;
 
     error EnableOfflineLogin(
         const std::string &password);
@@ -62,17 +83,17 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     TimeEntry *Start(
         const std::string &description,
         const std::string &duration,
-        const Poco::UInt64 task_id,
-        const Poco::UInt64 project_id,
+        Poco::UInt64 task_id,
+        Poco::UInt64 project_id,
         const std::string project_guid,
         const std::string tags,
-        const time_t started,
-        const time_t ended,
-        const bool stop_current_running);
+        time_t started,
+        time_t ended,
+        bool stop_current_running);
 
     TimeEntry *Continue(
-        const std::string &GUID,
-        const bool manual_mode);
+        const std::string &guid,
+        bool manual_mode);
 
     void Stop(std::vector<TimeEntry *> *stopped = nullptr);
 
@@ -80,96 +101,28 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     // the discarded time was split into a new time entry
     TimeEntry *DiscardTimeAt(
         const std::string &guid,
-        const Poco::Int64 at,
-        const bool split_into_new_entry);
+        Poco::Int64 at,
+        bool split_into_new_entry);
 
     Project *CreateProject(
-        const Poco::UInt64 workspace_id,
-        const Poco::UInt64 client_id,
+        Poco::UInt64 workspace_id,
+        Poco::UInt64 client_id,
         const std::string &client_guid,
         const std::string &client_name,
         const std::string &project_name,
-        const bool is_private,
+        bool is_private,
         const std::string &project_color,
-        const bool billable);
+        bool billable);
 
     void AddProjectToList(Project *p);
 
     Client *CreateClient(
-        const Poco::UInt64 workspace_id,
+        Poco::UInt64 workspace_id,
         const std::string &client_name);
 
     void AddClientToList(Client *c);
 
     std::string DateDuration(TimeEntry *te) const;
-
-    const std::string &APIToken() const {
-        return api_token_;
-    }
-    void SetAPIToken(const std::string &api_token);
-
-    const Poco::UInt64 &DefaultWID() const {
-        return default_wid_;
-    }
-    void SetDefaultWID(Poco::UInt64 value);
-
-    // Unix timestamp of the user data; returned from API
-    const Poco::Int64 &Since() const {
-        return since_;
-    }
-    void SetSince(const Poco::Int64 value);
-
-    bool HasValidSinceDate() const;
-
-    const std::string &Fullname() const {
-        return fullname_;
-    }
-    void SetFullname(const std::string &value);
-
-    const std::string &TimeOfDayFormat() const {
-        return timeofday_format_;
-    }
-    void SetTimeOfDayFormat(const std::string &value);
-
-    const std::string &Email() const {
-        return email_;
-    }
-    void SetEmail(const std::string &value);
-
-    const bool &RecordTimeline() const {
-        return record_timeline_;
-    }
-    void SetRecordTimeline(const bool value);
-
-    const std::string &DurationFormat() const {
-        return duration_format_;
-    }
-    void SetDurationFormat(const std::string &);
-
-    const bool &StoreStartAndStopTime() const {
-        return store_start_and_stop_time_;
-    }
-    void SetStoreStartAndStopTime(const bool value);
-
-    const std::string & OfflineData() const {
-        return offline_data_;
-    }
-    void SetOfflineData(const std::string &);
-
-    const Poco::UInt64& DefaultPID() const {
-        return default_pid_;
-    }
-    void SetDefaultPID(const Poco::UInt64);
-
-    const Poco::UInt64& DefaultTID() const {
-        return default_tid_;
-    }
-    void SetDefaultTID(const Poco::UInt64);
-
-    const bool &CollapseEntries() const {
-        return collapse_entries_;
-    }
-    void SetCollapseEntries(const bool value);
 
     RelatedData related;
 
@@ -179,16 +132,16 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     std::string ModelURL() const override;
 
     // Handle related model deletions
-    void DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid);
-    void RemoveClientFromRelatedModels(const Poco::UInt64 cid);
-    void RemoveProjectFromRelatedModels(const Poco::UInt64 pid);
-    void RemoveTaskFromRelatedModels(const Poco::UInt64 tid);
+    void DeleteRelatedModelsWithWorkspace(Poco::UInt64 wid);
+    void RemoveClientFromRelatedModels(Poco::UInt64 cid);
+    void RemoveProjectFromRelatedModels(Poco::UInt64 pid);
+    void RemoveTaskFromRelatedModels(Poco::UInt64 tid);
 
     error LoadUserUpdateFromJSONString(const std::string &json);
 
     error LoadUserAndRelatedDataFromJSONString(
         const std::string &json,
-        const bool &including_related_data);
+        bool including_related_data);
 
     error LoadWorkspacesFromJSONString(const std::string & json);
 
@@ -251,14 +204,6 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         const std::string &password,
         std::string *result);
 
-    bool HasLoadedMore() {
-        return has_loaded_more_;
-    }
-
-    void ConfirmLoadedMore() {
-        has_loaded_more_ = true;
-    }
-
  private:
     void loadUserTagFromJSON(
         Json::Value data,
@@ -313,13 +258,6 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         std::vector<TimeEntry *> *dirty,
         std::vector<error> *errors);
 
-    error requestJSON(
-        const std::string &method,
-        const std::string &relative_url,
-        const std::string &json,
-        const bool authenticate_with_api_token,
-        std::string *response_body);
-
     void parseResponseArray(
         const std::string &response_body,
         std::vector<BatchUpdateResult> *responses);
@@ -331,23 +269,6 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     std::vector<TimelineEvent> CompressedTimeline(
         const Poco::LocalDateTime *date = nullptr, bool is_for_upload = true) const;
 
-    std::string api_token_;
-    Poco::UInt64 default_wid_;
-    // Unix timestamp of the user data; returned from API
-    Poco::Int64 since_;
-    std::string fullname_;
-    std::string email_;
-    bool record_timeline_;
-    bool store_start_and_stop_time_;
-    std::string timeofday_format_;
-    std::string duration_format_;
-    std::string offline_data_;
-    Poco::UInt64 default_pid_;
-    Poco::UInt64 default_tid_;
-
-    bool has_loaded_more_;
-    bool collapse_entries_;
-
     Poco::Mutex loadTimeEntries_m_;
 };
 
@@ -357,11 +278,11 @@ void deleteZombies(
     const std::set<Poco::UInt64> &alive);
 
 template <typename T>
-void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
+void deleteRelatedModelsWithWorkspace(Poco::UInt64 wid,
                                       std::vector<T *> *list);
 
 template <typename T>
-void removeProjectFromRelatedModels(const Poco::UInt64 pid,
+void removeProjectFromRelatedModels(Poco::UInt64 pid,
                                     std::vector<T *> *list);
 
 }  // namespace toggl

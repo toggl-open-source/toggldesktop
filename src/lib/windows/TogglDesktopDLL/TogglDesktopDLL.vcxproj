@@ -456,6 +456,7 @@
     <ClInclude Include="..\..\..\database\migrations.h" />
     <ClInclude Include="..\..\..\netconf.h" />
     <ClInclude Include="..\..\..\model\obm_action.h" />
+    <ClInclude Include="..\..\..\util\property.h" />
     <ClInclude Include="..\..\..\util\random.h" />
     <ClInclude Include="..\..\..\util\rectangle.h" />
     <ClInclude Include="..\..\..\toggl_api.h" />

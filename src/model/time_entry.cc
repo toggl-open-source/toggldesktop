@@ -29,23 +29,23 @@
 namespace toggl {
 
 bool TimeEntry::ResolveError(const error &err) {
-    if (durationTooLarge(err) && Stop() && Start()) {
+    if (durationTooLarge(err) && StopTime() && StartTime()) {
         Poco::Int64 seconds =
-            (std::min)(Stop() - Start(),
+            (std::min)(StopTime() - StartTime(),
                        Poco::Int64(kMaxTimeEntryDurationSeconds));
         SetDurationInSeconds(seconds);
         return true;
     }
-    if (startTimeWrongYear(err) && Stop() && Start()) {
+    if (startTimeWrongYear(err) && StopTime() && StartTime()) {
         Poco::Int64 seconds =
-            (std::min)(Stop() - Start(),
+            (std::min)(StopTime() - StartTime(),
                        Poco::Int64(kMaxTimeEntryDurationSeconds));
         SetDurationInSeconds(seconds);
-        SetStart(Stop() - Duration());
+        SetStartTime(StopTime() - Duration());
         return true;
     }
-    if (stopTimeMustBeAfterStartTime(err) && Stop() && Start()) {
-        SetStop(Start() + DurationInSeconds());
+    if (stopTimeMustBeAfterStartTime(err) && StopTime() && StartTime()) {
+        SetStopTime(StartTime() + DurationInSeconds());
         return true;
     }
     if (userCannotAccessWorkspace(err)) {
@@ -126,12 +126,12 @@ void TimeEntry::DiscardAt(const Poco::Int64 at) {
         return;
     }
 
-    if (at < Start()) {
+    if (at < StartTime()) {
         logger().error("Cannot discard time entry with start time bigger than current moment");
         return;
     }
 
-    Poco::Int64 duration = at - Start();
+    Poco::Int64 duration = at - StartTime();
 
     if (duration < 0) {
         logger().error("Discarding with this time entry would result in negative duration");  // NOLINT
@@ -139,7 +139,7 @@ void TimeEntry::DiscardAt(const Poco::Int64 at) {
     }
 
     SetDurationInSeconds(duration);
-    SetStop(at);
+    SetStopTime(at);
     SetUIModified();
 }
 
@@ -152,17 +152,17 @@ std::string TimeEntry::String() const {
     ss  << "TimeEntry"
         << " ID=" << ID()
         << " local_id=" << LocalID()
-        << " description=" << description_
-        << " wid=" << wid_
+        << " description=" << Description()
+        << " wid=" << WID()
         << " guid=" << GUID()
-        << " pid=" << pid_
-        << " tid=" << tid_
-        << " start=" << start_
-        << " stop=" << stop_
-        << " duration=" << duration_in_seconds_
-        << " billable=" << billable_
-        << " unsynced=" << unsynced_
-        << " duronly=" << duronly_
+        << " pid=" << PID()
+        << " tid=" << TID()
+        << " start=" << StartTime()
+        << " stop=" << StopTime()
+        << " duration=" << DurationInSeconds()
+        << " billable=" << Billable()
+        << " unsynced=" << Unsynced()
+        << " duronly=" << DurOnly()
         << " tags=" << Tags()
         << " created_with=" << CreatedWith()
         << " ui_modified_at=" << UIModifiedAt()
@@ -171,62 +171,62 @@ std::string TimeEntry::String() const {
     return ss.str();
 }
 
-void TimeEntry::SetLastStartAt(const Poco::Int64 value) {
-    if (last_start_at_ != value) {
-        last_start_at_ = value;
+void TimeEntry::SetLastStartAt(Poco::Int64 value) {
+    if (LastStartAt() != value) {
+        LastStartAt.Set(value);
     }
 }
 
-void TimeEntry::SetDurOnly(const bool value) {
-    if (duronly_ != value) {
-        duronly_ = value;
+void TimeEntry::SetDurOnly(bool value) {
+    if (DurOnly() != value) {
+        DurOnly.Set(value);
         SetDirty();
     }
 }
 
-void TimeEntry::SetStart(const Poco::Int64 value) {
-    if (start_ != value) {
-        start_ = value;
+void TimeEntry::SetStartTime(Poco::Int64 value) {
+    if (StartTime() != value) {
+        StartTime.Set(value);
         SetDirty();
     }
 }
 
-void TimeEntry::SetStop(const Poco::Int64 value) {
-    if (stop_ != value) {
-        stop_ = value;
+void TimeEntry::SetStopTime(Poco::Int64 value) {
+    if (StopTime() != value) {
+        StopTime.Set(value);
         SetDirty();
     }
 }
 
 void TimeEntry::SetDescription(const std::string &value) {
     const std::string &trimValue = trim_whitespace(value);
-    if (description_ != trimValue) {
-        description_ = trimValue;
+    if (Description() != trimValue) {
+        Description.Set(trimValue);
         SetDirty();
     }
 }
 
 void TimeEntry::SetStopString(const std::string &value) {
-    SetStop(Formatter::Parse8601(value));
+    SetStopTime(Formatter::Parse8601(value));
 }
 
 void TimeEntry::SetCreatedWith(const std::string &value) {
-    if (created_with_ != value) {
-        created_with_ = value;
+    if (CreatedWith() != value) {
+        CreatedWith.Set(value);
         SetDirty();
     }
 }
 
-void TimeEntry::SetBillable(const bool value) {
-    if (billable_ != value) {
-        billable_ = value;
+void TimeEntry::SetBillable(bool value) {
+    if (Billable() != value) {
+        Billable.Set(value);
         SetDirty();
     }
 }
 
-void TimeEntry::SetWID(const Poco::UInt64 value) {
-    if (wid_ != value) {
-        wid_ = value;
+void TimeEntry::SetWID(Poco::UInt64 value) {
+    if (WID() != value) {
+        WID.Set(value);
         SetDirty();
     }
 }
@@ -234,21 +234,21 @@ void TimeEntry::SetWID(const Poco::UInt64 value) {
 void TimeEntry::SetStopUserInput(const std::string &value) {
     SetStopString(value);
 
-    if (Stop() < Start()) {
+    if (StopTime() < StartTime()) {
         // Stop time cannot be before start time,
         // it'll get an error from backend.
         Poco::Timestamp ts =
-            Poco::Timestamp::fromEpochTime(Stop()) + 1*Poco::Timespan::DAYS;
-        SetStop(ts.epochTime());
+            Poco::Timestamp::fromEpochTime(StopTime()) + 1*Poco::Timespan::DAYS;
+        SetStopTime(ts.epochTime());
     }
 
-    if (Stop() < Start()) {
+    if (StopTime() < StartTime()) {
         logger().error("Stop time must be after start time!");
         return;
     }
 
     if (!IsTracking()) {
-        SetDurationInSeconds(Stop() - Start());
+        SetDurationInSeconds(StopTime() - StartTime());
     }
 
     if (Dirty()) {
@@ -257,9 +257,9 @@ void TimeEntry::SetStopUserInput(const std::string &value) {
     }
 }
 
-void TimeEntry::SetTID(const Poco::UInt64 value) {
-    if (tid_ != value) {
-        tid_ = value;
+void TimeEntry::SetTID(Poco::UInt64 value) {
+    if (TID() != value) {
+        TID.Set(value);
         SetDirty();
     }
 }
@@ -268,47 +268,47 @@ static const char kTagSeparator = '\t';
 
 void TimeEntry::SetTags(const std::string &tags) {
     if (Tags() != tags) {
-        TagNames.clear();
+        TagNames->clear();
         if (!tags.empty()) {
             std::stringstream ss(tags);
             while (ss.good()) {
                 std::string tag;
                 getline(ss, tag, kTagSeparator);
-                TagNames.push_back(tag);
+                TagNames->push_back(tag);
             }
         }
         SetDirty();
     }
 }
 
-void TimeEntry::SetPID(const Poco::UInt64 value) {
-    if (pid_ != value) {
-        pid_ = value;
+void TimeEntry::SetPID(Poco::UInt64 value) {
+    if (PID() != value) {
+        PID.Set(value);
         SetDirty();
     }
 }
 
-void TimeEntry::SetDurationInSeconds(const Poco::Int64 value) {
-    if (duration_in_seconds_ != value) {
-        duration_in_seconds_ = value;
+void TimeEntry::SetDurationInSeconds(Poco::Int64 value) {
+    if (DurationInSeconds() != value) {
+        DurationInSeconds.Set(value);
         SetDirty();
     }
 }
 
 void TimeEntry::SetStartUserInput(const std::string &value,
-                                  const bool keepEndTimeFixed) {
+                                  bool keepEndTimeFixed) {
     Poco::Int64 start = Formatter::Parse8601(value);
     if (IsTracking()) {
         SetDurationInSeconds(-start);
     } else {
-        auto stop = Stop();
+        auto stop = StopTime();
         if (keepEndTimeFixed && stop > start) {
             SetDurationInSeconds(stop - start);
         } else {
-            SetStop(start + DurationInSeconds());
+            SetStopTime(start + DurationInSeconds());
         }
     }
-    SetStart(start);
+    SetStartTime(start);
 
     if (Dirty()) {
         ClearValidationError();
@@ -317,7 +317,7 @@ void TimeEntry::SetStartUserInput(const std::string &value,
 }
 
 void TimeEntry::SetStartString(const std::string &value) {
-    SetStart(Formatter::Parse8601(value));
+    SetStartTime(Formatter::Parse8601(value));
 }
 
 void TimeEntry::SetDurationUserInput(const std::string &value) {
@@ -325,12 +325,12 @@ void TimeEntry::SetDurationUserInput(const std::string &value) {
     if (IsTracking()) {
         time_t now = time(nullptr);
         time_t start = now - seconds;
-        SetStart(start);
+        SetStartTime(start);
         SetDurationInSeconds(-start);
     } else {
         SetDurationInSeconds(seconds);
     }
-    SetStop(Start() + seconds);
+    SetStopTime(StartTime() + seconds);
 
     if (Dirty()) {
         ClearValidationError();
@@ -339,16 +339,16 @@ void TimeEntry::SetDurationUserInput(const std::string &value) {
 }
 
 void TimeEntry::SetProjectGUID(const std::string &value) {
-    if (project_guid_ != value) {
-        project_guid_ = value;
+    if (ProjectGUID() != value) {
+        ProjectGUID.Set(value);
         SetDirty();
     }
 }
 
 const std::string TimeEntry::Tags() const {
     std::stringstream ss;
-    for (auto it = TagNames.begin(); it != TagNames.end(); ++it) {
-        if (it != TagNames.begin()) {
+    for (auto it = TagNames->begin(); it != TagNames->end(); ++it) {
+        if (it != TagNames->begin()) {
             ss << kTagSeparator;
         }
         ss << *it;
@@ -357,7 +357,7 @@ const std::string TimeEntry::Tags() const {
 }
 
 const std::string TimeEntry::TagsHash() const {
-    std::vector<std::string> sortedTagNames(TagNames);
+    std::vector<std::string> sortedTagNames(TagNames());
     sort(sortedTagNames.begin(), sortedTagNames.end());
     std::stringstream ss;
     for (auto it = sortedTagNames.begin(); it != sortedTagNames.end(); ++it) {
@@ -370,16 +370,16 @@ const std::string TimeEntry::TagsHash() const {
 }
 
 std::string TimeEntry::StopString() const {
-    return Formatter::Format8601(stop_);
+    return Formatter::Format8601(StopTime());
 }
 
 std::string TimeEntry::StartString() const {
-    return Formatter::Format8601(start_);
+    return Formatter::Format8601(StartTime());
 }
 
 const std::string TimeEntry::GroupHash() const {
     std::stringstream ss;
-    ss << toggl::Formatter::FormatDateHeader(Start())
+    ss << toggl::Formatter::FormatDateHeader(StartTime())
        << Description()
        << WID()
        << PID()
@@ -391,7 +391,7 @@ const std::string TimeEntry::GroupHash() const {
 }
 
 bool TimeEntry::IsToday() const {
-    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(Start());
+    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(StartTime());
     Poco::LocalDateTime datetime(ts);
     Poco::LocalDateTime today;
     return today.year() == datetime.year() &&
@@ -496,7 +496,7 @@ Json::Value TimeEntry::SaveToJSON() const {
     }
 
     n["start"] = StartString();
-    if (Stop()) {
+    if (StopTime()) {
         n["stop"] = StopString();
     }
     n["duration"] = Json::Int64(DurationInSeconds());
@@ -506,9 +506,9 @@ Json::Value TimeEntry::SaveToJSON() const {
     n["created_with"] = Formatter::EscapeJSONString(CreatedWith());
 
     Json::Value tag_nodes;
-    if (TagNames.size() > 0) {
-        for (std::vector<std::string>::const_iterator it = TagNames.begin();
-                it != TagNames.end();
+    if (TagNames->size() > 0) {
+        for (std::vector<std::string>::const_iterator it = TagNames->begin();
+                it != TagNames->end();
                 ++it) {
             std::string tag_name = Formatter::EscapeJSONString(*it);
             tag_nodes.append(Json::Value(tag_name));
@@ -529,12 +529,12 @@ Poco::Int64 TimeEntry::RealDurationInSeconds() const {
 }
 
 void TimeEntry::loadTagsFromJSON(Json::Value list) {
-    TagNames.clear();
+    TagNames->clear();
 
     for (unsigned int i = 0; i < list.size(); i++) {
         std::string tag = list[i].asString();
         if (!tag.empty()) {
-            TagNames.push_back(tag);
+            TagNames->push_back(tag);
         }
     }
 }
@@ -555,8 +555,8 @@ std::string TimeEntry::ModelURL() const {
     return relative_url.str();
 }
 
-void TimeEntry::SetSkipPomodoro(const bool value) {
-    skipPomodoro = value;
+void TimeEntry::SetSkipPomodoro(bool value) {
+    SkipPomodoro.Set(value);
 }
 
 }   // namespace toggl

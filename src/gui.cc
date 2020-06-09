@@ -36,19 +36,19 @@ void TimeEntry::Fill(toggl::TimeEntry * const model) {
     WID = model->WID();
     TID = model->TID();
     PID = model->PID();
-    Started = model->Start();
-    Ended = model->Stop();
+    Started = model->StartTime();
+    Ended = model->StopTime();
     StartTimeString =
         toggl::Formatter::FormatTimeForTimeEntryEditor(
-            model->Start());
+            model->StartTime());
     EndTimeString =
         toggl::Formatter::FormatTimeForTimeEntryEditor(
-            model->Stop());
+            model->StopTime());
     Billable = model->Billable();
     Tags = model->Tags();
     UpdatedAt = model->UpdatedAt();
     DateHeader =
-        toggl::Formatter::FormatDateHeader(model->Start());
+        toggl::Formatter::FormatDateHeader(model->StartTime());
     DurOnly = model->DurOnly();
     Error = model->ValidationError();
     Unsynced = model->Unsynced();
