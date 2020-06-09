@@ -198,10 +198,10 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="23*" />
-                        <ColumnDefinition Width="16*"/>
+                        <ColumnDefinition Width="19*" />
+                        <ColumnDefinition Width="18*"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="16*" />
+                        <ColumnDefinition Width="18*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 0 0 8" Text="Duration" />
                     <toggl:ExtendedTextBox x:Name="durationTextBox" x:FieldModifier="private" Grid.Row="1" Grid.Column="0"
