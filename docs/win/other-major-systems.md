@@ -28,21 +28,7 @@ The WPF styles of the application are located in a number of files in `ui/Resour
 
 ### Custom window styling
 
-To achieve the custom window borders and styling of the Toggl Desktop windows, we use our own window types that override much of the default windows styling. These files can be found in `ui/chrome`.
-
-Care was taken to allow as much of the default windows behaviour - like minimizing and maximising animations, and drop shadows - to be retained, while implementing the application's style according to the design documents.
-
-### Themes
-
-When experimenting with adding an option to allow the user to switch to a more compact layout, we added a theme system that can be used to easily switch out resource dictionaries at runtime.
-
-`ui/ThemeTypes` specifies the different types of themes supported. For each theme, only one resource dictionary can be active at a time.
-
-The default dictionary for a theme type is specified in `App.xaml`, while themes can be switched out with a call to `Activate()` in the static class `ui/Theme.cs`.
-
-Note that resources specified in themes have to be consumed in the UI XAML using dynamic bindings, to ensure they are updated when the themes are switched out.
-
-This system can for example be used for localisation, or color scheme settings.
+To achieve the custom window borders and styling of the Toggl Desktop windows, we window types from `MahApps.Metro` library that override much of the default windows styling.
 
 
 ## Overlays
