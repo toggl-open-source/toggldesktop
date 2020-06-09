@@ -23,7 +23,7 @@ Currently, there are two main views, the login view and the time entry list view
 
 The login view handles both logging in, and signing up for a new Toggl account.
 
-The implementation can be found in `LoginView.xaml` and `LoginView.xaml.cs` in `ui/views`.
+The implementation can be found in `LoginView.xaml` and `LoginView.xaml.cs` in `ui/views` and `LoginViewModel.cs` in `ui/viewModels`.
 
 As such it is a state machine with these two states. While trying to log in or sign up, the views interface is disabled, while the operation is executed asynchronously.
 
@@ -33,7 +33,7 @@ In addition, the login view also contains the code to initialise a login using G
 
 The time entry list view is the central part of the UI. It includes both the timer, and the list of time entries.
 
-The implementation can be found in `TimeEntryCellList.xaml`and `TimeEntryCellList.xaml.cs` in `ui/views`.
+The implementation can be found in `TimeEntryList.xaml`and `TimeEntryList.xaml.cs` in `ui/views`.
 
 The view handles the routing of some events and calls to the two components, and is responsible for filling the time entry list with entry cells.
 
