@@ -7,7 +7,7 @@
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             mc:Ignorable="d" MinWidth="300">
+             mc:Ignorable="d" MinWidth="320">
     <Grid Background="{DynamicResource Toggl.CardBackground}">
         <Grid Name="contentGrid" x:FieldModifier="private" Margin="28 20">
             <Grid.RowDefinitions>
@@ -198,10 +198,10 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="19*" />
-                        <ColumnDefinition Width="18*"/>
+                        <ColumnDefinition Width="21*" />
+                        <ColumnDefinition Width="17*"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="18*" />
+                        <ColumnDefinition Width="17*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 0 0 8" Text="Duration" />
                     <toggl:ExtendedTextBox x:Name="durationTextBox" x:FieldModifier="private" Grid.Row="1" Grid.Column="0"
