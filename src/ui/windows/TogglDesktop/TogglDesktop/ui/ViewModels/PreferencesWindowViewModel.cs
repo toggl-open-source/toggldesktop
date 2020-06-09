@@ -122,7 +122,7 @@ namespace TogglDesktop.ViewModels
 
         private void UpdateKnownShortcuts(HotKey previousValue, HotKey newValue, string hotKeyDescription)
         {
-            if (!previousValue.IsNullOrNone())
+            if (!previousValue.IsNullOrNone() && _knownShortcuts.ContainsKey(previousValue))
             {
                 if (_knownShortcuts[previousValue] == hotKeyDescription)
                 {
