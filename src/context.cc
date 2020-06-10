@@ -2400,20 +2400,30 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
 
         HTTPResponse resp = TogglClient::GetInstance().Get(req);
         if (resp.err != noError) {
+            if (kBadRequestError == resp.err) {
+                return resp.body;
+            }
             return resp.err;
         }
 
-        Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
-            return "Invalid JSON";
+        // Success
+        if (resp.status_code == 200) {
+            Json::Value root;
+            Json::Reader reader;
+            if (!reader.parse(resp.body, root)) {
+                return "Invalid JSON";
+            }
+
+            if (root.isMember("sso_url")) {
+                std::string ssoURL = root["sso_url"].asString();
+            } else {
+                return "Missing sso_url key";
+            }
+        } else {
+            // Return error message from the backend
+            return resp.body;
         }
 
-        if (root.isMember("sso_url")) {
-            std::string ssoURL = root["sso_url"].asString();
-        } else {
-            return "Missing sso_url key";
-        }
 
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
