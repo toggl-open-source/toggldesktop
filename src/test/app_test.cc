@@ -20,6 +20,7 @@
 #include "timeline_uploader.h"
 #include "model/user.h"
 #include "model/workspace.h"
+#include "color_convert.h"
 
 #include "test_data.h"
 
@@ -27,6 +28,10 @@
 #include "Poco/FileStream.h"
 #include "Poco/Logger.h"
 #include "Poco/LocalDateTime.h"
+#include <Poco/SimpleFileChannel.h>
+#include <Poco/FormattingChannel.h>
+#include <Poco/PatternFormatter.h>
+#include <Poco/ConsoleChannel.h>
 
 namespace toggl {
 
@@ -102,7 +107,7 @@ TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {
     p.SetPrivate(false);
     error err = error("Only admins can change project visibility");
     ASSERT_TRUE(p.ResolveError(err));
-    ASSERT_TRUE(p.IsPrivate());
+    ASSERT_TRUE(p.Private());
 }
 
 TEST(User, CreateCompressedTimelineBatchForUpload) {
@@ -122,7 +127,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     TimelineEvent *good = new TimelineEvent();
     good->SetUID(user_id);
     // started yesterday, "16 minutes ago"
-    good->SetStart(time(0) - 86400 - 60*16);
+    good->SetStartTime(time(0) - 86400 - 60*16);
     good->SetEndTime(good->Start() + good_duration_seconds);
     good->SetFilename("Notepad.exe");
     good->SetTitle("untitled");
@@ -134,7 +139,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // can be uploaded to Toggl backend.
     TimelineEvent *good2 = new TimelineEvent();
     good2->SetUID(user_id);
-    good2->SetStart(good->EndTime() + 1);  // started after first event
+    good2->SetStartTime(good->EndTime() + 1);  // started after first event
     good2->SetEndTime(good2->Start() + good2_duration_seconds);
     good2->SetFilename("Notepad.exe");
     good2->SetTitle("untitled");
@@ -144,7 +149,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // but has already been uploaded to Toggl backend.
     TimelineEvent *uploaded = new TimelineEvent();;
     uploaded->SetUID(user_id);
-    uploaded->SetStart(good2->EndTime() + 1);  // started after second event
+    uploaded->SetStartTime(good2->EndTime() + 1);  // started after second event
     uploaded->SetEndTime(uploaded->Start() + 10);
     uploaded->SetFilename("Notepad.exe");
     uploaded->SetTitle("untitled");
@@ -155,7 +160,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // so it must not be uploaded
     TimelineEvent *too_fresh = new TimelineEvent();
     too_fresh->SetUID(user_id);
-    too_fresh->SetStart(time(0) - 60);  // started 1 minute ago
+    too_fresh->SetStartTime(time(0) - 60);  // started 1 minute ago
     too_fresh->SetEndTime(time(0));  // lasted until now
     too_fresh->SetFilename("Notepad.exe");
     too_fresh->SetTitle("notes");
@@ -165,7 +170,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // so it must not be uploaded, just deleted
     TimelineEvent *too_old = new TimelineEvent();
     too_old->SetUID(user_id);
-    too_old->SetStart(time(0) - kTimelineSecondsToKeep - 1);  // 7 days ago
+    too_old->SetStartTime(time(0) - kTimelineSecondsToKeep - 1);  // 7 days ago
     too_old->SetEndTime(too_old->EndTime() + 120);  // lasted 2 minutes
     too_old->SetFilename("Notepad.exe");
     too_old->SetTitle("diary");
@@ -786,12 +791,12 @@ TEST(User, ParsesAndSavesData) {
     //ASSERT_EQ("07fba193-91c4-0ec8-2894-820df0548a8f", user.related.TimeEntries[0]->GUID());
     ASSERT_EQ(uint(2567324), user.related.TimeEntries[0]->PID());
     ASSERT_TRUE(user.related.TimeEntries[0]->Billable());
-    ASSERT_EQ(uint(1378362830), user.related.TimeEntries[0]->Start());
-    ASSERT_EQ(uint(1378369186), user.related.TimeEntries[0]->Stop());
+    ASSERT_EQ(uint(1378362830), user.related.TimeEntries[0]->StartTime());
+    ASSERT_EQ(uint(1378369186), user.related.TimeEntries[0]->StopTime());
     ASSERT_EQ(6356, user.related.TimeEntries[0]->DurationInSeconds());
     ASSERT_EQ("Important things",
               user.related.TimeEntries[0]->Description());
-    ASSERT_EQ(uint(0), user.related.TimeEntries[0]->TagNames.size());
+    ASSERT_EQ(uint(0), user.related.TimeEntries[0]->TagNames->size());
     ASSERT_FALSE(user.related.TimeEntries[0]->DurOnly());
     ASSERT_EQ(user.ID(), user.related.TimeEntries[0]->UID());
 
@@ -1256,13 +1261,13 @@ TEST(TimeEntry, ParseDurationLargerThan24Hours) {
 TEST(TimeEntry, InterpretsCrazyStartAndStopAsMissingValues) {
     TimeEntry te;
 
-    ASSERT_EQ(Poco::UInt64(0), te.Start());
+    ASSERT_EQ(Poco::UInt64(0), te.StartTime());
     te.SetStartString("0003-03-16T-7:-19:-24Z");
-    ASSERT_EQ(Poco::UInt64(0), te.Start());
+    ASSERT_EQ(Poco::UInt64(0), te.StartTime());
 
-    ASSERT_EQ(Poco::UInt64(0), te.Stop());
+    ASSERT_EQ(Poco::UInt64(0), te.StopTime());
     te.SetStopString("0003-03-16T-5:-52:-51Z");
-    ASSERT_EQ(Poco::UInt64(0), te.Stop());
+    ASSERT_EQ(Poco::UInt64(0), te.StopTime());
 }
 
 TEST(User, Continue) {
@@ -1291,15 +1296,15 @@ TEST(TimeEntry, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
     TimeEntry *te = user.related.TimeEntryByID(164891639);
     ASSERT_TRUE(te);
     ASSERT_TRUE(te->IsTracking());
-    ASSERT_LT(te->Start(), te->Stop());
+    ASSERT_LT(te->StartTime(), te->StopTime());
 
     te->SetDurationUserInput("00:59:47");
     ASSERT_TRUE(te->IsTracking());
-    ASSERT_LT(te->Start(), te->Stop());
+    ASSERT_LT(te->StartTime(), te->StopTime());
 
     te->StopTracking();
     ASSERT_FALSE(te->IsTracking());
-    ASSERT_LT(te->Start(), te->Stop());
+    ASSERT_LT(te->StartTime(), te->StopTime());
 }
 
 TEST(Formatter, CollectErrors) {
@@ -1557,7 +1562,7 @@ TEST(JSON, ConvertTimelineToJSON) {
     const std::string desktop_id("12345");
 
     TimelineEvent event;
-    event.SetStart(time(0) - 10);
+    event.SetStartTime(time(0) - 10);
     event.SetEndTime(time(0));
     event.SetFilename("Is this the real life?");
     event.SetTitle("Is this just fantasy?");
@@ -1661,7 +1666,7 @@ TEST(JSON, Project) {
     //ASSERT_EQ(p.GUID(), p2.GUID());
     ASSERT_EQ(p.CID(), p2.CID());
     //ASSERT_EQ(p.Billable(), p2.Billable());
-    ASSERT_EQ(p.IsPrivate(), p2.IsPrivate());
+    ASSERT_EQ(p.Private(), p2.Private());
     ASSERT_EQ(p.UIModifiedAt(), p2.UIModifiedAt());
 }
 
@@ -1693,8 +1698,8 @@ TEST(JSON, TimeEntry) {
     ASSERT_EQ(Poco::UInt64(123456789), t.WID());
     //ASSERT_EQ("07fba193-91c4-0ec8-2345-820df0548123", t.GUID());
     ASSERT_TRUE(t.Billable());
-    ASSERT_EQ(Poco::UInt64(1378362830000 / 1000), t.Start());
-    ASSERT_EQ(Poco::UInt64(1378369186000 / 1000), t.Stop());
+    ASSERT_EQ(Poco::UInt64(1378362830000 / 1000), t.StartTime());
+    ASSERT_EQ(Poco::UInt64(1378369186000 / 1000), t.StopTime());
     ASSERT_EQ(Poco::Int64(6356), t.DurationInSeconds());
     ASSERT_EQ("A deleted time entry", t.Description());
     ASSERT_EQ("ahaa", t.Tags());
@@ -1707,8 +1712,8 @@ TEST(JSON, TimeEntry) {
     ASSERT_EQ(t.WID(), t2.WID());
     //ASSERT_EQ(t.GUID(), t2.GUID());
     ASSERT_EQ(t.Billable(), t2.Billable());
-    ASSERT_EQ(t.Start(), t2.Start());
-    ASSERT_EQ(t.Stop(), t2.Stop());
+    ASSERT_EQ(t.StartTime(), t2.StartTime());
+    ASSERT_EQ(t.StopTime(), t2.StopTime());
     ASSERT_EQ(t.DurationInSeconds(), t2.DurationInSeconds());
     ASSERT_EQ(t.Description(), t2.Description());
     ASSERT_EQ(t.Tags(), t2.Tags());
@@ -1895,10 +1900,194 @@ TEST(Settings, IsSame) {
     ASSERT_FALSE(s2.IsSame(s3));
 }
 
+TEST(ColorConverter_HSV_0B83D9, IsCorrect) {
+    HsvColor color_1 = toggl::ColorConverter::GetAdaptiveColor("0B83D9", AdaptiveColorShapeOnLightBackground);
+    ASSERT_NEAR(0.57, color_1.h, 0.01);
+    ASSERT_NEAR(0.95, color_1.s, 0.01);
+    ASSERT_NEAR(0.85, color_1.v, 0.01);
+
+    HsvColor color_2 = toggl::ColorConverter::GetAdaptiveColor("0B83D9", AdaptiveColorTextOnLightBackground);
+    ASSERT_NEAR(0.57, color_2.h, 0.01);
+    ASSERT_NEAR(0.95, color_2.s, 0.01);
+    ASSERT_NEAR(0.7, color_2.v, 0.01);
+
+    HsvColor color_3 = toggl::ColorConverter::GetAdaptiveColor("0B83D9", AdaptiveColorShapeOnDarkBackground);
+    ASSERT_NEAR(0.57, color_3.h, 0.01);
+    ASSERT_NEAR(0.81, color_3.s, 0.01);
+    ASSERT_NEAR(0.95, color_3.v, 0.01);
+
+    HsvColor color_4 = toggl::ColorConverter::GetAdaptiveColor("0B83D9", AdaptiveColorTextOnDarkBackground);
+    ASSERT_NEAR(0.57, color_4.h, 0.01);
+    ASSERT_NEAR(0.81, color_4.s, 0.01);
+    ASSERT_NEAR(1.0, color_4.v, 0.01);
+}
+
+TEST(ColorConverter_RGB_0B83D9, IsCorrect) {
+    RgbColor color_1 = toggl::ColorConverter::GetRgbAdaptiveColor("0B83D9", AdaptiveColorShapeOnLightBackground);
+    ASSERT_NEAR(0.04, color_1.r, 0.01);
+    ASSERT_NEAR(0.51, color_1.g, 0.01);
+    ASSERT_NEAR(0.85, color_1.b, 0.01);
+
+    RgbColor color_2 = toggl::ColorConverter::GetRgbAdaptiveColor("0B83D9", AdaptiveColorTextOnLightBackground);
+    ASSERT_NEAR(0.03, color_2.r, 0.01);
+    ASSERT_NEAR(0.42, color_2.g, 0.01);
+    ASSERT_NEAR(0.70, color_2.b, 0.01);
+
+    RgbColor color_3 = toggl::ColorConverter::GetRgbAdaptiveColor("0B83D9", AdaptiveColorShapeOnDarkBackground);
+    ASSERT_NEAR(0.18, color_3.r, 0.01);
+    ASSERT_NEAR(0.63, color_3.g, 0.01);
+    ASSERT_NEAR(0.95, color_3.b, 0.01);
+
+    RgbColor color_4 = toggl::ColorConverter::GetRgbAdaptiveColor("0B83D9", AdaptiveColorTextOnDarkBackground);
+    ASSERT_NEAR(0.19, color_4.r, 0.01);
+    ASSERT_NEAR(0.66, color_4.g, 0.01);
+    ASSERT_NEAR(1.0, color_4.b, 0.01);
+}
+
+TEST(ColorConverter_RGB_991102, IsCorrect) {
+    RgbColor color_1 = toggl::ColorConverter::GetRgbAdaptiveColor("991102", AdaptiveColorShapeOnLightBackground);
+    ASSERT_NEAR(0.60, color_1.r, 0.01);
+    ASSERT_NEAR(0.07, color_1.g, 0.01);
+    ASSERT_NEAR(0.01, color_1.b, 0.01);
+
+    RgbColor color_2 = toggl::ColorConverter::GetRgbAdaptiveColor("991102", AdaptiveColorTextOnLightBackground);
+    ASSERT_NEAR(0.45, color_2.r, 0.01);
+    ASSERT_NEAR(0.05, color_2.g, 0.01);
+    ASSERT_NEAR(0.0, color_2.b, 0.01);
+
+    RgbColor color_3 = toggl::ColorConverter::GetRgbAdaptiveColor("991102", AdaptiveColorShapeOnDarkBackground);
+    ASSERT_NEAR(0.86, color_3.r, 0.01);
+    ASSERT_NEAR(0.40, color_3.g, 0.01);
+    ASSERT_NEAR(0.35, color_3.b, 0.01);
+
+    RgbColor color_4 = toggl::ColorConverter::GetRgbAdaptiveColor("991102", AdaptiveColorTextOnDarkBackground);
+    ASSERT_NEAR(0.91, color_4.r, 0.01);
+    ASSERT_NEAR(0.43, color_4.g, 0.01);
+    ASSERT_NEAR(0.37, color_4.b, 0.01);
+}
+
+TEST(ColorConverter_RGB_2DA608, IsCorrect) {
+    RgbColor color_1 = toggl::ColorConverter::GetRgbAdaptiveColor("2DA608", AdaptiveColorShapeOnLightBackground);
+    ASSERT_NEAR(0.17, color_1.r, 0.01);
+    ASSERT_NEAR(0.65, color_1.g, 0.01);
+    ASSERT_NEAR(0.04, color_1.b, 0.01);
+
+    RgbColor color_2 = toggl::ColorConverter::GetRgbAdaptiveColor("2DA608", AdaptiveColorTextOnLightBackground);
+    ASSERT_NEAR(0.14, color_2.r, 0.01);
+    ASSERT_NEAR(0.50, color_2.g, 0.01);
+    ASSERT_NEAR(0.03, color_2.b, 0.01);
+
+    RgbColor color_3 = toggl::ColorConverter::GetRgbAdaptiveColor("2DA608", AdaptiveColorShapeOnDarkBackground);
+    ASSERT_NEAR(0.46, color_3.r, 0.01);
+    ASSERT_NEAR(0.88, color_3.g, 0.01);
+    ASSERT_NEAR(0.33, color_3.b, 0.01);
+
+    RgbColor color_4 = toggl::ColorConverter::GetRgbAdaptiveColor("2DA608", AdaptiveColorTextOnDarkBackground);
+    ASSERT_NEAR(0.49, color_4.r, 0.01);
+    ASSERT_NEAR(0.93, color_4.g, 0.01);
+    ASSERT_NEAR(0.35, color_4.b, 0.01);
+}
+
+TEST(Sync, LegacyFormat) {
+    testing::Database db;
+    std::string json { "{\"data\" : {\"achievements_enabled\" : true,\"api_token\" : \"token\",\"at\" : \"2019-04-08T11:08:37+00:00\",\"beginning_of_week\" : 1,\"clients\" : [{\"at\" : \"2018-11-07T20:52:31+00:00\",\"id\" : 43289164,\"name\" : \"client\",\"wid\" : 2817276}],\"created_at\" : \"2018-06-24T17:56:16+00:00\",\"date_format\" : \"MM/DD/YYYY\",\"default_wid\" : 2817276,\"duration_format\" : \"improved\",\"email\" : \"m@rtinbriza.cz\",\"fullname\" : \"M\",\"id\" : 4187712,\"image_url\" : \"https://assets.toggl.space/images/profile.png\",\"invitation\" : {},\"jquery_date_format\" : \"m/d/Y\",\"jquery_timeofday_format\" : \"h:i A\",\"language\" : \"en_US\",\"last_blog_entry\" : \"\",\"new_blog_post\" : {},\"openid_email\" : \"m@rtinbriza.cz\",\"openid_enabled\" : true,\"projects\" : [{\"active\" : true,\"actual_hours\" : 362,\"at\" : \"2019-09-18T12:31:25+00:00\",\"auto_estimates\" : false,\"billable\" : false,\"cid\" : 43289164,\"color\" : \"0\",\"created_at\" : \"2019-09-18T12:31:25+00:00\",\"hex_color\" : \"#06aaf5\",\"id\" : 154073509,\"is_private\" : true,\"name\" : \"project\",\"template\" : false,\"wid\" : 2817276}],\"record_timeline\" : true,\"render_timeline\" : true,\"retention\" : 9,\"send_product_emails\" : true,\"send_timer_notifications\" : true,\"send_weekly_report\" : true,\"should_upgrade\" : true,\"sidebar_piechart\" : true,\"store_start_and_stop_time\" : true,\"tags\" : [{\"at\" : \"2019-10-18T10:08:01+00:00\",\"id\" : 6892625,\"name\" : \"tag\",\"wid\" : 2817276}],\"time_entries\": [{\"at\" : \"2020-05-27T15:40:37+00:00\",\"billable\" : false,\"description\" : \"time entry\",\"duration\" : 415,\"duronly\" : false,\"guid\" : \"a28b9092ec9055edea7af710fcd72459\",\"id\" : 1563187599,\"pid\" : 154073509,\"start\" : \"2020-05-27T15:33:42+00:00\",\"stop\" : \"2020-05-27T15:40:37+00:00\",\"uid\" : 4187712,\"wid\" : 2817276}],\"timeline_enabled\" : true,\"timeline_experiment\" : false,\"timeofday_format\" : \"h:mm A\",\"timezone\" : \"Europe/Warsaw\",\"workspaces\" : [{\"admin\" : true,\"api_token\" : \"token\",\"at\" : \"2018-09-01T08:27:56+00:00\",\"default_currency\" : \"USD\",\"default_hourly_rate\" : 0,\"ical_enabled\" : true,\"id\" : 2817276,\"name\" : \"workspace\",\"only_admins_may_create_projects\" : false,\"only_admins_see_billable_rates\" : false,\"only_admins_see_team_dashboard\" : false,\"premium\" : true,\"profile\" : 0,\"projects_billable_by_default\" : true,\"rounding\" : 1,\"rounding_minutes\" : 0}]},\"since\" : 1590592101}" };
+    User user;
+    error err = user.LoadUserAndRelatedDataFromJSONString(json, false);
+    ASSERT_EQ(err, noError);
+
+    ASSERT_EQ(user.Email(), "m@rtinbriza.cz");
+    ASSERT_EQ(user.Fullname(), "M");
+    ASSERT_EQ(user.ID(), 4187712);
+
+    ASSERT_EQ(user.related.Clients.size(), 1);
+    ASSERT_EQ(user.related.Projects.size(), 1);
+    ASSERT_EQ(user.related.Tags.size(), 1);
+    ASSERT_EQ(user.related.TimeEntries.size(), 1);
+    ASSERT_EQ(user.related.Workspaces.size(), 1);
+
+    ASSERT_EQ(user.related.Clients[0]->ID(), 43289164);
+    ASSERT_EQ(user.related.Clients[0]->Name(), "client");
+    ASSERT_EQ(user.related.Clients[0]->WID(), 2817276);
+
+    ASSERT_EQ(user.related.Projects[0]->ID(), 154073509);
+    ASSERT_EQ(user.related.Projects[0]->Name(), "project");
+    ASSERT_EQ(user.related.Projects[0]->WID(), 2817276);
+    ASSERT_EQ(user.related.Projects[0]->CID(), 43289164);
+    ASSERT_EQ(user.related.Projects[0]->Active(), true);
+    ASSERT_EQ(user.related.Projects[0]->Billable(), false);
+
+    ASSERT_EQ(user.related.Tags[0]->ID(), 6892625);
+    ASSERT_EQ(user.related.Tags[0]->Name(), "tag");
+    ASSERT_EQ(user.related.Tags[0]->WID(), 2817276);
+
+    ASSERT_EQ(user.related.TimeEntries[0]->ID(), 1563187599);
+    ASSERT_EQ(user.related.TimeEntries[0]->Description(), "time entry");
+    ASSERT_EQ(user.related.TimeEntries[0]->WID(), 2817276);
+    ASSERT_EQ(user.related.TimeEntries[0]->UID(), 4187712);
+    ASSERT_EQ(user.related.TimeEntries[0]->StartTime(), 1590593622);
+    ASSERT_EQ(user.related.TimeEntries[0]->StopTime(), 1590594037);
+    ASSERT_EQ(user.related.TimeEntries[0]->Duration(), 415);
+
+    ASSERT_EQ(user.related.Workspaces[0]->ID(), 2817276);
+    ASSERT_EQ(user.related.Workspaces[0]->Name(), "workspace");
+    ASSERT_EQ(user.related.Workspaces[0]->Admin(), true);
+    ASSERT_EQ(user.related.Workspaces[0]->Premium(), true);
+}
+
+TEST(Sync, BatchedFormat) {
+    testing::Database db;
+    std::string json { "{\"clients\" : [{\"at\" : \"2018-11-07T20:52:31+00:00\",\"id\" : 43289164,\"name\" : \"client\",\"wid\" : 2817276}],\"flags\" : {\"badges.master_seen\" : \"2019-10-21T08:53:51.051Z\",\"has_seen_toggl_master_campaign\" : true,\"notifications.snowball_weekly_report_rollout\" : true,\"shopify_discount_enabled\" : false,\"snowball_detailed_report_rollout\" : true,\"snowball_summary_report_rollout\" : true},\"preferences\" : {\"CollapseTimeEntries\" : true,\"alpha_features\" : [{\"code\" : \"snowball_projects_list\",\"enabled\" : true},{\"code\" : \"snowball_teams\",\"enabled\" : true},{\"code\" : \"snowball_project_teams\",\"enabled\" : true},{\"code\" : \"snowball_saved_reports\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_general\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_owner\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_alerts\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_reminders\",\"enabled\" : true},{\"code\" : \"snowball_workspace_creation\",\"enabled\" : true},{\"code\" : \"snowball_view_shared_report\",\"enabled\" : true},{\"code\" : \"snowball_project_edit\",\"enabled\" : true},{\"code\" : \"snowball_settings\",\"enabled\" : true},{\"code\" : \"snowball_weekly_report\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_integrations\",\"enabled\" : false},{\"code\" : \"snowball_detailed_report\",\"enabled\" : false},{\"code\" : \"snowball_clients\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_import\",\"enabled\" : false},{\"code\" : \"snowball_profile\",\"enabled\" : true},{\"code\" : \"mobile_sync_client\",\"enabled\" : false},{\"code\" : \"snowball_dashboard\",\"enabled\" : false},{\"code\" : \"new_react_router\",\"enabled\" : false},{\"code\" : \"web_sync_client\",\"enabled\" : false},{\"code\" : \"alpha_program\",\"enabled\" : false},{\"code\" : \"dekstop_sync_client\",\"enabled\" : false},{\"code\" : \"snowball_tags\",\"enabled\" : true},{\"code\" : \"single_sign_on\",\"enabled\" : false},{\"code\" : \"calendar_view\",\"enabled\" : false},{\"code\" : \"snowball_project_tasks\",\"enabled\" : true},{\"code\" : \"snowball_i18n\",\"enabled\" : false}],\"date_format\" : \"MM/DD/YYYY\",\"duration_format\" : \"improved\",\"record_timeline\" : true,\"send_product_emails\" : true,\"send_timer_notifications\" : true,\"send_weekly_report\" : true,\"timeofday_format\" : \"h:mm A\"},\"projects\" : [{\"active\" : true,\"actual_hours\" : 362,\"at\" : \"2019-09-18T12:31:25+00:00\",\"auto_estimates\" : null,\"billable\" : null,\"cid\" : 43289164,\"client_id\" : 43289164,\"color\" : \"#06aaf5\",\"created_at\" : \"2019-09-18T12:31:25+00:00\",\"currency\" : null,\"estimated_hours\" : null,\"id\" : 154073509,\"is_private\" : true,\"name\" : \"project\",\"rate\" : null,\"server_deleted_at\" : null,\"template\" : null,\"wid\" : 2817276,\"workspace_id\" : 2817276}],\"server_time\" : 1590592101,\"tags\" : [{\"at\" : \"2019-10-18T10:08:01.693372Z\",\"id\" : 6892625,\"name\" : \"tag\",\"workspace_id\" : 2817276}],\"tasks\" : [],\"time_entries\" : [{\"at\" : \"2020-05-27T15:40:37+00:00\",\"billable\" : false,\"description\" : \"time entry\",\"duration\" : 415,\"duronly\" : false,\"id\" : 1563187599,\"project_id\" : null,\"server_deleted_at\" : null,\"start\" : \"2020-05-27T15:33:42+00:00\",\"stop\" : \"2020-05-27T15:40:37.000000Z\",\"tag_ids\" : null,\"tags\" : null,\"task_id\" : null,\"uid\" : 4187712,\"user_id\" : 4187712,\"wid\" : 2817276,\"workspace_id\" : 2817276}],\"user\" : {\"api_token\" : \"token\",\"at\" : \"2020-05-27T15:08:21.468625Z\",\"beginning_of_week\" : 1,\"country_id\" : 59,\"created_at\" : \"2018-06-24T17:56:16.075815Z\",\"default_workspace_id\" : 2817276,\"email\" : \"m@rtinbriza.cz\",\"fullname\" : \"M\",\"has_password\" : true,\"id\" : 4187712,\"image_url\" : \"https://assets.toggl.com/images/profile.png\",\"intercom_hash\" : \"33ad107c55cc9f8e89b0b1940812194b9441f742771f0f3be14bf329f41f8f9b\",\"oauth_providers\" : [ \"google\" ],\"openid_email\" : \"m@rtinbriza.cz\",\"openid_enabled\" : true,\"timezone\" : \"Europe/Warsaw\",\"updated_at\" : \"2019-04-08T11:08:37.90838Z\"},\"workspace_features\" : [{\"features\" : [{\"enabled\" : true,\"feature_id\" : 0,\"name\" : \"free\"},{\"enabled\" : false,\"feature_id\" : 13,\"name\" : \"pro\"},{\"enabled\" : false,\"feature_id\" : 15,\"name\" : \"business\"},{\"enabled\" : false,\"feature_id\" : 50,\"name\" : \"scheduled_reports\"},{\"enabled\" : false,\"feature_id\" : 51,\"name\" : \"time_audits\"},{\"enabled\" : false,\"feature_id\" : 52,\"name\" : \"locking_time_entries\"},{\"enabled\" : false,\"feature_id\" : 53,\"name\" : \"edit_team_member_time_entries\"},{\"enabled\" : false,\"feature_id\" : 54,\"name\" : \"edit_team_member_profile\"},{\"enabled\" : false,\"feature_id\" : 55,\"name\" : \"tracking_reminders\"},{\"enabled\" : false,\"feature_id\" : 56,\"name\" : \"time_entry_constraints\"},{\"enabled\" : false,\"feature_id\" : 57,\"name\" : \"priority_support\"},{\"enabled\" : false,\"feature_id\" : 58,\"name\" : \"labour_cost\"},{\"enabled\" : false,\"feature_id\" : 59,\"name\" : \"report_employee_profitability\"},{\"enabled\" : false,\"feature_id\" : 60,\"name\" : \"report_project_profitability\"},{\"enabled\" : false,\"feature_id\" : 61,\"name\" : \"report_comparative\"},{\"enabled\" : false,\"feature_id\" : 62,\"name\" : \"report_data_trends\"},{\"enabled\" : false,\"feature_id\" : 63,\"name\" : \"report_export_xlsx\"},{\"enabled\" : false,\"feature_id\" : 64,\"name\" : \"tasks\"},{\"enabled\" : false,\"feature_id\" : 65,\"name\" : \"project_dashboard\"}],\"workspace_id\" : 2817276}],\"workspaces\" : [{\"admin\" : true,\"api_token\" : \"token\",\"at\" : \"2018-09-01T08:27:56+00:00\",\"business_ws\" : false,\"csv_upload\" : null,\"default_currency\" : \"USD\",\"default_hourly_rate\" : 0,\"ical_enabled\" : true,\"ical_url\" : \"/ical/workspace_user/cf8775d2110d5d874ffa633434c901bd\",\"id\" : 2817276,\"logo_url\" : \"https://assets.toggl.com/images/workspace.jpg\",\"name\" : \"workspace\",\"only_admins_may_create_projects\" : false,\"only_admins_see_billable_rates\" : false,\"only_admins_see_team_dashboard\" : false,\"premium\" : true,\"profile\" : 0,\"projects_billable_by_default\" : true,\"rounding\" : 1,\"rounding_minutes\" : 0,\"server_deleted_at\" : null,\"subscription\" : null,\"suspended_at\" : null}]}" };
+    User user;
+    error err = user.LoadUserAndRelatedDataFromJSONString(json, false);
+    ASSERT_EQ(err, noError);
+
+    ASSERT_EQ(user.Email(), "m@rtinbriza.cz");
+    ASSERT_EQ(user.Fullname(), "M");
+    ASSERT_EQ(user.ID(), 4187712);
+
+    ASSERT_EQ(user.related.Clients.size(), 1);
+    ASSERT_EQ(user.related.Projects.size(), 1);
+    ASSERT_EQ(user.related.Tags.size(), 1);
+    ASSERT_EQ(user.related.TimeEntries.size(), 1);
+    ASSERT_EQ(user.related.Workspaces.size(), 1);
+
+    ASSERT_EQ(user.related.Clients[0]->ID(), 43289164);
+    ASSERT_EQ(user.related.Clients[0]->Name(), "client");
+    ASSERT_EQ(user.related.Clients[0]->WID(), 2817276);
+
+    ASSERT_EQ(user.related.Projects[0]->ID(), 154073509);
+    ASSERT_EQ(user.related.Projects[0]->Name(), "project");
+    ASSERT_EQ(user.related.Projects[0]->WID(), 2817276);
+    ASSERT_EQ(user.related.Projects[0]->CID(), 43289164);
+    ASSERT_EQ(user.related.Projects[0]->Active(), true);
+    ASSERT_EQ(user.related.Projects[0]->Billable(), false);
+
+    ASSERT_EQ(user.related.Tags[0]->ID(), 6892625);
+    ASSERT_EQ(user.related.Tags[0]->Name(), "tag");
+    ASSERT_EQ(user.related.Tags[0]->WID(), 2817276);
+
+    ASSERT_EQ(user.related.TimeEntries[0]->ID(), 1563187599);
+    ASSERT_EQ(user.related.TimeEntries[0]->Description(), "time entry");
+    ASSERT_EQ(user.related.TimeEntries[0]->WID(), 2817276);
+    ASSERT_EQ(user.related.TimeEntries[0]->UID(), 4187712);
+    ASSERT_EQ(user.related.TimeEntries[0]->StartTime(), 1590593622);
+    ASSERT_EQ(user.related.TimeEntries[0]->StopTime(), 1590594037);
+    ASSERT_EQ(user.related.TimeEntries[0]->Duration(), 415);
+
+    ASSERT_EQ(user.related.Workspaces[0]->ID(), 2817276);
+    ASSERT_EQ(user.related.Workspaces[0]->Name(), "workspace");
+    ASSERT_EQ(user.related.Workspaces[0]->Admin(), true);
+    ASSERT_EQ(user.related.Workspaces[0]->Premium(), true);
+}
+
 }  // namespace toggl
 
 int main(int argc, char **argv) {
     Poco::Logger &logger = Poco::Logger::get("");
+#ifdef unix
+    // log straight to stderr
+    //logger.setChannel(new Poco::ConsoleChannel());
+#endif
     logger.setLevel(Poco::Message::PRIO_DEBUG);
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

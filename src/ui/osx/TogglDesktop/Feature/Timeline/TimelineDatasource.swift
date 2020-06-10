@@ -69,6 +69,34 @@ final class TimelineDatasource: NSObject {
         var minimumGap: CGFloat {
             return 2.0
         }
+
+        var gestureDelta: CGFloat {
+            switch self {
+            case .x1:
+                return 0
+            case .x2:
+                return -100
+            case .x3:
+                return -250
+            case .x4:
+                return -400
+            }
+        }
+
+        init(gestureDelta: CGFloat) {
+            switch gestureDelta {
+            case Self.x2.gestureDelta ..< Self.x1.gestureDelta:
+                self = .x1
+            case Self.x3.gestureDelta ..< Self.x2.gestureDelta:
+                self = .x2
+            case Self.x4.gestureDelta ..< Self.x3.gestureDelta:
+                self = .x3
+            case ..<Self.x4.gestureDelta:
+                self = .x4
+            default:
+                self = .x1
+            }
+        }
     }
 
     // MARK: Variables

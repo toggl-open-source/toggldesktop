@@ -329,12 +329,16 @@ namespace TogglDesktop.ViewModels
             }
             else if (settings.UseProxy)
             {
-                var proxy = new WebProxy(settings.ProxyHost + ":" + settings.ProxyPort, true);
-                if (!string.IsNullOrEmpty(settings.ProxyUsername))
+                if (!Uri.CheckHostName(settings.ProxyHost).Equals(UriHostNameType.Unknown))
                 {
-                    proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
+                    var proxy = new WebProxy(settings.ProxyHost + ":" + settings.ProxyPort, true);
+
+                    if (!string.IsNullOrEmpty(settings.ProxyUsername))
+                    {
+                        proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
+                    }
+                    proxyHttpClientFactory.Proxy = proxy;
                 }
-                proxyHttpClientFactory.Proxy = proxy;
             }
 
             return proxyHttpClientFactory;

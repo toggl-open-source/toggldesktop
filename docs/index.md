@@ -23,7 +23,7 @@ Windows app is built in C# and the powerful WPF (Windows Presentation Foundation
 
 Windows app is packaged in [NSIS (Nullsoft Scriptable Install System)](http://nsis.sourceforge.net/Main_Page) based installer. Windows app is meant to be used without administrative rights. The app installs itself into the user directory `C:\Users\<username>\AppData\Local\TogglDesktop`
 
-Windows application works with 64 bit architecture on Windows 7 and newer
+Windows application works on Windows 7 and newer
 
 _More detailed description is available at [Windows UI Documentation](win/index.md)_
 

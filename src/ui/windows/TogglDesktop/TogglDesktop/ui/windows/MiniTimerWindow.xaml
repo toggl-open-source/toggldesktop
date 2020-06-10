@@ -32,11 +32,11 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid x:Name="rootGrid" Margin="16">
+    <Grid x:Name="rootGrid" Margin="16 0 16 16">
         <Grid.Effect>
             <DropShadowEffect
                 Direction="270"
-                ShadowDepth="5"
+                ShadowDepth="4"
                 BlurRadius="14"
                 Opacity="0.28" />
         </Grid.Effect>

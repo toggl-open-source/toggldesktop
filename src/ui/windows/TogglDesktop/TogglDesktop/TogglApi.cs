@@ -503,7 +503,13 @@ public static partial class Toggl
         string duration,
         Int64 started,
         [MarshalAs(UnmanagedType.LPWStr)]
-        string description);
+        string description,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string project,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string task,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string projectColor);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayUpdate(

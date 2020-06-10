@@ -220,7 +220,7 @@ bool OnboardingService::hasAtLeastOneTimelineTimeEntryOnCurrentDay() {
     for (std::vector<TimeEntry *>::const_iterator it = user->related.TimeEntries.begin();
          it != user->related.TimeEntries.end(); ++it) {
         TimeEntry *item = *it;
-        time_t start_time_entry = Poco::Timestamp::fromEpochTime(item->Start()).epochTime();
+        time_t start_time_entry = Poco::Timestamp::fromEpochTime(item->StartTime()).epochTime();
 
         // If we have at least one Time Entry in current Timeline day
         if (start_time_entry >= start_day) {
@@ -351,7 +351,7 @@ bool OnboardingService::handleNewUserOnboarding() {
          1. when user installs the app
          2. when users comes back to the app after more than 24 hours and still hasn’t tracked any time
      */
-    if (user->IsNewUser && state->timeEntryTotal == 0) {
+    if (user->IsNewUser() && state->timeEntryTotal == 0) {
         bool isTrigger = false;
 
         // Present twice
@@ -389,7 +389,7 @@ bool OnboardingService::handleOldUserOnboarding() {
          1. when user installs the app
          2. when users comes back to the app after more than 24 hours and still hasn’t tracked any time
      */
-    if (!user->IsNewUser) {
+    if (!user->IsNewUser()) {
         bool isTrigger = false;
         time_t elapsed = std::time(NULL) - state->createdAt;
 
@@ -421,7 +421,7 @@ void OnboardingService::getFirstTimeEntryCreatedAtFromUser(User *user) {
     if (!user->related.TimeEntries.empty()) {
         TimeEntry *firstTimeEntry = user->related.TimeEntries.front();
         if (firstTimeEntry != nullptr) {
-            state->firstTimeEntryCreatedAt = firstTimeEntry->Start();
+            state->firstTimeEntryCreatedAt = firstTimeEntry->StartTime();
         }
     }
 }

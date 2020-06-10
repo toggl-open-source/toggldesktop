@@ -16,120 +16,73 @@ namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
  public:
-    TimeEntry()
-        : BaseModel()
-    , wid_(0)
-    , pid_(0)
-    , tid_(0)
-    , billable_(false)
-    , start_(0)
-    , stop_(0)
-    , duration_in_seconds_(0)
-    , description_("")
-    , duronly_(false)
-    , created_with_("")
-    , project_guid_("")
-    , unsynced_(false)
-    , last_start_at_(0)
-    , skipPomodoro(false) {}
-
+    TimeEntry() : BaseModel() {}
     virtual ~TimeEntry() {}
 
-    const Poco::Int64 &LastStartAt() const {
-        return last_start_at_;
-    }
-    void SetLastStartAt(const Poco::Int64 value);
+    Property<std::string> Description { "" };
+    Property<std::string> CreatedWith { "" };
+    Property<std::string> ProjectGUID { "" };
+    Property<std::vector<std::string>> TagNames;
+    Property<Poco::UInt64> WID { 0 };
+    Property<Poco::UInt64> PID { 0 };
+    Property<Poco::UInt64> TID { 0 };
+    Property<Poco::Int64> StartTime { 0 };
+    Property<Poco::Int64> StopTime { 0 };
+    Property<Poco::Int64> DurationInSeconds { 0 };
+    Property<Poco::Int64> LastStartAt { 0 };
+    Property<bool> Billable { false };
+    Property<bool> DurOnly { false };
+    Property<bool> SkipPomodoro { false };
 
-    std::vector<std::string> TagNames;
+    void SetDescription(const std::string &value);
+    void SetCreatedWith(const std::string &value);
+    void SetProjectGUID(const std::string &value);
 
     const std::string Tags() const;
     void SetTags(const std::string &tags);
-
     const std::string TagsHash() const;
 
-    const Poco::UInt64 &WID() const {
-        return wid_;
-    }
-    void SetWID(const Poco::UInt64 value);
-
-    const Poco::UInt64 &PID() const {
-        return pid_;
-    }
-    void SetPID(const Poco::UInt64 value);
-
-    const Poco::UInt64 &TID() const {
-        return tid_;
-    }
-    void SetTID(const Poco::UInt64 value);
-
-    const bool &Billable() const {
-        return billable_;
-    }
-    void SetBillable(const bool value);
-
-    const Poco::Int64 &DurationInSeconds() const {
-        return duration_in_seconds_;
-    }
-    void SetDurationInSeconds(const Poco::Int64 value);
-
-    const bool &DurOnly() const {
-        return duronly_;
-    }
-    void SetDurOnly(const bool value);
-
-    const std::string &Description() const {
-        return description_;
-    }
-    void SetDescription(const std::string &value);
+    void SetWID(Poco::UInt64 value);
+    void SetPID(Poco::UInt64 value);
+    void SetTID(Poco::UInt64 value);
 
     std::string StartString() const;
     void SetStartString(const std::string &value);
-
-    const Poco::Int64 &Start() const override {
-        return start_;
-    }
-    void SetStart(const Poco::Int64 value);
+    void SetStartTime(Poco::Int64 value);
 
     std::string StopString() const;
     void SetStopString(const std::string &value);
+    void SetStopTime(Poco::Int64 value);
 
-    const Poco::Int64 &Stop() const {
-        return stop_;
-    }
-    void SetStop(const Poco::Int64 value);
+    void SetDurationInSeconds(const Poco::Int64 value);
+    void SetLastStartAt(Poco::Int64 value);
 
-    const std::string &CreatedWith() const {
-        return created_with_;
-    }
-    void SetCreatedWith(const std::string &value);
+    void SetBillable(bool value);
+    void SetDurOnly(bool value);
+    void SetSkipPomodoro(bool value);
 
-    void DiscardAt(const Poco::Int64);
-
+    // Derived information and modifiers
     bool IsToday() const;
 
-    void SetSkipPomodoro(const bool value);
-    const bool &SkipPomodoro() const {
-        return skipPomodoro;
+    bool IsTracking() const {
+        return DurationInSeconds() < 0;
     }
 
-    const std::string &ProjectGUID() const {
-        return project_guid_;
-    }
-    void SetProjectGUID(const std::string &);
+    Poco::Int64 RealDurationInSeconds() const;
+
+    void DiscardAt(const Poco::Int64);
+    void StopTracking();
+
+    bool isNotFound(const error &err) const;
+
+    const std::string GroupHash() const;
 
     // User-triggered changes to timer:
     void SetDurationUserInput(const std::string &);
     void SetStopUserInput(const std::string &);
     void SetStartUserInput(const std::string &, const bool);
 
-    bool IsTracking() const {
-        return duration_in_seconds_ < 0;
-    }
-
-    void StopTracking();
-
     // Override BaseModel
-
     std::string ModelName() const override;
     std::string ModelURL() const override;
     std::string String() const override;
@@ -138,32 +91,14 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     Json::Value SaveToJSON() const override;
 
     // Implement TimedEvent
-
+    virtual const Poco::Int64 &Start() const {
+        return StartTime();
+    }
     virtual const Poco::Int64 &Duration() const {
         return DurationInSeconds();
     }
 
-    Poco::Int64 RealDurationInSeconds() const;
-
-    bool isNotFound(const error &err) const;
-
-    const std::string GroupHash() const;
-
  private:
-    Poco::UInt64 wid_;
-    Poco::UInt64 pid_;
-    Poco::UInt64 tid_;
-    bool billable_;
-    Poco::Int64 start_;
-    Poco::Int64 stop_;
-    Poco::Int64 duration_in_seconds_;
-    std::string description_;
-    bool duronly_;
-    std::string created_with_;
-    std::string project_guid_;
-    bool unsynced_;
-    Poco::Int64 last_start_at_;
-    bool skipPomodoro;
 
     bool setDurationStringHHMMSS(const std::string &value);
     bool setDurationStringHHMM(const std::string &value);

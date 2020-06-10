@@ -173,8 +173,8 @@ void on_time_entry_list(
         te.SetID(it->ID);
         te.SetDurationInSeconds(it->DurationInSeconds);
         te.SetDescription(to_string(it->Description));
-        te.SetStart(it->Started);
-        te.SetStop(it->Ended);
+        te.SetStartTime(it->Started);
+        te.SetStopTime(it->Ended);
         testing::testresult::time_entries.push_back(te);
         it = reinterpret_cast<TogglTimeEntryView *>(it->Next);
     }
@@ -286,7 +286,7 @@ void on_display_timer_state(TogglTimeEntryView *te) {
     testing::testresult::timer_state = TimeEntry();
     if (te) {
         testing::testresult::timer_state.SetID(te->ID);
-        testing::testresult::timer_state.SetStart(te->Started);
+        testing::testresult::timer_state.SetStartTime(te->Started);
         testing::testresult::timer_state.SetGUID(to_string(te->GUID));
         testing::testresult::timer_state.SetDurationInSeconds(
             te->DurationInSeconds);
@@ -305,7 +305,10 @@ void on_display_idle_notification(
     const char_t *since,
     const char_t *duration,
     const int64_t started,
-    const char_t *description) {
+    const char_t *description,
+    const char_t *project,
+    const char_t *task,
+    const char_t *projectColor) {
     testing::testresult::idle_since = to_string(since);
     testing::testresult::idle_started = started;
     testing::testresult::idle_duration = to_string(duration);
@@ -1064,7 +1067,7 @@ TEST(toggl_api, toggl_continue_in_manual_mode) {
 
     ASSERT_NE(guid, testing::testresult::timer_state.GUID());
 
-    ASSERT_FALSE(testing::testresult::timer_state.Start());
+    ASSERT_FALSE(testing::testresult::timer_state.StartTime());
     ASSERT_FALSE(testing::testresult::timer_state.DurationInSeconds());
 
     ASSERT_NE("", testing::testresult::editor_state.GUID());
@@ -1184,7 +1187,7 @@ TEST(toggl_api, toggl_continue_latest_with_manual_mode) {
 
     ASSERT_EQ(noError, testing::testresult::error);
 
-    ASSERT_FALSE(testing::testresult::timer_state.Start());
+    ASSERT_FALSE(testing::testresult::timer_state.StartTime());
     ASSERT_FALSE(testing::testresult::timer_state.DurationInSeconds());
 
     ASSERT_NE("", testing::testresult::editor_state.GUID());
@@ -1667,8 +1670,8 @@ TEST(toggl_api, toggl_discard_time_at) {
         }
     }
     ASSERT_EQ(guid, te.GUID());
-    ASSERT_TRUE(started == te.Start() || started + 1 == te.Start());
-    ASSERT_TRUE(stopped == te.Stop() || stopped + 1 == te.Stop());
+    ASSERT_TRUE(started == te.StartTime() || started + 1 == te.StartTime());
+    ASSERT_TRUE(stopped == te.StopTime() || stopped + 1 == te.StopTime());
 
     // Start another time entry
 
@@ -1695,13 +1698,13 @@ TEST(toggl_api, toggl_discard_time_at) {
         }
     }
     ASSERT_EQ(guid, te.GUID());
-    ASSERT_TRUE(started == te.Start() || started + 1 == te.Start());
-    ASSERT_TRUE(stopped == te.Stop() || stopped + 1 == te.Stop());
+    ASSERT_TRUE(started == te.StartTime() || started + 1 == te.StartTime());
+    ASSERT_TRUE(stopped == te.StopTime() || stopped + 1 == te.StopTime());
 
     // Check that a new time entry was created
 
     ASSERT_TRUE(!testing::testresult::timer_state.GUID().empty());
-    ASSERT_EQ(stopped, testing::testresult::timer_state.Start());
+    ASSERT_EQ(stopped, testing::testresult::timer_state.StartTime());
     ASSERT_TRUE(testing::testresult::timer_state.IsTracking());
     ASSERT_EQ("", testing::testresult::timer_state.Description());
 }
@@ -1747,7 +1750,7 @@ TEST(toggl_api, toggl_set_time_entry_date) {
     toggl::TimeEntry te = testing::testresult::time_entry_by_id(89818605);
     std::string guid = te.GUID();
 
-    Poco::DateTime datetime(Poco::Timestamp::fromEpochTime(te.Start()));
+    Poco::DateTime datetime(Poco::Timestamp::fromEpochTime(te.StartTime()));
     ASSERT_EQ(2013, datetime.year());
     ASSERT_EQ(9, datetime.month());
     ASSERT_EQ(5, datetime.day());
@@ -1762,7 +1765,7 @@ TEST(toggl_api, toggl_set_time_entry_date) {
                                           unix_timestamp));
 
     te = testing::testresult::time_entry_by_id(89818605);
-    datetime = Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Start()));
+    datetime = Poco::DateTime(Poco::Timestamp::fromEpochTime(te.StartTime()));
     ASSERT_EQ(2014, datetime.year());
     ASSERT_EQ(10, datetime.month());
     ASSERT_EQ(27, datetime.day());
@@ -1778,7 +1781,7 @@ TEST(toggl_api, toggl_set_time_entry_start) {
     toggl::TimeEntry te = testing::testresult::time_entry_by_id(89818605);
     std::string guid = te.GUID();
 
-    Poco::DateTime datetime(Poco::Timestamp::fromEpochTime(te.Start()));
+    Poco::DateTime datetime(Poco::Timestamp::fromEpochTime(te.StartTime()));
     ASSERT_EQ(2013, datetime.year());
     ASSERT_EQ(9, datetime.month());
     ASSERT_EQ(5, datetime.day());
@@ -1790,7 +1793,7 @@ TEST(toggl_api, toggl_set_time_entry_start) {
 
     te = testing::testresult::time_entry_by_id(89818605);
     Poco::LocalDateTime local =
-        Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Start()));
+        Poco::DateTime(Poco::Timestamp::fromEpochTime(te.StartTime()));
     ASSERT_EQ(2013, local.year());
     ASSERT_EQ(9, local.month());
     ASSERT_EQ(5, local.day());
@@ -1810,7 +1813,7 @@ TEST(toggl_api, toggl_set_time_entry_end) {
     toggl::TimeEntry te = testing::testresult::time_entry_by_id(89818605);
     std::string guid = te.GUID();
 
-    Poco::DateTime datetime(Poco::Timestamp::fromEpochTime(te.Stop()));
+    Poco::DateTime datetime(Poco::Timestamp::fromEpochTime(te.StopTime()));
     ASSERT_EQ(2013, datetime.year());
     ASSERT_EQ(9, datetime.month());
     ASSERT_EQ(5, datetime.day());
@@ -1822,7 +1825,7 @@ TEST(toggl_api, toggl_set_time_entry_end) {
 
     te = testing::testresult::time_entry_by_id(89818605);
     Poco::LocalDateTime local =
-        Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Stop()));
+        Poco::DateTime(Poco::Timestamp::fromEpochTime(te.StopTime()));
     ASSERT_EQ(2013, local.year());
     ASSERT_EQ(9, local.month());
     ASSERT_EQ(5, local.day());
@@ -1852,8 +1855,8 @@ TEST(toggl_api, toggl_set_time_entry_end_prefers_same_day) {
     // take the updated time entry
     te = testing::testresult::time_entry_by_id(89818605);
 
-    Poco::DateTime start(Poco::Timestamp::fromEpochTime(te.Start()));
-    Poco::DateTime end(Poco::Timestamp::fromEpochTime(te.Stop()));
+    Poco::DateTime start(Poco::Timestamp::fromEpochTime(te.StartTime()));
+    Poco::DateTime end(Poco::Timestamp::fromEpochTime(te.StopTime()));
     ASSERT_EQ(start.year(), end.year());
     ASSERT_EQ(start.month(), end.month());
     ASSERT_EQ(start.day(), end.day());

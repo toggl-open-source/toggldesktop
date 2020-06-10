@@ -8,7 +8,7 @@ Most business logic of the application is implemented in C++ inside the TogglDes
 
 ## Architecture
 
-With most business logic contained in the library, Toggl Desktop **loosely** follows the Model-View-Controller (MVC) pattern, where the TogglDesktop project acts as both view and controller.
+With most business logic contained in the library, Toggl Desktop mostly follows the Model-View-Controller (MVC) pattern where the TogglDesktop project acts as both view and controller. Some views were recently moved to MVVM with ReactiveUI acting as an MVVM framework.
 
 The different window and view types of the interface correspond to the logical components of the application, and are kept interacting as little as reasonably possible to decrease complexity.
 
@@ -34,11 +34,6 @@ Both the `Timer` and the `EditView` make heavy use of auto completion which sugg
 
 The data for these suggestions is provided by the library through appropriate events. The interface parses this raw data into a more usable object structure and lazily populates the auto completion drop downs when needed.
 
-### WPF bindings
-
-At the moment of writing, (data) bindings are used only sparingly throughout the app. Most views are filled by hand with the data received from the library. There is no particular reason for this choice. While the current implementation performs well, this may be an area of improvement, should bindings prove more efficient or performant than hard-coding ui updates. This has so far not been tested.
-
-
 ## Namespaces and folders
 
 Inside the TogglDesktop project directory, namespaces are contained in nested folders starting with capital letters. Lower-case folders only serve to organize files within a namespace. The base namespace of the project is `TogglDesktop`.
@@ -50,6 +45,8 @@ The only files contained in the root folder are application global files, like t
 The UI is implemented using WPF, with each control, view, or window consisting of a `*.xaml` and an `*.xaml.cs` file as usual in C#. All these types are contained in the sub-folders of the `ui` directory, mostly sorted by type.
 
 The `ui` folder also contains the application's style sheets in `Resources`, as well as tutorial overlays, OBM experiments and ui elements related to auto completion in the folders and namespaces `Tutorial`, `Experiments`, `AutoCompleteControls` respectively.
+
+The recent release has introduced the Light and Dark modes to the application. Colors/brushes for these 2 modes are contained in `ui\Resources\Themes\ColorScheme` folder.
 
 The `ui` folder also contains a number of helper types directly related to the interface.
 

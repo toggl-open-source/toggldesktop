@@ -266,8 +266,8 @@ extension ProjectCreationView {
     }
 
     fileprivate func updateSelectColorView() {
-        guard let color = ConvertHexColor.hexCode(toNSColor: selectedColor.hex) else { return }
-        colorBtn.layer?.backgroundColor = color.cgColor
+        colorBtn.layer?.backgroundColor = ConvertHexColor.hexCode(toNSColor: selectedColor.hex)?.getAdaptiveColorForShape().cgColor
+        colorPickerView.select(selectedColor)
     }
 
     fileprivate var colorBtnBorderColor: NSColor {

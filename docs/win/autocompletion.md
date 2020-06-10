@@ -5,9 +5,9 @@ To handle the context specific requirements of inputting data into Toggl, the Wi
 
 This system is used all across the application's edit view as well as in the timer, to help the user quickly complete their input.
 
-The abstract implementation of the system can be found in the `AutoCompletion` namespace, while the Toggl specific implementations of these abstract types can be found in `AutoCompletion.Implementation`.
+The implementation of the system can be found in the `AutoCompletion` namespace.
 
-The UI controls displayed inside the autocompletion popups can be found in `ui/AutoCompleteControls`, while the popup itself is implemented in `ui/controls/AutoCompletionPopup`.
+The autocompletion popup is implemented in `ui/controls/AutoCompletionPopup` while the controls displayed inside the popup are defined as DataTemplates inside `AutoCompletionPopup`'s ResourceDictionary.
 
 The logic to take data given by the library and build the autocompletion data structures is in `AutoCompletion/AutoCompleteControllers.cs`.
 

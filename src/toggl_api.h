@@ -212,6 +212,27 @@ extern "C" {
         void *Next;
     } TogglCountryView;
 
+    // Range values from [0..1]
+    typedef struct RgbColor {
+        double r;
+        double g;
+        double b;
+    } RgbColor;
+
+    // Range values from [0..1]
+    typedef struct HsvColor {
+        double h;
+        double s;
+        double v;
+    } HsvColor;
+
+    typedef enum AdaptiveColor {
+        AdaptiveColorShapeOnLightBackground,
+        AdaptiveColorShapeOnDarkBackground,
+        AdaptiveColorTextOnLightBackground,
+        AdaptiveColorTextOnDarkBackground
+    } AdaptiveColor;
+
     // Callbacks that need to be implemented in UI
 
     typedef void (*TogglDisplayApp)(
@@ -306,7 +327,10 @@ extern "C" {
         const char_t *since,
         const char_t *duration,
         const int64_t started,
-        const char_t *description);
+        const char_t *description,
+        const char_t *project,
+        const char_t *task,
+        const char_t *projectColor);
 
     typedef void (*TogglDisplayUpdate)(
         const char_t *url);
@@ -937,6 +961,20 @@ extern "C" {
         void *context);
 
     // returns GUID of the started time entry. you must free() the result
+    TOGGL_EXPORT char_t *toggl_start_with_current_running(
+        void *context,
+        const char_t *description,
+        const char_t *duration,
+        const uint64_t task_id,
+        const uint64_t project_id,
+        const char_t *project_guid,
+        const char_t *tags,
+        const bool_t prevent_on_app,
+        const uint64_t started,
+        const uint64_t ended,
+        const bool_t stop_current_running);
+
+    // returns GUID of the started time entry. you must free() the result
     TOGGL_EXPORT char_t *toggl_start(
         void *context,
         const char_t *description,
@@ -1209,6 +1247,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_continue_sign_in(
         void *context,
         TogglContinueSignIn cb);
+
+TOGGL_EXPORT HsvColor toggl_get_adaptive_hsv_color(
+       RgbColor rgbColor,
+       AdaptiveColor type);
 
 #undef TOGGL_EXPORT
 

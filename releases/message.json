@@ -1,12 +1,13 @@
 {
-	"id": 1,
+	"id": 2,
 	"from": 1576573200,
-	"to": 1579219200,
-	"type": 2,
-	"title": "Save 20% on Annual Plans!",
-	"text": "Upgrade to any annual plan and pocket some extra cash just in time for the holiday season!",
-	"button": "Learn more",
-	"url-mac": "https://toggl.com/winter-is-here/?utm_source=desktop&utm_campaign=winter-is-here&utm_content=desktop-mac",
-	"url-win": "https://toggl.com/winter-is-here/?utm_source=desktop&utm_campaign=winter-is-here&utm_content=desktop-windows",
-	"url-linux": "https://toggl.com/winter-is-here/?utm_source=desktop&utm_campaign=winter-is-here&utm_content=desktop-linux"
+	"to": 1591747200,
+	"type": 0,
+  "appversion": "7.5.46",
+	"title": "Update your app to continue using Toggl",
+	"text": "To ensure that your Toggl app continues to sync entries, please update the app by clicking on the cogwheel menu icon -> About -> Restart now. Alternatively, download and install the latest version manually.",
+	"button": "Download here",
+	"url-mac": "https://toggl.com/toggl-desktop/",
+	"url-win": "https://toggl.com/toggl-desktop/",
+	"url-linux": "https://toggl.com/toggl-desktop/"
 }

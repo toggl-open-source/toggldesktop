@@ -41,14 +41,14 @@ User::~User() {
 }
 
 Project *User::CreateProject(
-    const Poco::UInt64 workspace_id,
-    const Poco::UInt64 client_id,
+    Poco::UInt64 workspace_id,
+    Poco::UInt64 client_id,
     const std::string &client_guid,
     const std::string &client_name,
     const std::string &project_name,
-    const bool is_private,
+    bool is_private,
     const std::string &project_color,
-    const bool billable) {
+    bool billable) {
 
     Project *p = new Project();
     p->SetWID(workspace_id);
@@ -117,7 +117,7 @@ void User::AddProjectToList(Project *p) {
 }
 
 Client *User::CreateClient(
-    const Poco::UInt64 workspace_id,
+    Poco::UInt64 workspace_id,
     const std::string &client_name) {
     Client *c = new Client();
     c->SetWID(workspace_id);
@@ -159,13 +159,13 @@ void User::AddClientToList(Client *c) {
 TimeEntry *User::Start(
     const std::string &description,
     const std::string &duration,
-    const Poco::UInt64 task_id,
-    const Poco::UInt64 project_id,
+    Poco::UInt64 task_id,
+    Poco::UInt64 project_id,
     const std::string project_guid,
     const std::string tags,
-    const time_t started,
-    const time_t ended,
-    const bool stop_current_running) {
+    time_t started,
+    time_t ended,
+    bool stop_current_running) {
 
     if (stop_current_running) {
         Stop();
@@ -189,18 +189,18 @@ TimeEntry *User::Start(
         if (!duration.empty()) {
             int seconds = Formatter::ParseDurationString(duration);
             te->SetDurationInSeconds(seconds);
-            te->SetStop(now);
-            te->SetStart(te->Stop() - te->DurationInSeconds());
+            te->SetStopTime(now);
+            te->SetStartTime(te->StopTime() - te->DurationInSeconds());
         } else {
             te->SetDurationInSeconds(-now);
             // dont set Stop, TE is running
-            te->SetStart(now);
+            te->SetStartTime(now);
         }
     } else {
         int seconds = int(ended - started);
         te->SetDurationInSeconds(seconds);
-        te->SetStop(ended);
-        te->SetStart(started);
+        te->SetStopTime(ended);
+        te->SetStartTime(started);
     }
 
     // Try to set workspace ID from project
@@ -233,12 +233,12 @@ TimeEntry *User::Start(
 }
 
 TimeEntry *User::Continue(
-    const std::string &GUID,
-    const bool manual_mode) {
+    const std::string &guid,
+    bool manual_mode) {
 
-    TimeEntry *existing = related.TimeEntryByGUID(GUID);
+    TimeEntry *existing = related.TimeEntryByGUID(guid);
     if (!existing) {
-        logger().warning("Time entry not found: ", GUID);
+        logger().warning("Time entry not found: ", guid);
         return nullptr;
     }
 
@@ -273,7 +273,7 @@ TimeEntry *User::Continue(
     result->SetBillable(existing->Billable());
     result->SetTags(existing->Tags());
     result->SetUID(ID());
-    result->SetStart(now);
+    result->SetStartTime(now);
 
     if (!manual_mode) {
         result->SetDurationInSeconds(-now);
@@ -288,13 +288,13 @@ TimeEntry *User::Continue(
 
 std::string User::DateDuration(TimeEntry * const te) const {
     Poco::Int64 date_duration(0);
-    std::string date_header = Formatter::FormatDateHeader(te->Start());
+    std::string date_header = Formatter::FormatDateHeader(te->StartTime());
     for (std::vector<TimeEntry *>::const_iterator it =
         related.TimeEntries.begin();
             it != related.TimeEntries.end();
             ++it) {
         TimeEntry *n = *it;
-        if (Formatter::FormatDateHeader(n->Start()) == date_header) {
+        if (Formatter::FormatDateHeader(n->StartTime()) == date_header) {
             Poco::Int64 duration = n->DurationInSeconds();
             if (duration > 0) {
                 date_duration += duration;
@@ -331,52 +331,56 @@ bool User::CanAddProjects() const {
 }
 
 void User::SetFullname(const std::string &value) {
-    if (fullname_ != value) {
-        fullname_ = value;
+    if (Fullname() != value) {
+        Fullname.Set(value);
         SetDirty();
     }
 }
 
 void User::SetTimeOfDayFormat(const std::string &value) {
     Formatter::TimeOfDayFormat = value;
-    if (timeofday_format_ != value) {
-        timeofday_format_ = value;
+    if (TimeOfDayFormat() != value) {
+        TimeOfDayFormat.Set(value);
         SetDirty();
     }
 }
 
 void User::SetDurationFormat(const std::string &value) {
     Formatter::DurationFormat = value;
-    if (duration_format_ != value) {
-        duration_format_ = value;
+    if (DurationFormat() != value) {
+        DurationFormat.Set(value);
         SetDirty();
     }
 }
 
 void User::SetOfflineData(const std::string &value) {
-    if (offline_data_ != value) {
-        offline_data_ = value;
+    if (OfflineData() != value) {
+        OfflineData.Set(value);
         SetDirty();
     }
 }
 
-void User::SetStoreStartAndStopTime(const bool value) {
-    if (store_start_and_stop_time_ != value) {
-        store_start_and_stop_time_ = value;
+void User::SetStoreStartAndStopTime(bool value) {
+    if (StoreStartAndStopTime() != value) {
+        StoreStartAndStopTime.Set(value);
         SetDirty();
     }
 }
 
-void User::SetRecordTimeline(const bool value) {
-    if (record_timeline_ != value) {
-        record_timeline_ = value;
+void User::ConfirmLoadedMore() {
+    HasLoadedMore.Set(true);
+}
+
+void User::SetRecordTimeline(bool value) {
+    if (RecordTimeline() != value) {
+        RecordTimeline.Set(value);
         SetDirty();
     }
 }
 
 void User::SetEmail(const std::string &value) {
-    if (email_ != value) {
-        email_ = value;
+    if (Email() != value) {
+        Email.Set(value);
         SetDirty();
     }
 }
@@ -384,40 +388,40 @@ void User::SetEmail(const std::string &value) {
 void User::SetAPIToken(const std::string &value) {
     // API token is not saved into DB, so no
     // no dirty checking needed for it.
-    api_token_ = value;
+    APIToken.Set(value);
 }
 
-void User::SetSince(const Poco::Int64 value) {
-    if (since_ != value) {
-        since_ = value;
+void User::SetSince(Poco::Int64 value) {
+    if (Since() != value) {
+        Since.Set(value);
         SetDirty();
     }
 }
 
-void User::SetDefaultWID(const Poco::UInt64 value) {
-    if (default_wid_ != value) {
-        default_wid_ = value;
+void User::SetDefaultWID(Poco::UInt64 value) {
+    if (DefaultWID() != value) {
+        DefaultWID.Set(value);
         SetDirty();
     }
 }
 
-void User::SetDefaultPID(const Poco::UInt64 value) {
-    if (default_pid_ != value) {
-        default_pid_ = value;
+void User::SetDefaultPID(Poco::UInt64 value) {
+    if (DefaultPID() != value) {
+        DefaultPID.Set(value);
         SetDirty();
     }
 }
 
-void User::SetDefaultTID(const Poco::UInt64 value) {
-    if (default_tid_ != value) {
-        default_tid_ = value;
+void User::SetDefaultTID(Poco::UInt64 value) {
+    if (DefaultTID() != value) {
+        DefaultTID.Set(value);
         SetDirty();
     }
 }
 
-void User::SetCollapseEntries(const bool value) {
-    if (collapse_entries_ != value) {
-        collapse_entries_ = value;
+void User::SetCollapseEntries(bool value) {
+    if (CollapseEntries() != value) {
+        CollapseEntries.Set(value);
         SetDirty();
     }
 }
@@ -445,8 +449,8 @@ void User::Stop(std::vector<TimeEntry *> *stopped) {
 
 TimeEntry *User::DiscardTimeAt(
     const std::string &guid,
-    const Poco::Int64 at,
-    const bool split_into_new_entry) {
+    Poco::Int64 at,
+    bool split_into_new_entry) {
 
     if (!(at > 0)) {
         logger().error("Cannot discard without valid timestamp");
@@ -464,7 +468,7 @@ TimeEntry *User::DiscardTimeAt(
         TimeEntry *split = new TimeEntry();
         split->SetCreatedWith(HTTPClient::Config.UserAgent());
         split->SetUID(ID());
-        split->SetStart(at);
+        split->SetStartTime(at);
         split->SetDurationInSeconds(-at);
         split->SetUIModified();
         split->SetWID(te->WID());
@@ -508,14 +512,14 @@ std::string User::String() const {
     std::stringstream ss;
     ss  << "ID=" << ID()
         << " local_id=" << LocalID()
-        << " default_wid=" << default_wid_
-        << " api_token=" << api_token_
-        << " since=" << since_
-        << " record_timeline=" << record_timeline_;
+        << " default_wid=" << DefaultWID()
+        << " api_token=" << APIToken()
+        << " since=" << Since()
+        << " record_timeline=" << RecordTimeline();
     return ss.str();
 }
 
-void User::DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid) {
+void User::DeleteRelatedModelsWithWorkspace(Poco::UInt64 wid) {
     deleteRelatedModelsWithWorkspace(wid, &related.Clients);
     deleteRelatedModelsWithWorkspace(wid, &related.Projects);
     deleteRelatedModelsWithWorkspace(wid, &related.Tasks);
@@ -523,7 +527,7 @@ void User::DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid) {
     deleteRelatedModelsWithWorkspace(wid, &related.Tags);
 }
 
-void User::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
+void User::RemoveClientFromRelatedModels(Poco::UInt64 cid) {
     for (std::vector<Project *>::iterator it = related.Projects.begin();
             it != related.Projects.end(); ++it) {
         Project *model = *it;
@@ -533,12 +537,12 @@ void User::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
     }
 }
 
-void User::RemoveProjectFromRelatedModels(const Poco::UInt64 pid) {
+void User::RemoveProjectFromRelatedModels(Poco::UInt64 pid) {
     removeProjectFromRelatedModels(pid, &related.Tasks);
     removeProjectFromRelatedModels(pid, &related.TimeEntries);
 }
 
-void User::RemoveTaskFromRelatedModels(const Poco::UInt64 tid) {
+void User::RemoveTaskFromRelatedModels(Poco::UInt64 tid) {
     related.forEachTimeEntries([&](TimeEntry *model) {
         if (model->TID() == tid) {
             model->SetTID(0);
@@ -696,9 +700,8 @@ void User::loadUserWorkspaceFromJSON(
     model->LoadFromJSON(data);
 }
 
-error User::LoadUserAndRelatedDataFromJSONString(
-    const std::string &json,
-    const bool &including_related_data) {
+error User::LoadUserAndRelatedDataFromJSONString(const std::string &json,
+    bool including_related_data) {
 
     if (json.empty()) {
         Logger("json").warning("cannot load empty JSON");
@@ -711,10 +714,7 @@ error User::LoadUserAndRelatedDataFromJSONString(
         return error("Failed to LoadUserAndRelatedDataFromJSONString");
     }
 
-    SetSince(root["since"].asInt64());
-    Logger("json").debug("User data as of: ", Since());
-
-    loadUserAndRelatedDataFromJSON(root["data"], including_related_data);
+    loadUserAndRelatedDataFromJSON(root, including_related_data);
     return noError;
 }
 
@@ -803,12 +803,38 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
 }
 
 void User::loadUserAndRelatedDataFromJSON(
-    Json::Value data,
-    const bool &including_related_data) {
+    const Json::Value &root,
+    bool including_related_data) {
+
+    // if the root of the json contains "data", then we're using /v8/me
+    // otherwise, it's Sync API
+    bool syncApi { !root.isMember("data") };
+
+    if (root.isMember("since")) {
+        SetSince(root["since"].asInt64());
+        Logger("json").debug("User data as of: ", Since());
+    }
+    else if (root.isMember("server_time")) {
+        SetSince(root["server_time"].asInt64());
+        Logger("json").debug("User data as of: ", Since());
+    }
+
+    // legacy API sends the data in a "data" nested member
+    const Json::Value &data { syncApi ? root : root["data"] };
+
+    // user is contained in Sync API but it is in root of data in v8
+    error err = loadUserFromJSON(syncApi ? data["user"] : data);
+    // other entities are contained about the same
+    if (err == noError) {
+        loadRelatedDataFromJSON(data, including_related_data);
+    }
+}
+
+error User::loadUserFromJSON(const Json::Value &data) {
 
     if (!data["id"].asUInt64()) {
         logger().error("Backend is sending invalid data: ignoring update without an ID");
-        return;
+        return kBackendIsSendingInvalidData;
     }
 
     SetID(data["id"].asUInt64());
@@ -820,6 +846,13 @@ void User::loadUserAndRelatedDataFromJSON(
     SetStoreStartAndStopTime(data["store_start_and_stop_time"].asBool());
     SetTimeOfDayFormat(data["timeofday_format"].asString());
     SetDurationFormat(data["duration_format"].asString());
+
+    return noError;
+}
+
+error User::loadRelatedDataFromJSON(
+    const Json::Value &data,
+    bool including_related_data) {
 
     {
         std::set<Poco::UInt64> alive;
@@ -916,6 +949,8 @@ void User::loadUserAndRelatedDataFromJSON(
             deleteZombies(related.TimeEntries, alive);
         }
     }
+
+    return noError;
 }
 
 void User::loadUserClientFromSyncJSON(
@@ -1528,7 +1563,7 @@ void deleteZombies(
 }
 
 template <typename T>
-void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
+void deleteRelatedModelsWithWorkspace(Poco::UInt64 wid,
                                       std::vector<T *> *list) {
     typedef typename std::vector<T *>::iterator iterator;
     for (iterator it = list->begin(); it != list->end(); ++it) {
@@ -1540,7 +1575,7 @@ void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
 }
 
 template <typename T>
-void removeProjectFromRelatedModels(const Poco::UInt64 pid,
+void removeProjectFromRelatedModels(Poco::UInt64 pid,
                                     std::vector<T *> *list) {
     typedef typename std::vector<T *>::iterator iterator;
     for (iterator it = list->begin(); it != list->end(); ++it) {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -152,6 +153,7 @@ namespace TogglDesktop
             #endregion
 
             ViewModel.LoadShortcutsFromSettings();
+            ViewModel.SetSavedProxyHost(settings.ProxyHost);
         }
 
         private static async Task<bool?> IsRunOnStartupEnabled()

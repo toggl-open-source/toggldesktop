@@ -358,7 +358,7 @@ void *ctx;
     if (tags == nil) {
         tags = @"";
     }
-    char *guid = toggl_start(ctx,
+    char *guid = toggl_start_with_current_running(ctx,
                              [item.Description UTF8String],
                              [item.duration UTF8String],
                              item.TaskID,
@@ -367,7 +367,8 @@ void *ctx;
                              [tags UTF8String],
                              false,
                              [item.started timeIntervalSince1970],
-                             [item.ended timeIntervalSince1970]);
+                             [item.ended timeIntervalSince1970],
+                             false);
     if (guid != nil) {
         NSString *GUID = [NSString stringWithUTF8String:guid];
         free(guid);
@@ -391,6 +392,39 @@ void *ctx;
         return duration;
     }
     return nil;
+}
+
+- (NSColor *) getAdaptiveColorForShapeFromColor:(NSColor *) color {
+    AdaptiveColor type = [self isDarkTheme] ? AdaptiveColorShapeOnDarkBackground : AdaptiveColorShapeOnLightBackground;
+    return [self getAdaptiveColorFromColor:color type:type];
+}
+
+- (NSColor *) getAdaptiveColorForTextFromColor:(NSColor *) color {
+    AdaptiveColor type = [self isDarkTheme] ? AdaptiveColorTextOnDarkBackground : AdaptiveColorTextOnLightBackground;
+    return [self getAdaptiveColorFromColor:color type:type];
+}
+
+- (NSColor *) getAdaptiveColorFromColor:(NSColor *) originalColor type:(AdaptiveColor) type {
+    // Convert to RGB color space
+    // Because some part of the app uses grey color space
+    NSColor *color = [originalColor colorUsingColorSpace:NSColorSpace.deviceRGBColorSpace];
+    if (color == NULL) {
+        return originalColor;
+    }
+
+    // adjust color
+    RgbColor rgbColor = { color.redComponent, color.greenComponent, color.blueComponent};
+    HsvColor hsvColor = toggl_get_adaptive_hsv_color(rgbColor, type);
+    return [NSColor colorWithHue:hsvColor.h saturation:hsvColor.s brightness:hsvColor.v alpha:1.0];
+}
+
+-(BOOL) isDarkTheme {
+    if (@available(macOS 10.14, *)) {
+        if ([NSApp.effectiveAppearance.name containsString:@"Dark"]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (void)userDidClickOnTimelineTab

@@ -11,10 +11,13 @@ namespace urls {
 
 std::string Main();
 std::string API();
+std::string SyncAPI();
 std::string TimelineUpload();
 std::string WebSocket();
 
 void SetUseStagingAsBackend(const bool value);
+
+bool IsUsingStagingAsBackend();
 
 bool RequestsAllowed();
 

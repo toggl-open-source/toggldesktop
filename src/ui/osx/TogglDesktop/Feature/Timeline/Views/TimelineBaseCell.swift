@@ -98,13 +98,12 @@ class TimelineBaseCell: NSCollectionViewItem {
     ///   - foregroundColor: Foreground Color
     ///   - isSmallEntry: isSmallEntry
     func renderColor(with foregroundColor: NSColor, isSmallEntry: Bool) {
-        // Get the lighter color like the design
-        backgroundColor = foregroundColor.lighten(by: 0.2)
+        let adaptiveColor = foregroundColor.getAdaptiveColorForShape()
+        backgroundColor = adaptiveColor.lighten(by: 0.2)
 
-        // Set color and border
-        foregroundBox.backgroundColor = foregroundColor
-        backgroundBox?.backgroundColor = backgroundColor ?? foregroundColor
-        backgroundBox?.borderColor = backgroundColor ?? foregroundColor
+        foregroundBox.backgroundColor = adaptiveColor
+        backgroundBox?.backgroundColor = backgroundColor ?? adaptiveColor
+        backgroundBox?.borderColor = backgroundColor ?? adaptiveColor
 
         // Find the suitable corner radius
         let cornerRadius = TimelineBaseCell.suitableCornerRadius(isSmallEntry, height: view.frame.height)
