@@ -2384,7 +2384,7 @@ error Context::AsyncAppleLogin(const std::string &access_token) {
 
 error Context::GetSSOIdentityProvider(const std::string &email) {
     if (email.empty()) {
-        return "Empty email or API token";
+        return displayError("Empty email or API token");
     }
 
     try {
@@ -2401,9 +2401,9 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
         HTTPResponse resp = TogglClient::GetInstance().Get(req);
         if (resp.err != noError) {
             if (kBadRequestError == resp.err) {
-                return resp.body;
+                return displayError(resp.body);
             }
-            return resp.err;
+            return displayError(resp.err);
         }
 
         // Success
@@ -2411,7 +2411,7 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
             Json::Value root;
             Json::Reader reader;
             if (!reader.parse(resp.body, root)) {
-                return "Invalid JSON";
+                return displayError("Invalid JSON");
             }
 
             if (root.isMember("sso_url")) {
@@ -2424,7 +2424,7 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
             }
         } else {
             // Return error message from the backend
-            return resp.body;
+            return displayError(resp.body);
         }
 
 

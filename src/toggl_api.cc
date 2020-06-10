@@ -1641,5 +1641,5 @@ HsvColor toggl_get_adaptive_hsv_color(
 }
 
 bool_t toggl_get_identity_provider_sso(void *context, const char_t *email) {
-    return toggl::noError == app(context)->GetSSOIdentityProvider(email);
+    return toggl::noError == app(context)->GetSSOIdentityProvider(to_string(email));
 }
