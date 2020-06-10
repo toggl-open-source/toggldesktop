@@ -71,3 +71,5 @@ extern NSString *const kInvalidAppleUserCrendential;
 extern NSString *const kStartDisplayOnboarding;
 extern NSString *const kOnboardingDidClickNotification;
 extern NSString *const kContinueSignIn;
+
+extern NSString *const kSSSOURIScheme;
