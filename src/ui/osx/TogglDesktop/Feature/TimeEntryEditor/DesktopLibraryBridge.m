@@ -395,12 +395,12 @@ void *ctx;
 }
 
 - (NSColor *) getAdaptiveColorForShapeFromColor:(NSColor *) color {
-    AdaptiveColor type = [self isDarkTheme] ? AdaptiveColorShapeOnDarkBackground : AdaptiveColorShapeOnLightBackground;
+    TogglAdaptiveColor type = [self isDarkTheme] ? AdaptiveColorShapeOnDarkBackground : AdaptiveColorShapeOnLightBackground;
     return [self getAdaptiveColorFromColor:color type:type];
 }
 
 - (NSColor *) getAdaptiveColorForTextFromColor:(NSColor *) color {
-    AdaptiveColor type = [self isDarkTheme] ? AdaptiveColorTextOnDarkBackground : AdaptiveColorTextOnLightBackground;
+    TogglAdaptiveColor type = [self isDarkTheme] ? AdaptiveColorTextOnDarkBackground : AdaptiveColorTextOnLightBackground;
     return [self getAdaptiveColorFromColor:color type:type];
 }
 
