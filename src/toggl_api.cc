@@ -1639,3 +1639,7 @@ HsvColor toggl_get_adaptive_hsv_color(
     AdaptiveColor type) {
     return toggl::ColorConverter::GetAdaptiveColor(rgbColor, type);
 }
+
+bool_t toggl_get_identity_provider_sso(void *context, const char_t *email) {
+    return toggl::noError == app(context)->GetSSOIdentityProvider(email);
+}

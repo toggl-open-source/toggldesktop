@@ -1254,9 +1254,13 @@ extern "C" {
         void *context,
         TogglDisplayLoginSSO cb);
 
-TOGGL_EXPORT HsvColor toggl_get_adaptive_hsv_color(
+    TOGGL_EXPORT HsvColor toggl_get_adaptive_hsv_color(
        RgbColor rgbColor,
        AdaptiveColor type);
+
+    TOGGL_EXPORT bool_t toggl_get_identity_provider_sso(
+        void *context,
+        const char_t *email);
 
 #undef TOGGL_EXPORT
 
