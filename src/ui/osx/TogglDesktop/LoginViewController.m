@@ -585,7 +585,7 @@ extern void *ctx;
 
 - (BOOL)isValidEmail:(NSString *) email
 {
-    if (email == nil || !email.length)
+    if (email == nil || !email.length || ![email containsString:@"@"])
     {
         [self.email.window makeFirstResponder:self.email];
         [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
@@ -1003,7 +1003,7 @@ extern void *ctx;
     }
 
     NSString *email = [self.email stringValue];
-    [self showLoaderView:YES];
+    toggl_get_identity_provider_sso(ctx, email.UTF8String);
 
     // Test
     [self changeTabView:TabViewTypeEmailExistsSSO];
