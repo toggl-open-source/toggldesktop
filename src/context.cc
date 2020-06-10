@@ -2416,6 +2416,9 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
 
             if (root.isMember("sso_url")) {
                 std::string ssoURL = root["sso_url"].asString();
+
+                // Ask the client to open SSL URL on the browser
+                UI()->DisplayOnLoginSSO(ssoURL);
             } else {
                 return "Missing sso_url key";
             }

@@ -1629,6 +1629,11 @@ void toggl_on_continue_sign_in(
     app(context)->UI()->OnContinueSignIn(cb);
 }
 
+void toggl_on_display_login_sso(void *context,
+                                TogglDisplayLoginSSO cb) {
+    app(context)->UI()->OnDisplayLoginSSO(cb);
+}
+
 HsvColor toggl_get_adaptive_hsv_color(
     RgbColor rgbColor,
     AdaptiveColor type) {

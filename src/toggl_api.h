@@ -322,6 +322,8 @@ extern "C" {
 
     typedef void (*TogglContinueSignIn)(void);
 
+    typedef void (*TogglDisplayLoginSSO)(const char_t *sso_url);
+
     typedef void (*TogglDisplayIdleNotification)(
         const char_t *guid,
         const char_t *since,
@@ -1247,6 +1249,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_continue_sign_in(
         void *context,
         TogglContinueSignIn cb);
+
+    TOGGL_EXPORT void toggl_on_display_login_sso(
+        void *context,
+        TogglDisplayLoginSSO cb);
 
 TOGGL_EXPORT HsvColor toggl_get_adaptive_hsv_color(
        RgbColor rgbColor,

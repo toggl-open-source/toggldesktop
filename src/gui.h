@@ -646,6 +646,10 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         on_continue_sign_in = cb;
     }
 
+    void OnDisplayLoginSSO(TogglDisplayLoginSSO cb) {
+        on_display_login_sso = cb;
+    }
+
     bool CanDisplayUpdate() const {
         return !!on_display_update_;
     }
@@ -710,6 +714,8 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         }
     }
 
+    void DisplayOnLoginSSO(std::string ssoURL);
+
  private:
     error findMissingCallbacks();
 
@@ -748,6 +754,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     TogglDisplayObmExperiment on_display_obm_experiment_;
     TogglDisplayOnboarding on_display_onboarding_;
     TogglContinueSignIn on_continue_sign_in;
+    TogglDisplayLoginSSO on_display_login_sso;
 
     // Cached views
     Poco::Int64 lastSyncState;
