@@ -333,6 +333,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error AppleLogin(const std::string &access_token);
     error AsyncAppleLogin(const std::string &access_token);
 
+    error GetSSOIdentityProvider(const std::string &email);
+    
     error Logout();
 
     error SetLoggedInUserFromJSON(

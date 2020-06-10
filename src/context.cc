@@ -2382,6 +2382,49 @@ error Context::AsyncAppleLogin(const std::string &access_token) {
     return AsyncLogin(access_token, kAppleAccessToken);
 }
 
+error Context::GetSSOIdentityProvider(const std::string &email) {
+    if (email.empty()) {
+        return "Empty email or API token";
+    }
+
+    try {
+
+        std::stringstream ss;
+        ss << kAPIV9
+           << "/auth/saml2/login"
+        << "?email=" << email;
+
+        HTTPRequest req;
+        req.host = urls::API();
+        req.relative_url = ss.str();
+
+        HTTPResponse resp = TogglClient::GetInstance().Get(req);
+        if (resp.err != noError) {
+            return resp.err;
+        }
+
+        Json::Value root;
+        Json::Reader reader;
+        if (!reader.parse(resp.body, root)) {
+            return "Invalid JSON";
+        }
+
+        if (root.isMember("sso_url")) {
+            std::string ssoURL = root["sso_url"].asString();
+        } else {
+            return "Missing sso_url key";
+        }
+
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string & ex) {
+        return ex;
+    }
+    return noError;
+}
+
 error Context::attemptOfflineLogin(const std::string &email,
                                    const std::string &password) {
     if (email.empty()) {
