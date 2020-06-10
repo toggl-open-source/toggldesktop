@@ -125,7 +125,7 @@ Context::Context(const std::string &app_name, const std::string &app_version)
     OnboardingService::getInstance()->RegisterEvents([&] (const OnboardingType onboardingType) {
         UI()->DisplayOnboarding(onboardingType);
     });
-    
+
     TogglClient::GetInstance().SetSyncStateMonitor(UI());
 }
 
@@ -4854,9 +4854,13 @@ void Context::syncerActivityWrapper() {
 #if defined(TOGGL_SYNC_FORCE_BATCHED)
     { BATCHED };
 #elif defined(TOGGL_SYNC_FORCE_LEGACY)
-    { LEGACY };
+    {
+        LEGACY
+    };
 #else
-    { STARTUP };
+    {
+        STARTUP
+    };
 #endif
 
     while (true) {

@@ -35,16 +35,16 @@ TogglRgbColor ColorConverter::GetRgbAdaptiveColor(std::string hexColor, TogglAda
 
 TogglHsvColor ColorConverter::adjustColor(TogglHsvColor hsvColor, TogglAdaptiveColor type) {
     switch (type) {
-        case AdaptiveColorShapeOnLightBackground:
-            return { hsvColor.h, hsvColor.s, hsvColor.v };
-        case AdaptiveColorTextOnLightBackground:
-            return { hsvColor.h, hsvColor.s, safe_range_f(hsvColor.v - 0.15, 0.0f, 1.0f) };
-        case AdaptiveColorShapeOnDarkBackground:
-            return { hsvColor.h, hsvColor.s * hsvColor.v, safe_range_f((hsvColor.v + 2.0) / 3.0, 0.0f, 1.0f) };
-        case AdaptiveColorTextOnDarkBackground:
-            return { hsvColor.h, hsvColor.s * hsvColor.v, safe_range_f(0.05 + (hsvColor.v + 2.0) / 3.0, 0.0f, 1.0f) };
-        default:
-            return hsvColor;
+    case AdaptiveColorShapeOnLightBackground:
+        return { hsvColor.h, hsvColor.s, hsvColor.v };
+    case AdaptiveColorTextOnLightBackground:
+        return { hsvColor.h, hsvColor.s, safe_range_f(hsvColor.v - 0.15, 0.0f, 1.0f) };
+    case AdaptiveColorShapeOnDarkBackground:
+        return { hsvColor.h, hsvColor.s * hsvColor.v, safe_range_f((hsvColor.v + 2.0) / 3.0, 0.0f, 1.0f) };
+    case AdaptiveColorTextOnDarkBackground:
+        return { hsvColor.h, hsvColor.s * hsvColor.v, safe_range_f(0.05 + (hsvColor.v + 2.0) / 3.0, 0.0f, 1.0f) };
+    default:
+        return hsvColor;
     }
     return hsvColor;
 }
@@ -117,42 +117,42 @@ TogglRgbColor ColorConverter::hsvToRgb(TogglHsvColor hsvColor) {
     double t = v * (1 - (1 - f) * s);
 
     switch(i % 6) {
-        case 0: {
-            r = v;
-            g = t;
-            b = p;
-            break;
-        }
-        case 1: {
-            r = q;
-            g = v;
-            b = p;
-            break;
-        }
-        case 2: {
-            r = p;
-            g = v;
-            b = t;
-            break;
-        }
-        case 3: {
-            r = p;
-            g = q;
-            b = v;
-            break;
-        }
-        case 4: {
-            r = t;
-            g = p;
-            b = v;
-            break;
-        }
-        case 5: {
-            r = v;
-            g = p;
-            b = q;
-            break;
-        }
+    case 0: {
+        r = v;
+        g = t;
+        b = p;
+        break;
+    }
+    case 1: {
+        r = q;
+        g = v;
+        b = p;
+        break;
+    }
+    case 2: {
+        r = p;
+        g = v;
+        b = t;
+        break;
+    }
+    case 3: {
+        r = p;
+        g = q;
+        b = v;
+        break;
+    }
+    case 4: {
+        r = t;
+        g = p;
+        b = v;
+        break;
+    }
+    case 5: {
+        r = v;
+        g = p;
+        b = q;
+        break;
+    }
     }
     return { r , g, b };
 }
