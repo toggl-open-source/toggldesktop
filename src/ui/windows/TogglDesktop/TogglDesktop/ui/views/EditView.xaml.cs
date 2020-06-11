@@ -206,6 +206,9 @@ namespace TogglDesktop
 
         private void durationUpdateTimerTick(object sender, string s)
         {
+            if (this.TryBeginInvoke(durationUpdateTimerTick, sender, s))
+                return;
+
             if (!this.hasTimeEntry() || this.timeEntry.DurationInSeconds >= 0)
                 return;
 

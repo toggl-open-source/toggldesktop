@@ -243,6 +243,7 @@
     </Compile>
     <Compile Include="ui\Converters\AdaptProjectColorConverter.cs" />
     <Compile Include="ui\Converters\AndConverter.cs" />
+    <Compile Include="ui\Converters\BooleanInvertToVisibilityConverter.cs" />
     <Compile Include="ui\Converters\CapitalizeConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
     <Compile Include="ui\Converters\IsSelectableItemConverter.cs" />
@@ -333,6 +334,7 @@
     <Compile Include="ui\ViewModels\TimeEntryCellViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryLabelViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryListViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimerViewModel.cs" />
     <Compile Include="ui\ViewModels\ViewModelExtensions.cs" />
     <Compile Include="ui\views\IMainView.cs" />
     <Compile Include="ui\Experiments\ExperimentManager.cs" />

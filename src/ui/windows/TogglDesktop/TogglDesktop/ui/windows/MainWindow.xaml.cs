@@ -581,6 +581,9 @@ namespace TogglDesktop
 
         private void updateTaskbarTooltip(object sender, string s)
         {
+            if (this.TryBeginInvoke(updateTaskbarTooltip, sender, s))
+                return;
+
             this.trayToolTip.SetDuration(s);
         }
 
@@ -790,6 +793,9 @@ namespace TogglDesktop
 
         private void closeEditPopup(bool focusTimeEntryList = false, bool skipAnimation = false)
         {
+            if (this.TryBeginInvoke(this.closeEditPopup, focusTimeEntryList, skipAnimation))
+                return;
+
             if (this.editPopup != null && this.editPopup.IsVisible)
             {
                 // TODO: consider saving popup open state and restoring when window is shown
