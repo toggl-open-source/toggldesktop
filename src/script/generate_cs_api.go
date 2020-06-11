@@ -20,7 +20,7 @@ func convert(s string, public bool) string {
 	}
 	if strings.Contains(s, "uint64_t") {
 		return visibility + strings.Replace(s, "uint64_t", "UInt64", -1)
-	} 
+	}
 	if strings.Contains(s, "int64_t *") {
 		return visibility + strings.Replace(s, "int64_t *", "ref Int64 ", -1)
 	}
@@ -29,6 +29,9 @@ func convert(s string, public bool) string {
 	}
 	if strings.Contains(s, "uint8_t") {
 		return visibility + strings.Replace(s, "uint8_t", "byte", -1)
+	}
+	if strings.Contains(s, "double") {
+		return visibility + strings.Replace(s, "double", "double", -1)
 	}
 	if strings.Contains(s, "void *") {
 		return visibility + strings.Replace(s, "void *", "IntPtr ", -1)
@@ -77,10 +80,10 @@ func main() {
 	write("{")
 	write("    public static partial class Toggl")
 	write("    {")
-	write("    		private const string dll = \"TogglDesktopDLL.dll\";");
-	write("    		private const CharSet charset = CharSet.Unicode;");
-	write("    		private const CallingConvention convention = CallingConvention.Cdecl;");
-	write("    		private const int structPackingBytes = 8;");
+	write("    		private const string dll = \"TogglDesktopDLL.dll\";")
+	write("    		private const CharSet charset = CharSet.Unicode;")
+	write("    		private const CallingConvention convention = CallingConvention.Cdecl;")
+	write("    		private const int structPackingBytes = 8;")
 	write("")
 	csclass, csfunc, cscallback, firstStringField := "", "", "", ""
 	for i, s := range l {
@@ -99,27 +102,42 @@ func main() {
 			w := strings.Split(s, " ")
 			name, value := w[1], w[2]
 			write("private const int " + name + " = " + value + ";")
-		}  else if strings.Contains(s, "typedef struct {") {
+		} else if strings.Contains(s, "typedef struct {") {
 			write("[StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]")
 			// look forward for class name
 			for _, text := range l[i:] {
 				if strings.Contains(text, "} ") {
 					text = strings.Replace(text, ";", "", -1)
 					csclass = strings.Replace(text, "} ", "", -1)
+					firstStringField = ""
 					break
 				}
 			}
 			write("public struct" + csclass)
 			write("{")
+		} else if strings.Contains(s, "typedef enum {") {
+			// look forward for class name
+			for _, text := range l[i:] {
+				if strings.Contains(text, "} ") {
+					text = strings.Replace(text, ";", "", -1)
+					csclass = strings.Replace(text, "} ", "", -1)
+					firstStringField = ""
+					break
+				}
+			}
+			write("public enum" + csclass)
+			write("{")
 		} else if len(csclass) != 0 {
 			if strings.Contains(s, "} Toggl") {
 				csclass = ""
-				write("")
-	            write("public override string ToString()")
-	            write("{")
-	            write("    return " + firstStringField + ";")
-				write("}")
-				write("")
+				if len(firstStringField) > 0 {
+					write("")
+					write("public override string ToString()")
+					write("{")
+					write("    return " + firstStringField + ";")
+					write("}")
+					write("")
+				}
 				write("}")
 			} else {
 				addMarshalInfo(s)
@@ -127,7 +145,7 @@ func main() {
 				write(s)
 				if strings.Contains(s, "string") {
 					w := strings.Split(s, " ")
-					firstStringField = w[len(w) - 1]
+					firstStringField = w[len(w)-1]
 					firstStringField = strings.Replace(firstStringField, ";", "", -1)
 				}
 			}
@@ -137,8 +155,8 @@ func main() {
 			s = convert(s, false)
 			w := strings.Split(s, " ")
 			t := w[1]
-			csfunc = w[len(w) - 1]
-			if ("bool" == t) {
+			csfunc = w[len(w)-1]
+			if "bool" == t {
 				write("[return:MarshalAs(UnmanagedType.I1)]")
 			}
 			write("private static extern " + t + " " + csfunc)

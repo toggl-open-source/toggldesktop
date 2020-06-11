@@ -395,16 +395,16 @@ void *ctx;
 }
 
 - (NSColor *) getAdaptiveColorForShapeFromColor:(NSColor *) color {
-    AdaptiveColor type = [self isDarkTheme] ? AdaptiveColorShapeOnDarkBackground : AdaptiveColorShapeOnLightBackground;
+    TogglAdaptiveColor type = [self isDarkTheme] ? AdaptiveColorShapeOnDarkBackground : AdaptiveColorShapeOnLightBackground;
     return [self getAdaptiveColorFromColor:color type:type];
 }
 
 - (NSColor *) getAdaptiveColorForTextFromColor:(NSColor *) color {
-    AdaptiveColor type = [self isDarkTheme] ? AdaptiveColorTextOnDarkBackground : AdaptiveColorTextOnLightBackground;
+    TogglAdaptiveColor type = [self isDarkTheme] ? AdaptiveColorTextOnDarkBackground : AdaptiveColorTextOnLightBackground;
     return [self getAdaptiveColorFromColor:color type:type];
 }
 
-- (NSColor *) getAdaptiveColorFromColor:(NSColor *) originalColor type:(AdaptiveColor) type {
+- (NSColor *) getAdaptiveColorFromColor:(NSColor *) originalColor type:(TogglAdaptiveColor) type {
     // Convert to RGB color space
     // Because some part of the app uses grey color space
     NSColor *color = [originalColor colorUsingColorSpace:NSColorSpace.deviceRGBColorSpace];
@@ -413,8 +413,8 @@ void *ctx;
     }
 
     // adjust color
-    RgbColor rgbColor = { color.redComponent, color.greenComponent, color.blueComponent};
-    HsvColor hsvColor = toggl_get_adaptive_hsv_color(rgbColor, type);
+    TogglRgbColor rgbColor = { color.redComponent, color.greenComponent, color.blueComponent};
+    TogglHsvColor hsvColor = toggl_get_adaptive_hsv_color(rgbColor, type);
     return [NSColor colorWithHue:hsvColor.h saturation:hsvColor.s brightness:hsvColor.v alpha:1.0];
 }
 

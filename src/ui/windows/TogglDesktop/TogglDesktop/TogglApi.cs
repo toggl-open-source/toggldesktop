@@ -363,6 +363,32 @@ public static partial class Toggl
 
     }
 
+    // Range values from [0..1]
+    [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
+    public struct    TogglRgbColor
+    {
+        public         double r;
+        public         double g;
+        public         double b;
+    }
+
+    // Range values from [0..1]
+    [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
+    public struct    TogglHsvColor
+    {
+        public         double h;
+        public         double s;
+        public         double v;
+    }
+
+    public enum    TogglAdaptiveColor
+    {
+        AdaptiveColorShapeOnLightBackground,
+        AdaptiveColorShapeOnDarkBackground,
+        AdaptiveColorTextOnLightBackground,
+        AdaptiveColorTextOnDarkBackground
+    }
+
     // Callbacks that need to be implemented in UI
 
     [UnmanagedFunctionPointer(convention)]
@@ -494,6 +520,10 @@ public static partial class Toggl
         IntPtr te);
 
     [UnmanagedFunctionPointer(convention)]
+    private delegate void     TogglContinueSignIn(
+    );
+
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayIdleNotification(
         [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
@@ -550,6 +580,10 @@ public static partial class Toggl
     [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayCountries(
         IntPtr first);
+
+    [UnmanagedFunctionPointer(convention)]
+    private delegate void     TogglDisplayOnboarding(
+        Int64 onboarding_type);
 
     // Initialize/destroy an instance of the app
 
@@ -884,6 +918,40 @@ public static partial class Toggl
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]
         string access_token);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_apple_login(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string access_token);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_apple_login_async(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string access_token);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_apple_signup(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string access_token,
+        UInt64 country_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string full_name);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_apple_signup_async(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string access_token,
+        UInt64 country_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string full_name);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_password_forgot(
@@ -1427,6 +1495,13 @@ public static partial class Toggl
         UInt64 started,
         UInt64 ended);
 
+    // Create an Empty Time Entry without stopping the running TE
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern string toggl_create_empty_time_entry(
+        IntPtr context,
+        UInt64 started,
+        UInt64 ended);
+
     // returns GUID of the new project. you must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_add_project(
@@ -1737,6 +1812,50 @@ public static partial class Toggl
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void track_expand_all_days(
         IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_update_time_entry(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string guid,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string description,
+        UInt64 task_id,
+        UInt64 project_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string project_guid,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string tags,
+        [MarshalAs(UnmanagedType.I1)]
+        bool billable);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_on_onboarding(
+        IntPtr context,
+        TogglDisplayOnboarding cb);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_user_did_click_on_timeline_tab(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_user_did_turn_on_record_activity(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_user_did_edit_add_timeentry_on_timeline_view(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_on_continue_sign_in(
+        IntPtr context,
+        TogglContinueSignIn cb);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern TogglHsvColor toggl_get_adaptive_hsv_color(
+        TogglRgbColor rgbColor,
+        TogglAdaptiveColor type);
 
 
 

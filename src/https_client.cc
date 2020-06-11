@@ -231,7 +231,7 @@ error HTTPClient::StatusCodeToError(const Poco::Int64 status_code) {
 }
 
 error HTTPClient::accountLockingError(int remainingLogins) const {
-    switch (remainingLogins){
+    switch (remainingLogins) {
     case 1:
         return kOneLoginAttemptLeft;
     case 0:

@@ -757,6 +757,11 @@ public static partial class Toggl
         track_expand_all_days(ctx);
     }
 
+    public static TogglHsvColor GetAdaptiveHsvColor(TogglRgbColor rgbColor, TogglAdaptiveColor type)
+    {
+        return toggl_get_adaptive_hsv_color(rgbColor, type);
+    }
+
     #endregion
 
     #region callback events
