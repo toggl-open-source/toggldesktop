@@ -6309,8 +6309,6 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
     auto findByLocalID = [](auto &source, auto localID) -> typename std::remove_reference<decltype(source)>::type::value_type {
         auto id = stoi(localID);
         id = id < 0 ? -id : id;
-        if (id < 0)
-            id = -id;
         for (auto i : source) {
             if (i->LocalID() == id) {
                 return i;
@@ -6319,11 +6317,8 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
         return nullptr;
     };
     auto findByID = [](auto &source, auto ID) -> typename std::remove_reference<decltype(source)>::type::value_type {
-        auto id = ID < 0 ? -ID : ID;
-        if (id < 0)
-            id = -id;
         for (auto i : source) {
-            if (i->ID() == id) {
+            if (i->ID() == ID) {
                 return i;
             }
         }
