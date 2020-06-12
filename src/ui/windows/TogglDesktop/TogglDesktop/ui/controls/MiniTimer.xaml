@@ -143,7 +143,7 @@
                                        MaxHeight="44"
                                        Style="{StaticResource Toggl.Timer.DescriptionTextBox}"
                                        Visibility="{Binding IsRunning, Converter={StaticResource BooleanInvertToVisibilityConverter}}"
-                                       Text="{Binding Description}"/>
+                                       Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </DockPanel>
 
             <Grid x:Name="durationPanel" x:FieldModifier="private"
