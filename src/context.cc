@@ -50,8 +50,9 @@
 #include <Poco/Stopwatch.h>
 #include <Poco/StreamCopier.h>
 #include <Poco/URI.h>
-#include <Poco/UTF8String.h>
 #include <Poco/URIStreamOpener.h>
+#include <Poco/UUIDGenerator.h>
+#include <Poco/UTF8String.h>
 #include <Poco/Util/TimerTask.h>
 #include <Poco/Util/TimerTaskAdapter.h>
 #include <mutex> // NOLINT
@@ -5000,7 +5001,7 @@ void Context::batchedSyncerActivity() {
     {
         Poco::Mutex::ScopedLock lock(syncer_m_);
 
-        if (trigger_sync_) {
+        if (trigger_sync_ || trigger_push_) {
 
             error err = pullBatchedUserData();
             if (err != noError) {
@@ -5009,7 +5010,7 @@ void Context::batchedSyncerActivity() {
 
             setOnline("Data pulled");
 
-            err = pushChanges(&trigger_sync_);
+            err = pushBatchedChanges(&trigger_sync_);
             trigger_push_ = false;
             if (err != noError) {
                 user_->ConfirmLoadedMore();
@@ -5030,30 +5031,6 @@ void Context::batchedSyncerActivity() {
             displayError(save(false));
         }
 
-    }
-
-    {
-        Poco::Mutex::ScopedLock lock(syncer_m_);
-
-        if (trigger_push_) {
-            error err = pushChanges(&trigger_sync_);
-            if (err != noError) {
-                user_->ConfirmLoadedMore();
-                displayError(err);
-            } else {
-                setOnline("Data pushed");
-            }
-            trigger_push_ = false;
-
-            // Push cached OBM action
-            err = pushObmAction();
-            if (err != noError) {
-                std::cout << "SYNC: pushObm ERROR\n";
-                logger.error("Error pushing OBM action: " + err);
-            }
-
-            displayError(save(false));
-        }
     }
 }
 
@@ -5268,22 +5245,11 @@ error Context::pullBatchedUserData() {
         std::string user_data_json("");
         error err = noError;
 
-        // For keeping it as simple as possible, start out with only full pulls without since
-        // fall back to /v8/me when we have a since argument
-        if (since) {
-            err = me(
-                api_token,
-                "api_token",
-                &user_data_json,
-                since);
-        }
-        else {
-            err = syncPull(
-                api_token,
-                "api_token",
-                &user_data_json,
-                since);
-        }
+        err = syncPull(
+            api_token,
+            "api_token",
+            &user_data_json,
+            since);
 
         Json::Value json;
         Json::Reader reader;
@@ -5300,7 +5266,7 @@ error Context::pullBatchedUserData() {
             }
             TimeEntry *running_entry = user_->RunningTimeEntry();
 
-            error err = user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since);
+            user_->LoadUserAndRelatedDataFromJSON(json, !since);
 
             if (err != noError) {
                 return err;
@@ -5325,6 +5291,119 @@ error Context::pullBatchedUserData() {
 
         stopwatch.stop();
         logger.debug("User with related data JSON fetched and parsed in ", stopwatch.elapsed() / 1000, " ms");
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string & ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Context::pushBatchedChanges(
+    bool *had_something_to_push) {
+
+    try {
+        Poco::Stopwatch stopwatch;
+        stopwatch.start();
+
+        poco_check_ptr(had_something_to_push);
+
+        *had_something_to_push = true;
+
+        bool isPremium = false;
+
+        std::map<std::string, BaseModel *> models;
+
+        std::vector<TimeEntry *> time_entries;
+        std::vector<Project *> projects;
+        std::vector<Client *> clients;
+
+        std::string api_token("");
+
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger.warning("cannot push changes when logged out");
+                return noError;
+            }
+
+            api_token = user_->APIToken();
+            if (api_token.empty()) {
+                return error("cannot push changes without API token");
+            }
+            isPremium = user_->HasPremiumWorkspaces();
+
+            collectPushableModels(
+                user_->related.TimeEntries,
+                &time_entries,
+                &models);
+            collectPushableModels(
+                user_->related.Projects,
+                &projects,
+                &models);
+            collectPushableModels(
+                user_->related.Clients,
+                &clients,
+                &models);
+            if (time_entries.empty()
+                    && projects.empty()
+                    && clients.empty()) {
+                *had_something_to_push = false;
+                return noError;
+            }
+        }
+
+        Json::Value request;
+
+        // the conditions should be here so we don't create unnecessary empty JSON items
+        // (accessing a JSON item by a name allocates an empty item)
+        if (!clients.empty())
+            syncCollectJSON(request["clients"], clients, isPremium);
+        if (!projects.empty())
+            syncCollectJSON(request["projects"], projects, isPremium);
+        if (!time_entries.empty())
+            syncCollectJSON(request["time_entries"], time_entries, isPremium);
+
+        if (request.empty())
+            return noError;
+
+        Json::FastWriter w;
+        std::string payload = w.write(request);
+
+        lastRequestUUID_ = Poco::UUIDGenerator().createOne().toString();
+
+        HTTPRequest req;
+        req.payload = payload;
+        req.host = urls::SyncAPI();
+        req.relative_url = "/push/" + lastRequestUUID_;
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
+
+        auto response = TogglClient::GetInstance().Post(req);
+
+        std::cerr << "REQUEST: " << request.toStyledString() << std::endl;
+
+        if (response.err != noError) {
+            logger.log("Sync error: ", response.err);
+            return displayError(response.err);
+        }
+
+        Json::Reader reader;
+        Json::Value responseJson;
+        reader.parse(response.body, responseJson);
+
+        std::cerr << "RESPONSE: " << responseJson.toStyledString() << std::endl;
+
+        syncHandleResponse(responseJson["clients"], clients);
+        updateProjectClients(clients, projects);
+        syncHandleResponse(responseJson["projects"], projects);
+        updateEntryProjects(projects, time_entries);
+        syncHandleResponse(responseJson["time_entries"], time_entries);
+
+        stopwatch.stop();
+        logger.debug("Sync success. Total = ", stopwatch.elapsed() / 1000, " ms");
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -5564,6 +5643,23 @@ error Context::pushProjects(
     return err;
 }
 
+error Context::updateProjectClients(const std::vector<Client *> &clients,
+                                     const std::vector<Project *> &projects) {
+    for (auto it = projects.cbegin(); it != projects.cend(); ++it) {
+        if (!(*it)->CID() && !(*it)->ClientGUID().empty()) {
+            // Find client id
+            for (auto itc = clients.begin(); itc != clients.end(); ++itc) {
+                if ((*itc)->GUID().compare((*it)->ClientGUID()) == 0) {
+                    (*it)->SetCID((*itc)->ID());
+                    break;
+                }
+            }
+        }
+    }
+
+    return noError;
+}
+
 error Context::updateEntryProjects(const std::vector<Project *> &projects,
                                    const std::vector<TimeEntry *> &time_entries) {
     for (std::vector<TimeEntry *>::const_iterator it =
@@ -5682,7 +5778,7 @@ error Context::pushEntries(
         }
 
         if (!(*it)->ID()) {
-            if (!(user_->SetTimeEntryID(id, (*it)))) {
+            if (!(user_->SetModelID(id, (*it)))) {
                 continue;
             }
         }
@@ -6131,6 +6227,145 @@ error Context::pullUserPreferences() {
     return noError;
 }
 
+template<typename T>
+void Context::syncCollectJSON(Json::Value &array, const std::vector<T*> &source, bool isPremium) {
+    // The actual heavy lifting
+    // Go through the list of pointers and ask each model to generate a Sync server JSON
+    // The generation itself is split into three parts - We need to know:
+    //   * the type
+    //   * the metadata (usually the ID of the item and the workspace) and
+    //   * the payload (properties when creating or the ones that have changed)
+    // The payload has to be modified for some special cases (it's much easier to do this little hack now
+    // than to fix it properly - we'd have to change the storage of a ton of properties)
+    // Also, we don't track the relationships between entities in a very smart way so SyncPayload
+    // returns a GUID in place of a foreign ID (of clients and projects) and we then look for the actual
+    // local ID of the entity and question and use that instead.
+    for (auto i : source) {
+        Json::Value item, meta;
+
+        i->EnsureGUID();
+
+        item["type"] = i->SyncType();
+        item["meta"] = i->SyncMetadata();
+
+        Json::Value payload = i->SyncPayload();
+
+        // Remove some premium-feature-only data because we don't have a nullable bool property here nor in the database
+        if (!isPremium)
+            syncStripPremiumDataFromModelJSON(payload);
+
+        // And also translate local GUIDs to LocalIDs because Sync server went with using TmpID instead of GUIDs
+        // This is fine for now (the actual resolution of these dependencies will happen only when syncing a large chunk of offline data)
+        // but in the future we should think about using entity pointers instead of storing foreign IDs and GUIDs for Clients and Projects
+        // When removing this, see the SyncPayload method, it relies on returning GUIDs
+        syncTranslateGUIDToLocalID(payload);
+
+        if (!payload.isNull())
+            item["payload"] = payload;
+
+        array.append(item);
+    }
+}
+
+void Context::syncStripPremiumDataFromModelJSON(Json::Value &item) {
+    if (item.isMember("billable"))
+        item.removeMember("billable");
+    if (item.isMember("task_id"))
+        item.removeMember("task_id");
+}
+
+void Context::syncTranslateGUIDToLocalID(Json::Value &item) {
+    if (item.isMember("project_id") && item["project_id"].isString()) {
+        auto guid = item["project_id"].asString();
+        if (guid.empty()) {
+            item["project_id"] = Json::nullValue;
+        }
+        else {
+            Project *project = this->user_->related.ProjectByGUID(guid);
+            if (project) {
+                auto localID = project->LocalID();
+                item["project_id"] = Json::Int64(-localID);
+            }
+        }
+    }
+    if (item.isMember("client_id") && item["client_id"].isString()) {
+        auto guid = item["client_id"].asString();
+        if (guid.empty()) {
+            item["client_id"] = Json::nullValue;
+        }
+        else {
+            Client *client = this->user_->related.ClientByGUID(guid);
+            if (client) {
+                auto localID = client->LocalID();
+                item["client_id"] = Json::Int64(-localID);
+            }
+        }
+    }
+}
+
+template<typename T>
+error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &source) {
+    // this only looks into the container of modified items, not the whole RelatedData container
+    auto findByLocalID = [](auto &source, auto localID) -> typename std::remove_reference<decltype(source)>::type::value_type {
+        auto id = stoi(localID);
+        id = id < 0 ? -id : id;
+        for (auto i : source) {
+            if (i->LocalID() == id) {
+                return i;
+            }
+        }
+        return nullptr;
+    };
+    auto findByID = [](auto &source, auto ID) -> typename std::remove_reference<decltype(source)>::type::value_type {
+        for (auto i : source) {
+            if (i->ID() == ID) {
+                return i;
+            }
+        }
+        return nullptr;
+    };
+    for (auto i : array) {
+        if (!i["payload"].empty()) {
+            auto model = findByLocalID(source, i["meta"]["client_assigned_id"].asString());
+            if (!model)
+                model = findByID(source, i["meta"]["id"].asUInt64());
+            std::string modelInfo = model ? (model->ModelName() + "-localID:" + std::to_string(model->LocalID())) : "<nullptr>";
+            if (i["payload"]["success"].asBool()) {
+                if (model) {
+                    auto &root = i["payload"]["result"];
+                    auto id = root["id"].asUInt64();
+                    if (!id) {
+                        continue;
+                    }
+
+                    if (!model->ID()) {
+                        user_->SetModelID(id, model);
+                    }
+
+                    if (model->ID() != id) {
+                        return error("Backend has changed the ID of the entry");
+                    }
+
+                    model->LoadFromJSON(i["payload"]["result"]);
+                    model->ClearDirty();
+                    model->ClearUnsynced();
+                }
+            }
+            else if (i["payload"]["result"].isMember("error_message") && i["payload"]["result"]["error_message"].isMember("default_message")) {
+                std::string errorMessage = i["payload"]["result"]["error_message"]["default_message"].asString();
+                logger.warning("Sync: Error when syncing ", modelInfo, ": ", errorMessage);
+                displayError(errorMessage);
+            }
+            else {
+                logger.warning("Sync: Server sent a malformed response for the item ", modelInfo);
+                logger.log("Sync: The response: ", i.toStyledString());
+                continue;
+            }
+        }
+    }
+    return noError;
+}
+
 error Context::signupGoogle(
     const std::string &access_token,
     std::string *user_data_json,
@@ -6567,5 +6802,6 @@ bool Context::checkIfSkipPomodoro(TimeEntry *te) {
     }
     return false;
 }
+
 
 }  // namespace toggl

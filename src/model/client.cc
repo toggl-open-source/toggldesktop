@@ -54,16 +54,44 @@ void Client::LoadFromJSON(Json::Value data) {
         SetWID(data["workspace_id"].asUInt64());
 }
 
-Json::Value Client::SaveToJSON() const {
+Json::Value Client::SaveToJSON(int) const {
     Json::Value n;
     if (ID()) {
         n["id"] = Json::UInt64(ID());
     }
     n["name"] = Formatter::EscapeJSONString(Name());
+    // V9 inconsistency - Clients' Workspace ID is still `wid`
     n["wid"] = Json::UInt64(WID());
     n["guid"] = GUID();
     n["ui_modified_at"] = Json::UInt64(UIModifiedAt());
     return n;
+}
+
+Json::Value Client::SyncMetadata() const {
+    Json::Value result;
+    if (NeedsPOST()) {
+        result["client_assigned_id"] = std::to_string(-LocalID());
+    }
+    else if (NeedsPUT() || NeedsDELETE()) {
+        if (ID() > 0)
+            result["id"] = Json::Int64(ID());
+        else // and this really shouldn't happen
+            result["id"] = std::to_string(-LocalID());
+        result["workspace_id"] = Json::Int64(WID());
+    }
+    return result;
+}
+
+Json::Value Client::SyncPayload() const {
+    Json::Value result;
+    if (NeedsPOST()) {
+        result["id"] = Json::Int64(ID());
+        result["wid"] = Json::Int64(WID());
+    }
+    if (NeedsPOST() || NeedsPUT()) {
+        result["name"] = Name();
+    }
+    return result;
 }
 
 bool Client::ResolveError(const toggl::error &err) {

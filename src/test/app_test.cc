@@ -2024,8 +2024,10 @@ TEST(Sync, LegacyFormat) {
     ASSERT_EQ(user.related.TimeEntries[0]->Description(), "time entry");
     ASSERT_EQ(user.related.TimeEntries[0]->WID(), 2817276);
     ASSERT_EQ(user.related.TimeEntries[0]->UID(), 4187712);
+
     ASSERT_EQ(user.related.TimeEntries[0]->StartTime(), 1590593622);
     ASSERT_EQ(user.related.TimeEntries[0]->StopTime(), 1590594037);
+
     ASSERT_EQ(user.related.TimeEntries[0]->Duration(), 415);
 
     ASSERT_EQ(user.related.Workspaces[0]->ID(), 2817276);
@@ -2070,8 +2072,10 @@ TEST(Sync, BatchedFormat) {
     ASSERT_EQ(user.related.TimeEntries[0]->Description(), "time entry");
     ASSERT_EQ(user.related.TimeEntries[0]->WID(), 2817276);
     ASSERT_EQ(user.related.TimeEntries[0]->UID(), 4187712);
+
     ASSERT_EQ(user.related.TimeEntries[0]->StartTime(), 1590593622);
     ASSERT_EQ(user.related.TimeEntries[0]->StopTime(), 1590594037);
+
     ASSERT_EQ(user.related.TimeEntries[0]->Duration(), 415);
 
     ASSERT_EQ(user.related.Workspaces[0]->ID(), 2817276);

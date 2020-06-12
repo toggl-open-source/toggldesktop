@@ -145,17 +145,27 @@ void Project::LoadFromJSON(Json::Value data) {
     SetBillable(data["billable"].asBool());
 }
 
-Json::Value Project::SaveToJSON() const {
+Json::Value Project::SaveToJSON(int apiVersion) const {
     Json::Value n;
     if (ID()) {
         n["id"] = Json::UInt64(ID());
     }
     n["name"] = Formatter::EscapeJSONString(Name());
-    n["wid"] = Json::UInt64(WID());
-    if (CID()) {
-        n["cid"] = Json::UInt64(CID());
-    } else {
-        n["cid"] = Json::nullValue;
+    if (apiVersion == 8) {
+        n["wid"] = Json::UInt64(WID());
+        if (CID()) {
+            n["cid"] = Json::UInt64(CID());
+        } else {
+            n["cid"] = Json::nullValue;
+        }
+    }
+    else {
+        n["workspace_id"] = Json::UInt64(WID());
+        if (CID()) {
+            n["client_id"] = Json::UInt64(CID());
+        } else {
+            n["client_id"] = Json::nullValue;
+        }
     }
     // There is no way to set it in UI and free ws gets error when it's sent
     // n["billable"] = Billable();
@@ -164,6 +174,41 @@ Json::Value Project::SaveToJSON() const {
     n["active"] = Active();
 
     return n;
+}
+
+Json::Value Project::SyncMetadata() const {
+    Json::Value result;
+    if (NeedsPOST()) {
+        result["client_assigned_id"] = std::to_string(-LocalID());
+    }
+    else if (NeedsPUT() || NeedsDELETE()) {
+        if (ID() > 0)
+            result["id"] = Json::Int64(ID());
+        else // and this really shouldn't happen
+            result["id"] = std::to_string(-LocalID());
+        result["workspace_id"] = Json::Int64(WID());
+    }
+    return result;
+}
+
+Json::Value Project::SyncPayload() const {
+    Json::Value result;
+    if (NeedsPOST()) {
+        result["id"] = Json::Int64(ID());
+        result["workspace_id"] = Json::Int64(WID());
+    }
+    if (NeedsPOST() || NeedsPUT()) {
+        if (CID())
+            result["client_id"] = Json::Int64(CID());
+        else
+            result["client_id"] = ClientGUID();
+        result["name"] = Name();
+        result["is_private"] = Private();
+        result["active"] = Active();
+        result["color"] = Color();
+        result["billable"] = Billable();
+    }
+    return result;
 }
 
 bool Project::DuplicateResource(const toggl::error &err) const {
