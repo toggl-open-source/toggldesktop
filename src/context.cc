@@ -5351,9 +5351,6 @@ error Context::pushBatchedChanges(
             }
         }
 
-        std::stringstream ss;
-        ss << "Sync success (";
-
         Json::Value request;
 
         // the conditions should be here so we don't create unnecessary empty JSON items
@@ -5402,8 +5399,7 @@ error Context::pushBatchedChanges(
         syncHandleResponse(responseJson["time_entries"], time_entries);
 
         stopwatch.stop();
-        ss << ") Total = " << stopwatch.elapsed() / 1000 << " ms";
-        logger.debug(ss.str());
+        logger.debug("Sync success. Total = ", stopwatch.elapsed() / 1000, " ms");
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
