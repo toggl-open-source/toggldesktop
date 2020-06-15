@@ -1002,11 +1002,8 @@ extern void *ctx;
         return;
     }
 
-    NSString *email = [self.email stringValue];
+    NSString *email = [self.emailSSOTextField stringValue];
     toggl_get_identity_provider_sso(ctx, email.UTF8String);
-
-    // Test
-    [self changeTabView:TabViewTypeEmailExistsSSO];
 }
 
 - (IBAction)loginToEnableSSLOnClick:(id)sender
