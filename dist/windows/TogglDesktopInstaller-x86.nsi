@@ -132,7 +132,7 @@
 ;--------------------------------
 ;Installer Sections
 
-!define srcdir "..\..\src\ui\windows\TogglDesktop\TogglDesktop\bin\Release"
+!define srcdir "..\..\src\ui\windows\TogglDesktop\TogglDesktop\bin\Debug"
 !define redist "..\..\third_party\vs_redist"
 
 Section

@@ -66,7 +66,7 @@ jobs:
         bash ./dist/osx/build.sh cocoapods
     - name: Build the application
       run: |
-        bash ./dist/osx/build.sh app
+        bash ./dist/osx/build.sh app_staging
     - name: Insert version string
       run: |
         bash ./dist/osx/build.sh plist
@@ -93,10 +93,6 @@ jobs:
       run: |
         export "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         bash ./dist/osx/build.sh upload
-    - name: Update Release
-      if: github.event_name == 'release'
-      run: |
-        bash ./dist/osx/build.sh update_release
    
   linux-basic:
     runs-on: ubuntu-latest
@@ -112,7 +108,7 @@ jobs:
         sudo apt install patchelf binutils cmake pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev  qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
     - name: Build the Linux binary
       run: |
-        bash ./dist/linux/package.sh build
+        bash ./dist/linux/package.sh build_staging
     - name: Run App test
       run: |
         pushd build-tarball
@@ -137,7 +133,7 @@ jobs:
     - name: Build the Linux binary
       run: |
         export CMAKE_PREFIX_PATH="${PWD}/Qt/5.12.5/gcc_64/lib/cmake/"
-        bash ./dist/linux/package.sh build
+        bash ./dist/linux/package.sh build_staging
     - name: Package the binaries, create tarball
       run: |
         export CMAKE_PREFIX_PATH="${PWD}/Qt/5.12.5/gcc_64/lib/cmake/"
@@ -237,12 +233,12 @@ jobs:
       if: steps.cache-poco-bin.outputs.cache-hit == 'true'
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.NoPoco.sln
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Debug /p:Platform="x86" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.NoPoco.sln
     - name: Build on Windows x86
       if: steps.cache-poco-bin.outputs.cache-hit != 'true'
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.sln
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Debug /p:Platform="x86" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.sln
     - name: Sign binaries
       if: github.event_name == 'release'
       run: |
@@ -303,12 +299,12 @@ jobs:
       if: steps.cache-poco-bin64.outputs.cache-hit == 'true'
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.NoPoco.sln
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Debug /p:Platform="x64" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.NoPoco.sln
     - name: Build on Windows x64
       if: steps.cache-poco-bin64.outputs.cache-hit != 'true'
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.sln
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Debug /p:Platform="x64" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.sln
     - name: Sign binaries
       if: github.event_name == 'release'
       run: |
@@ -334,54 +330,4 @@ jobs:
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller-x64.exe" renameto="TogglDesktopInstaller-x64-${TAG_NAME/v/}.exe"
       shell: bash
-
-  windows-dev-release:
-    needs: [windows-32bit, windows-64bit]
-    runs-on: ubuntu-latest # anything supporting bash
-    if: github.event_name == 'release'
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 1
-    - name: Add new dev channel release
-      shell: bash
-      run: |
-        git config user.name "runner"
-        git config user.email "action@github.com"
-        TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/update_releases.sh win dev ${TAG_NAME/v/}
     
-  windows-store:
-    runs-on: windows-2019
-    if: github.event_name == 'release'
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-    - name: Install signing key - Part 1
-      run: |
-        echo "${{ secrets.CERT_WINDOWS_STORE }}" > Certificate.b64
-        base64 -d Certificate.b64 > Certificate.pfx
-      shell: bash
-    - name: Install signing key - Part 2
-      run: |
-        $SecurePassword = "1" | ConvertTo-SecureString -AsPlainText -Force
-        Import-PfxCertificate -FilePath Certificate.pfx cert:\currentUser\My -Password $SecurePassword
-      shell: powershell
-    - name: Set version
-      shell: bash
-      run: |
-        TAG_NAME=$(./dist/get-tag-name.sh)
-        echo "Setting version to ${TAG_NAME/v/}"
-        bash dist/windows/scripts/set_version.sh "${TAG_NAME/v/}"
-    - name: Build on Windows for Microsoft Store
-      shell: cmd
-      run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=StoreRelease /p:Platform="x86" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m src\ui\windows\TogglDesktop\TogglDesktop.sln
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=StoreRelease /p:Platform="x64" /p:UapAppxPackageBuildMode=CI /p:AppxBundle=Always /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="322D8592D0FDB01F1C8FCA56ED3FBFAF646D3739" /p:AppxPackageDir="..\\..\\..\\..\\..\\" /t:Clean,Build /restore -m src\ui\windows\TogglDesktop\TogglDesktop.sln
-        dir
-    - name: Upload to GitHub
-      run: |
-        TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="TogglDesktop.Package_${TAG_NAME/v/}.0_x86_x64_bundle_StoreRelease.appxupload"
-      shell: bash

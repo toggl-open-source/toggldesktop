@@ -28,6 +28,20 @@ function build() {
     popd > /dev/null
 }
 
+function build_staging() {
+    echo "=========== Will build in $fullbuilddir" >&2
+
+    pushd $builddir >/dev/null
+
+    echo "=========== Configuring" >&2
+    cmake -DTOGGL_PRODUCTION_BUILD=OFF -DTOGGL_ALLOW_UPDATE_CHECK=OFF $VERSION_DEFINE -DUSE_BUNDLED_LIBRARIES=ON -DCMAKE_INSTALL_PREFIX="$PWD/package" ..
+    echo "=========== Building..." >&2
+    make -j4
+    echo "=========== Installing" >&2
+    make install
+    popd > /dev/null
+}
+
 function compose() {
     pushd "$builddir/package" >/dev/null
 
