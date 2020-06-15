@@ -73,12 +73,6 @@ jobs:
     - name: Codesign
       run: |
         bash ./dist/osx/build.sh sign
-    - name: Notarize
-      if: github.event_name == 'release'
-      run: |
-        export "APPLE_APPID_USER=${{ secrets.MACOS_APPID_USER }}"
-        export "APPLE_APPID_PASSWORD=${{ secrets.MACOS_APPID_PASSWORD }}"
-        bash ./dist/osx/build.sh notarize
     - name: Compose dmg
       if: github.event_name == 'release'
       run: |
