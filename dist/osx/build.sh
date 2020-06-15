@@ -8,7 +8,7 @@ export   CFLAGS="$LDFLAGS"
 export CXXFLAGS="$LDFLAGS"
 
 function app_path() {
-    echo $(xcodebuild -scheme TogglDesktop -workspace src/ui/osx/TogglDesktop.xcworkspace -configuration Release -showBuildSettings \
+    echo $(xcodebuild -scheme TogglDesktop -workspace src/ui/osx/TogglDesktop.xcworkspace -configuration Debug -showBuildSettings \
                 | grep -w 'BUILT_PRODUCTS_DIR' \
                 | cut -d'=' -f 2 \
                 | sed -e 's/^[ \t]*//')/TogglDesktop.app
@@ -24,6 +24,10 @@ function cocoapods() {
 
 function app() {
     make app_release
+}
+
+function app_staging() {
+    make app
 }
 
 function plist() {
