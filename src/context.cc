@@ -2391,9 +2391,10 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
     try {
 
         std::stringstream ss;
-        ss << kAPIV9
-           << "/auth/saml2/login"
-        << "?email=" << email;
+        ss << "/"
+            << kAPIV9
+            << "/auth/saml2/login"
+            << "?email=" << email;
 
         HTTPRequest req;
         req.host = urls::API();
@@ -2401,9 +2402,6 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
 
         HTTPResponse resp = TogglClient::GetInstance().Get(req);
         if (resp.err != noError) {
-            if (kBadRequestError == resp.err) {
-                return displayError(resp.body);
-            }
             return displayError(resp.err);
         }
 
