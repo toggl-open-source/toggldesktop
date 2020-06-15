@@ -37,7 +37,7 @@ enum OnboardingType {
 };
 
 class TOGGL_INTERNAL_EXPORT OnboardingState {
-public:
+ public:
     OnboardingState()
         : local_id(0)
     , user_id(0)
@@ -85,7 +85,7 @@ public:
 };
 
 class TOGGL_INTERNAL_EXPORT OnboardingService {
-public:
+ public:
     static OnboardingService* getInstance() {
         static OnboardingService instance;
         return &instance;
@@ -96,7 +96,7 @@ public:
     void SetDatabase(Database *db);
     void LoadOnboardingStateFromCurrentUser(User *user);
     void Reset();
-    
+
     // User actions
     void OpenApp();
     void StopTimeEntry();
@@ -106,8 +106,8 @@ public:
     void SetTimelineDateAt(const Poco::LocalDateTime &value) {
         timeline_date_at_ = value;
     }
-    
-private:
+
+ private:
     OnboardingService(): timeline_date_at_(Poco::LocalDateTime()) {};
 
     OnboardingState *state;

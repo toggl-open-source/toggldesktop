@@ -716,4 +716,28 @@ T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list) {
     return nullptr;
 }
 
+template<>
+TimeEntry *toggl::RelatedData::ModelByLocalID<TimeEntry>(Poco::Int64 id) {
+    auto it = std::find_if(TimeEntries.begin(), TimeEntries.end(), [id](auto &item){ return item->LocalID() == id; });
+    if (it != TimeEntries.end())
+        return *it;
+    return nullptr;
+}
+
+template<>
+Project *toggl::RelatedData::ModelByLocalID<Project>(Poco::Int64 id) {
+    auto it = std::find_if(Projects.begin(), Projects.end(), [id](auto &item){ return item->LocalID() == id; });
+    if (it != Projects.end())
+        return *it;
+    return nullptr;
+}
+
+template<>
+Client *toggl::RelatedData::ModelByLocalID<Client>(Poco::Int64 id) {
+    auto it = std::find_if(Clients.begin(), Clients.end(), [id](auto &item){ return item->LocalID() == id; });
+    if (it != Clients.end())
+        return *it;
+    return nullptr;
+}
+
 }   // namespace toggl

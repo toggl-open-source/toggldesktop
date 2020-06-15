@@ -1634,9 +1634,9 @@ void toggl_on_display_login_sso(void *context,
     app(context)->UI()->OnDisplayLoginSSO(cb);
 }
 
-HsvColor toggl_get_adaptive_hsv_color(
-    RgbColor rgbColor,
-    AdaptiveColor type) {
+TogglHsvColor toggl_get_adaptive_hsv_color(
+    TogglRgbColor rgbColor,
+    TogglAdaptiveColor type) {
     return toggl::ColorConverter::GetAdaptiveColor(rgbColor, type);
 }
 

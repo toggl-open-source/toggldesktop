@@ -118,6 +118,7 @@ namespace TogglDesktop
 
         private void initializeContextMenu()
         {
+            ContextMenu = mainContextMenu;
             foreach (var item in mainContextMenu.Items)
             {
                 var asMenuItem = item as MenuItem;

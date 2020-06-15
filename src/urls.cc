@@ -39,9 +39,9 @@ std::string API() {
 
 std::string SyncAPI() {
     if (use_staging_as_backend) {
-        // TODO
+        return "https://sync.toggl.space/";
     }
-    return "http://localhost:8080";
+    return "https://sync.toggl.com/";
 }
 
 std::string TimelineUpload() {

@@ -213,25 +213,25 @@ extern "C" {
     } TogglCountryView;
 
     // Range values from [0..1]
-    typedef struct RgbColor {
+    typedef struct {
         double r;
         double g;
         double b;
-    } RgbColor;
+    } TogglRgbColor;
 
     // Range values from [0..1]
-    typedef struct HsvColor {
+    typedef struct {
         double h;
         double s;
         double v;
-    } HsvColor;
+    } TogglHsvColor;
 
-    typedef enum AdaptiveColor {
+    typedef enum {
         AdaptiveColorShapeOnLightBackground,
         AdaptiveColorShapeOnDarkBackground,
         AdaptiveColorTextOnLightBackground,
         AdaptiveColorTextOnDarkBackground
-    } AdaptiveColor;
+    } TogglAdaptiveColor;
 
     // Callbacks that need to be implemented in UI
 
@@ -320,7 +320,8 @@ extern "C" {
     typedef void (*TogglDisplayTimerState)(
         TogglTimeEntryView *te);
 
-    typedef void (*TogglContinueSignIn)(void);
+    typedef void (*TogglContinueSignIn)(
+        );
 
     typedef void (*TogglDisplayLoginSSO)(const char_t *sso_url);
 
@@ -1254,9 +1255,13 @@ extern "C" {
         void *context,
         TogglDisplayLoginSSO cb);
 
-    TOGGL_EXPORT HsvColor toggl_get_adaptive_hsv_color(
-       RgbColor rgbColor,
-       AdaptiveColor type);
+    TOGGL_EXPORT TogglHsvColor toggl_get_adaptive_hsv_color(
+       TogglRgbColor rgbColor,
+       TogglAdaptiveColor type);
+    
+    TOGGL_EXPORT TogglHsvColor toggl_get_adaptive_hsv_color(
+        TogglRgbColor rgbColor,
+        TogglAdaptiveColor type);
 
     TOGGL_EXPORT bool_t toggl_get_identity_provider_sso(
         void *context,

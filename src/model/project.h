@@ -47,14 +47,16 @@ class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
     std::string ModelName() const override;
     std::string ModelURL() const override;
     void LoadFromJSON(Json::Value value) override;
-    Json::Value SaveToJSON() const override;
+    Json::Value SaveToJSON(int apiVersion = 8) const override;
+    Json::Value SyncMetadata() const override;
+    Json::Value SyncPayload() const override;
     bool DuplicateResource(const toggl::error &err) const override;
     bool ResourceCannotBeCreated(const toggl::error &err) const override;
     bool ResolveError(const toggl::error &err) override;
 
     static std::vector<std::string> ColorCodes;
 
- private:
+private:
     bool clientIsInAnotherWorkspace(const toggl::error &err) const;
     bool onlyAdminsCanChangeProjectVisibility(const toggl::error &err) const;
 };

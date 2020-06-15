@@ -464,35 +464,63 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
     ClearUnsynced();
 }
 
-Json::Value TimeEntry::SaveToJSON() const {
+Json::Value TimeEntry::SaveToJSON(int apiVersion) const {
     Json::Value n;
     if (ID()) {
         n["id"] = Json::UInt64(ID());
     }
     n["description"] = Formatter::EscapeJSONString(Description());
-    // Workspace ID can't be 0 on server side. So don't
-    // send 0 if we have no default workspace ID, because
-    // NULL is not 0
-    if (WID()) {
-        n["wid"] = Json::UInt64(WID());
-    }
-    n["guid"] = GUID();
-    if (!PID() && !ProjectGUID().empty()) {
-        n["pid"] = ProjectGUID();
-    } else {
-        n["pid"] = Json::UInt64(PID());
-    }
+    if (apiVersion == 8) {
+        // Workspace ID can't be 0 on server side. So don't
+        // send 0 if we have no default workspace ID, because
+        // NULL is not 0
+        if (WID()) {
+            n["wid"] = Json::UInt64(WID());
+        }
+        n["guid"] = GUID();
+        if (!PID() && !ProjectGUID().empty()) {
+            n["pid"] = ProjectGUID();
+        } else {
+            n["pid"] = Json::UInt64(PID());
+        }
 
-    if (PID()) {
-        n["pid"] = Json::UInt64(PID());
-    } else {
-        n["pid"] = Json::nullValue;
-    }
+        if (PID()) {
+            n["pid"] = Json::UInt64(PID());
+        } else {
+            n["pid"] = Json::nullValue;
+        }
 
-    if (TID()) {
-        n["tid"] = Json::UInt64(TID());
-    } else {
-        n["tid"] = Json::nullValue;
+        if (TID()) {
+            n["tid"] = Json::UInt64(TID());
+        } else {
+            n["tid"] = Json::nullValue;
+        }
+    }
+    else {
+        // Workspace ID can't be 0 on server side. So don't
+        // send 0 if we have no default workspace ID, because
+        // NULL is not 0
+        if (WID()) {
+            n["workspace_id"] = Json::UInt64(WID());
+        }
+        n["guid"] = GUID();
+        if (!PID() && !ProjectGUID().empty()) {
+            n["project_id"] = ProjectGUID();
+        } else {
+            n["project_id"] = Json::UInt64(PID());
+        }
+
+        if (PID()) {
+            n["project_id"] = Json::UInt64(PID());
+        } else {
+            n["project_id"] = Json::nullValue;
+        }
+
+        if (TID()) {
+            n["task_id"] = Json::UInt64(TID());
+        } else {
+            n["task_id"] = Json::nullValue;
+        }
     }
 
     n["start"] = StartString();
@@ -500,6 +528,7 @@ Json::Value TimeEntry::SaveToJSON() const {
         n["stop"] = StopString();
     }
     n["duration"] = Json::Int64(DurationInSeconds());
+    // TODO billable is a premium feature. It will now be handled in Context but it really should be omitted here, not anywhere else
     n["billable"] = Billable();
     n["duronly"] = DurOnly();
     n["ui_modified_at"] = Json::UInt64(UIModifiedAt());
@@ -521,6 +550,60 @@ Json::Value TimeEntry::SaveToJSON() const {
 
     return n;
 }
+
+Json::Value TimeEntry::SyncMetadata() const {
+    Json::Value result;
+    if (NeedsPOST()) {
+        result["client_assigned_id"] = std::to_string(-LocalID());
+    }
+    else if (NeedsPUT() || NeedsDELETE()) {
+        if (ID() > 0)
+            result["id"] = Json::Int64(ID());
+        else // and this really shouldn't happen
+            result["id"] = std::to_string(-LocalID());
+        result["workspace_id"] = Json::Int64(WID());
+    }
+    return result;
+}
+
+Json::Value TimeEntry::SyncPayload() const {
+    Json::Value result;
+    if (NeedsPOST()) {
+        result["id"] = Json::Int64(ID());
+        result["workspace_id"] = Json::Int64(WID());
+    }
+    if (NeedsPOST() || NeedsPUT()) {
+        if (PID() > 0)
+            result["project_id"] = Json::Int64(PID());
+        else
+            result["project_id"] = ProjectGUID();
+        if (TID() > 0)
+            result["task_id"] = Json::Int64(TID());
+        result["billable"] = Billable();
+        result["start"] = StartString();
+        if (StopTime())
+            result["stop"] = StopString();
+        result["duration"] = Json::Int64(DurationInSeconds());
+        result["description"] = Description();
+        result["created_with"] = Formatter::EscapeJSONString(CreatedWith());
+
+        Json::Value tag_nodes;
+        if (TagNames->size() > 0) {
+            for (std::vector<std::string>::const_iterator it = TagNames->begin();
+                    it != TagNames->end();
+                    ++it) {
+                std::string tag_name = Formatter::EscapeJSONString(*it);
+                tag_nodes.append(Json::Value(tag_name));
+            }
+        } else {
+            Json::Reader reader;
+            reader.parse("[]", tag_nodes);
+        }
+        result["tags"] = tag_nodes;
+    }
+    return result;
+}
+
 
 Poco::Int64 TimeEntry::RealDurationInSeconds() const {
     auto now = time(nullptr);

@@ -663,7 +663,7 @@ void User::loadUserUpdateFromJSON(
     } else if (kModelTag == model) {
         loadUserTagFromJSON(data);
     } else if (kModelUser == model) {
-        loadUserAndRelatedDataFromJSON(data, false);
+        LoadUserAndRelatedDataFromJSON(data, false);
     }
 }
 
@@ -714,7 +714,7 @@ error User::LoadUserAndRelatedDataFromJSONString(const std::string &json,
         return error("Failed to LoadUserAndRelatedDataFromJSONString");
     }
 
-    loadUserAndRelatedDataFromJSON(root, including_related_data);
+    LoadUserAndRelatedDataFromJSON(root, including_related_data);
     return noError;
 }
 
@@ -802,7 +802,7 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
     model->SetActions(obm["actions"].asString());
 }
 
-void User::loadUserAndRelatedDataFromJSON(
+void User::LoadUserAndRelatedDataFromJSON(
     const Json::Value &root,
     bool including_related_data) {
 
@@ -1110,33 +1110,6 @@ void User::loadUserProjectFromJSON(
     }
     model->SetUID(ID());
     model->LoadFromJSON(data);
-}
-
-bool User::SetTimeEntryID(
-    Poco::UInt64 id,
-    TimeEntry* timeEntry) {
-
-    poco_check_ptr(timeEntry);
-
-    {
-        Poco::Mutex::ScopedLock lock(loadTimeEntries_m_);
-        auto otherTimeEntry = related.TimeEntryByID(id);
-        if (otherTimeEntry) {
-            // this means that somehow we already have a time entry with the ID
-            // that was just returned from a response to time entry creation request
-            logger().error("There is already a newer version of this entry");
-
-            // clearing the GUID to make sure there's no GUID conflict
-            timeEntry->SetGUID("");
-
-            // deleting the duplicate entry
-            // this entry has no ID so the corresponding server entry will not be deleted
-            timeEntry->Delete();
-            return false;
-        }
-        timeEntry->SetID(id);
-        return true;
-    }
 }
 
 void User::loadUserTimeEntryFromJSON(

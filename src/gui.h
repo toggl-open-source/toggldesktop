@@ -703,7 +703,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     }
 
     void DisplayOnboarding(const OnboardingType onboarding_type);
-    
+
     void OnDisplayOnboarding(TogglDisplayOnboarding cb) {
         on_display_onboarding_ = cb;
     }

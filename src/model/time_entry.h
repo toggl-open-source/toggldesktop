@@ -88,7 +88,9 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     std::string String() const override;
     virtual bool ResolveError(const error &err) override;
     void LoadFromJSON(Json::Value value) override;
-    Json::Value SaveToJSON() const override;
+    Json::Value SaveToJSON(int apiVersion = 8) const override;
+    Json::Value SyncMetadata() const override;
+    Json::Value SyncPayload() const override;
 
     // Implement TimedEvent
     virtual const Poco::Int64 &Start() const {

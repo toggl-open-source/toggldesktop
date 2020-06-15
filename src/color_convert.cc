@@ -18,38 +18,38 @@ namespace toggl {
 #define max_f(a, b, c)  (fmaxf(a, fmaxf(b, c)))
 #define safe_range_f(value, min, max) (fmin(max, fmax(value, min)))
 
-HsvColor ColorConverter::GetAdaptiveColor(std::string hexColor, AdaptiveColor type) {
-    RgbColor rbg = hexToRgb(hexColor);
+TogglHsvColor ColorConverter::GetAdaptiveColor(std::string hexColor, TogglAdaptiveColor type) {
+    TogglRgbColor rbg = hexToRgb(hexColor);
     return GetAdaptiveColor(rbg, type);
 }
 
-HsvColor ColorConverter::GetAdaptiveColor(RgbColor rgbColor, AdaptiveColor type) {
-    HsvColor hsvColor = rgbToHsv(rgbColor);
+TogglHsvColor ColorConverter::GetAdaptiveColor(TogglRgbColor rgbColor, TogglAdaptiveColor type) {
+    TogglHsvColor hsvColor = rgbToHsv(rgbColor);
     return adjustColor(hsvColor, type);
 }
 
-RgbColor ColorConverter::GetRgbAdaptiveColor(std::string hexColor, AdaptiveColor type) {
-    HsvColor hsv = GetAdaptiveColor(hexColor, type);
+TogglRgbColor ColorConverter::GetRgbAdaptiveColor(std::string hexColor, TogglAdaptiveColor type) {
+    TogglHsvColor hsv = GetAdaptiveColor(hexColor, type);
     return hsvToRgb(hsv);
 }
 
-HsvColor ColorConverter::adjustColor(HsvColor hsvColor, AdaptiveColor type) {
+TogglHsvColor ColorConverter::adjustColor(TogglHsvColor hsvColor, TogglAdaptiveColor type) {
     switch (type) {
-        case AdaptiveColorShapeOnLightBackground:
-            return { hsvColor.h, hsvColor.s, hsvColor.v };
-        case AdaptiveColorTextOnLightBackground:
-            return { hsvColor.h, hsvColor.s, safe_range_f(hsvColor.v - 0.15, 0.0f, 1.0f) };
-        case AdaptiveColorShapeOnDarkBackground:
-            return { hsvColor.h, hsvColor.s * hsvColor.v, safe_range_f((hsvColor.v + 2.0) / 3.0, 0.0f, 1.0f) };
-        case AdaptiveColorTextOnDarkBackground:
-            return { hsvColor.h, hsvColor.s * hsvColor.v, safe_range_f(0.05 + (hsvColor.v + 2.0) / 3.0, 0.0f, 1.0f) };
-        default:
-            return hsvColor;
+    case AdaptiveColorShapeOnLightBackground:
+        return { hsvColor.h, hsvColor.s, hsvColor.v };
+    case AdaptiveColorTextOnLightBackground:
+        return { hsvColor.h, hsvColor.s, safe_range_f(hsvColor.v - 0.15, 0.0f, 1.0f) };
+    case AdaptiveColorShapeOnDarkBackground:
+        return { hsvColor.h, hsvColor.s * hsvColor.v, safe_range_f((hsvColor.v + 2.0) / 3.0, 0.0f, 1.0f) };
+    case AdaptiveColorTextOnDarkBackground:
+        return { hsvColor.h, hsvColor.s * hsvColor.v, safe_range_f(0.05 + (hsvColor.v + 2.0) / 3.0, 0.0f, 1.0f) };
+    default:
+        return hsvColor;
     }
     return hsvColor;
 }
 
-HsvColor ColorConverter::rgbToHsv(RgbColor rgbColor)
+TogglHsvColor ColorConverter::rgbToHsv(TogglRgbColor rgbColor)
 {
     float r = rgbColor.r;
     float g = rgbColor.g;
@@ -89,7 +89,7 @@ HsvColor ColorConverter::rgbToHsv(RgbColor rgbColor)
     return {h / 360.0, s, v}; // Range from 0..1
 }
 
-RgbColor ColorConverter::hexToRgb(std::string hex)
+TogglRgbColor ColorConverter::hexToRgb(std::string hex)
 {
     // Convert to hex value
     std::istringstream converter(hex);
@@ -104,7 +104,7 @@ RgbColor ColorConverter::hexToRgb(std::string hex)
     return { r, g, b };
 }
 
-RgbColor ColorConverter::hsvToRgb(HsvColor hsvColor) {
+TogglRgbColor ColorConverter::hsvToRgb(TogglHsvColor hsvColor) {
     double h = hsvColor.h;
     double s = hsvColor.s;
     double v = hsvColor.v;
@@ -117,42 +117,42 @@ RgbColor ColorConverter::hsvToRgb(HsvColor hsvColor) {
     double t = v * (1 - (1 - f) * s);
 
     switch(i % 6) {
-        case 0: {
-            r = v;
-            g = t;
-            b = p;
-            break;
-        }
-        case 1: {
-            r = q;
-            g = v;
-            b = p;
-            break;
-        }
-        case 2: {
-            r = p;
-            g = v;
-            b = t;
-            break;
-        }
-        case 3: {
-            r = p;
-            g = q;
-            b = v;
-            break;
-        }
-        case 4: {
-            r = t;
-            g = p;
-            b = v;
-            break;
-        }
-        case 5: {
-            r = v;
-            g = p;
-            b = q;
-            break;
-        }
+    case 0: {
+        r = v;
+        g = t;
+        b = p;
+        break;
+    }
+    case 1: {
+        r = q;
+        g = v;
+        b = p;
+        break;
+    }
+    case 2: {
+        r = p;
+        g = v;
+        b = t;
+        break;
+    }
+    case 3: {
+        r = p;
+        g = q;
+        b = v;
+        break;
+    }
+    case 4: {
+        r = t;
+        g = p;
+        b = v;
+        break;
+    }
+    case 5: {
+        r = v;
+        g = p;
+        b = q;
+        break;
+    }
     }
     return { r , g, b };
 }
