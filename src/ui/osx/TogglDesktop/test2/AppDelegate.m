@@ -1870,6 +1870,7 @@ void on_display_login_sso(const char *sso_url)
     }
 
     NSString *url = [NSString stringWithUTF8String:sso_url];
+    [SSOServiceObjc authorizeWith:url];
 }
 
 - (void) updateReadyNotification:(NSNotification *) notification

@@ -14,4 +14,8 @@ import Foundation
     @objc class func handleCallback(with url: URL) {
         SSOService.shared.handleCallback(with: url)
     }
+
+    @objc class func authorize(with urlStr: String) {
+        SSOService.shared.authorize(with: urlStr)
+    }
 }
