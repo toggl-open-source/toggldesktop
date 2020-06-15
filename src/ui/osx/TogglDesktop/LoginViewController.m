@@ -330,6 +330,7 @@ extern void *ctx;
             self.donotHaveAccountLbl.hidden = YES;
             self.signUpLink.titleUnderline = YES;
             self.welcomeToTogglLbl.hidden = YES;
+            self.welcomeToTogglLbl.stringValue = @"Welcome to Toggl!";
             self.countryStackViewTop.constant = 66;
             self.termContinueSignInView.hidden = YES;
             self.termSignUpContainerView.hidden = NO;
@@ -1009,5 +1010,10 @@ extern void *ctx;
 - (IBAction)loginToEnableSSLOnClick:(id)sender
 {
     [self changeTabView:TabViewTypeLoginSSO];
+}
+
+-(void)switchToExistSSOView
+{
+    [self changeTabView:TabViewTypeEmailExistsSSO];
 }
 @end
