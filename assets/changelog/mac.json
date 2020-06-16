@@ -23,29 +23,6 @@
             "date": "June 16th 2020"
         },
         {
-            "version": "7.5.172",
-            "rows": [
-                "Introduce Onboarding feature",
-                "Add Account Locking error messages",
-                "Add a new color formula to make the color looks better",
-                "Reset Login / Sign up forms",
-                "Remove Success state of the Password Strength View",
-                "Reduce memory leaks on the Color Picker Collection View",
-                "Add beta flag for the sync",
-                "Add Pinch to Zoom gesture",
-                "Fixed Only load Country API on the Sign-Up view",
-                "Fixed App crashes when it tries to load time entries when a user is not logged in",
-                "Fixed Submit Feedback menu button is available when logged out",
-                "Fixed Spam on the Flag endpoint",
-                "Fixed Grey vertical line on the background of the Login View",
-                "Fixed Rounded corner on the Onboarding view",
-                "Fixed Undo the deleted Time Entry will stop the current running Time Entry",
-                "Fixed Timeline view doesn't update when passing to the next day"
-            ],
-            "date": "June 4th 2020",
-            "beta": "true"
-        },
-        {
             "version": "7.5.146",
             "rows": [
                 "Introduce Password Strength View on Login and Signup View",
