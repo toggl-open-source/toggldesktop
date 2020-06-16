@@ -7,7 +7,7 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignWidth="500"
-             MinHeight="44"
+             MinHeight="46"
              MaxHeight="52"
              Focusable="True"
              Background="{DynamicResource Toggl.CardBackground}"
@@ -22,7 +22,7 @@
                             <Grid>
                                 <Rectangle Name="BackgroundRectangle"
                                            Fill="{DynamicResource Toggl.AccentBrush}"
-                                           Width="47"/>
+                                           Width="46"/>
                                 <Path Name="StartButton"
                                       Width="36"
                                       Height="36"
@@ -35,7 +35,7 @@
                                       Fill="White"
                                       Data="{StaticResource StopButtonGeometry}"/>
                                 <Rectangle Name="OverlayRectangle"
-                                         Width="44"
+                                         Width="46"
                                          Fill="Transparent" />
                             </Grid>
                             <ControlTemplate.Triggers>
@@ -90,7 +90,7 @@
             </Grid.ColumnDefinitions>
 
             <toggl:TimeEntryLabel x:Name="timeEntryLabel" x:FieldModifier="private"
-                                  Margin="16 4 0 6"
+                                  Margin="16 3 0 5"
                                   VerticalPadding="1"
                                   CompactDescription="True"
                                   DescriptionLabelMouseDown="onDescriptionLabelMouseDown"
