@@ -2391,7 +2391,7 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
     try {
 
         std::stringstream ss;
-        ss << "/"
+        ss << "/api/"
             << kAPIV9
             << "/auth/saml2/login"
             << "?email=" << email;
