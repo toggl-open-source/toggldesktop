@@ -1012,7 +1012,7 @@ extern void *ctx;
     [self changeTabView:TabViewTypeLoginSSO];
 }
 
--(void)switchToExistSSOView
+-(void)switchToLinkSSOView
 {
     [self changeTabView:TabViewTypeEmailExistsSSO];
 }

@@ -86,6 +86,10 @@ extern void *ctx;
 												selector:@selector(handleContinueSignInNotification:)
                                                      name:kContinueSignIn
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                   selector:@selector(handleContinueSignInNotification:)
+                                                        name:kLinkSSOEmail
+                                                      object:nil];
     }
     return self;
 }
@@ -490,4 +494,10 @@ extern void *ctx;
     [self.loginViewController.view removeFromSuperview];
     self.loginViewController = nil;
 }
+
+-(void)handeLinkSSOEmail
+{
+    [self.loginViewController switchToLinkSSOView];
+}
+
 @end

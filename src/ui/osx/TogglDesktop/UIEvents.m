@@ -72,3 +72,4 @@ NSString *const kOnboardingDidClickNotification = @"kOnboardingDidClickNotificat
 NSString *const kContinueSignIn = @"kContinueSignIn";
 
 NSString *const kSSSOURIScheme = @"togglauth";
+NSString *const kLinkSSOEmail = @"kLinkSSOEmail";

@@ -73,3 +73,5 @@ extern NSString *const kOnboardingDidClickNotification;
 extern NSString *const kContinueSignIn;
 
 extern NSString *const kSSSOURIScheme;
+extern NSString *const kLinkSSOEmail;
+

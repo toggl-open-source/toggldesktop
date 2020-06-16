@@ -11,5 +11,5 @@
 @interface LoginViewController : NSViewController
 - (void)resetLoader;
 - (void)continueSignIn;
-- (void) switchToExistSSOView;
+- (void)switchToLinkSSOView;
 @end

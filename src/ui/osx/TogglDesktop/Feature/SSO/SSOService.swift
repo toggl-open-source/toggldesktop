@@ -73,7 +73,7 @@ extension SSOService {
     private func getRoute(with component: URLComponents) -> Route {
         // Get the first path
         guard let firstPath = component.path.components(separatedBy: "/").first else {
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kDisplayError), object: "Missing Path")
+            present(error: "Missing Path")
             return .none
         }
 
@@ -88,8 +88,8 @@ extension SSOService {
             // Check error
             guard let errorCode = component.queryItems?.first(where: { $0.name == Constants.Keys.SsoError }),
                 let value = errorCode.value else {
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: kDisplayError), object: "Missing SSO error code")
-                return .none
+                    present(error: "Missing SSO error code")
+                    return .none
             }
 
             switch value {
@@ -104,12 +104,12 @@ extension SSOService {
         case Constants.Keys.MustLinkPath:
             // Extract the confirmation_code from the callback
             guard let code = component.queryItems?.first(where: { $0.name == Constants.Keys.ConfirmationCode }) else {
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: kDisplayError), object: "Missing confirmation code")
+                present(error: "Missing confirmation code")
                 return .none
             }
             print(code)
         default:
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kDisplayError), object: "Unsupported path \(firstPath)")
+            present(error: "Unsupported path \(firstPath)")
         }
         return .none
     }
@@ -117,15 +117,19 @@ extension SSOService {
     private func handle(_ route: Route) {
         switch route {
         case .emailDoNotExist:
-            break
+            present(error: "SSO Email doesn't exist")
         case .notInWorkspace:
-            break
+            present(error: "SSO Email isn't belong to any workspace")
         case .success:
             break
         case .successButMustLink:
-            break
+            NotificationCenter.default.post(name: Notification.Name(rawValue: kLinkSSOEmail), object: nil)
         case .none:
             break
         }
+    }
+
+    private func present(error: String) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: kDisplayError), object: error)
     }
 }
