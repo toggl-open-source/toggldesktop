@@ -134,4 +134,6 @@
 #define kSyncStrategyLegacy1 "dekstop_sync_client"
 #define kSyncStrategyLegacy2 "desktop_sync_client"
 
+#define kDesktopClient "desktop"
+
 #endif  // SRC_CONST_H_

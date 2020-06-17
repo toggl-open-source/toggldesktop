@@ -2394,7 +2394,8 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
         ss << "/api/"
             << kAPIV9
             << "/auth/saml2/login"
-            << "?email=" << email;
+            << "?email=" << email
+            << "&client=" << kDesktopClient;
 
         HTTPRequest req;
         req.host = urls::API();
