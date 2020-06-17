@@ -91,8 +91,7 @@ jobs:
     - name: Upload
       if: github.event_name == 'release'
       run: |
-        export "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        bash ./dist/osx/build.sh upload
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="$installer" renameto="$installer_name"
     - name: Update Release
       if: github.event_name == 'release'
       run: |
