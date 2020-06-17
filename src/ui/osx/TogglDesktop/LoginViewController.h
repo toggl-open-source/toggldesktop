@@ -11,5 +11,5 @@
 @interface LoginViewController : NSViewController
 - (void)resetLoader;
 - (void)continueSignIn;
-- (void)switchToLinkSSOView;
+-(void)linkSSOEmailWithCode:(NSString *) code;
 @end

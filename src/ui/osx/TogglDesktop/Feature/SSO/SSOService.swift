@@ -29,7 +29,7 @@ final class SSOService {
 
     enum Route {
         case success
-        case successButMustLink
+        case needConfirmationBeforeLink(String)
         case emailDoNotExist
         case notInWorkspace
         case none
@@ -103,11 +103,12 @@ extension SSOService {
 
         case Constants.Keys.MustLinkPath:
             // Extract the confirmation_code from the callback
-            guard let code = component.queryItems?.first(where: { $0.name == Constants.Keys.ConfirmationCode }) else {
+            guard let codeKey = component.queryItems?.first(where: { $0.name == Constants.Keys.ConfirmationCode }),
+                let code = codeKey.value  else {
                 present(error: "Missing confirmation code")
                 return .none
             }
-            print(code)
+            return .needConfirmationBeforeLink(code)
         default:
             present(error: "Unsupported path \(firstPath)")
         }
@@ -122,8 +123,8 @@ extension SSOService {
             present(error: "SSO Email isn't belong to any workspace")
         case .success:
             break
-        case .successButMustLink:
-            NotificationCenter.default.post(name: Notification.Name(rawValue: kLinkSSOEmail), object: nil)
+        case .needConfirmationBeforeLink(let code):
+            NotificationCenter.default.post(name: Notification.Name(rawValue: kLinkSSOEmail), object: code)
         case .none:
             break
         }

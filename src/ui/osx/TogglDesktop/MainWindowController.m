@@ -87,7 +87,7 @@ extern void *ctx;
                                                      name:kContinueSignIn
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                   selector:@selector(handleContinueSignInNotification:)
+                                                   selector:@selector(startLinkSSOEmailNotification:)
                                                         name:kLinkSSOEmail
                                                       object:nil];
     }
@@ -495,9 +495,13 @@ extern void *ctx;
     self.loginViewController = nil;
 }
 
--(void)handeLinkSSOEmail
+-(void)startLinkSSOEmailNotification:(NSNotification *) noti
 {
-    [self.loginViewController switchToLinkSSOView];
+    if (![noti.object isKindOfClass:[NSString class]]) {
+        return;
+    }
+    NSString *code = (NSString *) noti.object;
+    [self.loginViewController linkSSOEmailWithCode:code];
 }
 
 @end

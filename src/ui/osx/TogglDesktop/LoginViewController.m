@@ -1012,7 +1012,7 @@ extern void *ctx;
     [self changeTabView:TabViewTypeLoginSSO];
 }
 
--(void)switchToLinkSSOView
+-(void)linkSSOEmailWithCode:(NSString *) code
 {
     [self changeTabView:TabViewTypeEmailExistsSSO];
 }
