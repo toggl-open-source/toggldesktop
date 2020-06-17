@@ -2438,6 +2438,52 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
     return noError;
 }
 
+error Context::EnableSSO(const std::string &email, const std::string &code) {
+    if (email.empty()) {
+        return displayError("Empty email or API token");
+    }
+
+    if (email.empty()) {
+        return displayError("Empty confirmation code");
+    }
+
+    try {
+
+        std::stringstream ss;
+        ss << "/api/"
+            << kAPIV9
+            << "/me/enable_sso"
+            << "?email=" << email
+            << "&confirmation_code=" << code;
+
+        HTTPRequest req;
+        req.host = urls::API();
+        req.relative_url = ss.str();
+
+        HTTPResponse resp = TogglClient::GetInstance().Post(req);
+        if (resp.err != noError) {
+            return displayError(resp.err);
+        }
+
+        // Success
+        if (resp.status_code == 200) {
+
+        } else {
+            // Return error message from the backend
+            return displayError(resp.body);
+        }
+
+
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string & ex) {
+        return ex;
+    }
+    return noError;
+}
+
 error Context::attemptOfflineLogin(const std::string &email,
                                    const std::string &password) {
     if (email.empty()) {
