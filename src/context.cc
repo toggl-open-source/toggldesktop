@@ -4926,11 +4926,7 @@ void Context::syncerActivityWrapper() {
             legacySyncerActivity();
             break;
         case BATCHED:
-            // TODO: Still using batched only for development builds
-            if (urls::IsUsingStagingAsBackend())
-                batchedSyncerActivity();
-            else
-                legacySyncerActivity();
+            batchedSyncerActivity();
             break;
         }
     }
