@@ -86,7 +86,9 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , syncer_(this, &Context::syncerActivityWrapper)
 , update_path_("")
 , overlay_visible_(false)
-, last_message_id_("") {
+, last_message_id_("")
+, need_enable_SSO(false)
+, confirmation_code("") {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
     }
@@ -2438,6 +2440,11 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
     return noError;
 }
 
+void Context::SetNeedEnableSSO(const std::string code) {
+    need_enable_SSO = true;
+    confirmation_code = code;
+}
+
 error Context::EnableSSO(const std::string &email, const std::string &code) {
     if (email.empty()) {
         return displayError("Empty email or API token");
@@ -2472,8 +2479,6 @@ error Context::EnableSSO(const std::string &email, const std::string &code) {
             // Return error message from the backend
             return displayError(resp.body);
         }
-
-
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -2584,6 +2589,15 @@ error Context::Login(
             logger.debug("Got networking error ", err, " will attempt offline login");
 
             return displayError(attemptOfflineLogin(email, password));
+        }
+
+        // It's for SSO Feature
+        // After user authorization, we have to enable SSO with the user's email before presenting the Main View
+        if (need_enable_SSO) {
+            error err = EnableSSO(email, confirmation_code);
+            if (err != noError) {
+                displayError(err);
+            }
         }
 
         err = SetLoggedInUserFromJSON(json, isSignup);

@@ -335,6 +335,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error GetSSOIdentityProvider(const std::string &email);
     error EnableSSO(const std::string &email, const std::string &code);
+    void SetNeedEnableSSO(const std::string code);
 
     error Logout();
 
@@ -856,6 +857,9 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     Poco::Mutex onboarding_service_m_;
 
     bool checkIfSkipPomodoro(TimeEntry *te);
+
+    bool need_enable_SSO;
+    std::string confirmation_code;
 };
 void on_websocket_message(
     void *context,
