@@ -23,7 +23,7 @@
                    ToolTip="{Binding Description}">
         </TextBlock>
         <TextBlock Grid.Row="0" Name="addDescriptionLabel" x:FieldModifier="private"
-                   Style="{StaticResource Toggl.CaptionGrayishText}"
+                   Style="{StaticResource Toggl.BodyGrayishText}"
                    TextWrapping="NoWrap"
                    Text="{Binding AddDescriptionLabelText}"
                    VerticalAlignment="Center"
@@ -37,7 +37,7 @@
                             Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}" />
 
         <TextBlock Grid.Row="1"
-                   Style="{DynamicResource Toggl.CaptionGrayishText}"
+                   Style="{StaticResource Toggl.BodyGrayishText}"
                    Text="+ Add project"
                    TextWrapping="NoWrap"
                    MouseLeftButtonDown="onProjectLabelMouseDown"

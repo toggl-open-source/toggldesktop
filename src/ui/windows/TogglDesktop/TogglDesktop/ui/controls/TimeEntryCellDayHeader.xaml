@@ -41,7 +41,7 @@
                                HorizontalAlignment="Left"
                                Text="{Binding DateHeader}"/>
                     <TextBlock DockPanel.Dock="Right"
-                               Style="{StaticResource Toggl.CaptionSemiBoldText}"
+                               Style="{StaticResource Toggl.BaseText}"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Right"
                                Text="{Binding DateDuration}"/>
