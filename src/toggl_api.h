@@ -1267,6 +1267,13 @@ extern "C" {
         void *context,
         const char_t *email);
 
+    TOGGL_EXPORT void toggl_set_need_enable_SSO(
+        void *context,
+        const char_t *code);
+
+    TOGGL_EXPORT void toggl_reset_enable_SSO(
+        void *context);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus

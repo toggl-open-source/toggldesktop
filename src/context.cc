@@ -2442,6 +2442,11 @@ void Context::SetNeedEnableSSO(const std::string code) {
     confirmation_code = code;
 }
 
+void Context::ResetEnableSSO() {
+    need_enable_SSO = false;
+    confirmation_code = "";
+}
+
 error Context::EnableSSO(const std::string &email, const std::string &code) {
     if (email.empty()) {
         return displayError("Empty email or API token");
@@ -2465,13 +2470,10 @@ error Context::EnableSSO(const std::string &email, const std::string &code) {
         req.relative_url = ss.str();
 
         HTTPResponse resp = TogglClient::GetInstance().Post(req);
-        if (resp.err != noError) {
-            return displayError(resp.err);
-        }
 
         // Success
         if (resp.status_code == 200) {
-
+            return noError;
         } else {
             // Return error message from the backend
             return displayError(resp.body);

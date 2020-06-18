@@ -1643,3 +1643,15 @@ TogglHsvColor toggl_get_adaptive_hsv_color(
 bool_t toggl_get_identity_provider_sso(void *context, const char_t *email) {
     return toggl::noError == app(context)->GetSSOIdentityProvider(to_string(email));
 }
+
+void toggl_set_need_enable_SSO(void *context, const char_t *code) {
+    std::string _code("");
+    if (code) {
+        _code = to_string(code);
+    }
+    app(context)->SetNeedEnableSSO(_code);
+}
+
+void toggl_reset_enable_SSO(void *context) {
+    app(context)->ResetEnableSSO();
+}

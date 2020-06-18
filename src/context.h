@@ -336,6 +336,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error GetSSOIdentityProvider(const std::string &email);
     error EnableSSO(const std::string &email, const std::string &code);
     void SetNeedEnableSSO(const std::string code);
+    void ResetEnableSSO();
 
     error Logout();
 
