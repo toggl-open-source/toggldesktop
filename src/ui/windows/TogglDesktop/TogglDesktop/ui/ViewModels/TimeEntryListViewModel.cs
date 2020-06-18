@@ -14,7 +14,7 @@ namespace TogglDesktop.ViewModels
                 .Select(x => !x)
                 .ToPropertyEx(this, x => x.IsViewEnabled);
 
-            UndoCommand = ReactiveCommand.Create(()=>OnUndo());
+            UndoCommand = ReactiveCommand.Create(OnUndo);
         }
 
         public void OnUndo() =>

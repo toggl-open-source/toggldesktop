@@ -31,7 +31,7 @@ namespace TogglDesktop.Services
             if (CanUndo)
             {
                 var te = undoStack.Pop();
-                Toggl.Start(te.Description, te.Duration, te.TID, te.PID, "", te.Tags, true, te.Started, te.Ended, false);
+                Toggl.StartWithCurrentRunning(te.Description, te.Duration, te.TID, te.PID, "", te.Tags, true, te.Started, te.Ended, false);
                 if (te.Billable)
                     Toggl.SetTimeEntryBillable(te.GUID, te.Billable);
             }

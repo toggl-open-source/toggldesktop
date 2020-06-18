@@ -516,17 +516,41 @@ namespace TogglDesktop
         return testing_set_logged_in_user(ctx, json);
     }
 
-    public static string Start(
+        public static string StartWithCurrentRunning(
+            string description,
+            string duration,
+            UInt64 task_id,
+            UInt64 project_id,
+            string project_guid,
+            string tags,
+            bool preventOnApp,
+            ulong started,
+            ulong ended,
+            bool stop_current_running)
+    {
+        OnUserTimeEntryStart();
+
+        return toggl_start_with_current_running(ctx,
+                           description,
+                           duration,
+                           task_id,
+                           project_id,
+                           project_guid,
+                           tags,
+                           preventOnApp,
+                           started,
+                           ended,
+                           stop_current_running);
+    }
+
+     public static string Start(
         string description,
         string duration,
         UInt64 task_id,
         UInt64 project_id,
         string project_guid,
         string tags,
-        bool preventOnApp = false,
-        ulong started = 0,
-        ulong ended = 0,
-        bool stop_current_running = true)
+        bool preventOnApp = false)
     {
         OnUserTimeEntryStart();
 
@@ -538,9 +562,8 @@ namespace TogglDesktop
                            project_guid,
                            tags,
                            preventOnApp,
-                           started,
-                           ended,
-                           stop_current_running);
+                           0,
+                           0);
     }
 
     public static string AddProject(
