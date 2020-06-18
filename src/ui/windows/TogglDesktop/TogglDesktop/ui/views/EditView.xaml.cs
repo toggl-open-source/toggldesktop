@@ -850,10 +850,10 @@ namespace TogglDesktop
         {
             if (this.timeEntry.ConfirmlessDelete())
             {
-                Toggl.DeleteTimeEntry(this.timeEntry.GUID);
+                Toggl.DeleteTimeEntry(this.timeEntry);
                 return;
             }
-            Toggl.AskToDeleteEntry(this.timeEntry.GUID);
+            Toggl.AskToDeleteEntry(this.timeEntry);
         }
 
         private void clearUndoHistory()

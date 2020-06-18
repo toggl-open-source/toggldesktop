@@ -1478,6 +1478,26 @@ public static partial class Toggl
 
     // returns GUID of the started time entry. you must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern string toggl_start_with_current_running(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string description,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string duration,
+        UInt64 task_id,
+        UInt64 project_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string project_guid,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string tags,
+        [MarshalAs(UnmanagedType.I1)]
+        bool prevent_on_app,
+        UInt64 started,
+        UInt64 ended,
+        bool stop_current_running);
+
+    // returns GUID of the started time entry. you must free() the result
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_start(
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]

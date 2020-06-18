@@ -39,6 +39,7 @@ namespace TogglDesktop
 
         public void Display(Toggl.TogglTimeEntryView item)
         {
+            ViewModel.TimeEntrySnapshot = item;
             ViewModel.Guid = item.GUID;
             ViewModel.IsGroup = item.Group;
             if (ViewModel.IsGroup)

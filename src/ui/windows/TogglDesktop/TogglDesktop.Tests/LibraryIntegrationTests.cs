@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
+using static TogglDesktop.Toggl;
 
 namespace TogglDesktop.Tests
 {
     public class LibraryIntegrationTests : IClassFixture<LibraryFixture>
     {
         private readonly LibraryFixture _state;
+        private readonly TogglTimeEntryView _timeEntrySnapshot;
         private readonly string _firstTimeEntryGuid;
 
         public LibraryIntegrationTests(LibraryFixture libraryFixture)
         {
             _state = libraryFixture;
             Assert.True(Toggl.SetLoggedInUser(_state.MeJson));
+            _timeEntrySnapshot = _state.TimeEntries[0];
             _firstTimeEntryGuid = _state.TimeEntries[0].GUID;
         }
 
@@ -148,9 +151,9 @@ namespace TogglDesktop.Tests
         [Fact]
         public void DeleteTimeEntryShouldDeleteTimeEntry()
         {
-            Toggl.DeleteTimeEntry(_firstTimeEntryGuid);
+            Toggl.DeleteTimeEntry(_timeEntrySnapshot);
 
-            Assert.DoesNotContain(_state.TimeEntries, te => te.GUID == _firstTimeEntryGuid);
+            Assert.DoesNotContain(_state.TimeEntries, te => te.GUID == _timeEntrySnapshot.GUID);
         }
 
         [Fact]

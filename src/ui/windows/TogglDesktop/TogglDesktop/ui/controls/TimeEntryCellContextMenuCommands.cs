@@ -10,6 +10,7 @@ namespace TogglDesktop
         {
             var bindings = new[] {
                 new CommandBinding(DeleteCommand, deleteTimeEntry, canDeleteTimeEntry),
+                new CommandBinding(UndoDeletionCommand, undoDeletion, canUndoDeletion),
                 new CommandBinding(CollapseAllDaysCommand, collapseAllDays, canCollapseAllDays),
                 new CommandBinding(ExpandAllDaysCommand, expandAllDays, canExpandAllDays),
             };
@@ -37,6 +38,23 @@ namespace TogglDesktop
                 return;
 
             cell.ViewModel.DeleteTimeEntry();
+        }
+
+        #endregion
+
+        #region undo delete time entry
+
+        public static readonly RoutedUICommand UndoDeletionCommand =
+            new RoutedUICommand("", "UndoDeletionCommand", typeof(TimeEntryCellContextMenuCommands));
+
+        private static void canUndoDeletion(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Toggl.UndoDeletionService.CanUndo;
+        }
+
+        private static void undoDeletion(object sender, ExecutedRoutedEventArgs e)
+        {
+            Toggl.UndoDeletionService.UndoDeletion();
         }
 
         #endregion

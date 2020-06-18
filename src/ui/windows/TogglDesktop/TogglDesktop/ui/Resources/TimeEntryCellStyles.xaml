@@ -11,6 +11,8 @@
         <MenuItem Header="Delete time entry"
                   Command="{x:Static toggl:TimeEntryCellContextMenuCommands.DeleteCommand}"
                   CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type ContextMenu}}}"/>
+        <MenuItem Header="Undo Delete time entry"
+                  Command="{x:Static toggl:TimeEntryCellContextMenuCommands.UndoDeletionCommand}"/>
         <Separator />
         <MenuItem Header="Collapse all days"
                   Command="{x:Static toggl:TimeEntryCellContextMenuCommands.CollapseAllDaysCommand}"/>
@@ -19,6 +21,9 @@
     </ContextMenu>
 
     <ContextMenu x:Key="TimeEntryHeaderContextMenu">
+        <MenuItem Header="Undo Delete time entry"
+                  Command="{x:Static toggl:TimeEntryCellContextMenuCommands.UndoDeletionCommand}"/>
+        <Separator />
         <MenuItem Header="Collapse all days"
                   Command="{x:Static toggl:TimeEntryCellContextMenuCommands.CollapseAllDaysCommand}"/>
         <MenuItem Header="Expand all days"
