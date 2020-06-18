@@ -342,6 +342,7 @@
     <Compile Include="ui\windows\MiniTimerWindow.xaml.cs">
       <DependentUpon>MiniTimerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="utilities\ColorSchemeExtensions.cs" />
     <Compile Include="utilities\LinqExtensions.cs" />
     <Compile Include="utilities\StaticObjectPool.cs" />
     <Compile Include="TogglApi.cs" />

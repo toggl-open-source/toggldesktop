@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
+using TogglDesktop.Converters;
 using Rectangle = System.Drawing.Rectangle;
 
 namespace TogglDesktop
@@ -286,7 +287,8 @@ public static class Utils
         return brush;
     }
 
-    public static SolidColorBrush AdaptedProjectColorBrushFromString(string hex, Toggl.TogglAdaptiveColor adaptationType)
+    public static SolidColorBrush AdaptedProjectColorBrushFromString(string hex,
+        Toggl.TogglAdaptiveColor adaptationType)
     {
         var projectColorString = string.IsNullOrEmpty(hex) ? "999999" : (hex.StartsWith("#") ? hex.Substring(1) : hex);
         var rgbColor = Toggl.GetAdaptiveRgbColorFromHex(projectColorString, adaptationType);
@@ -299,8 +301,14 @@ public static class Utils
         return brush;
     }
 
+    public static SolidColorBrush AdaptedProjectColorBrushFromString(string hex)
+    {
+        return AdaptedProjectColorBrushFromString(
+            hex,
+            AdaptProjectColorConverter.AdaptationType.Value);
+    }
 
-        #endregion
+    #endregion
 
         #region registry
 
