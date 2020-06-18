@@ -1,6 +1,19 @@
 {
     "versions": [
         {
+            "version": "7.5.193",
+            "rows": [
+                "Appearance improvements for better readability",
+                "Stability improvements",
+                "Fixed the mini timer not sticking to the top",
+                "Fixed the tags dropdown not closing",
+                "Fixed context menu not appearing on the running timer"
+            ],
+            "date": "June 18th 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.162",
             "rows": [
                 "Update CA certificates bundle",
