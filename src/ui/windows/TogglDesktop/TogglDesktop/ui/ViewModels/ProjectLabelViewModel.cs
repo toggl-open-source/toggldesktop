@@ -1,5 +1,3 @@
-using System.Windows.Media;
-
 namespace TogglDesktop.ViewModels
 {
     public class ProjectLabelViewModel
@@ -19,7 +17,6 @@ namespace TogglDesktop.ViewModels
             ColorString = colorString;
             WorkspaceName = workspaceName;
             ProjectInfo = new ProjectInfo(projectId, taskId);
-            Color = Utils.ProjectColorBrushFromString(ColorString);
         }
 
         public string ProjectName { get; }
@@ -31,8 +28,6 @@ namespace TogglDesktop.ViewModels
         public string ColorString { get; }
 
         public string WorkspaceName { get; }
-
-        public Brush Color { get; }
 
         public ProjectInfo ProjectInfo { get; }
 

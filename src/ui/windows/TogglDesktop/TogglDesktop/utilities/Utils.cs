@@ -286,6 +286,20 @@ public static class Utils
         return brush;
     }
 
+    public static SolidColorBrush AdaptedProjectColorBrushFromString(string hex, Toggl.TogglAdaptiveColor adaptationType)
+    {
+        var projectColorString = string.IsNullOrEmpty(hex) ? "999999" : (hex.StartsWith("#") ? hex.Substring(1) : hex);
+        var rgbColor = Toggl.GetAdaptiveRgbColorFromHex(projectColorString, adaptationType);
+        var color = Color.FromRgb(
+            (byte) Math.Round(rgbColor.r * 255.0),
+            (byte) Math.Round(rgbColor.g * 255.0),
+            (byte) Math.Round(rgbColor.b * 255.0));
+        var brush = new SolidColorBrush(color);
+        brush.Freeze();
+        return brush;
+    }
+
+
         #endregion
 
         #region registry
