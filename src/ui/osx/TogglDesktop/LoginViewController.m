@@ -40,6 +40,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 };
 
 #define kLoginAppleViewTop 86.0
+#define kSSOLoginAppleViewTop 118.0f
 #define kLoginContainerHeight 440.0
 #define kSignupAppleViewTop 166.0
 #define kSignupContainerHeight 460.0
@@ -100,6 +101,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (weak) IBOutlet NSTextFieldClickablePointer *ssoCancelAndGoBackBtn;
 @property (weak) IBOutlet NSTextField *emailSSOTextField;
 @property (weak) IBOutlet NSTextFieldClickablePointer *backToSSOBtn;
+@property (weak) IBOutlet NSTextField *ssoTitleLbl;
 @property (assign, nonatomic) BOOL isLoginSignUpAsSSO;
 
 - (IBAction)userActionButtonOnClick:(id)sender;
@@ -154,6 +156,7 @@ extern void *ctx;
     self.privacyContinueLink.titleUnderline = YES;
     self.tosContinueLink.delegate = self;
     self.privacyContinueLink.delegate = self;
+    self.ssoCancelAndGoBackBtn.titleUnderline = YES;
 
     self.boxView.wantsLayer = YES;
     self.boxView.layer.masksToBounds = NO;
@@ -263,6 +266,12 @@ extern void *ctx;
         [self changeTabView:TabViewTypeEmailInputSSO];
         return;
     }
+
+    if (sender == self.ssoCancelAndGoBackBtn) {
+        self.isLoginSignUpAsSSO = NO;
+        [self changeTabView:TabViewTypeLogin];
+        return;
+    }
 }
 
 - (void)changeTabView:(TabViewType)type
@@ -299,7 +308,6 @@ extern void *ctx;
             self.welcomeToTogglLbl.hidden = YES;
 
             self.loginWithSSOBtn.hidden = NO;
-            self.welcomeToTogglLbl.hidden = YES;
             self.subWelcomeLbl.hidden = YES;
             self.socialButtonStackView.hidden = NO;
             self.email.hidden = NO;
@@ -386,9 +394,11 @@ extern void *ctx;
         self.donotHaveAccountLbl.hidden = YES;
         self.ssoCancelAndGoBackBtn.hidden = NO;
         self.signUpLink.hidden = YES;
-        self.welcomeToTogglLbl.stringValue = @"Log in to enable SSO";
+        self.ssoTitleLbl.hidden = NO;
+        self.appleGoogleGroupViewTop.constant = kSSOLoginAppleViewTop;
     } else {
         self.ssoCancelAndGoBackBtn.hidden = YES;
+        self.ssoTitleLbl.hidden = YES;
     }
 
     // Reset touchbar
@@ -1015,11 +1025,5 @@ extern void *ctx;
 -(void)linkSSOEmailWithCode:(NSString *) code
 {
     [self changeTabView:TabViewTypeEmailExistsSSO];
-}
-
-- (IBAction)ssoCancelAndGoBackBtnOnClick:(id)sender
-{
-    self.isLoginSignUpAsSSO = NO;
-    [self changeTabView:TabViewTypeLogin];
 }
 @end

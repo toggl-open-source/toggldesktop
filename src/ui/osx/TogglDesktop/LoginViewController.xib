@@ -37,6 +37,7 @@
                 <outlet property="signUpLink" destination="vHA-Cd-ciE" id="IIF-Rc-Dys"/>
                 <outlet property="socialButtonStackView" destination="NsR-Mq-gmm" id="Vaz-v0-Ezu"/>
                 <outlet property="ssoCancelAndGoBackBtn" destination="4Ay-II-lK2" id="crh-cm-ZYw"/>
+                <outlet property="ssoTitleLbl" destination="x3A-46-70W" id="eMH-HA-3TD"/>
                 <outlet property="subWelcomeLbl" destination="cQK-7K-9KT" id="GI4-gk-g9z"/>
                 <outlet property="tabView" destination="IPe-4I-8RJ" id="StK-z2-1Or"/>
                 <outlet property="termContinueSignInView" destination="538-Ma-lQh" id="lRj-Wl-AyP"/>
@@ -215,6 +216,14 @@
                                                                 <real value="3.4028234663852886e+38"/>
                                                             </customSpacing>
                                                         </stackView>
+                                                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="x3A-46-70W">
+                                                            <rect key="frame" x="31" y="312" width="165" height="21"/>
+                                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Log in to enable SSO" id="YQ3-tQ-xl2">
+                                                                <font key="font" metaFont="systemThin" size="18"/>
+                                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            </textFieldCell>
+                                                        </textField>
                                                         <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NsR-Mq-gmm">
                                                             <rect key="frame" x="28" y="224" width="172" height="68"/>
                                                             <subviews>
@@ -432,9 +441,6 @@
                                                                         <color key="textColor" name="login-text-color"/>
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
-                                                                    <connections>
-                                                                        <action selector="ssoCancelAndGoBackBtnOnClick:" target="-2" id="FP9-SC-8wI"/>
-                                                                    </connections>
                                                                 </textField>
                                                             </subviews>
                                                             <visibilityPriorities>
@@ -511,11 +517,13 @@
                                                         <constraint firstItem="0ii-WG-Mwe" firstAttribute="centerY" secondItem="tVo-dL-QHu" secondAttribute="centerY" id="dOR-Hu-KgY"/>
                                                         <constraint firstItem="0Z5-Nq-p4o" firstAttribute="leading" secondItem="sfu-XE-Fjf" secondAttribute="leading" constant="20" id="eDh-Uf-lVM"/>
                                                         <constraint firstItem="0Z5-Nq-p4o" firstAttribute="top" secondItem="tVo-dL-QHu" secondAttribute="bottom" constant="20" id="ekM-R8-ULa"/>
+                                                        <constraint firstItem="NsR-Mq-gmm" firstAttribute="top" secondItem="x3A-46-70W" secondAttribute="bottom" constant="20" id="fwd-9i-1qB"/>
                                                         <constraint firstItem="B3g-en-asq" firstAttribute="centerX" secondItem="sfu-XE-Fjf" secondAttribute="centerX" id="iLZ-V1-xb9"/>
                                                         <constraint firstAttribute="bottom" secondItem="B3g-en-asq" secondAttribute="bottom" constant="39" id="mwe-xe-iW6"/>
                                                         <constraint firstItem="tZj-P6-Z8M" firstAttribute="centerX" secondItem="sfu-XE-Fjf" secondAttribute="centerX" id="ojj-Ts-C6F"/>
                                                         <constraint firstItem="b55-m8-HrX" firstAttribute="centerY" secondItem="tVo-dL-QHu" secondAttribute="centerY" id="r9E-rl-AhD"/>
                                                         <constraint firstItem="TJa-KI-Gbo" firstAttribute="leading" secondItem="sfu-XE-Fjf" secondAttribute="leading" constant="28" id="wrk-fD-V1L"/>
+                                                        <constraint firstItem="x3A-46-70W" firstAttribute="centerX" secondItem="sfu-XE-Fjf" secondAttribute="centerX" id="y67-h0-Ug4"/>
                                                     </constraints>
                                                 </customView>
                                             </subviews>
