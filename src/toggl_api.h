@@ -1265,6 +1265,10 @@ extern "C" {
         void *context,
         TimelineMenuContextType menuType);
 
+    TOGGL_EXPORT TogglRgbColor toggl_get_adaptive_rgb_color_from_hex(
+        const char_t *hexColor,
+        TogglAdaptiveColor type);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus
