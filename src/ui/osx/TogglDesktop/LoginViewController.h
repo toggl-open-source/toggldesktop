@@ -13,5 +13,5 @@
 @interface LoginViewController : NSViewController
 - (void)resetLoader;
 - (void)continueSignIn;
-- (void)linkSSOEmailWithPayload:(SSOPayload *) code;
+- (void)linkSSOEmailWithPayload:(SSOPayload *) payload;
 @end

@@ -13,6 +13,7 @@
 #import "NSCustomComboBox.h"
 #import "TogglDesktop-Swift.h"
 #import "const.h"
+#import "DesktopLibraryBridge.h"
 
 typedef NS_ENUM (NSUInteger, TabViewType)
 {
@@ -39,11 +40,11 @@ typedef NS_ENUM (NSUInteger, UserAction)
     UserActionContinueSSO
 };
 
-#define kLoginAppleViewTop 86.0
+#define kLoginAppleViewTop 77.0f
 #define kSSOLoginAppleViewTop 118.0f
 #define kLoginContainerHeight 440.0
 #define kSignupAppleViewTop 166.0
-#define kSignupContainerHeight 460.0
+#define kSignupContainerHeight 480.0
 #define kPasswordStrengthViewBottom -4
 #define kPasswordStrengthViewCenterX 0
 
@@ -103,6 +104,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (weak) IBOutlet NSTextFieldClickablePointer *backToSSOBtn;
 @property (weak) IBOutlet NSTextField *ssoTitleLbl;
 @property (assign, nonatomic) BOOL isLoginSignUpAsSSO;
+@property (strong, nonatomic) SSOPayload *ssoPayload;
 
 - (IBAction)userActionButtonOnClick:(id)sender;
 - (IBAction)countrySelected:(id)sender;
@@ -263,11 +265,15 @@ extern void *ctx;
     }
 
     if (sender == self.backToSSOBtn) {
+        // As we go back to the main Login view
+        // We reset all SSO states from the UI and Library
+        [[DesktopLibraryBridge shared] resetEnableSSO];
         [self changeTabView:TabViewTypeEmailInputSSO];
         return;
     }
 
     if (sender == self.ssoCancelAndGoBackBtn) {
+        [[DesktopLibraryBridge shared] resetEnableSSO];
         self.isLoginSignUpAsSSO = NO;
         [self changeTabView:TabViewTypeLogin];
         return;
@@ -1011,19 +1017,21 @@ extern void *ctx;
     }
 
     NSString *email = [self.emailSSOTextField stringValue];
-    toggl_get_identity_provider_sso(ctx, email.UTF8String);
+    [[DesktopLibraryBridge shared] getSSOIdentityProviderWithEmail:email];
 }
 
 - (IBAction)loginToEnableSSLOnClick:(id)sender
 {
+    [[DesktopLibraryBridge shared] setNeedEnableSSOWithCode:self.ssoPayload.confirmationCode];
     self.isLoginSignUpAsSSO = YES;
 
     // It's the same logic with Login and Sign Up, but different title
     [self changeTabView:TabViewTypeLogin];
 }
 
-- (void)linkSSOEmailWithPayload:(SSOPayload *) code
+- (void)linkSSOEmailWithPayload:(SSOPayload *) payload
 {
+    self.ssoPayload = payload;
     [self changeTabView:TabViewTypeEmailExistsSSO];
 }
 @end

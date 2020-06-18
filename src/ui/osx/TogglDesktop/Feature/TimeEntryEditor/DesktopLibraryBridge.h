@@ -125,6 +125,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)userDidTurnOnRecordActivity;
 - (void)userDidEditOrAddTimeEntryDirectlyOnTimelineView;
 
+#pragma mark - SSO
+
+- (void)getSSOIdentityProviderWithEmail:(NSString *) email;
+- (void)setNeedEnableSSOWithCode:(NSString *) code;
+- (void)resetEnableSSO;
 @end
 
 NS_ASSUME_NONNULL_END

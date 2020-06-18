@@ -442,4 +442,19 @@ void *ctx;
     toggl_user_did_edit_add_timeentry_on_timeline_view(ctx);
 }
 
+- (void)getSSOIdentityProviderWithEmail:(NSString *) email
+{
+    toggl_get_identity_provider_sso(ctx, [email UTF8String]);
+}
+
+- (void)setNeedEnableSSOWithCode:(NSString *) code
+{
+    toggl_set_need_enable_SSO(ctx, [code UTF8String]);
+}
+
+- (void)resetEnableSSO
+{
+    toggl_reset_enable_SSO(ctx);
+}
+
 @end

@@ -366,6 +366,8 @@
 		BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */; };
 		BAB0027F22731248005ECC93 /* DayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0027E22731248005ECC93 /* DayLabel.swift */; };
 		BAB0029F2273125C005ECC93 /* DayLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB0029E2273125C005ECC93 /* DayLabel.xib */; };
+		BAB42C76249B785700D7647C /* Color+Adaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2A116A247BB72A00B97FAE /* Color+Adaptive.swift */; };
+		BAB42C77249B788B00D7647C /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
 		BAB508E2237E8FBC00D3D468 /* SystemPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB508E1237E8FBC00D3D468 /* SystemPermissionManager.swift */; };
 		BAB508E4237EA54500D3D468 /* ObjcSystemPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB508E3237EA54500D3D468 /* ObjcSystemPermissionManager.swift */; };
 		BAB5FFD423F13F75003781D3 /* TimelineDraggingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB5FFD323F13F75003781D3 /* TimelineDraggingSession.swift */; };
@@ -2711,6 +2713,7 @@
 				BAE64D592368334000244D2B /* NSTextFieldDuration.m in Sources */,
 				BAE64D5A2368334000244D2B /* UIEvents.m in Sources */,
 				BA37ACB823D890050013EE26 /* OGSwitch.swift in Sources */,
+				BAB42C77249B788B00D7647C /* TimelineInitialDateProvider.swift in Sources */,
 				BAE64D5B2368334000244D2B /* Date+Utils.swift in Sources */,
 				BAE64D5C2368334000244D2B /* GoogleAuthenticationServer+Objc.swift in Sources */,
 				BAE64D5D2368334000244D2B /* VertificalTimeEntryFlowLayout.swift in Sources */,
@@ -2830,6 +2833,7 @@
 				BAE64DAD2368334000244D2B /* ProjectTextField.m in Sources */,
 				BA37ACD623D8900C0013EE26 /* TimelineEmptyTimeEntryCell.swift in Sources */,
 				BAE64DAE2368334000244D2B /* EditorPopover.swift in Sources */,
+				BAB42C76249B785700D7647C /* Color+Adaptive.swift in Sources */,
 				BAE64DAF2368334000244D2B /* ProjectHeaderCellView.swift in Sources */,
 				BAE64DB02368334000244D2B /* (null) in Sources */,
 				BAE64DB12368334000244D2B /* CalendarDataSource.swift in Sources */,
