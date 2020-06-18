@@ -5649,7 +5649,7 @@ error Context::pushProjects(
 }
 
 error Context::updateProjectClients(const std::vector<Client *> &clients,
-                                     const std::vector<Project *> &projects) {
+                                    const std::vector<Project *> &projects) {
     for (auto it = projects.cbegin(); it != projects.cend(); ++it) {
         if (!(*it)->CID() && !(*it)->ClientGUID().empty()) {
             // Find client id

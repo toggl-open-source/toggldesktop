@@ -663,6 +663,13 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         string level);
 
+    // Allow overriding the server in production
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_staging_override(
+        [MarshalAs(UnmanagedType.I1)]
+        bool value);
+
     // Various parts of UI can tell the app to show itself.
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -1475,6 +1482,27 @@ public static partial class Toggl
     [return:MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_clear_cache(
         IntPtr context);
+
+    // returns GUID of the started time entry. you must free() the result
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern string toggl_start_with_current_running(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string description,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string duration,
+        UInt64 task_id,
+        UInt64 project_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string project_guid,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string tags,
+        [MarshalAs(UnmanagedType.I1)]
+        bool prevent_on_app,
+        UInt64 started,
+        UInt64 ended,
+        [MarshalAs(UnmanagedType.I1)]
+        bool stop_current_running);
 
     // returns GUID of the started time entry. you must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
