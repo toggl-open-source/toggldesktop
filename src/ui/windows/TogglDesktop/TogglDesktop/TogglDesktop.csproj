@@ -241,6 +241,7 @@
     <Compile Include="ui\controls\TrayToolTipControl.xaml.cs">
       <DependentUpon>TrayToolTipControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\Converters\AdaptColorConverter.cs" />
     <Compile Include="ui\Converters\AndConverter.cs" />
     <Compile Include="ui\Converters\CapitalizeConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
