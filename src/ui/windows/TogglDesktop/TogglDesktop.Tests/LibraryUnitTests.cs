@@ -23,5 +23,20 @@ namespace TogglDesktop.Tests
             Assert.Equal(1.0, hsvColor.s);
             Assert.Equal(1.0, hsvColor.v);
         }
+
+        [Theory]
+        [InlineData("00FF00", 0.0, 1.0, 0.0)]
+        [InlineData("FF0000", 1.0, 0.0, 0.0)]
+        [InlineData("0000FF", 0.0, 0.0, 1.0)]
+        [InlineData("000000", 0.0, 0.0, 0.0)]
+        [InlineData("FFFFFF", 1.0, 1.0, 1.0)]
+        [InlineData("808080", .5019, .5019, .5019)]
+        public void ShapeOnLightBackground_ShouldConvertHexToRgbWithoutAdaptation(string hex, double r, double g, double b)
+        {
+            var rgbColor = Toggl.GetAdaptiveRgbColorFromHex(hex,Toggl.TogglAdaptiveColor.AdaptiveColorShapeOnLightBackground);
+            Assert.Equal(r, rgbColor.r, 3);
+            Assert.Equal(g, rgbColor.g, 3);
+            Assert.Equal(b, rgbColor.b, 3);
+        }
     }
 }
