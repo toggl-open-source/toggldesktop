@@ -20,8 +20,7 @@ typedef NS_ENUM (NSUInteger, TabViewType)
     TabViewTypeSingup,
     TabViewTypeContinueSignin,
     TabViewTypeEmailInputSSO,
-    TabViewTypeEmailExistsSSO,
-    TabViewTypeLoginSSO
+    TabViewTypeEmailExistsSSO
 };
 
 static NSString *const emailMissingError = @"Please enter valid email address";
@@ -98,8 +97,10 @@ typedef NS_ENUM (NSUInteger, UserAction)
 
 // SSO
 @property (weak) IBOutlet NSTextFieldClickablePointer *loginWithDifferentMethodBtn;
+@property (weak) IBOutlet NSTextFieldClickablePointer *ssoCancelAndGoBackBtn;
 @property (weak) IBOutlet NSTextField *emailSSOTextField;
 @property (weak) IBOutlet NSTextFieldClickablePointer *backToSSOBtn;
+@property (assign, nonatomic) BOOL isLoginSignUpAsSSO;
 
 - (IBAction)userActionButtonOnClick:(id)sender;
 - (IBAction)countrySelected:(id)sender;
@@ -140,6 +141,7 @@ extern void *ctx;
     self.loginWithSSOBtn.delegate = self;
     self.loginWithDifferentMethodBtn.delegate = self;
     self.backToSSOBtn.delegate = self;
+    self.isLoginSignUpAsSSO = NO;
 
     self.backToSSOBtn.titleUnderline = YES;
     self.loginWithDifferentMethodBtn.titleUnderline = YES;
@@ -230,8 +232,6 @@ extern void *ctx;
             case TabViewTypeEmailInputSSO:
                 break;
             case TabViewTypeEmailExistsSSO:
-                break;
-            case TabViewTypeLoginSSO:
                 break;
         }
         return;
@@ -378,12 +378,17 @@ extern void *ctx;
         case TabViewTypeEmailExistsSSO:
             [self.tabView selectTabViewItem:self.emailExistSSOTabItem];
             break;
+    }
 
-        case TabViewTypeLoginSSO:
-            [self.tabView selectTabViewItem:self.loginAndSignUpTabItem];
-            self.welcomeToTogglLbl.stringValue = @"Log in to enable SSO";
-
-            break;
+    // Change some title if it's SSO authentication
+    if (self.isLoginSignUpAsSSO) {
+        self.loginWithSSOBtn.hidden = YES;
+        self.donotHaveAccountLbl.hidden = YES;
+        self.ssoCancelAndGoBackBtn.hidden = NO;
+        self.signUpLink.hidden = YES;
+        self.welcomeToTogglLbl.stringValue = @"Log in to enable SSO";
+    } else {
+        self.ssoCancelAndGoBackBtn.hidden = YES;
     }
 
     // Reset touchbar
@@ -658,8 +663,6 @@ extern void *ctx;
                 return nil;
             case TabViewTypeEmailExistsSSO:
                 return nil;
-            case TabViewTypeLoginSSO:
-                return nil;
         }
     }
     return nil;
@@ -709,8 +712,6 @@ extern void *ctx;
         case TabViewTypeEmailInputSSO:
             break;
         case TabViewTypeEmailExistsSSO:
-            break;
-        case TabViewTypeLoginSSO:
             break;
     }
 }
@@ -788,8 +789,6 @@ extern void *ctx;
             break;
         case TabViewTypeEmailExistsSSO:
             break;
-        case TabViewTypeLoginSSO:
-            break;
     }
 }
 
@@ -808,8 +807,6 @@ extern void *ctx;
         case TabViewTypeEmailInputSSO:
             break;
         case TabViewTypeEmailExistsSSO:
-            break;
-        case TabViewTypeLoginSSO:
             break;
     }
 }
@@ -1009,11 +1006,20 @@ extern void *ctx;
 
 - (IBAction)loginToEnableSSLOnClick:(id)sender
 {
-    [self changeTabView:TabViewTypeLoginSSO];
+    self.isLoginSignUpAsSSO = YES;
+
+    // It's the same logic with Login and Sign Up, but different title
+    [self changeTabView:TabViewTypeLogin];
 }
 
 -(void)linkSSOEmailWithCode:(NSString *) code
 {
     [self changeTabView:TabViewTypeEmailExistsSSO];
+}
+
+- (IBAction)ssoCancelAndGoBackBtnOnClick:(id)sender
+{
+    self.isLoginSignUpAsSSO = NO;
+    [self changeTabView:TabViewTypeLogin];
 }
 @end
