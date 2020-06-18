@@ -42,7 +42,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 
 #define kLoginAppleViewTop 77.0f
 #define kSSOLoginAppleViewTop 118.0f
-#define kLoginContainerHeight 440.0
+#define kLoginContainerHeight 480.0
 #define kSignupAppleViewTop 166.0
 #define kSignupContainerHeight 480.0
 #define kPasswordStrengthViewBottom -4
