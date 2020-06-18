@@ -425,7 +425,7 @@ extern "C" {
     // Allow overriding the server in production
 
     TOGGL_EXPORT void toggl_set_staging_override(
-        bool value);
+        bool_t value);
 
     // Various parts of UI can tell the app to show itself.
 
