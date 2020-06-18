@@ -497,11 +497,11 @@ extern void *ctx;
 
 -(void)startLinkSSOEmailNotification:(NSNotification *) noti
 {
-    if (![noti.object isKindOfClass:[NSString class]]) {
+    if (![noti.object isKindOfClass:[SSOPayload class]]) {
         return;
     }
-    NSString *code = (NSString *) noti.object;
-    [self.loginViewController linkSSOEmailWithCode:code];
+    SSOPayload *payload = (SSOPayload *) noti.object;
+    [self.loginViewController linkSSOEmailWithPayload:payload];
 }
 
 @end

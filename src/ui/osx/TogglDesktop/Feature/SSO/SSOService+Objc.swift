@@ -19,3 +19,16 @@ import Foundation
         SSOService.shared.authorize(with: urlStr)
     }
 }
+
+@objcMembers
+class SSOPayload: NSObject {
+
+    let email: String
+    let confirmationCode: String
+
+    init(email: String, confirmationCode: String) {
+        self.email = email
+        self.confirmationCode = confirmationCode
+        super.init()
+    }
+}

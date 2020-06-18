@@ -13,6 +13,7 @@ final class SSOService {
     private struct Constants {
         struct Keys {
             static let ConfirmationCode = "confirmation_code"
+            static let Email = "email"
             static let SsoError = "ssoError"
             static let LoginPath = "sso-login"
             static let MustLinkPath = "sso-must-link"
@@ -29,7 +30,7 @@ final class SSOService {
 
     enum Route {
         case success
-        case needConfirmationBeforeLink(String)
+        case needConfirmationBeforeLink(String, String)
         case emailDoNotExist
         case notInWorkspace
         case none
@@ -72,12 +73,12 @@ extension SSOService {
 
     private func getRoute(with component: URLComponents) -> Route {
         // Get the first path
-        guard let firstPath = component.path.components(separatedBy: "/").first else {
+        guard let host = component.host else {
             present(error: "Missing Path")
             return .none
         }
 
-        switch firstPath {
+        switch host {
         case Constants.Keys.LoginPath:
 
             // Success path
@@ -102,15 +103,20 @@ extension SSOService {
             }
 
         case Constants.Keys.MustLinkPath:
-            // Extract the confirmation_code from the callback
-            guard let codeKey = component.queryItems?.first(where: { $0.name == Constants.Keys.ConfirmationCode }),
-                let code = codeKey.value  else {
-                present(error: "Missing confirmation code")
+            // Extract values from the query
+            guard let codeQuery = component.queryItems?.first(where: { $0.name == Constants.Keys.ConfirmationCode }),
+                let code = codeQuery.value  else {
+                present(error: "Missing Confirmation Code")
                 return .none
             }
-            return .needConfirmationBeforeLink(code)
+            guard let emailQuery = component.queryItems?.first(where: { $0.name == Constants.Keys.Email }),
+                let email = emailQuery.value  else {
+                present(error: "Missing SSO Email")
+                return .none
+            }
+            return .needConfirmationBeforeLink(email, code)
         default:
-            present(error: "Unsupported path \(firstPath)")
+            present(error: "Unsupported path \(host)")
         }
         return .none
     }
@@ -123,8 +129,8 @@ extension SSOService {
             present(error: "SSO Email isn't belong to any workspace")
         case .success:
             break
-        case .needConfirmationBeforeLink(let code):
-            NotificationCenter.default.post(name: Notification.Name(rawValue: kLinkSSOEmail), object: code)
+        case .needConfirmationBeforeLink(let email, let code):
+            NotificationCenter.default.post(name: Notification.Name(rawValue: kLinkSSOEmail), object: SSOPayload(email: email, confirmationCode: code))
         case .none:
             break
         }

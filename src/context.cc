@@ -2404,9 +2404,6 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
         req.relative_url = ss.str();
 
         HTTPResponse resp = TogglClient::GetInstance().Get(req);
-        if (resp.err != noError) {
-            return displayError(resp.err);
-        }
 
         // Success
         if (resp.status_code == 200) {
