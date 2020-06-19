@@ -28,6 +28,10 @@
 		3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */; };
 		3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */; };
 		492F5F02248550F800FFEC70 /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
+		49418B3A249CE70F00265665 /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
+		49418B3B249CE71800265665 /* Color+Adaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2A116A247BB72A00B97FAE /* Color+Adaptive.swift */; };
+		49418B4B249CEBA300265665 /* TogglDesktopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */; };
+		49D3603B24878FA000527DE8 /* TogglDesktopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */; };
 		622BBF654A6A958692A4633B /* Pods_TogglDesktop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 776525112125F6AD81DF4DEF /* Pods_TogglDesktop.framework */; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
 		69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
@@ -76,8 +80,10 @@
 		74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */; };
 		74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */; };
 		74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
+		8D7A939921BDBE7BD6599A02 /* Pods_TogglDesktopTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B60B83A6E228F2A959F5FEA /* Pods_TogglDesktopTests.framework */; };
 		95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */; };
 		95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707918CDB91500A34D0D /* NSCustomComboBox.m */; };
+		B42F5DE935AF3652AE1C2ED9 /* Pods_TogglDesktopTests_AppStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFD8BD7ED08637BB01AA612E /* Pods_TogglDesktopTests_AppStore.framework */; };
 		BA00E9ED234C5A6C0011A703 /* TouchBarService+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */; };
 		BA00E9F0234C73990011A703 /* TimeEntryScrubberItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9EF234C73990011A703 /* TimeEntryScrubberItem.swift */; };
 		BA00E9F3234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9F2234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift */; };
@@ -616,6 +622,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		49418B45249CE77D00265665 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BAE64D512368334000244D2B;
+			remoteInfo = "TogglDesktop-AppStore";
+		};
+		49D3603D24878FA000527DE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 69FC17F017E6534400B96425;
+			remoteInfo = TogglDesktop;
+		};
 		74456B991A774858002A6338 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */;
@@ -685,6 +705,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		095DCC35F3D63F2491F920D2 /* Pods-TogglDesktopTests-AppStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktopTests-AppStore.debug.xcconfig"; path = "Target Support Files/Pods-TogglDesktopTests-AppStore/Pods-TogglDesktopTests-AppStore.debug.xcconfig"; sourceTree = "<group>"; };
 		3A54C9591227E723FEC0DB85 /* Pods-TogglDesktop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop.debug.xcconfig"; path = "Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop.debug.xcconfig"; sourceTree = "<group>"; };
 		3C0158EF1C7B414E00FE63AA /* LoadMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadMoreCell.xib; sourceTree = "<group>"; };
 		3C07B758193C88AE00ED6E6F /* NSCustomTimerComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomTimerComboBox.h; sourceTree = "<group>"; };
@@ -722,9 +743,16 @@
 		3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoCompleteTableContainer.h; sourceTree = "<group>"; };
 		3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableContainer.m; sourceTree = "<group>"; };
 		492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineInitialDateProvider.swift; sourceTree = "<group>"; };
+		49418B40249CE77D00265665 /* TogglDesktopTests-AppStore.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TogglDesktopTests-AppStore.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		49418B44249CE77D00265665 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49D3603824878FA000527DE8 /* TogglDesktopTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TogglDesktopTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TogglDesktopTests.swift; sourceTree = "<group>"; };
+		49D3603C24878FA000527DE8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BCB2D1F3BD02A806D947C18 /* Pods-TogglDesktop-AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop-AppStore.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktop-AppStore/Pods-TogglDesktop-AppStore.release.xcconfig"; sourceTree = "<group>"; };
 		523FD02C959288FBFA20F5B1 /* Pods-TogglDesktop-AppStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop-AppStore.debug.xcconfig"; path = "Target Support Files/Pods-TogglDesktop-AppStore/Pods-TogglDesktop-AppStore.debug.xcconfig"; sourceTree = "<group>"; };
+		5B60B83A6E228F2A959F5FEA /* Pods_TogglDesktopTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TogglDesktopTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F76040E605C5D6E37B6F73B /* Pods_TogglDesktop_AppStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TogglDesktop_AppStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6386C95D02B8C4FB0ACDCEA1 /* Pods-TogglDesktopTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktopTests.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktopTests/Pods-TogglDesktopTests.release.xcconfig"; sourceTree = "<group>"; };
 		69FC17F117E6534400B96425 /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69FC17F417E6534400B96425 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		69FC17F717E6534400B96425 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -814,6 +842,7 @@
 		95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBoxCell.m; sourceTree = "<group>"; };
 		95C0707818CDB91500A34D0D /* NSCustomComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBox.h; sourceTree = "<group>"; };
 		95C0707918CDB91500A34D0D /* NSCustomComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBox.m; sourceTree = "<group>"; };
+		ACB606A36C2DCD2678F09E6B /* Pods-TogglDesktopTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktopTests.debug.xcconfig"; path = "Target Support Files/Pods-TogglDesktopTests/Pods-TogglDesktopTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop.release.xcconfig"; sourceTree = "<group>"; };
 		BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TouchBarService+Name.swift"; sourceTree = "<group>"; };
 		BA00E9EF234C73990011A703 /* TimeEntryScrubberItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryScrubberItem.swift; sourceTree = "<group>"; };
@@ -1074,9 +1103,27 @@
 		C5DA1FC117F1B38B001C4565 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = SOURCE_ROOT; };
 		C5DA1FC217F1B38B001C4565 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = SOURCE_ROOT; };
 		C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = SOURCE_ROOT; };
+		D2DDA71055B263A3287A575A /* Pods-TogglDesktopTests-AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktopTests-AppStore.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktopTests-AppStore/Pods-TogglDesktopTests-AppStore.release.xcconfig"; sourceTree = "<group>"; };
+		EFD8BD7ED08637BB01AA612E /* Pods_TogglDesktopTests_AppStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TogglDesktopTests_AppStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		49418B3D249CE77D00265665 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B42F5DE935AF3652AE1C2ED9 /* Pods_TogglDesktopTests_AppStore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49D3603524878FA000527DE8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D7A939921BDBE7BD6599A02 /* Pods_TogglDesktopTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		69FC17EE17E6534400B96425 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1122,6 +1169,10 @@
 				B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */,
 				523FD02C959288FBFA20F5B1 /* Pods-TogglDesktop-AppStore.debug.xcconfig */,
 				4BCB2D1F3BD02A806D947C18 /* Pods-TogglDesktop-AppStore.release.xcconfig */,
+				ACB606A36C2DCD2678F09E6B /* Pods-TogglDesktopTests.debug.xcconfig */,
+				6386C95D02B8C4FB0ACDCEA1 /* Pods-TogglDesktopTests.release.xcconfig */,
+				095DCC35F3D63F2491F920D2 /* Pods-TogglDesktopTests-AppStore.debug.xcconfig */,
+				D2DDA71055B263A3287A575A /* Pods-TogglDesktopTests-AppStore.release.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;
@@ -1147,6 +1198,23 @@
 			name = AutoComplete;
 			sourceTree = "<group>";
 		};
+		49418B41249CE77D00265665 /* TogglDesktopTests-AppStore */ = {
+			isa = PBXGroup;
+			children = (
+				49418B44249CE77D00265665 /* Info.plist */,
+			);
+			path = "TogglDesktopTests-AppStore";
+			sourceTree = "<group>";
+		};
+		49D3603924878FA000527DE8 /* TogglDesktopTests */ = {
+			isa = PBXGroup;
+			children = (
+				49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */,
+				49D3603C24878FA000527DE8 /* Info.plist */,
+			);
+			path = TogglDesktopTests;
+			sourceTree = "<group>";
+		};
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
@@ -1161,6 +1229,8 @@
 				BA1B7FA122E5D52F001333D9 /* Swift */,
 				BA0CEC4C21BE516F00F1BF01 /* Other */,
 				69FC17FA17E6534400B96425 /* ui */,
+				49D3603924878FA000527DE8 /* TogglDesktopTests */,
+				49418B41249CE77D00265665 /* TogglDesktopTests-AppStore */,
 				69FC17F317E6534400B96425 /* Frameworks */,
 				69FC17F217E6534400B96425 /* Products */,
 				3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */,
@@ -1175,6 +1245,8 @@
 			children = (
 				69FC17F117E6534400B96425 /* TogglDesktop.app */,
 				BAE64E4B2368334000244D2B /* TogglDesktop.app */,
+				49D3603824878FA000527DE8 /* TogglDesktopTests.xctest */,
+				49418B40249CE77D00265665 /* TogglDesktopTests-AppStore.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1200,6 +1272,8 @@
 				69FC17F617E6534400B96425 /* Other Frameworks */,
 				5F76040E605C5D6E37B6F73B /* Pods_TogglDesktop_AppStore.framework */,
 				776525112125F6AD81DF4DEF /* Pods_TogglDesktop.framework */,
+				5B60B83A6E228F2A959F5FEA /* Pods_TogglDesktopTests.framework */,
+				EFD8BD7ED08637BB01AA612E /* Pods_TogglDesktopTests_AppStore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1960,6 +2034,46 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		49418B3F249CE77D00265665 /* TogglDesktopTests-AppStore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49418B47249CE77D00265665 /* Build configuration list for PBXNativeTarget "TogglDesktopTests-AppStore" */;
+			buildPhases = (
+				DF5A413FF97A027BAECB84F5 /* [CP] Check Pods Manifest.lock */,
+				49418B3C249CE77D00265665 /* Sources */,
+				49418B3D249CE77D00265665 /* Frameworks */,
+				49418B3E249CE77D00265665 /* Resources */,
+				DBBE0CD2223CE2F93AF82E7E /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				49418B46249CE77D00265665 /* PBXTargetDependency */,
+			);
+			name = "TogglDesktopTests-AppStore";
+			productName = "TogglDesktopTests-AppStore";
+			productReference = 49418B40249CE77D00265665 /* TogglDesktopTests-AppStore.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		49D3603724878FA000527DE8 /* TogglDesktopTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49D3603F24878FA000527DE8 /* Build configuration list for PBXNativeTarget "TogglDesktopTests" */;
+			buildPhases = (
+				81A110554E6933FC84621A85 /* [CP] Check Pods Manifest.lock */,
+				49D3603424878FA000527DE8 /* Sources */,
+				49D3603524878FA000527DE8 /* Frameworks */,
+				49D3603624878FA000527DE8 /* Resources */,
+				C279BE2CEE6A519519B901CA /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				49D3603E24878FA000527DE8 /* PBXTargetDependency */,
+			);
+			name = TogglDesktopTests;
+			productName = TogglDesktopTests;
+			productReference = 49D3603824878FA000527DE8 /* TogglDesktopTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		69FC17F017E6534400B96425 /* TogglDesktop */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 69FC182217E6534500B96425 /* Build configuration list for PBXNativeTarget "TogglDesktop" */;
@@ -2016,9 +2130,22 @@
 		69FC17E917E6534400B96425 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1150;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = Alari;
 				TargetAttributes = {
+					49418B3F249CE77D00265665 = {
+						CreatedOnToolsVersion = 11.5;
+						DevelopmentTeam = B227VTMZ94;
+						ProvisioningStyle = Automatic;
+						TestTargetID = BAE64D512368334000244D2B;
+					};
+					49D3603724878FA000527DE8 = {
+						CreatedOnToolsVersion = 11.5;
+						DevelopmentTeam = B227VTMZ94;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 69FC17F017E6534400B96425;
+					};
 					69FC17F017E6534400B96425 = {
 						DevelopmentTeam = B227VTMZ94;
 						LastSwiftMigration = 1020;
@@ -2067,6 +2194,8 @@
 				BAE64D512368334000244D2B /* TogglDesktop-AppStore */,
 				74607C1C18EDE6D800571BA6 /* poco */,
 				74607C2018EDE70C00571BA6 /* openssl */,
+				49D3603724878FA000527DE8 /* TogglDesktopTests */,
+				49418B3F249CE77D00265665 /* TogglDesktopTests-AppStore */,
 			);
 		};
 /* End PBXProject section */
@@ -2082,6 +2211,20 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		49418B3E249CE77D00265665 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49D3603624878FA000527DE8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		69FC17EF17E6534400B96425 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2169,7 +2312,6 @@
 				BA43B25523F525F30007DD99 /* TimelineLineView.xib in Resources */,
 				BAE64E072368334000244D2B /* DateCellViewItem.xib in Resources */,
 				BA13E57F24347716005244AD /* OnboardingContentViewController.xib in Resources */,
-				BAE64E082368334000244D2B /* ColorViewItem.xib in Resources */,
 				BA13E57F24347716005244AD /* OnboardingContentViewController.xib in Resources */,
 				BAE64E092368334000244D2B /* OverlayViewController.xib in Resources */,
 				BAE64E0A2368334000244D2B /* ProjectContentCellView.xib in Resources */,
@@ -2273,6 +2415,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /usr/bin/ruby;
 			shellScript = "if ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\nexit\nend\n\nfork do\nProcess.setsid\nSTDIN.reopen(\"/dev/null\")\nSTDOUT.reopen(\"/dev/null\", \"a\")\nSTDERR.reopen(\"/dev/null\", \"a\")\n\nrequire 'shellwords'\n\nDir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/#{ENV[\"DWARF_DSYM_FILE_NAME\"]}/Contents/Resources/DWARF/*\"].each do |dsym|\nsystem(\"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\nend\nend\n";
+		};
+		81A110554E6933FC84621A85 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TogglDesktopTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 		B984F0D8FC24E4374FFADFBB /* Upload Bugsnag dSYM */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2424,6 +2588,36 @@
 			shellScript = "# Bugsnag key\napi_key = \"aa13053a88d5133b688db0f25ec103b7\"\n\nfork do\n  Process.setsid\n  STDIN.reopen(\"/dev/null\")\n  STDOUT.reopen(\"/dev/null\", \"a\")\n  STDERR.reopen(\"/dev/null\", \"a\")\n\n  require 'shellwords'\n\n  Dir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/*/Contents/Resources/DWARF/*\"].each do |dsym|\n    curl_command = \"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} \"\n    curl_command += \"-F apiKey=#{Shellwords.escape(api_key)} \" if api_key\n    curl_command += \"https://upload.bugsnag.com/\"\n    system(curl_command)\n  end\nend\n";
 			showEnvVarsInLog = 0;
 		};
+		C279BE2CEE6A519519B901CA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TogglDesktopTests/Pods-TogglDesktopTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/Bugsnag/Bugsnag.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
+				"${PODS_ROOT}/Sparkle/Sparkle.framework",
+				"${PODS_ROOT}/Sparkle/Sparkle.framework.dSYM",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bugsnag.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sparkle.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/Sparkle.framework.dSYM",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TogglDesktopTests/Pods-TogglDesktopTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		CE4DD35122BF90B10398A0A6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2454,9 +2648,73 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		DBBE0CD2223CE2F93AF82E7E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TogglDesktopTests-AppStore/Pods-TogglDesktopTests-AppStore-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/Bugsnag/Bugsnag.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bugsnag.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TogglDesktopTests-AppStore/Pods-TogglDesktopTests-AppStore-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DF5A413FF97A027BAECB84F5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TogglDesktopTests-AppStore-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		49418B3C249CE77D00265665 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49418B4B249CEBA300265665 /* TogglDesktopTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49D3603424878FA000527DE8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49D3603B24878FA000527DE8 /* TogglDesktopTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		69FC17ED17E6534400B96425 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2761,6 +3019,7 @@
 				BAE64D892368334000244D2B /* Utils.m in Sources */,
 				BAE64D8A2368334000244D2B /* CursorButton.swift in Sources */,
 				BA37ACFC23D890250013EE26 /* String+Search.swift in Sources */,
+				49418B3B249CE71800265665 /* Color+Adaptive.swift in Sources */,
 				BAE64D8B2368334000244D2B /* KeyboardTableView.swift in Sources */,
 				BAE64D8D2368334000244D2B /* main.m in Sources */,
 				BA37ACE823D890100013EE26 /* TimeChunk.swift in Sources */,
@@ -2787,6 +3046,7 @@
 				BA13E582243480C5005244AD /* OnboardingService+Objc.swift in Sources */,
 				BAE64D9D2368334000244D2B /* TimeDecoratorView.swift in Sources */,
 				BAB5FFD523F13F75003781D3 /* TimelineDraggingSession.swift in Sources */,
+				49418B3A249CE70F00265665 /* TimelineInitialDateProvider.swift in Sources */,
 				BAE64D9E2368334000244D2B /* TimeEntryEmptyView.swift in Sources */,
 				BA7F4D8C24658BDB00DB5058 /* DSFSecureTextField.swift in Sources */,
 				BA37AD0923D890940013EE26 /* TimelineDisplayCommand.m in Sources */,
@@ -2914,6 +3174,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		49418B46249CE77D00265665 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BAE64D512368334000244D2B /* TogglDesktop-AppStore */;
+			targetProxy = 49418B45249CE77D00265665 /* PBXContainerItemProxy */;
+		};
+		49D3603E24878FA000527DE8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 69FC17F017E6534400B96425 /* TogglDesktop */;
+			targetProxy = 49D3603D24878FA000527DE8 /* PBXContainerItemProxy */;
+		};
 		74456B9C1A77486B002A6338 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = TogglDesktopLibrary;
@@ -2965,6 +3235,148 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		49418B48249CE77D00265665 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 095DCC35F3D63F2491F920D2 /* Pods-TogglDesktopTests-AppStore.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = B227VTMZ94;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "TogglDesktopTests-AppStore/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.toggl.toggldesktop.TogglDesktopTests-AppStore";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TogglDesktop.app/Contents/MacOS/TogglDesktop";
+			};
+			name = Debug;
+		};
+		49418B49249CE77D00265665 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2DDA71055B263A3287A575A /* Pods-TogglDesktopTests-AppStore.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = B227VTMZ94;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "TogglDesktopTests-AppStore/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.toggl.toggldesktop.TogglDesktopTests-AppStore";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TogglDesktop.app/Contents/MacOS/TogglDesktop";
+			};
+			name = Release;
+		};
+		49D3604024878FA000527DE8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ACB606A36C2DCD2678F09E6B /* Pods-TogglDesktopTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = B227VTMZ94;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = TogglDesktopTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktopTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TogglDesktop.app/Contents/MacOS/TogglDesktop";
+			};
+			name = Debug;
+		};
+		49D3604124878FA000527DE8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6386C95D02B8C4FB0ACDCEA1 /* Pods-TogglDesktopTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = B227VTMZ94;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = TogglDesktopTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktopTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TogglDesktop.app/Contents/MacOS/TogglDesktop";
+			};
+			name = Release;
+		};
 		69FC182017E6534500B96425 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3502,6 +3914,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		49418B47249CE77D00265665 /* Build configuration list for PBXNativeTarget "TogglDesktopTests-AppStore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49418B48249CE77D00265665 /* Debug */,
+				49418B49249CE77D00265665 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		49D3603F24878FA000527DE8 /* Build configuration list for PBXNativeTarget "TogglDesktopTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49D3604024878FA000527DE8 /* Debug */,
+				49D3604124878FA000527DE8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		69FC17EC17E6534400B96425 /* Build configuration list for PBXProject "TogglDesktop" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

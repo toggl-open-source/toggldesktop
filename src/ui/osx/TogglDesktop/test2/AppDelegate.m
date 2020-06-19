@@ -78,6 +78,11 @@
 // Environment (development, production, etc)
 @property (nonatomic, copy) NSString *environment;
 
+// TODO: would be nice to have it as an enum
+// e.g. `enum Mode { case normal, unitTests, uiTests }`
+/// True if app is running in Unit Testing mode
+@property (nonatomic, assign) BOOL isUnitTesting;
+
 @property (nonatomic, copy) NSString *version;
 
 // For testing crash reporter
@@ -225,8 +230,6 @@ void *ctx;
 	{
 		self.effectiveAppearanceObs = [self.mainWindowController.window observerEffectiveAppearanceNotification];
 	}
-
-	toggl_set_environment(ctx, [self.environment UTF8String]);
 
 	bool_t started = toggl_ui_start(ctx);
 	NSAssert(started, @"Failed to start UI");
@@ -1222,6 +1225,11 @@ const NSString *appName = @"osx_native_app";
 	logUIToFile = YES;
 #endif
 
+    self.isUnitTesting = [[[NSProcessInfo processInfo] environment] objectForKey:@"UNIT_TESTING"] != nil;
+    if (self.isUnitTesting) {
+        self.environment = @"test";
+    }
+
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
 	self.version = infoDict[@"CFBundleShortVersionString"];
 
@@ -1259,6 +1267,11 @@ const NSString *appName = @"osx_native_app";
 	toggl_set_log_level([self.log_level UTF8String]);
 
 	ctx = toggl_context_init([appName UTF8String], [self.version UTF8String]);
+
+    // TODO: consider initialising context with an environment variable
+    // this way context may decide not to start heavy operations
+    // instead of stoping them when new environment value arrives
+    toggl_set_environment(ctx, [self.environment UTF8String]);
 
 	// Using sparkle instead of self updater:
 	toggl_disable_update_check(ctx);
