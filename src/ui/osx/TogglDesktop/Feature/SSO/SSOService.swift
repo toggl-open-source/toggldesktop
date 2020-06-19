@@ -17,7 +17,7 @@ final class SSOService {
             static let SsoError = "ssoError"
             static let LoginPath = "sso-login"
             static let MustLinkPath = "sso-must-link"
-            static let APIToken = "api_token"
+            static let APIToken = "apiToken"
         }
 
         struct Values {
