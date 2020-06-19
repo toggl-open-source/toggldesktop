@@ -2452,8 +2452,7 @@ void Context::LoginSSO(const std::string api_token) {
 }
 
 error Context::EnableSSO(const std::string &code,
-                         const std::string &username,
-                         const std::string &password) {
+                         const std::string &api_token) {
     if (code.empty()) {
         return displayError("Empty confirmation code");
     }
@@ -2468,8 +2467,11 @@ error Context::EnableSSO(const std::string &code,
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = ss.str();
-        req.basic_auth_username = username;
-        req.basic_auth_password = password;
+
+        // Must use api_token which obtain from /me endpoint
+        // https://toggl.slack.com/archives/C010JBG1KTK/p1592579211031900?thread_ts=1592548873.021000&cid=C010JBG1KTK
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
 
         // Body Json
         Json::Value body;
@@ -2604,19 +2606,27 @@ error Context::Login(
             return displayError(attemptOfflineLogin(email, password));
         }
 
-        // It's for SSO Feature
-        // After user authorization, we have to enable SSO with the user's email before presenting the Main View
-        if (need_enable_SSO) {
-            error err = EnableSSO(confirmation_code, email, password);
-            if (err != noError) {
-                displayError(err);
-                return err;
-            }
-        }
-
+        // Load JSON to user and get token
         err = SetLoggedInUserFromJSON(json, isSignup);
         if (err != noError) {
             return displayError(err);
+        }
+
+        // It's for SSO Feature
+        // After user authorization, we have to enable SSO with the user's email before presenting the Main View
+        if (need_enable_SSO) {
+            // At this point, we successfully get /me, so we have the api_token
+            auto api_token = user_->APIToken();
+
+            // Start enable SSO for this token
+            error err = EnableSSO(confirmation_code, api_token);
+
+            // If something wrong, we should logout and display error
+            if (err != noError) {
+                Logout();
+                displayError(err);
+                return err;
+            }
         }
 
         err = pullWorkspacePreferences();
