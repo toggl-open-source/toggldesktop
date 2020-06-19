@@ -2447,12 +2447,8 @@ void Context::ResetEnableSSO() {
     confirmation_code = "";
 }
 
-error Context::EnableSSO(const std::string &email, const std::string &code) {
-    if (email.empty()) {
-        return displayError("Empty email or API token");
-    }
-
-    if (email.empty()) {
+error Context::EnableSSO(const std::string &code) {
+    if (code.empty()) {
         return displayError("Empty confirmation code");
     }
 
@@ -2461,14 +2457,19 @@ error Context::EnableSSO(const std::string &email, const std::string &code) {
         std::stringstream ss;
         ss << "/api/"
             << kAPIV9
-            << "/me/enable_sso"
-            << "?email=" << email
-            << "&confirmation_code=" << code;
+            << "/me/enable_sso";
 
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = ss.str();
 
+        // Body Json
+        Json::Value body;
+        Json::FastWriter w;
+        body["confirmation_code"] = code;
+        req.payload = w.write(body);
+
+        // Make a request
         HTTPResponse resp = TogglClient::GetInstance().Post(req);
 
         // Success
@@ -2476,7 +2477,7 @@ error Context::EnableSSO(const std::string &email, const std::string &code) {
             return noError;
         } else {
             // Return error message from the backend
-            return displayError(resp.body);
+            return resp.body;
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -2593,9 +2594,10 @@ error Context::Login(
         // It's for SSO Feature
         // After user authorization, we have to enable SSO with the user's email before presenting the Main View
         if (need_enable_SSO) {
-            error err = EnableSSO(email, confirmation_code);
+            error err = EnableSSO(confirmation_code);
             if (err != noError) {
                 displayError(err);
+                return err;
             }
         }
 
