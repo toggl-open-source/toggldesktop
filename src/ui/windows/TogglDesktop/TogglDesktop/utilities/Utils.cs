@@ -305,7 +305,7 @@ public static class Utils
     {
         return AdaptedProjectColorBrushFromString(
             hex,
-            AdaptProjectColorConverter.AdaptationType.Value);
+            Theming.Theme.ShapeColorAdaptation.Value);
     }
 
     #endregion
