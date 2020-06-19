@@ -2451,7 +2451,9 @@ void Context::LoginSSO(const std::string api_token) {
     Login(api_token, "api_token");
 }
 
-error Context::EnableSSO(const std::string &code) {
+error Context::EnableSSO(const std::string &code,
+                         const std::string &username,
+                         const std::string &password) {
     if (code.empty()) {
         return displayError("Empty confirmation code");
     }
@@ -2466,6 +2468,8 @@ error Context::EnableSSO(const std::string &code) {
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = ss.str();
+        req.basic_auth_username = username;
+        req.basic_auth_password = password;
 
         // Body Json
         Json::Value body;
@@ -2481,6 +2485,11 @@ error Context::EnableSSO(const std::string &code) {
             return noError;
         } else {
             // Return error message from the backend
+            // 401 status but the body is empty
+            // we should return some error
+            if (resp.body.length() == 0) {
+                return "Unauthorized!";
+            }
             return resp.body;
         }
     } catch(const Poco::Exception& exc) {
@@ -2598,7 +2607,7 @@ error Context::Login(
         // It's for SSO Feature
         // After user authorization, we have to enable SSO with the user's email before presenting the Main View
         if (need_enable_SSO) {
-            error err = EnableSSO(confirmation_code);
+            error err = EnableSSO(confirmation_code, email, password);
             if (err != noError) {
                 displayError(err);
                 return err;
