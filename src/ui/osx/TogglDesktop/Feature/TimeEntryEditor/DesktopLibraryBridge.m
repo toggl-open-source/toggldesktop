@@ -457,4 +457,9 @@ void *ctx;
     toggl_reset_enable_SSO(ctx);
 }
 
+- (void)loginSSOWithAPIToken:(NSString *) apiToken
+{
+    toggl_login_sso(ctx, [apiToken UTF8String]);
+}
+
 @end

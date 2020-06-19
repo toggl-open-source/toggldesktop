@@ -130,6 +130,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)getSSOIdentityProviderWithEmail:(NSString *) email;
 - (void)setNeedEnableSSOWithCode:(NSString *) code;
 - (void)resetEnableSSO;
+- (void)loginSSOWithAPIToken:(NSString *) apiToken;
+
 @end
 
 NS_ASSUME_NONNULL_END
