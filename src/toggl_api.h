@@ -1274,6 +1274,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_reset_enable_SSO(
         void *context);
 
+    TOGGL_EXPORT void toggl_login_sso(
+        void *context,
+        const char_t *api_token);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus

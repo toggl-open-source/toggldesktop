@@ -1655,3 +1655,11 @@ void toggl_set_need_enable_SSO(void *context, const char_t *code) {
 void toggl_reset_enable_SSO(void *context) {
     app(context)->ResetEnableSSO();
 }
+
+void toggl_login_sso(void *context, const char_t *api_token) {
+    std::string token("");
+    if (api_token) {
+        token = to_string(api_token);
+    }
+    app(context)->LoginSSO(token);
+}

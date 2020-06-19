@@ -2447,6 +2447,10 @@ void Context::ResetEnableSSO() {
     confirmation_code = "";
 }
 
+void Context::LoginSSO(const std::string api_token) {
+    Login(api_token, "api_token");
+}
+
 error Context::EnableSSO(const std::string &code) {
     if (code.empty()) {
         return displayError("Empty confirmation code");
