@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" d:DesignHeight="34" d:DesignWidth="34"
-             d:DataContext="{d:DesignInstance Type=toggl:ProjectColorPickerSample, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance Type=toggl:ProjectColorPicker}"
              HorizontalAlignment="Left">
     
     <Grid>
@@ -67,7 +67,7 @@
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Center"
                                                 CornerRadius="100"
-                                                Background="{Binding}"
+                                                Background="{Binding Converter={StaticResource AdaptProjectColorConverter}}"
                                                 BorderBrush="{DynamicResource Toggl.CardBackground}"
                                                 BorderThickness="0">
                                         </Border>
