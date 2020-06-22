@@ -1634,3 +1634,7 @@ TogglHsvColor toggl_get_adaptive_hsv_color(
     TogglAdaptiveColor type) {
     return toggl::ColorConverter::GetAdaptiveColor(rgbColor, type);
 }
+
+void toggl_track_timeline_menu_context(void *context, TimelineMenuContextType menuType) {
+    app(context)->TrackTimelineMenuContext(menuType);
+}

@@ -442,4 +442,8 @@ void *ctx;
     toggl_user_did_edit_add_timeentry_on_timeline_view(ctx);
 }
 
+-(void) trackTimelineMenuContextType:(TimelineMenuContextType) type
+{
+    toggl_track_timeline_menu_context(ctx, type);
+}
 @end

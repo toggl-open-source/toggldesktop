@@ -6827,5 +6827,10 @@ bool Context::checkIfSkipPomodoro(TimeEntry *te) {
     return false;
 }
 
+void Context::TrackTimelineMenuContext(const TimelineMenuContextType type) {
+    if ("production" == environment_) {
+        analytics_.TrackTimelineMenuContext(db_->AnalyticsClientID(), type);
+    }
+}
 
 }  // namespace toggl
