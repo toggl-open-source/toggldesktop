@@ -1209,7 +1209,7 @@ const NSString *appName = @"osx_native_app";
 			NSLog(@"log level overriden with '%@'", self.log_level);
 			continue;
 		}
-        if ([argument rangeOfString:@"staging"].location != NSNotFound)
+        if ([argument isEqualToString:@"--staging"])
         {
             NSLog(@"forcing staging");
             self.forceStaging = YES;
