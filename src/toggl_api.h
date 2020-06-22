@@ -234,7 +234,7 @@ extern "C" {
     } TogglAdaptiveColor;
 
     typedef enum {
-        TimelineMenuContextTypeContinueEntry = 0,
+        TimelineMenuContextTypeContinueEntry,
         TimelineMenuContextTypeStartEntryFromEnd,
         TimelineMenuContextTypeDelete,
         TimelineMenuContextTypeChangeFirstEntryStopTime,
@@ -1256,10 +1256,6 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_continue_sign_in(
         void *context,
         TogglContinueSignIn cb);
-
-    TOGGL_EXPORT TogglHsvColor toggl_get_adaptive_hsv_color(
-        TogglRgbColor rgbColor,
-        TogglAdaptiveColor type);
 
     TOGGL_EXPORT TogglHsvColor toggl_get_adaptive_hsv_color(
         TogglRgbColor rgbColor,

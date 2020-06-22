@@ -21,3 +21,4 @@
 #import "BetterFocusAutoCompleteInput.h"
 #import "Settings.h"
 #import "AppDelegate.h"
+#import "toggl_api.h"

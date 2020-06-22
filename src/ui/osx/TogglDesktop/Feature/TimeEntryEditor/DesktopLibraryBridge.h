@@ -127,11 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Tracking
 
--(void) trackTimelineMenuContextContinue;
--(void) trackTimelineMenuContextStart;
--(void) trackTimelineMenuContextDelete;
--(void) trackTimelineMenuContextChangeFirst;
--(void) trackTimelineMenuContextChangeLast;
+-(void) trackTimelineMenuContextType:(TimelineMenuContextType) type;
 
 @end
 

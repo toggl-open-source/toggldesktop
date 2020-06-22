@@ -442,28 +442,8 @@ void *ctx;
     toggl_user_did_edit_add_timeentry_on_timeline_view(ctx);
 }
 
--(void) trackTimelineMenuContextContinue
+-(void) trackTimelineMenuContextType:(TimelineMenuContextType) type
 {
-    toggl_track_timeline_menu_context_continue_entry(ctx);
-}
-
--(void) trackTimelineMenuContextStart
-{
-    toggl_track_timeline_menu_context_start_entry_from_end(ctx);
-}
-
--(void) trackTimelineMenuContextDelete
-{
-    toggl_track_timeline_menu_context_delete(ctx);
-}
-
--(void) trackTimelineMenuContextChangeFirst
-{
-    toggl_track_timeline_menu_context_change_first_entry(ctx);
-}
-
--(void) trackTimelineMenuContextChangeLast
-{
-    toggl_track_timeline_menu_context_change_last_entry(ctx);
+    toggl_track_timeline_menu_context(ctx, type);
 }
 @end
