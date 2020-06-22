@@ -569,7 +569,7 @@ Json::Value TimeEntry::SyncMetadata() const {
 Json::Value TimeEntry::SyncPayload() const {
     Json::Value result;
     if (NeedsPOST()) {
-        result["id"] = Json::Int64(ID());
+        result["id"] = Json::Int64(-ID());
         result["workspace_id"] = Json::Int64(WID());
     }
     if (NeedsPOST() || NeedsPUT()) {
