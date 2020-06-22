@@ -11,16 +11,9 @@
 #include "proxy.h"
 #include "model/settings.h"
 #include "util/rectangle.h"
+#include "toggl_api.h"
 
 namespace toggl {
-
-enum TimelineMenuContextType {
-    TimelineMenuContextTypeContinueEntry,
-    TimelineMenuContextTypeStartEntryFromEnd,
-    TimelineMenuContextTypeDelete,
-    TimelineMenuContextTypeChangeFirstEntryStopTime,
-    TimelineMenuContextTypeChangeLastEntryStartTime
-};
 
 class Analytics : public Poco::TaskManager {
  public:
