@@ -389,6 +389,15 @@ public static partial class Toggl
         AdaptiveColorTextOnDarkBackground
     }
 
+    public enum    TimelineMenuContextType
+    {
+        TimelineMenuContextTypeContinueEntry,
+        TimelineMenuContextTypeStartEntryFromEnd,
+        TimelineMenuContextTypeDelete,
+        TimelineMenuContextTypeChangeFirstEntryStopTime,
+        TimelineMenuContextTypeChangeLastEntryStartTime
+    }
+
     // Callbacks that need to be implemented in UI
 
     [UnmanagedFunctionPointer(convention)]
@@ -1478,6 +1487,27 @@ public static partial class Toggl
 
     // returns GUID of the started time entry. you must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern string toggl_start_with_current_running(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string description,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string duration,
+        UInt64 task_id,
+        UInt64 project_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string project_guid,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string tags,
+        [MarshalAs(UnmanagedType.I1)]
+        bool prevent_on_app,
+        UInt64 started,
+        UInt64 ended,
+        [MarshalAs(UnmanagedType.I1)]
+        bool stop_current_running);
+
+    // returns GUID of the started time entry. you must free() the result
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_start(
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]
@@ -1856,6 +1886,11 @@ public static partial class Toggl
     private static extern TogglHsvColor toggl_get_adaptive_hsv_color(
         TogglRgbColor rgbColor,
         TogglAdaptiveColor type);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_track_timeline_menu_context(
+        IntPtr context,
+        TimelineMenuContextType menuType);
 
 
 
