@@ -6325,9 +6325,14 @@ void Context::syncTranslateGUIDToLocalID(Json::Value &item) {
 template<typename T>
 error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &source) {
     // this only looks into the container of modified items, not the whole RelatedData container
-    auto findByLocalID = [](auto &source, auto localID) -> typename std::remove_reference<decltype(source)>::type::value_type {
-        auto id = stoi(localID);
-        id = id < 0 ? -id : id;
+    auto findByLocalID = [](auto &source, std::string &&localID) -> typename std::remove_reference<decltype(source)>::type::value_type {
+        int64_t id = 0;
+        try {
+            id = stoi(localID);
+            id = id < 0 ? -id : id;
+        } catch (...) {
+            return nullptr;
+        }
         for (auto i : source) {
             if (i->LocalID() == id) {
                 return i;
