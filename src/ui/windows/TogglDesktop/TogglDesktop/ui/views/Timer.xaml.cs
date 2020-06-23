@@ -123,5 +123,11 @@ namespace TogglDesktop
         {
             DescriptionTextBoxTextChanged?.Invoke(sender, this.descriptionTextBox.Text);
         }
+
+        public event Action StartStopButtonClicked;
+        private void startStopButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            StartStopButtonClicked?.Invoke();
+        }
     }
 }
