@@ -1,11 +1,20 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace TogglDesktop
 {
     class ExtendedTextBox : TextBox
     {
-        public bool IsTextChangingProgrammatically { get; private set; }
+        public static readonly DependencyProperty IsTextChangingProgrammaticallyProperty =
+            DependencyProperty.Register(
+            "IsTextChangingProgrammatically", typeof(bool),
+            typeof(ExtendedTextBox));
+        public bool IsTextChangingProgrammatically 
+        { 
+            get => (bool)GetValue(IsTextChangingProgrammaticallyProperty);
+            set { SetValue(IsTextChangingProgrammaticallyProperty, value); }
+        }
 
         public bool SelectAllOnKeyboardFocus { get; set; }
 

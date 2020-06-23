@@ -1,6 +1,7 @@
 ﻿using DynamicData.Binding;
 using System;
 using System.Collections.Generic;
+using System.Reactive.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TogglDesktop.AutoCompletion;
@@ -18,8 +19,6 @@ namespace TogglDesktop
             set => DataContext = value;
         }
 
-        public event EventHandler StartStopClick;
-        public event EventHandler<string> RunningTimeEntrySecondPulse;
         public event EventHandler FocusTimeEntryList;
         public event EventHandler<string> DescriptionTextBoxTextChanged;
 
@@ -27,10 +26,7 @@ namespace TogglDesktop
         {
             this.InitializeComponent();
             ViewModel = new TimerViewModel(false);
-            ViewModel.WhenValueChanged(x => x.IsRunning).Subscribe(_ => StartStopClick?.Invoke(this, EventArgs.Empty));
-            ViewModel.WhenValueChanged(x => x.DurationText).Subscribe(e => RunningTimeEntrySecondPulse?.Invoke(this, e));
-            ViewModel.WhenValueChanged(x => x.IsRunning).Subscribe(x => { if (!x) FocusFirstInput(); });
-
+            ViewModel.WhenValueChanged(x => x.IsRunning).Where(isRunning => !isRunning).Subscribe(_ => FocusFirstInput());
             Toggl.OnMinitimerAutocomplete += this.onMiniTimerAutocomplete;
         }
 

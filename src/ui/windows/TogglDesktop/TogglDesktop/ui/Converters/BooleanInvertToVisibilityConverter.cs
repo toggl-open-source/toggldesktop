@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace TogglDesktop.ui.Converters
+namespace TogglDesktop.Converters
 {
     public class BooleanInvertToVisibilityConverter : IValueConverter
     {

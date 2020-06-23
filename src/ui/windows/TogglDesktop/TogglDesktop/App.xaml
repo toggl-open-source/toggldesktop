@@ -27,7 +27,7 @@
             <converters:EnumEqualToVisibilityConverter x:Key="EnumEqualToVisibilityConverter" />
             <converters:AndConverter x:Key="AndConverter" />
             <converters:PopupAlignmentAwareConverter x:Key="PopupAlignmentAwareConverter"/>
-
+            <converters:BooleanInvertToVisibilityConverter x:Key="BooleanInvertToVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
