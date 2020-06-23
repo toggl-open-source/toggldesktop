@@ -28,6 +28,10 @@
 		4917325824C06BA3003EE7CC /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = 4917325624C06BA3003EE7CC /* cacert.pem */; };
 		4917325E24C06F6F003EE7CC /* TogglDesktopLibrary.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4917325D24C06F6F003EE7CC /* TogglDesktopLibrary.dylib */; };
 		4917325F24C06F6F003EE7CC /* TogglDesktopLibrary.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4917325D24C06F6F003EE7CC /* TogglDesktopLibrary.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		4921BE2024C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4921BE1E24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.swift */; };
+		4921BE2124C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4921BE1F24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib */; };
+		4921BE2224C87136006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4921BE1F24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib */; };
+		4921BE2324C87136006E8BB5 /* TimelineTimeEntryPlaceholderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4921BE1E24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.swift */; };
 		492F5F02248550F800FFEC70 /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
 		49418B4B249CEBA300265665 /* TogglDesktopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */; };
 		4943FB6124C070010000DE3C /* TogglDesktopLibrary.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4943FB5C24C06F8B0000DE3C /* TogglDesktopLibrary.dylib */; };
@@ -715,6 +719,8 @@
 		4917325524C069DD003EE7CC /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = const.h; path = ../../../../const.h; sourceTree = "<group>"; };
 		4917325624C06BA3003EE7CC /* cacert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cacert.pem; path = ../../../../ssl/cacert.pem; sourceTree = "<group>"; };
 		4917325D24C06F6F003EE7CC /* TogglDesktopLibrary.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = TogglDesktopLibrary.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		4921BE1E24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntryPlaceholderCell.swift; sourceTree = "<group>"; };
+		4921BE1F24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineTimeEntryPlaceholderCell.xib; sourceTree = "<group>"; };
 		492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineInitialDateProvider.swift; sourceTree = "<group>"; };
 		49418B40249CE77D00265665 /* TogglDesktopTests-AppStore.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TogglDesktopTests-AppStore.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		49418B44249CE77D00265665 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1877,6 +1883,8 @@
 				BA75FF2222BCC1EA00D3F08C /* TimelineTimeLabelCell.xib */,
 				BA75FF2522BCC1FC00D3F08C /* TimelineTimeEntryCell.swift */,
 				BA75FF2622BCC1FC00D3F08C /* TimelineTimeEntryCell.xib */,
+				4921BE1E24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.swift */,
+				4921BE1F24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib */,
 				BAA0104D22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift */,
 				BAA0104E22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.xib */,
 				BA75FF2922BCC20D00D3F08C /* TimelineActivityCell.swift */,
@@ -2299,6 +2307,7 @@
 				BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */,
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
+				4921BE2124C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib in Resources */,
 				BAB5FFD723F15A65003781D3 /* TimelineBackgroundCell.xib in Resources */,
 				BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */,
 				BA5E988F23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib in Resources */,
@@ -2366,6 +2375,7 @@
 				BA37ACE123D8900C0013EE26 /* TimelineActivityHoverController.xib in Resources */,
 				BAE64E172368334000244D2B /* TimeDecoratorView.xib in Resources */,
 				BAE64E182368334000244D2B /* FeedbackWindowController.xib in Resources */,
+				4921BE2224C87136006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib in Resources */,
 				BAE64E192368334000244D2B /* IdleNotificationWindowController.xib in Resources */,
 				BAE64E1A2368334000244D2B /* WorkspaceCellView.xib in Resources */,
 				BAE64E1B2368334000244D2B /* MainMenu.xib in Resources */,
@@ -2896,6 +2906,7 @@
 				BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */,
 				BAA11AC12251F49E007F31D2 /* WorkspaceStorage.swift in Sources */,
 				3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */,
+				4921BE2024C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.swift in Sources */,
 				BA45AAF623FBEED4000C94C0 /* CornerBoxView.swift in Sources */,
 				BA13E576243476FA005244AD /* OnboardingViewController.swift in Sources */,
 				BA13D2062269B7C400EB3833 /* CalendarViewController.swift in Sources */,
@@ -3113,6 +3124,7 @@
 				BAE64DC22368334000244D2B /* WorkspaceStorage.swift in Sources */,
 				BAE64DC32368334000244D2B /* CountryViewItem.m in Sources */,
 				BAE64DC42368334000244D2B /* CalendarViewController.swift in Sources */,
+				4921BE2324C87136006E8BB5 /* TimelineTimeEntryPlaceholderCell.swift in Sources */,
 				BA37ACBE23D890050013EE26 /* LayerBackedViewController.swift in Sources */,
 				BAF9364D23E8114800EE1076 /* TimelineResizeHoverController.swift in Sources */,
 				BAE64DC62368334000244D2B /* SystemService.m in Sources */,

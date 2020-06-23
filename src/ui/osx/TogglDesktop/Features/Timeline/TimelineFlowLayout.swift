@@ -224,6 +224,7 @@ extension TimelineFlowLayout {
         return (Constants.TimeLabel.Size.height + verticalPaddingTimeLabel) / CGFloat(zoomLevel.span)
     }
 
+    /// Returns timestamp from a click point, depending on a zoom level and position
     public func convertTimestamp(from location: CGPoint) -> TimeInterval {
         let beginDay = Date.startOfDay(from: currentDate.timeIntervalSince1970)
         let start = TimeInterval((location.y / ratio)) + beginDay

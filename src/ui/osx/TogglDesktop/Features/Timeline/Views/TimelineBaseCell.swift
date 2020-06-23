@@ -18,8 +18,6 @@ protocol TimelineBaseCellDelegate: class {
     func timelineCellOpenEditor(_ sender: TimelineBaseCell)
 }
 
-/// Parent cellof the Timeline Time Entry Cell
-/// TODO: Remove this class, since there is only one subclass
 class TimelineBaseCell: NSCollectionViewItem {
 
     private struct Constants {
@@ -51,6 +49,12 @@ class TimelineBaseCell: NSCollectionViewItem {
     private(set) var backgroundColor: NSColor?
     var isResizable: Bool { return false }
     var isHoverable: Bool { return false }
+
+    /// Determine if the size of the Time Entry is small
+    /// It's essential to reduce the radius corner
+    var isSmallSize: Bool {
+        return view.frame.height <= 10
+    }
 
     // Resizable tracker
     private var mousePosition = MousePosition.none { didSet { updateCursor() }}
@@ -97,7 +101,7 @@ class TimelineBaseCell: NSCollectionViewItem {
     /// - Parameters:
     ///   - foregroundColor: Foreground Color
     ///   - isSmallEntry: isSmallEntry
-    func renderColor(with foregroundColor: NSColor, isSmallEntry: Bool) {
+    func renderColor(with foregroundColor: NSColor) {
         let adaptiveColor = foregroundColor.getAdaptiveColorForShape()
         backgroundColor = adaptiveColor.lighten(by: 0.2)
 
@@ -106,7 +110,7 @@ class TimelineBaseCell: NSCollectionViewItem {
         backgroundBox?.borderColor = backgroundColor ?? adaptiveColor
 
         // Find the suitable corner radius
-        let cornerRadius = TimelineBaseCell.suitableCornerRadius(isSmallEntry, height: view.frame.height)
+        let cornerRadius = TimelineBaseCell.suitableCornerRadius(isSmallSize, height: view.frame.height)
         foregroundBox.cornerRadius = cornerRadius
         backgroundBox?.cornerRadius = cornerRadius
     }

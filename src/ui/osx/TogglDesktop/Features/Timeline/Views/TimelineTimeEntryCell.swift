@@ -30,12 +30,6 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     private(set) var timeEntry: TimelineTimeEntry!
     private lazy var timeEntryMenu = TimelineTimeEntryMenu()
 
-    /// Determine if the size of the Time Entry is small
-    /// It's essential to reduce the radius corner
-    private var isSmallSize: Bool {
-        return view.frame.height <= 10
-    }
-
     /// The view that the NSPopover should be presents
     var popoverView: NSView {
         if isSmallSize {
@@ -89,7 +83,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     /// - Parameter timeEntry: Current Time Entry
     func config(for timeEntry: TimelineTimeEntry) {
         self.timeEntry = timeEntry
-        renderColor(with: timeEntry.color, isSmallEntry: timeEntry.isSmall)
+        renderColor(with: timeEntry.color)
         populateInfo()
         handleRunningTimeEntry()
     }

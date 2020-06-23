@@ -45,7 +45,7 @@ final class TimelineData {
     ///   - cmd: TimelineDisplayCommand from Objc
     ///   - zoomLevel: Zoom Level
     ///   - runningTimeEntry: Running Time Entry
-    init(cmd: TimelineDisplayCommand, zoomLevel: TimelineDatasource.ZoomLevel, runningTimeEntry: TimeEntryViewItem?) {
+    init(cmd: TimelineDisplayCommand, zoomLevel: TimelineDatasource.ZoomLevel, runningTimeEntry: TimeEntryViewItem?, dragCreatedTimeEntry: TimelineTimeEntryPlaceholder? = nil) {
         self.zoomLevel = zoomLevel
         self.start = cmd.start
         self.end = cmd.end
@@ -57,8 +57,13 @@ final class TimelineData {
             timeEntries.append(runningTimeEntry)
         }
 
+        self.timeEntries = timeEntries.map { TimelineTimeEntry($0) }
+        if let entry = dragCreatedTimeEntry {
+            self.timeEntries.append(entry)
+        }
+
         // Sort
-        self.timeEntries = timeEntries.map { TimelineTimeEntry($0) }.sorted(by: { (lhs, rhs) -> Bool in
+        self.timeEntries = self.timeEntries.sorted(by: { (lhs, rhs) -> Bool in
             return lhs.start < rhs.start
         })
         numberOfSections = Section.allCases.count
