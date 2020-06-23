@@ -3250,13 +3250,13 @@ error Context::updateTimeEntryProject(
         // billable, // then selected the same project again).
         if (p->ID() != te->PID()
                 || (!project_guid.empty() && p->GUID().compare(te->ProjectGUID()) != 0)) {
-            te->SetBillable(p->Billable());
+            te->SetBillable(p->Billable(), false);
         }
         te->SetWID(p->WID());
     }
-    te->SetTID(task_id);
-    te->SetPID(project_id);
-    te->SetProjectGUID(project_guid);
+    te->SetTID(task_id, false);
+    te->SetPID(project_id, false);
+    te->SetProjectGUID(project_guid, false);
     return noError;
 }
 
@@ -3534,7 +3534,7 @@ error Context::SetTimeEntryTags(
             return logAndDisplayUserTriedEditingLockedEntry();
         }
 
-        te->SetTags(value);
+        te->SetTags(value, true);
     }
 
     if (te->Dirty()) {
@@ -3571,7 +3571,7 @@ error Context::SetTimeEntryBillable(
             return logAndDisplayUserTriedEditingLockedEntry();
         }
 
-        te->SetBillable(value);
+        te->SetBillable(value, true);
     }
 
     if (te->Dirty()) {
@@ -3629,7 +3629,7 @@ error Context::updateTimeEntryDescription(
         return displayError(error(kMaximumDescriptionLengthError));
     }
 
-    te->SetDescription(value);
+    te->SetDescription(value, true);
     return noError;
 }
 
@@ -4599,8 +4599,8 @@ void Context::displayPomodoro() {
         const Poco::Int64 pomodoroDuration = settings_.pomodoro_minutes * 60;
         wid = current_te->WID();
         Stop(true);
-        current_te->SetDurationInSeconds(pomodoroDuration);
-        current_te->SetStopTime(current_te->StartTime() + pomodoroDuration);
+        current_te->SetDurationInSeconds(pomodoroDuration, true);
+        current_te->SetStopTime(current_te->StartTime() + pomodoroDuration, true);
     }
     UI()->DisplayPomodoro(settings_.pomodoro_minutes);
 
@@ -4650,8 +4650,8 @@ void Context::displayPomodoroBreak() {
         }
         const Poco::Int64 pomodoroDuration = settings_.pomodoro_break_minutes * 60;
         Stop(true);
-        current_te->SetDurationInSeconds(pomodoroDuration);
-        current_te->SetStopTime(current_te->StartTime() + pomodoroDuration);
+        current_te->SetDurationInSeconds(pomodoroDuration, true);
+        current_te->SetStopTime(current_te->StartTime() + pomodoroDuration, true);
     }
     pomodoro_break_entry_ = nullptr;
 
@@ -5686,7 +5686,7 @@ error Context::updateEntryProjects(const std::vector<Project *> &projects,
                 projects.begin();
                     itc != projects.end(); ++itc) {
                 if ((*itc)->GUID().compare((*it)->ProjectGUID()) == 0) {
-                    (*it)->SetPID((*itc)->ID());
+                    (*it)->SetPID((*itc)->ID(), false);
                     break;
                 }
             }
@@ -6373,6 +6373,11 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
             }
             else if (i["payload"]["result"].isMember("error_message") && i["payload"]["result"]["error_message"].isMember("default_message")) {
                 std::string errorMessage = i["payload"]["result"]["error_message"]["default_message"].asString();
+                // Not found on server. Probably deleted already.
+                if (TimeEntry::isNotFound(errorMessage)) {
+                    model->MarkAsDeletedOnServer();
+                    continue;
+                }
                 logger.warning("Sync: Error when syncing ", modelInfo, ": ", errorMessage);
                 displayError(errorMessage);
             }
@@ -6787,8 +6792,8 @@ error Context::UpdateTimeEntry(
     }
 
     // Tag + billable
-    te->SetTags(tags);
-    te->SetBillable(billable);
+    te->SetTags(tags, true);
+    te->SetBillable(billable, true);
 
     if (te->Dirty()) {
         te->ClearValidationError();

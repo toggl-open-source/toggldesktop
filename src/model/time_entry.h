@@ -34,30 +34,30 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     Property<bool> DurOnly { false };
     Property<bool> SkipPomodoro { false };
 
-    void SetDescription(const std::string &value);
+    void SetDescription(const std::string &value, bool userModified);
     void SetCreatedWith(const std::string &value);
-    void SetProjectGUID(const std::string &value);
+    void SetProjectGUID(const std::string &value, bool userModified);
 
     const std::string Tags() const;
-    void SetTags(const std::string &tags);
+    void SetTags(const std::string &tags, bool userModified);
     const std::string TagsHash() const;
 
     void SetWID(Poco::UInt64 value);
-    void SetPID(Poco::UInt64 value);
-    void SetTID(Poco::UInt64 value);
+    void SetPID(Poco::UInt64 value, bool userModified);
+    void SetTID(Poco::UInt64 value, bool userModified);
 
     std::string StartString() const;
-    void SetStartString(const std::string &value);
-    void SetStartTime(Poco::Int64 value);
+    void SetStartString(const std::string &value, bool userModified);
+    void SetStartTime(Poco::Int64 value, bool userModified);
 
     std::string StopString() const;
-    void SetStopString(const std::string &value);
-    void SetStopTime(Poco::Int64 value);
+    void SetStopString(const std::string &value, bool userModified);
+    void SetStopTime(Poco::Int64 value, bool userModified);
 
-    void SetDurationInSeconds(const Poco::Int64 value);
+    void SetDurationInSeconds(const Poco::Int64 value, bool userModified);
     void SetLastStartAt(Poco::Int64 value);
 
-    void SetBillable(bool value);
+    void SetBillable(bool value, bool userModified);
     void SetDurOnly(bool value);
     void SetSkipPomodoro(bool value);
 
@@ -73,7 +73,7 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     void DiscardAt(const Poco::Int64);
     void StopTracking();
 
-    bool isNotFound(const error &err) const;
+    static bool isNotFound(const error &err);
 
     const std::string GroupHash() const;
 

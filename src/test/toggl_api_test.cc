@@ -171,10 +171,10 @@ void on_time_entry_list(
         TimeEntry te;
         te.SetGUID(to_string(it->GUID));
         te.SetID(it->ID);
-        te.SetDurationInSeconds(it->DurationInSeconds);
-        te.SetDescription(to_string(it->Description));
-        te.SetStartTime(it->Started);
-        te.SetStopTime(it->Ended);
+        te.SetDurationInSeconds(it->DurationInSeconds, false);
+        te.SetDescription(to_string(it->Description), false);
+        te.SetStartTime(it->Started, false);
+        te.SetStopTime(it->Ended, false);
         testing::testresult::time_entries.push_back(te);
         it = reinterpret_cast<TogglTimeEntryView *>(it->Next);
     }
@@ -286,17 +286,17 @@ void on_display_timer_state(TogglTimeEntryView *te) {
     testing::testresult::timer_state = TimeEntry();
     if (te) {
         testing::testresult::timer_state.SetID(te->ID);
-        testing::testresult::timer_state.SetStartTime(te->Started);
+        testing::testresult::timer_state.SetStartTime(te->Started, false);
         testing::testresult::timer_state.SetGUID(to_string(te->GUID));
         testing::testresult::timer_state.SetDurationInSeconds(
-            te->DurationInSeconds);
-        testing::testresult::timer_state.SetDescription(to_string(te->Description));
+            te->DurationInSeconds, false);
+        testing::testresult::timer_state.SetDescription(to_string(te->Description), false);
         if (te->Tags) {
-            testing::testresult::timer_state.SetTags(to_string(te->Tags));
+            testing::testresult::timer_state.SetTags(to_string(te->Tags), false);
         }
-        testing::testresult::timer_state.SetBillable(te->Billable);
-        testing::testresult::timer_state.SetPID(te->PID);
-        testing::testresult::timer_state.SetTID(te->TID);
+        testing::testresult::timer_state.SetBillable(te->Billable, false);
+        testing::testresult::timer_state.SetPID(te->PID, false);
+        testing::testresult::timer_state.SetTID(te->TID, false);
     }
 }
 
