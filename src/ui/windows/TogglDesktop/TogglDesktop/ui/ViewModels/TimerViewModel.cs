@@ -103,6 +103,7 @@ namespace TogglDesktop.ui.ViewModels
 
             acceptNextUpdate = false;
 
+            IsRunning = running;
             SetDescription("");
             DurationText = "";
         }
@@ -121,10 +122,9 @@ namespace TogglDesktop.ui.ViewModels
 
         public void startStop()
         {
-            IsRunning = !IsRunning;
             this.acceptNextUpdate = true;
 
-            if (IsRunning)
+            if (!IsRunning)
             {
                 start();
             }

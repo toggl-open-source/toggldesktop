@@ -185,7 +185,8 @@
                           Margin="8 0 12 0"
                           Focusable="False"
                           IsChecked="{Binding IsRunning, Mode=OneWay}"
-                          Command="{Binding StartStopCommand}"/>
+                          Command="{Binding StartStopCommand}"
+                          Click="startStopButton_Click"/>
         </Grid>
     </Grid>
 </UserControl>
