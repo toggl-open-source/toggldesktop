@@ -2395,13 +2395,16 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
         std::stringstream ss;
         ss << "/api/"
             << kAPIV9
-            << "/auth/saml2/login"
-            << "?email=" << email
-            << "&client=" << kDesktopClient;
+            << "/auth/saml2/login";
+
+        Poco::URI::QueryParameters query;
+        query.push_back(std::make_pair("email", email));
+        query.push_back(std::make_pair("client", kDesktopClient));
 
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = ss.str();
+        req.query = &query;
 
         HTTPResponse resp = TogglClient::GetInstance().Get(req);
 
