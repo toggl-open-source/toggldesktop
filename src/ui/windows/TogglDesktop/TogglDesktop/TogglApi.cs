@@ -1892,6 +1892,7 @@ public static partial class Toggl
         IntPtr context,
         TimelineMenuContextType menuType);
 
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern TogglRgbColor toggl_get_adaptive_rgb_color_from_hex(
         [MarshalAs(UnmanagedType.LPWStr)]
         string hexColor,
