@@ -1088,6 +1088,10 @@ public static partial class Toggl
                 Env = args[i + 1];
                 Console.WriteLine("Environment = {0}", Env);
             }
+            else if (args[i].Contains("--staging"))
+            {
+                toggl_set_staging_override(true);
+            }
         }
     }
 

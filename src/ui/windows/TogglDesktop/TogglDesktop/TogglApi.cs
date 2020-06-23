@@ -672,6 +672,13 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         string level);
 
+    // Allow overriding the server in production
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_staging_override(
+        [MarshalAs(UnmanagedType.I1)]
+        bool value);
+
     // Various parts of UI can tell the app to show itself.
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]

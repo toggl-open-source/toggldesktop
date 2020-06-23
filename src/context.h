@@ -684,7 +684,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error syncHandleResponse(Json::Value &array, const std::vector<T*> &source);
 
     error pushBatchedChanges(
-            bool *had_something_to_push);
+        bool *had_something_to_push);
     error pushChanges(
         bool *had_something_to_push);
     error pushClients(
@@ -730,9 +730,9 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
                     std::string *user_data,
                     const Poco::Int64 since);
     static error syncPull(const std::string &email,
-                         const std::string &password,
-                         std::string *user_data,
-                         const Poco::Int64 since);
+                          const std::string &password,
+                          std::string *user_data,
+                          const Poco::Int64 since);
 
     bool isTimeEntryLocked(TimeEntry* te);
     bool isTimeLockedInWorkspace(time_t t, Workspace* ws);

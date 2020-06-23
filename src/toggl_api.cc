@@ -23,6 +23,7 @@
 #include "websocket_client.h"
 #include "window_change_recorder.h"
 #include "color_convert.h"
+#include "urls.h"
 
 #include <Poco/Bugcheck.h>
 #include <Poco/Path.h>
@@ -408,6 +409,10 @@ void toggl_set_log_path(const char_t *path) {
 
 void toggl_set_log_level(const char_t *level) {
     Poco::Logger::get("").setLevel(to_string(level));
+}
+
+void toggl_set_staging_override(bool_t value) {
+    toggl::urls::SetUseStagingAsBackend(value);
 }
 
 void toggl_show_app(

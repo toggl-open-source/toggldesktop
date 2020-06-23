@@ -94,10 +94,6 @@ Context::Context(const std::string &app_name, const std::string &app_version)
         Poco::Net::HTTPSStreamFactory::registerFactory();
     }
 
-#ifndef TOGGL_PRODUCTION_BUILD
-    urls::SetUseStagingAsBackend(true);
-#endif
-
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -5663,7 +5659,7 @@ error Context::pushProjects(
 }
 
 error Context::updateProjectClients(const std::vector<Client *> &clients,
-                                     const std::vector<Project *> &projects) {
+                                    const std::vector<Project *> &projects) {
     for (auto it = projects.cbegin(); it != projects.cend(); ++it) {
         if (!(*it)->CID() && !(*it)->ClientGUID().empty()) {
             // Find client id
