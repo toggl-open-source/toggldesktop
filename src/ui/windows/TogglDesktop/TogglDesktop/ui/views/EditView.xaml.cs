@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DynamicData.Binding;
 using MahApps.Metro.Controls;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Items;
@@ -824,7 +825,7 @@ namespace TogglDesktop
 
         public void SetTimer(Timer timer)
         {
-            timer.RunningTimeEntrySecondPulse += this.durationUpdateTimerTick;
+            timer.ViewModel.WhenValueChanged(x => x.DurationText).Subscribe(x => durationUpdateTimerTick(this, x));
         }
 
         public void FocusField(string focusedFieldName)

@@ -21,12 +21,9 @@ namespace TogglDesktop.ui.ViewModels
         public TimerViewModel(bool isMiniTimer)
         {
             this.isMiniTimer = isMiniTimer;
-            StartStopCommand = ReactiveCommand.Create(() => startStop());
-            CancelProjectSelectionCommand = ReactiveCommand.Create(() => clearSelectedProject());
-            ManualAddButtonCommand = ReactiveCommand.Create(() => AddNewTimeEntry());
-            DescriptionAutoCompleteConfirmCommand = ReactiveCommand.Create<RoutedEventArgs>(e => {
-                DescriptionAutoCompleteConfirm(e);
-            });
+            StartStopCommand = ReactiveCommand.Create(startStop);
+            CancelProjectSelectionCommand = ReactiveCommand.Create(clearSelectedProject);
+            ManualAddButtonCommand = ReactiveCommand.Create(AddNewTimeEntry);
             TryOpenEditView = ReactiveCommand.Create<string>(s => tryOpenEditViewIfRunning(s));
 
             setupSecondsTimer();
@@ -42,6 +39,9 @@ namespace TogglDesktop.ui.ViewModels
 
         [Reactive]
         public string DurationText { get; set; }
+
+        [Reactive]
+        public bool IsDescriptionChangedNotByUser { get; private set; } = false;
 
         [Reactive]
         public string Description { get; set; }
@@ -60,8 +60,6 @@ namespace TogglDesktop.ui.ViewModels
         public ReactiveCommand<Unit, Unit> CancelProjectSelectionCommand { get; }
 
         public ReactiveCommand<Unit, Unit> ManualAddButtonCommand { get; }
-
-        public ReactiveCommand<RoutedEventArgs, Unit> DescriptionAutoCompleteConfirmCommand { get; }
 
         public ReactiveCommand<string, Unit> TryOpenEditView { get; }
 
@@ -105,8 +103,7 @@ namespace TogglDesktop.ui.ViewModels
 
             acceptNextUpdate = false;
 
-            IsRunning = running;
-            Description = "";
+            SetDescription("");
             DurationText = "";
         }
 
@@ -124,15 +121,16 @@ namespace TogglDesktop.ui.ViewModels
 
         public void startStop()
         {
+            IsRunning = !IsRunning;
             this.acceptNextUpdate = true;
 
             if (IsRunning)
             {
-                this.stop();
+                start();
             }
             else
             {
-                this.start();
+                stop();
             }
         }
 
@@ -160,7 +158,10 @@ namespace TogglDesktop.ui.ViewModels
                     completedProject.Tags,
                     isMiniTimer
                     );
-
+                if (isMiniTimer && !string.IsNullOrEmpty(guid) && !string.IsNullOrEmpty(DurationText))
+                {
+                    Toggl.SetTimeEntryDuration(guid, DurationText);
+                }
                 if (completedProject.Billable)
                 {
                     Toggl.SetTimeEntryBillable(guid, true);
@@ -186,7 +187,7 @@ namespace TogglDesktop.ui.ViewModels
             completedProject = default;
         }
 
-        public void DescriptionAutoCompleteConfirm(object e)
+        public void DescriptionAutoCompleteConfirm(IAutoCompleteItem e)
         {
             var asItem = e as IModelItem<Toggl.TogglAutocompleteView>;
             if (asItem == null)
@@ -194,8 +195,7 @@ namespace TogglDesktop.ui.ViewModels
 
             var item = asItem.Model;
 
-            Description = item.Description;
-
+            SetDescription(item.Description);
             ProjectLabelViewModel = item.ToProjectLabelViewModel();
             completedProject = item;
         }
@@ -204,6 +204,13 @@ namespace TogglDesktop.ui.ViewModels
         {
             var guid = Toggl.Start("", "0", 0, 0, "", "", isMiniTimer);
             Toggl.Edit(guid, false, Toggl.Duration);
+        }
+
+        private void SetDescription(string desc)
+        {
+            IsDescriptionChangedNotByUser = true;
+            Description = desc;
+            IsDescriptionChangedNotByUser = false;
         }
     }
 }

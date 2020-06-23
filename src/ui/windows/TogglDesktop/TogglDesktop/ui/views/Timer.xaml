@@ -4,15 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
-             xmlns:conv="clr-namespace:TogglDesktop.ui.Converters"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:vm="clr-namespace:TogglDesktop.ui.ViewModels"
              mc:Ignorable="d" 
              d:DesignWidth="500"
              MinWidth="300"
              Height="{StaticResource TimerHeight}"
              Focusable="True"
              FocusVisualStyle="{x:Null}"
-             Background="{DynamicResource Toggl.CardBackground}">
+             Background="{DynamicResource Toggl.CardBackground}"
+             d:DataContext="{d:DesignInstance vm:TimerViewModel, IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -70,7 +70,6 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <conv:BooleanInvertToVisibilityConverter x:Key="BooleanInvertToVisibilityConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -93,7 +92,7 @@
               Background="Transparent">
             <Grid.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding StartStopCommand}"/>
-                <KeyBinding Key="Esc" Command="{Binding CancelProjectSelectionCommand}"/>
+                <KeyBinding Key="Escape" Command="{Binding CancelProjectSelectionCommand}"/>
             </Grid.InputBindings>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -125,7 +124,8 @@
                                        MaxHeight="32"
                                        Style="{StaticResource Toggl.Timer.DescriptionTextBox}"
                                        Visibility="{Binding IsRunning, Converter={StaticResource BooleanInvertToVisibilityConverter}}"
-                                       Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                       Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       IsTextChangingProgrammatically="{Binding IsDescriptionChangedNotByUser}">
                 </toggl:ExtendedTextBox>
                 <toggl:AutoCompletionPopup x:Name="descriptionAutoComplete" x:FieldModifier="private"
                                            Grid.Row="0"

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using DynamicData.Binding;
 using Microsoft.Win32;
 using NHotkey;
 using NHotkey.Wpf;
@@ -192,8 +193,8 @@ namespace TogglDesktop
             this.idleNotificationWindow = new IdleNotificationWindow();
 
             this.editPopup.EditView.SetTimer(this.timerEntryListView.Timer);
-            this.timerEntryListView.Timer.RunningTimeEntrySecondPulse += this.updateTaskbarTooltip;
-            this.timerEntryListView.Timer.StartStopClick += (sender, args) => this.closeEditPopup(true);
+            this.timerEntryListView.Timer.ViewModel.WhenValueChanged(x => x.DurationText).Subscribe(x => updateTaskbarTooltip(this, x));
+            this.timerEntryListView.Timer.ViewModel.WhenValueChanged(x => x.IsRunning).Subscribe( x => closeEditPopup(true));
             this.timerEntryListView.Entries.SetEditPopup(this.editPopup);
             this.timerEntryListView.Entries.CloseEditPopup += (sender, args) => this.closeEditPopup(true);
 
