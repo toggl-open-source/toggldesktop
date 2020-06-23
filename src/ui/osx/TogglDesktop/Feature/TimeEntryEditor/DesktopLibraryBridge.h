@@ -132,6 +132,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)resetEnableSSO;
 - (void)loginSSOWithAPIToken:(NSString *) apiToken;
 
+#pragma mark - Tracking
+
+-(void) trackTimelineMenuContextType:(TimelineMenuContextType) type;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -2362,6 +2362,16 @@ void Context::SetEnvironment(const std::string &value) {
 
     TogglClient::GetInstance().SetIgnoreCert(("development" == environment_));
     urls::SetRequestsAllowed("test" != environment_);
+
+    // stopping heavy tasks for better unit tests performance/speed
+    if (value == "test") {
+        if (ui_updater_.isRunning()) {
+            ui_updater_.stop();
+        }
+        if (reminder_.isRunning()) {
+            reminder_.stop();
+        }
+    }
 }
 
 Database *Context::db() const {
@@ -5024,7 +5034,7 @@ void Context::syncerActivityWrapper() {
 
             HTTPRequest req;
             req.host = urls::API();
-            req.relative_url = "/api/v9/me/flags";
+            req.relative_url = "/api/v9/me/preferences";
             req.basic_auth_username = api_token;
             req.basic_auth_password = "api_token";
 
@@ -5034,7 +5044,7 @@ void Context::syncerActivityWrapper() {
             if (resp.err == noError) {
                 // if the server doesn't respond OK to this request, fall back to the legacy sync protocol
                 if (resp.status_code != 200) {
-                    logger.log("Syncer - Server didn't respond 200 to /me/flags, fallback to LEGACY");
+                    logger.log("Syncer - Server didn't respond 200 to /me/preferences, fallback to LEGACY");
                     state = LEGACY;
                 }
                 else { // is OK - 200
@@ -5042,24 +5052,37 @@ void Context::syncerActivityWrapper() {
                     Json::Value root;
                     Json::Reader reader;
                     if (!reader.parse(resp.body, root)) {
-                        logger.log("Syncer - /me/flags response couldn't be parsed as JSON, fallback to LEGACY");
+                        logger.log("Syncer - /me/preferences response couldn't be parsed as JSON, fallback to LEGACY");
                         state = LEGACY;
                     }
                     else {
-                        // there was a typo in the initial set of flags, use both variants to be sure
-                        if (root[kSyncStrategyLegacy1].isBool() && root[kSyncStrategyLegacy1].asBool())
-                            state = BATCHED;
-                        else if (root[kSyncStrategyLegacy2].isBool() && root[kSyncStrategyLegacy2].asBool())
-                            state = BATCHED;
-                        else
+                        if (root.isMember("alpha_features")) {
                             state = LEGACY;
-                        logger.log("Syncer - Syncing protocol was selected: ", (state == BATCHED ? "BATCHED" : "LEGACY"));
+                            for (auto i : root["alpha_features"]) {
+                                if (i.isMember("code")) {
+                                    // there was a typo in the initial set of flags, use both variants to be sure
+                                    if (i["code"] == kSyncStrategyLegacy1 && i["enabled"].asBool()) {
+                                        state = BATCHED;
+                                        break;
+                                    }
+                                    if (i["code"] == kSyncStrategyLegacy2 && i["enabled"].asBool()) {
+                                        state = BATCHED;
+                                        break;
+                                    }
+                                }
+                            }
+                            logger.log("Syncer - Syncing protocol was selected: ", (state == BATCHED ? "BATCHED" : "LEGACY"));
+                        }
+                        else {
+                            logger.log("Syncer - /me/preferences response didn't contain alpha_features, fallback to LEGACY");
+                            state = LEGACY;
+                        }
                     }
                 }
             }
             // it is a HTTP error in disguise which means the server is alive, fallback to LEGACY
             else if (resp.err == HTTPClient::StatusCodeToError(resp.status_code)) {
-                logger.log("Syncer - Server didn't respond 200 to /me/flags, fallback to LEGACY");
+                logger.log("Syncer - Server didn't respond 200 to /me/preferences, fallback to LEGACY");
                 state = LEGACY;
             }
             break;
@@ -5068,11 +5091,7 @@ void Context::syncerActivityWrapper() {
             legacySyncerActivity();
             break;
         case BATCHED:
-            // TODO: Still using batched only for development builds
-            if (urls::IsUsingStagingAsBackend())
-                batchedSyncerActivity();
-            else
-                legacySyncerActivity();
+            batchedSyncerActivity();
             break;
         }
     }
@@ -6448,9 +6467,14 @@ void Context::syncTranslateGUIDToLocalID(Json::Value &item) {
 template<typename T>
 error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &source) {
     // this only looks into the container of modified items, not the whole RelatedData container
-    auto findByLocalID = [](auto &source, auto localID) -> typename std::remove_reference<decltype(source)>::type::value_type {
-        auto id = stoi(localID);
-        id = id < 0 ? -id : id;
+    auto findByLocalID = [](auto &source, std::string &&localID) -> typename std::remove_reference<decltype(source)>::type::value_type {
+        int64_t id = 0;
+        try {
+            id = stoi(localID);
+            id = id < 0 ? -id : id;
+        } catch (...) {
+            return nullptr;
+        }
         for (auto i : source) {
             if (i->LocalID() == id) {
                 return i;
@@ -6945,5 +6969,10 @@ bool Context::checkIfSkipPomodoro(TimeEntry *te) {
     return false;
 }
 
+void Context::TrackTimelineMenuContext(const TimelineMenuContextType type) {
+    if ("production" == environment_) {
+        analytics_.TrackTimelineMenuContext(db_->AnalyticsClientID(), type);
+    }
+}
 
 }  // namespace toggl

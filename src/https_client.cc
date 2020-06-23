@@ -385,6 +385,9 @@ HTTPResponse HTTPClient::makeHttpRequest(
         // Request gzip unless downloading files
         poco_req.set("Accept-Encoding", "gzip");
 
+        // Set the Switching board header for Sync server requests
+        poco_req.set("X-Toggl-Client", "desktop");
+
         if (!req.form) {
             std::istringstream requestStream(req.payload);
 

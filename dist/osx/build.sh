@@ -139,11 +139,6 @@ function appcast() {
     cat tmp/darwin_dev_appcast.xml
 }
 
-function upload() {
-    # Upload the new version to Github releases
-    PLATFORM="darwin" VERSION=$version INSTALLER_FILENAME=$installer_name INSTALLER=$installer GITHUB_USER="token" GITHUB_TOKEN=${GITHUB_TOKEN} go run dist/upload_to_github.go -platform="darwin" 
-}
-
 function update_release() {
     ./dist/update_releases.sh osx dev $version
 }
@@ -157,7 +152,6 @@ if [[ "$#" -ne 1 ]]; then
     debuginfo
     dmg
     appcast
-    upload
     update_release
 else
     $1

@@ -462,4 +462,8 @@ void *ctx;
     toggl_login_sso(ctx, [apiToken UTF8String]);
 }
 
+-(void) trackTimelineMenuContextType:(TimelineMenuContextType) type
+{
+    toggl_track_timeline_menu_context(ctx, type);
+}
 @end

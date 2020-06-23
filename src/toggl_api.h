@@ -233,6 +233,14 @@ extern "C" {
         AdaptiveColorTextOnDarkBackground
     } TogglAdaptiveColor;
 
+    typedef enum {
+        TimelineMenuContextTypeContinueEntry,
+        TimelineMenuContextTypeStartEntryFromEnd,
+        TimelineMenuContextTypeDelete,
+        TimelineMenuContextTypeChangeFirstEntryStopTime,
+        TimelineMenuContextTypeChangeLastEntryStartTime
+    } TimelineMenuContextType;
+
     // Callbacks that need to be implemented in UI
 
     typedef void (*TogglDisplayApp)(
@@ -1277,6 +1285,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_login_sso(
         void *context,
         const char_t *api_token);
+    
+    TOGGL_EXPORT void toggl_track_timeline_menu_context(
+        void *context,
+        TimelineMenuContextType menuType);
 
 #undef TOGGL_EXPORT
 

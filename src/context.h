@@ -571,6 +571,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     void UserDidTurnOnRecordActivity();
     void UserDidEditOrAddTimeEntryOnTimelineView();
 
+    void TrackTimelineMenuContext(const TimelineMenuContextType type);
+
  protected:
     void uiUpdaterActivity();
     void checkReminders();

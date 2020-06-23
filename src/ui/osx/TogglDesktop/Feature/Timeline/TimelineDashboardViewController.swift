@@ -118,6 +118,13 @@ final class TimelineDashboardViewController: NSViewController {
         DesktopLibraryBridge.shared().timelineSetDate(proposedDate)
     }
 
+    private lazy var trackingArea: NSTrackingArea = {
+        return NSTrackingArea(rect: view.bounds,
+                              options: [.mouseEnteredAndExited, .activeAlways],
+                              owner: self,
+                              userInfo: nil)
+    }()
+
     // MARK: View
     
     override func viewDidLoad() {
@@ -126,7 +133,6 @@ final class TimelineDashboardViewController: NSViewController {
         initCommon()
         initNotifications()
         initCollectionView()
-        initTrackingArea()
     }
 
     deinit {
@@ -192,12 +198,18 @@ final class TimelineDashboardViewController: NSViewController {
 
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
-        zoomContainerView.isHidden = false
+        if event.trackingArea === trackingArea {
+            zoomContainerView.isHidden = false
+        }
     }
 
     override func mouseExited(with event: NSEvent) {
         super.mouseExited(with: event)
-        zoomContainerView.isHidden = true
+
+        // Only hide the button if the event is triggered from the Zoom button tracking area
+        if event.trackingArea === trackingArea {
+            zoomContainerView.isHidden = true
+        }
     }
 
     func nextDay() {
@@ -256,6 +268,9 @@ extension TimelineDashboardViewController {
         
         // Forect Render the view
         _ = activityHoverController.view
+
+        // Tracking for Zoom buttons
+        view.addTrackingArea(trackingArea)
     }
 
     fileprivate func initNotifications() {
@@ -283,14 +298,6 @@ extension TimelineDashboardViewController {
                                        selector: #selector(runningTimeEntryNoti(_:)),
                                        name: Notification.Name(kDisplayTimerState),
                                        object: nil)
-    }
-
-    private func initTrackingArea() {
-        let tracking = NSTrackingArea(rect: collectionViewContainerView.bounds,
-                                      options: [.mouseEnteredAndExited, .activeInKeyWindow],
-                                      owner: collectionViewContainerView,
-                                      userInfo: nil)
-        collectionViewContainerView.addTrackingArea(tracking)
     }
 
     fileprivate func initCollectionView() {

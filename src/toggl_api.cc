@@ -1663,3 +1663,7 @@ void toggl_login_sso(void *context, const char_t *api_token) {
     }
     app(context)->LoginSSO(token);
 }
+
+void toggl_track_timeline_menu_context(void *context, TimelineMenuContextType menuType) {
+    app(context)->TrackTimelineMenuContext(menuType);
+}

@@ -128,7 +128,7 @@ func main() {
 			write("public enum" + csclass)
 			write("{")
 		} else if len(csclass) != 0 {
-			if strings.Contains(s, "} Toggl") {
+			if strings.Contains(s, "} ") {
 				csclass = ""
 				if len(firstStringField) > 0 {
 					write("")
