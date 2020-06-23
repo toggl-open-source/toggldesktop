@@ -1903,6 +1903,14 @@ error Database::loadTimeEntriesFromSQLStatement(
             bool more = rs.moveFirst();
             while (more) {
                 TimeEntry *model = new TimeEntry();
+
+                if (rs[10].isEmpty()) {
+                    model->SetUIModifiedAt(0);
+                } else {
+                    model->SetUIModifiedAt(rs[10].convert<Poco::Int64>());
+                }
+                bool userModified = model->UIModifiedAt();
+
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
                     model->SetID(0);
@@ -1911,40 +1919,36 @@ error Database::loadTimeEntriesFromSQLStatement(
                 }
                 model->SetUID(rs[2].convert<Poco::UInt64>());
                 if (rs[3].isEmpty()) {
-                    model->SetDescription("");
+                    model->SetDescription("", userModified);
                 } else {
-                    model->SetDescription(rs[3].convert<std::string>());
+                    model->SetDescription(rs[3].convert<std::string>(), userModified);
                 }
                 model->SetWID(rs[4].convert<Poco::UInt64>());
                 model->SetGUID(rs[5].convert<std::string>());
                 if (rs[6].isEmpty()) {
-                    model->SetPID(0);
+                    model->SetPID(0, userModified);
                 } else {
-                    model->SetPID(rs[6].convert<Poco::UInt64>());
+                    model->SetPID(rs[6].convert<Poco::UInt64>(), userModified);
                 }
                 if (rs[7].isEmpty()) {
-                    model->SetTID(0);
+                    model->SetTID(0, userModified);
                 } else {
-                    model->SetTID(rs[7].convert<Poco::UInt64>());
+                    model->SetTID(rs[7].convert<Poco::UInt64>(), userModified);
                 }
-                model->SetBillable(rs[8].convert<bool>());
+                model->SetBillable(rs[8].convert<bool>(), userModified);
                 model->SetDurOnly(rs[9].convert<bool>());
-                if (rs[10].isEmpty()) {
-                    model->SetUIModifiedAt(0);
-                } else {
-                    model->SetUIModifiedAt(rs[10].convert<Poco::Int64>());
-                }
-                model->SetStartTime(rs[11].convert<Poco::Int64>());
+                // 10 is UIUpdatedAt
+                model->SetStartTime(rs[11].convert<Poco::Int64>(), userModified);
                 if (rs[12].isEmpty()) {
-                    model->SetStopTime(0);
+                    model->SetStopTime(0, userModified);
                 } else {
-                    model->SetStopTime(rs[12].convert<Poco::Int64>());
+                    model->SetStopTime(rs[12].convert<Poco::Int64>(), userModified);
                 }
-                model->SetDurationInSeconds(rs[13].convert<Poco::Int64>());
+                model->SetDurationInSeconds(rs[13].convert<Poco::Int64>(), userModified);
                 if (rs[14].isEmpty()) {
-                    model->SetTags("");
+                    model->SetTags("", userModified);
                 } else {
-                    model->SetTags(rs[14].convert<std::string>());
+                    model->SetTags(rs[14].convert<std::string>(), userModified);
                 }
                 if (rs[15].isEmpty()) {
                     model->SetCreatedWith("");
@@ -1962,9 +1966,9 @@ error Database::loadTimeEntriesFromSQLStatement(
                     model->SetUpdatedAt(rs[17].convert<Poco::Int64>());
                 }
                 if (rs[18].isEmpty()) {
-                    model->SetProjectGUID("");
+                    model->SetProjectGUID("", userModified);
                 } else {
-                    model->SetProjectGUID(rs[18].convert<std::string>());
+                    model->SetProjectGUID(rs[18].convert<std::string>(), userModified);
                 }
                 if (rs[19].isEmpty()) {
                     model->SetValidationError("");
