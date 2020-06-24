@@ -18,7 +18,7 @@
                        TextWrapping="Wrap" />
             <Ellipse Grid.Column="1" Width="20" Height="20"
                      Margin="20 0 0 0"
-                     Fill="{Binding Color}"
+                     Fill="{Binding ColorString, Converter={StaticResource AdaptProjectColorConverter}}"
                      Visibility="{Binding ColorString, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
         </Grid>
         <TextBlock Margin="0 5 0 0"

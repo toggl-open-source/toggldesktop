@@ -241,6 +241,7 @@
     <Compile Include="ui\controls\TrayToolTipControl.xaml.cs">
       <DependentUpon>TrayToolTipControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\Converters\AdaptProjectColorConverter.cs" />
     <Compile Include="ui\Converters\AndConverter.cs" />
     <Compile Include="ui\Converters\CapitalizeConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
@@ -341,6 +342,7 @@
     <Compile Include="ui\windows\MiniTimerWindow.xaml.cs">
       <DependentUpon>MiniTimerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="utilities\ColorSchemeExtensions.cs" />
     <Compile Include="utilities\LinqExtensions.cs" />
     <Compile Include="utilities\StaticObjectPool.cs" />
     <Compile Include="TogglApi.cs" />

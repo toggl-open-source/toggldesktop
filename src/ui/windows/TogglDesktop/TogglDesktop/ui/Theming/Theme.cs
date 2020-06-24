@@ -13,6 +13,17 @@ namespace TogglDesktop.Theming
         private static readonly Subject<ColorScheme> currentColorSchemeSubject = new Subject<ColorScheme>();
         public static IObservable<ColorScheme> CurrentColorScheme => currentColorSchemeSubject.AsObservable();
 
+        public static readonly BehaviorSubject<Toggl.TogglAdaptiveColor> ShapeColorAdaptation =
+            new BehaviorSubject<Toggl.TogglAdaptiveColor>(Toggl.TogglAdaptiveColor.AdaptiveColorShapeOnLightBackground);
+        public static readonly BehaviorSubject<Toggl.TogglAdaptiveColor> TextColorAdaptation =
+            new BehaviorSubject<Toggl.TogglAdaptiveColor>(Toggl.TogglAdaptiveColor.AdaptiveColorTextOnLightBackground);
+
+        static Theme()
+        {
+            Theme.CurrentColorScheme.Select(ColorSchemeExtensions.ToAdaptiveShapeColor).Subscribe(ShapeColorAdaptation.OnNext);
+            Theme.CurrentColorScheme.Select(ColorSchemeExtensions.ToAdaptiveTextColor).Subscribe(TextColorAdaptation.OnNext);
+        }
+
         public static void SetThemeFromSettings(byte selectedTheme)
         {
             switch (selectedTheme)

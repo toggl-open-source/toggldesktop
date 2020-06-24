@@ -762,6 +762,11 @@ public static partial class Toggl
         return toggl_get_adaptive_hsv_color(rgbColor, type);
     }
 
+    public static TogglRgbColor GetAdaptiveRgbColorFromHex(string hexColor, TogglAdaptiveColor type)
+    {
+        return toggl_get_adaptive_rgb_color_from_hex(hexColor, type);
+    }
+
     #endregion
 
     #region callback events
