@@ -167,6 +167,7 @@
                          FontSize="18"
                          Height="Auto"
                          Padding="3 1"
+                         Text="{Binding DurationText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Visibility="{Binding IsRunning, Converter={StaticResource BooleanInvertToVisibilityConverter}}"/>
             </Grid>
             <!-- start/stop button -->

@@ -15,7 +15,7 @@ namespace TogglDesktop.ui.ViewModels
         private readonly DispatcherTimer secondsTimer = new DispatcherTimer();
         private Toggl.TogglTimeEntryView runningTimeEntry;
         private bool acceptNextUpdate;
-        private bool isMiniTimer;
+        private readonly bool isMiniTimer;
         private Toggl.TogglAutocompleteView completedProject;
 
         public TimerViewModel(bool isMiniTimer)
@@ -24,7 +24,6 @@ namespace TogglDesktop.ui.ViewModels
             StartStopCommand = ReactiveCommand.Create(startStop);
             CancelProjectSelectionCommand = ReactiveCommand.Create(clearSelectedProject);
             ManualAddButtonCommand = ReactiveCommand.Create(AddNewTimeEntry);
-            TryOpenEditView = ReactiveCommand.Create<string>(s => tryOpenEditViewIfRunning(s));
 
             setupSecondsTimer();
 
@@ -61,8 +60,6 @@ namespace TogglDesktop.ui.ViewModels
 
         public ReactiveCommand<Unit, Unit> ManualAddButtonCommand { get; }
 
-        public ReactiveCommand<string, Unit> TryOpenEditView { get; }
-
         private void setupSecondsTimer()
         {
             secondsTimer.Interval = TimeSpan.FromSeconds(1);
@@ -79,7 +76,6 @@ namespace TogglDesktop.ui.ViewModels
         {
             using (Performance.Measure("timer responding to OnRunningTimerState"))
             {
-                
                 SetRunningTimeEntry(te);
                 secondsTimer.IsEnabled = true;
             }
@@ -147,6 +143,7 @@ namespace TogglDesktop.ui.ViewModels
 
         private void start()
         {
+            var durationString = DurationText;
             using (Performance.Measure("starting time entry from timer"))
             {
                 var guid = Toggl.Start(
@@ -158,9 +155,9 @@ namespace TogglDesktop.ui.ViewModels
                     completedProject.Tags,
                     isMiniTimer
                     );
-                if (isMiniTimer && !string.IsNullOrEmpty(guid) && !string.IsNullOrEmpty(DurationText))
+                if (isMiniTimer && !string.IsNullOrEmpty(guid) && !string.IsNullOrEmpty(durationString))
                 {
-                    Toggl.SetTimeEntryDuration(guid, DurationText);
+                    Toggl.SetTimeEntryDuration(guid, durationString);
                 }
                 if (completedProject.Billable)
                 {
