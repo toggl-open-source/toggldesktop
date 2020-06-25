@@ -98,6 +98,9 @@ namespace TogglDesktop
 
         private void FocusFirstInput()
         {
+            if (this.TryBeginInvoke(FocusFirstInput))
+                return;
+
             if (!this.IsKeyboardFocused)
                 return;
 
