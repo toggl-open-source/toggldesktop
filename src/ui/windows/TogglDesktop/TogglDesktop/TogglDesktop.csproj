@@ -431,10 +431,11 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.manifest" />
-    <None Include="cacert.pem">
+    <None Include="..\..\..\..\ssl\cacert.pem">
+      <Link>cacert.pem</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
