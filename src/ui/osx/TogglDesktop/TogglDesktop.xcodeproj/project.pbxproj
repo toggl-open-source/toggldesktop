@@ -28,6 +28,8 @@
 		3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */; };
 		3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */; };
 		492F5F02248550F800FFEC70 /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
+		498AE51C24A4A98200E0B08B /* Color+Adaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2A116A247BB72A00B97FAE /* Color+Adaptive.swift */; };
+		498AE51D24A4A98B00E0B08B /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
 		622BBF654A6A958692A4633B /* Pods_TogglDesktop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 776525112125F6AD81DF4DEF /* Pods_TogglDesktop.framework */; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
 		69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
@@ -2169,7 +2171,6 @@
 				BA43B25523F525F30007DD99 /* TimelineLineView.xib in Resources */,
 				BAE64E072368334000244D2B /* DateCellViewItem.xib in Resources */,
 				BA13E57F24347716005244AD /* OnboardingContentViewController.xib in Resources */,
-				BAE64E082368334000244D2B /* ColorViewItem.xib in Resources */,
 				BA13E57F24347716005244AD /* OnboardingContentViewController.xib in Resources */,
 				BAE64E092368334000244D2B /* OverlayViewController.xib in Resources */,
 				BAE64E0A2368334000244D2B /* ProjectContentCellView.xib in Resources */,
@@ -2824,6 +2825,7 @@
 				BAE64DB72368334000244D2B /* AutoCompleteViewDataSource.swift in Sources */,
 				BA37ACF723D890250013EE26 /* NSView+Animation.swift in Sources */,
 				BAE64DB82368334000244D2B /* TagStorage.swift in Sources */,
+				498AE51D24A4A98B00E0B08B /* TimelineInitialDateProvider.swift in Sources */,
 				BAE64DB92368334000244D2B /* ViewItem.m in Sources */,
 				BAE64DBA2368334000244D2B /* CalendarCollectionView.swift in Sources */,
 				BAE64DBB2368334000244D2B /* NSResize.m in Sources */,
@@ -2842,6 +2844,7 @@
 				BAE64DC42368334000244D2B /* CalendarViewController.swift in Sources */,
 				BAE64DC52368334000244D2B /* (null) in Sources */,
 				BA37ACBE23D890050013EE26 /* LayerBackedViewController.swift in Sources */,
+				498AE51C24A4A98200E0B08B /* Color+Adaptive.swift in Sources */,
 				BAF9364D23E8114800EE1076 /* TimelineResizeHoverController.swift in Sources */,
 				BAE64DC62368334000244D2B /* SystemService.m in Sources */,
 				BAE64DC72368334000244D2B /* AppIconFactory.m in Sources */,
