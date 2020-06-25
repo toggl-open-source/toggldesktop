@@ -6,6 +6,15 @@
                 "Show project information on the Idle Notification dialog",
                 "Fixed bug when zooming buttons were randomly hidden from the Timeline"
             ],
+            "date": "June 25th 2020",
+            "beta": "true"
+        },
+        {
+            "version": "7.5.192",
+            "rows": [
+                "Show project information on the Idle Notification dialog",
+                "Fixed bug when zooming buttons were randomly hidden from the Timeline"
+            ],
             "date": "June 18th 2020",
             "beta": "true"
         },
