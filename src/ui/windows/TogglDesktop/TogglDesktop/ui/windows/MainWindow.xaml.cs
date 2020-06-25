@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using DynamicData.Binding;
 using Microsoft.Win32;
 using NHotkey;
 using NHotkey.Wpf;
@@ -192,8 +193,8 @@ namespace TogglDesktop
             this.idleNotificationWindow = new IdleNotificationWindow();
 
             this.editPopup.EditView.SetTimer(this.timerEntryListView.Timer);
-            this.timerEntryListView.Timer.RunningTimeEntrySecondPulse += this.updateTaskbarTooltip;
-            this.timerEntryListView.Timer.StartStopClick += (sender, args) => this.closeEditPopup(true);
+            this.timerEntryListView.Timer.ViewModel.WhenValueChanged(x => x.DurationText).Subscribe(x => updateTaskbarTooltip(this, x));
+            this.timerEntryListView.Timer.StartStopButtonClicked += ()  => closeEditPopup(true);
             this.timerEntryListView.Entries.SetEditPopup(this.editPopup);
             this.timerEntryListView.Entries.CloseEditPopup += (sender, args) => this.closeEditPopup(true);
 
@@ -581,6 +582,9 @@ namespace TogglDesktop
 
         private void updateTaskbarTooltip(object sender, string s)
         {
+            if (this.TryBeginInvoke(updateTaskbarTooltip, sender, s))
+                return;
+
             this.trayToolTip.SetDuration(s);
         }
 
@@ -790,6 +794,9 @@ namespace TogglDesktop
 
         private void closeEditPopup(bool focusTimeEntryList = false, bool skipAnimation = false)
         {
+            if (this.TryBeginInvoke(this.closeEditPopup, focusTimeEntryList, skipAnimation))
+                return;
+
             if (this.editPopup != null && this.editPopup.IsVisible)
             {
                 // TODO: consider saving popup open state and restoring when window is shown
