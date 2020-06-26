@@ -2436,7 +2436,11 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
             }
         } else {
             // Return error message from the backend
-            return displayError(resp.body);
+            std::string errorMessage = resp.body;
+            if (errorMessage.find(kSSONotConfigure) != std::string::npos) {
+                errorMessage = kBetterSSONotConfigure;
+            }
+            return displayError(errorMessage);
         }
 
 

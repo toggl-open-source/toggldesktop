@@ -99,6 +99,8 @@
 #define kOneLoginAttemptLeft "Incorrect email or password. One more try before account gets locked for 5 minutes."
 #define kAccountIsLocked "Incorrect email or password. Account is locked for 5 minutes. Account owner has been notified."
 #define kIncorrectEmailOrPassword "Incorrect email or password. Please try again."
+#define kSSONotConfigure "SSO is not configured for this email address"
+#define kBetterSSONotConfigure "Single Sign On is not configured for your email address. Please try a different login method or contact your administrator."
 
 #define kModelAutotrackerRule "autotracker_rule"
 #define kModelClient "client"
