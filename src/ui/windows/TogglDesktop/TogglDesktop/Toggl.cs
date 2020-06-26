@@ -1114,14 +1114,9 @@ public static partial class Toggl
         toggl_set_log_level("debug");
     }
 
-    public static bool StartUI(string version, IEnumerable<ulong> experimentIds)
+    public static bool StartUI(string version)
     {
         parseCommandlineParams();
-
-        foreach (var id in experimentIds)
-        {
-            toggl_add_obm_experiment_nr(id);
-        }
 
         ctx = toggl_context_init("windows_native_app", version);
 

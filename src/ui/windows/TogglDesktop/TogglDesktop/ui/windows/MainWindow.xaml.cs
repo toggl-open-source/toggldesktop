@@ -16,7 +16,6 @@ using Microsoft.Win32;
 using NHotkey;
 using NHotkey.Wpf;
 using TogglDesktop.Diagnostics;
-using TogglDesktop.Experiments;
 using TogglDesktop.Services;
 using TogglDesktop.Theming;
 using TogglDesktop.Tutorial;
@@ -41,7 +40,6 @@ namespace TogglDesktop
         private EditViewPopup editPopup;
         private IdleNotificationWindow idleNotificationWindow;
         private SyncingIndicator syncingIndicator;
-        private ExperimentManager experimentManager;
         private MiniTimerWindow miniTimer;
         private InAppNotification inAppNotification;
         private NotificationManager notificationManager;
@@ -72,7 +70,6 @@ namespace TogglDesktop
             this.initializeCustomNotifications();
             this.initializeSyncingIndicator();
             this.initializeTutorialManager();
-            this.initializeExperimentManager();
             this.initializeSessionNotification();
 
             this.idleDetectionTimer.Tick += this.onIdleDetectionTimerTick;
@@ -97,11 +94,6 @@ namespace TogglDesktop
         #endregion
 
         #region setup
-
-        private void initializeExperimentManager()
-        {
-            this.experimentManager = new ExperimentManager(this);
-        }
 
         private void initializeTutorialManager()
         {
@@ -256,7 +248,7 @@ namespace TogglDesktop
         {
             Toggl.RegisterMainWindow(this);
 
-            if (!Toggl.StartUI(Program.Version(), this.experimentManager.CurrentExperumentIds))
+            if (!Toggl.StartUI(Program.Version()))
             {
                 MessageBox.Show(null, "Missing callback. See the log file for details");
                 this.shutdown(1);

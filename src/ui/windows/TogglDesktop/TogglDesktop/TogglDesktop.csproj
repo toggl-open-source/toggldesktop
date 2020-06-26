@@ -257,31 +257,8 @@
     <Compile Include="ui\Converters\EmptyStringToHiddenConverter.cs" />
     <Compile Include="ui\Converters\ColorsToBrushConverter.cs" />
     <Compile Include="ui\Converters\TrimPathConverter.cs" />
-    <Compile Include="ui\Experiments\implementations\Experiment98.cs" />
-    <Compile Include="ui\Experiments\implementations\Experiment98Screen2.xaml.cs">
-      <DependentUpon>Experiment98Screen2.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\Experiments\implementations\Experiment101.cs" />
-    <Compile Include="ui\Experiments\implementations\Experiment99.cs" />
-    <Compile Include="ui\Experiments\implementations\Experiment87.cs" />
-    <Compile Include="ui\Experiments\implementations\Experiment98Screen1.xaml.cs">
-      <DependentUpon>Experiment98Screen1.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\Experiments\implementations\Experiment101Screen.xaml.cs">
-      <DependentUpon>Experiment101Screen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\Experiments\implementations\Experiment99Screen.xaml.cs">
-      <DependentUpon>Experiment99Screen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\Experiments\ExperimentBase.cs" />
-    <Compile Include="ui\Experiments\IExperiment.cs" />
-    <Compile Include="ui\Experiments\implementations\Experiment87Screen.xaml.cs">
-      <DependentUpon>Experiment87Screen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\Experiments\ExperimentParameters.cs" />
     <Compile Include="ui\IRecyclable.cs" />
     <Compile Include="ui\KeyboardShortcuts.cs" />
-    <Compile Include="ui\Experiments\implementations\ExperimentHacks.cs" />
     <Compile Include="ui\ModelExtensions.cs" />
     <Compile Include="ui\NotificationExtensions.cs" />
     <Compile Include="ui\Notifications\AutotrackerNotification.xaml.cs">
@@ -337,7 +314,6 @@
     <Compile Include="ui\ViewModels\TimerViewModel.cs" />
     <Compile Include="ui\ViewModels\ViewModelExtensions.cs" />
     <Compile Include="ui\views\IMainView.cs" />
-    <Compile Include="ui\Experiments\ExperimentManager.cs" />
     <Compile Include="ui\views\OverlayView.xaml.cs">
       <DependentUpon>OverlayView.xaml</DependentUpon>
     </Compile>
@@ -521,26 +497,6 @@
     </Page>
     <Page Include="ui\controls\TimeEntryLabel.xaml" />
     <Page Include="ui\controls\TrayToolTipControl.xaml" />
-    <Page Include="ui\Experiments\implementations\Experiment87Screen.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\Experiments\implementations\Experiment98Screen2.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\Experiments\implementations\Experiment98Screen1.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\Experiments\implementations\Experiment101Screen.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\Experiments\implementations\Experiment99Screen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ui\Notifications\AutotrackerNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
