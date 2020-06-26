@@ -251,15 +251,7 @@ void TimeEntry::SetTID(Poco::UInt64 value, bool userModified) {
 static const char kTagSeparator = '\t';
 
 void TimeEntry::SetTags(const std::string &tags, bool userModified) {
-    decltype(TagNames)::value_type tmp;
-    if (!tags.empty()) {
-        std::stringstream ss(tags);
-        while (ss.good()) {
-            std::string tag;
-            getline(ss, tag, kTagSeparator);
-            tmp.push_back(tag);
-        }
-    }
+    decltype(TagNames)::value_type tmp = TagsStringToVector(tags);
     if (TagNames.Set(std::move(tmp), userModified))
         SetDirty();
 }
@@ -344,6 +336,19 @@ const std::string TimeEntry::TagsHash() const {
         ss << *it;
     }
     return ss.str();
+}
+
+std::vector<std::string> TimeEntry::TagsStringToVector(const std::string &str) {
+    std::vector<std::string> tmp;
+    if (!str.empty()) {
+        std::stringstream ss(str);
+        while (ss.good()) {
+            std::string tag;
+            getline(ss, tag, kTagSeparator);
+            tmp.push_back(tag);
+        }
+    }
+    return tmp;
 }
 
 std::string TimeEntry::StopString() const {
