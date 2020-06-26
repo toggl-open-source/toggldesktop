@@ -125,7 +125,8 @@
                                        Style="{StaticResource Toggl.Timer.DescriptionTextBox}"
                                        Visibility="{Binding IsRunning, Converter={StaticResource BooleanInvertToVisibilityConverter}}"
                                        Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                       IsTextChangingProgrammatically="{Binding IsDescriptionChangedNotByUser}">
+                                       IsTextChangingProgrammatically="{Binding IsDescriptionChangedNotByUser}"
+                                       TextChanged="onDescriptionTextBoxTextChanged">
                 </toggl:ExtendedTextBox>
                 <toggl:AutoCompletionPopup x:Name="descriptionAutoComplete" x:FieldModifier="private"
                                            Grid.Row="0"

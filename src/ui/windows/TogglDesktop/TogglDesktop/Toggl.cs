@@ -151,9 +151,6 @@ public static partial class Toggl
     public delegate void DisplayPromotion(
         long id);
 
-    public delegate void DisplayObmExperiment(
-        ulong id, bool included, bool seenBefore);
-
     public delegate void DisplayPomodoro(
         string title, string informativeText);
 
@@ -170,11 +167,6 @@ public static partial class Toggl
     public static void LoadMore()
     {
         toggl_load_more(ctx);
-    }
-
-    public static void SendObmAction(ulong experiment, string key)
-    {
-        toggl_add_obm_action(ctx, experiment, key, "1");
     }
 
     public static void Clear()
@@ -797,7 +789,6 @@ public static partial class Toggl
     public static event DisplayProjectColors OnDisplayProjectColors = delegate { };
     public static event DisplayCountries OnDisplayCountries = delegate { };
     public static event DisplayPromotion OnDisplayPromotion = delegate { };
-    public static event DisplayObmExperiment OnDisplayObmExperiment = delegate { };
     public static event DisplayPomodoro OnDisplayPomodoro = delegate { };
     public static event DisplayPomodoroBreak OnDisplayPomodoroBreak = delegate { };
     public static event DisplayInAppNotification OnDisplayInAppNotification = delegate { };
@@ -1020,15 +1011,6 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_obm_experiment(ctx, (id, included, seenBefore) =>
-        {
-            using (Performance.Measure(
-                "Calling OnDisplatObmExperiment, id: {0}, included: {1}, seen: {2}",
-                id, included, seenBefore))
-            {
-                OnDisplayObmExperiment(id, included, seenBefore);
-            }
-        });
         toggl_on_pomodoro(ctx, (title, text) =>
         {
             using (Performance.Measure("Calling OnDisplayPomodoro"))
@@ -1114,14 +1096,9 @@ public static partial class Toggl
         toggl_set_log_level("debug");
     }
 
-    public static bool StartUI(string version, IEnumerable<ulong> experimentIds)
+    public static bool StartUI(string version)
     {
         parseCommandlineParams();
-
-        foreach (var id in experimentIds)
-        {
-            toggl_add_obm_experiment_nr(id);
-        }
 
         ctx = toggl_context_init("windows_native_app", version);
 
