@@ -3250,13 +3250,13 @@ error Context::updateTimeEntryProject(
         // billable, // then selected the same project again).
         if (p->ID() != te->PID()
                 || (!project_guid.empty() && p->GUID().compare(te->ProjectGUID()) != 0)) {
-            te->SetBillable(p->Billable(), false);
+            te->SetBillable(p->Billable(), true);
         }
         te->SetWID(p->WID());
     }
-    te->SetTID(task_id, false);
-    te->SetPID(project_id, false);
-    te->SetProjectGUID(project_guid, false);
+    te->SetTID(task_id, true);
+    te->SetPID(project_id, true);
+    te->SetProjectGUID(project_guid, true);
     return noError;
 }
 
