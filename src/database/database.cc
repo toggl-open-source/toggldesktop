@@ -1855,7 +1855,8 @@ error Database::loadTimeEntries(
                "SELECT local_id, id, uid, description, wid, guid, pid, "
                "tid, billable, duronly, ui_modified_at, start, stop, "
                "duration, tags, created_with, deleted_at, updated_at, "
-               "project_guid, validation_error "
+               "project_guid, validation_error, "
+               "previous_pid, previous_project_guid, previous_tid, previous_billable, previous_start, previous_stop, previous_duration, previous_description, previous_created_with, previous_tags "
                "FROM time_entries "
                "WHERE uid = :uid "
                "ORDER BY start DESC",
@@ -1904,13 +1905,7 @@ error Database::loadTimeEntriesFromSQLStatement(
             while (more) {
                 TimeEntry *model = new TimeEntry();
 
-                if (rs[10].isEmpty()) {
-                    model->SetUIModifiedAt(0);
-                } else {
-                    model->SetUIModifiedAt(rs[10].convert<Poco::Int64>());
-                }
-                bool userModified = model->UIModifiedAt();
-
+                // "Current" values - the ones that are actually displayed in the UI
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
                     model->SetID(0);
@@ -1919,41 +1914,45 @@ error Database::loadTimeEntriesFromSQLStatement(
                 }
                 model->SetUID(rs[2].convert<Poco::UInt64>());
                 if (rs[3].isEmpty()) {
-                    model->SetDescription("", userModified);
+                    model->Description.SetCurrent("");
                 } else {
-                    model->SetDescription(rs[3].convert<std::string>(), userModified);
+                    model->Description.SetCurrent(rs[3].convert<std::string>());
                 }
                 model->SetWID(rs[4].convert<Poco::UInt64>());
                 model->SetGUID(rs[5].convert<std::string>());
                 if (rs[6].isEmpty()) {
-                    model->SetPID(0, userModified);
+                    model->PID.SetCurrent(0);
                 } else {
-                    model->SetPID(rs[6].convert<Poco::UInt64>(), userModified);
+                    model->PID.SetCurrent(rs[6].convert<Poco::UInt64>());
                 }
                 if (rs[7].isEmpty()) {
-                    model->SetTID(0, userModified);
+                    model->TID.SetCurrent(0);
                 } else {
-                    model->SetTID(rs[7].convert<Poco::UInt64>(), userModified);
+                    model->TID.SetCurrent(rs[7].convert<Poco::UInt64>());
                 }
-                model->SetBillable(rs[8].convert<bool>(), userModified);
+                model->Billable.SetCurrent(rs[8].convert<bool>());
                 model->SetDurOnly(rs[9].convert<bool>());
-                // 10 is UIUpdatedAt
-                model->SetStartTime(rs[11].convert<Poco::Int64>(), userModified);
-                if (rs[12].isEmpty()) {
-                    model->SetStopTime(0, userModified);
+                if (rs[10].isEmpty()) {
+                    model->SetUIModifiedAt(0);
                 } else {
-                    model->SetStopTime(rs[12].convert<Poco::Int64>(), userModified);
+                    model->SetUIModifiedAt(rs[10].convert<Poco::Int64>());
                 }
-                model->SetDurationInSeconds(rs[13].convert<Poco::Int64>(), userModified);
-                if (rs[14].isEmpty()) {
-                    model->SetTags("", userModified);
+                model->StartTime.SetCurrent(rs[11].convert<Poco::Int64>());
+                if (rs[12].isEmpty()) {
+                    model->StopTime.SetCurrent(0);
                 } else {
-                    model->SetTags(rs[14].convert<std::string>(), userModified);
+                    model->StopTime.SetCurrent(rs[12].convert<Poco::Int64>());
+                }
+                model->DurationInSeconds.SetCurrent(rs[13].convert<Poco::Int64>());
+                if (rs[14].isEmpty()) {
+                    model->TagNames.SetCurrent({});
+                } else {
+                    model->TagNames.SetCurrent(TimeEntry::TagsStringToVector(rs[14].convert<std::string>()));
                 }
                 if (rs[15].isEmpty()) {
-                    model->SetCreatedWith("");
+                    model->CreatedWith.SetCurrent("");
                 } else {
-                    model->SetCreatedWith(rs[15].convert<std::string>());
+                    model->CreatedWith.SetCurrent(rs[15].convert<std::string>());
                 }
                 if (rs[16].isEmpty()) {
                     model->SetDeletedAt(0);
@@ -1966,15 +1965,68 @@ error Database::loadTimeEntriesFromSQLStatement(
                     model->SetUpdatedAt(rs[17].convert<Poco::Int64>());
                 }
                 if (rs[18].isEmpty()) {
-                    model->SetProjectGUID("", userModified);
+                    model->ProjectGUID.SetCurrent("");
                 } else {
-                    model->SetProjectGUID(rs[18].convert<std::string>(), userModified);
+                    model->ProjectGUID.SetCurrent(rs[18].convert<std::string>());
                 }
                 if (rs[19].isEmpty()) {
                     model->SetValidationError("");
                 } else {
                     model->SetValidationError(rs[19].convert<std::string>());
                 }
+
+                // "Previous" values - used to track what the user has changed between server sync cycles
+                if (rs[20].isEmpty()) {
+                    model->PID.SetPrevious(0);
+                } else {
+                    model->PID.SetPrevious(rs[20].convert<Poco::UInt64>());
+                }
+                if (rs[21].isEmpty()) {
+                    model->ProjectGUID.SetPrevious("");
+                } else {
+                    model->ProjectGUID.SetPrevious(rs[21].convert<std::string>());
+                }
+                if (rs[22].isEmpty()) {
+                    model->TID.SetPrevious(0);
+                } else {
+                    model->TID.SetPrevious(rs[22].convert<Poco::UInt64>());
+                }
+                if (rs[23].isEmpty()) {
+                    model->Billable.SetPrevious(false);
+                } else {
+                    model->Billable.SetPrevious(rs[23].convert<bool>());
+                }
+                if (rs[24].isEmpty()) {
+                    model->StartTime.SetPrevious(0);
+                } else {
+                    model->StartTime.SetPrevious(rs[24].convert<Poco::Int64>());
+                }
+                if (rs[25].isEmpty()) {
+                    model->StopTime.SetPrevious(0);
+                } else {
+                    model->StopTime.SetPrevious(rs[25].convert<Poco::Int64>());
+                }
+                if (rs[26].isEmpty()) {
+                    model->DurationInSeconds.SetPrevious(0);
+                } else {
+                    model->DurationInSeconds.SetPrevious(rs[26].convert<Poco::Int64>());
+                }
+                if (rs[27].isEmpty()) {
+                    model->Description.SetPrevious("");
+                } else {
+                    model->Description.SetPrevious(rs[27].convert<std::string>());
+                }
+                if (rs[28].isEmpty()) {
+                    model->CreatedWith.SetPrevious("");
+                } else {
+                    model->CreatedWith.SetPrevious(rs[28].convert<std::string>());
+                }
+                if (rs[29].isEmpty()) {
+                    model->TagNames.SetPrevious({});
+                } else {
+                    model->TagNames.SetPrevious(TimeEntry::TagsStringToVector(rs[29].convert<std::string>()));
+                }
+
                 model->ClearDirty();
 
                 list->push_back(model);
