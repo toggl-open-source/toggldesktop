@@ -815,6 +815,43 @@ error Migrations::migrateTimeEntries() {
         return err;
     }
 
+    err = db_->Migrate(
+        "time_entries.sync_spec",
+
+        "ALTER TABLE time_entries ADD COLUMN previous_pid integer;"
+        "UPDATE time_entries SET previous_pid = pid;"
+
+        "ALTER TABLE time_entries ADD COLUMN previous_project_guid integer;"
+        "UPDATE time_entries SET previous_project_guid = project_guid;"
+
+        "ALTER TABLE time_entries ADD COLUMN previous_tid integer;"
+        "UPDATE time_entries SET previous_tid = tid;"
+
+        "ALTER TABLE time_entries ADD COLUMN previous_billable integer;"
+        "UPDATE time_entries SET previous_billable = billable;"
+
+        "ALTER TABLE time_entries ADD COLUMN previous_start integer;"
+        "UPDATE time_entries SET previous_start = start;"
+
+        "ALTER TABLE time_entries ADD COLUMN previous_stop integer;"
+        "UPDATE time_entries SET previous_stop = stop;"
+
+        "ALTER TABLE time_entries ADD COLUMN previous_duration integer;"
+        "UPDATE time_entries SET previous_duration = duration;"
+
+        "ALTER TABLE time_entries ADD COLUMN previous_description varchar;"
+        "UPDATE time_entries SET previous_description = description;"
+
+        "ALTER TABLE time_entries ADD COLUMN previous_created_with varchar;"
+        "UPDATE time_entries SET previous_created_with = created_with;"
+
+        "ALTER TABLE time_entries ADD COLUMN previous_tags text;"
+        "UPDATE time_entries SET previous_tags = tags;"
+        );
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
