@@ -169,11 +169,6 @@ public static partial class Toggl
         toggl_load_more(ctx);
     }
 
-    public static void SendObmAction(ulong experiment, string key)
-    {
-        toggl_add_obm_action(ctx, experiment, key, "1");
-    }
-
     public static void Clear()
     {
         toggl_context_clear(ctx);
