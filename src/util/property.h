@@ -53,6 +53,29 @@ public:
             previous_ = std::move(value);
         current_ = value;
     }
+    /* Setters for current values only (previous value stays) */
+    void SetCurrent(const T& current) {
+        current_ = current;
+    }
+    void SetCurrent(const T&& current) {
+        current_ = std::move(current);
+    }
+    /* Setters for previous values (to enable loading from db) */
+    void SetPrevious(const T& previous) {
+        previous_ = previous;
+    }
+    void SetPrevious(const T&& previous) {
+        previous_ = std::move(previous);
+    }
+    /* Insert will modify current and previous value at once */
+    void Insert(const T& previous, const T& current) {
+        current_ = current;
+        previous_ = previous;
+    }
+    void Insert(const T&& previous, const T&& current) {
+        current_ = std::move(current);
+        previous_ = std::move(previous);
+    }
     /* Data access operators */
     // Notice that references are returned only as const
     // Only the -> operator is allowed to modify data inside (but should probably be const as well in the future)
