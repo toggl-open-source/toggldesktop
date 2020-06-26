@@ -41,6 +41,7 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     const std::string Tags() const;
     void SetTags(const std::string &tags, bool userModified);
     const std::string TagsHash() const;
+    static std::vector<std::string> TagsStringToVector(const std::string &str);
 
     void SetWID(Poco::UInt64 value);
     void SetPID(Poco::UInt64 value, bool userModified);
