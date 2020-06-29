@@ -339,14 +339,7 @@ void TimeEntry::SetProjectGUID(const std::string &value, bool userModified) {
 }
 
 const std::string TimeEntry::Tags() const {
-    std::stringstream ss;
-    for (auto it = TagNames->begin(); it != TagNames->end(); ++it) {
-        if (it != TagNames->begin()) {
-            ss << kTagSeparator;
-        }
-        ss << *it;
-    }
-    return ss.str();
+    return std::string(TagsVectorToString(TagNames()));
 }
 
 const std::string TimeEntry::TagsHash() const {
@@ -373,6 +366,19 @@ std::vector<std::string> TimeEntry::TagsStringToVector(const std::string &str) {
         }
     }
     return tmp;
+}
+
+const std::string &TimeEntry::TagsVectorToString(const std::vector<std::string> &vec) {
+    static thread_local std::string cache;
+    std::stringstream ss;
+    for (auto it = vec.begin(); it != vec.end(); ++it) {
+        if (it != vec.begin()) {
+            ss << kTagSeparator;
+        }
+        ss << *it;
+    }
+    cache = ss.str();
+    return cache;
 }
 
 std::string TimeEntry::StopString() const {
