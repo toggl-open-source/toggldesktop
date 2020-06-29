@@ -2135,7 +2135,17 @@ error Database::saveModel(
                           "deleted_at = :deleted_at, "
                           "updated_at = :updated_at, "
                           "project_guid = :project_guid, "
-                          "validation_error = :validation_error "
+                          "validation_error = :validation_error, "
+                          "previous_pid = :previous_pid, "
+                          "previous_project_guid = :previous_project_guid, "
+                          "previous_tid = :previous_tid, "
+                          "previous_billable = :previous_billable, "
+                          "previous_start = :previous_start, "
+                          "previous_stop = :previous_stop, "
+                          "previous_duration = :previous_duration, "
+                          "previous_description = :previous_description, "
+                          "previous_created_with = :previous_created_with, "
+                          "previous_tags = :previous_tags "
                           "where local_id = :local_id",
                           useRef(model->ID()),
                           useRef(model->UID()),
@@ -2156,6 +2166,16 @@ error Database::saveModel(
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
                           useRef(model->ValidationError()),
+                          useRef(model->PID.GetPrevious()),
+                          useRef(model->ProjectGUID.GetPrevious()),
+                          useRef(model->TID.GetPrevious()),
+                          useRef(model->Billable.GetPrevious()),
+                          useRef(model->StartTime.GetPrevious()),
+                          useRef(model->StopTime.GetPrevious()),
+                          useRef(model->DurationInSeconds.GetPrevious()),
+                          useRef(model->Description.GetPrevious()),
+                          useRef(model->CreatedWith.GetPrevious()),
+                          useRef(TimeEntry::TagsVectorToString(model->TagNames.GetPrevious())),
                           useRef(model->LocalID()),
                           now;
             } else {
@@ -2171,7 +2191,17 @@ error Database::saveModel(
                           "deleted_at = :deleted_at, "
                           "updated_at = :updated_at, "
                           "project_guid = :project_guid, "
-                          "validation_error = :validation_error "
+                          "validation_error = :validation_error, "
+                          "previous_pid = :previous_pid, "
+                          "previous_project_guid = :previous_project_guid, "
+                          "previous_tid = :previous_tid, "
+                          "previous_billable = :previous_billable, "
+                          "previous_start = :previous_start, "
+                          "previous_stop = :previous_stop, "
+                          "previous_duration = :previous_duration, "
+                          "previous_description = :previous_description, "
+                          "previous_created_with = :previous_created_with, "
+                          "previous_tags = :previous_tags "
                           "where local_id = :local_id",
                           useRef(model->UID()),
                           useRef(model->Description()),
@@ -2191,6 +2221,16 @@ error Database::saveModel(
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
                           useRef(model->ValidationError()),
+                          useRef(model->PID.GetPrevious()),
+                          useRef(model->ProjectGUID.GetPrevious()),
+                          useRef(model->TID.GetPrevious()),
+                          useRef(model->Billable.GetPrevious()),
+                          useRef(model->StartTime.GetPrevious()),
+                          useRef(model->StopTime.GetPrevious()),
+                          useRef(model->DurationInSeconds.GetPrevious()),
+                          useRef(model->Description.GetPrevious()),
+                          useRef(model->CreatedWith.GetPrevious()),
+                          useRef(TimeEntry::TagsVectorToString(model->TagNames.GetPrevious())),
                           useRef(model->LocalID()),
                           now;
             }
@@ -2220,13 +2260,17 @@ error Database::saveModel(
                           "duronly, ui_modified_at, "
                           "start, stop, duration, "
                           "tags, created_with, deleted_at, updated_at, "
-                          "project_guid, validation_error) "
-                          "values(:id, :uid, :description, :wid, "
+                          "project_guid, validation_error, "
+                          "previous_pid, previous_project_guid, previous_tid, previous_billable, previous_start, previous_stop, previous_duration, previous_description, previous_created_with, previous_tags"
+                          ") values ("
+                          ":id, :uid, :description, :wid, "
                           ":guid, :pid, :tid, :billable, "
                           ":duronly, :ui_modified_at, "
                           ":start, :stop, :duration, "
                           ":tags, :created_with, :deleted_at, :updated_at, "
-                          ":project_guid, :validation_error)",
+                          ":project_guid, :validation_error, "
+                          ":previous_pid, :previous_project_guid, :previous_tid, :previous_billable, :previous_start, :previous_stop, :previous_duration, :previous_description, :previous_created_with, :previous_tags "
+                          ")",
                           useRef(model->ID()),
                           useRef(model->UID()),
                           useRef(model->Description()),
@@ -2246,6 +2290,16 @@ error Database::saveModel(
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
                           useRef(model->ValidationError()),
+                          useRef(model->PID.GetPrevious()),
+                          useRef(model->ProjectGUID.GetPrevious()),
+                          useRef(model->TID.GetPrevious()),
+                          useRef(model->Billable.GetPrevious()),
+                          useRef(model->StartTime.GetPrevious()),
+                          useRef(model->StopTime.GetPrevious()),
+                          useRef(model->DurationInSeconds.GetPrevious()),
+                          useRef(model->Description.GetPrevious()),
+                          useRef(model->CreatedWith.GetPrevious()),
+                          useRef(TimeEntry::TagsVectorToString(model->TagNames.GetPrevious())),
                           now;
             } else {
                 *session_ <<
@@ -2254,14 +2308,17 @@ error Database::saveModel(
                           "duronly, ui_modified_at, "
                           "start, stop, duration, "
                           "tags, created_with, deleted_at, updated_at, "
-                          "project_guid, validation_error "
+                          "project_guid, validation_error, "
+                          "previous_pid, previous_project_guid, previous_tid, previous_billable, previous_start, previous_stop, previous_duration, previous_description, previous_created_with, previous_tags"
                           ") values ("
                           ":uid, :description, :wid, "
                           ":guid, :pid, :tid, :billable, "
                           ":duronly, :ui_modified_at, "
                           ":start, :stop, :duration, "
                           ":tags, :created_with, :deleted_at, :updated_at, "
-                          ":project_guid, :validation_error)",
+                          ":project_guid, :validation_error, "
+                          ":previous_pid, :previous_project_guid, :previous_tid, :previous_billable, :previous_start, :previous_stop, :previous_duration, :previous_description, :previous_created_with, :previous_tags "
+                          ")",
                           useRef(model->UID()),
                           useRef(model->Description()),
                           useRef(model->WID()),
@@ -2280,6 +2337,16 @@ error Database::saveModel(
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
                           useRef(model->ValidationError()),
+                          useRef(model->PID.GetPrevious()),
+                          useRef(model->ProjectGUID.GetPrevious()),
+                          useRef(model->TID.GetPrevious()),
+                          useRef(model->Billable.GetPrevious()),
+                          useRef(model->StartTime.GetPrevious()),
+                          useRef(model->StopTime.GetPrevious()),
+                          useRef(model->DurationInSeconds.GetPrevious()),
+                          useRef(model->Description.GetPrevious()),
+                          useRef(model->CreatedWith.GetPrevious()),
+                          useRef(TimeEntry::TagsVectorToString(model->TagNames.GetPrevious())),
                           now;
             }
             error err = last_error("saveTimeEntry");
