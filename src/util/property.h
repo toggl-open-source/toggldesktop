@@ -110,6 +110,9 @@ public:
     const T& Get() const {
         return current_;
     }
+    const T& GetPrevious() const {
+        return previous_;
+    }
     /* Equality */
     bool operator ==(const Property<T> &o) const {
         return current_ == o.current_;
