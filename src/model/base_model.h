@@ -19,8 +19,6 @@
 
 namespace toggl {
 
-class BatchUpdateResult;
-
 class TOGGL_INTERNAL_EXPORT BaseModel {
  public:
     BaseModel() {}

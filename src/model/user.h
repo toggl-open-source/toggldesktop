@@ -253,15 +253,6 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     std::string dirtyObjectsJSON(std::vector<TimeEntry *> * const) const;
 
-    void processResponseArray(
-        std::vector<BatchUpdateResult> * const results,
-        std::vector<TimeEntry *> *dirty,
-        std::vector<error> *errors);
-
-    void parseResponseArray(
-        const std::string &response_body,
-        std::vector<BatchUpdateResult> *responses);
-
     std::string generateKey(const std::string &password);
 
     void loadObmExperimentFromJson(Json::Value const &obm);
