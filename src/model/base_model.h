@@ -117,8 +117,6 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
 
     void Delete();
 
-    error ApplyBatchUpdateResult(BatchUpdateResult * const);
-
     // Convert model JSON into batch update format.
     error BatchUpdateJSON(Json::Value *result) const;
 

@@ -11,7 +11,6 @@
 #include <json/json.h>  // NOLINT
 
 #include "model/base_model.h"
-#include "batch_update_result.h"
 #include "related_data.h"
 #include "types.h"
 #include "model/workspace.h"

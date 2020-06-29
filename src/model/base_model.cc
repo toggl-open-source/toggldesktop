@@ -4,7 +4,6 @@
 
 #include <sstream>
 
-#include "batch_update_result.h"
 #include "database/database.h"
 #include "util/formatter.h"
 #include "model_change.h"
@@ -92,35 +91,6 @@ error BaseModel::LoadFromDataString(const std::string &data_string) {
 void BaseModel::Delete() {
     SetDeletedAt(time(nullptr));
     SetUIModified();
-}
-
-error BaseModel::ApplyBatchUpdateResult(
-    BatchUpdateResult * const update) {
-    poco_check_ptr(update);
-
-    if (update->ResourceIsGone()) {
-        MarkAsDeletedOnServer();
-        return noError;
-    }
-
-    toggl::error err = update->Error();
-    if (err != toggl::noError) {
-        if (DuplicateResource(err) || ResourceCannotBeCreated(err)) {
-            MarkAsDeletedOnServer();
-            return noError;
-        }
-
-        if (ResolveError(err)) {
-            return noError;
-        }
-
-        SetValidationError(err);
-        return err;
-    }
-
-    SetValidationError(noError);
-
-    return LoadFromDataString(update->Body);
 }
 
 bool BaseModel::userCannotAccessWorkspace(const error &err) const {
