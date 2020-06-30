@@ -1,6 +1,32 @@
 {
     "versions": [
         {
+            "version": "7.5.205",
+            "rows": [
+                "update cacert.pem (lib)",
+                "Color adaptation formula comprehensive tests (win)",
+                "Apply color adaptation to the color picker (win)",
+                "Move out color adaptation types into Theme class (win)",
+                "Implement project color adaptation in autocomplete text fields (win)",
+                "Implement project color adaptation in time entry list, autocomplete dropdown, timer (win)",
+                "Initial simplified implementation of AdaptColorConverter (win)",
+                "Add tests for GetAdaptiveRgbColorFromHex method (win)",
+                "Expose GetRgbAdaptiveColor via API (lib)",
+                "Use enum for Timeline menu context (lib)",
+                "Fix the action name for timeline menu context (lib)",
+                "Expose timeline tracking funcs (lib)",
+                "Add tracking for timeline menu context (lib)",
+                "Fix exception on std::stoi with empty string (lib)",
+                "Allow using staging on release builds (win)",
+                "bool->bool_t (lib)",
+                "Use alpha features instead of beta flags (lib)",
+                "Allow Sync protocol in production too (lib)"
+            ],
+            "date": "June 30th 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.193",
             "rows": [
                 "Appearance improvements for better readability",
