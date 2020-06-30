@@ -115,7 +115,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
     Poco::UInt64 user_id = user.ID();
 
     std::vector<ModelChange> changes;
@@ -309,20 +309,20 @@ TEST(User, Since) {
 TEST(User, UpdatesTimeEntryFromJSON) {
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
     TimeEntry *te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
 
     std::string json = "{\"id\":89818605,\"description\":\"Changed\"}";
-    te->LoadFromJSON(jsonStringToValue(json));
+    te->LoadFromJSON(jsonStringToValue(json), false);
     ASSERT_EQ("Changed", te->Description());
 }
 
 TEST(User, DeletesZombies) {
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
     TimeEntry *te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
@@ -332,7 +332,7 @@ TEST(User, DeletesZombies) {
         loadTestDataFile(std::string("../testdata/me_without_time_entries.json"));
 
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json, true));
+              user.LoadUserAndRelatedDataFromJSONString(json, true, false));
 
     te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
@@ -344,7 +344,7 @@ TEST(Database, LoadUserByEmail) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
     std::vector<ModelChange> changes;
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
@@ -375,7 +375,7 @@ TEST(Database, AllowsSameEmail) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
     std::vector<ModelChange> changes;
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
@@ -383,7 +383,7 @@ TEST(Database, AllowsSameEmail) {
     User user2;
     std::string json = loadTestDataFile(std::string("../testdata/same_email.json"));
     ASSERT_EQ(noError,
-              user2.LoadUserAndRelatedDataFromJSONString(json, true));
+              user2.LoadUserAndRelatedDataFromJSONString(json, true, false));
 
     ASSERT_EQ(noError, db.instance()->SaveUser(&user2, true, &changes));
 
@@ -404,7 +404,7 @@ TEST(User, UpdatesTimeEntryFromFullUserJSON) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
     TimeEntry *te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
@@ -415,7 +415,7 @@ TEST(User, UpdatesTimeEntryFromFullUserJSON) {
     te->SetDescription("Even more important!", false);
 
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json, true));
+              user.LoadUserAndRelatedDataFromJSONString(json, true, false));
     te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
     ASSERT_EQ("Even more important!", te->Description());
@@ -426,7 +426,7 @@ TEST(Database, SavesAndLoadsUserFields) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
     ASSERT_TRUE(user.StoreStartAndStopTime());
     // Change fields
@@ -455,7 +455,7 @@ TEST(Database, SavesAndLoadsObmExperiments) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
     std::string json = loadTestDataFile(std::string("../testdata/obm_response.json"));
     Json::Value data = jsonStringToValue(json);
@@ -487,7 +487,7 @@ TEST(Database, SavesAndLoadsObmExperimentsArray) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
     std::string json = loadTestDataFile(std::string("../testdata/obm_response_array.json"));
     Json::Value data = jsonStringToValue(json);
@@ -520,7 +520,7 @@ TEST(Database, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
     Poco::UInt64 n;
     ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
@@ -569,7 +569,7 @@ TEST(Database,
 
     User user1;
     ASSERT_EQ(noError,
-              user1.LoadUserAndRelatedDataFromJSONString(json, true));
+              user1.LoadUserAndRelatedDataFromJSONString(json, true, false));
 
     std::vector<ModelChange> changes;
     ASSERT_EQ(noError, db.instance()->SaveUser(&user1, true, &changes));
@@ -619,7 +619,7 @@ TEST(Database,
               user2.related.TimeEntries.size());
 
     ASSERT_EQ(noError,
-              user2.LoadUserAndRelatedDataFromJSONString(json, true));
+              user2.LoadUserAndRelatedDataFromJSONString(json, true, false));
 
     ASSERT_EQ(noError, db.instance()->SaveUser(&user2, true, &changes));
 
@@ -654,7 +654,7 @@ TEST(User, TestStartTimeEntryWithDuration) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
     size_t count = user.related.TimeEntries.size();
 
@@ -672,7 +672,7 @@ TEST(User, TestStartTimeEntryWithoutDuration) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
     user.Start("Old work", "", 0, 0, "", "", 0, 0, true);
 
@@ -686,7 +686,7 @@ TEST(User, TestDeletionSteps) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
     // first, mark time entry as deleted
     user.Start("My new time entry", "", 0, 0, "", "", 0, 0, true);
@@ -720,7 +720,7 @@ TEST(User, TestDeletionSteps) {
 TEST(Database, SavesModels) {
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
     testing::Database db;
 
@@ -736,7 +736,7 @@ TEST(Database, AssignsGUID) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json, true));
+              user.LoadUserAndRelatedDataFromJSONString(json, true, false));
 
     ASSERT_EQ(uint(5), user.related.TimeEntries.size());
     TimeEntry *te = user.related.TimeEntryByID(89837445);
@@ -758,7 +758,7 @@ TEST(User, ParsesAndSavesData) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json, true));
+              user.LoadUserAndRelatedDataFromJSONString(json, true, false));
     ASSERT_EQ(Poco::UInt64(1379068550), user.Since());
     ASSERT_EQ(Poco::UInt64(10471231), user.ID());
     ASSERT_EQ(Poco::UInt64(123456788), user.DefaultWID());
@@ -1275,7 +1275,7 @@ TEST(User, Continue) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
     TimeEntry *te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
@@ -1291,7 +1291,7 @@ TEST(TimeEntry, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json, true));
+              user.LoadUserAndRelatedDataFromJSONString(json, true, false));
 
     TimeEntry *te = user.related.TimeEntryByID(164891639);
     ASSERT_TRUE(te);
@@ -1652,14 +1652,14 @@ TEST(JSON, Project) {
     std::string json("{\"id\":2598323,\"guid\":\"2f0b8f11-f898-d992-3e1a-6bc261fc41ef\",\"wid\":123456789,\"name\":\"A deleted project\",\"billable\":true,\"is_private\":false,\"active\":false,\"template\":false,\"at\":\"2013-05-13T10:19:24+00:00\",\"color\":\"21\",\"auto_estimates\":true,\"server_deleted_at\":\"2013-08-22T09:05:31+00:00\"}");  // NOLINT
 
     Project p;
-    p.LoadFromJSON(jsonStringToValue(json));
+    p.LoadFromJSON(jsonStringToValue(json), false);
     ASSERT_EQ(Poco::UInt64(2598323), p.ID());
     ASSERT_EQ("A deleted project", p.Name());
     ASSERT_EQ(Poco::UInt64(123456789), p.WID());
     //ASSERT_EQ("2f0b8f11-f898-d992-3e1a-6bc261fc41ef", p.GUID());
 
     Project p2;
-    p2.LoadFromJSON(p.SaveToJSON());
+    p2.LoadFromJSON(p.SaveToJSON(), false);
     ASSERT_EQ(p.ID(), p2.ID());
     ASSERT_EQ(p.Name(), p2.Name());
     ASSERT_EQ(p.WID(), p2.WID());
@@ -1674,14 +1674,14 @@ TEST(JSON, Client) {
     std::string json("{\"id\":878318,\"guid\":\"59b464cd-0f8e-e601-ff44-f135225a6738\",\"wid\":123456789,\"name\":\"Big Client\",\"at\":\"2013-03-27T13:17:18+00:00\"}");  // NOLINT
 
     Client c;
-    c.LoadFromJSON(jsonStringToValue(json));
+    c.LoadFromJSON(jsonStringToValue(json), false);
     ASSERT_EQ(Poco::UInt64(878318), c.ID());
     ASSERT_EQ("Big Client", c.Name());
     ASSERT_EQ(Poco::UInt64(123456789), c.WID());
     //ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738", c.GUID());
 
     Client c2;
-    c2.LoadFromJSON(c.SaveToJSON());
+    c2.LoadFromJSON(c.SaveToJSON(), false);
     ASSERT_EQ(c.ID(), c2.ID());
     ASSERT_EQ(c.Name(), c2.Name());
     ASSERT_EQ(c.WID(), c2.WID());
@@ -1692,7 +1692,7 @@ TEST(JSON, TimeEntry) {
     std::string json("{\"id\":89818612,\"guid\":\"07fba193-91c4-0ec8-2345-820df0548123\",\"wid\":123456789,\"pid\":2567324,\"billable\":true,\"start\":\"2013-09-05T06:33:50+00:00\",\"stop\":\"2013-09-05T08:19:46+00:00\",\"duration\":6356,\"description\":\"A deleted time entry\",\"tags\":[\"ahaa\"],\"duronly\":false,\"at\":\"2013-09-05T08:19:45+00:00\",\"server_deleted_at\":\"2013-08-22T09:05:31+00:00\"}");  // NOLINT
 
     TimeEntry t;
-    t.LoadFromJSON(jsonStringToValue(json));
+    t.LoadFromJSON(jsonStringToValue(json), false);
     ASSERT_EQ(Poco::UInt64(0), t.ID()); // ID can only be updated from User class
     ASSERT_EQ(Poco::UInt64(2567324), t.PID());
     ASSERT_EQ(Poco::UInt64(123456789), t.WID());
@@ -1706,7 +1706,7 @@ TEST(JSON, TimeEntry) {
     ASSERT_FALSE(t.DurOnly());
 
     TimeEntry t2;
-    t2.LoadFromJSON(t.SaveToJSON());
+    t2.LoadFromJSON(t.SaveToJSON(), false);
     ASSERT_EQ(t.ID(), t2.ID());
     ASSERT_EQ(t.PID(), t2.PID());
     ASSERT_EQ(t.WID(), t2.WID());
@@ -1928,7 +1928,7 @@ TEST(Sync, LegacyFormat) {
     testing::Database db;
     std::string json { "{\"data\" : {\"achievements_enabled\" : true,\"api_token\" : \"token\",\"at\" : \"2019-04-08T11:08:37+00:00\",\"beginning_of_week\" : 1,\"clients\" : [{\"at\" : \"2018-11-07T20:52:31+00:00\",\"id\" : 43289164,\"name\" : \"client\",\"wid\" : 2817276}],\"created_at\" : \"2018-06-24T17:56:16+00:00\",\"date_format\" : \"MM/DD/YYYY\",\"default_wid\" : 2817276,\"duration_format\" : \"improved\",\"email\" : \"m@rtinbriza.cz\",\"fullname\" : \"M\",\"id\" : 4187712,\"image_url\" : \"https://assets.toggl.space/images/profile.png\",\"invitation\" : {},\"jquery_date_format\" : \"m/d/Y\",\"jquery_timeofday_format\" : \"h:i A\",\"language\" : \"en_US\",\"last_blog_entry\" : \"\",\"new_blog_post\" : {},\"openid_email\" : \"m@rtinbriza.cz\",\"openid_enabled\" : true,\"projects\" : [{\"active\" : true,\"actual_hours\" : 362,\"at\" : \"2019-09-18T12:31:25+00:00\",\"auto_estimates\" : false,\"billable\" : false,\"cid\" : 43289164,\"color\" : \"0\",\"created_at\" : \"2019-09-18T12:31:25+00:00\",\"hex_color\" : \"#06aaf5\",\"id\" : 154073509,\"is_private\" : true,\"name\" : \"project\",\"template\" : false,\"wid\" : 2817276}],\"record_timeline\" : true,\"render_timeline\" : true,\"retention\" : 9,\"send_product_emails\" : true,\"send_timer_notifications\" : true,\"send_weekly_report\" : true,\"should_upgrade\" : true,\"sidebar_piechart\" : true,\"store_start_and_stop_time\" : true,\"tags\" : [{\"at\" : \"2019-10-18T10:08:01+00:00\",\"id\" : 6892625,\"name\" : \"tag\",\"wid\" : 2817276}],\"time_entries\": [{\"at\" : \"2020-05-27T15:40:37+00:00\",\"billable\" : false,\"description\" : \"time entry\",\"duration\" : 415,\"duronly\" : false,\"guid\" : \"a28b9092ec9055edea7af710fcd72459\",\"id\" : 1563187599,\"pid\" : 154073509,\"start\" : \"2020-05-27T15:33:42+00:00\",\"stop\" : \"2020-05-27T15:40:37+00:00\",\"uid\" : 4187712,\"wid\" : 2817276}],\"timeline_enabled\" : true,\"timeline_experiment\" : false,\"timeofday_format\" : \"h:mm A\",\"timezone\" : \"Europe/Warsaw\",\"workspaces\" : [{\"admin\" : true,\"api_token\" : \"token\",\"at\" : \"2018-09-01T08:27:56+00:00\",\"default_currency\" : \"USD\",\"default_hourly_rate\" : 0,\"ical_enabled\" : true,\"id\" : 2817276,\"name\" : \"workspace\",\"only_admins_may_create_projects\" : false,\"only_admins_see_billable_rates\" : false,\"only_admins_see_team_dashboard\" : false,\"premium\" : true,\"profile\" : 0,\"projects_billable_by_default\" : true,\"rounding\" : 1,\"rounding_minutes\" : 0}]},\"since\" : 1590592101}" };
     User user;
-    error err = user.LoadUserAndRelatedDataFromJSONString(json, false);
+    error err = user.LoadUserAndRelatedDataFromJSONString(json, false, false);
     ASSERT_EQ(err, noError);
 
     ASSERT_EQ(user.Email(), "m@rtinbriza.cz");
@@ -1976,7 +1976,7 @@ TEST(Sync, BatchedFormat) {
     testing::Database db;
     std::string json { "{\"clients\" : [{\"at\" : \"2018-11-07T20:52:31+00:00\",\"id\" : 43289164,\"name\" : \"client\",\"wid\" : 2817276}],\"flags\" : {\"badges.master_seen\" : \"2019-10-21T08:53:51.051Z\",\"has_seen_toggl_master_campaign\" : true,\"notifications.snowball_weekly_report_rollout\" : true,\"shopify_discount_enabled\" : false,\"snowball_detailed_report_rollout\" : true,\"snowball_summary_report_rollout\" : true},\"preferences\" : {\"CollapseTimeEntries\" : true,\"alpha_features\" : [{\"code\" : \"snowball_projects_list\",\"enabled\" : true},{\"code\" : \"snowball_teams\",\"enabled\" : true},{\"code\" : \"snowball_project_teams\",\"enabled\" : true},{\"code\" : \"snowball_saved_reports\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_general\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_owner\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_alerts\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_reminders\",\"enabled\" : true},{\"code\" : \"snowball_workspace_creation\",\"enabled\" : true},{\"code\" : \"snowball_view_shared_report\",\"enabled\" : true},{\"code\" : \"snowball_project_edit\",\"enabled\" : true},{\"code\" : \"snowball_settings\",\"enabled\" : true},{\"code\" : \"snowball_weekly_report\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_integrations\",\"enabled\" : false},{\"code\" : \"snowball_detailed_report\",\"enabled\" : false},{\"code\" : \"snowball_clients\",\"enabled\" : true},{\"code\" : \"snowball_workspace_settings_import\",\"enabled\" : false},{\"code\" : \"snowball_profile\",\"enabled\" : true},{\"code\" : \"mobile_sync_client\",\"enabled\" : false},{\"code\" : \"snowball_dashboard\",\"enabled\" : false},{\"code\" : \"new_react_router\",\"enabled\" : false},{\"code\" : \"web_sync_client\",\"enabled\" : false},{\"code\" : \"alpha_program\",\"enabled\" : false},{\"code\" : \"dekstop_sync_client\",\"enabled\" : false},{\"code\" : \"snowball_tags\",\"enabled\" : true},{\"code\" : \"single_sign_on\",\"enabled\" : false},{\"code\" : \"calendar_view\",\"enabled\" : false},{\"code\" : \"snowball_project_tasks\",\"enabled\" : true},{\"code\" : \"snowball_i18n\",\"enabled\" : false}],\"date_format\" : \"MM/DD/YYYY\",\"duration_format\" : \"improved\",\"record_timeline\" : true,\"send_product_emails\" : true,\"send_timer_notifications\" : true,\"send_weekly_report\" : true,\"timeofday_format\" : \"h:mm A\"},\"projects\" : [{\"active\" : true,\"actual_hours\" : 362,\"at\" : \"2019-09-18T12:31:25+00:00\",\"auto_estimates\" : null,\"billable\" : null,\"cid\" : 43289164,\"client_id\" : 43289164,\"color\" : \"#06aaf5\",\"created_at\" : \"2019-09-18T12:31:25+00:00\",\"currency\" : null,\"estimated_hours\" : null,\"id\" : 154073509,\"is_private\" : true,\"name\" : \"project\",\"rate\" : null,\"server_deleted_at\" : null,\"template\" : null,\"wid\" : 2817276,\"workspace_id\" : 2817276}],\"server_time\" : 1590592101,\"tags\" : [{\"at\" : \"2019-10-18T10:08:01.693372Z\",\"id\" : 6892625,\"name\" : \"tag\",\"workspace_id\" : 2817276}],\"tasks\" : [],\"time_entries\" : [{\"at\" : \"2020-05-27T15:40:37+00:00\",\"billable\" : false,\"description\" : \"time entry\",\"duration\" : 415,\"duronly\" : false,\"id\" : 1563187599,\"project_id\" : null,\"server_deleted_at\" : null,\"start\" : \"2020-05-27T15:33:42+00:00\",\"stop\" : \"2020-05-27T15:40:37.000000Z\",\"tag_ids\" : null,\"tags\" : null,\"task_id\" : null,\"uid\" : 4187712,\"user_id\" : 4187712,\"wid\" : 2817276,\"workspace_id\" : 2817276}],\"user\" : {\"api_token\" : \"token\",\"at\" : \"2020-05-27T15:08:21.468625Z\",\"beginning_of_week\" : 1,\"country_id\" : 59,\"created_at\" : \"2018-06-24T17:56:16.075815Z\",\"default_workspace_id\" : 2817276,\"email\" : \"m@rtinbriza.cz\",\"fullname\" : \"M\",\"has_password\" : true,\"id\" : 4187712,\"image_url\" : \"https://assets.toggl.com/images/profile.png\",\"intercom_hash\" : \"33ad107c55cc9f8e89b0b1940812194b9441f742771f0f3be14bf329f41f8f9b\",\"oauth_providers\" : [ \"google\" ],\"openid_email\" : \"m@rtinbriza.cz\",\"openid_enabled\" : true,\"timezone\" : \"Europe/Warsaw\",\"updated_at\" : \"2019-04-08T11:08:37.90838Z\"},\"workspace_features\" : [{\"features\" : [{\"enabled\" : true,\"feature_id\" : 0,\"name\" : \"free\"},{\"enabled\" : false,\"feature_id\" : 13,\"name\" : \"pro\"},{\"enabled\" : false,\"feature_id\" : 15,\"name\" : \"business\"},{\"enabled\" : false,\"feature_id\" : 50,\"name\" : \"scheduled_reports\"},{\"enabled\" : false,\"feature_id\" : 51,\"name\" : \"time_audits\"},{\"enabled\" : false,\"feature_id\" : 52,\"name\" : \"locking_time_entries\"},{\"enabled\" : false,\"feature_id\" : 53,\"name\" : \"edit_team_member_time_entries\"},{\"enabled\" : false,\"feature_id\" : 54,\"name\" : \"edit_team_member_profile\"},{\"enabled\" : false,\"feature_id\" : 55,\"name\" : \"tracking_reminders\"},{\"enabled\" : false,\"feature_id\" : 56,\"name\" : \"time_entry_constraints\"},{\"enabled\" : false,\"feature_id\" : 57,\"name\" : \"priority_support\"},{\"enabled\" : false,\"feature_id\" : 58,\"name\" : \"labour_cost\"},{\"enabled\" : false,\"feature_id\" : 59,\"name\" : \"report_employee_profitability\"},{\"enabled\" : false,\"feature_id\" : 60,\"name\" : \"report_project_profitability\"},{\"enabled\" : false,\"feature_id\" : 61,\"name\" : \"report_comparative\"},{\"enabled\" : false,\"feature_id\" : 62,\"name\" : \"report_data_trends\"},{\"enabled\" : false,\"feature_id\" : 63,\"name\" : \"report_export_xlsx\"},{\"enabled\" : false,\"feature_id\" : 64,\"name\" : \"tasks\"},{\"enabled\" : false,\"feature_id\" : 65,\"name\" : \"project_dashboard\"}],\"workspace_id\" : 2817276}],\"workspaces\" : [{\"admin\" : true,\"api_token\" : \"token\",\"at\" : \"2018-09-01T08:27:56+00:00\",\"business_ws\" : false,\"csv_upload\" : null,\"default_currency\" : \"USD\",\"default_hourly_rate\" : 0,\"ical_enabled\" : true,\"ical_url\" : \"/ical/workspace_user/cf8775d2110d5d874ffa633434c901bd\",\"id\" : 2817276,\"logo_url\" : \"https://assets.toggl.com/images/workspace.jpg\",\"name\" : \"workspace\",\"only_admins_may_create_projects\" : false,\"only_admins_see_billable_rates\" : false,\"only_admins_see_team_dashboard\" : false,\"premium\" : true,\"profile\" : 0,\"projects_billable_by_default\" : true,\"rounding\" : 1,\"rounding_minutes\" : 0,\"server_deleted_at\" : null,\"subscription\" : null,\"suspended_at\" : null}]}" };
     User user;
-    error err = user.LoadUserAndRelatedDataFromJSONString(json, false);
+    error err = user.LoadUserAndRelatedDataFromJSONString(json, false, true);
     ASSERT_EQ(err, noError);
 
     ASSERT_EQ(user.Email(), "m@rtinbriza.cz");
