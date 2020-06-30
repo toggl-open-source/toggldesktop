@@ -41,7 +41,7 @@ void Client::SetWID(Poco::UInt64 value) {
         SetDirty();
 }
 
-void Client::LoadFromJSON(Json::Value data) {
+void Client::LoadFromJSON(const Json::Value &data) {
     SetID(data["id"].asUInt64());
     SetName(data["name"].asString());
     if (data.isMember("wid"))

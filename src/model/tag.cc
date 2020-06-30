@@ -28,7 +28,7 @@ void Tag::SetName(const std::string &value) {
         SetDirty();
 }
 
-void Tag::LoadFromJSON(Json::Value data) {
+void Tag::LoadFromJSON(const Json::Value &data) {
     SetID(data["id"].asUInt64());
     SetName(data["name"].asString());
     if (data.isMember("wid"))
