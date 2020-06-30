@@ -396,6 +396,36 @@ bool TimeEntry::IsToday() const {
 }
 
 void TimeEntry::LoadFromJSON(const Json::Value &data, bool syncServer) {
+    // Helper function to convert a string value to a timestamp
+    auto convertTimeString = [](const Json::Value &json) -> Poco::Int64 {
+        return Formatter::Parse8601(json.asString());
+    };
+    // Function that checks the JSON for the field in question and updates the property according to both sync server and legacy specs
+    auto updateMergeablePropertyConvert = [this, &data, &syncServer](const std::string &field, auto &property, auto &convert) -> bool {
+        // no member -> no update
+        if (!data.isMember(field))
+            return false;
+        // extract the value using the helper in util/json or any other supplied conversion function
+        auto serverValue = convert(data[field]);
+        // if we're using the sync server and the previous value is the same as what server has, don't change anything
+        if (syncServer && serverValue == property.GetPrevious())
+            return true;
+        // now if the current version is different from the server value, we need to update it
+        if (serverValue != property.Get()) {
+            property.Set(std::move(serverValue), false);
+            SetDirty();
+        }
+        return true;
+    };
+    // This is just a wrapper so we don't have to supply JsonHelper::convert<T> for each call. It determines the type of the property automatically.
+    auto updateMergeableProperty = [&updateMergeablePropertyConvert](const std::string &field, auto &property) -> bool {
+        // decltype(property) gets us Property<T>&
+        // std::remove_reference removes the reference -> Property<T>
+        // Then we need to actually access the Property<T> type and use our own value_type to get T
+        using type = typename std::remove_reference<decltype(property)>::type::value_type;
+        return updateMergeablePropertyConvert(field, property, JsonHelper::convert<type>);
+    };
+
     // No ui_modified_at in server responses.
     // Compare updated_at with ui_modified_at to see if ui has been changed
     Json::Value at = data["at"];
@@ -418,16 +448,7 @@ void TimeEntry::LoadFromJSON(const Json::Value &data, bool syncServer) {
         return;
     }
 
-    if (data.isMember("tags")) {
-        loadTagsFromJSON(data["tags"]);
-    }
-
-    if (data.isMember("created_with")) {
-        SetCreatedWith(data["created_with"].asString());
-    }
-
-    SetDescription(data["description"].asString(), false);
-
+    // WID should be static
     if (data.isMember("wid")) {
         SetWID(data["wid"].asUInt64());
     } else if (data.isMember("workspace_id")) {
@@ -435,24 +456,22 @@ void TimeEntry::LoadFromJSON(const Json::Value &data, bool syncServer) {
     } else {
         SetWID(0);
     }
-    if (data.isMember("pid")) {
-        SetPID(data["pid"].asUInt64(), false);
-    } else if (data.isMember("project_id")) {
-        SetPID(data["project_id"].asUInt64(), false);
-    } else {
-        SetPID(0, false);
-    }
-    if (data.isMember("tid")) {
-        SetTID(data["tid"].asUInt64(), false);
-    } else if (data.isMember("task_id")) {
-        SetTID(data["task_id"].asUInt64(), false);
-    } else {
-        SetTID(0, false);
-    }
-    SetStartString(data["start"].asString(), false);
-    SetStopString(data["stop"].asString(), false);
-    SetDurationInSeconds(data["duration"].asInt64(), false);
-    SetBillable(data["billable"].asBool(), false);
+
+    updateMergeableProperty("tags", TagNames);
+    updateMergeableProperty("created_with", CreatedWith);
+    updateMergeableProperty("description", Description);
+    if (!updateMergeableProperty("project_id", PID))
+        if (!updateMergeableProperty("pid", PID))
+            SetPID(0, false);
+    if (!updateMergeableProperty("task_id", TID))
+        if (!updateMergeableProperty("tid", TID))
+            SetTID(0, false);
+    updateMergeableProperty("billable", Billable);
+    updateMergeableProperty("duration", DurationInSeconds);
+    updateMergeablePropertyConvert("start", StartTime, convertTimeString);
+    updateMergeablePropertyConvert("stop", StopTime, convertTimeString);
+
+    // These properties are not sync-server-mergeable
     SetDurOnly(data["duronly"].asBool());
     SetUpdatedAtString(data["at"].asString());
 
