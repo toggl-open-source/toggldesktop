@@ -64,7 +64,7 @@ void Workspace::SetLockedTime(time_t value) {
     }
 }
 
-void Workspace::LoadFromJSON(Json::Value n) {
+void Workspace::LoadFromJSON(const Json::Value &n) {
     SetID(n["id"].asUInt64());
     SetName(n["name"].asString());
     SetPremium(n["premium"].asBool());

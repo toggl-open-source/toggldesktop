@@ -44,7 +44,7 @@ void Task::SetActive(bool value) {
     }
 }
 
-void Task::LoadFromJSON(Json::Value data) {
+void Task::LoadFromJSON(const Json::Value &data) {
     SetID(data["id"].asUInt64());
     SetName(data["name"].asString());
     if (data.isMember("pid"))
