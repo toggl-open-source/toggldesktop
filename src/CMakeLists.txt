@@ -39,6 +39,7 @@ set(LIBRARY_SOURCE_FILES
     util/logger.cc
     util/random.cc
     util/rectangle.cc
+    util/json.cc
 
     database/database.cc
     database/migrations.cc

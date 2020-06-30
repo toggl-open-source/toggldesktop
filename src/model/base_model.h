@@ -14,6 +14,7 @@
 #include "types.h"
 #include "util/logger.h"
 #include "util/property.h"
+#include "util/json.h"
 
 #include <Poco/Types.h>
 
