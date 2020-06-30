@@ -280,8 +280,8 @@ TEST(Database, SaveAndLoadCurrentAPIToken) {
     ASSERT_EQ(Poco::UInt64(0), uid_from_db);
 }
 
-Json::Value jsonStringToValue(const std::string json_string) {
-    Json::Value root;
+Json::Value &jsonStringToValue(const std::string json_string) {
+    static thread_local Json::Value root;
     Json::Reader reader;
     reader.parse(json_string, root);
     return root;
@@ -1740,30 +1740,6 @@ TEST(User, DurationFormat) {
     u.SetDurationFormat("decimal");
     ASSERT_EQ("decimal", u.DurationFormat());
     ASSERT_EQ("decimal", Formatter::DurationFormat);
-}
-
-TEST(BaseModel, LoadFromDataStringWithInvalidJSON) {
-    User u;
-    error err = u.LoadFromDataString("foobar");
-    ASSERT_NE(noError, err);
-}
-
-TEST(BaseModel, LoadFromDataString) {
-    User u;
-    error err = u.LoadFromDataString(loadTestData());
-    ASSERT_EQ(noError, err);
-}
-
-TEST(BaseModel, LoadFromJSONStringWithEmptyString) {
-    User u;
-    u.LoadFromJSON(jsonStringToValue(""));
-    ASSERT_TRUE(true);
-}
-
-TEST(BaseModel, LoadFromJSONStringWithInvalidString) {
-    User u;
-    u.LoadFromJSON(jsonStringToValue("foobar"));
-    ASSERT_TRUE(true);
 }
 
 TEST(BaseModel, BatchUpdateJSONWithoutGUID) {

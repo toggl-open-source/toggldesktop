@@ -387,7 +387,7 @@ bool TimeEntry::IsToday() const {
            today.day() == datetime.day();
 }
 
-void TimeEntry::LoadFromJSON(Json::Value data) {
+void TimeEntry::LoadFromJSON(const Json::Value &data) {
     // No ui_modified_at in server responses.
     // Compare updated_at with ui_modified_at to see if ui has been changed
     Json::Value at = data["at"];
