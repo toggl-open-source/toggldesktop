@@ -19,7 +19,6 @@
 		B8B6EC6D244616B10008FA32 /* model_change.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC3E244616AF0008FA32 /* model_change.h */; };
 		B8B6EC6E244616B10008FA32 /* get_focused_window_mac.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6EC3F244616AF0008FA32 /* get_focused_window_mac.cc */; };
 		B8B6EC70244616B10008FA32 /* types.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC41244616AF0008FA32 /* types.h */; };
-		B8B6EC71244616B10008FA32 /* batch_update_result.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC42244616AF0008FA32 /* batch_update_result.h */; };
 		B8B6EC72244616B10008FA32 /* urls.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC43244616AF0008FA32 /* urls.h */; };
 		B8B6EC73244616B10008FA32 /* proxy.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC44244616AF0008FA32 /* proxy.h */; };
 		B8B6EC74244616B10008FA32 /* help_article.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC45244616AF0008FA32 /* help_article.h */; };
@@ -44,7 +43,6 @@
 		B8B6EC88244616B10008FA32 /* error.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC59244616B00008FA32 /* error.h */; };
 		B8B6EC89244616B10008FA32 /* help_article.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6EC5A244616B00008FA32 /* help_article.cc */; };
 		B8B6EC8A244616B10008FA32 /* idle.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC5B244616B00008FA32 /* idle.h */; };
-		B8B6EC8B244616B10008FA32 /* batch_update_result.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6EC5C244616B10008FA32 /* batch_update_result.cc */; };
 		B8B6EC8C244616B10008FA32 /* window_change_recorder.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC5D244616B10008FA32 /* window_change_recorder.h */; };
 		B8B6EC8D244616B10008FA32 /* const.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC5E244616B10008FA32 /* const.h */; };
 		B8B6EC8E244616B10008FA32 /* window_change_recorder.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6EC5F244616B10008FA32 /* window_change_recorder.cc */; };
@@ -158,7 +156,6 @@
 		B8B6EC3E244616AF0008FA32 /* model_change.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = model_change.h; sourceTree = "<group>"; };
 		B8B6EC3F244616AF0008FA32 /* get_focused_window_mac.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = get_focused_window_mac.cc; sourceTree = "<group>"; };
 		B8B6EC41244616AF0008FA32 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
-		B8B6EC42244616AF0008FA32 /* batch_update_result.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = batch_update_result.h; sourceTree = "<group>"; };
 		B8B6EC43244616AF0008FA32 /* urls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = urls.h; sourceTree = "<group>"; };
 		B8B6EC44244616AF0008FA32 /* proxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = proxy.h; sourceTree = "<group>"; };
 		B8B6EC45244616AF0008FA32 /* help_article.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = help_article.h; sourceTree = "<group>"; };
@@ -183,7 +180,6 @@
 		B8B6EC59244616B00008FA32 /* error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = error.h; sourceTree = "<group>"; };
 		B8B6EC5A244616B00008FA32 /* help_article.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = help_article.cc; sourceTree = "<group>"; };
 		B8B6EC5B244616B00008FA32 /* idle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = idle.h; sourceTree = "<group>"; };
-		B8B6EC5C244616B10008FA32 /* batch_update_result.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = batch_update_result.cc; sourceTree = "<group>"; };
 		B8B6EC5D244616B10008FA32 /* window_change_recorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = window_change_recorder.h; sourceTree = "<group>"; };
 		B8B6EC5E244616B10008FA32 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = const.h; sourceTree = "<group>"; };
 		B8B6EC5F244616B10008FA32 /* window_change_recorder.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = window_change_recorder.cc; sourceTree = "<group>"; };
@@ -415,8 +411,6 @@
 				B8B6EC95244616DA0008FA32 /* model */,
 				B8B6EC51244616B00008FA32 /* analytics.cc */,
 				B8B6EC38244616AE0008FA32 /* analytics.h */,
-				B8B6EC5C244616B10008FA32 /* batch_update_result.cc */,
-				B8B6EC42244616AF0008FA32 /* batch_update_result.h */,
 				B8B6EC5E244616B10008FA32 /* const.h */,
 				B8B6EC64244616B10008FA32 /* context.cc */,
 				B8B6EC47244616AF0008FA32 /* context.h */,
@@ -500,7 +494,6 @@
 				B8B6EC78244616B10008FA32 /* websocket_client.h in Headers */,
 				B8B6EC72244616B10008FA32 /* urls.h in Headers */,
 				B8B6ECC5244617000008FA32 /* client.h in Headers */,
-				B8B6EC71244616B10008FA32 /* batch_update_result.h in Headers */,
 				B8B6ECBF244617000008FA32 /* settings.h in Headers */,
 				B8B6EC66244616B10008FA32 /* timeline_notifications.h in Headers */,
 				B8B6EC7A244616B10008FA32 /* platforminfo.h in Headers */,
@@ -621,7 +614,6 @@
 				BAA2C31B2477AF23005FBBE9 /* color_convert.cc in Sources */,
 				B8B6EC79244616B10008FA32 /* related_data.cc in Sources */,
 				B8B6EC69244616B10008FA32 /* model_change.cc in Sources */,
-				B8B6EC8B244616B10008FA32 /* batch_update_result.cc in Sources */,
 				B8B6EC7D244616B10008FA32 /* netconf.cc in Sources */,
 				B8B6EC6E244616B10008FA32 /* get_focused_window_mac.cc in Sources */,
 				B8B6ECC1244617000008FA32 /* timeline_event.cc in Sources */,

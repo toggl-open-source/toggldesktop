@@ -19,8 +19,6 @@
 
 namespace toggl {
 
-class BatchUpdateResult;
-
 class TOGGL_INTERNAL_EXPORT BaseModel {
  public:
     BaseModel() {}
@@ -116,8 +114,6 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     error LoadFromDataString(const std::string &);
 
     void Delete();
-
-    error ApplyBatchUpdateResult(BatchUpdateResult * const);
 
     // Convert model JSON into batch update format.
     error BatchUpdateJSON(Json::Value *result) const;

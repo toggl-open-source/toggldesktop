@@ -438,7 +438,6 @@
     <ClInclude Include="..\..\..\autocomplete_item.h" />
     <ClInclude Include="..\..\..\model\autotracker.h" />
     <ClInclude Include="..\..\..\model\base_model.h" />
-    <ClInclude Include="..\..\..\batch_update_result.h" />
     <ClInclude Include="..\..\..\model\client.h" />
     <ClInclude Include="..\..\..\const.h" />
     <ClInclude Include="..\..\..\context.h" />
@@ -487,7 +486,6 @@
     <ClCompile Include="..\..\..\analytics.cc" />
     <ClCompile Include="..\..\..\model\autotracker.cc" />
     <ClCompile Include="..\..\..\model\base_model.cc" />
-    <ClCompile Include="..\..\..\batch_update_result.cc" />
     <ClCompile Include="..\..\..\model\client.cc" />
     <ClCompile Include="..\..\..\context.cc" />
     <ClCompile Include="..\..\..\util\custom_error_handler.cc" />

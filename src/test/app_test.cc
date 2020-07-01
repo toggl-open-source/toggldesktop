@@ -1801,46 +1801,6 @@ TEST(BaseModel, BatchUpdateJSONForPut) {
     ASSERT_EQ(noError, err);
 }
 
-TEST(BatchUpdateResult, Error) {
-    BatchUpdateResult b;
-    ASSERT_EQ(noError, b.Error());
-}
-
-TEST(BatchUpdateResult, ErrorWithStatusCode200) {
-    BatchUpdateResult b;
-    b.StatusCode = 200;
-    ASSERT_EQ(noError, b.Error());
-}
-
-TEST(BatchUpdateResult, ErrorWithStatusCode400) {
-    BatchUpdateResult b;
-    b.StatusCode = 400;
-    b.Body = "null";
-    ASSERT_NE(noError, b.Error());
-}
-
-TEST(BatchUpdateResult, String) {
-    BatchUpdateResult b;
-    ASSERT_NE("", b.String());
-}
-
-TEST(BatchUpdateResult, ResourceIsGone) {
-    BatchUpdateResult b;
-    ASSERT_FALSE(b.ResourceIsGone());
-}
-
-TEST(BatchUpdateResult, ResourceIsGoneBecauseOfDeleteMethod) {
-    BatchUpdateResult b;
-    b.Method = "DELETE";
-    ASSERT_TRUE(b.ResourceIsGone());
-}
-
-TEST(BatchUpdateResult, ResourceIsGoneBecauseOf404) {
-    BatchUpdateResult b;
-    b.StatusCode = 404;
-    ASSERT_TRUE(b.ResourceIsGone());
-}
-
 TEST(Proxy, IsConfigured) {
     Proxy p;
     ASSERT_FALSE(p.IsConfigured());
