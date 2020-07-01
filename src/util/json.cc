@@ -15,4 +15,24 @@ std::vector<std::string> JsonHelper::convert(const Json::Value &json) {
     return ret;
 }
 
+template<>
+Poco::UInt64 JsonHelper::convert(const Json::Value& json) {
+    return json.asUInt64();
+}
+
+template<>
+Poco::Int64 JsonHelper::convert(const Json::Value& json) {
+    return json.asInt64();
+}
+
+template<>
+std::string JsonHelper::convert(const Json::Value& json) {
+    return json.asString();
+}
+
+template<>
+bool JsonHelper::convert(const Json::Value& json) {
+    return json.asBool();
+}
+
 } // namespace toggl

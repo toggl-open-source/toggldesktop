@@ -6,17 +6,20 @@
 #define JSON_H
 
 #include <json/json.h>
+#include <Poco/Types.h>
 
 namespace toggl {
 
 class JsonHelper {
 public:
     template <class T>
-    static T convert(const ::Json::Value &json) {
-        return json.as<T>();
-    }
+    static T convert(const ::Json::Value &json);
 };
 
+template <> Poco::Int64 JsonHelper::convert(const ::Json::Value& json);
+template <> Poco::UInt64 JsonHelper::convert(const ::Json::Value& json);
+template <> std::string JsonHelper::convert(const ::Json::Value& json);
+template <> bool JsonHelper::convert(const ::Json::Value& json);
 template <> std::vector<std::string> JsonHelper::convert(const ::Json::Value &json);
 
 } // namespace toggl
