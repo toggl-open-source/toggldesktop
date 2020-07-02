@@ -219,6 +219,7 @@ jobs:
         cp Certificate.pfx dist/windows
       shell: bash
     - name: Set version
+      if: github.event_name == 'release'
       shell: bash
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
@@ -251,15 +252,16 @@ jobs:
       run: |
         ./dist/windows/scripts/sign.sh cert_password=${{ secrets.CERT_WINDOWS_PASSWORD }}
       shell: bash
-    - name: Install NSIS
-      if: github.event_name == 'release'
-      run: |
-        choco install nsis -y
     - name: Create x86 installer
-      if: github.event_name == 'release'
       run: |
         cd dist/windows
         makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglDesktopInstaller-x86.nsi
+    - name: Upload artifacts to GitHub
+      if: github.event_name != 'release'
+      uses: actions/upload-artifact@v2
+      with:
+        name: TogglDesktopInstaller-x86.exe
+        path: dist\windows\TogglDesktopInstaller.exe    
     - name: Sign the installer
       if: github.event_name == 'release'
       shell: cmd
@@ -271,7 +273,6 @@ jobs:
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller.exe" renameto="TogglDesktopInstaller-${TAG_NAME/v/}.exe"
       shell: bash
-
   windows-64bit:
     runs-on: windows-2019
     steps:
@@ -285,6 +286,7 @@ jobs:
         cp Certificate.pfx dist/windows
       shell: bash
     - name: Set version
+      if: github.event_name == 'release'
       shell: bash
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
@@ -317,15 +319,16 @@ jobs:
       run: |
         ./dist/windows/scripts/sign.sh cert_password=${{ secrets.CERT_WINDOWS_PASSWORD }}
       shell: bash
-    - name: Install NSIS
-      if: github.event_name == 'release'
-      run: |
-        choco install nsis -y
     - name: Make x64 installer
-      if: github.event_name == 'release'
       run: |
         cd dist/windows
         makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglDesktopInstaller-x64.nsi
+    - name: Upload artifacts to GitHub
+      if: github.event_name != 'release'
+      uses: actions/upload-artifact@v2
+      with:
+        name: TogglDesktopInstaller-x64.exe
+        path: dist\windows\TogglDesktopInstaller-x64.exe
     - name: Sign the installer
       if: github.event_name == 'release'
       shell: cmd
