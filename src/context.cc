@@ -3239,6 +3239,10 @@ error Context::updateTimeEntryProject(
         p = user_->related.ProjectByGUID(project_guid);
     }
 
+    if (isUsingSyncServer() && p && p->WID() != te->WID()) {
+        return displayError("This version of Toggl Desktop does not support changing time entry workspaces.");
+    }
+
     if (p && !canChangeProjectTo(te, p)) {
         return displayError(error(
             "Cannot change project: would end up with locked time entry"));
@@ -4933,6 +4937,10 @@ void Context::syncerActivityWrapper() {
                         }
                     }
                 }
+                if (state == BATCHED)
+                    is_using_sync_server_ = true;
+                else
+                    is_using_sync_server_ = false;
             }
             // it is a HTTP error in disguise which means the server is alive, fallback to LEGACY
             else if (resp.err == HTTPClient::StatusCodeToError(resp.status_code)) {
@@ -6826,6 +6834,10 @@ bool Context::checkIfSkipPomodoro(TimeEntry *te) {
         }
     }
     return false;
+}
+
+bool Context::isUsingSyncServer() const {
+    return is_using_sync_server_;
 }
 
 void Context::TrackTimelineMenuContext(const TimelineMenuContextType type) {
