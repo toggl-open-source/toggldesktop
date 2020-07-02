@@ -318,19 +318,24 @@ jobs:
         ./dist/windows/scripts/sign.sh cert_password=${{ secrets.CERT_WINDOWS_PASSWORD }}
       shell: bash
     - name: Install NSIS
-      if: github.event_name == 'release'
+      #if: github.event_name == 'release'
       run: |
         choco install nsis -y
     - name: Make x64 installer
-      if: github.event_name == 'release'
+      #if: github.event_name == 'release'
       run: |
         cd dist/windows
         makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglDesktopInstaller-x64.nsi
     - name: Sign the installer
-      if: github.event_name == 'release'
+      #if: github.event_name == 'release'
       shell: cmd
       run: |
         "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx -p "${{ secrets.CERT_WINDOWS_PASSWORD }}" dist\windows\TogglDesktopInstaller-x64.exe
+    - name: Upload installer as artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: installer-x64
+        path: dist/windows/TogglDesktopInstaller-x64.exe
     - name: Upload to GitHub
       if: github.event_name == 'release'
       run: |
