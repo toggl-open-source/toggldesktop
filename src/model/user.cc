@@ -36,6 +36,59 @@
 
 namespace toggl {
 
+template<class T>
+void deleteZombies(
+    const std::vector<T> &list,
+    const std::set<Poco::UInt64> &alive) {
+    for (size_t i = 0; i < list.size(); ++i) {
+        BaseModel *model = list[i];
+        if (!model->ID()) {
+            // If model has no server-assigned ID, it's not even
+            // pushed to server. So actually we don't know if it's
+            // a zombie or not. Ignore:
+            continue;
+        }
+        if (alive.end() == alive.find(model->ID())) {
+            model->MarkAsDeletedOnServer();
+        }
+    }
+}
+
+template <typename T>
+void deleteRelatedModelsWithWorkspace(Poco::UInt64 wid,
+                                      std::vector<T *> *list) {
+    typedef typename std::vector<T *>::iterator iterator;
+    for (iterator it = list->begin(); it != list->end(); ++it) {
+        T *model = *it;
+        if (model->WID() == wid) {
+            model->MarkAsDeletedOnServer();
+        }
+    }
+}
+
+template <>
+void removeProjectFromRelatedModels(Poco::UInt64 pid,
+                                    std::vector<TimeEntry *> *list) {
+    for (auto it = list->begin(); it != list->end(); ++it) {
+        TimeEntry *model = *it;
+        if (model->PID() == pid) {
+            model->SetPID(0, true);
+        }
+    }
+}
+
+template <typename T>
+void removeProjectFromRelatedModels(Poco::UInt64 pid,
+                                    std::vector<T *> *list) {
+    for (auto it = list->begin(); it != list->end(); ++it) {
+        T *model = *it;
+        if (model->PID() == pid) {
+            model->SetPID(0);
+        }
+    }
+}
+
+
 User::~User() {
     related.Clear();
 }
@@ -178,29 +231,29 @@ TimeEntry *User::Start(
 
     TimeEntry *te = new TimeEntry();
     te->SetCreatedWith(HTTPClient::Config.UserAgent());
-    te->SetDescription(description);
+    te->SetDescription(description, false);
     te->SetUID(ID());
-    te->SetPID(project_id);
-    te->SetProjectGUID(project_guid);
-    te->SetTID(task_id);
-    te->SetTags(tags);
+    te->SetPID(project_id, false);
+    te->SetProjectGUID(project_guid, false);
+    te->SetTID(task_id, false);
+    te->SetTags(tags, false);
 
     if (started == 0 && ended == 0) {
         if (!duration.empty()) {
             int seconds = Formatter::ParseDurationString(duration);
-            te->SetDurationInSeconds(seconds);
-            te->SetStopTime(now);
-            te->SetStartTime(te->StopTime() - te->DurationInSeconds());
+            te->SetDurationInSeconds(seconds, false);
+            te->SetStopTime(now, false);
+            te->SetStartTime(te->StopTime() - te->DurationInSeconds(), false);
         } else {
-            te->SetDurationInSeconds(-now);
+            te->SetDurationInSeconds(-now, false);
             // dont set Stop, TE is running
-            te->SetStartTime(now);
+            te->SetStartTime(now, false);
         }
     } else {
         int seconds = int(ended - started);
-        te->SetDurationInSeconds(seconds);
-        te->SetStopTime(ended);
-        te->SetStartTime(started);
+        te->SetDurationInSeconds(seconds, false);
+        te->SetStopTime(ended, false);
+        te->SetStartTime(started, false);
     }
 
     // Try to set workspace ID from project
@@ -212,7 +265,7 @@ TimeEntry *User::Start(
     }
     if (p) {
         te->SetWID(p->WID());
-        te->SetBillable(p->Billable());
+        te->SetBillable(p->Billable(), false);
     }
 
     // Try to set workspace ID from task
@@ -261,22 +314,22 @@ TimeEntry *User::Continue(
       p = related.ProjectByGUID(existing->ProjectGUID());
     }
     if (p && p->Active()) {
-      result->SetPID(existing->PID());
-      result->SetProjectGUID(existing->ProjectGUID());
-      result->SetTID(existing->TID());
+      result->SetPID(existing->PID(), false);
+      result->SetProjectGUID(existing->ProjectGUID(), false);
+      result->SetTID(existing->TID(), false);
     }
 
     // Set all time entry values
     result->SetCreatedWith(HTTPClient::Config.UserAgent());
-    result->SetDescription(existing->Description());
+    result->SetDescription(existing->Description(), false);
     result->SetWID(existing->WID());
-    result->SetBillable(existing->Billable());
-    result->SetTags(existing->Tags());
+    result->SetBillable(existing->Billable(), false);
+    result->SetTags(existing->Tags(), false);
     result->SetUID(ID());
-    result->SetStartTime(now);
+    result->SetStartTime(now, false);
 
     if (!manual_mode) {
-        result->SetDurationInSeconds(-now);
+        result->SetDurationInSeconds(-now, false);
     }
 
     result->SetCreatedWith(HTTPClient::Config.UserAgent());
@@ -468,8 +521,8 @@ TimeEntry *User::DiscardTimeAt(
         TimeEntry *split = new TimeEntry();
         split->SetCreatedWith(HTTPClient::Config.UserAgent());
         split->SetUID(ID());
-        split->SetStartTime(at);
-        split->SetDurationInSeconds(-at);
+        split->SetStartTime(at, false);
+        split->SetDurationInSeconds(-at, false);
         split->SetUIModified();
         split->SetWID(te->WID());
         related.pushBackTimeEntry(split);
@@ -545,7 +598,7 @@ void User::RemoveProjectFromRelatedModels(Poco::UInt64 pid) {
 void User::RemoveTaskFromRelatedModels(Poco::UInt64 tid) {
     related.forEachTimeEntries([&](TimeEntry *model) {
         if (model->TID() == tid) {
-            model->SetTID(0);
+            model->SetTID(0, false);
         }
     });
 }
@@ -1515,48 +1568,6 @@ std::string User::ModelName() const {
 
 std::string User::ModelURL() const {
     return "/api/v9/me";
-}
-
-template<class T>
-void deleteZombies(
-    const std::vector<T> &list,
-    const std::set<Poco::UInt64> &alive) {
-    for (size_t i = 0; i < list.size(); ++i) {
-        BaseModel *model = list[i];
-        if (!model->ID()) {
-            // If model has no server-assigned ID, it's not even
-            // pushed to server. So actually we don't know if it's
-            // a zombie or not. Ignore:
-            continue;
-        }
-        if (alive.end() == alive.find(model->ID())) {
-            model->MarkAsDeletedOnServer();
-        }
-    }
-}
-
-template <typename T>
-void deleteRelatedModelsWithWorkspace(Poco::UInt64 wid,
-                                      std::vector<T *> *list) {
-    typedef typename std::vector<T *>::iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); ++it) {
-        T *model = *it;
-        if (model->WID() == wid) {
-            model->MarkAsDeletedOnServer();
-        }
-    }
-}
-
-template <typename T>
-void removeProjectFromRelatedModels(Poco::UInt64 pid,
-                                    std::vector<T *> *list) {
-    typedef typename std::vector<T *>::iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); ++it) {
-        T *model = *it;
-        if (model->PID() == pid) {
-            model->SetPID(0);
-        }
-    }
 }
 
 }  // namespace toggl

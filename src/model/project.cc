@@ -194,7 +194,7 @@ Json::Value Project::SyncMetadata() const {
 Json::Value Project::SyncPayload() const {
     Json::Value result;
     if (NeedsPOST()) {
-        result["id"] = Json::Int64(ID());
+        result["id"] = Json::Int64(-LocalID());
         result["workspace_id"] = Json::Int64(WID());
     }
     if (NeedsPOST() || NeedsPUT()) {

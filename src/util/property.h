@@ -15,6 +15,8 @@ namespace toggl {
 template <class T>
 class Property {
 public:
+    typedef T value_type;
+
     Property(const T& value) {
         current_ = value;
         previous_ = value;

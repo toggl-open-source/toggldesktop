@@ -85,7 +85,7 @@ Json::Value Client::SyncMetadata() const {
 Json::Value Client::SyncPayload() const {
     Json::Value result;
     if (NeedsPOST()) {
-        result["id"] = Json::Int64(ID());
+        result["id"] = Json::Int64(-LocalID());
         result["wid"] = Json::Int64(WID());
     }
     if (NeedsPOST() || NeedsPUT()) {

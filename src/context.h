@@ -833,6 +833,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     TimeEntry *pomodoro_break_entry_;
 
+    bool is_using_sync_server_;
+
     // To cache grouped entries open/close status
     std::map<std::string, bool_t> entry_groups;
 
@@ -855,6 +857,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     Poco::Mutex onboarding_service_m_;
 
     bool checkIfSkipPomodoro(TimeEntry *te);
+
+    bool isUsingSyncServer() const;
 };
 void on_websocket_message(
     void *context,
