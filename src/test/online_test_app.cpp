@@ -60,6 +60,14 @@ std::string App::errorSinceLastTime() {
     return copy;
 }
 
+void *App::context() {
+    return context_;
+}
+
+void App::dispatch(bool waitForEvents) {
+    Dispatcher::dispatch(waitForEvents);
+}
+
 void App::getCountries() {
     toggl_get_countries(context_);
     return; // TODO for some reason this started freezing
@@ -129,36 +137,42 @@ const TimeEntry &App::runningTimeEntry() const {
 
 bool App::stop() {
     auto ret = toggl_stop(context_, 0);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::timeEntry_setDescription(const std::string &guid, const std::string &value) {
     auto ret = toggl_set_time_entry_description(context_, guid.c_str(), value.c_str());
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::timeEntry_setStart(const std::string &guid, const std::string &value) {
     auto ret = toggl_set_time_entry_start(context_, guid.c_str(), value.c_str());
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::timeEntry_setEnd(const std::string &guid, const std::string &value) {
     auto ret = toggl_set_time_entry_end(context_, guid.c_str(), value.c_str());
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::timeEntry_setDuration(const std::string &guid, const std::string &value) {
     auto ret = toggl_set_time_entry_duration(context_, guid.c_str(), value.c_str());
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::timeEntry_setBillable(const std::string &guid, bool value) {
     auto ret = toggl_set_time_entry_billable(context_, guid.c_str(), value);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
@@ -171,12 +185,14 @@ bool App::timeEntry_setTags(const std::string &guid, const std::list<std::string
             merged += "\t";
     }
     auto ret = toggl_set_time_entry_tags(context_, guid.c_str(), merged.c_str());
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::timeEntry_setDate(const std::string &guid, int64_t value) {
     auto ret = toggl_set_time_entry_date(context_, guid.c_str(), value);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
@@ -186,6 +202,7 @@ std::string App::client_create(const std::string &name) {
     std::string ret(str);
     free(str);
     auto oldSize = clients_.size();
+    toggl_sync(context_);
     while (!ret.empty() && clients_.size() == oldSize)
         Dispatcher::dispatch(!ret.empty());
     return ret;
@@ -195,138 +212,161 @@ std::string App::timeEntry_addProject(const std::string &teGuid, const std::stri
     char *str = toggl_add_project(context_, teGuid.c_str(), selectedWorkspace_.id_, 0, cGuid.c_str(), name.c_str(), 1, color.c_str());
     std::string ret(str);
     free(str);
+    toggl_sync(context_);
     Dispatcher::dispatch(!ret.empty());
     return ret;
 }
 
 bool App::timeEntry_setProject(const std::string &teGuid, const std::string &pGuid) {
     auto ret = toggl_set_time_entry_project(context_, teGuid.c_str(), 0, 0, pGuid.c_str());
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_remindDays(bool remind_mon, bool remind_tue, bool remind_wed, bool remind_thu, bool remind_fri, bool remind_sat, bool remind_sun) {
     auto ret = toggl_set_settings_remind_days(context_, remind_mon, remind_tue, remind_wed, remind_thu, remind_fri, remind_sat, remind_sun);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_remindTimes(const std::string &remind_starts, const std::string &remind_ends) {
     auto ret = toggl_set_settings_remind_times(context_, remind_starts.c_str(), remind_ends.c_str());
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_useIdleDetection(bool use_idle_detection) {
     auto ret = toggl_set_settings_use_idle_detection(context_, use_idle_detection);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_Autotrack(bool value) {
     auto ret = toggl_set_settings_autotrack(context_, value);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_openEditorOnShortcut(bool value) {
     auto ret = toggl_set_settings_open_editor_on_shortcut(context_, value);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_autodetectProxy(bool autodetect_proxy) {
     auto ret = toggl_set_settings_autodetect_proxy(context_, autodetect_proxy);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_menubarTimer(bool menubar_timer) {
     auto ret = toggl_set_settings_menubar_timer(context_, menubar_timer);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_menubarProject(bool menubar_project) {
     auto ret = toggl_set_settings_menubar_project(context_, menubar_project);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_dockIcon(bool dock_icon) {
     auto ret = toggl_set_settings_dock_icon(context_, dock_icon);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_onTop(bool on_top) {
     auto ret = toggl_set_settings_on_top(context_, on_top);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_reminder(bool reminder) {
     auto ret = toggl_set_settings_reminder(context_, reminder);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_pomodoro(bool pomodoro) {
     auto ret = toggl_set_settings_pomodoro(context_, pomodoro);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_pomodoroBreak(bool pomodoro_break) {
     auto ret = toggl_set_settings_pomodoro_break(context_, pomodoro_break);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_stopEntryOnShutdownSleep(bool stop_entry) {
     auto ret = toggl_set_settings_stop_entry_on_shutdown_sleep(context_, stop_entry);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_idleMinutes(uint64_t idle_minutes) {
     auto ret = toggl_set_settings_idle_minutes(context_, idle_minutes);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_focusOnShortcut(bool focus_on_shortcut) {
     auto ret = toggl_set_settings_focus_on_shortcut(context_, focus_on_shortcut);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_reminderMinutes(uint64_t reminder_minutes) {
     auto ret = toggl_set_settings_reminder_minutes(context_, reminder_minutes);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_pomodoroMinutes(uint64_t pomodoro_minutes) {
     auto ret = toggl_set_settings_pomodoro_minutes(context_, pomodoro_minutes);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_pomodoroBreakMinutes(uint64_t pomodoro_break_minutes) {
     auto ret = toggl_set_settings_pomodoro_break_minutes(context_, pomodoro_break_minutes);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_manualMode(bool manual_mode) {
     auto ret = toggl_set_settings_manual_mode(context_, manual_mode);
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
 
 bool App::settings_proxy(bool use_proxy, const std::string &proxy_host, uint64_t proxy_port, const std::string &proxy_username, const std::string &proxy_password) {
     auto ret = toggl_set_proxy_settings(context_, use_proxy, proxy_host.c_str(), proxy_port, proxy_username.c_str(), proxy_password.c_str());
+    toggl_sync(context_);
     Dispatcher::dispatch(ret);
     return ret;
 }
@@ -343,8 +383,16 @@ const std::set<Client> &App::clients() const {
     return clients_;
 }
 
+const std::set<Project> &App::projects() const {
+    return projects_;
+}
+
 const Settings &App::settings() const {
     return settings_;
+}
+
+const Workspace &App::workspace() const {
+    return selectedWorkspace_;
 }
 
 void test::App::on_app(bool open) {

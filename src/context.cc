@@ -4871,7 +4871,7 @@ void Context::syncerActivityWrapper() {
     };
 #else
     {
-        STARTUP
+        BATCHED
     };
 #endif
 

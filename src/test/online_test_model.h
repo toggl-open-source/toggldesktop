@@ -38,6 +38,15 @@ inline TestType oneFromView(LibType view) {
     return TestType {};
 }
 
+template <class Container>
+inline auto modelByGuid(Container &container, const std::string &guid) -> typename std::add_const<typename Container::value_type>::type * {
+    for (auto &i : container) {
+        if (i.guid_ == guid)
+            return &i;
+    }
+    return nullptr;
+}
+
 struct Model {
     Model(const std::string &name, uint64_t id = 0) : name_(name), id_(id) {}
     std::string name_;

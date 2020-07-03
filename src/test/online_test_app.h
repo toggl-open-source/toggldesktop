@@ -22,6 +22,11 @@ public:
 
     std::string errorSinceLastTime();
 
+    void *context();
+
+    // Helper for when the API is used directly from tests
+    void dispatch(bool waitForEvents);
+
     void getCountries();
 
     void uiStart();
@@ -75,7 +80,9 @@ public:
     const std::set<Country> &countries() const;
     const std::list<TimeEntry> &timeEntries() const;
     const std::set<Client> &clients() const;
+    const std::set<Project> &projects() const;
     const Settings &settings() const;
+    const Workspace &workspace() const;
 
 private:
     void *context_;

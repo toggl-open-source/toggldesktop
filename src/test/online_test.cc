@@ -393,3 +393,102 @@ TEST(Settings, ReadData) {
     ASSERT_EQ(testData.app->settings().proxyPassword_, "c");
     */
 }
+
+TEST(MultipleEntities, ClientProjectTimeEntry) {
+    int originalTimeEntries = testData.app->timeEntries().size();
+    int originalProjects = testData.app->projects().size();
+    int originalClients = testData.app->clients().size();
+
+    auto ctx = testData.app->context();
+    auto ws = testData.app->workspace().id_;
+
+    auto cGuid = toggl_create_client(ctx, ws, "MultipleEntities1 Client");
+    ASSERT_TRUE(cGuid); ASSERT_STRNE(cGuid, "");
+    auto teGuid = toggl_create_empty_time_entry(ctx, time(nullptr) - 100, time(nullptr));
+    ASSERT_TRUE(teGuid); ASSERT_STRNE(teGuid, "");
+    auto pGuid = toggl_add_project(ctx, teGuid, ws, 0, cGuid, "MultipleEntries 1 Project", true, "red");
+    ASSERT_TRUE(pGuid); ASSERT_STRNE(pGuid, "");
+
+    toggl_sync(ctx);
+    for (auto i = 0; i < 3; i++)
+        testData.app->dispatch(true);
+
+    ASSERT_EQ(testData.app->timeEntries().size(), originalTimeEntries + 1);
+    ASSERT_EQ(testData.app->projects().size(), originalProjects + 1);
+    ASSERT_EQ(testData.app->clients().size(), originalClients + 1);
+}
+
+TEST(MultipleEntities, ModifyMultipleEntries) {
+    int originalTimeEntries = testData.app->timeEntries().size();
+    int originalProjects = testData.app->projects().size();
+    int originalClients = testData.app->clients().size();
+
+    auto ctx = testData.app->context();
+
+    // Take some random TEs
+    auto teGuid1 = testData.app->timeEntries().front().guid_;
+    ASSERT_NE(teGuid1, "");
+    auto teGuid2 = testData.app->timeEntries().back().guid_;
+    ASSERT_NE(teGuid2, "");
+    ASSERT_NE(teGuid1, teGuid2);
+
+    // Rename them
+    std::string name1 = "MultipleEntities Changed TE 1";
+    std::string name2 = "MultipleEntities Changed TE 2";
+    toggl_set_time_entry_description(ctx, teGuid1.c_str(), name1.c_str());
+    toggl_set_time_entry_description(ctx, teGuid2.c_str(), name2.c_str());
+
+    toggl_sync(ctx);
+    for (auto i = 0; i < 2; i++)
+        testData.app->dispatch(true);
+
+    ASSERT_EQ(testData.app->timeEntries().front().name_, name1);
+    ASSERT_EQ(testData.app->timeEntries().back().name_, name2);
+
+    ASSERT_EQ(testData.app->timeEntries().size(), originalTimeEntries);
+    ASSERT_EQ(testData.app->projects().size(), originalProjects);
+    ASSERT_EQ(testData.app->clients().size(), originalClients);
+}
+
+TEST(MultipleEntities, CreateModifyAndDelete) {
+    int originalTimeEntries = testData.app->timeEntries().size();
+    int originalProjects = testData.app->projects().size();
+    int originalClients = testData.app->clients().size();
+
+    auto ctx = testData.app->context();
+
+    // Take some random TEs
+    auto teGuid1 = testData.app->timeEntries().front().guid_;
+    ASSERT_NE(teGuid1, "");
+    auto teGuid2 = testData.app->timeEntries().back().guid_;
+    ASSERT_NE(teGuid2, "");
+    ASSERT_NE(teGuid1, teGuid2);
+
+    // Rename one of them
+    std::string name1 = "MultipleEntities CreateModifyAndDelete TE 1";
+    toggl_set_time_entry_description(ctx, teGuid1.c_str(), name1.c_str());
+
+    // Delete another
+    toggl_delete_time_entry(ctx, teGuid2.c_str());
+
+    // And finally, create a completely new entry
+    std::string teGuid3 = toggl_create_empty_time_entry(ctx, 123, 12345);
+
+    toggl_sync(ctx);
+    for (auto i = 0; i < 3; i++)
+        testData.app->dispatch(true);
+
+    const test::TimeEntry *te1 = modelByGuid(testData.app->timeEntries(), teGuid1);
+    const test::TimeEntry *te2 = modelByGuid(testData.app->timeEntries(), teGuid2);
+    const test::TimeEntry *te3 = modelByGuid(testData.app->timeEntries(), teGuid3);
+
+    ASSERT_EQ(te1->name_, name1);
+    ASSERT_FALSE(te2);
+    ASSERT_EQ(te3->started_, 123);
+    ASSERT_EQ(te3->ended_, 12345);
+
+    ASSERT_EQ(testData.app->timeEntries().size(), originalTimeEntries);
+    ASSERT_EQ(testData.app->projects().size(), originalProjects);
+    ASSERT_EQ(testData.app->clients().size(), originalClients);
+}
+

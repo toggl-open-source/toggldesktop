@@ -37,6 +37,8 @@ typedef std::variant<
     std::list<Country>
 > TestType;
 
+typedef std::vector<TestType> Arguments;
+
 class Dispatcher {
 public:
     // wireUp is the initialization method that hooks up to the library callbacks
@@ -118,12 +120,12 @@ private:
         static void on_display_update_download_state(const char_t *version, const int64_t download_state);
     };
 
-    static std::deque<                                      // double ended queue
-            std::pair<                                      // of pairs consisting of:
-                std::function<void(std::vector<TestType>)>, // void functions that take a list of any objects as an argument
-                std::vector<TestType>>                      // and the list of any objects
+    static std::deque<                           // double ended queue
+            std::pair<                           // of pairs consisting of:
+                std::function<void(Arguments)>,  // void functions that take a list of any objects as an argument
+                Arguments>                       // and the list of any objects
            > tasks;
-    static std::recursive_mutex tasks_lock;                 // mutex to protect concurrent access to the list of tasks
+    static std::recursive_mutex tasks_lock;      // mutex to protect concurrent access to the list of tasks
     static App *app;
 };
 
