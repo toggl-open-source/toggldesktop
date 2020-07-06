@@ -1814,6 +1814,8 @@ void on_countries(TogglCountryView *first)
 	NSString *urlString = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
 	NSURL *url = [NSURL URLWithString:urlString];
 
+    [self.mainWindowController.window makeKeyWindow];
+
     // SSO
     if ([url.scheme isEqualToString:kSSSOURIScheme])
     {
