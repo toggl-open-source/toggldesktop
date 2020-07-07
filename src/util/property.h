@@ -39,19 +39,32 @@ public:
         previous_ = current_;
     }
     /* Setters */
-    void Set(const T& value, bool makeDirty = true) {
+    bool Set(const T& value, bool makeDirty = true) {
+        if (value == current_) {
+            previous_ = value;
+            return false;
+        }
         if (makeDirty)
             previous_ = std::move(current_);
         else
             previous_ = value;
         current_ = value;
+        return true;
     }
-    void Set(const T&& value, bool makeDirty = true) {
-        if (makeDirty)
-            previous_ = std::move(current_);
-        else
+    bool Set(const T&& value, bool makeDirty = true) {
+        if (value == current_) {
             previous_ = std::move(value);
-        current_ = value;
+            return false;
+        }
+        if (makeDirty) {
+            previous_ = std::move(current_);
+            current_ = std::move(value);
+        }
+        else {
+            previous_ = std::move(value);
+            current_ = previous_;
+        }
+        return true;
     }
     /* Data access operators */
     // Notice that references are returned only as const

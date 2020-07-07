@@ -178,32 +178,24 @@ void TimeEntry::SetLastStartAt(Poco::Int64 value) {
 }
 
 void TimeEntry::SetDurOnly(bool value) {
-    if (DurOnly() != value) {
-        DurOnly.Set(value);
+    if (DurOnly.Set(value))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetStartTime(Poco::Int64 value, bool userModified) {
-    if (StartTime() != value) {
-        StartTime.Set(value, userModified);
+    if (StartTime.Set(value, userModified))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetStopTime(Poco::Int64 value, bool userModified) {
-    if (StopTime() != value) {
-        StopTime.Set(value, userModified);
+    if (StopTime.Set(value, userModified))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetDescription(const std::string &value, bool userModified) {
     const std::string &trimValue = trim_whitespace(value);
-    if (Description() != trimValue) {
-        Description.Set(trimValue, userModified);
+    if (Description.Set(trimValue, userModified))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetStopString(const std::string &value, bool userModified) {
@@ -211,24 +203,18 @@ void TimeEntry::SetStopString(const std::string &value, bool userModified) {
 }
 
 void TimeEntry::SetCreatedWith(const std::string &value) {
-    if (CreatedWith() != value) {
-        CreatedWith.Set(value, false);
+    if (CreatedWith.Set(value, false))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetBillable(bool value, bool userModified) {
-    if (Billable() != value) {
-        Billable.Set(value, userModified);
+    if (Billable.Set(value, userModified))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetWID(Poco::UInt64 value) {
-    if (WID() != value) {
-        WID.Set(value);
+    if (WID.Set(value))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetStopUserInput(const std::string &value) {
@@ -258,42 +244,34 @@ void TimeEntry::SetStopUserInput(const std::string &value) {
 }
 
 void TimeEntry::SetTID(Poco::UInt64 value, bool userModified) {
-    if (TID() != value) {
-        TID.Set(value, userModified);
+    if (TID.Set(value, userModified))
         SetDirty();
-    }
 }
 
 static const char kTagSeparator = '\t';
 
 void TimeEntry::SetTags(const std::string &tags, bool userModified) {
-    if (Tags() != tags) {
-        decltype(TagNames)::value_type tmp;
-        if (!tags.empty()) {
-            std::stringstream ss(tags);
-            while (ss.good()) {
-                std::string tag;
-                getline(ss, tag, kTagSeparator);
-                tmp.push_back(tag);
-            }
+    decltype(TagNames)::value_type tmp;
+    if (!tags.empty()) {
+        std::stringstream ss(tags);
+        while (ss.good()) {
+            std::string tag;
+            getline(ss, tag, kTagSeparator);
+            tmp.push_back(tag);
         }
-        TagNames.Set(std::move(tmp), userModified);
-        SetDirty();
     }
+    if (TagNames.Set(std::move(tmp), userModified))
+        SetDirty();
 }
 
 void TimeEntry::SetPID(Poco::UInt64 value, bool userModified) {
-    if (PID() != value) {
-        PID.Set(value, userModified);
+    if (PID.Set(value, userModified))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetDurationInSeconds(Poco::Int64 value, bool userModified) {
-    if (DurationInSeconds() != value) {
-        DurationInSeconds.Set(value, userModified);
+    if (DurationInSeconds.Set(value, userModified))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetStartUserInput(const std::string &value,
@@ -340,10 +318,8 @@ void TimeEntry::SetDurationUserInput(const std::string &value) {
 }
 
 void TimeEntry::SetProjectGUID(const std::string &value, bool userModified) {
-    if (ProjectGUID() != value) {
-        ProjectGUID.Set(value, userModified);
+    if (ProjectGUID.Set(value, userModified))
         SetDirty();
-    }
 }
 
 const std::string TimeEntry::Tags() const {
