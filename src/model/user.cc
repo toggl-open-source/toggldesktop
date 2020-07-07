@@ -331,40 +331,30 @@ bool User::CanAddProjects() const {
 }
 
 void User::SetFullname(const std::string &value) {
-    if (Fullname() != value) {
-        Fullname.Set(value);
+    if (Fullname.Set(value))
         SetDirty();
-    }
 }
 
 void User::SetTimeOfDayFormat(const std::string &value) {
     Formatter::TimeOfDayFormat = value;
-    if (TimeOfDayFormat() != value) {
-        TimeOfDayFormat.Set(value);
+    if (TimeOfDayFormat.Set(value))
         SetDirty();
-    }
 }
 
 void User::SetDurationFormat(const std::string &value) {
     Formatter::DurationFormat = value;
-    if (DurationFormat() != value) {
-        DurationFormat.Set(value);
+    if (DurationFormat.Set(value))
         SetDirty();
-    }
 }
 
 void User::SetOfflineData(const std::string &value) {
-    if (OfflineData() != value) {
-        OfflineData.Set(value);
+    if (OfflineData.Set(value))
         SetDirty();
-    }
 }
 
 void User::SetStoreStartAndStopTime(bool value) {
-    if (StoreStartAndStopTime() != value) {
-        StoreStartAndStopTime.Set(value);
+    if (StoreStartAndStopTime.Set(value))
         SetDirty();
-    }
 }
 
 void User::ConfirmLoadedMore() {
@@ -372,17 +362,13 @@ void User::ConfirmLoadedMore() {
 }
 
 void User::SetRecordTimeline(bool value) {
-    if (RecordTimeline() != value) {
-        RecordTimeline.Set(value);
+    if (RecordTimeline.Set(value))
         SetDirty();
-    }
 }
 
 void User::SetEmail(const std::string &value) {
-    if (Email() != value) {
-        Email.Set(value);
+    if (Email.Set(value))
         SetDirty();
-    }
 }
 
 void User::SetAPIToken(const std::string &value) {
@@ -392,38 +378,28 @@ void User::SetAPIToken(const std::string &value) {
 }
 
 void User::SetSince(Poco::Int64 value) {
-    if (Since() != value) {
-        Since.Set(value);
+    if (Since.Set(value))
         SetDirty();
-    }
 }
 
 void User::SetDefaultWID(Poco::UInt64 value) {
-    if (DefaultWID() != value) {
-        DefaultWID.Set(value);
+    if (DefaultWID.Set(value))
         SetDirty();
-    }
 }
 
 void User::SetDefaultPID(Poco::UInt64 value) {
-    if (DefaultPID() != value) {
-        DefaultPID.Set(value);
+    if (DefaultPID.Set(value))
         SetDirty();
-    }
 }
 
 void User::SetDefaultTID(Poco::UInt64 value) {
-    if (DefaultTID() != value) {
-        DefaultTID.Set(value);
+    if (DefaultTID.Set(value))
         SetDirty();
-    }
 }
 
 void User::SetCollapseEntries(bool value) {
-    if (CollapseEntries() != value) {
-        CollapseEntries.Set(value);
+    if (CollapseEntries.Set(value))
         SetDirty();
-    }
 }
 
 // Stop a time entry, mark it as dirty.

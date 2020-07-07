@@ -19,17 +19,13 @@ std::string Tag::String() const {
 }
 
 void Tag::SetWID(Poco::UInt64 value) {
-    if (WID() != value) {
-        WID.Set(value);
+    if (WID.Set(value))
         SetDirty();
-    }
 }
 
 void Tag::SetName(const std::string &value) {
-    if (Name() != value) {
-        Name.Set(value);
+    if (Name.Set(value))
         SetDirty();
-    }
 }
 
 void Tag::LoadFromJSON(Json::Value data) {

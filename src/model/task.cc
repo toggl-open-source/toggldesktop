@@ -17,31 +17,23 @@ std::string Task::String() const {
 }
 
 void Task::SetPID(Poco::UInt64 value) {
-    if (PID() != value) {
-        PID.Set(value);
+    if (PID.Set(value))
         SetDirty();
-    }
 }
 
 void Task::SetWID(Poco::UInt64 value) {
-    if (WID() != value) {
-        WID.Set(value);
+    if (WID.Set(value))
         SetDirty();
-    }
 }
 
 void Task::SetName(const std::string &value) {
-    if (Name() != value) {
-        Name.Set(value);
+    if (Name.Set(value))
         SetDirty();
-    }
 }
 
 void Task::SetActive(bool value) {
-    if (Active() != value) {
-        Active.Set(value);
+    if (Active.Set(value))
         SetDirty();
-    }
 }
 
 void Task::LoadFromJSON(Json::Value data) {

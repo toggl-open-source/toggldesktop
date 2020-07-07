@@ -178,32 +178,24 @@ void TimeEntry::SetLastStartAt(Poco::Int64 value) {
 }
 
 void TimeEntry::SetDurOnly(bool value) {
-    if (DurOnly() != value) {
-        DurOnly.Set(value);
+    if (DurOnly.Set(value))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetStartTime(Poco::Int64 value) {
-    if (StartTime() != value) {
-        StartTime.Set(value);
+    if (StartTime.Set(value))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetStopTime(Poco::Int64 value) {
-    if (StopTime() != value) {
-        StopTime.Set(value);
+    if (StopTime.Set(value))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetDescription(const std::string &value) {
     const std::string &trimValue = trim_whitespace(value);
-    if (Description() != trimValue) {
-        Description.Set(trimValue);
+    if (Description.Set(trimValue))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetStopString(const std::string &value) {
@@ -211,24 +203,18 @@ void TimeEntry::SetStopString(const std::string &value) {
 }
 
 void TimeEntry::SetCreatedWith(const std::string &value) {
-    if (CreatedWith() != value) {
-        CreatedWith.Set(value);
+    if (CreatedWith.Set(value))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetBillable(bool value) {
-    if (Billable() != value) {
-        Billable.Set(value);
+    if (Billable.Set(value))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetWID(Poco::UInt64 value) {
-    if (WID() != value) {
-        WID.Set(value);
+    if (WID.Set(value))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetStopUserInput(const std::string &value) {
@@ -258,41 +244,34 @@ void TimeEntry::SetStopUserInput(const std::string &value) {
 }
 
 void TimeEntry::SetTID(Poco::UInt64 value) {
-    if (TID() != value) {
-        TID.Set(value);
+    if (TID.Set(value))
         SetDirty();
-    }
 }
 
 static const char kTagSeparator = '\t';
 
 void TimeEntry::SetTags(const std::string &tags) {
-    if (Tags() != tags) {
-        TagNames->clear();
-        if (!tags.empty()) {
-            std::stringstream ss(tags);
-            while (ss.good()) {
-                std::string tag;
-                getline(ss, tag, kTagSeparator);
-                TagNames->push_back(tag);
-            }
+    std::vector<std::string> tmp;
+    if (!tags.empty()) {
+        std::stringstream ss(tags);
+        while (ss.good()) {
+            std::string tag;
+            getline(ss, tag, kTagSeparator);
+            tmp.push_back(tag);
         }
-        SetDirty();
     }
+    if (TagNames.Set(std::move(tmp)))
+        SetDirty();
 }
 
 void TimeEntry::SetPID(Poco::UInt64 value) {
-    if (PID() != value) {
-        PID.Set(value);
+    if (PID.Set(value))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetDurationInSeconds(Poco::Int64 value) {
-    if (DurationInSeconds() != value) {
-        DurationInSeconds.Set(value);
+    if (DurationInSeconds.Set(value))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetStartUserInput(const std::string &value,
@@ -339,10 +318,8 @@ void TimeEntry::SetDurationUserInput(const std::string &value) {
 }
 
 void TimeEntry::SetProjectGUID(const std::string &value) {
-    if (ProjectGUID() != value) {
-        ProjectGUID.Set(value);
+    if (ProjectGUID.Set(value))
         SetDirty();
-    }
 }
 
 const std::string TimeEntry::Tags() const {

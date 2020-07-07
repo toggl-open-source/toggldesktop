@@ -19,24 +19,18 @@ std::string ObmAction::String() const {
 }
 
 void ObmAction::SetExperimentID(Poco::UInt64 value) {
-    if (ExperimentID() != value) {
-        ExperimentID.Set(value);
+    if (ExperimentID.Set(value))
         SetDirty();
-    }
 }
 
 void ObmAction::SetKey(const std::string &value) {
-    if (Key() != value) {
-        Key.Set(value);
+    if (Key.Set(value))
         SetDirty();
-    }
 }
 
 void ObmAction::SetValue(const std::string &value) {
-    if (Value() != value) {
-        Value.Set(value);
+    if (Value.Set(value))
         SetDirty();
-    }
 }
 
 std::string ObmAction::ModelName() const {
@@ -67,31 +61,23 @@ std::string ObmExperiment::String() const {
 }
 
 void ObmExperiment::SetNr(Poco::UInt64 value) {
-    if (Nr() != value) {
-        Nr.Set(value);
+    if (Nr.Set(value))
         SetDirty();
-    }
 }
 
 void ObmExperiment::SetHasSeen(bool value) {
-    if (HasSeen() != value) {
-        HasSeen.Set(value);
+    if (HasSeen.Set(value))
         SetDirty();
-    }
 }
 
 void ObmExperiment::SetIncluded(bool value) {
-    if (Included() != value) {
-        Included.Set(value);
+    if (Included.Set(value))
         SetDirty();
-    }
 }
 
 void ObmExperiment::SetActions(const std::string &value) {
-    if (Actions() != value) {
-        Actions.Set(value);
+    if (Actions.Set(value))
         SetDirty();
-    }
 }
 
 std::string ObmExperiment::ModelName() const {
