@@ -29,54 +29,42 @@ std::string TimelineEvent::ModelURL() const {
 }
 
 void TimelineEvent::SetTitle(const std::string &value) {
-    if (Title() != value) {
-        Title.Set(value);
+    if (Title.Set(value))
         SetDirty();
-    }
 }
 
 void TimelineEvent::SetStartTime(Poco::Int64 value) {
-    if (StartTime() != value) {
-        StartTime.Set(value);
+    if (StartTime.Set(value)) {
         updateDuration();
         SetDirty();
     }
 }
 
 void TimelineEvent::SetEndTime(Poco::Int64 value) {
-    if (EndTime() != value) {
-        EndTime.Set(value);
+    if (EndTime.Set(value))  {
         updateDuration();
         SetDirty();
     }
 }
 
 void TimelineEvent::SetIdle(bool value) {
-    if (Idle() != value) {
-        Idle.Set(value);
+    if (Idle.Set(value))
         SetDirty();
-    }
 }
 
 void TimelineEvent::SetFilename(const std::string &value) {
-    if (Filename() != value) {
-        Filename.Set(value);
+    if (Filename.Set(value))
         SetDirty();
-    }
 }
 
 void TimelineEvent::SetChunked(bool value) {
-    if (Chunked() != value) {
-        Chunked.Set(value);
+    if (Chunked.Set(value))
         SetDirty();
-    }
 }
 
 void TimelineEvent::SetUploaded(bool value) {
-    if (Uploaded() != value) {
-        Uploaded.Set(value);
+    if (Uploaded.Set(value))
         SetDirty();
-    }
 }
 
 Json::Value TimelineEvent::SaveToJSON(int) const {

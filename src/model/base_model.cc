@@ -55,8 +55,8 @@ void BaseModel::ClearValidationError() {
 }
 
 void BaseModel::SetValidationError(const std::string &value) {
-    ValidationError.Set(value);
-    SetDirty();
+    if (ValidationError.Set(value))
+        SetDirty();
 }
 
 std::string BaseModel::SyncType() const {
@@ -74,8 +74,8 @@ void BaseModel::SetUpdatedAtString(const std::string &value) {
 }
 
 void BaseModel::MarkAsDeletedOnServer() {
-    IsMarkedAsDeletedOnServer.Set(true);
-    SetDirty();
+    if (IsMarkedAsDeletedOnServer.Set(true))
+        SetDirty();
 }
 
 error BaseModel::LoadFromDataString(const std::string &data_string) {
@@ -142,23 +142,23 @@ Logger BaseModel::logger() const {
 }
 
 void BaseModel::SetID(Poco::UInt64 value) {
-    ID.Set(value);
-    SetDirty();
+    if (ID.Set(value))
+        SetDirty();
 }
 
 void BaseModel::SetUIModifiedAt(Poco::Int64 value) {
-    UIModifiedAt.Set(value);
-    SetDirty();
+    if (UIModifiedAt.Set(value))
+        SetDirty();
 }
 
 void BaseModel::SetGUID(const std::string &value) {
-    GUID.Set(value);
-    SetDirty();
+    if (GUID.Set(value))
+        SetDirty();
 }
 
 void BaseModel::SetUID(Poco::UInt64 value) {
-    UID.Set(value);
-    SetDirty();
+    if (UID.Set(value))
+        SetDirty();
 }
 
 void BaseModel::SetDirty() {
@@ -178,13 +178,13 @@ void BaseModel::ClearUnsynced() {
 }
 
 void BaseModel::SetDeletedAt(Poco::Int64 value) {
-    DeletedAt.Set(value);
-    SetDirty();
+    if (DeletedAt.Set(value))
+        SetDirty();
 }
 
 void BaseModel::SetUpdatedAt(Poco::Int64 value) {
-    UpdatedAt.Set(value);
-    SetDirty();
+    if (UpdatedAt.Set(value))
+        SetDirty();
 }
 
 }   // namespace toggl

@@ -49,45 +49,33 @@ std::string Project::FullName() const {
 }
 
 void Project::SetClientGUID(const std::string &value) {
-    if (ClientGUID() != value) {
-        ClientGUID.Set(value);
+    if (ClientGUID.Set(value))
         SetDirty();
-    }
 }
 
 void Project::SetActive(bool value) {
-    if (Active() != value) {
-        Active.Set(value);
+    if (Active.Set(value))
         SetDirty();
-    }
 }
 
 void Project::SetPrivate(bool value) {
-    if (Private() != value) {
-        Private.Set(value);
+    if (Private.Set(value))
         SetDirty();
-    }
 }
 
 void Project::SetName(const std::string &value) {
-    if (Name() != value) {
-        Name.Set(value);
+    if (Name.Set(value))
         SetDirty();
-    }
 }
 
 void Project::SetBillable(bool value) {
-    if (Billable() != value) {
-        Billable.Set(value);
+    if (Billable.Set(value))
         SetDirty();
-    }
 }
 
 void Project::SetColor(const std::string &value) {
-    if (Color() != value) {
-        Color.Set(Poco::UTF8::toLower(value));
+    if (Color.Set(Poco::UTF8::toLower(value)))
         SetDirty();
-    }
 }
 
 std::string Project::ColorCode() const {
@@ -104,24 +92,18 @@ error Project::SetColorCode(const std::string &color_code) {
 }
 
 void Project::SetWID(Poco::UInt64 value) {
-    if (WID() != value) {
-        WID.Set(value);
+    if (WID.Set(value))
         SetDirty();
-    }
 }
 
 void Project::SetCID(Poco::UInt64 value) {
-    if (CID() != value) {
-        CID.Set(value);
+    if (CID.Set(value))
         SetDirty();
-    }
 }
 
 void Project::SetClientName(const std::string &value) {
-    if (ClientName() != value) {
-        ClientName.Set(value);
+    if (ClientName.Set(value))
         SetDirty();
-    }
 }
 
 void Project::LoadFromJSON(Json::Value data) {
