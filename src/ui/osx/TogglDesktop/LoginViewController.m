@@ -265,15 +265,11 @@ extern void *ctx;
     }
 
     if (sender == self.backToSSOBtn) {
-        // As we go back to the main Login view
-        // We reset all SSO states from the UI and Library
-        [[DesktopLibraryBridge shared] resetEnableSSO];
         [self changeTabView:TabViewTypeEmailInputSSO];
         return;
     }
 
     if (sender == self.ssoCancelAndGoBackBtn) {
-        [[DesktopLibraryBridge shared] resetEnableSSO];
         self.isLoginSignUpAsSSO = NO;
         [self changeTabView:TabViewTypeLogin];
         return;
@@ -776,9 +772,10 @@ extern void *ctx;
     [self setUserSignUp:NO];
     [self showLoaderView:YES];
 
-    if (!toggl_login_async(ctx, [email UTF8String], [pass UTF8String]))
-    {
-        return;
+    if (self.isLoginSignUpAsSSO) {
+        toggl_login_sso_link(ctx, [email UTF8String], [pass UTF8String], [self.ssoPayload.confirmationCode UTF8String]);
+    } else {
+        toggl_login_async(ctx, [email UTF8String], [pass UTF8String]);
     }
 }
 
@@ -1020,9 +1017,8 @@ extern void *ctx;
     [[DesktopLibraryBridge shared] getSSOIdentityProviderWithEmail:email];
 }
 
-- (IBAction)loginToEnableSSLOnClick:(id)sender
+- (IBAction)loginToEnableSSOOnClick:(id)sender
 {
-    [[DesktopLibraryBridge shared] setNeedEnableSSOWithCode:self.ssoPayload.confirmationCode];
     self.isLoginSignUpAsSSO = YES;
 
     // It's the same logic with Login and Sign Up, but different title

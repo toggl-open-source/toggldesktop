@@ -447,16 +447,6 @@ void *ctx;
     toggl_get_identity_provider_sso(ctx, [email UTF8String]);
 }
 
-- (void)setNeedEnableSSOWithCode:(NSString *) code
-{
-    toggl_set_need_enable_SSO(ctx, [code UTF8String]);
-}
-
-- (void)resetEnableSSO
-{
-    toggl_reset_enable_SSO(ctx);
-}
-
 - (void)loginSSOWithAPIToken:(NSString *) apiToken
 {
     toggl_login_sso(ctx, [apiToken UTF8String]);

@@ -52,7 +52,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView misplaced="YES" id="d50-27-v7r">
+        <customView id="d50-27-v7r">
             <rect key="frame" x="0.0" y="0.0" width="369" height="540"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
@@ -469,7 +469,7 @@
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tVo-dL-QHu">
                                                             <rect key="frame" x="104" y="211" width="19" height="13"/>
                                                             <textFieldCell key="cell" lineBreakMode="clipping" title="OR" id="iHn-E3-WQi">
-                                                                <font key="font" metaFont="menu" size="10"/>
+                                                                <font key="font" metaFont="system" size="10"/>
                                                                 <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
@@ -644,15 +644,15 @@
                                     </tabViewItem>
                                     <tabViewItem label="Exist Email SSO" identifier="" id="jaE-XO-cxA">
                                         <view key="view" id="GU3-dM-h7t">
-                                            <rect key="frame" x="0.0" y="0.0" width="228" height="458"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="228" height="478"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9Z8-uh-ugo">
-                                                    <rect key="frame" x="50" y="310" width="128" height="128"/>
+                                                    <rect key="frame" x="89" y="442" width="50" height="16"/>
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="toggl-logo" id="5Fi-jA-PZy"/>
                                                 </imageView>
                                                 <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i5W-kP-90W">
-                                                    <rect key="frame" x="20" y="98" width="188" height="172"/>
+                                                    <rect key="frame" x="20" y="230" width="188" height="172"/>
                                                     <subviews>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PFf-Iq-43p">
                                                             <rect key="frame" x="-2" y="130" width="192" height="42"/>
@@ -701,7 +701,7 @@ existing credentials.</string>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
-                                                                <action selector="loginToEnableSSLOnClick:" target="-2" id="VcX-48-wNN"/>
+                                                                <action selector="loginToEnableSSOOnClick:" target="-2" id="VcX-48-wNN"/>
                                                                 <outlet property="nextKeyView" destination="vHA-Cd-ciE" id="dj7-yH-Q8u"/>
                                                             </connections>
                                                         </button>

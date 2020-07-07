@@ -128,8 +128,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - SSO
 
 - (void)getSSOIdentityProviderWithEmail:(NSString *) email;
-- (void)setNeedEnableSSOWithCode:(NSString *) code;
-- (void)resetEnableSSO;
 - (void)loginSSOWithAPIToken:(NSString *) apiToken;
 
 #pragma mark - Tracking

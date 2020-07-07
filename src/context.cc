@@ -86,9 +86,7 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , syncer_(this, &Context::syncerActivityWrapper)
 , update_path_("")
 , overlay_visible_(false)
-, last_message_id_("")
-, need_enable_SSO(false)
-, confirmation_code("") {
+, last_message_id_("") {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
     }
@@ -2454,16 +2452,6 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
     return noError;
 }
 
-void Context::SetNeedEnableSSO(const std::string code) {
-    need_enable_SSO = true;
-    confirmation_code = code;
-}
-
-void Context::ResetEnableSSO() {
-    need_enable_SSO = false;
-    confirmation_code = "";
-}
-
 void Context::LoginSSO(const std::string api_token) {
     Login(api_token, "api_token");
 }
@@ -2587,7 +2575,8 @@ error Context::AsyncLogin(const std::string &email,
 error Context::Login(
     const std::string &email,
     const std::string &password,
-    const bool isSignup) {
+    const bool isSignup,
+    const std::string &ssoConfirmationCode) {
     try {
         std::string json("");
         error err = me(email, password, &json, 0);
@@ -2631,12 +2620,12 @@ error Context::Login(
 
         // It's for SSO Feature
         // After user authorization, we have to enable SSO with the user's email before presenting the Main View
-        if (need_enable_SSO) {
+        if (!ssoConfirmationCode.empty()) {
             // At this point, we successfully get /me, so we have the api_token
             auto api_token = user_->APIToken();
 
             // Start enable SSO for this token
-            error err = EnableSSO(confirmation_code, api_token);
+            error err = EnableSSO(ssoConfirmationCode, api_token);
 
             // If something wrong, we should logout and display error
             if (err != noError) {
