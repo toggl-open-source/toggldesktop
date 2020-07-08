@@ -145,6 +145,7 @@ extern void *ctx;
     self.loginWithSSOBtn.delegate = self;
     self.loginWithDifferentMethodBtn.delegate = self;
     self.backToSSOBtn.delegate = self;
+    self.emailSSOTextField.delegate = self;
     self.isLoginSignUpAsSSO = NO;
 
     self.backToSSOBtn.titleUnderline = YES;
@@ -559,7 +560,7 @@ extern void *ctx;
 }
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)commandSelector {
-    if (control == self.email || control == self.password)
+    if (control == self.email || control == self.password || control == self.emailSSOTextField)
     {
         if (commandSelector == @selector(insertNewline:))
         {
@@ -722,6 +723,7 @@ extern void *ctx;
             [self continueBtnOnClick:sender];
             break;
         case TabViewTypeEmailInputSSO:
+            [self emailSSOContinueBtnOnClick:sender];
             break;
         case TabViewTypeEmailExistsSSO:
             break;
@@ -956,7 +958,7 @@ extern void *ctx;
     }
 }
 
-- (void) displayPasswordStrengthView:(BOOL) display {
+- (void)displayPasswordStrengthView:(BOOL)display {
     if (display) {
         if (self.passwordStrengthView.view.superview == nil) {
             self.passwordStrengthView.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -1029,5 +1031,6 @@ extern void *ctx;
 {
     self.ssoPayload = payload;
     [self changeTabView:TabViewTypeEmailExistsSSO];
+    self.email.stringValue = payload.email;
 }
 @end

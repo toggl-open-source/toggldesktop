@@ -537,15 +537,15 @@
                                     </tabViewItem>
                                     <tabViewItem label="Email SSO" identifier="" id="bwX-Cn-Dy6">
                                         <view key="view" id="Vbu-zG-iAy">
-                                            <rect key="frame" x="0.0" y="0.0" width="228" height="458"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="228" height="478"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zbK-nX-qgg">
-                                                    <rect key="frame" x="89" y="422" width="50" height="16"/>
+                                                    <rect key="frame" x="89" y="442" width="50" height="16"/>
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="toggl-logo" id="epf-hc-YkZ"/>
                                                 </imageView>
                                                 <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GZ9-10-Utx">
-                                                    <rect key="frame" x="20" y="261" width="188" height="121"/>
+                                                    <rect key="frame" x="20" y="281" width="188" height="121"/>
                                                     <subviews>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YQn-ed-0YI">
                                                             <rect key="frame" x="35" y="100" width="117" height="21"/>
