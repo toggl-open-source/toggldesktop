@@ -863,12 +863,15 @@ void User::LoadUserAndRelatedDataFromJSON(
 
 error User::loadUserFromJSON(const Json::Value &data) {
 
-    if (!data["id"].asUInt64()) {
+    if (!data["id"].asUInt64() && !data["user_id"].asUInt64()) {
         logger().error("Backend is sending invalid data: ignoring update without an ID");
         return kBackendIsSendingInvalidData;
     }
 
-    SetID(data["id"].asUInt64());
+    if (data["id"].asUInt64())
+        SetID(data["id"].asUInt64());
+    else
+        SetID(data["user_id"].asUInt64());
     SetDefaultWID(data["default_wid"].asUInt64());
     SetAPIToken(data["api_token"].asString());
     SetEmail(data["email"].asString());
