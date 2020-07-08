@@ -22,24 +22,18 @@ bool AutotrackerRule::Matches(const TimelineEvent &event) const {
 }
 
 void AutotrackerRule::SetTerm(const std::string &value) {
-    if (Term() != value) {
-        Term.Set(value);
+    if (Term.Set(value))
         SetDirty();
-    }
 }
 
 void AutotrackerRule::SetPID(Poco::UInt64 value) {
-    if (PID()  != value) {
-        PID.Set(value);
+    if (PID.Set(value))
         SetDirty();
-    }
 }
 
 void AutotrackerRule::SetTID(Poco::UInt64 value) {
-    if (TID() != value) {
-        TID.Set(value);
+    if (TID.Set(value))
         SetDirty();
-    }
 }
 
 std::string AutotrackerRule::String() const {

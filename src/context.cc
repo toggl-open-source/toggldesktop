@@ -94,10 +94,6 @@ Context::Context(const std::string &app_name, const std::string &app_version)
         Poco::Net::HTTPSStreamFactory::registerFactory();
     }
 
-#ifndef TOGGL_PRODUCTION_BUILD
-    urls::SetUseStagingAsBackend(true);
-#endif
-
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -3378,6 +3374,10 @@ error Context::updateTimeEntryProject(
         p = user_->related.ProjectByGUID(project_guid);
     }
 
+    if (isUsingSyncServer() && p && p->WID() != te->WID()) {
+        return displayError("This version of Toggl Desktop does not support changing time entry workspaces.");
+    }
+
     if (p && !canChangeProjectTo(te, p)) {
         return displayError(error(
             "Cannot change project: would end up with locked time entry"));
@@ -3389,13 +3389,13 @@ error Context::updateTimeEntryProject(
         // billable, // then selected the same project again).
         if (p->ID() != te->PID()
                 || (!project_guid.empty() && p->GUID().compare(te->ProjectGUID()) != 0)) {
-            te->SetBillable(p->Billable());
+            te->SetBillable(p->Billable(), true);
         }
         te->SetWID(p->WID());
     }
-    te->SetTID(task_id);
-    te->SetPID(project_id);
-    te->SetProjectGUID(project_guid);
+    te->SetTID(task_id, true);
+    te->SetPID(project_id, true);
+    te->SetProjectGUID(project_guid, true);
     return noError;
 }
 
@@ -3673,7 +3673,7 @@ error Context::SetTimeEntryTags(
             return logAndDisplayUserTriedEditingLockedEntry();
         }
 
-        te->SetTags(value);
+        te->SetTags(value, true);
     }
 
     if (te->Dirty()) {
@@ -3710,7 +3710,7 @@ error Context::SetTimeEntryBillable(
             return logAndDisplayUserTriedEditingLockedEntry();
         }
 
-        te->SetBillable(value);
+        te->SetBillable(value, true);
     }
 
     if (te->Dirty()) {
@@ -3768,7 +3768,7 @@ error Context::updateTimeEntryDescription(
         return displayError(error(kMaximumDescriptionLengthError));
     }
 
-    te->SetDescription(value);
+    te->SetDescription(value, true);
     return noError;
 }
 
@@ -4738,8 +4738,8 @@ void Context::displayPomodoro() {
         const Poco::Int64 pomodoroDuration = settings_.pomodoro_minutes * 60;
         wid = current_te->WID();
         Stop(true);
-        current_te->SetDurationInSeconds(pomodoroDuration);
-        current_te->SetStopTime(current_te->StartTime() + pomodoroDuration);
+        current_te->SetDurationInSeconds(pomodoroDuration, true);
+        current_te->SetStopTime(current_te->StartTime() + pomodoroDuration, true);
     }
     UI()->DisplayPomodoro(settings_.pomodoro_minutes);
 
@@ -4789,8 +4789,8 @@ void Context::displayPomodoroBreak() {
         }
         const Poco::Int64 pomodoroDuration = settings_.pomodoro_break_minutes * 60;
         Stop(true);
-        current_te->SetDurationInSeconds(pomodoroDuration);
-        current_te->SetStopTime(current_te->StartTime() + pomodoroDuration);
+        current_te->SetDurationInSeconds(pomodoroDuration, true);
+        current_te->SetStopTime(current_te->StartTime() + pomodoroDuration, true);
     }
     pomodoro_break_entry_ = nullptr;
 
@@ -5072,6 +5072,10 @@ void Context::syncerActivityWrapper() {
                         }
                     }
                 }
+                if (state == BATCHED)
+                    is_using_sync_server_ = true;
+                else
+                    is_using_sync_server_ = false;
             }
             // it is a HTTP error in disguise which means the server is alive, fallback to LEGACY
             else if (resp.err == HTTPClient::StatusCodeToError(resp.status_code)) {
@@ -5798,7 +5802,7 @@ error Context::pushProjects(
 }
 
 error Context::updateProjectClients(const std::vector<Client *> &clients,
-                                     const std::vector<Project *> &projects) {
+                                    const std::vector<Project *> &projects) {
     for (auto it = projects.cbegin(); it != projects.cend(); ++it) {
         if (!(*it)->CID() && !(*it)->ClientGUID().empty()) {
             // Find client id
@@ -5825,7 +5829,7 @@ error Context::updateEntryProjects(const std::vector<Project *> &projects,
                 projects.begin();
                     itc != projects.end(); ++itc) {
                 if ((*itc)->GUID().compare((*it)->ProjectGUID()) == 0) {
-                    (*it)->SetPID((*itc)->ID());
+                    (*it)->SetPID((*itc)->ID(), false);
                     break;
                 }
             }
@@ -6512,6 +6516,11 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
             }
             else if (i["payload"]["result"].isMember("error_message") && i["payload"]["result"]["error_message"].isMember("default_message")) {
                 std::string errorMessage = i["payload"]["result"]["error_message"]["default_message"].asString();
+                // Not found on server. Probably deleted already.
+                if (TimeEntry::isNotFound(errorMessage)) {
+                    model->MarkAsDeletedOnServer();
+                    continue;
+                }
                 logger.warning("Sync: Error when syncing ", modelInfo, ": ", errorMessage);
                 displayError(errorMessage);
             }
@@ -6926,8 +6935,8 @@ error Context::UpdateTimeEntry(
     }
 
     // Tag + billable
-    te->SetTags(tags);
-    te->SetBillable(billable);
+    te->SetTags(tags, true);
+    te->SetBillable(billable, true);
 
     if (te->Dirty()) {
         te->ClearValidationError();
@@ -6960,6 +6969,10 @@ bool Context::checkIfSkipPomodoro(TimeEntry *te) {
         }
     }
     return false;
+}
+
+bool Context::isUsingSyncServer() const {
+    return is_using_sync_server_;
 }
 
 void Context::TrackTimelineMenuContext(const TimelineMenuContextType type) {

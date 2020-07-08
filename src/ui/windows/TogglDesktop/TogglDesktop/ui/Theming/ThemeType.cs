@@ -6,7 +6,7 @@ namespace TogglDesktop.Theming
         ColorScheme = 2
     }
 
-    enum ColorScheme
+    public enum ColorScheme
     {
         Light = 1,
         Dark = 2

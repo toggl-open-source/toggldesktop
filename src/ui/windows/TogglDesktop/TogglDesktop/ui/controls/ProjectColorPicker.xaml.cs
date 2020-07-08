@@ -3,25 +3,10 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using TogglDesktop.Theming;
 
 namespace TogglDesktop
 {
-    public sealed class ProjectColorPickerSample
-    {
-        public string[] Colors
-        {
-            get
-            {
-                return new[]
-                {
-                    "#4dc3ff", "#bc85e6", "#df7baa", "#f68d38", "#b27636",
-                    "#8ab734", "#14a88e", "#268bb5", "#6668b4", "#a4506c",
-                    "#67412c", "#3c6526", "#094558", "#bc2d07", "#999999"
-                };
-            }
-        }
-    }
-
     public partial class ProjectColorPicker
     {
         private readonly Random random = new Random();
@@ -35,6 +20,7 @@ namespace TogglDesktop
             this.InitializeComponent();
 
             Toggl.OnDisplayProjectColors += this.onDisplayProjectColors;
+            Theme.CurrentColorScheme.Subscribe(_ => RefreshColorsList());
         }
 
         private void onDisplayProjectColors(string[] strings, ulong count)
@@ -44,6 +30,13 @@ namespace TogglDesktop
 
             this.colors = strings;
             this.list.ItemsSource = strings;
+        }
+
+        private void RefreshColorsList()
+        {
+            var itemsSource = this.list.ItemsSource;
+            this.list.ItemsSource = null;
+            this.list.ItemsSource = itemsSource;
         }
 
         public string SelectedColor
@@ -59,7 +52,7 @@ namespace TogglDesktop
         private void updateColor()
         {
             this.colorCircle.Fill =
-                Utils.ProjectColorBrushFromString(this.selectedColor);
+                Utils.AdaptedProjectColorBrushFromString(this.selectedColor);
         }
 
 

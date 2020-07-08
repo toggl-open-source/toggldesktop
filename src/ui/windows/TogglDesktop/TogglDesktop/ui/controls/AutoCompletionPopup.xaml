@@ -33,7 +33,7 @@
                                            TextWrapping="Wrap" />
                                 <Ellipse Grid.Column="1" Width="20" Height="20"
                                          Margin="20 0 0 0"
-                                         Fill="{Binding ProjectColor}"
+                                         Fill="{Binding ProjectColor, Converter={StaticResource AdaptProjectColorConverter}}"
                                          Visibility="{Binding ProjectColor, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
                             </Grid>
                             <TextBlock Margin="0 10 0 0"
@@ -58,7 +58,7 @@
                             Margin="16 14 8 12">
                         <Border.Background>
                             <MultiBinding Converter="{StaticResource ColorsToBrushMultiConverter}">
-                                <Binding Path="ProjectColor" />
+                                <Binding Path="ProjectColor" Converter="{StaticResource AdaptProjectColorConverter}"/>
                                 <Binding Source="{StaticResource NoProjectColorProxy}" Path="Data" />
                             </MultiBinding>
                         </Border.Background>
@@ -68,7 +68,7 @@
                                Text="{Binding ProjectLabel}" Margin="0 0 8 0">
                         <TextBlock.Foreground>
                             <MultiBinding Converter="{StaticResource ColorsToBrushMultiConverter}">
-                                <Binding Path="ProjectColor" />
+                                <Binding Path="ProjectColor" Converter="{StaticResource AdaptProjectTextColorConverter}" />
                                 <Binding Source="{StaticResource NoProjectColorProxy}" Path="Data" />
                             </MultiBinding>
                         </TextBlock.Foreground>
@@ -81,7 +81,7 @@
                                Style="{StaticResource Toggl.CaptionBlackText}"
                                VerticalAlignment="Center"
                                Margin="32 0 8 0"
-                               Foreground="{Binding ProjectColor}" Text="{Binding TaskLabel}"/>
+                               Foreground="{Binding ProjectColor, Converter={StaticResource AdaptProjectTextColorConverter}}" Text="{Binding TaskLabel}"/>
                     <StackPanel.ToolTip>
                         <StackPanel Orientation="Vertical" Margin="8 6" MaxWidth="256" MinWidth="160">
                             <Grid>
@@ -94,7 +94,7 @@
                                            TextWrapping="Wrap" />
                                 <Ellipse Grid.Column="1" Width="20" Height="20"
                                          Margin="20 0 0 0"
-                                         Fill="{Binding ProjectColor}"
+                                         Fill="{Binding ProjectColor, Converter={StaticResource AdaptProjectColorConverter}}"
                                          Visibility="{Binding ProjectColor, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
                             </Grid>
                             <TextBlock Margin="0 5 0 0"
@@ -127,10 +127,10 @@
                     <Border Name="projectColor"
                             CornerRadius="100" Width="6" Height="6" BorderThickness="0" Margin="8 14 8 12"
                             Visibility="{Binding ProjectColor, Converter={StaticResource EmptyStringToCollapsedConverter}}"
-                            Background="{Binding ProjectColor}"
+                            Background="{Binding ProjectColor, Converter={StaticResource AdaptProjectColorConverter}}"
                             ToolTip="{Binding Text}"/>
-                    <TextBlock Name="project" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding ProjectLabel}" Foreground="{Binding ProjectColor}"/>
-                    <TextBlock Name="task" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding TaskLabel, Converter={StaticResource StringFormatIfNotEmptyConverter}, ConverterParameter='- {0}'}" Foreground="{Binding ProjectColor}"/>
+                    <TextBlock Name="project" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding ProjectLabel}" Foreground="{Binding ProjectColor, Converter={StaticResource AdaptProjectTextColorConverter}}"/>
+                    <TextBlock Name="task" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding TaskLabel, Converter={StaticResource StringFormatIfNotEmptyConverter}, ConverterParameter='- {0}'}" Foreground="{Binding ProjectColor, Converter={StaticResource AdaptProjectTextColorConverter}}"/>
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="category-item-template">

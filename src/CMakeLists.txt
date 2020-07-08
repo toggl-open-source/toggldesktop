@@ -58,7 +58,6 @@ set(LIBRARY_SOURCE_FILES
     model/workspace.cc
 
     analytics.cc
-    batch_update_result.cc
     context.cc
     error.cc
     feedback.cc

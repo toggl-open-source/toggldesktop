@@ -32,17 +32,13 @@ std::string Client::String() const {
 }
 
 void Client::SetName(const std::string &value) {
-    if (Name() != value) {
-        Name.Set(value);
+    if (Name.Set(value))
         SetDirty();
-    }
 }
 
 void Client::SetWID(Poco::UInt64 value) {
-    if (WID() != value) {
-        WID.Set(value);
+    if (WID.Set(value))
         SetDirty();
-    }
 }
 
 void Client::LoadFromJSON(Json::Value data) {
@@ -85,7 +81,7 @@ Json::Value Client::SyncMetadata() const {
 Json::Value Client::SyncPayload() const {
     Json::Value result;
     if (NeedsPOST()) {
-        result["id"] = Json::Int64(ID());
+        result["id"] = Json::Int64(-LocalID());
         result["wid"] = Json::Int64(WID());
     }
     if (NeedsPOST() || NeedsPUT()) {

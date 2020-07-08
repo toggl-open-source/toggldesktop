@@ -690,7 +690,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error syncHandleResponse(Json::Value &array, const std::vector<T*> &source);
 
     error pushBatchedChanges(
-            bool *had_something_to_push);
+        bool *had_something_to_push);
     error pushChanges(
         bool *had_something_to_push);
     error pushClients(
@@ -736,9 +736,9 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
                     std::string *user_data,
                     const Poco::Int64 since);
     static error syncPull(const std::string &email,
-                         const std::string &password,
-                         std::string *user_data,
-                         const Poco::Int64 since);
+                          const std::string &password,
+                          std::string *user_data,
+                          const Poco::Int64 since);
 
     bool isTimeEntryLocked(TimeEntry* te);
     bool isTimeLockedInWorkspace(time_t t, Workspace* ws);
@@ -839,6 +839,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     TimeEntry *pomodoro_break_entry_;
 
+    bool is_using_sync_server_;
+
     // To cache grouped entries open/close status
     std::map<std::string, bool_t> entry_groups;
 
@@ -861,6 +863,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     Poco::Mutex onboarding_service_m_;
 
     bool checkIfSkipPomodoro(TimeEntry *te);
+
+    bool isUsingSyncServer() const;
 };
 void on_websocket_message(
     void *context,

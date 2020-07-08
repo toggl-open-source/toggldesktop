@@ -33,38 +33,38 @@ bool TimeEntry::ResolveError(const error &err) {
         Poco::Int64 seconds =
             (std::min)(StopTime() - StartTime(),
                        Poco::Int64(kMaxTimeEntryDurationSeconds));
-        SetDurationInSeconds(seconds);
+        SetDurationInSeconds(seconds, true);
         return true;
     }
     if (startTimeWrongYear(err) && StopTime() && StartTime()) {
         Poco::Int64 seconds =
             (std::min)(StopTime() - StartTime(),
                        Poco::Int64(kMaxTimeEntryDurationSeconds));
-        SetDurationInSeconds(seconds);
-        SetStartTime(StopTime() - Duration());
+        SetDurationInSeconds(seconds, true);
+        SetStartTime(StopTime() - Duration(), true);
         return true;
     }
     if (stopTimeMustBeAfterStartTime(err) && StopTime() && StartTime()) {
-        SetStopTime(StartTime() + DurationInSeconds());
+        SetStopTime(StartTime() + DurationInSeconds(), true);
         return true;
     }
     if (userCannotAccessWorkspace(err)) {
         SetWID(0);
-        SetPID(0);
-        SetTID(0);
+        SetPID(0, true);
+        SetTID(0, true);
         return true;
     }
     if (userCannotAccessTheSelectedProject(err)) {
-        SetPID(0);
-        SetTID(0);
+        SetPID(0, true);
+        SetTID(0, true);
         return true;
     }
     if (userCannotAccessSelectedTask(err)) {
-        SetTID(0);
+        SetTID(0, true);
         return true;
     }
     if (billableIsAPremiumFeature(err)) {
-        SetBillable(false);
+        SetBillable(false, true);
         return true;
     }
     if (isMissingCreatedWith(err)) {
@@ -74,7 +74,7 @@ bool TimeEntry::ResolveError(const error &err) {
     return false;
 }
 
-bool TimeEntry::isNotFound(const error &err) const {
+bool TimeEntry::isNotFound(const error &err) {
     return std::string::npos != std::string(err).find(
         "Time entry not found");
 }
@@ -138,8 +138,8 @@ void TimeEntry::DiscardAt(const Poco::Int64 at) {
         return;
     }
 
-    SetDurationInSeconds(duration);
-    SetStopTime(at);
+    SetDurationInSeconds(duration, true);
+    SetStopTime(at, true);
     SetUIModified();
 }
 
@@ -178,68 +178,54 @@ void TimeEntry::SetLastStartAt(Poco::Int64 value) {
 }
 
 void TimeEntry::SetDurOnly(bool value) {
-    if (DurOnly() != value) {
-        DurOnly.Set(value);
+    if (DurOnly.Set(value))
         SetDirty();
-    }
 }
 
-void TimeEntry::SetStartTime(Poco::Int64 value) {
-    if (StartTime() != value) {
-        StartTime.Set(value);
+void TimeEntry::SetStartTime(Poco::Int64 value, bool userModified) {
+    if (StartTime.Set(value, userModified))
         SetDirty();
-    }
 }
 
-void TimeEntry::SetStopTime(Poco::Int64 value) {
-    if (StopTime() != value) {
-        StopTime.Set(value);
+void TimeEntry::SetStopTime(Poco::Int64 value, bool userModified) {
+    if (StopTime.Set(value, userModified))
         SetDirty();
-    }
 }
 
-void TimeEntry::SetDescription(const std::string &value) {
+void TimeEntry::SetDescription(const std::string &value, bool userModified) {
     const std::string &trimValue = trim_whitespace(value);
-    if (Description() != trimValue) {
-        Description.Set(trimValue);
+    if (Description.Set(trimValue, userModified))
         SetDirty();
-    }
 }
 
-void TimeEntry::SetStopString(const std::string &value) {
-    SetStopTime(Formatter::Parse8601(value));
+void TimeEntry::SetStopString(const std::string &value, bool userModified) {
+    SetStopTime(Formatter::Parse8601(value), userModified);
 }
 
 void TimeEntry::SetCreatedWith(const std::string &value) {
-    if (CreatedWith() != value) {
-        CreatedWith.Set(value);
+    if (CreatedWith.Set(value, false))
         SetDirty();
-    }
 }
 
-void TimeEntry::SetBillable(bool value) {
-    if (Billable() != value) {
-        Billable.Set(value);
+void TimeEntry::SetBillable(bool value, bool userModified) {
+    if (Billable.Set(value, userModified))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetWID(Poco::UInt64 value) {
-    if (WID() != value) {
-        WID.Set(value);
+    if (WID.Set(value))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetStopUserInput(const std::string &value) {
-    SetStopString(value);
+    SetStopString(value, true);
 
     if (StopTime() < StartTime()) {
         // Stop time cannot be before start time,
         // it'll get an error from backend.
         Poco::Timestamp ts =
             Poco::Timestamp::fromEpochTime(StopTime()) + 1*Poco::Timespan::DAYS;
-        SetStopTime(ts.epochTime());
+        SetStopTime(ts.epochTime(), true);
     }
 
     if (StopTime() < StartTime()) {
@@ -248,7 +234,7 @@ void TimeEntry::SetStopUserInput(const std::string &value) {
     }
 
     if (!IsTracking()) {
-        SetDurationInSeconds(StopTime() - StartTime());
+        SetDurationInSeconds(StopTime() - StartTime(), true);
     }
 
     if (Dirty()) {
@@ -257,58 +243,51 @@ void TimeEntry::SetStopUserInput(const std::string &value) {
     }
 }
 
-void TimeEntry::SetTID(Poco::UInt64 value) {
-    if (TID() != value) {
-        TID.Set(value);
+void TimeEntry::SetTID(Poco::UInt64 value, bool userModified) {
+    if (TID.Set(value, userModified))
         SetDirty();
-    }
 }
 
 static const char kTagSeparator = '\t';
 
-void TimeEntry::SetTags(const std::string &tags) {
-    if (Tags() != tags) {
-        TagNames->clear();
-        if (!tags.empty()) {
-            std::stringstream ss(tags);
-            while (ss.good()) {
-                std::string tag;
-                getline(ss, tag, kTagSeparator);
-                TagNames->push_back(tag);
-            }
+void TimeEntry::SetTags(const std::string &tags, bool userModified) {
+    decltype(TagNames)::value_type tmp;
+    if (!tags.empty()) {
+        std::stringstream ss(tags);
+        while (ss.good()) {
+            std::string tag;
+            getline(ss, tag, kTagSeparator);
+            tmp.push_back(tag);
         }
-        SetDirty();
     }
+    if (TagNames.Set(std::move(tmp), userModified))
+        SetDirty();
 }
 
-void TimeEntry::SetPID(Poco::UInt64 value) {
-    if (PID() != value) {
-        PID.Set(value);
+void TimeEntry::SetPID(Poco::UInt64 value, bool userModified) {
+    if (PID.Set(value, userModified))
         SetDirty();
-    }
 }
 
-void TimeEntry::SetDurationInSeconds(Poco::Int64 value) {
-    if (DurationInSeconds() != value) {
-        DurationInSeconds.Set(value);
+void TimeEntry::SetDurationInSeconds(Poco::Int64 value, bool userModified) {
+    if (DurationInSeconds.Set(value, userModified))
         SetDirty();
-    }
 }
 
 void TimeEntry::SetStartUserInput(const std::string &value,
                                   bool keepEndTimeFixed) {
     Poco::Int64 start = Formatter::Parse8601(value);
     if (IsTracking()) {
-        SetDurationInSeconds(-start);
+        SetDurationInSeconds(-start, true);
     } else {
         auto stop = StopTime();
         if (keepEndTimeFixed && stop > start) {
-            SetDurationInSeconds(stop - start);
+            SetDurationInSeconds(stop - start, true);
         } else {
-            SetStopTime(start + DurationInSeconds());
+            SetStopTime(start + DurationInSeconds(), true);
         }
     }
-    SetStartTime(start);
+    SetStartTime(start, true);
 
     if (Dirty()) {
         ClearValidationError();
@@ -316,8 +295,8 @@ void TimeEntry::SetStartUserInput(const std::string &value,
     }
 }
 
-void TimeEntry::SetStartString(const std::string &value) {
-    SetStartTime(Formatter::Parse8601(value));
+void TimeEntry::SetStartString(const std::string &value, bool userModified) {
+    SetStartTime(Formatter::Parse8601(value), userModified);
 }
 
 void TimeEntry::SetDurationUserInput(const std::string &value) {
@@ -325,12 +304,12 @@ void TimeEntry::SetDurationUserInput(const std::string &value) {
     if (IsTracking()) {
         time_t now = time(nullptr);
         time_t start = now - seconds;
-        SetStartTime(start);
-        SetDurationInSeconds(-start);
+        SetStartTime(start, true);
+        SetDurationInSeconds(-start, true);
     } else {
-        SetDurationInSeconds(seconds);
+        SetDurationInSeconds(seconds, true);
     }
-    SetStopTime(StartTime() + seconds);
+    SetStopTime(StartTime() + seconds, true);
 
     if (Dirty()) {
         ClearValidationError();
@@ -338,11 +317,9 @@ void TimeEntry::SetDurationUserInput(const std::string &value) {
     }
 }
 
-void TimeEntry::SetProjectGUID(const std::string &value) {
-    if (ProjectGUID() != value) {
-        ProjectGUID.Set(value);
+void TimeEntry::SetProjectGUID(const std::string &value, bool userModified) {
+    if (ProjectGUID.Set(value, userModified))
         SetDirty();
-    }
 }
 
 const std::string TimeEntry::Tags() const {
@@ -430,7 +407,7 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
         SetCreatedWith(data["created_with"].asString());
     }
 
-    SetDescription(data["description"].asString());
+    SetDescription(data["description"].asString(), false);
 
     if (data.isMember("wid")) {
         SetWID(data["wid"].asUInt64());
@@ -440,23 +417,23 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
         SetWID(0);
     }
     if (data.isMember("pid")) {
-        SetPID(data["pid"].asUInt64());
+        SetPID(data["pid"].asUInt64(), false);
     } else if (data.isMember("project_id")) {
-        SetPID(data["project_id"].asUInt64());
+        SetPID(data["project_id"].asUInt64(), false);
     } else {
-        SetPID(0);
+        SetPID(0, false);
     }
     if (data.isMember("tid")) {
-        SetTID(data["tid"].asUInt64());
+        SetTID(data["tid"].asUInt64(), false);
     } else if (data.isMember("task_id")) {
-        SetTID(data["task_id"].asUInt64());
+        SetTID(data["task_id"].asUInt64(), false);
     } else {
-        SetTID(0);
+        SetTID(0, false);
     }
-    SetStartString(data["start"].asString());
-    SetStopString(data["stop"].asString());
-    SetDurationInSeconds(data["duration"].asInt64());
-    SetBillable(data["billable"].asBool());
+    SetStartString(data["start"].asString(), false);
+    SetStopString(data["stop"].asString(), false);
+    SetDurationInSeconds(data["duration"].asInt64(), false);
+    SetBillable(data["billable"].asBool(), false);
     SetDurOnly(data["duronly"].asBool());
     SetUpdatedAtString(data["at"].asString());
 
@@ -569,23 +546,36 @@ Json::Value TimeEntry::SyncMetadata() const {
 Json::Value TimeEntry::SyncPayload() const {
     Json::Value result;
     if (NeedsPOST()) {
-        result["id"] = Json::Int64(ID());
+        result["id"] = Json::Int64(-LocalID());
         result["workspace_id"] = Json::Int64(WID());
     }
     if (NeedsPOST() || NeedsPUT()) {
-        if (PID() > 0)
-            result["project_id"] = Json::Int64(PID());
-        else
-            result["project_id"] = ProjectGUID();
-        if (TID() > 0)
-            result["task_id"] = Json::Int64(TID());
-        result["billable"] = Billable();
-        result["start"] = StartString();
+        auto insertIfValue = [&, this](auto &name, auto &property, auto value) {
+            if (NeedsPOST() || property.IsDirty()) {
+                result[name] = value;
+            }
+        };
+        auto insertIf = [&](auto &name, auto &property) {
+            insertIfValue(name, property, property());
+        };
+
+        if (PID() > 0) {
+            insertIfValue("project_id", PID, Json::Int64(PID()));
+        }
+        else {
+            insertIf("project_id", ProjectGUID);
+        }
+        if (TID() > 0)  {
+            insertIfValue("task_id", TID, Json::Int64(TID()));
+        }
+
+        insertIf("billable", Billable);
+        insertIfValue("start", StartTime, StartString());
         if (StopTime())
-            result["stop"] = StopString();
-        result["duration"] = Json::Int64(DurationInSeconds());
-        result["description"] = Description();
-        result["created_with"] = Formatter::EscapeJSONString(CreatedWith());
+            insertIfValue("stop", StopTime, StopString());
+        insertIfValue("duration", DurationInSeconds, Json::Int64(DurationInSeconds()));
+        insertIf("description", Description);
+        insertIfValue("created_with", CreatedWith, Formatter::EscapeJSONString(CreatedWith()));
 
         Json::Value tag_nodes;
         if (TagNames->size() > 0) {
@@ -599,7 +589,7 @@ Json::Value TimeEntry::SyncPayload() const {
             Json::Reader reader;
             reader.parse("[]", tag_nodes);
         }
-        result["tags"] = tag_nodes;
+        insertIfValue("tags", TagNames, tag_nodes);
     }
     return result;
 }

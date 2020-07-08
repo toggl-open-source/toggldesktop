@@ -104,7 +104,7 @@ namespace TogglDesktop
             var project = item ?? default(Toggl.TogglAutocompleteView);
             this.selectedProject = project;
             this.projectTextBox.SetText(project.ProjectLabel, project.TaskLabel);
-            this.projectColorCircle.Background = Utils.ProjectColorBrushFromString(project.ProjectColor);
+            this.projectColorCircle.Background = Utils.AdaptedProjectColorBrushFromString(project.ProjectColor);
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
         }
 

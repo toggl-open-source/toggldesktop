@@ -16,52 +16,38 @@ std::string Workspace::String() const {
 }
 
 void Workspace::SetName(const std::string &value) {
-    if (Name() != value) {
-        Name.Set(value);
+    if (Name.Set(value))
         SetDirty();
-    }
 }
 
 void Workspace::SetPremium(bool value) {
-    if (Premium() != value) {
-        Premium.Set(value);
+    if (Premium.Set(value))
         SetDirty();
-    }
 }
 
 void Workspace::SetOnlyAdminsMayCreateProjects(bool value) {
-    if (OnlyAdminsMayCreateProjects() != value) {
-        OnlyAdminsMayCreateProjects.Set(value);
+    if (OnlyAdminsMayCreateProjects.Set(value))
         SetDirty();
-    }
 }
 
 void Workspace::SetAdmin(bool value) {
-    if (Admin() != value) {
-        Admin.Set(value);
+    if (Admin.Set(value))
         SetDirty();
-    }
 }
 
 void Workspace::SetProjectsBillableByDefault(bool value) {
-    if (ProjectsBillableByDefault() != value) {
-        ProjectsBillableByDefault.Set(value);
+    if (ProjectsBillableByDefault.Set(value))
         SetDirty();
-    }
 }
 
 void Workspace::SetBusiness(bool value) {
-    if (Business() != value) {
-        Business.Set(value);
+    if (Business.Set(value))
         SetDirty();
-    }
 }
 
 void Workspace::SetLockedTime(time_t value) {
-    if (LockedTime() != value) {
-        LockedTime.Set(value);
+    if (LockedTime.Set(value))
         SetDirty();
-    }
 }
 
 void Workspace::LoadFromJSON(Json::Value n) {

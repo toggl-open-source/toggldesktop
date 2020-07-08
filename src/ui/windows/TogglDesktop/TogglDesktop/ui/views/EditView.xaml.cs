@@ -5,9 +5,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DynamicData.Binding;
 using MahApps.Metro.Controls;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Items;
+using TogglDesktop.Converters;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.ViewModels;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -148,7 +150,7 @@ namespace TogglDesktop
                         this.disableNewProjectMode();
                     }
 
-                    this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString(timeEntry.Color);
+                    this.selectedProjectColorCircle.Background = Utils.AdaptedProjectColorBrushFromString(timeEntry.Color);
 
                     setText(this.projectTextBox, timeEntry.ProjectLabel, timeEntry.TaskLabel, open);
                     projectTextBox.DataContext = timeEntry.ToProjectLabelViewModel();
@@ -205,6 +207,9 @@ namespace TogglDesktop
 
         private void durationUpdateTimerTick(object sender, string s)
         {
+            if (this.TryBeginInvoke(durationUpdateTimerTick, sender, s))
+                return;
+
             if (!this.hasTimeEntry() || this.timeEntry.DurationInSeconds >= 0)
                 return;
 
@@ -540,7 +545,7 @@ namespace TogglDesktop
             if (autoCompleteItem.ProjectID == this.timeEntry.PID && autoCompleteItem.TaskID == this.timeEntry.TID)
                 return;
             this.projectTextBox.DataContext = autoCompleteItem.ProjectID == 0 ? null : autoCompleteItem.ToProjectLabelViewModel();
-            this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString(autoCompleteItem.ProjectColor);
+            this.selectedProjectColorCircle.Background = Utils.AdaptedProjectColorBrushFromString(autoCompleteItem.ProjectColor);
             Toggl.SetTimeEntryProject(this.timeEntry.GUID, autoCompleteItem.TaskID, autoCompleteItem.ProjectID, "");
         }
 
@@ -563,7 +568,7 @@ namespace TogglDesktop
 
             this.projectColorSelector.SelectRandom();
             this.projectTextBox.SetValue(TextBoxHelper.WatermarkProperty, "Add project");
-            this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString("#999999");
+            this.selectedProjectColorCircle.Background = Utils.AdaptedProjectColorBrushFromString("#999999");
 
             this.isInNewProjectMode = true;
         }
@@ -579,7 +584,7 @@ namespace TogglDesktop
             this.projectAutoComplete.IsEnabled = true;
             this.projectTextBox.Focus();
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
-            this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString(timeEntry.Color);
+            this.selectedProjectColorCircle.Background = Utils.AdaptedProjectColorBrushFromString(timeEntry.Color);
             this.projectTextBox.SetValue(TextBoxHelper.WatermarkProperty, "Select project");
 
             this.isInNewProjectMode = false;
@@ -820,7 +825,7 @@ namespace TogglDesktop
 
         public void SetTimer(Timer timer)
         {
-            timer.RunningTimeEntrySecondPulse += this.durationUpdateTimerTick;
+            timer.ViewModel.WhenValueChanged(x => x.DurationText).Subscribe(x => durationUpdateTimerTick(this, x));
         }
 
         public void FocusField(string focusedFieldName)

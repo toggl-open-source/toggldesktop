@@ -4,7 +4,6 @@
 
 #include <sstream>
 
-#include "batch_update_result.h"
 #include "database/database.h"
 #include "util/formatter.h"
 #include "model_change.h"
@@ -56,8 +55,8 @@ void BaseModel::ClearValidationError() {
 }
 
 void BaseModel::SetValidationError(const std::string &value) {
-    ValidationError.Set(value);
-    SetDirty();
+    if (ValidationError.Set(value))
+        SetDirty();
 }
 
 std::string BaseModel::SyncType() const {
@@ -75,8 +74,8 @@ void BaseModel::SetUpdatedAtString(const std::string &value) {
 }
 
 void BaseModel::MarkAsDeletedOnServer() {
-    IsMarkedAsDeletedOnServer.Set(true);
-    SetDirty();
+    if (IsMarkedAsDeletedOnServer.Set(true))
+        SetDirty();
 }
 
 error BaseModel::LoadFromDataString(const std::string &data_string) {
@@ -92,35 +91,6 @@ error BaseModel::LoadFromDataString(const std::string &data_string) {
 void BaseModel::Delete() {
     SetDeletedAt(time(nullptr));
     SetUIModified();
-}
-
-error BaseModel::ApplyBatchUpdateResult(
-    BatchUpdateResult * const update) {
-    poco_check_ptr(update);
-
-    if (update->ResourceIsGone()) {
-        MarkAsDeletedOnServer();
-        return noError;
-    }
-
-    toggl::error err = update->Error();
-    if (err != toggl::noError) {
-        if (DuplicateResource(err) || ResourceCannotBeCreated(err)) {
-            MarkAsDeletedOnServer();
-            return noError;
-        }
-
-        if (ResolveError(err)) {
-            return noError;
-        }
-
-        SetValidationError(err);
-        return err;
-    }
-
-    SetValidationError(noError);
-
-    return LoadFromDataString(update->Body);
 }
 
 bool BaseModel::userCannotAccessWorkspace(const error &err) const {
@@ -172,23 +142,23 @@ Logger BaseModel::logger() const {
 }
 
 void BaseModel::SetID(Poco::UInt64 value) {
-    ID.Set(value);
-    SetDirty();
+    if (ID.Set(value))
+        SetDirty();
 }
 
 void BaseModel::SetUIModifiedAt(Poco::Int64 value) {
-    UIModifiedAt.Set(value);
-    SetDirty();
+    if (UIModifiedAt.Set(value))
+        SetDirty();
 }
 
 void BaseModel::SetGUID(const std::string &value) {
-    GUID.Set(value);
-    SetDirty();
+    if (GUID.Set(value))
+        SetDirty();
 }
 
 void BaseModel::SetUID(Poco::UInt64 value) {
-    UID.Set(value);
-    SetDirty();
+    if (UID.Set(value))
+        SetDirty();
 }
 
 void BaseModel::SetDirty() {
@@ -208,13 +178,13 @@ void BaseModel::ClearUnsynced() {
 }
 
 void BaseModel::SetDeletedAt(Poco::Int64 value) {
-    DeletedAt.Set(value);
-    SetDirty();
+    if (DeletedAt.Set(value))
+        SetDirty();
 }
 
 void BaseModel::SetUpdatedAt(Poco::Int64 value) {
-    UpdatedAt.Set(value);
-    SetDirty();
+    if (UpdatedAt.Set(value))
+        SetDirty();
 }
 
 }   // namespace toggl
