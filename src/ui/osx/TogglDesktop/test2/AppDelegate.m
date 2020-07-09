@@ -1295,6 +1295,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_unsynced_items(ctx, on_unsynced_items);
 	toggl_on_show_app(ctx, on_app);
 	toggl_on_error(ctx, on_error);
+    toggl_on_info_message(ctx, on_info_message);
 	toggl_on_overlay(ctx, on_overlay);
 	toggl_on_online_state(ctx, on_online_state);
 	toggl_on_login(ctx, on_login);
@@ -1728,6 +1729,12 @@ void on_error(const char *errmsg, const bool_t is_user_error)
 			 [report addMetadata:data toTabWithName:@"metadata"];
 		 }];
 	}
+}
+
+void on_info_message(const char *message)
+{
+    [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayInfoMessageNotificationName
+                                                                object:[NSString stringWithUTF8String:message]];
 }
 
 void on_overlay(const int64_t type)

@@ -358,6 +358,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     GUI()
         : on_display_app_(nullptr)
     , on_display_error_(nullptr)
+    , on_display_info_message_(nullptr)
     , on_display_overlay_(nullptr)
     , on_display_online_state_(nullptr)
     , on_display_login_(nullptr)
@@ -405,6 +406,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     void DisplayApp();
 
     error DisplayError(const error &err);
+    void DisplayInfoMessage(const std::string &message);
 
     // Overlay screen triggers
     error DisplayWSError();
@@ -539,6 +541,10 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
 
     void OnDisplayError(TogglDisplayError cb) {
         on_display_error_ = cb;
+    }
+
+    void OnDisplayInfoMessage(TogglDisplayInfoMessage cb) {
+        on_display_info_message_ = cb;
     }
 
     void OnDisplayOverlay(TogglDisplayOverlay cb) {
@@ -721,6 +727,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
 
     TogglDisplayApp on_display_app_;
     TogglDisplayError on_display_error_;
+    TogglDisplayInfoMessage on_display_info_message_;
     TogglDisplayOverlay on_display_overlay_;
     TogglDisplayOnlineState on_display_online_state_;
     TogglDisplayLogin on_display_login_;

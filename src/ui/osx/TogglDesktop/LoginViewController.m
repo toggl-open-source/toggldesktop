@@ -775,9 +775,20 @@ extern void *ctx;
     [self showLoaderView:YES];
 
     if (self.isLoginSignUpAsSSO) {
-        toggl_login_sso_link(ctx, [email UTF8String], [pass UTF8String], [self.ssoPayload.confirmationCode UTF8String]);
+        if ([email isEqualToString:self.emailSSOTextField.stringValue]) {
+            // user is logging in with same email that he've used for SSO login
+            [[DesktopLibraryBridge shared] showMessageAfterLogin:NSLocalizedString(@"SSO login successfully enabled for your account.",
+                                                                                   @"Show After user is successfully logged in with SSO and existing credentials")
+                                                         asError:NO];
+            [[DesktopLibraryBridge shared] loginWithEmail:email password:pass andSSOConfirmationCode:self.ssoPayload.confirmationCode];
+        } else {
+            [[DesktopLibraryBridge shared] showMessageAfterLogin:NSLocalizedString(@"SSO login for this account was not enabled as login emails were different.",
+                                                                                   @"Show after SSO login, but with existing credentials where email did not match")
+                                                         asError:YES];
+            [[DesktopLibraryBridge shared] loginWithEmail:email password:pass];
+        }
     } else {
-        toggl_login_async(ctx, [email UTF8String], [pass UTF8String]);
+        [[DesktopLibraryBridge shared] loginWithEmail:email password:pass];
     }
 }
 

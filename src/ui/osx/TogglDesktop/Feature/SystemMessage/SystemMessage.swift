@@ -39,6 +39,10 @@ protocol SystemMessagePresentable {
     @objc static let shared = SystemMessage()
     private var presenter: SystemMessagePresentable?
 
+    private override init() {
+        super.init()
+    }
+
     // Public
 
     func present(_ payload: SystemMessage.Payload) {
@@ -81,5 +85,10 @@ extension SystemMessage {
         let payload = Payload(mode: .syncing,
                               content: .informative("Syncing..."))
         dismiss(payload)
+    }
+
+    @objc func presentInfo(_ message: String) {
+        let payload = Payload(mode: .information, content: .informative(message))
+        present(payload)
     }
 }

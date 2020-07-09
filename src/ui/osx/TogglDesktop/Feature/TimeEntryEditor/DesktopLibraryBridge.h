@@ -125,10 +125,22 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)userDidTurnOnRecordActivity;
 - (void)userDidEditOrAddTimeEntryDirectlyOnTimelineView;
 
-#pragma mark - SSO
+#pragma mark - Auth
+
+- (void)loginWithEmail:(NSString *)email password:(NSString *)password;
+
+/// Logs in an existing user with a given email and password.
+/// Additionaly links user's Toggl account with SSO provider using the @c confirmationCode.
+/// @param ssoConfirmation Needed to link existing Toggl account with the SSO provider.
+- (void)loginWithEmail:(NSString *)email password:(NSString *)password andSSOConfirmationCode:(NSString *)ssoConfirmation;
 
 - (void)getSSOIdentityProviderWithEmail:(NSString *) email;
 - (void)loginSSOWithAPIToken:(NSString *) apiToken;
+
+/// Sets a message that library will show to a user after the successful login. Message is shown as a small information toast.
+/// @param message Message to show to the user.
+/// @param isError Set to @c true if this is a message with an error appearance.
+- (void)showMessageAfterLogin:(NSString *)message asError:(BOOL)isError;
 
 #pragma mark - Tracking
 

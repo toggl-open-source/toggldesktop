@@ -63,6 +63,10 @@ extern void *ctx;
                                                      name:kDisplayError
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(displayInfoMessageNotification:)
+                                                     name:kDisplayInfoMessageNotificationName
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(stopDisplayError:)
                                                      name:kHideDisplayError
                                                    object:nil];
@@ -261,6 +265,13 @@ extern void *ctx;
     {
         [self.loginViewController resetLoader];
     }
+}
+
+- (void)displayInfoMessageNotification:(NSNotification *)notification
+{
+    NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+    NSString *message = notification.object;
+    [[SystemMessage shared] presentInfo:message];
 }
 
 - (void)startDisplayOnlineState:(NSNotification *)notification
