@@ -346,7 +346,8 @@ std::vector<std::string> TimeEntry::TagsStringToVector(const std::string &str) {
         while (ss.good()) {
             std::string tag;
             getline(ss, tag, kTagSeparator);
-            tmp.push_back(tag);
+            if (!tag.empty())
+                tmp.push_back(tag);
         }
     }
     return tmp;

@@ -10,7 +10,8 @@ template<>
 std::vector<std::string> JsonHelper::convert(const Json::Value &json) {
     std::vector<std::string> ret;
     for (auto i : json) {
-        ret.push_back(i.asString());
+        if (!i.asString().empty())
+            ret.push_back(i.asString());
     }
     return ret;
 }
