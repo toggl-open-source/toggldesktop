@@ -92,6 +92,28 @@ TEST(TimeEntry, SetDurationUserInput) {
     ASSERT_TRUE(te.UIModifiedAt());
 }
 
+TEST(TimeEntry, TagSplitter) {
+    std::vector<std::string> expectedSplit {
+        "a",
+        "b",
+        "c"
+    };
+    std::string expectedJoined {
+        "a" "\t"
+        "b" "\t"
+        "c"
+    };
+    auto split = toggl::TimeEntry::TagsStringToVector(expectedJoined);
+    auto joined = toggl::TimeEntry::TagsVectorToString(expectedSplit);
+    auto joinedsplit = toggl::TimeEntry::TagsVectorToString(split);
+    auto splitjoined = toggl::TimeEntry::TagsStringToVector(joined);
+
+    ASSERT_EQ(expectedSplit, split);
+    ASSERT_EQ(expectedSplit, splitjoined);
+    ASSERT_EQ(expectedJoined, joined);
+    ASSERT_EQ(expectedJoined, joinedsplit);
+}
+
 TEST(Project, ProjectsHaveColorCodes) {
     Project p;
     p.SetColor("1");

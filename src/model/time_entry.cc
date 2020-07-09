@@ -354,6 +354,7 @@ std::vector<std::string> TimeEntry::TagsStringToVector(const std::string &str) {
 
 const std::string &TimeEntry::TagsVectorToString(const std::vector<std::string> &vec) {
     static thread_local std::string cache;
+    cache.clear();
     for (auto it = vec.begin(); it != vec.end(); ++it) {
         if (it != vec.begin()) {
             cache += kTagSeparator;
