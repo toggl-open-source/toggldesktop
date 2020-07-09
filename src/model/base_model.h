@@ -23,6 +23,7 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT BaseModel {
  public:
     BaseModel() {}
+    BaseModel(const BaseModel &o);
     virtual ~BaseModel() {}
 
     Property<Poco::Int64> LocalID { 0 };

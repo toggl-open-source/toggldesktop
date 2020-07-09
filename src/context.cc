@@ -3240,10 +3240,6 @@ error Context::updateTimeEntryProject(
         p = user_->related.ProjectByGUID(project_guid);
     }
 
-    if (isUsingSyncServer() && p && p->WID() != te->WID()) {
-        return displayError("This version of Toggl Desktop does not support changing time entry workspaces.");
-    }
-
     if (p && !canChangeProjectTo(te, p)) {
         return displayError(error(
             "Cannot change project: would end up with locked time entry"));
@@ -3257,7 +3253,19 @@ error Context::updateTimeEntryProject(
                 || (!project_guid.empty() && p->GUID().compare(te->ProjectGUID()) != 0)) {
             te->SetBillable(p->Billable(), true);
         }
-        te->SetWID(p->WID());
+        if (te->WID != p->WID) {
+            if (isUsingSyncServer()) {
+                // Sync server doesn't support changing the WID, create a copy and make it deleted
+                auto copy = new TimeEntry(*te);
+                auto oldID = te->ID();
+                te->SetID(0);
+                copy->EnsureGUID();
+                copy->SetID(oldID);
+                copy->Delete();
+                user_->related.pushBackTimeEntry(copy);
+            }
+            te->SetWID(p->WID());
+        }
     }
     te->SetTID(task_id, true);
     te->SetPID(project_id, true);
