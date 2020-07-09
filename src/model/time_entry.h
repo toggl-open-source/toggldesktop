@@ -38,7 +38,7 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     void SetCreatedWith(const std::string &value);
     void SetProjectGUID(const std::string &value, bool userModified);
 
-    const std::string Tags() const;
+    const std::string &Tags() const;
     void SetTags(const std::string &tags, bool userModified);
     const std::string TagsHash() const;
 
