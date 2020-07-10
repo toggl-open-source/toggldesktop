@@ -24,7 +24,7 @@ DEPENDENCIES:
   - Sparkle
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - AppAuth
     - Bugsnag
     - GTMAppAuth
@@ -40,6 +40,6 @@ SPEC CHECKSUMS:
   MASShortcut: d9e4909e878661cc42877cc9d6efbe638273ab57
   Sparkle: 593ac2e677c07bcb6c3b22d621240e7cbedaab57
 
-PODFILE CHECKSUM: 47f76cb65908a796afa9bee0b52af94cd2c5633f
+PODFILE CHECKSUM: 799c066621b5b0ae6e7d607d88405719913d7ee8
 
 COCOAPODS: 1.8.4
