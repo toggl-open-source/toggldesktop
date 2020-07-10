@@ -573,12 +573,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     void TrackTimelineMenuContext(const TimelineMenuContextType type);
 
-    /// Sets a message to show to a user after successful login. Message is shown as a small information toast.
-    /// @param message Message to show to the user.
-    /// @param isErrorMessage Set to @c true if this is a message with an error appearance.
-    void ShowMessageAfterLogin(const std::string &message,
-                               const bool isErrorMessage);
-
  protected:
     void uiUpdaterActivity();
     void checkReminders();
@@ -855,8 +849,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     std::string last_message_id_;
 
     const bool handleStopRunningEntry();
-
-    TogglInfoMessage message_to_show_after_login;
 
     error updateTimeEntryProject(
         TimeEntry *te,

@@ -86,8 +86,7 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , syncer_(this, &Context::syncerActivityWrapper)
 , update_path_("")
 , overlay_visible_(false)
-, last_message_id_("")
-, message_to_show_after_login({ "", false }) {
+, last_message_id_("") {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
     }
@@ -2632,15 +2631,6 @@ error Context::Login(
             }
         }
 
-        // show message to user if needed
-        if (message_to_show_after_login.message.empty() == false) {
-            if (message_to_show_after_login.isErrorMessage) {
-                UI()->DisplayError(message_to_show_after_login.message);
-            } else {
-                UI()->DisplayInfoMessage(message_to_show_after_login.message);
-            }
-        }
-
         err = pullWorkspacePreferences();
         if (err != noError) {
             return displayError(err);
@@ -2751,12 +2741,6 @@ error Context::AsyncAppleSignup(
     }, access_token, country_id, full_name);
     backgroundThread.detach();
     return noError;
-}
-
-void Context::ShowMessageAfterLogin(
-    const std::string &message,
-    const bool isErrorMessage) {
-    message_to_show_after_login = { message, isErrorMessage };
 }
 
 void Context::setUser(User *value, const bool logged_in) {

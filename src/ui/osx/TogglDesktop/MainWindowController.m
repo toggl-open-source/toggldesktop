@@ -63,10 +63,6 @@ extern void *ctx;
                                                      name:kDisplayError
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(displayInfoMessageNotification:)
-                                                     name:kDisplayInfoMessageNotificationName
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(stopDisplayError:)
                                                      name:kHideDisplayError
                                                    object:nil];
@@ -209,6 +205,17 @@ extern void *ctx;
             if (@available(macOS 10.12.2, *)) {
                 [[TouchBarService shared] prepareContent];
             }
+
+            // Show information message to user after the login operation if needed
+            // we assume that if `afterLoginMessage != nil` this is the first time
+            // we show the TE list and that's why we show the message.
+            // Remember to clear `afterLoginMessage` so message is not shown
+            // on every TE list presentation
+            AppDelegate *appDelegate = (AppDelegate *)[[NSApplication sharedApplication] delegate];
+            if (appDelegate.afterLoginMessage) {
+                [[SystemMessage shared] present:appDelegate.afterLoginMessage];
+                appDelegate.afterLoginMessage = nil;
+            }
         }
     }
 }
@@ -265,13 +272,6 @@ extern void *ctx;
     {
         [self.loginViewController resetLoader];
     }
-}
-
-- (void)displayInfoMessageNotification:(NSNotification *)notification
-{
-    NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-    NSString *message = notification.object;
-    [[SystemMessage shared] presentInfo:message];
 }
 
 - (void)startDisplayOnlineState:(NSNotification *)notification

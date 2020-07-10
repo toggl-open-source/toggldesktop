@@ -137,11 +137,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)getSSOIdentityProviderWithEmail:(NSString *) email;
 - (void)loginSSOWithAPIToken:(NSString *) apiToken;
 
-/// Sets a message that library will show to a user after the successful login. Message is shown as a small information toast.
-/// @param message Message to show to the user.
-/// @param isError Set to @c true if this is a message with an error appearance.
-- (void)showMessageAfterLogin:(NSString *)message asError:(BOOL)isError;
-
 #pragma mark - Tracking
 
 -(void) trackTimelineMenuContextType:(TimelineMenuContextType) type;

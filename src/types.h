@@ -13,11 +13,6 @@ const error noError = "";
 
 typedef std::string guid;
 
-struct TogglInfoMessage {
-    std::string message;
-    bool isErrorMessage;
-};
-
 }
 
 #if defined(_WIN32) || defined(WIN32)

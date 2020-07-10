@@ -775,16 +775,17 @@ extern void *ctx;
     [self showLoaderView:YES];
 
     if (self.isLoginSignUpAsSSO) {
+        AppDelegate *appDelegate = (AppDelegate *)[[NSApplication sharedApplication] delegate];
         if ([email isEqualToString:self.emailSSOTextField.stringValue]) {
             // user is logging in with same email that he've used for SSO login
-            [[DesktopLibraryBridge shared] showMessageAfterLogin:NSLocalizedString(@"SSO login successfully enabled for your account.",
-                                                                                   @"Show After user is successfully logged in with SSO and existing credentials")
-                                                         asError:NO];
+            appDelegate.afterLoginMessage = [[SystemMessagePayload alloc] initWithMessage:NSLocalizedString(@"SSO login successfully enabled for your account.",
+                                                                                                            @"Show After user is successfully logged in with SSO and existing credentials")
+                                                                                  isError:NO];
             [[DesktopLibraryBridge shared] loginWithEmail:email password:pass andSSOConfirmationCode:self.ssoPayload.confirmationCode];
         } else {
-            [[DesktopLibraryBridge shared] showMessageAfterLogin:NSLocalizedString(@"SSO login for this account was not enabled as login emails were different.",
-                                                                                   @"Show after SSO login, but with existing credentials where email did not match")
-                                                         asError:YES];
+            appDelegate.afterLoginMessage = [[SystemMessagePayload alloc] initWithMessage:NSLocalizedString(@"SSO login for this account was not enabled as login emails were different.",
+                                                                                                            @"Show after SSO login, but with existing credentials where email did not match")
+                                                                                  isError:NO];
             [[DesktopLibraryBridge shared] loginWithEmail:email password:pass];
         }
     } else {

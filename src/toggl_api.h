@@ -257,9 +257,6 @@ extern "C" {
         const char_t *errmsg,
         const bool_t user_error);
 
-    typedef void (*TogglDisplayInfoMessage)(
-        const char_t *message);
-
     typedef void (*TogglDisplayOverlay)(
         const int64_t type);
 
@@ -463,10 +460,6 @@ extern "C" {
         void *context,
         TogglDisplayError cb);
 
-    TOGGL_EXPORT void toggl_on_info_message(
-        void *context,
-        TogglDisplayInfoMessage cb);
-
     TOGGL_EXPORT void toggl_on_overlay(
         void *context,
         TogglDisplayOverlay cb);
@@ -656,14 +649,6 @@ extern "C" {
 
     TOGGL_EXPORT void toggl_password_forgot(
         void *context);
-
-    /// Sets a message that library will show to a user after the successful login. Message is shown as a small information toast.
-    /// @param message Message to show to the user.
-    /// @param isErrorMessage Set to @c true if this is a message with an error appearance.
-    TOGGL_EXPORT void toggl_show_message_after_login(
-        void *context,
-        const char_t *message,
-        const bool_t isErrorMessage);
 
     TOGGL_EXPORT void toggl_tos(
         void *context);

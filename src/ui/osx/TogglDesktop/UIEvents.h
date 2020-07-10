@@ -26,7 +26,6 @@ extern NSString *const kDisplayTags;
 extern NSString *const kDisplayTimeEntryEditor;
 extern NSString *const kDisplayLogin;
 extern NSString *const kDisplayError;
-extern NSString *const kDisplayInfoMessageNotificationName;
 extern NSString *const kDisplayUpdate;
 extern NSString *const kDisplayIdleNotification;
 extern NSString *const kDisplayOnlineState;

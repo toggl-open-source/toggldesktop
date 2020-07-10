@@ -180,12 +180,6 @@ error GUI::DisplayError(const error &err) {
     return err;
 }
 
-void GUI::DisplayInfoMessage(const std::string &message) {
-    char_t *message_s = copy_string(message);
-    on_display_info_message_(message_s);
-    free(message_s);
-}
-
 error GUI::DisplayWSError() {
     on_display_overlay_(0);
     return noError;

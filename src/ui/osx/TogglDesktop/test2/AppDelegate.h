@@ -10,6 +10,7 @@
 
 @class AutocompleteItem;
 @class Reachability;
+@class SystemMessagePayload;
 
 @protocol OIDExternalUserAgentSession;
 
@@ -17,6 +18,10 @@
 @property (strong, nonatomic) id<OIDExternalUserAgentSession> currentAuthorizationFlow;
 @property (strong, nonatomic) NSStatusItem *statusItem;
 @property (strong, nonatomic) Reachability *reach;
+
+/// Message to show to a user after successful login. Message is shown as a small information toast.
+@property (strong, nonatomic) SystemMessagePayload *afterLoginMessage;
+
 - (IBAction)onPreferencesMenuItem:(id)sender;
 - (IBAction)onAboutMenuItem:(id)sender;
 - (IBAction)onSyncMenuItem:(id)sender;

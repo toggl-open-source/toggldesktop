@@ -467,9 +467,4 @@ void *ctx;
     toggl_login_sso(ctx, [apiToken UTF8String]);
 }
 
-- (void)showMessageAfterLogin:(NSString *)message asError:(BOOL)isError
-{
-    toggl_show_message_after_login(ctx, [message UTF8String], isError);
-}
-
 @end

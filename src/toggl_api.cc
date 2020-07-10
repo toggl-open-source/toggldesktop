@@ -518,13 +518,6 @@ bool_t toggl_apple_login_async(
     return toggl::noError == app(context)->AsyncAppleLogin(to_string(access_token));
 }
 
-void toggl_show_message_after_login(
-    void *context,
-    const char_t *message,
-    const bool_t isErrorMessage) {
-    app(context)->ShowMessageAfterLogin(to_string(message), isErrorMessage);
-}
-
 bool_t toggl_logout(
     void *context) {
 
@@ -1138,12 +1131,6 @@ void toggl_on_error(
     void *context,
     TogglDisplayError cb) {
     app(context)->UI()->OnDisplayError(cb);
-}
-
-void toggl_on_info_message(
-    void *context,
-    TogglDisplayInfoMessage cb) {
-    app(context)->UI()->OnDisplayInfoMessage(cb);
 }
 
 void toggl_on_overlay(
