@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		74AA947A18091AE10000539F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947918091AE10000539F /* WebKit.framework */; };
 		74CAAD0318185A9B001B77BB /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CAAD0218185A9B001B77BB /* Carbon.framework */; };
+		B890837624AE388100E40C38 /* json.cc in Sources */ = {isa = PBXBuildFile; fileRef = B890837324AE388100E40C38 /* json.cc */; };
+		B890837724AE388100E40C38 /* property.h in Headers */ = {isa = PBXBuildFile; fileRef = B890837424AE388100E40C38 /* property.h */; };
+		B890837824AE388100E40C38 /* json.h in Headers */ = {isa = PBXBuildFile; fileRef = B890837524AE388100E40C38 /* json.h */; };
 		B8B6EC65244616B10008FA32 /* netconf.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC35244616AE0008FA32 /* netconf.h */; };
 		B8B6EC66244616B10008FA32 /* timeline_notifications.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC36244616AE0008FA32 /* timeline_notifications.h */; };
 		B8B6EC67244616B10008FA32 /* timeline_uploader.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC37244616AE0008FA32 /* timeline_uploader.h */; };
@@ -100,11 +103,11 @@
 		BA43B33323F680B00007DD99 /* libPocoNetSSL.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B32423F680B00007DD99 /* libPocoNetSSL.60.dylib */; };
 		BA43B33523F680B00007DD99 /* libPocoUtil.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B32523F680B00007DD99 /* libPocoUtil.60.dylib */; };
 		BA43B33723F680B00007DD99 /* libPocoXML.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B32623F680B00007DD99 /* libPocoXML.60.dylib */; };
-		BAA2C31B2477AF23005FBBE9 /* color_convert.cc in Sources */ = {isa = PBXBuildFile; fileRef = BAA2C3192477AF23005FBBE9 /* color_convert.cc */; };
-		BAA2C31C2477AF23005FBBE9 /* color_convert.h in Headers */ = {isa = PBXBuildFile; fileRef = BAA2C31A2477AF23005FBBE9 /* color_convert.h */; };
 		BA71F4F6246D242900DB2D97 /* onboarding_service.h in Headers */ = {isa = PBXBuildFile; fileRef = BA71F4F4246D242800DB2D97 /* onboarding_service.h */; };
 		BA71F4F7246D242900DB2D97 /* onboarding_service.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA71F4F5246D242900DB2D97 /* onboarding_service.cpp */; };
 		BA71F4FA246D255500DB2D97 /* cpptime.h in Headers */ = {isa = PBXBuildFile; fileRef = BA71F4F9246D255500DB2D97 /* cpptime.h */; };
+		BAA2C31B2477AF23005FBBE9 /* color_convert.cc in Sources */ = {isa = PBXBuildFile; fileRef = BAA2C3192477AF23005FBBE9 /* color_convert.cc */; };
+		BAA2C31C2477AF23005FBBE9 /* color_convert.h in Headers */ = {isa = PBXBuildFile; fileRef = BAA2C31A2477AF23005FBBE9 /* color_convert.h */; };
 		BAA842252403D99800BCCB67 /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B31E23F680B00007DD99 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAA842262403D99800BCCB67 /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B31F23F680B00007DD99 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAA842272403D99800BCCB67 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B32023F680B00007DD99 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -146,6 +149,9 @@
 /* Begin PBXFileReference section */
 		74AA947918091AE10000539F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		74CAAD0218185A9B001B77BB /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		B890837324AE388100E40C38 /* json.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = json.cc; sourceTree = "<group>"; };
+		B890837424AE388100E40C38 /* property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = property.h; sourceTree = "<group>"; };
+		B890837524AE388100E40C38 /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json.h; sourceTree = "<group>"; };
 		B8B6EC35244616AE0008FA32 /* netconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = netconf.h; sourceTree = "<group>"; };
 		B8B6EC36244616AE0008FA32 /* timeline_notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timeline_notifications.h; sourceTree = "<group>"; };
 		B8B6EC37244616AE0008FA32 /* timeline_uploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timeline_uploader.h; sourceTree = "<group>"; };
@@ -240,11 +246,11 @@
 		BA43B34B23F681CF0007DD99 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../../ui/osx/TogglDesktop/Library/openssl/libcrypto.a; sourceTree = "<group>"; };
 		BA43B34C23F681CF0007DD99 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../../ui/osx/TogglDesktop/Library/openssl/libssl.a; sourceTree = "<group>"; };
 		BA43B34F23F681D60007DD99 /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua.a; path = ../../ui/osx/TogglDesktop/Library/lua/liblua.a; sourceTree = "<group>"; };
-		BAA2C3192477AF23005FBBE9 /* color_convert.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = color_convert.cc; sourceTree = "<group>"; };
-		BAA2C31A2477AF23005FBBE9 /* color_convert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = color_convert.h; sourceTree = "<group>"; };
 		BA71F4F4246D242800DB2D97 /* onboarding_service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = onboarding_service.h; sourceTree = "<group>"; };
 		BA71F4F5246D242900DB2D97 /* onboarding_service.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = onboarding_service.cpp; sourceTree = "<group>"; };
 		BA71F4F9246D255500DB2D97 /* cpptime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpptime.h; sourceTree = "<group>"; };
+		BAA2C3192477AF23005FBBE9 /* color_convert.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = color_convert.cc; sourceTree = "<group>"; };
+		BAA2C31A2477AF23005FBBE9 /* color_convert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = color_convert.h; sourceTree = "<group>"; };
 		BAA8422E2403DAE000BCCB67 /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.1.dylib; path = ../../ui/osx/TogglDesktop/Library/openssl/libcrypto.1.1.dylib; sourceTree = "<group>"; };
 		BAA8422F2403DAE000BCCB67 /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.1.1.dylib; path = ../../ui/osx/TogglDesktop/Library/openssl/libssl.1.1.dylib; sourceTree = "<group>"; };
 		BAD233DA21D60A4D0039C742 /* libPocoNet.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.dylib; sourceTree = "<group>"; };
@@ -289,6 +295,9 @@
 		B8B6EC34244616040008FA32 /* util */ = {
 			isa = PBXGroup;
 			children = (
+				B890837324AE388100E40C38 /* json.cc */,
+				B890837524AE388100E40C38 /* json.h */,
+				B890837424AE388100E40C38 /* property.h */,
 				B8B6ECCE2446170C0008FA32 /* custom_error_handler.cc */,
 				B8B6ECC82446170C0008FA32 /* custom_error_handler.h */,
 				B8B6ECCA2446170C0008FA32 /* formatter.cc */,
@@ -486,6 +495,7 @@
 				B8B6ECE12446173A0008FA32 /* migrations.h in Headers */,
 				B8B6ECAE244617000008FA32 /* project.h in Headers */,
 				B8B6ECBC244617000008FA32 /* autotracker.h in Headers */,
+				B890837824AE388100E40C38 /* json.h in Headers */,
 				B8B6EC87244616B10008FA32 /* related_data.h in Headers */,
 				B8B6ECD02446170C0008FA32 /* logger.h in Headers */,
 				B8B6ECB8244617000008FA32 /* user.h in Headers */,
@@ -525,6 +535,7 @@
 				BA71F4F6246D242900DB2D97 /* onboarding_service.h in Headers */,
 				B8B6EC88244616B10008FA32 /* error.h in Headers */,
 				B8B6EC8D244616B10008FA32 /* const.h in Headers */,
+				B890837724AE388100E40C38 /* property.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -632,6 +643,7 @@
 				B8B6ECBB244617000008FA32 /* workspace.cc in Sources */,
 				B8B6EC84244616B10008FA32 /* timeline_uploader.cc in Sources */,
 				B8B6EC75244616B10008FA32 /* websocket_client.cc in Sources */,
+				B890837624AE388100E40C38 /* json.cc in Sources */,
 				B8B6ECDF2446173A0008FA32 /* database.cc in Sources */,
 				B8B6ECC0244617000008FA32 /* task.cc in Sources */,
 				B8B6ECB0244617000008FA32 /* obm_action.cc in Sources */,

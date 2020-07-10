@@ -31,7 +31,7 @@ class TOGGL_INTERNAL_EXPORT Task : public BaseModel {
     std::string String() const override;
     std::string ModelName() const override;
     std::string ModelURL() const override;
-    void LoadFromJSON(Json::Value value) override;
+    void LoadFromJSON(const Json::Value &value);
 };
 
 }  // namespace toggl

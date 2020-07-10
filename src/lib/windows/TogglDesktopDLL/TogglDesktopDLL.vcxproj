@@ -455,6 +455,7 @@
     <ClInclude Include="..\..\..\database\migrations.h" />
     <ClInclude Include="..\..\..\netconf.h" />
     <ClInclude Include="..\..\..\model\obm_action.h" />
+    <ClInclude Include="..\..\..\util\json.h" />
     <ClInclude Include="..\..\..\util\property.h" />
     <ClInclude Include="..\..\..\util\random.h" />
     <ClInclude Include="..\..\..\util\rectangle.h" />
@@ -501,6 +502,7 @@
     <ClCompile Include="..\..\..\database\migrations.cc" />
     <ClCompile Include="..\..\..\netconf.cc" />
     <ClCompile Include="..\..\..\model\obm_action.cc" />
+    <ClCompile Include="..\..\..\util\json.cc" />
     <ClCompile Include="..\..\..\util\random.cc" />
     <ClCompile Include="..\..\..\util\rectangle.cc" />
     <ClCompile Include="..\..\..\model\settings.cc" />

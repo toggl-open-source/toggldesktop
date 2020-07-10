@@ -138,13 +138,12 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     error LoadUserUpdateFromJSONString(const std::string &json);
 
-    error LoadUserAndRelatedDataFromJSONString(
-        const std::string &json,
-        bool including_related_data);
+    error LoadUserAndRelatedDataFromJSONString(const std::string &json,
+        bool including_related_data, bool syncServer);
 
-    void LoadUserAndRelatedDataFromJSON(
-        const Json::Value &root,
-        bool including_related_data);
+    void LoadUserAndRelatedDataFromJSON(const Json::Value &root,
+        bool including_related_data,
+        bool syncServer);
 
     error LoadWorkspacesFromJSONString(const std::string & json);
 
@@ -216,20 +215,22 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     error loadUserFromJSON(
         const Json::Value &node);
 
-    error loadRelatedDataFromJSON(
-        const Json::Value &node,
-        bool including_related_data);
+    error loadRelatedDataFromJSON(const Json::Value &node,
+        bool including_related_data,
+        bool syncServer);
 
     void loadUserUpdateFromJSON(
         Json::Value list);
 
     void loadUserProjectFromJSON(
         Json::Value data,
-        std::set<Poco::UInt64> *alive = nullptr);
+        std::set<Poco::UInt64> *alive = nullptr,
+        bool syncServer = false);
 
     void loadUserProjectFromSyncJSON(
         Json::Value data,
-        std::set<Poco::UInt64> *alive = nullptr);
+        std::set<Poco::UInt64> *alive = nullptr,
+        bool syncServer = false);
 
     void loadUserWorkspaceFromJSON(
         Json::Value data,
@@ -237,11 +238,13 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     void loadUserClientFromJSON(
         Json::Value data,
-        std::set<Poco::UInt64> *alive = nullptr);
+        std::set<Poco::UInt64> *alive = nullptr,
+        bool syncServer = false);
 
     void loadUserClientFromSyncJSON(
         Json::Value data,
-        std::set<Poco::UInt64> *alive = nullptr);
+        std::set<Poco::UInt64> *alive = nullptr,
+        bool syncServer = false);
 
     void loadUserTaskFromJSON(
         Json::Value data,
@@ -249,7 +252,8 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     void loadUserTimeEntryFromJSON(
         Json::Value data,
-        std::set<Poco::UInt64> *alive = nullptr);
+        std::set<Poco::UInt64> *alive = nullptr,
+        bool syncServer = false);
 
     std::string dirtyObjectsJSON(std::vector<TimeEntry *> * const) const;
 

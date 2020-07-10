@@ -86,6 +86,7 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , syncer_(this, &Context::syncerActivityWrapper)
 , update_path_("")
 , overlay_visible_(false)
+, is_using_sync_server_(false)
 , last_message_id_("") {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
@@ -2723,7 +2724,7 @@ error Context::SetLoggedInUserFromJSON(
         return displayError(err);
     }
 
-    err = user->LoadUserAndRelatedDataFromJSONString(json, true);
+    err = user->LoadUserAndRelatedDataFromJSONString(json, true, false);
     if (err != noError) {
         delete user;
         return displayError(err);
@@ -4947,12 +4948,17 @@ void Context::syncerActivityWrapper() {
                 logger.log("Syncer - Server didn't respond 200 to /me/preferences, fallback to LEGACY");
                 state = LEGACY;
             }
+            if (state == LEGACY)
+                is_using_sync_server_ = false;
+            else
+                is_using_sync_server_ = true;
             break;
         }
         case LEGACY:
             legacySyncerActivity();
             break;
         case BATCHED:
+            is_using_sync_server_ = true;
             batchedSyncerActivity();
             break;
         }
@@ -5207,7 +5213,7 @@ error Context::pullAllUserData() {
             }
             TimeEntry *running_entry = user_->RunningTimeEntry();
 
-            error err = user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since);
+            err = user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since, false);
 
             if (err != noError) {
                 return err;
@@ -5289,7 +5295,7 @@ error Context::pullBatchedUserData() {
             }
             TimeEntry *running_entry = user_->RunningTimeEntry();
 
-            user_->LoadUserAndRelatedDataFromJSON(json, !since);
+            user_->LoadUserAndRelatedDataFromJSON(json, !since, true);
 
             if (err != noError) {
                 return err;
@@ -5604,7 +5610,7 @@ error Context::pushClients(
             continue;
         }
 
-        (*it)->LoadFromJSON(root);
+        (*it)->LoadFromJSON(root, false);
     }
 
     return err;
@@ -5660,7 +5666,7 @@ error Context::pushProjects(
             continue;
         }
 
-        (*it)->LoadFromJSON(root);
+        (*it)->LoadFromJSON(root, false);
     }
 
     return err;
@@ -5810,7 +5816,7 @@ error Context::pushEntries(
             return error("Backend has changed the ID of the entry");
         }
 
-        (*it)->LoadFromJSON(root);
+        (*it)->LoadFromJSON(root, isUsingSyncServer());
     }
 
     if (error_found) {
@@ -6374,7 +6380,7 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
                         return error("Backend has changed the ID of the entry");
                     }
 
-                    model->LoadFromJSON(i["payload"]["result"]);
+                    model->LoadFromJSON(i["payload"]["result"], isUsingSyncServer());
                     model->ClearDirty();
                     model->ClearUnsynced();
                 }

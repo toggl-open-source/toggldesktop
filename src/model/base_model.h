@@ -14,6 +14,7 @@
 #include "types.h"
 #include "util/logger.h"
 #include "util/property.h"
+#include "util/json.h"
 
 #include <Poco/Types.h>
 
@@ -93,7 +94,6 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     virtual std::string ModelName() const = 0;
     virtual std::string ModelURL() const = 0;
 
-    virtual void LoadFromJSON(Json::Value value) {}
     virtual Json::Value SaveToJSON(int apiVersion = 8) const {
         return 0;
     }
@@ -110,8 +110,6 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     virtual bool ResolveError(const toggl::error &err) {
         return false;
     }
-
-    error LoadFromDataString(const std::string &);
 
     void Delete();
 

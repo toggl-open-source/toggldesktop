@@ -25,7 +25,7 @@ class TOGGL_INTERNAL_EXPORT Tag : public BaseModel {
     std::string String() const override;
     std::string ModelName() const override;
     std::string ModelURL() const override;
-    void LoadFromJSON(Json::Value data) override;
+    void LoadFromJSON(const Json::Value &data);
 };
 
 }  // namespace toggl
