@@ -131,6 +131,19 @@ Logger BaseModel::logger() const {
     return { ModelName() };
 }
 
+BaseModel::BaseModel(const BaseModel &o)
+    // ID, GUID, LocalID are intentionally omitted
+    : UIModifiedAt { o.UIModifiedAt }
+    , UID { o.UID }
+    , Dirty { true }
+    , DeletedAt { o.DeletedAt }
+    , IsMarkedAsDeletedOnServer { o.IsMarkedAsDeletedOnServer }
+    , UpdatedAt { o.UpdatedAt }
+    , ValidationError { o.ValidationError }
+    , Unsynced { o.Unsynced }
+{
+}
+
 void BaseModel::SetID(Poco::UInt64 value) {
     if (ID.Set(value))
         SetDirty();

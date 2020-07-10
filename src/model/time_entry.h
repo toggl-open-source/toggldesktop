@@ -17,6 +17,7 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
  public:
     TimeEntry() : BaseModel() {}
+    TimeEntry(const TimeEntry &o);
     virtual ~TimeEntry() {}
 
     Property<std::string> Description { "" };

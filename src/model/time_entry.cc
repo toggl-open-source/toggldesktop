@@ -153,6 +153,7 @@ std::string TimeEntry::String() const {
         << " ID=" << ID()
         << " local_id=" << LocalID()
         << " description=" << Description()
+        << " uid=" << UID()
         << " wid=" << WID()
         << " guid=" << GUID()
         << " pid=" << PID()
@@ -190,6 +191,26 @@ void TimeEntry::SetStartTime(Poco::Int64 value, bool userModified) {
 void TimeEntry::SetStopTime(Poco::Int64 value, bool userModified) {
     if (StopTime.Set(value, userModified))
         SetDirty();
+}
+
+TimeEntry::TimeEntry(const TimeEntry &o)
+    : BaseModel(o)
+    , Description { o.Description }
+    , CreatedWith { o.CreatedWith }
+    , ProjectGUID { o.ProjectGUID }
+    , TagNames { o.TagNames }
+    , WID { o.WID }
+    , PID { o.PID }
+    , TID { o.TID }
+    , StartTime { o.StartTime }
+    , StopTime { o.StopTime }
+    , DurationInSeconds { o.DurationInSeconds }
+    , LastStartAt { o.LastStartAt }
+    , Billable { o.Billable }
+    , DurOnly { o.DurOnly }
+    , SkipPomodoro { o.SkipPomodoro }
+{
+
 }
 
 void TimeEntry::SetDescription(const std::string &value, bool userModified) {

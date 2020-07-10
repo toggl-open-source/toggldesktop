@@ -2181,6 +2181,9 @@ error Database::saveModel(
             } else {
                 *session_ <<
                           "update time_entries set "
+                          /* For cases where we need to remove the ID from the TE (like when changing the workspace) */
+                          "id = null, "
+                          /* Regular column updates */
                           "uid = :uid, description = :description, wid = :wid, "
                           "guid = :guid, pid = :pid, tid = :tid, "
                           "billable = :billable, "
