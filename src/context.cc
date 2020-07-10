@@ -4096,7 +4096,7 @@ Project *Context::CreateProject(
 
         ws = user_->related.WorkspaceByID(workspace_id);
         if (ws) {
-            billable = ws->ProjectsBillableByDefault();
+            billable = ws->ProjectsBillableByDefault() && ws->Premium();
         }
 
         std::string client_name("");
