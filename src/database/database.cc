@@ -2179,15 +2179,11 @@ error Database::saveModel(
                           useRef(model->LocalID()),
                           now;
             } else {
-                // For cases where we need to remove the ID from the TE (like when changing the workspace)
                 *session_ <<
                           "update time_entries set "
-                          "id = null "
-                          "where local_id = :local_id",
-                          useRef(model->LocalID()),
-                          now;
-                *session_ <<
-                          "update time_entries set "
+                          /* For cases where we need to remove the ID from the TE (like when changing the workspace) */
+                          "id = null, "
+                          /* Regular column updates */
                           "uid = :uid, description = :description, wid = :wid, "
                           "guid = :guid, pid = :pid, tid = :tid, "
                           "billable = :billable, "
