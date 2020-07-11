@@ -2084,7 +2084,6 @@
 				74E3CDDA17FC37A500C3ADD3 /* Run Script (install bugsnag) */,
 				74A50AA818434D90006F37BB /* CopyFiles */,
 				69FC17EF17E6534400B96425 /* Resources */,
-				7407F1F41AA80466000380C4 /* Run Script (Fix dynamic library paths in Frameworks) */,
 				BA6406F121C8FC690074BC96 /* Run Formatter */,
 				CE4DD35122BF90B10398A0A6 /* [CP] Embed Pods Frameworks */,
 				B984F0D8FC24E4374FFADFBB /* Upload Bugsnag dSYM */,
@@ -2387,20 +2386,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
-		};
-		7407F1F41AA80466000380C4 /* Run Script (Fix dynamic library paths in Frameworks) */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script (Fix dynamic library paths in Frameworks)";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "fix() {\n    pocolib=$1\n    lib=$2\n    oldpath=$(otool -L $pocolib|fgrep $lib|awk -F' ' '{print $1}'|grep -v @loader_path|grep -v \":\")\n    if [ -z \"$oldpath\" ]; then\n    return\n    fi\n    install_name_tool -change $oldpath @loader_path/$lib $pocolib\n    \n    # get shared library id name\n    file=$(otool -D $pocolib |grep -v \":\")\n    # get base name of the path we got\n    basename=${file##*/}\n        # change shared library id name\n        install_name_tool -id @loader_path/$basename $pocolib\n    }\n    \n    fix_poco_paths() {\n        f=$1\n        fix $f libPocoUtil.60.dylib\n        fix $f libPocoData.60.dylib\n        fix $f libPocoNetSSL.60.dylib\n        fix $f libPocoXML.60.dylib\n        fix $f libPocoDataSQLite.60.dylib\n        fix $f libPocoNet.60.dylib\n        fix $f libPocoFoundation.60.dylib\n        fix $f libPocoCrypto.60.dylib\n        fix $f libPocoJSON.60.dylib\n        fix $f libcrypto.1.1.dylib\n        fix $f libssl.1.1.dylib\n    }\n    \n    # Change dylib references in all dylibs found in Frameworks\n    for f in $BUILT_PRODUCTS_DIR/TogglDesktop.app/Contents/Frameworks/*.dylib\n                                                                                        do\n                                                                                        fix_poco_paths $f\n                                                                                        done\n";
 		};
 		74E3CDDA17FC37A500C3ADD3 /* Run Script (install bugsnag) */ = {
 			isa = PBXShellScriptBuildPhase;
