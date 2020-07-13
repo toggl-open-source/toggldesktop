@@ -142,16 +142,32 @@ jobs:
         sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0
         sudo apt install patchelf binutils cmake pkg-config libssl-dev libxss-dev libxmu-dev
         sudo apt install dbus libfreetype6 fontconfig libx11-6 libx11-xcb1 libgl1-mesa-dev libnss3 libasound2 libxcomposite1 libxcursor1 libxi6 libxtst6 wget
-    - name: Fetch and install binary Qt
+    - name: Upgrade GCC
       run: |
-        bash ./dist/linux/install-qt.sh 5.12.5
+        sudo apt-get install -y software-properties-common
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt update
+        sudo apt install g++-7 -y
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+        sudo update-alternatives --config gcc
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1
+      with:
+        path: ../Qt
+        key: QtCache512
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        modules: qtwebengine
     - name: Build the Linux binary
       run: |
-        export CMAKE_PREFIX_PATH="${PWD}/Qt/5.12.5/gcc_64/lib/cmake/"
+        export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
         bash ./dist/linux/package.sh build
     - name: Package the binaries, create tarball
       run: |
-        export CMAKE_PREFIX_PATH="${PWD}/Qt/5.12.5/gcc_64/lib/cmake/"
+        export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
         bash ./dist/linux/package.sh compose
     - name: Upload to GitHub
       run: |
