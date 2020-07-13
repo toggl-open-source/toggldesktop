@@ -94,7 +94,11 @@ extension SSOService {
             case Constants.ErrorKeys.NotInWorkspace:
                 return .error("SSO Email doesn't belong to any workspace")
             default:
-                return .error("SSO Error")
+                return .error(
+                    NSLocalizedString(
+                        "Single Sign On is not configured for your email address. Please try a different login method or contact your administrator.",
+                        comment: "SSO not configured error message"
+                ))
             }
         case Constants.CallbackHost.MustLinkPath: // sso-must-link
             // Extract values from the query

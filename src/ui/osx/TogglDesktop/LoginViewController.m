@@ -785,7 +785,7 @@ extern void *ctx;
         } else {
             appDelegate.afterLoginMessage = [[SystemMessagePayload alloc] initWithMessage:NSLocalizedString(@"SSO login for this account was not enabled as login emails were different.",
                                                                                                             @"Show after SSO login, but with existing credentials where email did not match")
-                                                                                  isError:NO];
+                                                                                  isError:YES];
             [[DesktopLibraryBridge shared] loginWithEmail:email password:pass];
         }
     } else {
