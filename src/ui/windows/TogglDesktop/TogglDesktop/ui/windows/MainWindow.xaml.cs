@@ -58,7 +58,7 @@ namespace TogglDesktop
 
             this.interopHelper = new WindowInteropHelper(this);
 
-            this.views = new IMainView[] { this.overlayView, this.loginView, this.timerEntryListView };
+            this.views = new IMainView[] { this.overlayView, this.loginView, SSOLoginView, this.timerEntryListView };
 
             this.hideAllViews();
 
@@ -71,6 +71,7 @@ namespace TogglDesktop
             this.initializeSyncingIndicator();
             this.initializeTutorialManager();
             this.initializeSessionNotification();
+            InitializeViews();
 
             this.idleDetectionTimer.Tick += this.onIdleDetectionTimerTick;
 
@@ -389,6 +390,22 @@ namespace TogglDesktop
             }
 
             this.updateTracking(null);
+        }
+
+        private void OpenSSOLoginView()
+        {
+            setActiveView(SSOLoginView);
+        }
+
+        private void OpenLoginView(string confirmationCode, string email)
+        {
+            if (!string.IsNullOrEmpty(confirmationCode))
+            {
+                loginView.ViewModel.SelectedConfirmAction = ConfirmAction.LogInAndLinkSSO;
+                loginView.ViewModel.SSOConfirmationCode = confirmationCode;
+                loginView.ViewModel.SSOEmail = email;
+            }
+            setActiveView(loginView);
         }
 
         private void onOverlay(long type)
@@ -885,6 +902,17 @@ namespace TogglDesktop
 
             this.updateMinimumSize(activeView);
             this.updateTitleBarBackground(activeView);
+        }
+
+        private void InitializeViews()
+        {
+            loginView.ViewModel = new LoginViewModel(OpenSSOLoginView);
+            SSOLoginView.ViewModel = new SSOLoginViewModel(OpenLoginView);
+        }
+
+        public void ProcessStartupUri(string uri)
+        {
+            SSOLoginView.ViewModel.AuthUri = new Uri(uri);
         }
 
         private void updateMinimumSize(IMainView activeView)

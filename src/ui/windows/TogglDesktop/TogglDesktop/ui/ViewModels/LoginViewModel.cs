@@ -32,21 +32,29 @@ namespace TogglDesktop.ViewModels
         private ValidationHelper _isTosCheckedValidation;
         private HttpClientFactory _httpClientFactory;
 
-        public LoginViewModel(Action refreshLoginBindings, Action refreshSignupBindings)
+        public LoginViewModel(Action loginWithSSO/*Action refreshLoginBindings, Action refreshSignupBindings*/)
             : base(RxApp.TaskpoolScheduler)
         {
-            _refreshLoginBindings = refreshLoginBindings;
-            _refreshSignupBindings = refreshSignupBindings;
+            //_refreshLoginBindings = refreshLoginBindings;
+            //_refreshSignupBindings = refreshSignupBindings;
             Toggl.OnDisplayCountries += OnDisplayCountries;
             Toggl.OnSettings += OnSettings;
             this.WhenAnyValue(x => x.SelectedConfirmAction,
-                    x => x == ConfirmAction.LogIn ? "Log in" : "Sign up")
+                    x => x.HasFlag(ConfirmAction.LogIn) ? "Log in" : "Sign up")
                 .ToPropertyEx(this, x => x.ConfirmButtonText);
             this.WhenAnyValue(x => x.SelectedConfirmAction,
-                    x => x == ConfirmAction.LogIn ? "Log in with Google" : "Sign up with Google")
+                    x => x.HasFlag(ConfirmAction.LogIn) ? "Log in with Google" : "Sign up with Google")
                 .ToPropertyEx(this, x => x.GoogleLoginButtonText);
-            this.WhenAnyValue(x => x.SelectedConfirmAction,
-                    x => x == ConfirmAction.LogIn ? "Sign up for free" : "Back to Log in")
+            this.WhenAnyValue<LoginViewModel,string, ConfirmAction>(x => x.SelectedConfirmAction,
+                    x =>
+                    {
+                        switch (x)
+                        {
+                            case ConfirmAction.LogInAndLinkSSO: return "Cancel and go back";
+                            case ConfirmAction.SignUp: return "Back to Log in";
+                            default: return "Sign up for free";
+                        };
+                    })
                 .ToPropertyEx(this, x => x.SignupLoginToggleText);
             this.ObservableForProperty(x => x.SelectedConfirmAction)
                 .Where(x => x.Value == ConfirmAction.SignUp)
@@ -55,6 +63,7 @@ namespace TogglDesktop.ViewModels
                 .Subscribe(_ => Toggl.GetCountries());
             ConfirmLoginSignupCommand = ReactiveCommand.CreateFromTask(ConfirmLoginSignupAsync);
             ConfirmGoogleLoginSignupCommand = ReactiveCommand.Create(ConfirmGoogleLoginSignup);
+            LoginWithSSO = ReactiveCommand.Create(loginWithSSO);
             IsLoginSignupExecuting = ConfirmLoginSignupCommand.IsExecuting
                 .CombineLatest(ConfirmGoogleLoginSignupCommand.IsExecuting,
                     (isExecuting1, isExecuting2) => isExecuting1 || isExecuting2);
@@ -79,9 +88,12 @@ namespace TogglDesktop.ViewModels
                 .Delay(satisfied => satisfied ? Observable.Timer(TimeSpan.FromSeconds(1)) : Observable.Return(0L));
             canShowPasswordStrength.CombineLatest(shouldHidePasswordStrength, (canShow, shouldHide) => canShow && !shouldHide)
                 .ToPropertyEx(this, x => x.ShowPasswordStrength);
+            SelectedConfirmAction = ConfirmAction.LogIn;
         }
         public ReactiveCommand<Unit, bool> ConfirmLoginSignupCommand { get; }
         public ReactiveCommand<Unit, Unit> ConfirmGoogleLoginSignupCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> LoginWithSSO { get; }
         public IObservable<bool> IsLoginSignupExecuting { get; }
 
         [Reactive]
@@ -98,6 +110,10 @@ namespace TogglDesktop.ViewModels
 
         [Reactive]
         public string Password { get; set; }
+
+        public string SSOConfirmationCode { get; set; }
+
+        public string SSOEmail { get; set; }
 
         public Subject<Unit> FocusEmail { get; } = new Subject<Unit>();
         public Subject<Unit> FocusPassword { get; } = new Subject<Unit>();
@@ -182,12 +198,12 @@ namespace TogglDesktop.ViewModels
 
             if (!isGoogleLogin)
             {
-                _refreshLoginBindings();
+                //_refreshLoginBindings();
             }
 
             if (SelectedConfirmAction == ConfirmAction.SignUp)
             {
-                _refreshSignupBindings();
+                //_refreshSignupBindings();
             }
 
             return false;
@@ -203,6 +219,9 @@ namespace TogglDesktop.ViewModels
             var success = false;
             switch (SelectedConfirmAction)
             {
+                case ConfirmAction.LogInAndLinkSSO:
+                    success = await LoginAndLinkSSO();
+                    break;
                 case ConfirmAction.LogIn:
                     success = await ConfirmAsync(Toggl.Login);
                     break;
@@ -225,6 +244,7 @@ namespace TogglDesktop.ViewModels
 
             switch (SelectedConfirmAction)
             {
+                case ConfirmAction.LogInAndLinkSSO:
                 case ConfirmAction.LogIn:
                     await GoogleLoginAsync();
                     break;
@@ -317,6 +337,14 @@ namespace TogglDesktop.ViewModels
             return await Task.Run(() => confirmAction(email, password, selectedCountryId));
         }
 
+        private async Task<bool> LoginAndLinkSSO()
+        {
+            if (SSOEmail == Email)
+                return await Task.Run(() => Toggl.LoginAndLinkSSO(Email, Password, SSOConfirmationCode));
+            else
+                return await ConfirmAsync(Toggl.Login);
+        }
+
         private static HttpClientFactory HttpClientFactoryFromProxySettings(Toggl.TogglSettingsView settings)
         {
             var proxyHttpClientFactory = new ProxySupportedHttpClientFactory
@@ -377,9 +405,12 @@ namespace TogglDesktop.ViewModels
         }
     }
 
+    [Flags]
     public enum ConfirmAction
     {
-        LogIn,
-        SignUp
+        LogIn = 1,
+        LinkSSO = 2,
+        LogInAndLinkSSO = 3,
+        SignUp = 4,
     }
 }

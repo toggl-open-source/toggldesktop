@@ -100,6 +100,9 @@ public static partial class Toggl
         bool open,
         UInt64 user_id);
 
+    public delegate void DisplayLoginSSO(
+        string sso_url);
+
     public delegate void DisplayReminder(
         string title,
         string informative_text);
@@ -210,6 +213,21 @@ public static partial class Toggl
     public static bool Login(string email, string password, long country_id)
     {
         return toggl_login(ctx, email, password);
+    }
+
+    public static bool GetIdentityProviderSSO(string email)
+    {
+        return toggl_get_identity_provider_sso(ctx, email);
+    }
+
+    public static void LoginSSO(string api_token)
+    {
+        toggl_login_sso(ctx, api_token);
+    }
+
+    public static bool LoginAndLinkSSO(string email, string password, string ssoConfirmationCode)
+    {
+        return toggl_login_sso_link(ctx, email, password, ssoConfirmationCode);
     }
 
     public static bool GoogleSignup(string access_token, long country_id)
@@ -768,6 +786,7 @@ public static partial class Toggl
     public static event DisplayError OnError = delegate { };
     public static event DisplayOnlineState OnOnlineState = delegate { };
     public static event DisplayLogin OnLogin = delegate { };
+    public static event DisplayLoginSSO OnLoginSSO = delegate { };
     public static event DisplayReminder OnReminder = delegate { };
     public static event DisplayTimeEntryList OnTimeEntryList = delegate { };
     public static event DisplayAutocomplete OnTimeEntryAutocomplete = delegate { };
@@ -848,6 +867,14 @@ public static partial class Toggl
             using (Performance.Measure("Calling OnLogin"))
             {
                 OnLogin(open, user_id);
+            }
+        });
+
+        toggl_on_display_login_sso(ctx, sso_url =>
+        {
+            using (Performance.Measure("Calling OnLoginSSO"))
+            {
+                OnLoginSSO(sso_url);
             }
         });
 

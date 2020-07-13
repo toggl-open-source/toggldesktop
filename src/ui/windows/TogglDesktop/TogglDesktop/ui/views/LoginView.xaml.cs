@@ -38,7 +38,7 @@ namespace TogglDesktop
         {
             this.InitializeComponent();
             this.confirmSpinnerAnimation = (Storyboard)this.Resources["RotateConfirmSpinner"];
-            this.Reset();
+            Loaded += (s, args) => this.Reset();
         }
 
         private void onSignupLoginToggleClick(object sender, RoutedEventArgs e)
@@ -51,6 +51,10 @@ namespace TogglDesktop
             {
                 ViewModel.SelectedConfirmAction = ConfirmAction.LogIn;
             }
+            else if (ViewModel.SelectedConfirmAction == ConfirmAction.LogInAndLinkSSO)
+            {
+                ViewModel.LoginWithSSO.Execute();
+            }
         }
 
         private void onForgotPasswordLinkClick(object sender, RoutedEventArgs e)
@@ -62,7 +66,6 @@ namespace TogglDesktop
         {
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();
-            ViewModel = new LoginViewModel(RefreshLoginBindings, RefreshSignupBindings);
             ViewModel.IsLoginSignupExecuting.Subscribe(isExecuting =>
             {
                 if (isExecuting)
@@ -75,6 +78,11 @@ namespace TogglDesktop
                 }
             });
             ViewModel.ConfirmLoginSignupCommand.IsExecuting.Subscribe(isExecuting => { isLoggingIn = isExecuting; });
+            ViewModel.ConfirmLoginSignupCommand.IsExecuting.Where(isExecuting => 
+                !isExecuting && ViewModel.SelectedConfirmAction == ConfirmAction.SignUp)
+                .Subscribe(_ => RefreshSignupBindings()).DisposeWith(_disposable);
+            ViewModel.ConfirmLoginSignupCommand.IsExecuting.Where(isExecuting => !isExecuting)
+                .Subscribe(_ => RefreshLoginBindings()).DisposeWith(_disposable);
             ViewModel.ConfirmLoginSignupCommand.Subscribe(isLoggedIn =>
             {
                 if (isLoggedIn && this.onLogin != null)

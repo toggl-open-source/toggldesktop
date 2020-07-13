@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Security;
 using System.Windows.Interop;
 using System.Windows.Media;
+using Microsoft.Win32;
 using Application = System.Windows.Forms.Application;
 
 namespace TogglDesktop
@@ -16,15 +18,24 @@ static class Program
     }
     public static bool IsLoggedIn => UserId > 0;
 
+    public static readonly string StartupUri = "togglauth";
+    public class UriSchemes
+    {
+        public static readonly string SSOLogin = "sso-login";
+        public static readonly string SSOMustLink = "sso-must-link";
+        }
+
     [STAThread]
     static void Main(string[] args)
     {
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
         RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
+        InstallProtocol();
         singleInstanceManager = new SingleInstanceManager<App>();
         singleInstanceManager.BeforeStartup += OnBeforeStartup;
         singleInstanceManager.Run(args);
+        
     }
 
     private static void OnBeforeStartup()
@@ -48,5 +59,28 @@ static class Program
         var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
         return $"{versionInfo.ProductMajorPart}.{versionInfo.ProductMinorPart}.{versionInfo.ProductBuildPart}";
     }
-}
+
+    private static void InstallProtocol()
+    {
+        try
+        {
+            var regLocation = Registry.CurrentUser.OpenSubKey("Software", true).OpenSubKey("Classes", true);
+
+            var key = regLocation.OpenSubKey(StartupUri, true) ?? regLocation.CreateSubKey(StartupUri);
+            //key?.SetValue("URL Protocol", UriSchemes.SSOMustLink);
+            key?.SetValue("URL Protocol", UriSchemes.SSOLogin);
+            var commandKey = key?.OpenSubKey(@"shell\open\command", true) ?? key?.CreateSubKey(@"shell\open\command");
+            commandKey?.SetValue("", Assembly.GetExecutingAssembly().Location + " %1");
+        }
+        catch (SecurityException)
+        {
+
+        }
+        catch (NullReferenceException)
+        {
+
+        }
+        
+    }
+    }
 }
