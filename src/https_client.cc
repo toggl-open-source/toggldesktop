@@ -36,7 +36,6 @@
 #include <Poco/NumberParser.h>
 #include <Poco/StreamCopier.h>
 #include <Poco/TextEncoding.h>
-#include <Poco/URI.h>
 #include <Poco/UTF8Encoding.h>
 
 namespace toggl {
@@ -344,6 +343,13 @@ HTTPResponse HTTPClient::makeHttpRequest(
 
         std::string encoded_url("");
         Poco::URI::encode(req.relative_url, "", encoded_url);
+
+        // Perform percent-encoded for request that has Query
+        if (req.query) {
+            Poco::URI url = Poco::URI(encoded_url);
+            url.setQueryParameters(*req.query);
+            encoded_url = url.getPathAndQuery();
+        }
 
         error err = Netconf::ConfigureProxy(req.host + encoded_url, session.get());
         if (err != noError) {

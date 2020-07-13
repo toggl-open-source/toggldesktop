@@ -2390,6 +2390,122 @@ error Context::AsyncAppleLogin(const std::string &access_token) {
     return AsyncLogin(access_token, kAppleAccessToken);
 }
 
+error Context::GetSSOIdentityProvider(const std::string &email) {
+    if (email.empty()) {
+        return displayError("Empty email or API token");
+    }
+
+    try {
+
+        std::stringstream ss;
+        ss << "/api/"
+            << kAPIV9
+            << "/auth/saml2/login";
+
+        Poco::URI::QueryParameters query;
+        query.push_back(std::make_pair("email", email));
+        query.push_back(std::make_pair("client", kDesktopClient));
+
+        HTTPRequest req;
+        req.host = urls::API();
+        req.relative_url = ss.str();
+        req.query = &query;
+
+        HTTPResponse resp = TogglClient::GetInstance().Get(req);
+
+        // Success
+        if (resp.status_code == 200) {
+            Json::Value root;
+            Json::Reader reader;
+            if (!reader.parse(resp.body, root)) {
+                return displayError("Invalid JSON");
+            }
+
+            if (root.isMember("sso_url")) {
+                std::string ssoURL = root["sso_url"].asString();
+
+                // Ask the client to open SSL URL on the browser
+                UI()->DisplayOnLoginSSO(ssoURL);
+            } else {
+                return "Missing sso_url key";
+            }
+        } else {
+            // Return error message from the backend
+            std::string errorMessage = resp.body;
+            if (errorMessage.find(kSSONotConfigure) != std::string::npos) {
+                errorMessage = kBetterSSONotConfigure;
+            }
+            return displayError(errorMessage);
+        }
+
+
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string & ex) {
+        return ex;
+    }
+    return noError;
+}
+
+void Context::LoginSSO(const std::string api_token) {
+    Login(api_token, "api_token");
+}
+
+error Context::EnableSSO(const std::string &code,
+                         const std::string &api_token) {
+    if (code.empty()) {
+        return displayError("Empty confirmation code");
+    }
+
+    try {
+
+        std::stringstream ss;
+        ss << "/api/"
+            << kAPIV9
+            << "/me/enable_sso";
+
+        HTTPRequest req;
+        req.host = urls::API();
+        req.relative_url = ss.str();
+
+        // Must use api_token which obtain from /me endpoint
+        // https://toggl.slack.com/archives/C010JBG1KTK/p1592579211031900?thread_ts=1592548873.021000&cid=C010JBG1KTK
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
+
+        // Body Json
+        Json::Value body;
+        Json::FastWriter w;
+        body["confirmation_code"] = code;
+        req.payload = w.write(body);
+
+        // Make a request
+        HTTPResponse resp = TogglClient::GetInstance().Post(req);
+
+        // Success
+        if (resp.status_code == 200) {
+            return noError;
+        } else {
+            // Return error message from the backend
+            // 401 status but the body is empty
+            // we should return some error
+            if (resp.body.length() == 0) {
+                return "Unauthorized!";
+            }
+            return resp.body;
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string & ex) {
+        return ex;
+    }
+    return noError;
+}
+
 error Context::attemptOfflineLogin(const std::string &email,
                                    const std::string &password) {
     if (email.empty()) {
@@ -2456,7 +2572,8 @@ error Context::AsyncLogin(const std::string &email,
 error Context::Login(
     const std::string &email,
     const std::string &password,
-    const bool isSignup) {
+    const bool isSignup,
+    const std::string &ssoConfirmationCode) {
     try {
         std::string json("");
         error err = me(email, password, &json, 0);
@@ -2492,9 +2609,27 @@ error Context::Login(
             return displayError(attemptOfflineLogin(email, password));
         }
 
+        // Load JSON to user and get token
         err = SetLoggedInUserFromJSON(json, isSignup);
         if (err != noError) {
             return displayError(err);
+        }
+
+        // It's for SSO Feature
+        // After user authorization, we have to enable SSO with the user's email before presenting the Main View
+        if (!ssoConfirmationCode.empty()) {
+            // At this point, we successfully get /me, so we have the api_token
+            auto api_token = user_->APIToken();
+
+            // Start enable SSO for this token
+            error err = EnableSSO(ssoConfirmationCode, api_token);
+
+            // If something wrong, we should logout and display error
+            if (err != noError) {
+                Logout();
+                displayError(err);
+                return err;
+            }
         }
 
         err = pullWorkspacePreferences();
@@ -2598,7 +2733,7 @@ error Context::AppleSignup(
     return Login(access_token, kAppleAccessToken, true);
 }
 
-error Context::AsyncApleSignup(
+error Context::AsyncAppleSignup(
     const std::string &access_token,
     const uint64_t country_id,
     const std::string full_name) {

@@ -70,3 +70,6 @@ NSString *const kInvalidAppleUserCrendential = @"kInvalidAppleUserCrendential";
 NSString *const kStartDisplayOnboarding = @"kStartDisplayOnboarding";
 NSString *const kOnboardingDidClickNotification = @"kOnboardingDidClickNotification";
 NSString *const kContinueSignIn = @"kContinueSignIn";
+
+NSString *const kSSSOURIScheme = @"togglauth";
+NSString *const kLinkSSOEmail = @"kLinkSSOEmail";

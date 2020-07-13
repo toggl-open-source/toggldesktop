@@ -86,6 +86,10 @@ extern void *ctx;
 												selector:@selector(handleContinueSignInNotification:)
                                                      name:kContinueSignIn
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                   selector:@selector(startLinkSSOEmailNotification:)
+                                                        name:kLinkSSOEmail
+                                                      object:nil];
     }
     return self;
 }
@@ -200,6 +204,17 @@ extern void *ctx;
             // Prepare the Touch bar
             if (@available(macOS 10.12.2, *)) {
                 [[TouchBarService shared] prepareContent];
+            }
+
+            // Show information message to user after the login operation if needed
+            // we assume that if `afterLoginMessage != nil` this is the first time
+            // we show the TE list and that's why we show the message.
+            // Remember to clear `afterLoginMessage` so message is not shown
+            // on every TE list presentation
+            AppDelegate *appDelegate = (AppDelegate *)[[NSApplication sharedApplication] delegate];
+            if (appDelegate.afterLoginMessage) {
+                [[SystemMessage shared] present:appDelegate.afterLoginMessage];
+                appDelegate.afterLoginMessage = nil;
             }
         }
     }
@@ -490,4 +505,14 @@ extern void *ctx;
     [self.loginViewController.view removeFromSuperview];
     self.loginViewController = nil;
 }
+
+-(void)startLinkSSOEmailNotification:(NSNotification *) noti
+{
+    if (![noti.object isKindOfClass:[SSOPayload class]]) {
+        return;
+    }
+    SSOPayload *payload = (SSOPayload *) noti.object;
+    [self.loginViewController linkSSOEmailWithPayload:payload];
+}
+
 @end

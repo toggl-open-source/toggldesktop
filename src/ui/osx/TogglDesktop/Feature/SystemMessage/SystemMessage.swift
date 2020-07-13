@@ -39,6 +39,10 @@ protocol SystemMessagePresentable {
     @objc static let shared = SystemMessage()
     private var presenter: SystemMessagePresentable?
 
+    private override init() {
+        super.init()
+    }
+
     // Public
 
     func present(_ payload: SystemMessage.Payload) {
@@ -81,5 +85,32 @@ extension SystemMessage {
         let payload = Payload(mode: .syncing,
                               content: .informative("Syncing..."))
         dismiss(payload)
+    }
+
+    @objc func presentInfo(_ message: String) {
+        let payload = Payload(mode: .information, content: .informative(message))
+        present(payload)
+    }
+
+    @objc func present(_ objcPayload: SystemMessagePayload) {
+        let payload: Payload
+        if objcPayload.isError {
+            payload = Payload(mode: .error, content: .error(objcPayload.message, nil))
+        } else {
+            payload = Payload(mode: .information, content: .informative(objcPayload.message))
+        }
+        present(payload)
+    }
+}
+
+@objc
+final class SystemMessagePayload: NSObject {
+    @objc let message: String
+    @objc let isError: Bool
+
+    @objc init(message: String, isError: Bool) {
+        self.message = message
+        self.isError = isError
+        super.init()
     }
 }

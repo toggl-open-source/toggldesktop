@@ -372,6 +372,8 @@
 		BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */; };
 		BAB0027F22731248005ECC93 /* DayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0027E22731248005ECC93 /* DayLabel.swift */; };
 		BAB0029F2273125C005ECC93 /* DayLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB0029E2273125C005ECC93 /* DayLabel.xib */; };
+		BAB42C76249B785700D7647C /* Color+Adaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2A116A247BB72A00B97FAE /* Color+Adaptive.swift */; };
+		BAB42C77249B788B00D7647C /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
 		BAB508E2237E8FBC00D3D468 /* SystemPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB508E1237E8FBC00D3D468 /* SystemPermissionManager.swift */; };
 		BAB508E4237EA54500D3D468 /* ObjcSystemPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB508E3237EA54500D3D468 /* ObjcSystemPermissionManager.swift */; };
 		BAB5FFD423F13F75003781D3 /* TimelineDraggingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB5FFD323F13F75003781D3 /* TimelineDraggingSession.swift */; };
@@ -400,6 +402,10 @@
 		BAD4F9C8246D392C0032F0C7 /* PasswordRuleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA5BDC362464112D00FF3C28 /* PasswordRuleView.xib */; };
 		BAD858CC228EAE7C00226C71 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD858CB228EAE7C00226C71 /* libz.tbd */; };
 		BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAE007DD21FAF00D00404379 /* Media.xcassets */; };
+		BAE280C62490C79900D400DA /* SSOService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE280C52490C79900D400DA /* SSOService.swift */; };
+		BAE280C72490C79900D400DA /* SSOService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE280C52490C79900D400DA /* SSOService.swift */; };
+		BAE280C92490CFF300D400DA /* SSOService+Objc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE280C82490CFF300D400DA /* SSOService+Objc.swift */; };
+		BAE280CA2490CFF300D400DA /* SSOService+Objc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE280C82490CFF300D400DA /* SSOService+Objc.swift */; };
 		BAE6379A22B225C70024DD08 /* AddTagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE6379922B225C70024DD08 /* AddTagButton.swift */; };
 		BAE64D562368334000244D2B /* AutocompleteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74C15795183A8CE600550613 /* AutocompleteItem.m */; };
 		BAE64D572368334000244D2B /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7484F621191D92C30038885C /* Settings.m */; };
@@ -1076,6 +1082,8 @@
 		BAD858C5228EAE3000226C71 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		BAD858CB228EAE7C00226C71 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		BAE007DD21FAF00D00404379 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		BAE280C52490C79900D400DA /* SSOService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSOService.swift; sourceTree = "<group>"; };
+		BAE280C82490CFF300D400DA /* SSOService+Objc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SSOService+Objc.swift"; sourceTree = "<group>"; };
 		BAE6379922B225C70024DD08 /* AddTagButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagButton.swift; sourceTree = "<group>"; };
 		BAE64E4B2368334000244D2B /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAE64E4C2368334000244D2B /* TogglDesktop copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TogglDesktop copy-Info.plist"; path = "/Users/nghiatran/Documents/Work/Toggl/toggldesktop/src/ui/osx/TogglDesktop/TogglDesktop copy-Info.plist"; sourceTree = "<absolute>"; };
@@ -1789,6 +1797,7 @@
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				BAE280C42490C78C00D400DA /* SSO */,
 				BA13E5612434728B005244AD /* Onboarding */,
 				BA5BDC2A2464077C00FF3C28 /* PasswordStrength */,
 				BAB8CA8C240E3EA2002FF62B /* AppleSignIn */,
@@ -1962,6 +1971,15 @@
 				BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */,
 			);
 			path = TimeEntryEmptyView;
+			sourceTree = "<group>";
+		};
+		BAE280C42490C78C00D400DA /* SSO */ = {
+			isa = PBXGroup;
+			children = (
+				BAE280C52490C79900D400DA /* SSOService.swift */,
+				BAE280C82490CFF300D400DA /* SSOService+Objc.swift */,
+			);
+			path = SSO;
 			sourceTree = "<group>";
 		};
 		BAF3ACCA2341F86300E41B33 /* TouchBar */ = {
@@ -2771,6 +2789,7 @@
 				BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */,
 				BA7D33512248980B00B953A8 /* ProjectContentCellView.swift in Sources */,
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
+				BAE280C62490C79900D400DA /* SSOService.swift in Sources */,
 				BAB5FFD423F13F75003781D3 /* TimelineDraggingSession.swift in Sources */,
 				BA133AC023740EA6003A6A3A /* LoginSignupTouchBar.swift in Sources */,
 				BA3E75D422291CEB009AD291 /* SystemMessage.swift in Sources */,
@@ -2863,6 +2882,7 @@
 				3CD7AD6F19ED579700372797 /* NSResize.m in Sources */,
 				BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */,
 				BAC4D399225470DA00254DAD /* AutoCompleteRowView.swift in Sources */,
+				BAE280C92490CFF300D400DA /* SSOService+Objc.swift in Sources */,
 				BA4AEB9C22C217A4001A898D /* ResizablePopover.swift in Sources */,
 				BA4791F122F0478A00E24F79 /* NSView+Xib.swift in Sources */,
 				BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */,
@@ -2952,6 +2972,7 @@
 				BAE64D592368334000244D2B /* NSTextFieldDuration.m in Sources */,
 				BAE64D5A2368334000244D2B /* UIEvents.m in Sources */,
 				BA37ACB823D890050013EE26 /* OGSwitch.swift in Sources */,
+				BAB42C77249B788B00D7647C /* TimelineInitialDateProvider.swift in Sources */,
 				BAE64D5B2368334000244D2B /* Date+Utils.swift in Sources */,
 				BAE64D5C2368334000244D2B /* GoogleAuthenticationServer+Objc.swift in Sources */,
 				BAE64D5D2368334000244D2B /* VertificalTimeEntryFlowLayout.swift in Sources */,
@@ -3038,6 +3059,7 @@
 				BAE64D972368334000244D2B /* TagDataSource.swift in Sources */,
 				BAE64D982368334000244D2B /* ColorGraphicsView.swift in Sources */,
 				BAE64D992368334000244D2B /* WorkspaceDataSource.swift in Sources */,
+				BAE280CA2490CFF300D400DA /* SSOService+Objc.swift in Sources */,
 				BAE64D9A2368334000244D2B /* OverlayViewController.m in Sources */,
 				BAE64D9B2368334000244D2B /* ClientAutoCompleteTextField.swift in Sources */,
 				BA37AD0623D890570013EE26 /* DatePickerView.swift in Sources */,
@@ -3064,6 +3086,7 @@
 				BAE64DA82368334000244D2B /* DesktopLibraryBridge.m in Sources */,
 				BAE64DA92368334000244D2B /* TimeEntryDatasource.swift in Sources */,
 				BA13E577243476FA005244AD /* OnboardingViewController.swift in Sources */,
+				BAE280C72490C79900D400DA /* SSOService.swift in Sources */,
 				BAE64DAA2368334000244D2B /* SystemMessageView.swift in Sources */,
 				BA37ACBC23D890050013EE26 /* TimelineActivityRecorderViewController.swift in Sources */,
 				BAE64DAB2368334000244D2B /* HoverTableCellView.swift in Sources */,
@@ -3071,6 +3094,7 @@
 				BAE64DAD2368334000244D2B /* ProjectTextField.m in Sources */,
 				BA37ACD623D8900C0013EE26 /* TimelineEmptyTimeEntryCell.swift in Sources */,
 				BAE64DAE2368334000244D2B /* EditorPopover.swift in Sources */,
+				BAB42C76249B785700D7647C /* Color+Adaptive.swift in Sources */,
 				BAE64DAF2368334000244D2B /* ProjectHeaderCellView.swift in Sources */,
 				BAE64DB02368334000244D2B /* (null) in Sources */,
 				BAE64DB12368334000244D2B /* CalendarDataSource.swift in Sources */,

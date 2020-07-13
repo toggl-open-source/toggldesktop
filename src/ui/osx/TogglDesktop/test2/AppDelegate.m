@@ -313,8 +313,8 @@ void *ctx;
 												 name:NSWindowDidDeminiaturizeNotification
 											   object:nil];
 
-	// Setup Google Service Callback
-	[self registerGoogleEventHandler];
+	// Setup Callback URL Scheme event for SSO and Google
+	[self registerEventHandler];
 
     // Validate the apple user
     #ifdef APP_STORE
@@ -1322,6 +1322,7 @@ const NSString *appName = @"osx_native_app";
     toggl_on_message(ctx, on_display_message);
     toggl_on_onboarding(ctx, on_display_onboarding);
     toggl_on_continue_sign_in(ctx, on_continue_sign_in);
+    toggl_on_display_login_sso(ctx, on_display_login_sso);
 
 	NSLog(@"Version %@", self.version);
 
@@ -1810,9 +1811,9 @@ void on_countries(TogglCountryView *first)
 																object:[CountryViewItem loadAll:first]];
 }
 
-#pragma mark - Google Authentication
+#pragma mark - Handle URL Scheme
 
-- (void)registerGoogleEventHandler
+- (void)registerEventHandler
 {
 	NSAppleEventManager *appleEventManager = [NSAppleEventManager sharedAppleEventManager];
 
@@ -1825,10 +1826,20 @@ void on_countries(TogglCountryView *first)
 - (void)handleGetURLEvent:(NSAppleEventDescriptor *)event
 		   withReplyEvent:(NSAppleEventDescriptor *)replyEvent
 {
-	NSString *URLString = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
-	NSURL *URL = [NSURL URLWithString:URLString];
+	NSString *urlString = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
+	NSURL *url = [NSURL URLWithString:urlString];
 
-	[_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:URL];
+    [self.mainWindowController.window makeKeyWindow];
+
+    // SSO
+    if ([url.scheme isEqualToString:kSSSOURIScheme])
+    {
+        [SSOServiceObjc handleCallbackWith:url];
+    }
+    else // Google
+    {
+        [_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:url];
+    }
 }
 
 - (NSString *)currentChannel
@@ -1880,6 +1891,16 @@ void on_continue_sign_in()
 {
     [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kContinueSignIn
                                                                 object:nil];
+}
+
+void on_display_login_sso(const char *sso_url)
+{
+    if (sso_url == NULL) {
+        return;
+    }
+
+    NSString *url = [NSString stringWithUTF8String:sso_url];
+    [SSOServiceObjc authorizeWith:url];
 }
 
 - (void) updateReadyNotification:(NSNotification *) notification

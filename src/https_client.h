@@ -16,6 +16,7 @@
 #include <Poco/Activity.h>
 #include <Poco/Timestamp.h>
 #include <Poco/Net/Context.h>
+#include <Poco/URI.h>
 
 namespace Poco {
 namespace Net {
@@ -119,6 +120,7 @@ class TOGGL_INTERNAL_EXPORT HTTPRequest {
     , basic_auth_username("")
     , basic_auth_password("")
     , form(nullptr)
+    , query(nullptr)
     , timeout_seconds(kHTTPClientTimeoutSeconds) {}
     virtual ~HTTPRequest() {}
 
@@ -129,6 +131,7 @@ class TOGGL_INTERNAL_EXPORT HTTPRequest {
     std::string basic_auth_username;
     std::string basic_auth_password;
     Poco::Net::HTMLForm *form;
+    Poco::URI::QueryParameters *query;
     Poco::Int64 timeout_seconds;
 };
 

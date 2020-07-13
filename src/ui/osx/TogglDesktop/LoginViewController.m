@@ -13,12 +13,15 @@
 #import "NSCustomComboBox.h"
 #import "TogglDesktop-Swift.h"
 #import "const.h"
+#import "DesktopLibraryBridge.h"
 
 typedef NS_ENUM (NSUInteger, TabViewType)
 {
     TabViewTypeLogin,
     TabViewTypeSingup,
-    TabViewTypeContinueSignin
+    TabViewTypeContinueSignin,
+    TabViewTypeEmailInputSSO,
+    TabViewTypeEmailExistsSSO
 };
 
 static NSString *const emailMissingError = @"Please enter valid email address";
@@ -34,12 +37,14 @@ typedef NS_ENUM (NSUInteger, UserAction)
     UserActionGoogleSignup,
     UserActionAppleLogin,
     UserActionAppleSignup,
+    UserActionContinueSSO
 };
 
-#define kLoginAppleViewTop 86.0
-#define kLoginContainerHeight 440.0
+#define kLoginAppleViewTop 77.0f
+#define kSSOLoginAppleViewTop 118.0f
+#define kLoginContainerHeight 480.0
 #define kSignupAppleViewTop 166.0
-#define kSignupContainerHeight 460.0
+#define kSignupContainerHeight 480.0
 #define kPasswordStrengthViewBottom -4
 #define kPasswordStrengthViewCenterX 0
 
@@ -75,6 +80,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (weak) IBOutlet NSLayoutConstraint *countryStackViewTop;
 @property (weak) IBOutlet NSView *termSignUpContainerView;
 @property (weak) IBOutlet NSView *termContinueSignInView;
+@property (weak) IBOutlet NSTextFieldClickablePointer *loginWithSSOBtn;
 
 @property (nonatomic, strong) PasswordStrengthView *passwordStrengthView;
 @property (nonatomic, strong) AutocompleteDataSource *countryAutocompleteDataSource;
@@ -85,6 +91,20 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (nonatomic, copy) NSString *token;
 @property (nonatomic, copy) NSString *fullName;
 @property (nonatomic, assign) BOOL isCountryLoaded;
+
+@property (weak) IBOutlet NSTabView *tabView;
+@property (weak) IBOutlet NSTabViewItem *loginAndSignUpTabItem;
+@property (weak) IBOutlet NSTabViewItem *inputSSOTabItem;
+@property (weak) IBOutlet NSTabViewItem *emailExistSSOTabItem;
+
+// SSO
+@property (weak) IBOutlet NSTextFieldClickablePointer *loginWithDifferentMethodBtn;
+@property (weak) IBOutlet NSTextFieldClickablePointer *ssoCancelAndGoBackBtn;
+@property (weak) IBOutlet NSTextField *emailSSOTextField;
+@property (weak) IBOutlet NSTextFieldClickablePointer *backToSSOBtn;
+@property (weak) IBOutlet NSTextField *ssoTitleLbl;
+@property (assign, nonatomic) BOOL isLoginSignUpAsSSO;
+@property (strong, nonatomic) SSOPayload *ssoPayload;
 
 - (IBAction)userActionButtonOnClick:(id)sender;
 - (IBAction)countrySelected:(id)sender;
@@ -122,15 +142,24 @@ extern void *ctx;
     self.email.delegate = self;
     self.password.delegate = self;
     self.isCountryLoaded = NO;
+    self.loginWithSSOBtn.delegate = self;
+    self.loginWithDifferentMethodBtn.delegate = self;
+    self.backToSSOBtn.delegate = self;
+    self.emailSSOTextField.delegate = self;
+    self.isLoginSignUpAsSSO = NO;
 
+    self.backToSSOBtn.titleUnderline = YES;
+    self.loginWithDifferentMethodBtn.titleUnderline = YES;
     self.forgotPasswordTextField.titleUnderline = YES;
     self.signUpLink.titleUnderline = YES;
+    self.loginWithSSOBtn.titleUnderline = YES;
     self.tosLink.titleUnderline = YES;
     self.privacyLink.titleUnderline = YES;
     self.tosContinueLink.titleUnderline = YES;
     self.privacyContinueLink.titleUnderline = YES;
     self.tosContinueLink.delegate = self;
     self.privacyContinueLink.delegate = self;
+    self.ssoCancelAndGoBackBtn.titleUnderline = YES;
 
     self.boxView.wantsLayer = YES;
     self.boxView.layer.masksToBounds = NO;
@@ -206,6 +235,10 @@ extern void *ctx;
             case TabViewTypeContinueSignin:
                 [self changeTabView:TabViewTypeLogin];
                 break;
+            case TabViewTypeEmailInputSSO:
+                break;
+            case TabViewTypeEmailExistsSSO:
+                break;
         }
         return;
     }
@@ -219,6 +252,27 @@ extern void *ctx;
     if (sender == self.privacyLink || sender == self.privacyContinueLink)
     {
         toggl_privacy_policy(ctx);
+        return;
+    }
+
+    if (sender == self.loginWithSSOBtn) {
+        [self changeTabView:TabViewTypeEmailInputSSO];
+        return;
+    }
+
+    if (sender == self.loginWithDifferentMethodBtn) {
+        [self changeTabView:TabViewTypeLogin];
+        return;
+    }
+
+    if (sender == self.backToSSOBtn) {
+        [self changeTabView:TabViewTypeEmailInputSSO];
+        return;
+    }
+
+    if (sender == self.ssoCancelAndGoBackBtn) {
+        self.isLoginSignUpAsSSO = NO;
+        [self changeTabView:TabViewTypeLogin];
         return;
     }
 }
@@ -239,13 +293,11 @@ extern void *ctx;
     [self showLoaderView:NO];
     [self displayPasswordStrengthView:NO];
     [self loadCountryListIfNeed];
-    
-    // Focus on email when changing mode
-    [self.view.window makeFirstResponder:self.email];
 
     switch (type)
     {
         case TabViewTypeLogin :
+            [self.tabView selectTabViewItem:self.loginAndSignUpTabItem];
             self.appleGoogleGroupViewTop.constant = kLoginAppleViewTop;
             self.containerViewHeight.constant = kLoginContainerHeight;
             self.signUpGroupView.hidden = YES;
@@ -258,7 +310,7 @@ extern void *ctx;
             self.signUpLink.titleUnderline = YES;
             self.welcomeToTogglLbl.hidden = YES;
 
-            self.welcomeToTogglLbl.hidden = YES;
+            self.loginWithSSOBtn.hidden = NO;
             self.subWelcomeLbl.hidden = YES;
             self.socialButtonStackView.hidden = NO;
             self.email.hidden = NO;
@@ -269,9 +321,15 @@ extern void *ctx;
             self.signUpLink.hidden = NO;
             self.termContinueSignInView.hidden = YES;
             self.termSignUpContainerView.hidden = NO;
+            self.welcomeToTogglLbl.stringValue = @"Welcome to Toggl!";
+
+            // Focus on email when changing mode
+            [self.view.window makeFirstResponder:self.email];
+
             break;
 
         case TabViewTypeSingup :
+            [self.tabView selectTabViewItem:self.loginAndSignUpTabItem];
             self.appleGoogleGroupViewTop.constant = kSignupAppleViewTop;
             self.containerViewHeight.constant = kSignupContainerHeight;
             self.signUpGroupView.hidden = NO;
@@ -283,12 +341,19 @@ extern void *ctx;
             self.donotHaveAccountLbl.hidden = YES;
             self.signUpLink.titleUnderline = YES;
             self.welcomeToTogglLbl.hidden = YES;
+            self.welcomeToTogglLbl.stringValue = @"Welcome to Toggl!";
             self.countryStackViewTop.constant = 66;
             self.termContinueSignInView.hidden = YES;
             self.termSignUpContainerView.hidden = NO;
+            self.loginWithSSOBtn.hidden = YES;
+
+            // Focus on email when changing mode
+            [self.view.window makeFirstResponder:self.email];
+
             break;
 
         case TabViewTypeContinueSignin:
+            [self.tabView selectTabViewItem:self.loginAndSignUpTabItem];
             self.appleGoogleGroupViewTop.constant = kSignupAppleViewTop;
             self.containerViewHeight.constant = kSignupContainerHeight;
             self.signUpGroupView.hidden = NO;
@@ -315,7 +380,28 @@ extern void *ctx;
             self.signUpLink.titleUnderline = YES;
             self.termContinueSignInView.hidden = NO;
             self.termSignUpContainerView.hidden = YES;
+            self.loginWithSSOBtn.hidden = YES;
             break;
+        case TabViewTypeEmailInputSSO:
+            [self.tabView selectTabViewItem:self.inputSSOTabItem];
+            break;
+
+        case TabViewTypeEmailExistsSSO:
+            [self.tabView selectTabViewItem:self.emailExistSSOTabItem];
+            break;
+    }
+
+    // Change some title if it's SSO authentication
+    if (self.isLoginSignUpAsSSO) {
+        self.loginWithSSOBtn.hidden = YES;
+        self.donotHaveAccountLbl.hidden = YES;
+        self.ssoCancelAndGoBackBtn.hidden = NO;
+        self.signUpLink.hidden = YES;
+        self.ssoTitleLbl.hidden = NO;
+        self.appleGoogleGroupViewTop.constant = kSSOLoginAppleViewTop;
+    } else {
+        self.ssoCancelAndGoBackBtn.hidden = YES;
+        self.ssoTitleLbl.hidden = YES;
     }
 
     // Reset touchbar
@@ -388,7 +474,7 @@ extern void *ctx;
     switch (action)
     {
         case UserActionAccountLogin :
-            if (![self isEmalValid])
+            if (![self isValidEmail:self.email.stringValue])
             {
                 return NO;
             }
@@ -399,7 +485,7 @@ extern void *ctx;
             return YES;
 
         case UserActionAccountSignup :
-            if (![self isEmalValid])
+            if (![self isValidEmail:self.email.stringValue])
             {
                 return NO;
             }
@@ -432,9 +518,12 @@ extern void *ctx;
                 return NO;
             }
             return YES;
-
-        default :
-            break;
+        case UserActionContinueSSO:
+            if (![self isValidEmail:self.emailSSOTextField.stringValue])
+            {
+                return NO;
+            }
+            return YES;
     }
 
     return NO;
@@ -471,7 +560,7 @@ extern void *ctx;
 }
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)commandSelector {
-    if (control == self.email || control == self.password)
+    if (control == self.email || control == self.password || control == self.emailSSOTextField)
     {
         if (commandSelector == @selector(insertNewline:))
         {
@@ -513,11 +602,9 @@ extern void *ctx;
     [self showLoaderView:NO];
 }
 
-- (BOOL)isEmalValid
+- (BOOL)isValidEmail:(NSString *) email
 {
-    NSString *email = [self.email stringValue];
-
-    if (email == nil || !email.length)
+    if (email == nil || !email.length || ![email containsString:@"@"])
     {
         [self.email.window makeFirstResponder:self.email];
         [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
@@ -585,6 +672,10 @@ extern void *ctx;
                 return [self.loginTouchBar makeTouchBarFor:LoginSignupModeSignUp];
             case TabViewTypeContinueSignin:
                 return nil;
+            case TabViewTypeEmailInputSSO:
+                return nil;
+            case TabViewTypeEmailExistsSSO:
+                return nil;
         }
     }
     return nil;
@@ -630,6 +721,11 @@ extern void *ctx;
             break;
         case TabViewTypeContinueSignin:
             [self continueBtnOnClick:sender];
+            break;
+        case TabViewTypeEmailInputSSO:
+            [self emailSSOContinueBtnOnClick:sender];
+            break;
+        case TabViewTypeEmailExistsSSO:
             break;
     }
 }
@@ -678,9 +774,22 @@ extern void *ctx;
     [self setUserSignUp:NO];
     [self showLoaderView:YES];
 
-    if (!toggl_login_async(ctx, [email UTF8String], [pass UTF8String]))
-    {
-        return;
+    if (self.isLoginSignUpAsSSO) {
+        AppDelegate *appDelegate = (AppDelegate *)[[NSApplication sharedApplication] delegate];
+        if ([email isEqualToString:self.emailSSOTextField.stringValue]) {
+            // user is logging in with same email that he've used for SSO login
+            appDelegate.afterLoginMessage = [[SystemMessagePayload alloc] initWithMessage:NSLocalizedString(@"SSO login successfully enabled for your account.",
+                                                                                                            @"Show After user is successfully logged in with SSO and existing credentials")
+                                                                                  isError:NO];
+            [[DesktopLibraryBridge shared] loginWithEmail:email password:pass andSSOConfirmationCode:self.ssoPayload.confirmationCode];
+        } else {
+            appDelegate.afterLoginMessage = [[SystemMessagePayload alloc] initWithMessage:NSLocalizedString(@"SSO login for this account was not enabled as login emails were different.",
+                                                                                                            @"Show after SSO login, but with existing credentials where email did not match")
+                                                                                  isError:YES];
+            [[DesktopLibraryBridge shared] loginWithEmail:email password:pass];
+        }
+    } else {
+        [[DesktopLibraryBridge shared] loginWithEmail:email password:pass];
     }
 }
 
@@ -703,6 +812,10 @@ extern void *ctx;
             break;
         case TabViewTypeContinueSignin:
             break;
+        case TabViewTypeEmailInputSSO:
+            break;
+        case TabViewTypeEmailExistsSSO:
+            break;
     }
 }
 
@@ -717,6 +830,10 @@ extern void *ctx;
             [self signupGoogleBtnOnTap:sender];
             break;
         case TabViewTypeContinueSignin:
+            break;
+        case TabViewTypeEmailInputSSO:
+            break;
+        case TabViewTypeEmailExistsSSO:
             break;
     }
 }
@@ -853,7 +970,7 @@ extern void *ctx;
     }
 }
 
-- (void) displayPasswordStrengthView:(BOOL) display {
+- (void)displayPasswordStrengthView:(BOOL)display {
     if (display) {
         if (self.passwordStrengthView.view.superview == nil) {
             self.passwordStrengthView.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -896,5 +1013,36 @@ extern void *ctx;
         default:
             break;
     }
+}
+
+#pragma mark - SSO
+
+- (IBAction)emailSSOContinueBtnOnClick:(id)sender
+{
+    self.userAction = UserActionContinueSSO;
+
+    // Validate all values inserted
+    if (![self validateFormForAction:self.userAction])
+    {
+        return;
+    }
+
+    NSString *email = [self.emailSSOTextField stringValue];
+    [[DesktopLibraryBridge shared] getSSOIdentityProviderWithEmail:email];
+}
+
+- (IBAction)loginToEnableSSOOnClick:(id)sender
+{
+    self.isLoginSignUpAsSSO = YES;
+
+    // It's the same logic with Login and Sign Up, but different title
+    [self changeTabView:TabViewTypeLogin];
+}
+
+- (void)linkSSOEmailWithPayload:(SSOPayload *) payload
+{
+    self.ssoPayload = payload;
+    [self changeTabView:TabViewTypeEmailExistsSSO];
+    self.email.stringValue = payload.email;
 }
 @end

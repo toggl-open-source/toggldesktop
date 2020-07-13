@@ -832,4 +832,12 @@ void GUI::DisplayOnboarding(const OnboardingType onboarding_type) {
     }
 }
 
+void GUI::DisplayOnLoginSSO(std::string ssoURL) {
+    if (on_display_login_sso) {
+        char_t *ssl_url = copy_string(ssoURL);
+        on_display_login_sso(ssl_url);
+        free(ssl_url);
+    }
+}
+
 }  // namespace toggl

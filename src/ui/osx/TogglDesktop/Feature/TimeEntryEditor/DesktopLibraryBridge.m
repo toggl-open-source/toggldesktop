@@ -442,8 +442,29 @@ void *ctx;
     toggl_user_did_edit_add_timeentry_on_timeline_view(ctx);
 }
 
--(void) trackTimelineMenuContextType:(TimelineMenuContextType) type
+-(void)trackTimelineMenuContextType:(TimelineMenuContextType)type
 {
     toggl_track_timeline_menu_context(ctx, type);
 }
+
+#pragma mark - Auth
+
+- (void)loginWithEmail:(NSString *)email password:(NSString *)password {
+    toggl_login_async(ctx, [email UTF8String], [password UTF8String]);
+}
+
+- (void)loginWithEmail:(NSString *)email password:(NSString *)password andSSOConfirmationCode:(NSString *)ssoConfirmation {
+    toggl_login_sso_link(ctx, [email UTF8String], [password UTF8String], [ssoConfirmation UTF8String]);
+}
+
+- (void)getSSOIdentityProviderWithEmail:(NSString *) email
+{
+    toggl_get_identity_provider_sso(ctx, [email UTF8String]);
+}
+
+- (void)loginSSOWithAPIToken:(NSString *) apiToken
+{
+    toggl_login_sso(ctx, [apiToken UTF8String]);
+}
+
 @end

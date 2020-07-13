@@ -8,7 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class SSOPayload;
+
 @interface LoginViewController : NSViewController
 - (void)resetLoader;
 - (void)continueSignIn;
+- (void)linkSSOEmailWithPayload:(SSOPayload *) payload;
 @end

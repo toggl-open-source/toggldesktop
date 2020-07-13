@@ -294,10 +294,12 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error AsyncLogin(const std::string &email,
                      const std::string &password);
 
+    /// @param ssoConfirmationCode Set if this login call also needs to enable SSO for this user account. Empty by default.
     error Login(
         const std::string &email,
         const std::string &password,
-        const bool isSignup = false);
+        const bool isSignup = false,
+        const std::string &ssoConfirmationCode = "");
 
     error AsyncSignup(
         const std::string &email,
@@ -322,7 +324,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const uint64_t country_id,
         const std::string full_name);
 
-    error AsyncApleSignup(
+    error AsyncAppleSignup(
         const std::string &access_token,
         const uint64_t country_id,
         const std::string full_name);
@@ -332,6 +334,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error AppleLogin(const std::string &access_token);
     error AsyncAppleLogin(const std::string &access_token);
+
+    error GetSSOIdentityProvider(const std::string &email);
+    error EnableSSO(const std::string &code, const std::string &api_token);
+    void LoginSSO(const std::string api_token);
 
     error Logout();
 

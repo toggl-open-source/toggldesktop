@@ -332,6 +332,8 @@ extern "C" {
     typedef void (*TogglContinueSignIn)(
     );
 
+    typedef void (*TogglDisplayLoginSSO)(const char_t *sso_url);
+
     typedef void (*TogglDisplayIdleNotification)(
         const char_t *guid,
         const char_t *since,
@@ -1263,10 +1265,33 @@ extern "C" {
         void *context,
         TogglContinueSignIn cb);
 
+    TOGGL_EXPORT void toggl_on_display_login_sso(
+        void *context,
+        TogglDisplayLoginSSO cb);
+
+    TOGGL_EXPORT TogglHsvColor toggl_get_adaptive_hsv_color(
+       TogglRgbColor rgbColor,
+       TogglAdaptiveColor type);
+    
     TOGGL_EXPORT TogglHsvColor toggl_get_adaptive_hsv_color(
         TogglRgbColor rgbColor,
         TogglAdaptiveColor type);
 
+    TOGGL_EXPORT bool_t toggl_get_identity_provider_sso(
+        void *context,
+        const char_t *email);
+
+    TOGGL_EXPORT void toggl_login_sso(
+        void *context,
+        const char_t *api_token);
+
+    /// Login user along with enabling/linking SSO account to Toggl account
+    TOGGL_EXPORT bool_t toggl_login_sso_link(
+        void *context,
+        const char_t *email,
+        const char_t *password,
+        const char_t *ssoConfirmationCode);
+    
     TOGGL_EXPORT void toggl_track_timeline_menu_context(
         void *context,
         TimelineMenuContextType menuType);

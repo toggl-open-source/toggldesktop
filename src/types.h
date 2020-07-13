@@ -12,6 +12,7 @@ typedef std::string error;
 const error noError = "";
 
 typedef std::string guid;
+
 }
 
 #if defined(_WIN32) || defined(WIN32)
