@@ -106,7 +106,7 @@ void Project::SetClientName(const std::string &value) {
         SetDirty();
 }
 
-void Project::LoadFromJSON(Json::Value data) {
+void Project::LoadFromJSON(const Json::Value &data, bool) {
     if (data.isMember("hex_color")) {
         SetColor(data["hex_color"].asString());
     } else {

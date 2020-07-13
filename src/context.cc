@@ -86,6 +86,7 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , syncer_(this, &Context::syncerActivityWrapper)
 , update_path_("")
 , overlay_visible_(false)
+, is_using_sync_server_(false)
 , last_message_id_("") {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
@@ -2858,7 +2859,7 @@ error Context::SetLoggedInUserFromJSON(
         return displayError(err);
     }
 
-    err = user->LoadUserAndRelatedDataFromJSONString(json, true);
+    err = user->LoadUserAndRelatedDataFromJSONString(json, true, false);
     if (err != noError) {
         delete user;
         return displayError(err);
@@ -3374,10 +3375,6 @@ error Context::updateTimeEntryProject(
         p = user_->related.ProjectByGUID(project_guid);
     }
 
-    if (isUsingSyncServer() && p && p->WID() != te->WID()) {
-        return displayError("This version of Toggl Desktop does not support changing time entry workspaces.");
-    }
-
     if (p && !canChangeProjectTo(te, p)) {
         return displayError(error(
             "Cannot change project: would end up with locked time entry"));
@@ -3391,7 +3388,19 @@ error Context::updateTimeEntryProject(
                 || (!project_guid.empty() && p->GUID().compare(te->ProjectGUID()) != 0)) {
             te->SetBillable(p->Billable(), true);
         }
-        te->SetWID(p->WID());
+        if (te->WID != p->WID) {
+            if (isUsingSyncServer()) {
+                // Sync server doesn't support changing the WID, create a copy and make it deleted
+                auto copy = new TimeEntry(*te);
+                auto oldID = te->ID();
+                te->SetID(0);
+                copy->EnsureGUID();
+                copy->SetID(oldID);
+                copy->Delete();
+                user_->related.pushBackTimeEntry(copy);
+            }
+            te->SetWID(p->WID());
+        }
     }
     te->SetTID(task_id, true);
     te->SetPID(project_id, true);
@@ -4231,7 +4240,7 @@ Project *Context::CreateProject(
 
         ws = user_->related.WorkspaceByID(workspace_id);
         if (ws) {
-            billable = ws->ProjectsBillableByDefault();
+            billable = ws->ProjectsBillableByDefault() && ws->Premium();
         }
 
         std::string client_name("");
@@ -5082,12 +5091,17 @@ void Context::syncerActivityWrapper() {
                 logger.log("Syncer - Server didn't respond 200 to /me/preferences, fallback to LEGACY");
                 state = LEGACY;
             }
+            if (state == LEGACY)
+                is_using_sync_server_ = false;
+            else
+                is_using_sync_server_ = true;
             break;
         }
         case LEGACY:
             legacySyncerActivity();
             break;
         case BATCHED:
+            is_using_sync_server_ = true;
             batchedSyncerActivity();
             break;
         }
@@ -5342,7 +5356,7 @@ error Context::pullAllUserData() {
             }
             TimeEntry *running_entry = user_->RunningTimeEntry();
 
-            error err = user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since);
+            err = user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since, false);
 
             if (err != noError) {
                 return err;
@@ -5424,7 +5438,7 @@ error Context::pullBatchedUserData() {
             }
             TimeEntry *running_entry = user_->RunningTimeEntry();
 
-            user_->LoadUserAndRelatedDataFromJSON(json, !since);
+            user_->LoadUserAndRelatedDataFromJSON(json, !since, true);
 
             if (err != noError) {
                 return err;
@@ -5739,7 +5753,7 @@ error Context::pushClients(
             continue;
         }
 
-        (*it)->LoadFromJSON(root);
+        (*it)->LoadFromJSON(root, false);
     }
 
     return err;
@@ -5795,7 +5809,7 @@ error Context::pushProjects(
             continue;
         }
 
-        (*it)->LoadFromJSON(root);
+        (*it)->LoadFromJSON(root, false);
     }
 
     return err;
@@ -5945,7 +5959,7 @@ error Context::pushEntries(
             return error("Backend has changed the ID of the entry");
         }
 
-        (*it)->LoadFromJSON(root);
+        (*it)->LoadFromJSON(root, isUsingSyncServer());
     }
 
     if (error_found) {
@@ -6509,7 +6523,7 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
                         return error("Backend has changed the ID of the entry");
                     }
 
-                    model->LoadFromJSON(i["payload"]["result"]);
+                    model->LoadFromJSON(i["payload"]["result"], isUsingSyncServer());
                     model->ClearDirty();
                     model->ClearUnsynced();
                 }

@@ -692,7 +692,7 @@ void User::loadUserUpdateFromJSON(
     } else if (kModelTag == model) {
         loadUserTagFromJSON(data);
     } else if (kModelUser == model) {
-        LoadUserAndRelatedDataFromJSON(data, false);
+        LoadUserAndRelatedDataFromJSON(data, false, false);
     }
 }
 
@@ -730,7 +730,8 @@ void User::loadUserWorkspaceFromJSON(
 }
 
 error User::LoadUserAndRelatedDataFromJSONString(const std::string &json,
-    bool including_related_data) {
+    bool including_related_data,
+    bool syncServer) {
 
     if (json.empty()) {
         Logger("json").warning("cannot load empty JSON");
@@ -743,7 +744,7 @@ error User::LoadUserAndRelatedDataFromJSONString(const std::string &json,
         return error("Failed to LoadUserAndRelatedDataFromJSONString");
     }
 
-    LoadUserAndRelatedDataFromJSON(root, including_related_data);
+    LoadUserAndRelatedDataFromJSON(root, including_related_data, syncServer);
     return noError;
 }
 
@@ -833,7 +834,8 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
 
 void User::LoadUserAndRelatedDataFromJSON(
     const Json::Value &root,
-    bool including_related_data) {
+    bool including_related_data,
+    bool syncServer) {
 
     // if the root of the json contains "data", then we're using /v8/me
     // otherwise, it's Sync API
@@ -855,18 +857,21 @@ void User::LoadUserAndRelatedDataFromJSON(
     error err = loadUserFromJSON(syncApi ? data["user"] : data);
     // other entities are contained about the same
     if (err == noError) {
-        loadRelatedDataFromJSON(data, including_related_data);
+        loadRelatedDataFromJSON(data, including_related_data, syncServer);
     }
 }
 
 error User::loadUserFromJSON(const Json::Value &data) {
 
-    if (!data["id"].asUInt64()) {
+    if (!data["id"].asUInt64() && !data["user_id"].asUInt64()) {
         logger().error("Backend is sending invalid data: ignoring update without an ID");
         return kBackendIsSendingInvalidData;
     }
 
-    SetID(data["id"].asUInt64());
+    if (data["id"].asUInt64())
+        SetID(data["id"].asUInt64());
+    else
+        SetID(data["user_id"].asUInt64());
     SetDefaultWID(data["default_wid"].asUInt64());
     SetAPIToken(data["api_token"].asString());
     SetEmail(data["email"].asString());
@@ -881,7 +886,8 @@ error User::loadUserFromJSON(const Json::Value &data) {
 
 error User::loadRelatedDataFromJSON(
     const Json::Value &data,
-    bool including_related_data) {
+    bool including_related_data,
+    bool syncServer) {
 
     {
         std::set<Poco::UInt64> alive;
@@ -906,7 +912,7 @@ error User::loadRelatedDataFromJSON(
             Json::Value list = data["clients"];
 
             for (unsigned int i = 0; i < list.size(); i++) {
-                loadUserClientFromSyncJSON(list[i], &alive);
+                loadUserClientFromSyncJSON(list[i], &alive, syncServer);
             }
         }
 
@@ -922,7 +928,7 @@ error User::loadRelatedDataFromJSON(
             Json::Value list = data["projects"];
 
             for (unsigned int i = 0; i < list.size(); i++) {
-                loadUserProjectFromSyncJSON(list[i], &alive);
+                loadUserProjectFromSyncJSON(list[i], &alive, syncServer);
             }
         }
 
@@ -970,7 +976,7 @@ error User::loadRelatedDataFromJSON(
             Json::Value list = data["time_entries"];
 
             for (unsigned int i = 0; i < list.size(); i++) {
-                loadUserTimeEntryFromJSON(list[i], &alive);
+                loadUserTimeEntryFromJSON(list[i], &alive, syncServer);
             }
         }
 
@@ -984,7 +990,8 @@ error User::loadRelatedDataFromJSON(
 
 void User::loadUserClientFromSyncJSON(
     Json::Value data,
-    std::set<Poco::UInt64> *alive) {
+    std::set<Poco::UInt64> *alive,
+    bool syncServer) {
     bool addNew = false;
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
@@ -1013,7 +1020,7 @@ void User::loadUserClientFromSyncJSON(
     }
 
     model->SetUID(ID());
-    model->LoadFromJSON(data);
+    model->LoadFromJSON(data, syncServer);
 
     if (addNew) {
         AddClientToList(model);
@@ -1022,7 +1029,8 @@ void User::loadUserClientFromSyncJSON(
 
 void User::loadUserClientFromJSON(
     Json::Value data,
-    std::set<Poco::UInt64> *alive) {
+    std::set<Poco::UInt64> *alive,
+    bool syncServer) {
 
     // alive can be 0, dont assert/check it
 
@@ -1052,12 +1060,13 @@ void User::loadUserClientFromJSON(
         alive->insert(id);
     }
     model->SetUID(ID());
-    model->LoadFromJSON(data);
+    model->LoadFromJSON(data, syncServer);
 }
 
 void User::loadUserProjectFromSyncJSON(
     Json::Value data,
-    std::set<Poco::UInt64> *alive) {
+    std::set<Poco::UInt64> *alive,
+    bool syncServer) {
     bool addNew = false;
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
@@ -1087,7 +1096,7 @@ void User::loadUserProjectFromSyncJSON(
     }
 
     model->SetUID(ID());
-    model->LoadFromJSON(data);
+    model->LoadFromJSON(data, syncServer);
 
     Client *c = related.clientByProject(model);
     if (c) {
@@ -1107,7 +1116,8 @@ void User::loadUserProjectFromSyncJSON(
 
 void User::loadUserProjectFromJSON(
     Json::Value data,
-    std::set<Poco::UInt64> *alive) {
+    std::set<Poco::UInt64> *alive,
+    bool syncServer) {
 
     // alive can be 0, dont assert/check it
 
@@ -1138,12 +1148,13 @@ void User::loadUserProjectFromJSON(
         alive->insert(id);
     }
     model->SetUID(ID());
-    model->LoadFromJSON(data);
+    model->LoadFromJSON(data, syncServer);
 }
 
 void User::loadUserTimeEntryFromJSON(
     Json::Value data,
-    std::set<Poco::UInt64> *alive) {
+    std::set<Poco::UInt64> *alive,
+    bool syncServer) {
 
     // alive can be 0, dont assert/check it
 
@@ -1185,7 +1196,7 @@ void User::loadUserTimeEntryFromJSON(
         alive->insert(id);
     }
     model->SetUID(ID());
-    model->LoadFromJSON(data);
+    model->LoadFromJSON(data, syncServer);
     model->EnsureGUID();
 }
 

@@ -17,6 +17,7 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
  public:
     TimeEntry() : BaseModel() {}
+    TimeEntry(const TimeEntry &o);
     virtual ~TimeEntry() {}
 
     Property<std::string> Description { "" };
@@ -38,9 +39,12 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     void SetCreatedWith(const std::string &value);
     void SetProjectGUID(const std::string &value, bool userModified);
 
-    const std::string Tags() const;
+    const std::string &Tags() const;
     void SetTags(const std::string &tags, bool userModified);
     const std::string TagsHash() const;
+
+    static std::vector<std::string> TagsStringToVector(const std::string &str);
+    static const std::string &TagsVectorToString(const std::vector<std::string> &vec);
 
     void SetWID(Poco::UInt64 value);
     void SetPID(Poco::UInt64 value, bool userModified);
@@ -87,7 +91,7 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     std::string ModelURL() const override;
     std::string String() const override;
     virtual bool ResolveError(const error &err) override;
-    void LoadFromJSON(Json::Value value) override;
+    void LoadFromJSON(const Json::Value &value, bool syncServer);
     Json::Value SaveToJSON(int apiVersion = 8) const override;
     Json::Value SyncMetadata() const override;
     Json::Value SyncPayload() const override;

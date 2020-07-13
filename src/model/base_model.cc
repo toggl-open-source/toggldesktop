@@ -78,16 +78,6 @@ void BaseModel::MarkAsDeletedOnServer() {
         SetDirty();
 }
 
-error BaseModel::LoadFromDataString(const std::string &data_string) {
-    Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(data_string, root)) {
-        return error("Failed to parse data string");
-    }
-    LoadFromJSON(root["data"]);
-    return noError;
-}
-
 void BaseModel::Delete() {
     SetDeletedAt(time(nullptr));
     SetUIModified();
@@ -139,6 +129,19 @@ error BaseModel::BatchUpdateJSON(Json::Value *result) const {
 
 Logger BaseModel::logger() const {
     return { ModelName() };
+}
+
+BaseModel::BaseModel(const BaseModel &o)
+    // ID, GUID, LocalID are intentionally omitted
+    : UIModifiedAt { o.UIModifiedAt }
+    , UID { o.UID }
+    , Dirty { true }
+    , DeletedAt { o.DeletedAt }
+    , IsMarkedAsDeletedOnServer { o.IsMarkedAsDeletedOnServer }
+    , UpdatedAt { o.UpdatedAt }
+    , ValidationError { o.ValidationError }
+    , Unsynced { o.Unsynced }
+{
 }
 
 void BaseModel::SetID(Poco::UInt64 value) {
