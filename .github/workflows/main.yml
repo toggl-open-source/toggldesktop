@@ -92,9 +92,14 @@ jobs:
         export "APPLE_APPID_PASSWORD=${{ secrets.MACOS_APPID_PASSWORD }}"
         bash ./dist/osx/build.sh notarize
     - name: Compose dmg
-      if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh dmg
+    - name: Upload artifacts to GitHub
+      if: github.event_name != 'release'
+      uses: actions/upload-artifact@v2
+      with:
+        name: TogglDesktop.dmg
+        path: "${{ env.installer }}"
     - name: Update Appcast
       if: github.event_name == 'release'
       run: |
