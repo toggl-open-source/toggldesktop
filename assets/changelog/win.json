@@ -5,6 +5,15 @@
             "rows": [
                 "Fixed a performance issue"
             ],
+            "date": "July 14th 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
+            "version": "7.5.213",
+            "rows": [
+                "Fixed a performance issue"
+            ],
             "date": "July 9th 2020",
             "beta": "true",
             "has64bit": "true"
