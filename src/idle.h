@@ -1,4 +1,4 @@
-// Copyright 2014 Toggl Desktop developers.
+// Copyright 2014 Toggl Track developers.
 
 #ifndef SRC_IDLE_H_
 #define SRC_IDLE_H_

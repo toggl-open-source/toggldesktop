@@ -14,8 +14,8 @@ if [[ -z "$SIGNTOOL" ]]; then
     SIGNTOOL="/c/Program Files (x86)/Windows Kits/10/bin/10.0.18362.0/x64/signtool.exe"
 fi
 
-PATHS="src/ui/windows/TogglDesktop/TogglDesktop/bin/Release
-       src/ui/windows/TogglDesktop/TogglDesktop/bin/x64/Release"
+PATHS="src/ui/windows/TogglTrack/TogglTrack/bin/Release
+       src/ui/windows/TogglTrack/TogglTrack/bin/x64/Release"
 
 EXTENSIONS="exe dll"
 

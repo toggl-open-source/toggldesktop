@@ -1,4 +1,4 @@
-// Copyright 2019 Toggl Desktop developers.
+// Copyright 2019 Toggl Track developers.
 
 #include "online_test.h"
 

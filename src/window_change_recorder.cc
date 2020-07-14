@@ -1,4 +1,4 @@
-// Copyright 2014 Toggl Desktop developers.
+// Copyright 2014 Toggl Track developers.
 
 #include "window_change_recorder.h"
 

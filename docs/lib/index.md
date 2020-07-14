@@ -1,5 +1,5 @@
 
-# Toggl Desktop Library Documentation
+# Toggl Track Library Documentation
 
 ## Introduction
 

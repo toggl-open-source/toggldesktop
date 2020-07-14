@@ -1,7 +1,7 @@
 
 # Main window
 
-This file documents the main window of the Windows UI of Toggl Desktop.
+This file documents the main window of the Windows UI of Toggl Track.
 
 The main window is the central part of the UI, host to the application's main views, and serves as a parent of most other parts of the UI.
 

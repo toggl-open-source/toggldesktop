@@ -24,34 +24,34 @@ if (platform == "linux") {
   filename = [
     {
       "type": "linux_tar.gz",
-      "name": "toggldesktop_linux_x86_64-" + version.replace(/\./g, "_") + ".tar.gz"
+      "name": "toggltrack_linux_x86_64-" + version.replace(/\./g, "_") + ".tar.gz"
     },
     {
         "type": "linux_deb64",
-        "name": "toggldesktop_" + version + "_amd64.deb"
+        "name": "toggltrack_" + version + "_amd64.deb"
     }];
   if (parseInt(flatpak) == 1) {
     filename.push({
       "type": "linux_flatpak",
-      "name": "com.toggl.TogglDesktop_linux_x86_64-" + version.replace(/\./g, "_") + ".flatpak"
+      "name": "com.toggl.TogglTrack_linux_x86_64-" + version.replace(/\./g, "_") + ".flatpak"
     });
   }
 } else if (platform == "win") {
   filename = [
   {
     "type": "windows",
-    "name": "TogglDesktopInstaller-" + version + ".exe"
+    "name": "TogglTrackInstaller-" + version + ".exe"
   },
   {
     "type": "windows64",
-    "name": "TogglDesktopInstaller-x64-" + version + ".exe"
+    "name": "TogglTrackInstaller-x64-" + version + ".exe"
   }
   ];
 } else if (platform == "osx") {
   filename = [
     {
       "type":"macos",
-      "name": "TogglDesktop-" + version.replace(/\./g, "_") + ".dmg"
+      "name": "TogglTrack-" + version.replace(/\./g, "_") + ".dmg"
     }
   ];
 }

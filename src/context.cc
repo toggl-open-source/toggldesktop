@@ -1,5 +1,5 @@
 
-// Copyright 2014 Toggl Desktop developers
+// Copyright 2014 Toggl Track developers
 
 // No exceptions should be thrown from this class.
 // If pointers to models are returned from this
@@ -1434,7 +1434,7 @@ error Context::downloadUpdate() {
         }
 
         if (HTTPClient::Config.AppVersion.empty()) {
-            return error("This version cannot check for updates. This has been probably already fixed. Please check https://toggl.com/toggl-desktop/ for a newer version.");
+            return error("This version cannot check for updates. This has been probably already fixed. Please check https://toggl.com/toggl-track/ for a newer version.");
         }
 
         // Ask Toggl server if we have updates
@@ -1443,7 +1443,7 @@ error Context::downloadUpdate() {
         {
             HTTPRequest req;
             req.host = "https://toggl.github.io";
-            req.relative_url = "/toggldesktop/assets/updates-link.txt";
+            req.relative_url = "/toggltrack/assets/updates-link.txt";
 
             TogglClient client = TogglClient::GetInstance();
             HTTPResponse resp = client.silentGet(req);
@@ -1591,7 +1591,7 @@ error Context::fetchMessage(const bool periodic) {
                 req.relative_url = "/message.json";
             } else {
                 req.host = "https://raw.githubusercontent.com";
-                req.relative_url = "/toggl-open-source/toggldesktop/master/releases/message.json";
+                req.relative_url = "/toggl-open-source/toggltrack/master/releases/message.json";
             }
 
             TogglClient client = TogglClient::GetInstance();

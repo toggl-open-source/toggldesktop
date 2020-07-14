@@ -36,19 +36,19 @@
         <note>Class = "NSMenu"; title = "AMainMenu"; ObjectID = "29";</note>
       </trans-unit>
       <trans-unit id="56.title">
-        <source>Toggl Desktop</source>
-        <target>Toggl Desktop</target>
-        <note>Class = "NSMenuItem"; title = "Toggl Desktop"; ObjectID = "56";</note>
+        <source>Toggl Track</source>
+        <target>Toggl Track</target>
+        <note>Class = "NSMenuItem"; title = "Toggl Track"; ObjectID = "56";</note>
       </trans-unit>
       <trans-unit id="57.title">
-        <source>Toggl Desktop</source>
-        <target>Toggl Desktop</target>
-        <note>Class = "NSMenu"; title = "Toggl Desktop"; ObjectID = "57";</note>
+        <source>Toggl Track</source>
+        <target>Toggl Track</target>
+        <note>Class = "NSMenu"; title = "Toggl Track"; ObjectID = "57";</note>
       </trans-unit>
       <trans-unit id="58.title">
-        <source>About Toggl Desktop</source>
-        <target>Teave Toggl Desktop kohta</target>
-        <note>Class = "NSMenuItem"; title = "About Toggl Desktop"; ObjectID = "58";</note>
+        <source>About Toggl Track</source>
+        <target>Teave Toggl Track kohta</target>
+        <note>Class = "NSMenuItem"; title = "About Toggl Track"; ObjectID = "58";</note>
       </trans-unit>
       <trans-unit id="92o-Sa-9cW.title">
         <source>Account</source>
@@ -61,14 +61,14 @@
         <note>Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "129";</note>
       </trans-unit>
       <trans-unit id="134.title">
-        <source>Hide Toggl Desktop</source>
-        <target>Peida Toggl Desktop</target>
-        <note>Class = "NSMenuItem"; title = "Hide Toggl Desktop"; ObjectID = "134";</note>
+        <source>Hide Toggl Track</source>
+        <target>Peida Toggl Track</target>
+        <note>Class = "NSMenuItem"; title = "Hide Toggl Track"; ObjectID = "134";</note>
       </trans-unit>
       <trans-unit id="136.title">
-        <source>Quit Toggl Desktop</source>
-        <target>Välju rakendusest Toggl Desktop</target>
-        <note>Class = "NSMenuItem"; title = "Quit Toggl Desktop"; ObjectID = "136";</note>
+        <source>Quit Toggl Track</source>
+        <target>Välju rakendusest Toggl Track</target>
+        <note>Class = "NSMenuItem"; title = "Quit Toggl Track"; ObjectID = "136";</note>
       </trans-unit>
       <trans-unit id="145.title">
         <source>Hide Others</source>
@@ -161,9 +161,9 @@
         <note>Class = "NSMenu"; title = "Help"; ObjectID = "491";</note>
       </trans-unit>
       <trans-unit id="492.title">
-        <source>Toggl Desktop Help</source>
-        <target>Toote Toggl Desktop abi</target>
-        <note>Class = "NSMenuItem"; title = "Toggl Desktop Help"; ObjectID = "492";</note>
+        <source>Toggl Track Help</source>
+        <target>Toote Toggl Track abi</target>
+        <note>Class = "NSMenuItem"; title = "Toggl Track Help"; ObjectID = "492";</note>
       </trans-unit>
       <trans-unit id="1459.ibShadowedLabels[0]">
         <source>Weekly log</source>
@@ -338,19 +338,19 @@
       </trans-unit>
     </body>
   </file>
-  <file original="test2/TogglDesktop-Info.plist" source-language="en" datatype="plaintext" target-language="et">
+  <file original="test2/TogglTrack-Info.plist" source-language="en" datatype="plaintext" target-language="et">
     <header>
       <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="6.1.1" build-num="6A2008a"/>
     </header>
     <body>
       <trans-unit id="CFBundleName">
-        <source>TogglDesktop</source>
+        <source>TogglTrack</source>
       </trans-unit>
       <trans-unit id="CFBundleShortVersionString">
         <source>7.0.0</source>
       </trans-unit>
       <trans-unit id="NSHumanReadableCopyright">
-        <source>Copyright © 2014 Toggl Desktop developers. All rights reserved.</source>
+        <source>Copyright © 2014 Toggl Track developers. All rights reserved.</source>
       </trans-unit>
     </body>
   </file>

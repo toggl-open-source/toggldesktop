@@ -1,6 +1,6 @@
 ---
 name: 🚀 Feature request
-about: Suggest enhancements to make Toggl Desktop better
+about: Suggest enhancements to make Toggl Track better
 
 ---
 <!-- Before submitting a new issue, please make sure that the same issue has not been created already -->

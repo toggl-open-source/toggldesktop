@@ -1,0 +1,16 @@
+//
+//  NSHoverButton.h
+//  Toggl Track on the Mac
+//
+//  Created by Tanel Lebedev on 21/02/2014.
+//  Copyright (c) 2014 Toggl Track developers. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+
+@interface NSHoverButton : NSButton
+@property (nonatomic, assign) CGFloat alpha;
+- (void)setHoverAlpha:(CGFloat)alpha;
+- (void)mouseEntered:(NSEvent *)theEvent;
+- (void)mouseExited:(NSEvent *)theEvent;
+@end

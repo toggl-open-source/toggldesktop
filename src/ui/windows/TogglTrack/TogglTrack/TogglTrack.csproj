@@ -1,0 +1,749 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{27AC6261-3916-4683-B692-DC57E2FE0ABD}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TogglTrack</RootNamespace>
+    <AssemblyName>TogglTrack</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+    <LangVersion>8</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>TogglTrack.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\toggl.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD;TOGGL_ALLOW_UPDATE_CHECK</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD;TOGGL_ALLOW_UPDATE_CHECK</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreRelease|x64'">
+    <OutputPath>bin\x64\StoreRelease\</OutputPath>
+    <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD;MS_STORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreRelease|x86'">
+    <OutputPath>bin\x86\StoreRelease\</OutputPath>
+    <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD;MS_STORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreDebug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\StoreDebug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;MS_STORE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreDebug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\StoreDebug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;MS_STORE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\lib\windows\TogglTrackDLL\TogglTrackDLL.vcxproj">
+      <Project>{3ACE25DD-04CE-47D8-9658-3D0546521DA2}</Project>
+      <Name>TogglTrackDLL</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.InteropServices.WindowsRuntime" />
+    <Reference Include="System.Runtime.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Runtime.WindowsRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.WindowsRuntime.UI.Xaml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Runtime.WindowsRuntime.UI.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Windows">
+      <HintPath>C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.16299.0\Windows.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Foundation.FoundationContract">
+      <HintPath>C:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Foundation.FoundationContract\3.0.0.0\Windows.Foundation.FoundationContract.winmd</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Windows.Foundation.UniversalApiContract">
+      <HintPath>C:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Foundation.UniversalApiContract\5.0.0.0\Windows.Foundation.UniversalApiContract.winmd</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AutoCompletion\AutoCompleteController.cs" />
+    <Compile Include="AutoCompletion\AutoCompleteControllersFactory.cs" />
+    <Compile Include="AutoCompletion\IAutoCompleteController.cs" />
+    <Compile Include="AutoCompletion\Items\AutoCompleteItemExtensions.cs" />
+    <Compile Include="AutoCompletion\Items\WorkspaceSeparatorItem.cs" />
+    <Compile Include="AutoCompletion\ListBoxSelectionManager.cs" />
+    <Compile Include="AutoCompletion\TagsAutoCompleteController.cs" />
+    <Compile Include="AutoCompletion\Items\AutoCompleteItem.cs" />
+    <Compile Include="AutoCompletion\Items\GenericModelItem.cs" />
+    <Compile Include="AutoCompletion\Items\IAutoCompleteItem.cs" />
+    <Compile Include="AutoCompletion\Items\IModelItem.cs" />
+    <Compile Include="AutoCompletion\Items\ModelItem.cs" />
+    <Compile Include="AutoCompletion\Items\CustomTextItem.cs" />
+    <Compile Include="AutoCompletion\Items\NoProjectItem.cs" />
+    <Compile Include="AutoCompletion\Items\ProjectItem.cs" />
+    <Compile Include="AutoCompletion\Items\TagItem.cs" />
+    <Compile Include="AutoCompletion\Items\TimeEntryItem.cs" />
+    <Compile Include="BugsnagService.cs" />
+    <Compile Include="Diagnostics\IPerformanceToken.cs" />
+    <Compile Include="Diagnostics\Performance.cs" />
+    <Compile Include="Services\NsisPackageExtractor.cs" />
+    <Compile Include="Services\UpdateService.cs" />
+    <Compile Include="Services\UpdateStatus.cs" />
+    <Compile Include="Services\Win10\RunOnStartup.cs" />
+    <Compile Include="SingleInstanceManager.cs" />
+    <Compile Include="ui\Behaviors\ActivateParentWindowOnMouseClick.cs" />
+    <Compile Include="ui\Behaviors\ButtonHelper.cs" />
+    <Compile Include="ui\Behaviors\CloseWindowOnEscBehavior.cs" />
+    <Compile Include="ui\Behaviors\DatePickerKeyboardHandlingBehavior.cs" />
+    <Compile Include="ui\Behaviors\FocusHelper.cs" />
+    <Compile Include="ui\Behaviors\FocusParentWindowOnClosingBehavior.cs" />
+    <Compile Include="ui\Behaviors\HideWindowOnClosingBehavior.cs" />
+    <Compile Include="ui\Behaviors\NumericInputTextBoxBehavior.cs" />
+    <Compile Include="ui\Behaviors\RepositionPopupWithParentWindowBehavior.cs" />
+    <Compile Include="ui\Behaviors\TextBoxHelper.cs" />
+    <Compile Include="ui\controls\InAppNotification.xaml.cs">
+      <DependentUpon>InAppNotification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\CheckBoxHelper.cs" />
+    <Compile Include="ui\controls\PasswordRuleView.xaml.cs">
+      <DependentUpon>PasswordRuleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\ProgressBar.xaml.cs">
+      <DependentUpon>ProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\ProjectColorPicker.xaml.cs">
+      <DependentUpon>ProjectColorPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\ProjectLabel.xaml.cs">
+      <DependentUpon>ProjectLabel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\ProjectTextBox.cs" />
+    <Compile Include="ui\controls\ProjectToolTip.xaml.cs">
+      <DependentUpon>ProjectToolTip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\TimeEntryCellContextMenuCommands.cs" />
+    <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
+      <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\MiniTimer.xaml.cs">
+      <DependentUpon>MiniTimer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\TimeEntryLabel.xaml.cs">
+      <DependentUpon>TimeEntryLabel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\TrayToolTipControl.xaml.cs">
+      <DependentUpon>TrayToolTipControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Converters\AdaptProjectColorConverter.cs" />
+    <Compile Include="ui\Converters\AndConverter.cs" />
+    <Compile Include="ui\Converters\BooleanInvertToVisibilityConverter.cs" />
+    <Compile Include="ui\Converters\CapitalizeConverter.cs" />
+    <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
+    <Compile Include="ui\Converters\IsSelectableItemConverter.cs" />
+    <Compile Include="ui\Converters\PopupAlignmentAwareConverter.cs" />
+    <Compile Include="ui\Converters\StringFormatIfNotEmptyConverter.cs" />
+    <Compile Include="ui\Converters\StringToUpperConverter.cs" />
+    <Compile Include="ui\Converters\BytesToStringConverter.cs" />
+    <Compile Include="ui\Converters\EnumEqualToVisibilityConverter.cs" />
+    <Compile Include="ui\Converters\FileNameToIconConverter.cs" />
+    <Compile Include="ui\Converters\BindingProxy.cs" />
+    <Compile Include="ui\Converters\EmptyStringToHiddenConverter.cs" />
+    <Compile Include="ui\Converters\ColorsToBrushConverter.cs" />
+    <Compile Include="ui\Converters\TrimPathConverter.cs" />
+    <Compile Include="ui\IRecyclable.cs" />
+    <Compile Include="ui\KeyboardShortcuts.cs" />
+    <Compile Include="ui\ModelExtensions.cs" />
+    <Compile Include="ui\NotificationExtensions.cs" />
+    <Compile Include="ui\Notifications\AutotrackerNotification.xaml.cs">
+      <DependentUpon>AutotrackerNotification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Notifications\NotificationManager.cs" />
+    <Compile Include="ui\Notifications\PomodoroNotification.xaml.cs">
+      <DependentUpon>PomodoroNotification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Notifications\ReminderNotification.xaml.cs">
+      <DependentUpon>ReminderNotification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Notifications\TogglNotification.cs" />
+    <Compile Include="ui\Theming\Theme.cs" />
+    <Compile Include="ui\Theming\ThemeResourceDictionary.cs" />
+    <Compile Include="ui\Theming\ThemeType.cs" />
+    <Compile Include="ui\Tutorial\BasicTutorialScreen7.xaml.cs">
+      <DependentUpon>BasicTutorialScreen7.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen6.xaml.cs">
+      <DependentUpon>BasicTutorialScreen6.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen5.xaml.cs">
+      <DependentUpon>BasicTutorialScreen5.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen4.xaml.cs">
+      <DependentUpon>BasicTutorialScreen4.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen3.xaml.cs">
+      <DependentUpon>BasicTutorialScreen3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen2.xaml.cs">
+      <DependentUpon>BasicTutorialScreen2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen1.xaml.cs">
+      <DependentUpon>BasicTutorialScreen1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\NewUserWelcomeScreen.xaml.cs">
+      <DependentUpon>NewUserWelcomeScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\TutorialManager.cs" />
+    <Compile Include="ui\Tutorial\TutorialScreen.cs" />
+    <Compile Include="ui\ViewModels\AboutWindowViewModel.cs" />
+    <Compile Include="ui\ViewModels\DayHeaderViewModel.cs" />
+    <Compile Include="ui\ViewModels\FeedbackWindowViewModel.cs" />
+    <Compile Include="ui\ViewModels\LoginViewModel.cs" />
+    <Compile Include="ui\ViewModels\PasswordEx.cs" />
+    <Compile Include="ui\ViewModels\PreferencesWindowViewModel.cs" />
+    <Compile Include="ui\ViewModels\ProjectLabelViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimeEntryCellViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimeEntryLabelViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimeEntryListViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimerViewModel.cs" />
+    <Compile Include="ui\ViewModels\ViewModelExtensions.cs" />
+    <Compile Include="ui\views\IMainView.cs" />
+    <Compile Include="ui\views\OverlayView.xaml.cs">
+      <DependentUpon>OverlayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\windows\MiniTimerWindow.xaml.cs">
+      <DependentUpon>MiniTimerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="utilities\ColorSchemeExtensions.cs" />
+    <Compile Include="utilities\LinqExtensions.cs" />
+    <Compile Include="utilities\StaticObjectPool.cs" />
+    <Compile Include="TogglApi.cs" />
+    <Compile Include="ui\UIExtensions.cs" />
+    <Compile Include="ui\Converters\FalseToHiddenVisibilityConverter.cs" />
+    <Compile Include="ui\controls\AutotrackerRuleItem.xaml.cs">
+      <DependentUpon>AutotrackerRuleItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\AutotrackerSettings.xaml.cs">
+      <DependentUpon>AutotrackerSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\ErrorBar.xaml.cs">
+      <DependentUpon>ErrorBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\StatusBar.xaml.cs">
+      <DependentUpon>StatusBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\SyncingIndicator.xaml.cs">
+      <DependentUpon>SyncingIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\views\TimerEntryListView.xaml.cs">
+      <DependentUpon>TimerEntryListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\windows\IdleNotificationWindow.xaml.cs">
+      <DependentUpon>IdleNotificationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\windows\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\AutoCompletionPopup.xaml.cs">
+      <DependentUpon>AutoCompletionPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\windows\EditViewPopup.xaml.cs">
+      <DependentUpon>EditViewPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\ExtendedTextBox.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Toggl.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="utilities\StringExtensions.cs" />
+    <Compile Include="utilities\Utils.cs" />
+    <Compile Include="utilities\Win32.cs" />
+    <Compile Include="ui\windows\FeedbackWindow.xaml.cs">
+      <DependentUpon>FeedbackWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\windows\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\OpacityExtension.cs" />
+    <Compile Include="ui\windows\MessageBox.xaml.cs">
+      <DependentUpon>MessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\windows\PreferencesWindow.xaml.cs">
+      <DependentUpon>PreferencesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\Tag.xaml.cs">
+      <DependentUpon>Tag.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\TagList.xaml.cs">
+      <DependentUpon>TagList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\TimeEntryCell.xaml.cs">
+      <DependentUpon>TimeEntryCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\views\EditView.xaml.cs">
+      <DependentUpon>EditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\TimeEntryList.xaml.cs">
+      <DependentUpon>TimeEntryList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\views\Timer.xaml.cs">
+      <DependentUpon>Timer.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="..\..\..\..\ssl\cacert.pem">
+      <Link>cacert.pem</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\toggl.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\toggl_inactive.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\toggltray.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\toggltray_inactive.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\toggltray_offline_active.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\toggltray_offline_inactive.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon-google.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="ui\controls\AutotrackerRuleItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\AutotrackerSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\ErrorBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\InAppNotification.xaml" />
+    <Page Include="ui\controls\PasswordRuleView.xaml" />
+    <Page Include="ui\controls\ProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\ProjectColorPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\ProjectLabel.xaml" />
+    <Page Include="ui\controls\ProjectToolTip.xaml" />
+    <Page Include="ui\controls\SyncingIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\TimeEntryCellDayHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\MiniTimer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\TimeEntryLabel.xaml" />
+    <Page Include="ui\controls\TrayToolTipControl.xaml" />
+    <Page Include="ui\Notifications\AutotrackerNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\Notifications\PomodoroNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\Notifications\ReminderNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\Resources\AutotrackerStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\controls\StatusBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\Resources\DesignUpdate\Buttons.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Calendar.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ComboBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ContextMenu.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Controls.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\DatePicker.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ErrorTemplate.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\HotKeyBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Hyperlink.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\CheckBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Icons.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ListBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\MahApps.Overrides.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Notifications.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\PasswordBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\RadioButton.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ScrollBar.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\TabControl.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\TextBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ToggleSwitch.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ToolTip.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Window.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Typography.xaml" />
+    <Page Include="ui\Resources\Themes\ColorScheme\Dark.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\Resources\Themes\ColorScheme\Light.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\Resources\SharedStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Resources\TutorialStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Tutorial\BasicTutorialScreen7.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Tutorial\BasicTutorialScreen6.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Tutorial\BasicTutorialScreen5.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Tutorial\BasicTutorialScreen4.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Tutorial\BasicTutorialScreen3.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Tutorial\BasicTutorialScreen2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Tutorial\BasicTutorialScreen1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\Tutorial\NewUserWelcomeScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\views\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\views\OverlayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\views\TimerEntryListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\windows\IdleNotificationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\windows\AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\AutoCompletionPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\windows\EditViewPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\windows\FeedbackWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\windows\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\windows\MessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\windows\MiniTimerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\windows\PreferencesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\Resources\EditViewStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Resources\TimeEntryCellStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\controls\Tag.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\TagList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\TimeEntryCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\views\EditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\TimeEntryList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\views\Timer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\timerLightBg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_close_grey600_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_cog_grey600_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\syncing-spinner.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\login-spinner.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tutorial-arrow-curved.png" />
+    <Resource Include="Resources\tutorial-line.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_close_white600_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tutorial-line-dark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\arrow-up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\locked-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\arrow-up-white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Bugsnag">
+      <Version>2.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Google.Apis.Oauth2.v2">
+      <Version>1.40.2.1602</Version>
+    </PackageReference>
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf">
+      <Version>1.0.8</Version>
+    </PackageReference>
+    <PackageReference Include="MahApps.Metro">
+      <Version>2.0.0-alpha0660</Version>
+    </PackageReference>
+    <PackageReference Include="NHotkey.Wpf">
+      <Version>1.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="Onova">
+      <Version>2.5.2</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.Fody">
+      <Version>11.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.Validation">
+      <Version>1.4.15</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.WPF">
+      <Version>11.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Reactive">
+      <Version>4.4.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bg-pattern.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
+    <Resource Include="Resources\restricted-area.png" />
+    <Resource Include="Resources\spider.png" />
+    <Resource Include="Resources\stopwatch.png" />
+  </ItemGroup>
+  <Import Project="Dependencies.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

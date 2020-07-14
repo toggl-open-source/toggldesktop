@@ -1,20 +1,20 @@
-toggldesktop (7.4.528) unstable; urgency=low
+toggltrack (7.4.528) unstable; urgency=low
 
  * Setting decimal hour values works right again
  * Idle notification behavior is more consistent
 
 -- Toggl <support@toggl.com> Thu, 22 Aug 2019 18:14:00 +0200
 
-toggldesktop (7.4.510) unstable; urgency=low
+toggltrack (7.4.510) unstable; urgency=low
 
  * Version string is now properly displayed in the About section of the app
  * Application now longer crashes on exit
 
 -- Toggl <support@toggl.com> Mon, 12 Aug 2019 17:18:00 +0200
 
-toggldesktop (7.4.476) unstable; urgency=low
+toggltrack (7.4.476) unstable; urgency=low
 
- * You can control TogglDesktop using your keyboard entirely. If in doubt, use Ctrl+Enter to open a Time entry or Ctrl+Delete to delete it.
+ * You can control TogglTrack using your keyboard entirely. If in doubt, use Ctrl+Enter to open a Time entry or Ctrl+Delete to delete it.
  * Systemwide font, style and color palette settings are now used - the application should fit your environment a lot better.
  * Idle and tracking reminder notifications now use system notifications instead of popup windows.
  * Deleting a running time entry will prompt the user to confirm if it's running for more than 15 seconds.
@@ -31,7 +31,7 @@ toggldesktop (7.4.476) unstable; urgency=low
 
 -- Toggl <support@toggl.com>  Thu, 25 Jul 2019 16:35:00 +0200
 
-toggldesktop (7.4.358) unstable; urgency=low
+toggltrack (7.4.358) unstable; urgency=low
 
   * Added confirmless delete for all items shorter than 15 seconds
   * Added handling for 'no workspace' scenario
@@ -68,7 +68,7 @@ toggldesktop (7.4.358) unstable; urgency=low
 
 -- Toggl <support@toggl.com>  Thu, 21 Feb 2019 13:00:00 +0200
 
-toggldesktop (7.4.184) unstable; urgency=low
+toggltrack (7.4.184) unstable; urgency=low
 
   * Fixed duplicate project name check issue
   * Fixed issue with tracking reminder being show right after coming from Idle mode
@@ -79,14 +79,14 @@ toggldesktop (7.4.184) unstable; urgency=low
 
 -- Toggl <support@toggl.com>  Thu, 7 Jun 2018 16:00:00 +0200
 
-toggldesktop (7.4.122) unstable; urgency=low
+toggltrack (7.4.122) unstable; urgency=low
 
   * Fixed login after signup
   * Fixed login crash issues
 
 -- Toggl <support@toggl.com>  Mon, 12 Feb 2018 16:00:00 +0200
 
-toggldesktop (7.4.118) unstable; urgency=low
+toggltrack (7.4.118) unstable; urgency=low
 
   * Fixed wrong error message issue when backend is down
   * Fixed invalid 'project name exists' error
@@ -98,7 +98,7 @@ toggldesktop (7.4.118) unstable; urgency=low
 
 -- Toggl <support@toggl.com>  Fri, 5 Feb 2018 16:00:00 +0200
 
-toggldesktop (7.4.71) unstable; urgency=low
+toggltrack (7.4.71) unstable; urgency=low
 
   * Added 'Missing workspace' screen
   * Fixed workspace assignment with Pomodoro Break entry
@@ -109,47 +109,47 @@ toggldesktop (7.4.71) unstable; urgency=low
 
 -- Toggl <support@toggl.com>  Thu, 19 Oct 2017 13:00:00 +0200
 
-toggldesktop (7.4.58) unstable; urgency=low
+toggltrack (7.4.58) unstable; urgency=low
 
   * Fixed issue with app freezing on quit
 
 -- Toggl <support@toggl.com>  Wed, 9 Aug 2017 19:00:00 +0200
 
-toggldesktop (7.4.52) unstable; urgency=low
+toggltrack (7.4.52) unstable; urgency=low
 
   * Fixes for syncing issues that caused user inputs to be overwritten
 
 -- Toggl <support@toggl.com>  Tue, 21 Jun 2017 13:00:00 +0200
 
-toggldesktop (7.4.47) unstable; urgency=low
+toggltrack (7.4.47) unstable; urgency=low
 
   * Fixed syncing issues that caused user inputs to be discarded
   * Fixed issue with not being able to remove all tags from entry
 
 -- Toggl <support@toggl.com>  Tue, 13 Jun 2017 14:00:00 +0200
 
-toggldesktop (7.4.38) unstable; urgency=low
+toggltrack (7.4.38) unstable; urgency=low
 
   * Updated syncing logic to use api v9 in background
   * Added dbus-launch support for LXDE
 
 -- Toggl <support@toggl.com>  Fri, 28 Apr 2017 14:00:00 +0200
 
-toggldesktop (7.4.31) unstable; urgency=low
+toggltrack (7.4.31) unstable; urgency=low
 
   * Avoid showing tracking reminder if entry is stopped elsewhere
   * Fixed autocomplete not copying tags and billable
 
 -- Toggl <support@toggl.com>  Thu, 30 Mar 2017 13:00:00 +0200
 
-toggldesktop (7.4.24) unstable; urgency=low
+toggltrack (7.4.24) unstable; urgency=low
 
   * Fixed 'start app in background' command line arguments
   * Fixed tray icon issues for most known window managers
 
 -- Toggl <support@toggl.com>  Fri, 24 Feb 2017 10:00:00 +0200
 
-toggldesktop (7.4.20) unstable; urgency=low
+toggltrack (7.4.20) unstable; urgency=low
 
   * Use user profile time format in group total time
   * Clear old/synced timeline data on app start
@@ -163,14 +163,14 @@ toggldesktop (7.4.20) unstable; urgency=low
 
 -- Toggl <support@toggl.com>  Fri, 17 Feb 2017 13:30:00 +0200
 
-toggldesktop (7.4.7) unstable; urgency=low
+toggltrack (7.4.7) unstable; urgency=low
 
   * Sync last 9 days on app start
   * Force list reload when collapse entries setting changes
 
 -- Toggl <support@toggl.com>  Tue, 20 Dec 2016 12:30:00 +0200
 
-toggldesktop (7.3.366) unstable; urgency=low
+toggltrack (7.3.366) unstable; urgency=low
 
   * Fixed project color select issue
   * Removed all traces of duration only mode
@@ -180,7 +180,7 @@ toggldesktop (7.3.366) unstable; urgency=low
 
 -- Toggl <support@toggl.com>  Fri, 5 Dec 2016 14:30:00 +0200
 
-toggldesktop (7.3.353) unstable; urgency=low
+toggltrack (7.3.353) unstable; urgency=low
 
   * Added grouped entries mode
   * Set input backgrounds to always be white
@@ -190,13 +190,13 @@ toggldesktop (7.3.353) unstable; urgency=low
 
 -- Toggl <support@toggl.com>  Mon, 28 Nov 2016 13:30:00 +0200
 
-toggldesktop (7.3.350) unstable; urgency=low
+toggltrack (7.3.350) unstable; urgency=low
 
   * Fixed duration mode issue with new web UI users
 
 -- Toggl <support@toggl.com>  Thu, 10 Nov 2016 13:30:00 +0200
 
-toggldesktop (7.3.346) unstable; urgency=low
+toggltrack (7.3.346) unstable; urgency=low
 
  * Added Pomodoro Break functionality
  * Increased local data kept to 30 days
@@ -216,23 +216,23 @@ toggldesktop (7.3.346) unstable; urgency=low
 
  -- Toggl <support@toggl.com>  Thu, 27 Oct 2016 10:30:00 +0200
 
-toggldesktop (7.3.326) unstable; urgency=low
+toggltrack (7.3.326) unstable; urgency=low
 
  * Fixed default project task overwriting issue
 
  -- Toggl <support@toggl.com>  Mon, 12 Sep 2016 14:30:00 +0200
 
-toggldesktop (7.3.325) unstable; urgency=low
+toggltrack (7.3.325) unstable; urgency=low
 
  * Added "Discard and continue" button to idle popup
  * Added Pomodoro Timer
  * Added Global shortcuts for show/hide and continue/stop
  * Fixes for icon docking issues
- * Support for using symbolic link for Toggl Desktop start
+ * Support for using symbolic link for Toggl Track start
 
  -- Toggl <support@toggl.com>  Fri, 11 Jul 2016 14:30:00 +0200
 
-toggldesktop (7.3.247) unstable; urgency=low
+toggltrack (7.3.247) unstable; urgency=low
 
  * Added time entry description to idle notification
  * Disabled workspace items in projects dropdown
@@ -243,7 +243,7 @@ toggldesktop (7.3.247) unstable; urgency=low
 
  -- Toggl <support@toggl.com>  Thu, 31 Dec 2015 12:10:00 +0200
 
-toggldesktop (7.3.119) unstable; urgency=low
+toggltrack (7.3.119) unstable; urgency=low
 
  * Hide app when tray icon is present
  * Added tray icon to menu bar
@@ -256,7 +256,7 @@ toggldesktop (7.3.119) unstable; urgency=low
 
  -- Toggl <support@toggl.com>  Thu, 3 Nov 2015 10:40:00 +0200
 
-toggldesktop (7.2.64) unstable; urgency=low
+toggltrack (7.2.64) unstable; urgency=low
 
  * Improved separation of Deb package and tar.gz
  * Added tooltip to error message (linux)
@@ -268,13 +268,13 @@ toggldesktop (7.2.64) unstable; urgency=low
 
  -- Toggl <support@toggl.com>  Fri, 10 Apr 2015 10:20:00 +0200
 
-toggldesktop (7.1.264) unstable; urgency=low
+toggltrack (7.1.264) unstable; urgency=low
 
  * Fixed tag ToopTip colors (linux)
 
  -- Toggl <support@toggl.com>  Tue, 31 Mar 2015 21:45:00 +0300
 
-toggldesktop (7.1.260) unstable; urgency=low
+toggltrack (7.1.260) unstable; urgency=low
 
  * Don't show start/end tooltip if there are no start/end times (linux) ref: #1249
  * Added Start Stop time tooltip to duration label (linux) ref: #1249
@@ -292,7 +292,7 @@ toggldesktop (7.1.260) unstable; urgency=low
 
  -- Toggl <support@toggl.com>  Tue, 31 Mar 2015 16:15:00 +0300
 
-toggldesktop (7.1.253) unstable; urgency=low
+toggltrack (7.1.253) unstable; urgency=low
 
  * Fixed timer duration cutoff (linux) closes #1144
  * Fixed entry cell duration cutoff in Hi DPI (linux)
@@ -328,13 +328,13 @@ toggldesktop (7.1.253) unstable; urgency=low
 
  -- Toggl <support@toggl.com>  Tue, 31 Mar 2015 07:22:00 +0300
 
-toggldesktop (7.1.198) unstable; urgency=low
+toggltrack (7.1.198) unstable; urgency=low
 
   * Added missing libraries
 
  -- Toggl <support@toggl.com>  Wed, 04 Feb 2015 19:44:00 +0300
 
-toggldesktop (7.1.192) unstable; urgency=low
+toggltrack (7.1.192) unstable; urgency=low
 
   * New JSON library
   * Handle umlauts in timeline uploader
@@ -390,7 +390,7 @@ toggldesktop (7.1.192) unstable; urgency=low
 
  -- Toggl <support@toggl.com>  Tue, 29 Jan 2015 01:44:00 +0300
 
-toggldesktop (7.1.115) unstable; urgency=low
+toggltrack (7.1.115) unstable; urgency=low
 
   * Include running time entry in daily total
   * Autocomplete dropdown fix, fixes #735
@@ -409,7 +409,7 @@ toggldesktop (7.1.115) unstable; urgency=low
 
  -- Toggl <support@toggl.com>  Wed, 22 Oct 2014 20:22:00 +0300
 
-toggldesktop (7.1.73) unstable; urgency=low
+toggltrack (7.1.73) unstable; urgency=low
 
   * Remove min size constraint, fixes #761
   * Remove error widget from tab order
@@ -419,7 +419,7 @@ toggldesktop (7.1.73) unstable; urgency=low
 
  -- Toggl <support@toggl.com>  Wed, 24 Sep 2014 14:50:00 +0300
 
-toggldesktop (7.1.71) UNRELEASED; urgency=low
+toggltrack (7.1.71) UNRELEASED; urgency=low
 
   * Initial release.
 

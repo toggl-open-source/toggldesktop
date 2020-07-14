@@ -1,4 +1,4 @@
-// Copyright 2015 Toggl Desktop developers.
+// Copyright 2015 Toggl Track developers.
 
 #ifndef SRC_NETCONF_H_
 #define SRC_NETCONF_H_

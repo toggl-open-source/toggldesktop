@@ -1,4 +1,4 @@
-// Copyright 2015 Toggl Desktop developers.
+// Copyright 2015 Toggl Track developers.
 
 #ifndef SRC_ANALYTICS_H_
 #define SRC_ANALYTICS_H_

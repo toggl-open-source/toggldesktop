@@ -1,14 +1,14 @@
 
 # Overview
 
-This file documents the general structure and architecture of the Windows UI of Toggl Desktop. The focus is to give a quick overview on how the different components of the program are organized and work together.
+This file documents the general structure and architecture of the Windows UI of Toggl Track. The focus is to give a quick overview on how the different components of the program are organized and work together.
 
-Most business logic of the application is implemented in C++ inside the TogglDesktopDLL project under `src/lib` ("the library"). All UI code for Toggl Desktop on Windows is contained inside the TogglDesktop project under `src\ui\windows\TogglDesktop\TogglDesktop` ("the ui" / "the interface").
+Most business logic of the application is implemented in C++ inside the TogglTrackDLL project under `src/lib` ("the library"). All UI code for Toggl Track on Windows is contained inside the TogglTrack project under `src\ui\windows\TogglTrack\TogglTrack` ("the ui" / "the interface").
 
 
 ## Architecture
 
-With most business logic contained in the library, Toggl Desktop mostly follows the Model-View-Controller (MVC) pattern where the TogglDesktop project acts as both view and controller. Some views were recently moved to MVVM with ReactiveUI acting as an MVVM framework.
+With most business logic contained in the library, Toggl Track mostly follows the Model-View-Controller (MVC) pattern where the TogglTrack project acts as both view and controller. Some views were recently moved to MVVM with ReactiveUI acting as an MVVM framework.
 
 The different window and view types of the interface correspond to the logical components of the application, and are kept interacting as little as reasonably possible to decrease complexity.
 
@@ -36,7 +36,7 @@ The data for these suggestions is provided by the library through appropriate ev
 
 ## Namespaces and folders
 
-Inside the TogglDesktop project directory, namespaces are contained in nested folders starting with capital letters. Lower-case folders only serve to organize files within a namespace. The base namespace of the project is `TogglDesktop`.
+Inside the TogglTrack project directory, namespaces are contained in nested folders starting with capital letters. Lower-case folders only serve to organize files within a namespace. The base namespace of the project is `TogglTrack`.
 
 The only files contained in the root folder are application global files, like the library-ui API, and application entry point.
 

@@ -35,7 +35,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = qt-oauth-lib1.0.0
-DISTDIR = /home/osboxes/toggldesktop/third_party/qt-oauth-lib/.tmp/qt-oauth-lib1.0.0
+DISTDIR = /home/osboxes/toggltrack/third_party/qt-oauth-lib/.tmp/qt-oauth-lib1.0.0
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -718,7 +718,7 @@ moc_oauth2.cpp: ../../../Qt/5.11.0/gcc_64/include/QtCore/QString \
 		oauth2.h \
 		moc_predefs.h \
 		../../../Qt/5.11.0/gcc_64/bin/moc
-	/home/osboxes/Qt/5.11.0/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/osboxes/Qt/5.11.0/gcc_64/mkspecs/linux-g++ -I/home/osboxes/toggldesktop/third_party/qt-oauth-lib -I/home/osboxes/Qt/5.11.0/gcc_64/include -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWebEngineWidgets -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWebEngineCore -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtQuick -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtPrintSupport -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWidgets -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtGui -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWebChannel -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtQml -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtNetwork -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtPositioning -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include oauth2.h -o moc_oauth2.cpp
+	/home/osboxes/Qt/5.11.0/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/osboxes/Qt/5.11.0/gcc_64/mkspecs/linux-g++ -I/home/osboxes/toggltrack/third_party/qt-oauth-lib -I/home/osboxes/Qt/5.11.0/gcc_64/include -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWebEngineWidgets -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWebEngineCore -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtQuick -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtPrintSupport -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWidgets -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtGui -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWebChannel -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtQml -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtNetwork -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtPositioning -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include oauth2.h -o moc_oauth2.cpp
 
 moc_logindialog.cpp: ../../../Qt/5.11.0/gcc_64/include/QtWidgets/QDialog \
 		../../../Qt/5.11.0/gcc_64/include/QtWidgets/qdialog.h \
@@ -828,7 +828,7 @@ moc_logindialog.cpp: ../../../Qt/5.11.0/gcc_64/include/QtWidgets/QDialog \
 		logindialog.h \
 		moc_predefs.h \
 		../../../Qt/5.11.0/gcc_64/bin/moc
-	/home/osboxes/Qt/5.11.0/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/osboxes/Qt/5.11.0/gcc_64/mkspecs/linux-g++ -I/home/osboxes/toggldesktop/third_party/qt-oauth-lib -I/home/osboxes/Qt/5.11.0/gcc_64/include -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWebEngineWidgets -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWebEngineCore -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtQuick -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtPrintSupport -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWidgets -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtGui -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWebChannel -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtQml -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtNetwork -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtPositioning -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include logindialog.h -o moc_logindialog.cpp
+	/home/osboxes/Qt/5.11.0/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/osboxes/Qt/5.11.0/gcc_64/mkspecs/linux-g++ -I/home/osboxes/toggltrack/third_party/qt-oauth-lib -I/home/osboxes/Qt/5.11.0/gcc_64/include -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWebEngineWidgets -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWebEngineCore -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtQuick -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtPrintSupport -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWidgets -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtGui -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtWebChannel -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtQml -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtNetwork -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtPositioning -I/home/osboxes/Qt/5.11.0/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include logindialog.h -o moc_logindialog.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:

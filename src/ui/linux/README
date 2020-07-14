@@ -1,7 +1,7 @@
 
-To start Toggl Desktop, please run the script
+To start Toggl Track, please run the script
 
-	TogglDesktop.sh
+	TogglTrack.sh
 
 It will automatically set up the Qt library paths
 and then start the app.
@@ -14,9 +14,9 @@ Desktop app developers at:
 
 Or create a new Github issue directly, by visiting:
 
-	https://github.com/toggl/toggldesktop/issues/new
+	https://github.com/toggl/toggltrack/issues/new
 
-If you're able to run the Toggl Desktop app, then you
+If you're able to run the Toggl Track app, then you
 can also send feedback directly from the app itself.
 In that case, log files are automatically included with
 the feedback to resolve the issue faster.

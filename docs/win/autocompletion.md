@@ -1,7 +1,7 @@
 
 # Autocompletion
 
-To handle the context specific requirements of inputting data into Toggl, the Windows UI of Toggl Desktop includes an entirely custom system to handle autocompletion and suggestions of user input.
+To handle the context specific requirements of inputting data into Toggl, the Windows UI of Toggl Track includes an entirely custom system to handle autocompletion and suggestions of user input.
 
 This system is used all across the application's edit view as well as in the timer, to help the user quickly complete their input.
 

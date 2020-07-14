@@ -1,6 +1,6 @@
 //
 //  rectangle.h
-//  TogglDesktopLibrary
+//  TogglTrackLibrary
 //
 //  Created by Nghia Tran on 11/22/18.
 //  Copyright © 2018 Toggl. All rights reserved.

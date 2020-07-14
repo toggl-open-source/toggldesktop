@@ -1,4 +1,4 @@
-// Copyright 2014 Toggl Desktop developers.
+// Copyright 2014 Toggl Track developers.
 
 #ifndef SRC_RANDOM_H
 #define SRC_RANDOM_H

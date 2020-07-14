@@ -7,7 +7,7 @@
 	"title": "Update your app to continue using Toggl",
 	"text": "To ensure that your Toggl app continues to sync entries, please update the app by clicking on the cogwheel menu icon -> About -> Restart now. Alternatively, download and install the latest version manually.",
 	"button": "Download here",
-	"url-mac": "https://toggl.com/toggl-desktop/",
-	"url-win": "https://toggl.com/toggl-desktop/",
-	"url-linux": "https://toggl.com/toggl-desktop/"
+	"url-mac": "https://toggl.com/toggl-track/",
+	"url-win": "https://toggl.com/toggl-track/",
+	"url-linux": "https://toggl.com/toggl-track/"
 }

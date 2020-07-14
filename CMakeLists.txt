@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-project(TogglDesktop)
+project(TogglTrack)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -9,9 +9,9 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-set(TOGGL_VERSION "7.0.0" CACHE STRING "TogglDesktop version string")
-set(TOGGL_VERSION_RELEASE_DATE "1970-01-01" CACHE STRING "TogglDesktop version release date string")
-set(TOGGL_VERSION_DESCRIPTION "<p>With this update, Toggl Desktop brings general bug fixes and usability improvements</p>" CACHE STRING "TogglDesktop version description")
+set(TOGGL_VERSION "7.0.0" CACHE STRING "TogglTrack version string")
+set(TOGGL_VERSION_RELEASE_DATE "1970-01-01" CACHE STRING "TogglTrack version release date string")
+set(TOGGL_VERSION_DESCRIPTION "<p>With this update, Toggl Track brings general bug fixes and usability improvements</p>" CACHE STRING "TogglTrack version description")
 set(TOGGL_BUILD_TYPE "manual" CACHE STRING "Build type (manual/flatpak/snap/deb/...)")
 option(TOGGL_PRODUCTION_BUILD "Use production servers in the app" OFF)
 option(TOGGL_ALLOW_UPDATE_CHECK "Allow the app to check for updates" OFF)
@@ -71,12 +71,12 @@ if(NOT USE_BUNDLED_LIBRARIES)
 endif()
 
 
-set(TOGGLDESKTOP_BUILDROOT
+set(TOGGLTRACK_BUILDROOT
     ${CMAKE_CURRENT_BINARY_DIR}/buildroot
 )
 
 set(TOGGL_BINARY_DIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE STRING "Binary install directory")
-set(TOGGL_DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/toggldesktop" CACHE STRING "Runtime data install directory")
+set(TOGGL_DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/toggltrack" CACHE STRING "Runtime data install directory")
 set(TOGGL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib" CACHE STRING "Library install directory")
 set(TOGGL_INTERNAL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib" CACHE STRING "Bundled library install directory")
 set(CMAKE_INSTALL_RPATH "${TOGGL_LIB_DIR};${TOGGL_INTERNAL_LIB_DIR}" CACHE STRING "Custom RPATH for the binaries and libraries")
@@ -84,4 +84,4 @@ set(CMAKE_INSTALL_RPATH "${TOGGL_LIB_DIR};${TOGGL_INTERNAL_LIB_DIR}" CACHE STRIN
 add_subdirectory(third_party)
 add_subdirectory(src)
 add_subdirectory(src/test)
-add_subdirectory(src/ui/linux/TogglDesktop)
+add_subdirectory(src/ui/linux/TogglTrack)

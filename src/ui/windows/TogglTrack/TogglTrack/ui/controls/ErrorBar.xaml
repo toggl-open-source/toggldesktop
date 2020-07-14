@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="TogglTrack.ErrorBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" d:DesignWidth="300"
+             MaxWidth="300"
+             VerticalAlignment="Bottom"
+             HorizontalAlignment="Stretch">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.ColumnSpan="2"
+                Background="{DynamicResource Toggl.ValidationErrorBackground}">
+            <Border.Effect>
+                <DropShadowEffect Opacity="0.3"
+                                  BlurRadius="8"
+                                  ShadowDepth="2"
+                                  Direction="270"/>
+            </Border.Effect>
+        </Border>
+
+        <TextBlock Grid.Column="0"
+                   x:Name="errorText" x:FieldModifier="private"
+                   Style="{StaticResource Toggl.BaseWhiteText}"
+                   Padding="12 9 12 12"
+                   Text="Everything is fine."
+                   TextWrapping="Wrap"/>
+        <Button Grid.Column="1"
+                Click="onCloseButtonClick"
+                Style="{StaticResource Toggl.CrossButton}"
+                Margin="4"
+                Width="32"
+                Height="32"
+                VerticalAlignment="Top"
+                Foreground="White" />
+    </Grid>
+</UserControl>

@@ -14,46 +14,46 @@ macosdir=src/ui/osx
 GTEST_ROOT=third_party/googletest-read-only
 
 source_dirs=src/*.cc src/*.h src/test/*.cc src/test/*.h \
-	src/ui/linux/TogglDesktop/aboutdialog.h src/ui/linux/TogglDesktop/aboutdialog.cpp \
-	src/ui/linux/TogglDesktop/autocompleteview.h src/ui/linux/TogglDesktop/autocompleteview.cpp \
-	src/ui/linux/TogglDesktop/clickablelabel.h src/ui/linux/TogglDesktop/clickablelabel.cpp \
-	src/ui/linux/TogglDesktop/errorviewcontroller.h src/ui/linux/TogglDesktop/errorviewcontroller.cpp \
-	src/ui/linux/TogglDesktop/feedbackdialog.h src/ui/linux/TogglDesktop/feedbackdialog.cpp \
-	src/ui/linux/TogglDesktop/genericview.h src/ui/linux/TogglDesktop/genericview.cpp \
-	src/ui/linux/TogglDesktop/loginwidget.h src/ui/linux/TogglDesktop/loginwidget.cpp \
-	src/ui/linux/TogglDesktop/main.cpp \
-	src/ui/linux/TogglDesktop/mainwindowcontroller.h src/ui/linux/TogglDesktop/mainwindowcontroller.cpp \
-	src/ui/linux/TogglDesktop/preferencesdialog.h src/ui/linux/TogglDesktop/preferencesdialog.cpp \
-	src/ui/linux/TogglDesktop/settingsview.h src/ui/linux/TogglDesktop/settingsview.cpp \
-	src/ui/linux/TogglDesktop/singleapplication.h src/ui/linux/TogglDesktop/singleapplication.cpp \
-	src/ui/linux/TogglDesktop/timeentrycellwidget.h src/ui/linux/TogglDesktop/timeentrycellwidget.cpp \
-	src/ui/linux/TogglDesktop/timeentryeditorwidget.h src/ui/linux/TogglDesktop/timeentryeditorwidget.cpp \
-	src/ui/linux/TogglDesktop/timeentrylistwidget.h src/ui/linux/TogglDesktop/timeentrylistwidget.cpp \
-	src/ui/linux/TogglDesktop/timeentryview.h src/ui/linux/TogglDesktop/timeentryview.cpp \
-	src/ui/linux/TogglDesktop/timerwidget.h src/ui/linux/TogglDesktop/timerwidget.cpp \
-	src/ui/linux/TogglDesktop/toggl.h src/ui/linux/TogglDesktop/toggl.cpp
+	src/ui/linux/TogglTrack/aboutdialog.h src/ui/linux/TogglTrack/aboutdialog.cpp \
+	src/ui/linux/TogglTrack/autocompleteview.h src/ui/linux/TogglTrack/autocompleteview.cpp \
+	src/ui/linux/TogglTrack/clickablelabel.h src/ui/linux/TogglTrack/clickablelabel.cpp \
+	src/ui/linux/TogglTrack/errorviewcontroller.h src/ui/linux/TogglTrack/errorviewcontroller.cpp \
+	src/ui/linux/TogglTrack/feedbackdialog.h src/ui/linux/TogglTrack/feedbackdialog.cpp \
+	src/ui/linux/TogglTrack/genericview.h src/ui/linux/TogglTrack/genericview.cpp \
+	src/ui/linux/TogglTrack/loginwidget.h src/ui/linux/TogglTrack/loginwidget.cpp \
+	src/ui/linux/TogglTrack/main.cpp \
+	src/ui/linux/TogglTrack/mainwindowcontroller.h src/ui/linux/TogglTrack/mainwindowcontroller.cpp \
+	src/ui/linux/TogglTrack/preferencesdialog.h src/ui/linux/TogglTrack/preferencesdialog.cpp \
+	src/ui/linux/TogglTrack/settingsview.h src/ui/linux/TogglTrack/settingsview.cpp \
+	src/ui/linux/TogglTrack/singleapplication.h src/ui/linux/TogglTrack/singleapplication.cpp \
+	src/ui/linux/TogglTrack/timeentrycellwidget.h src/ui/linux/TogglTrack/timeentrycellwidget.cpp \
+	src/ui/linux/TogglTrack/timeentryeditorwidget.h src/ui/linux/TogglTrack/timeentryeditorwidget.cpp \
+	src/ui/linux/TogglTrack/timeentrylistwidget.h src/ui/linux/TogglTrack/timeentrylistwidget.cpp \
+	src/ui/linux/TogglTrack/timeentryview.h src/ui/linux/TogglTrack/timeentryview.cpp \
+	src/ui/linux/TogglTrack/timerwidget.h src/ui/linux/TogglTrack/timerwidget.cpp \
+	src/ui/linux/TogglTrack/toggl.h src/ui/linux/TogglTrack/toggl.cpp
 
 xcodebuild_command=xcodebuild \
-				  -scheme TogglDesktop \
-				  -workspace src/ui/osx/TogglDesktop.xcworkspace  \
+				  -scheme TogglTrack \
+				  -workspace src/ui/osx/TogglTrack.xcworkspace  \
 				  -configuration Debug
 xcodebuild_command_release=xcodebuild \
-				  -scheme TogglDesktop \
-				  -workspace src/ui/osx/TogglDesktop.xcworkspace  \
+				  -scheme TogglTrack \
+				  -workspace src/ui/osx/TogglTrack.xcworkspace  \
 				  -configuration Release
 
 ifeq ($(uname), Linux)
-executable=./build/src/ui/linux/TogglDesktop/TogglDesktop
+executable=./build/src/ui/linux/TogglTrack/TogglTrack
 else
 executable=$(shell $(xcodebuild_command) \
 			 -showBuildSettings \
  			| grep -w 'BUILT_PRODUCTS_DIR' \
- 			| cut -d'=' -f 2)/TogglDesktop.app/Contents/MacOS/TogglDesktop
+ 			| cut -d'=' -f 2)/TogglTrack.app/Contents/MacOS/TogglTrack
 endif
 executable_release=$(shell $(xcodebuild_command_release) \
 			 -showBuildSettings \
 			| grep -w 'BUILT_PRODUCTS_DIR' \
-			| cut -d'=' -f 2)/TogglDesktop.app/Contents/MacOS/TogglDesktop
+			| cut -d'=' -f 2)/TogglTrack.app/Contents/MacOS/TogglTrack
 pocolib=$(pocodir)/lib/Darwin/x86_64/
 osname=mac
 
@@ -128,7 +128,7 @@ clean_lib:
 	rm -rf src/lib/osx/build
 
 clean_ui:
-	rm -rf src/ui/osx/TogglDesktop/build third_party/TFDatePicker/TFDatePicker/build TogglDesktop*.dmg TogglDesktop*.tar.gz
+	rm -rf src/ui/osx/TogglTrack/build third_party/TFDatePicker/TFDatePicker/build TogglTrack*.dmg TogglTrack*.tar.gz
 
 clean_test:
 	rm -rf test/*
@@ -154,9 +154,9 @@ endif
 app_release: lib_release ui_release
 
 lib:
-	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Debug
+	xcodebuild -project src/lib/osx/TogglTrackLibrary.xcodeproj -configuration Debug
 lib_release:
-	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Release build
+	xcodebuild -project src/lib/osx/TogglTrackLibrary.xcodeproj -configuration Release build
 
 ui:
 	$(xcodebuild_command)
@@ -208,8 +208,8 @@ fmt_lib: third_party/google-astyle/build/google-astyle
 	third_party/google-astyle/build/google-astyle -n $(source_dirs)
 
 fmt_ui:
-	./third_party/Xcode-formatter/CodeFormatter/scripts/formatAllSources.sh src/ui/osx/TogglDesktop
-	third_party/google-astyle/build/google-astyle -n src/ui/windows/TogglDesktop/TogglDesktop/TogglApi.cs
+	./third_party/Xcode-formatter/CodeFormatter/scripts/formatAllSources.sh src/ui/osx/TogglTrack
+	third_party/google-astyle/build/google-astyle -n src/ui/windows/TogglTrack/TogglTrack/TogglApi.cs
 
 build/jsoncpp.o: $(jsoncppdir)/jsoncpp.cpp
 	$(cxx) $(cflags) -c $(jsoncppdir)/jsoncpp.cpp -o build/jsoncpp.o
@@ -438,7 +438,7 @@ coverage: lcov
 	@echo "open coverage/index.html to view coverage report"
 
 loco:
-	xcodebuild -exportLocalizations -localizationPath src/ui/osx/localization -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj -exportLanguage et
+	xcodebuild -exportLocalizations -localizationPath src/ui/osx/localization -project src/ui/osx/TogglTrack/TogglTrack.xcodeproj -exportLanguage et
 
 package:
 	./src/ui/linux/package.sh

@@ -1,0 +1,25 @@
+//
+//  NSBoxClickable.m
+//  Toggl Track on the Mac
+//
+//  Created by Tanel Lebedev on 13/11/2013.
+//  Copyright (c) 2013 TogglTrack developers. All rights reserved.
+//
+
+#import "NSBoxClickable.h"
+
+@implementation NSBoxClickable
+
+extern void *ctx;
+
+- (void)mouseDown:(NSEvent *)event
+{
+	toggl_edit(ctx, "", true, "");
+}
+
+- (BOOL)acceptsFirstMouse:(NSEvent *)theEvent
+{
+	return YES;
+}
+
+@end

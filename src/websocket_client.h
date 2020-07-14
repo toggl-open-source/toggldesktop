@@ -1,4 +1,4 @@
-// Copyright 2014 Toggl Desktop developers.
+// Copyright 2014 Toggl Track developers.
 
 #ifndef SRC_WEBSOCKET_CLIENT_H_
 #define SRC_WEBSOCKET_CLIENT_H_

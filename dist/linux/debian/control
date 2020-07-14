@@ -1,4 +1,4 @@
-Source: toggldesktop
+Source: toggltrack
 Maintainer: Toggl <support@toggl.com>
 Section: misc
 Priority: optional
@@ -13,9 +13,9 @@ Build-Depends: cmake,
     libxss-dev,
     libxmu-dev
 Standards-Version: 4.1.2
-Homepage: https://github.com/toggl/toggldesktop
+Homepage: https://github.com/toggl/toggltrack
 
-Package: toggldesktop
+Package: toggltrack
 Architecture: any
 Depends: libxss1, 
     libgstreamer-plugins-base1.0-0, 

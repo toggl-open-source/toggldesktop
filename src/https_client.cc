@@ -1,4 +1,4 @@
-// Copyright 2014 Toggl Desktop developers.
+// Copyright 2014 Toggl Track developers.
 
 #include "https_client.h"
 
@@ -522,7 +522,7 @@ HTTPResponse HTTPClient::makeHttpRequest(
 
 std::string HTTPClient::clientIDForRefererHeader() const {
     if (POCO_OS_MAC_OS_X == POCO_OS) {
-        return kTogglDesktopClientID_MacOS;
+        return kTogglTrackClientID_MacOS;
     }
     // Extend in the future
     return "";

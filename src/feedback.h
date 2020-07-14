@@ -1,4 +1,4 @@
-// Copyright 2014 Toggl Desktop developers.
+// Copyright 2014 Toggl Track developers.
 
 #ifndef SRC_FEEDBACK_H_
 #define SRC_FEEDBACK_H_
@@ -36,7 +36,7 @@ class TOGGL_INTERNAL_EXPORT Feedback {
 
     void SetSubject(const std::string &value) {
         std::stringstream ss;
-        ss << "Toggl Desktop - " << value;
+        ss << "Toggl Track - " << value;
         subject_ = ss.str();
     }
     const std::string &Subject() const {

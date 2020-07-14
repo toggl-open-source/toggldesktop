@@ -1,4 +1,4 @@
-// Copyright 2014 Toggl Desktop developers.
+// Copyright 2014 Toggl Track developers.
 
 #ifndef SRC_CONST_H_
 #define SRC_CONST_H_
@@ -37,8 +37,8 @@
 
 #define kLostPasswordURL "https://toggl.com/forgot-password?desktop=true"
 #define kGeneralSupportURL "https://support.toggl.com/toggl-on-my-desktop/"
-#define kLinuxSupportURL "https://support.toggl.com/toggl-desktop-for-linux/"
-#define kMacSupportURL "https://support.toggl.com/toggl-desktop-for-mac-osx/"
+#define kLinuxSupportURL "https://support.toggl.com/toggl-track-for-linux/"
+#define kMacSupportURL "https://support.toggl.com/toggl-track-for-mac-osx/"
 #define kTOSURL "https://toggl.com/legal/terms/"
 #define kPrivacyPolicyURL "https://toggl.com/legal/privacy/"
 
@@ -94,7 +94,7 @@
 #define kClientNameAlreadyExists "Client name already exists"
 #define kDatabaseDiskMalformed "The database disk image is malformed"
 #define kMissingWS "You no longer have access to your last workspace"
-#define kOutOfDatePleaseUpgrade "Your version of Toggl Desktop is out of date, please upgrade!"
+#define kOutOfDatePleaseUpgrade "Your version of Toggl Track is out of date, please upgrade!"
 #define kThisEntryCantBeSavedPleaseAdd "This entry can't be saved - please add"
 #define kOneLoginAttemptLeft "Incorrect email or password. One more try before account gets locked for 5 minutes."
 #define kAccountIsLocked "Incorrect email or password. Account is locked for 5 minutes. Account owner has been notified."
@@ -124,7 +124,7 @@
 #define kAutocompleteItemProject 2
 #define kAutocompleteItemWorkspace 3
 
-#define kTogglDesktopClientID_MacOS "toggldesktop.TogglDesktop"
+#define kTogglTrackClientID_MacOS "toggltrack.TogglTrack"
 #define kAPIV8 "v8"
 #define kAPIV9 "v9"
 #define kGoogleProvider "google"

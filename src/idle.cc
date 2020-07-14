@@ -1,5 +1,5 @@
 
-// Copyright 2014 Toggl Desktop developers
+// Copyright 2014 Toggl Track developers
 
 // No exceptions should be thrown from this class.
 // If pointers to models are returned from this

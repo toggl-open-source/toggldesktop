@@ -1,4 +1,4 @@
-// Copyright 2015 Toggl Desktop developers.
+// Copyright 2015 Toggl Track developers.
 
 #ifndef SRC_HELP_ARTICLE_H_
 #define SRC_HELP_ARTICLE_H_

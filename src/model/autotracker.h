@@ -1,4 +1,4 @@
-// Copyright 2015 Toggl Desktop developers.
+// Copyright 2015 Toggl Track developers.
 
 #ifndef SRC_AUTOTRACKER_H_
 #define SRC_AUTOTRACKER_H_

@@ -20,7 +20,7 @@ test::App::App() {
     poco_assert(toggl_set_db_path(context_, TESTDB));
 
     // FIXME better path handling
-    Poco::Path path("../../../toggldesktop/src/ssl/cacert.pem");
+    Poco::Path path("../../../toggltrack/src/ssl/cacert.pem");
     toggl_set_cacert_path(context_, path.toString().c_str());
 
     Dispatcher::dispatch(false);
@@ -47,7 +47,7 @@ std::string test::App::randomString(size_t length) {
 
 std::string test::App::randomUser() {
     srand(time(nullptr));
-    return randomString(16) + "@" + "toggldesktop-test.com";
+    return randomString(16) + "@" + "toggltrack-test.com";
 }
 
 std::string test::App::randomPassword() {

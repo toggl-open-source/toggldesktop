@@ -1,5 +1,5 @@
 include_directories(
-    ${TOGGLDESKTOPLIBRARY_INCLUDE_DIR}
+    ${TOGGLTRACKLIBRARY_INCLUDE_DIR}
     ${OAUTH_INCLUDE_DIR}
     ${BUGSNAG_INCLUDE_DIR}
     ${LUA_INCLUDE_DIRS}
@@ -14,7 +14,7 @@ set(API_TEST_SOURCE_FILES
 )
 add_executable(TogglApiTest ${API_TEST_SOURCE_FILES})
 target_link_libraries(TogglApiTest PRIVATE
-    TogglDesktopLibrary
+    TogglTrackLibrary
     ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
     PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation
@@ -28,7 +28,7 @@ set(APP_TEST_SOURCE_FILES
 )
 add_executable(TogglAppTest ${APP_TEST_SOURCE_FILES})
 target_link_libraries(TogglAppTest PRIVATE
-    TogglDesktopLibrary
+    TogglTrackLibrary
     ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
     PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation
@@ -44,7 +44,7 @@ set(ONLINE_TEST_SOURCE_FILES
 )
 add_executable(TogglOnlineTest ${ONLINE_TEST_SOURCE_FILES})
 target_link_libraries(TogglOnlineTest PRIVATE
-    TogglDesktopLibrary
+    TogglTrackLibrary
     ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
     PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation

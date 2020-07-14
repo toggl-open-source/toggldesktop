@@ -9,27 +9,27 @@ def essential_pods
   pod 'Bugsnag'
 end
 
-# TogglDesktop
-target 'TogglDesktop' do
-  project 'TogglDesktop/TogglDesktop.xcodeproj'
+# TogglTrack
+target 'TogglTrack' do
+  project 'TogglTrack/TogglTrack.xcodeproj'
   essential_pods
   pod 'Sparkle'
 end
 
-# TogglDesktop-AppStore
-target 'TogglDesktop-AppStore' do
-  project 'TogglDesktop/TogglDesktop.xcodeproj'
+# TogglTrack-AppStore
+target 'TogglTrack-AppStore' do
+  project 'TogglTrack/TogglTrack.xcodeproj'
   essential_pods
 end
 
-target 'TogglDesktopTests' do
-  project 'TogglDesktop/TogglDesktop.xcodeproj'
+target 'TogglTrackTests' do
+  project 'TogglTrack/TogglTrack.xcodeproj'
   essential_pods
   pod 'Sparkle'
 end
 
-target 'TogglDesktopTests-AppStore' do
-  project 'TogglDesktop/TogglDesktop.xcodeproj'
+target 'TogglTrackTests-AppStore' do
+  project 'TogglTrack/TogglTrack.xcodeproj'
   essential_pods
 end
 

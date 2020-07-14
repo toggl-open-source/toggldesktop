@@ -8,10 +8,10 @@ export   CFLAGS="$LDFLAGS"
 export CXXFLAGS="$LDFLAGS"
 
 function app_path() {
-    echo $(xcodebuild -scheme TogglDesktop -workspace src/ui/osx/TogglDesktop.xcworkspace -configuration Release -showBuildSettings \
+    echo $(xcodebuild -scheme TogglTrack -workspace src/ui/osx/TogglTrack.xcworkspace -configuration Release -showBuildSettings \
                 | grep -w 'BUILT_PRODUCTS_DIR' \
                 | cut -d'=' -f 2 \
-                | sed -e 's/^[ \t]*//')/TogglDesktop.app
+                | sed -e 's/^[ \t]*//')/TogglTrack.app
 }
 
 function dependencies() {
@@ -46,7 +46,7 @@ function plist() {
 function sign() {
     security unlock-keychain -p 'password' ~/Library/Keychains/build.keychain
     APP=$(app_path)
-    EXECUTABLE=$APP/Contents/MacOS/TogglDesktop
+    EXECUTABLE=$APP/Contents/MacOS/TogglTrack
     CERTIFICATE="Developer ID Application: TOGGL OU"
 
     echo "== check that gatekeeper is enabled =="
@@ -59,9 +59,9 @@ for filename in $APP/Contents/Frameworks/*; do
         codesign -d --force --options runtime -vvvv --verify --strict -s "${CERTIFICATE}"  -r='designated => anchor apple generic and certificate leaf[subject.OU] = "B227VTMZ94"' $filename
     done
 
-    codesign -d --force --options runtime -vvvv --verify --strict -s "${CERTIFICATE}" -r='designated => anchor apple generic and identifier "com.toggl.toggldesktop.TogglDesktop" and certificate leaf[subject.OU] = "B227VTMZ94"' $EXECUTABLE
+    codesign -d --force --options runtime -vvvv --verify --strict -s "${CERTIFICATE}" -r='designated => anchor apple generic and identifier "com.toggl.toggltrack.TogglTrack" and certificate leaf[subject.OU] = "B227VTMZ94"' $EXECUTABLE
 
-    codesign -d --force --options runtime -vvvv --verify --strict -s "${CERTIFICATE}" -r='designated => anchor apple generic and identifier "com.toggl.toggldesktop.TogglDesktop" and certificate leaf[subject.OU] = "B227VTMZ94"' $APP
+    codesign -d --force --options runtime -vvvv --verify --strict -s "${CERTIFICATE}" -r='designated => anchor apple generic and identifier "com.toggl.toggltrack.TogglTrack" and certificate leaf[subject.OU] = "B227VTMZ94"' $APP
 
     codesign --deep --verify --strict --verbose=4 $APP
 }
@@ -70,7 +70,7 @@ function notarize() {
     APP_PATH=$(app_path)
     BUNDLE_APP=$(dirname "${APP_PATH}")
     EXPORT_PATH=${BUNDLE_APP}/Submissions
-    BUNDLE_ZIP=${EXPORT_PATH}/TogglDesktop.zip
+    BUNDLE_ZIP=${EXPORT_PATH}/TogglTrack.zip
     UPLOAD_INFO_PLIST=${EXPORT_PATH}/UploadInfo.plist
     REQUEST_INFO_PLIST=${EXPORT_PATH}/RequestInfo.plist
     AUDIT_INFO_JSON=${EXPORT_PATH}/AuditInfo.json
@@ -80,7 +80,7 @@ function notarize() {
     echo "Notarization" "Building a ZIP archive…"
     /usr/bin/ditto -c -k --keepParent ${APP_PATH} ${BUNDLE_ZIP}
     echo "Notarization" "Uploading for notarization…"
-    /usr/bin/xcrun altool --notarize-app --primary-bundle-id "com.toggl.toggldesktop.TogglDesktop.zip" -itc_provider "B227VTMZ94" -u ${DEVELOPER_USERNAME} -p ${DEVELOPER_PASSWORD} -f ${BUNDLE_ZIP} --output-format xml > ${UPLOAD_INFO_PLIST} || cat ${UPLOAD_INFO_PLIST}
+    /usr/bin/xcrun altool --notarize-app --primary-bundle-id "com.toggl.toggltrack.TogglTrack.zip" -itc_provider "B227VTMZ94" -u ${DEVELOPER_USERNAME} -p ${DEVELOPER_PASSWORD} -f ${BUNDLE_ZIP} --output-format xml > ${UPLOAD_INFO_PLIST} || cat ${UPLOAD_INFO_PLIST}
     echo "Notarization" "Waiting while notarized…"
     while true; do
         /usr/bin/xcrun altool --notarization-info `/usr/libexec/PlistBuddy -c "Print :notarization-upload:RequestUUID" ${UPLOAD_INFO_PLIST}` -u ${DEVELOPER_USERNAME} -p ${DEVELOPER_PASSWORD} --output-format xml > ${REQUEST_INFO_PLIST} || cat ${REQUEST_INFO_PLIST}
@@ -111,21 +111,21 @@ function dmg() {
 
 function debuginfo() {
     # Compress main app debug info
-    export dsym_dylib=TogglDesktopLibrary.dylib-$escaped_version-$timestamp-dsym.tar.gz 
+    export dsym_dylib=TogglTrackLibrary.dylib-$escaped_version-$timestamp-dsym.tar.gz 
     rm -rf $dsym_dylib 
-    tar cvfz $dsym_dylib $APP_PATH/../TogglDesktopLibrary.dylib.dSYM
+    tar cvfz $dsym_dylib $APP_PATH/../TogglTrackLibrary.dylib.dSYM
 
     # Compress dynamic library debug info
-    export dsym=TogglDesktop-$escaped_version-$timestamp-dsym.tar.gz 
+    export dsym=TogglTrack-$escaped_version-$timestamp-dsym.tar.gz 
     rm -rf $dsym 
-    tar cvfz $dsym $APP_PATH/../TogglDesktop.app.dSYM
+    tar cvfz $dsym $APP_PATH/../TogglTrack.app.dSYM
 }
 
 function appcast() {
     signature=$(./src/ui/osx/Pods/Sparkle/bin/old_dsa_scripts/sign_update $installer ./dsa_priv.pem)
     filesize=$(cat $installer | wc -c | sed 's/ //g') 
     functionilesize=(${filesize// / })
-    appUrl=https://github.com/toggl-open-source/toggldesktop/releases/download/v$version/$installer_name
+    appUrl=https://github.com/toggl-open-source/toggltrack/releases/download/v$version/$installer_name
 
     echo $signature
     echo $filesize

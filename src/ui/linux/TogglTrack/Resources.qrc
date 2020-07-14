@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/logo.png</file>
+        <file>images/icon-billable.png</file>
+        <file>images/icon-tags.png</file>
+        <file>images/continue.svg</file>
+        <file>icons/16x16/toggltrack.png</file>
+        <file>icons/24x24/toggltrack.png</file>
+        <file>icons/32x32/toggltrack.png</file>
+        <file>icons/48x48/toggltrack.png</file>
+        <file>icons/64x64/toggltrack.png</file>
+        <file>icons/96x96/toggltrack.png</file>
+        <file>icons/128x128/toggltrack.png</file>
+        <file>icons/256x256/toggltrack.png</file>
+        <file>icons/1024x1024/toggltrack.png</file>
+        <file>icons/1024x1024/toggltrack_gray.png</file>
+        <file>images/toggl-white-icon.png</file>
+        <file>images/continue_regular.svg</file>
+        <file>images/continue_light.svg</file>
+        <file>images/group_icon_closed.svg</file>
+        <file>images/group_icon_open.svg</file>
+        <file>images/down_arrow.png</file>
+        <file>../../windows/TogglTrack/TogglTrack/Resources/warning-icon.png</file>
+    </qresource>
+</RCC>

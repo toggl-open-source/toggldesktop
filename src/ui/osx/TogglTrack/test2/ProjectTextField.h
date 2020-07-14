@@ -1,0 +1,30 @@
+//
+//  ProjectTextField.h
+//  TogglTrack
+//
+//  Created by Nghia Tran on 3/5/19.
+//  Copyright © 2019 Alari. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+@class TimeEntryViewItem;
+@class AutocompleteItem;
+@class IdleEvent;
+
+@interface ProjectTextField : NSTextField
+
+@property (assign, nonatomic) BOOL isInTimerBar;
+@property (assign, nonatomic) BOOL renderClient;
+@property (assign, nonatomic) BOOL renderTask;
+@property (strong, nonatomic) NSColor *customClientTextColor;
+
+- (void)setTitleWithTimeEntry:(TimeEntryViewItem *)item;
+- (void)setTitleWithAutoCompleteItem:(AutocompleteItem *)item;
+- (void)setTitleWithIdleEvent:(IdleEvent *)item;
+
+@end
+
+NS_ASSUME_NONNULL_END

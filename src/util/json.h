@@ -1,4 +1,4 @@
-// Copyright 2020 Toggl Desktop developers.
+// Copyright 2020 Toggl Track developers.
 
 // helper methods for Json usage
 

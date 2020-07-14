@@ -1,4 +1,4 @@
-// Copyright 2014 Toggl Desktop developers.
+// Copyright 2014 Toggl Track developers.
 
 #ifndef SRC_TEST_TOGGL_API_TEST_H_
 #define SRC_TEST_TOGGL_API_TEST_H_

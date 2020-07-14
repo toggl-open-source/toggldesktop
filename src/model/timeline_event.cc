@@ -1,4 +1,4 @@
-// Copyright 2015 Toggl Desktop developers.
+// Copyright 2015 Toggl Track developers.
 
 #include "model/timeline_event.h"
 

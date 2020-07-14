@@ -1,6 +1,6 @@
 //
 //  color_convert.hpp
-//  TogglDesktopLibrary
+//  TogglTrackLibrary
 //
 //  Created by Nghia Tran on 5/22/20.
 //  Copyright © 2020 Toggl. All rights reserved.

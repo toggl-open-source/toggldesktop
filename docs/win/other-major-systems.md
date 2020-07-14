@@ -4,16 +4,16 @@
 
 The application entry point is the `Main` method in `Program.cs`.
 
-The method itself uses a global mutex to detect other running instances of Toggl Desktop. If such an instance is detected, the program tries to activate it, and then terminates.
+The method itself uses a global mutex to detect other running instances of Toggl Track. If such an instance is detected, the program tries to activate it, and then terminates.
 
 Otherwise, it initialises the application's error handling and runs the application as specified in `App.xaml`.
 
-This causes the main window to be created, which takes over all other parts of initialisation of Toggl Desktop.
+This causes the main window to be created, which takes over all other parts of initialisation of Toggl Track.
 
 
 ## Library API
 
-Most business logic of Toggl Desktop is located in the library, which is written in C++.
+Most business logic of Toggl Track is located in the library, which is written in C++.
 
 The static class `Toggl`, which is split into `Toggl.cs` and `TogglApi.cs` is responsible for interfacing with the library and creating an easily consumable interface for the rest of the application.
 
@@ -28,7 +28,7 @@ The WPF styles of the application are located in a number of files in `ui/Resour
 
 ### Custom window styling
 
-To achieve the custom window borders and styling of the Toggl Desktop windows, we window types from `MahApps.Metro` library that override much of the default windows styling.
+To achieve the custom window borders and styling of the Toggl Track windows, we window types from `MahApps.Metro` library that override much of the default windows styling.
 
 
 ## Overlays
@@ -49,7 +49,7 @@ They respond to both user input and API events to advance the tutorial automatic
 
 ### OBM Experiments
 
-To be able to experiment with different options of onboarding users new to Toggl Desktop - and ultimately other things as well - Toggl Desktop is able to run A/B experiments.
+To be able to experiment with different options of onboarding users new to Toggl Track - and ultimately other things as well - Toggl Track is able to run A/B experiments.
 
 The relevant logic is contained inside the class `ExperimentManager.cs` at `ui/Experiments`. The same directory also contains all implemented experiments, which implement the `IExperiment` interface.
 

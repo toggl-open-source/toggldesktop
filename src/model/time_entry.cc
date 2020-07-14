@@ -1,4 +1,4 @@
-// Copyright 2014 Toggl Desktop developers.
+// Copyright 2014 Toggl Track developers.
 
 // NB! Setters should not directly calculate
 // anything besides setting the field asked.

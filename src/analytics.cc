@@ -1,7 +1,7 @@
 
-// Copyright 2015 Toggl Desktop developers
+// Copyright 2015 Toggl Track developers
 
-// Collect Toggl Desktop usage using Google Analytics Measurement Protocol
+// Collect Toggl Track usage using Google Analytics Measurement Protocol
 // https://developers.google.com/analytics/devguides/collection/protocol/v1/
 // or using Toggl's own backend when appropriate.
 

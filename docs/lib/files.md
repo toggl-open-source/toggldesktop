@@ -173,7 +173,7 @@ Base model has the base methods needed by all the models used in library. Most o
 
 # Database
 
-Toggl Desktop Library uses LiteSQL C++ framework for the local database.
+Toggl Track Library uses LiteSQL C++ framework for the local database.
 
 ### migrations.cc
 

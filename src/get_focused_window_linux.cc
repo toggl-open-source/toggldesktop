@@ -1,4 +1,4 @@
-// Copyright 2014 Toggl Desktop developers.
+// Copyright 2014 Toggl Track developers.
 
 // HANDLE_EITNR and scanf("%m") won't work without declaring it a GNU source file
 #ifndef _GNU_SOURCE

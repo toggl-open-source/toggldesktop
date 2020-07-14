@@ -1,0 +1,16 @@
+//
+//  AutoCompleteTableCell+Ext.swift
+//  TogglTrack
+//
+//  Created by Nghia Tran on 3/8/19.
+//  Copyright © 2019 Alari. All rights reserved.
+//
+
+import Foundation
+
+extension AutoCompleteTableCell {
+
+    @objc class func cellType(from item: AutocompleteItem) -> AutoCompleteCellType {
+        return AutoCompleteCellType(item: item)
+    }
+}

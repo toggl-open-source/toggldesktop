@@ -25,9 +25,9 @@ prepare() {
 
 fetch_releases () {
   # Checkout gh-page in Github action
-  # Need to add TogglDesktop repo as an origin
+  # Need to add TogglTrack repo as an origin
   git remote update
-  git remote set-url origin https://github.com/toggl-open-source/toggldesktop.git
+  git remote set-url origin https://github.com/toggl-open-source/toggltrack.git
   git remote -v
   git fetch 
   git checkout --track origin/gh-pages

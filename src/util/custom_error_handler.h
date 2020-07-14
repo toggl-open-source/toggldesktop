@@ -1,4 +1,4 @@
-// Copyright 2014 Toggl Desktop developers.
+// Copyright 2014 Toggl Track developers.
 
 #ifndef SRC_CUSTOM_ERROR_HANDLER_H_
 #define SRC_CUSTOM_ERROR_HANDLER_H_

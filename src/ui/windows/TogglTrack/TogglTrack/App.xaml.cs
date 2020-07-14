@@ -1,0 +1,26 @@
+﻿using System;
+using System.Linq;
+using System.Windows;
+
+namespace TogglTrack
+{
+partial class App
+{
+    public App()
+    {
+        InitializeComponent();
+    }
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+        var mainWindow = new MainWindow();
+        var startMinimized = Environment.GetCommandLineArgs().Contains("--minimize");
+        mainWindow.Show();
+        if (startMinimized)
+        {
+            mainWindow.Hide();
+        }
+    }
+}
+}

@@ -20,8 +20,8 @@ jobs:
         version=${TAG_NAME/v/}
         timestamp=$(date '+%Y-%m-%d-%H-%M-%S')
         escaped_version=$(echo $version | sed 's/\./_/g')
-        installer=TogglDesktop-$escaped_version-$timestamp.dmg
-        installer_name=TogglDesktop-$escaped_version.dmg
+        installer=TogglTrack-$escaped_version-$timestamp.dmg
+        installer_name=TogglTrack-$escaped_version.dmg
 
         echo $version
         echo $installer
@@ -92,14 +92,9 @@ jobs:
         export "APPLE_APPID_PASSWORD=${{ secrets.MACOS_APPID_PASSWORD }}"
         bash ./dist/osx/build.sh notarize
     - name: Compose dmg
+      if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh dmg
-    - name: Upload artifacts to GitHub
-      if: github.event_name != 'release'
-      uses: actions/upload-artifact@v2
-      with:
-        name: TogglDesktop.dmg
-        path: "${{ env.installer }}"
     - name: Update Appcast
       if: github.event_name == 'release'
       run: |
@@ -177,7 +172,7 @@ jobs:
     - name: Upload to GitHub
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz" renameto="toggldesktop_linux_${TAG_NAME/v/}_x86_64.tar.gz"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="toggltrack_x86_64.tar.gz" renameto="toggltrack_linux_${TAG_NAME/v/}_x86_64.tar.gz"
 
   linux-ubuntu1804:
     runs-on: ubuntu-18.04
@@ -200,12 +195,12 @@ jobs:
         ln -s ../../src .
         ln -s ../../CMakeLists.txt .
         ln -s ../../third_party .
-        dch -b -D unstable --package "toggldesktop" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
+        dch -b -D unstable --package "toggltrack" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
         debuild
     - name: Upload to GitHub
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/toggldesktop_${TAG_NAME/v/}_amd64.deb"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/toggltrack_${TAG_NAME/v/}_amd64.deb"
 
   linux-flatpak-kde:
     runs-on: ubuntu-18.04
@@ -226,14 +221,14 @@ jobs:
     - name: Build Linux Flatpak package - KDE based
       run: |
         pushd dist/linux/flatpak
-        sudo flatpak-builder --repo=flatpak-repo --force-clean flatpak-build com.toggl.TogglDesktop.json
-        flatpak build-bundle flatpak-repo com.toggl.TogglDesktop.flatpak com.toggl.TogglDesktop
-        mv com.toggl.TogglDesktop.flatpak ../../..
+        sudo flatpak-builder --repo=flatpak-repo --force-clean flatpak-build com.toggl.TogglTrack.json
+        flatpak build-bundle flatpak-repo com.toggl.TogglTrack.flatpak com.toggl.TogglTrack
+        mv com.toggl.TogglTrack.flatpak ../../..
         popd
     - name: Upload to GitHub
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="com.toggl.TogglDesktop.flatpak" renameto="com.toggl.TogglDesktop-${TAG_NAME/v/}.flatpak"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="com.toggl.TogglTrack.flatpak" renameto="com.toggl.TogglTrack-${TAG_NAME/v/}.flatpak"
 
   windows-32bit:
     runs-on: windows-2019
@@ -270,12 +265,12 @@ jobs:
       if: steps.cache-poco-bin.outputs.cache-hit == 'true'
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.NoPoco.sln
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m src\ui\windows\TogglTrack\TogglTrack.NoPoco.sln
     - name: Build on Windows x86
       if: steps.cache-poco-bin.outputs.cache-hit != 'true'
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.sln
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m src\ui\windows\TogglTrack\TogglTrack.sln
     - name: Sign binaries
       if: github.event_name == 'release'
       run: |
@@ -284,23 +279,23 @@ jobs:
     - name: Create x86 installer
       run: |
         cd dist/windows
-        makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglDesktopInstaller-x86.nsi
+        makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglTrackInstaller-x86.nsi
     - name: Upload artifacts to GitHub
       if: github.event_name != 'release'
       uses: actions/upload-artifact@v2
       with:
-        name: TogglDesktopInstaller-x86.exe
-        path: dist\windows\TogglDesktopInstaller.exe    
+        name: TogglTrackInstaller-x86.exe
+        path: dist\windows\TogglTrackInstaller.exe    
     - name: Sign the installer
       if: github.event_name == 'release'
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx -p "${{ secrets.CERT_WINDOWS_PASSWORD }}" dist\windows\TogglDesktopInstaller.exe
+        "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx -p "${{ secrets.CERT_WINDOWS_PASSWORD }}" dist\windows\TogglTrackInstaller.exe
     - name: Upload to GitHub
       if: github.event_name == 'release'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller.exe" renameto="TogglDesktopInstaller-${TAG_NAME/v/}.exe"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglTrackInstaller.exe" renameto="TogglTrackInstaller-${TAG_NAME/v/}.exe"
       shell: bash
   windows-64bit:
     runs-on: windows-2019
@@ -337,12 +332,12 @@ jobs:
       if: steps.cache-poco-bin64.outputs.cache-hit == 'true'
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.NoPoco.sln
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore /m src\ui\windows\TogglTrack\TogglTrack.NoPoco.sln
     - name: Build on Windows x64
       if: steps.cache-poco-bin64.outputs.cache-hit != 'true'
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.sln
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore /m src\ui\windows\TogglTrack\TogglTrack.sln
     - name: Sign binaries
       if: github.event_name == 'release'
       run: |
@@ -351,23 +346,23 @@ jobs:
     - name: Make x64 installer
       run: |
         cd dist/windows
-        makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglDesktopInstaller-x64.nsi
+        makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglTrackInstaller-x64.nsi
     - name: Upload artifacts to GitHub
       if: github.event_name != 'release'
       uses: actions/upload-artifact@v2
       with:
-        name: TogglDesktopInstaller-x64.exe
-        path: dist\windows\TogglDesktopInstaller-x64.exe
+        name: TogglTrackInstaller-x64.exe
+        path: dist\windows\TogglTrackInstaller-x64.exe
     - name: Sign the installer
       if: github.event_name == 'release'
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx -p "${{ secrets.CERT_WINDOWS_PASSWORD }}" dist\windows\TogglDesktopInstaller-x64.exe
+        "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx -p "${{ secrets.CERT_WINDOWS_PASSWORD }}" dist\windows\TogglTrackInstaller-x64.exe
     - name: Upload to GitHub
       if: github.event_name == 'release'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller-x64.exe" renameto="TogglDesktopInstaller-x64-${TAG_NAME/v/}.exe"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglTrackInstaller-x64.exe" renameto="TogglTrackInstaller-x64-${TAG_NAME/v/}.exe"
       shell: bash
 
   windows-dev-release:
@@ -412,11 +407,11 @@ jobs:
     - name: Build on Windows for Microsoft Store
       shell: cmd
       run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=StoreRelease /p:Platform="x86" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m src\ui\windows\TogglDesktop\TogglDesktop.sln
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=StoreRelease /p:Platform="x64" /p:UapAppxPackageBuildMode=CI /p:AppxBundle=Always /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="322D8592D0FDB01F1C8FCA56ED3FBFAF646D3739" /p:AppxPackageDir="..\\..\\..\\..\\..\\" /t:Clean,Build /restore -m src\ui\windows\TogglDesktop\TogglDesktop.sln
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=StoreRelease /p:Platform="x86" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m src\ui\windows\TogglTrack\TogglTrack.sln
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=StoreRelease /p:Platform="x64" /p:UapAppxPackageBuildMode=CI /p:AppxBundle=Always /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="322D8592D0FDB01F1C8FCA56ED3FBFAF646D3739" /p:AppxPackageDir="..\\..\\..\\..\\..\\" /t:Clean,Build /restore -m src\ui\windows\TogglTrack\TogglTrack.sln
         dir
     - name: Upload to GitHub
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="TogglDesktop.Package_${TAG_NAME/v/}.0_x86_x64_bundle_StoreRelease.appxupload"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="TogglTrack.Package_${TAG_NAME/v/}.0_x86_x64_bundle_StoreRelease.appxupload"
       shell: bash

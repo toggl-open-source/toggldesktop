@@ -1,4 +1,4 @@
-// Copyright 2014 Toggl Desktop developers.
+// Copyright 2014 Toggl Track developers.
 
 #ifndef SRC_TYPES_H_
 #define SRC_TYPES_H_
@@ -16,7 +16,7 @@ typedef std::string guid;
 }
 
 #if defined(_WIN32) || defined(WIN32)
-# ifdef TOGGLDESKTOP_DLL_BUILD
+# ifdef TOGGLTRACK_DLL_BUILD
 #  define TOGGL_INTERNAL_EXPORT __declspec(dllexport)
 # else
 #  define TOGGL_INTERNAL_EXPORT __declspec(dllimport)

@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="TogglTrack.TagList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:toggl="clr-namespace:TogglTrack"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="34"
+             MouseDown="onMouseDown">
+    <Border Name="border" Style="{StaticResource Toggl.Border.Hoverable}" Background="{DynamicResource Toggl.SelectionElements.Background}">
+        <Grid>
+            <WrapPanel Name="panel" x:FieldModifier="private" Orientation="Horizontal" Margin="10, 1, 30, 1"
+                       SizeChanged="panel_OnSizeChanged">
+                <toggl:ExtendedTextBox x:Name="textBox" x:FieldModifier="private" MinWidth="80" Margin="-3, -1, 3, -1" BorderThickness="0" Padding="0 0 34 0"
+                                       Style="{StaticResource {x:Type TextBox}}"
+                                       PreviewKeyDown="textBoxOnPreviewKeyDown" LostKeyboardFocus="textBoxOnLostKeyboardFocus"/>
+            </WrapPanel>
+
+            <ToggleButton x:Name="dropDownButton" x:FieldModifier="private"
+                          Style="{DynamicResource Toggl.AutoCompleteDropDownToggleButton}"
+                          Width="30"/>
+
+            <toggl:AutoCompletionPopup x:Name="autoComplete" x:FieldModifier="private"
+                                       Target="{Binding ElementName=border}" TextBox="{Binding ElementName=textBox}"
+                                       DropDownButton="{Binding ElementName=dropDownButton}"
+                                       ConfirmCompletion="autoComplete_OnConfirmCompletion"
+                                       ConfirmWithoutCompletion="autoComplete_OnConfirmWithoutCompletion"
+                                       KeepOpenWhenSelecting="True"
+                                       StaysOpen="False"
+                                       IsOpenChanged="AutoComplete_OnIsOpenChanged"
+                                       ActionButtonText="{Binding ElementName=textBox, Path=Text, Converter={StaticResource StringFormatIfNotEmptyConverter}, ConverterParameter='Add tag &quot;{0}&quot;'}"
+                                       ActionButtonClick="AutoComplete_OnActionButtonClick"/>
+
+        </Grid>
+    </Border>
+</UserControl>

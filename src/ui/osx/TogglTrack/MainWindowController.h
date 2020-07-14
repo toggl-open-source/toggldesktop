@@ -1,0 +1,26 @@
+//
+//  MainWindowController.h
+//  Toggl Track on the Mac
+//
+//  Created by Tambet Masik on 9/24/13.
+//  Copyright (c) 2013 TogglTrack developers. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+
+/**
+ * The level of window.
+ *
+ * - WindowModeAlwaysOnTop: Always in top (NSFloatingWindowLevel)
+ * - WindowModeDefault: Normal behavior (NSNormalWindowLevel)
+ */
+typedef NS_ENUM (NSUInteger, WindowMode)
+{
+	WindowModeAlwaysOnTop,
+	WindowModeDefault,
+};
+
+@interface MainWindowController : NSWindowController
+- (BOOL)isEditOpened;
+- (void)setWindowMode:(WindowMode)mode;
+@end

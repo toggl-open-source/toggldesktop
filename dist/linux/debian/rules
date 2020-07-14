@@ -1,22 +1,22 @@
 #!/usr/bin/make -f
-DESTROOT=$(CURDIR)/debian/toggldesktop
+DESTROOT=$(CURDIR)/debian/toggltrack
 DEBVERS := $(shell dpkg-parsechangelog | sed -n -e 's/^Version: //p')
 VERSION := $(shell echo '$(DEBVERS)' | sed -e 's/^[[:digit:]]*://' -e 's/[~-].*//')
-#export LD_LIBRARY_PATH=toggldesktop/lib:$LD_LIBRARY_PATH
+#export LD_LIBRARY_PATH=toggltrack/lib:$LD_LIBRARY_PATH
 
 %:
 	dh $@
 
 override_dh_shlibdeps:
-	export LD_LIBRARY_PATH=$(DEB_HOST_MULTIARCH)/toggldesktop:$LD_LIBRARY_PATH dh_shlibdeps
+	export LD_LIBRARY_PATH=$(DEB_HOST_MULTIARCH)/toggltrack:$LD_LIBRARY_PATH dh_shlibdeps
 
 override_dh_auto_configure:
-	dh_auto_configure -- -DTOGGL_BUILD_TYPE="deb" -DTOGGL_VERSION=$(VERSION) -DTOGGL_PRODUCTION_BUILD=ON -DUSE_BUNDLED_LIBRARIES=ON -DCMAKE_INSTALL_RPATH="/usr/lib;/usr/lib/toggldesktop"
+	dh_auto_configure -- -DTOGGL_BUILD_TYPE="deb" -DTOGGL_VERSION=$(VERSION) -DTOGGL_PRODUCTION_BUILD=ON -DUSE_BUNDLED_LIBRARIES=ON -DCMAKE_INSTALL_RPATH="/usr/lib;/usr/lib/toggltrack"
 
 override_dh_auto_install:
 	dh_auto_install
 	rm -fr $(DESTROOT)/usr/include
 	rm -fr $(DESTROOT)/usr/lib/cmake
-	mkdir -p $(DESTROOT)/usr/lib/toggldesktop/
+	mkdir -p $(DESTROOT)/usr/lib/toggltrack/
 	ls -p -1 $(DESTROOT)/usr/lib/
-	ls -p -1 $(DESTROOT)/usr/lib/ | grep -v "^toggldesktop" | grep -v "^libTogglDesktopLibrary.so" | xargs printf -- "$(DESTROOT)/usr/lib/%s\n" | xargs -I{} mv {} $(DESTROOT)/usr/lib/toggldesktop/
+	ls -p -1 $(DESTROOT)/usr/lib/ | grep -v "^toggltrack" | grep -v "^libTogglTrackLibrary.so" | xargs printf -- "$(DESTROOT)/usr/lib/%s\n" | xargs -I{} mv {} $(DESTROOT)/usr/lib/toggltrack/

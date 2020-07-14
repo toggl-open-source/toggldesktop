@@ -1,0 +1,48 @@
+﻿<tutorial:TutorialScreen x:Class="TogglTrack.Tutorial.BasicTutorialScreen2"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:tutorial="clr-namespace:TogglTrack.Tutorial"
+             xmlns:toggl="clr-namespace:TogglTrack"
+             mc:Ignorable="d" 
+             d:DesignHeight="485" d:DesignWidth="387"
+             Style="{StaticResource TutorialScreen}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
+        
+        <Grid Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
+            <Grid Background="{StaticResource TutorialDarkOverlay}" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition />
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+
+                    <Image Source="/TogglTrack;component/Resources/tutorial-arrow-curved.png"
+                                Height="22" VerticalAlignment="Top" Margin="10 -10 5 0"/>
+                    <TextBlock Margin="0 3 0 0" TextAlignment="Center">
+                        Click here and tell us<LineBreak />
+                        what you are doing
+                    </TextBlock>
+                    
+                </StackPanel>
+
+                <toggl:ProgressBar Grid.Row="2" Margin="30 5"
+                    VerticalAlignment="Top"
+                    MaxValue="6" Value="1"/>
+
+                <Button Grid.Row="2"
+                    Style="{StaticResource TutorialEndButton}"
+                    Click="endTutorialClick"/>
+            </Grid>
+        </Grid>
+
+
+    </Grid>
+</tutorial:TutorialScreen>

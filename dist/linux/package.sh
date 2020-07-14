@@ -37,15 +37,15 @@ function compose() {
         export LD_LIBRARY_PATH="$CMAKE_PREFIX_PATH/../"
     fi
 
-    ldd bin/TogglDesktop
-    corelib=$(ldd bin/TogglDesktop | grep -e libQt5Core  | sed 's/.* => \(.*\)[(]0x.*/\1/')
+    ldd bin/TogglTrack
+    corelib=$(ldd bin/TogglTrack | grep -e libQt5Core  | sed 's/.* => \(.*\)[(]0x.*/\1/')
     echo "corelib: " $corelib
     libdir=$(dirname "$corelib")
     echo "libdir: " $libdir
     qmake=$(find $libdir/../bin/ $libdir/../../bin/ -name qmake -or -name qmake-qt5 | head -n1)
     echo "qmake: " $qmake
 
-    cp -Lrfu $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e crypto -e libicu -e double-conversion -e jpeg -e re2 -e avcodec -e avformat -e avutil -e webp | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
+    cp -Lrfu $(ldd bin/TogglTrack | grep -e libQt -e ssl -e crypto -e libicu -e double-conversion -e jpeg -e re2 -e avcodec -e avformat -e avutil -e webp | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
     ls "$qmake" >/dev/null
 
     libexecdir=$($qmake -query QT_INSTALL_LIBEXECS)
@@ -80,7 +80,7 @@ function compose() {
         done
     done
 
-    patchelf --set-rpath '$ORIGIN/../lib/' bin/TogglDesktop
+    patchelf --set-rpath '$ORIGIN/../lib/' bin/TogglTrack
     patchelf --set-rpath '$ORIGIN/../lib/' bin/QtWebEngineProcess
 
     for i in $(ls lib/*.so*); do
@@ -91,7 +91,7 @@ function compose() {
     cp -Lrfu "$translationdir/qtwebengine_locales" lib/qt5/translations
     cp -Lrfu "$datadir/resources/"* lib/qt5/resources
 
-    mv "bin/TogglDesktop.sh" "."
+    mv "bin/TogglTrack.sh" "."
 
     cat <<EOF >bin/qt.conf
     [Paths]
@@ -107,10 +107,10 @@ EOF
     # done
 
     echo "=========== Packaging" >&2
-    tar cvfz ../../toggldesktop_$(uname -m).tar.gz * >/dev/null
+    tar cvfz ../../toggltrack_$(uname -m).tar.gz * >/dev/null
 
     popd >/dev/null
-    echo "=========== Result is: $PWD/toggldesktop_$(uname -m).tar.gz ==========="
+    echo "=========== Result is: $PWD/toggltrack_$(uname -m).tar.gz ==========="
 }
 
 if [[ "$#" -ne 1 ]]; then

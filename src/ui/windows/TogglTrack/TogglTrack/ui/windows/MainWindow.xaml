@@ -1,0 +1,141 @@
+﻿<mah:MetroWindow x:Class="TogglTrack.MainWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:tb="http://www.hardcodet.net/taskbar"
+             xmlns:toggl="clr-namespace:TogglTrack"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:TogglTrack.Behaviors"
+             mc:Ignorable="d" 
+             d:DesignWidth="400"
+             Title="Toggl Track"
+             Style="{StaticResource Toggl.MainWindow}"
+             KeyDown="OnMainWindowKeyDown">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/DesignUpdate/MahApps.Overrides.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <i:Interaction.Behaviors>
+        <behaviors:HideWindowOnClosingBehavior />
+    </i:Interaction.Behaviors>
+
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.New}" />
+        <KeyBinding Key="O" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Continue}" />
+        <KeyBinding Key="S" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Stop}" />
+        <KeyBinding Key="W" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Hide}" />
+        <KeyBinding Key="F4" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Hide}" />
+        <KeyBinding Key="R" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Sync}" />
+        <KeyBinding Key="F5" Command="{x:Static toggl:KeyboardShortcuts.Sync}" />
+        <KeyBinding Key="E" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.EditRunning}" />
+        <KeyBinding Key="D" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.ToggleManualMode}" />
+        <KeyBinding Key="V" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.NewFromPaste}" />
+        <KeyBinding Key="Q" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Quit}" />
+        <KeyBinding Key="OemComma" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Preferences}" />
+    </Window.InputBindings>
+
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands SeparatorHeight="0">
+            <Button x:Name="cogButton" Content="menu" Click="onCogButtonClick"
+                    Style="{StaticResource Toggl.CogwheelButton}">
+                <Button.ContextMenu>
+                    <ContextMenu Name="mainContextMenu" x:FieldModifier="private"
+                                 Width="300"
+                                 Closed="onMainContextMenuClosed">
+                        <ContextMenu.Resources>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                            <Setter Property="IsHitTestVisible" Value="False" />
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <!-- override grayed out color when it is disabled -->
+                                    <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                        </ContextMenu.Resources>
+                        <MenuItem Header="New" InputGestureText="Ctrl + N"
+                                  Command="{x:Static toggl:KeyboardShortcuts.New}"
+                                  Icon="{StaticResource Toggl.NewIcon}"/>
+                        <MenuItem Header="Continue" InputGestureText="Ctrl + O"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Continue}"
+                                  Icon="{StaticResource Toggl.ContinueIcon}"/>
+                        <MenuItem Header="Stop" InputGestureText="Ctrl + S"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Stop}"
+                                  Icon="{StaticResource Toggl.StopIcon}"/>
+                        <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+                        <MenuItem Header="Sync" InputGestureText="F5"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Sync}"
+                                  Icon="{StaticResource Toggl.SyncIcon}"/>
+                        <MenuItem Header="Reports"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Reports}"
+                                  Icon="{StaticResource Toggl.ReportsIcon}"/>
+                        <MenuItem Header="Preferences" InputGestureText="Ctrl + ,"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Preferences}"
+                                  Icon="{StaticResource Toggl.PreferencesIcon}"/>
+                        <MenuItem Header="Use manual mode" InputGestureText="Ctrl + D"
+                                  Name="togglManualModeMenuItem" x:FieldModifier="private"
+                                  Command="{x:Static toggl:KeyboardShortcuts.ToggleManualMode}"
+                                  IsCheckable="True"/>
+                        <MenuItem Header="Use mini timer"
+                                  Name="togglMiniTimerVisibilityMenuItem" x:FieldModifier="private"
+                                  Command="{x:Static toggl:KeyboardShortcuts.ToggleMiniTimerVisibility}"
+                                  IsCheckable="True"/>
+                        <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+                        <MenuItem Header="Toggl Track Tutorial"
+                                  Command="{x:Static toggl:KeyboardShortcuts.BasicTutorial}"
+                                  Icon="{StaticResource Toggl.TutorialIcon}"/>
+                        <MenuItem Header="Send Feedback"
+                                  Command="{x:Static toggl:KeyboardShortcuts.SendFeedback}"
+                                  Icon="{StaticResource Toggl.FeedbackIcon}"/>
+                        <MenuItem Header="About"
+                                  Command="{x:Static toggl:KeyboardShortcuts.About}"
+                                  Icon="{StaticResource Toggl.AboutIcon}"/>
+                        <MenuItem x:Name="logoutMenuItem" Header="Logout"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Logout}"
+                                  Icon="{StaticResource Toggl.LogoutIcon}"/>
+                        <MenuItem Header="Quit" InputGestureText="Ctrl + Q"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Quit}"
+                                  Icon="{StaticResource Toggl.QuitIcon}"/>
+                    </ContextMenu>
+
+                </Button.ContextMenu>
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
+
+    <!-- <Window.ContextMenu> -->
+    <!-- </Window.ContextMenu> -->
+    
+    <Grid x:Name="root" x:FieldModifier="private">
+
+        <tb:TaskbarIcon x:Name="taskbarIcon" x:FieldModifier="private"
+                        TrayLeftMouseUp="onTaskbarLeftMouseUp"
+                        TrayBalloonTipClicked="onTrayBalloonTipClicked"
+                        Visibility="Collapsed">
+            <tb:TaskbarIcon.TrayToolTip>
+                <toggl:TrayToolTipControl x:Name="trayToolTip" x:FieldModifier="private" />
+            </tb:TaskbarIcon.TrayToolTip>
+        </tb:TaskbarIcon>
+
+        <toggl:TimerEntryListView x:Name="timerEntryListView" x:FieldModifier="private" />
+
+        <Grid Name="tutorialPanel" x:FieldModifier="private" />
+
+        <toggl:OverlayView x:Name="overlayView" x:FieldModifier="private"/>
+
+        <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
+
+        <toggl:ErrorBar x:Name="errorBar" x:FieldModifier="private" />
+
+        <toggl:StatusBar x:Name="statusBar" x:FieldModifier="private"
+                         VerticalAlignment="Bottom"/>
+    </Grid>
+</mah:MetroWindow>

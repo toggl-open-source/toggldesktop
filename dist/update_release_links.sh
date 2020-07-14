@@ -2,7 +2,7 @@
 
 var data = require('./releases.json'),
   fs = require('fs'),
-  githubUrl = "https://github.com/toggl-open-source/toggldesktop/releases/download/v",
+  githubUrl = "https://github.com/toggl-open-source/toggltrack/releases/download/v",
   currentOs,
   currentChannel,
   link,

@@ -1,6 +1,6 @@
 //
 //  random.cc
-//  TogglDesktopLibrary
+//  TogglTrackLibrary
 //
 //  Created by Martin Bříza on Jun 13, 2019.
 //  Copyright © 2019 Toggl. All rights reserved.

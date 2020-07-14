@@ -1,6 +1,6 @@
 //
 //  onboarding_service.hpp
-//  TogglDesktopLibrary
+//  TogglTrackLibrary
 //
 //  Created by Nghia Tran on 4/3/20.
 //  Copyright © 2020 Toggl. All rights reserved.

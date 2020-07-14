@@ -1,4 +1,4 @@
-// Copyright 2020 Toggl Desktop developers.
+// Copyright 2020 Toggl Track developers.
 
 #ifndef SRC_LOGGER_H_
 #define SRC_LOGGER_H_

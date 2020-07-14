@@ -1,7 +1,7 @@
 
-# Toggl Desktop Windows UI Documentation
+# Toggl Track Windows UI Documentation
 
-These files document the general structure and architecture of the Windows UI of Toggl Desktop and its main components.
+These files document the general structure and architecture of the Windows UI of Toggl Track and its main components.
 
 The total application is composed of two major parts: The interface, written in C#, using WPF, and the library containing most business logic. This documentation deals only with the interface, and the API as used by it.
 

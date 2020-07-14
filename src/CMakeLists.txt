@@ -17,7 +17,7 @@ endif()
 
 add_definitions(-DTOGGL_BUILD_TYPE="${TOGGL_BUILD_TYPE}")
 
-set(TOGGLDESKTOPLIBRARY_INCLUDE_DIR
+set(TOGGLTRACKLIBRARY_INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}
     PARENT_SCOPE
 )
@@ -32,7 +32,7 @@ include_directories(
     ${POCO_INCLUDE_DIRS}
 )
 
-# TogglDesktopLibrary sources
+# TogglTrackLibrary sources
 set(LIBRARY_SOURCE_FILES
     util/custom_error_handler.cc
     util/formatter.cc
@@ -82,13 +82,13 @@ set(LIBRARY_SOURCE_FILES
 )
 
 # Set up compilation targets
-add_library(TogglDesktopLibrary SHARED ${LIBRARY_SOURCE_FILES})
+add_library(TogglTrackLibrary SHARED ${LIBRARY_SOURCE_FILES})
 
 # And list the dependencies between them (and system libraries)
-target_link_libraries(TogglDesktopLibrary PRIVATE
+target_link_libraries(TogglTrackLibrary PRIVATE
     ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
     PocoCrypto PocoDataSQLite PocoNetSSL
 )
 
-install(TARGETS TogglDesktopLibrary DESTINATION lib)
+install(TARGETS TogglTrackLibrary DESTINATION lib)

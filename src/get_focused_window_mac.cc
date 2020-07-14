@@ -1,4 +1,4 @@
-// Copyright 2014 Toggl Desktop developers.
+// Copyright 2014 Toggl Track developers.
 
 #include <Carbon/Carbon.h>
 #include <CoreGraphics/CGWindow.h>

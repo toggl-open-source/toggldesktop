@@ -1,7 +1,7 @@
 
 # Edit popup
 
-This file documents the edit popup and edit view of the Windows UI of Toggl Desktop.
+This file documents the edit popup and edit view of the Windows UI of Toggl Track.
 
 The edit popup is a major part of the application since its single view is the primary way of entering and changing details of time entries.
 

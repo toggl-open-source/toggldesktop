@@ -1,4 +1,4 @@
-// Copyright 2019 Toggl Desktop developers.
+// Copyright 2019 Toggl Track developers.
 
 #ifndef SRC_ONLINE_TEST_H_
 #define SRC_ONLINE_TEST_H_

@@ -1,6 +1,6 @@
 //
 //  MacOSVersionChecker.m
-//  TogglDesktopLibrary
+//  TogglTrackLibrary
 //
 //  Created by Nghia Tran on 10/21/19.
 //  Copyright © 2019 Toggl. All rights reserved.
