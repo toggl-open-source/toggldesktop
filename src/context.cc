@@ -5556,6 +5556,7 @@ error Context::pushBatchedChanges(
         auto response = TogglClient::GetInstance().Post(req);
 
         std::cerr << "REQUEST: " << request.toStyledString() << std::endl;
+        logger.debug("Sync request ", lastRequestUUID_, ": ", request.toStyledString());
 
         if (response.err != noError) {
             logger.log("Sync error: ", response.err);
@@ -5567,6 +5568,7 @@ error Context::pushBatchedChanges(
         reader.parse(response.body, responseJson);
 
         std::cerr << "RESPONSE: " << responseJson.toStyledString() << std::endl;
+        logger.debug("Sync response to request ", lastRequestUUID_, ": ", request.toStyledString());
 
         syncHandleResponse(responseJson["clients"], clients);
         updateProjectClients(clients, projects);
