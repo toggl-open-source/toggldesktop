@@ -19,9 +19,6 @@
 + (unsigned int)stateToBool:(NSInteger)state;
 + (void)disallowDuplicateInstances;
 + (NSString *)applicationSupportDirectory:(NSString *)environment;
-+ (bool)isNumeric:(NSString *)checkText;
-+ (void)addUnderlineToTextField:(NSTextField *)field;
-+ (NSString *)formatTimeFromSeconds:(int)numberOfSeconds;
 + (void)setUpdaterChannel:(NSString *)channel;
 + (void)runClearCommand;
 @end

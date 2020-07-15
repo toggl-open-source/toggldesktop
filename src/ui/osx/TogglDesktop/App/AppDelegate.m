@@ -1732,7 +1732,6 @@ void on_error(const char *errmsg, const bool_t is_user_error)
 
 void on_overlay(const int64_t type)
 {
-//    [NSNotificationCenter defaultCenter] post
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayOverlay
 																object:[NSNumber numberWithLong:type]];
 }

@@ -136,46 +136,6 @@ extern void *ctx;
 	return path;
 }
 
-/*
- * Returns whether or not an NSString represents a numeric value.
- * For more info see:  http://appliedsoftwaredesign.com/blog/iphone-sdk-nsstring-numeric/
- */
-+ (bool)isNumeric:(NSString *)checkText
-{
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	NSNumber *number = [numberFormatter numberFromString:checkText];
-
-	return number != nil;
-}
-
-+ (void)addUnderlineToTextField:(NSTextField *)field
-{
-	NSMutableAttributedString *forgot = [[field attributedStringValue] mutableCopy];
-
-	[forgot addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, forgot.length)];
-	[field setAttributedStringValue:forgot];
-}
-
-+ (NSString *)formatTimeFromSeconds:(int)numberOfSeconds
-{
-	int seconds = numberOfSeconds % 60;
-	int minutes = (numberOfSeconds / 60) % 60;
-	int hours = numberOfSeconds / 3600;
-
-	// we have >=1 hour => example : 3h:25m
-	if (hours)
-	{
-		return [NSString stringWithFormat:@"%dh:%02dm", hours, minutes];
-	}
-	// we have 0 hours and >=1 minutes => example : 3m:25s
-	if (minutes)
-	{
-		return [NSString stringWithFormat:@"%dm:%02ds", minutes, seconds];
-	}
-	// we have only seconds example : 25s
-	return [NSString stringWithFormat:@"%ds", seconds];
-}
-
 @end
 
 #pragma GCC diagnostic push

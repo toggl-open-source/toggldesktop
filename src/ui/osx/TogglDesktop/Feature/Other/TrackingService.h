@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Analytics service to track window size
 @interface TrackingService : NSObject
 
 + (instancetype)sharedInstance;

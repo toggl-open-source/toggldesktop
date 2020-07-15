@@ -27,6 +27,10 @@
 		3CD7AD6F19ED579700372797 /* NSResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD7AD6E19ED579700372797 /* NSResize.m */; };
 		3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */; };
 		3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */; };
+		4917324E24C050D8003EE7CC /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */; };
+		4917324F24C050D8003EE7CC /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */; };
+		4917325724C06BA3003EE7CC /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = 4917325624C06BA3003EE7CC /* cacert.pem */; };
+		4917325824C06BA3003EE7CC /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = 4917325624C06BA3003EE7CC /* cacert.pem */; };
 		492F5F02248550F800FFEC70 /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
 		49418B3A249CE70F00265665 /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
 		49418B3B249CE71800265665 /* Color+Adaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2A116A247BB72A00B97FAE /* Color+Adaptive.swift */; };
@@ -76,7 +80,6 @@
 		74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
 		74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */; };
 		74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */; };
-		74E857BC194F8854007A88B9 /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = 74E857AB194F8807007A88B9 /* cacert.pem */; };
 		74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */; };
 		74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */; };
 		74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
@@ -142,7 +145,6 @@
 		BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA276A122240F5B500810C51 /* FloatingErrorView.swift */; };
 		BA2807E02306A2FA001A9E48 /* NSWindowController+Focusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */; };
 		BA2A116B247BB72A00B97FAE /* Color+Adaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2A116A247BB72A00B97FAE /* Color+Adaptive.swift */; };
-		BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
 		BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */; };
 		BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E5FB0223787C300EB866E /* EditorPopover.swift */; };
@@ -419,7 +421,6 @@
 		BAE64D5F2368334000244D2B /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		BAE64D602368334000244D2B /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
 		BAE64D612368334000244D2B /* AddTagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE6379922B225C70024DD08 /* AddTagButton.swift */; };
-		BAE64D622368334000244D2B /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
 		BAE64D642368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64D652368334000244D2B /* TimeEntrySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */; };
 		BAE64D662368334000244D2B /* DescriptionAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818C2228D5847008C2367 /* DescriptionAutoCompleteTextField.swift */; };
@@ -569,7 +570,6 @@
 		BAE64DFF2368334000244D2B /* ProjectWorksapceCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA05369E225E239600C26E1F /* ProjectWorksapceCellView.xib */; };
 		BAE64E002368334000244D2B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF50DE421A29FED0090BA95 /* Images.xcassets */; };
 		BAE64E012368334000244D2B /* EditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA34F0FF22439C3000C27A15 /* EditorViewController.xib */; };
-		BAE64E022368334000244D2B /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = 74E857AB194F8807007A88B9 /* cacert.pem */; };
 		BAE64E032368334000244D2B /* DescriptionContentCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */; };
 		BAE64E042368334000244D2B /* AutoCompleteTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */; };
 		BAE64E052368334000244D2B /* SystemMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA3E75D722293576009AD291 /* SystemMessageView.xib */; };
@@ -748,6 +748,9 @@
 		3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadMoreCell.m; sourceTree = "<group>"; };
 		3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoCompleteTableContainer.h; sourceTree = "<group>"; };
 		3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableContainer.m; sourceTree = "<group>"; };
+		4917325424C069DD003EE7CC /* toggl_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toggl_api.h; path = ../../../../toggl_api.h; sourceTree = "<group>"; };
+		4917325524C069DD003EE7CC /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = const.h; path = ../../../../const.h; sourceTree = "<group>"; };
+		4917325624C06BA3003EE7CC /* cacert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cacert.pem; path = /Users/andrew/Projects/Toggl/Repositories/toggldesktop/src/ui/osx/TogglDesktop/Resources/../../../../ssl/cacert.pem; sourceTree = "<absolute>"; };
 		492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineInitialDateProvider.swift; sourceTree = "<group>"; };
 		49418B40249CE77D00265665 /* TogglDesktopTests-AppStore.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TogglDesktopTests-AppStore.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		49418B44249CE77D00265665 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -773,27 +776,26 @@
 		69FC181217E6534500B96425 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		74033C9617EC1DE100CA53D3 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
-		7408EDB918C532C200CBE8F1 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = const.h; path = ../../../../const.h; sourceTree = "<group>"; };
-		74098C311919899600CBDFB9 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = ../Utils.h; sourceTree = "<group>"; };
-		74098C321919899600CBDFB9 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utils.m; path = ../Utils.m; sourceTree = "<group>"; };
-		741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSTextFieldWithBackground.h; path = ../NSTextFieldWithBackground.h; sourceTree = "<group>"; };
-		741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSTextFieldWithBackground.m; path = ../NSTextFieldWithBackground.m; sourceTree = "<group>"; };
+		74098C311919899600CBDFB9 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		74098C321919899600CBDFB9 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldWithBackground.h; sourceTree = "<group>"; };
+		741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldWithBackground.m; sourceTree = "<group>"; };
 		742339391829B99C00063FA9 /* IdleNotificationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdleNotificationWindowController.h; sourceTree = "<group>"; };
 		7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdleNotificationWindowController.m; sourceTree = "<group>"; };
 		7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IdleNotificationWindowController.xib; sourceTree = "<group>"; };
-		7424949C17F1E3D20030121C /* UIEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIEvents.h; path = ../UIEvents.h; sourceTree = "<group>"; };
-		7424949D17F1E3D20030121C /* UIEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIEvents.m; path = ../UIEvents.m; sourceTree = "<group>"; };
-		7430750118204EFB009019CB /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutWindowController.h; path = ../AboutWindowController.h; sourceTree = "<group>"; };
-		7430750218204EFB009019CB /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutWindowController.m; path = ../AboutWindowController.m; sourceTree = "<group>"; };
-		7430750318204EFB009019CB /* AboutWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutWindowController.xib; path = ../AboutWindowController.xib; sourceTree = "<group>"; };
-		7438B3D118253CD2002AE43C /* MenuItemTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuItemTags.h; path = ../MenuItemTags.h; sourceTree = "<group>"; };
-		7438B3D218253CD2002AE43C /* MenuItemTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuItemTags.m; path = ../MenuItemTags.m; sourceTree = "<group>"; };
-		743D7829182791FA00978BCC /* idler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = idler.c; path = ../idler.c; sourceTree = "<group>"; };
+		7424949C17F1E3D20030121C /* UIEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIEvents.h; sourceTree = "<group>"; };
+		7424949D17F1E3D20030121C /* UIEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIEvents.m; sourceTree = "<group>"; };
+		7430750118204EFB009019CB /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutWindowController.h; sourceTree = "<group>"; };
+		7430750218204EFB009019CB /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutWindowController.m; sourceTree = "<group>"; };
+		7430750318204EFB009019CB /* AboutWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutWindowController.xib; sourceTree = "<group>"; };
+		7438B3D118253CD2002AE43C /* MenuItemTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemTags.h; sourceTree = "<group>"; };
+		7438B3D218253CD2002AE43C /* MenuItemTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemTags.m; sourceTree = "<group>"; };
+		743D7829182791FA00978BCC /* idler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = idler.c; sourceTree = "<group>"; };
 		743D942518279290000E6F70 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		743D94271827929C000E6F70 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		743D94291827A0E0000E6F70 /* idler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = idler.h; sourceTree = "<group>"; };
-		743D942D1827C633000E6F70 /* IdleEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IdleEvent.h; path = ../IdleEvent.h; sourceTree = "<group>"; };
-		743D942E1827C633000E6F70 /* IdleEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IdleEvent.m; path = ../IdleEvent.m; sourceTree = "<group>"; };
+		743D942D1827C633000E6F70 /* IdleEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdleEvent.h; sourceTree = "<group>"; };
+		743D942E1827C633000E6F70 /* IdleEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdleEvent.m; sourceTree = "<group>"; };
 		743E58461A775B7700F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		743E58481A775B7700F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		743E58491A775B7700F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = et; path = et.lproj/Credits.rtf; sourceTree = "<group>"; };
@@ -803,43 +805,41 @@
 		745126B519A28AA600390F47 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		746947F81AF3FE3E0024BED7 /* AutotrackerRuleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutotrackerRuleItem.h; sourceTree = "<group>"; };
 		746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutotrackerRuleItem.m; sourceTree = "<group>"; };
-		74762B9E18A12DB8004433A9 /* NSComboBox_Expansion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSComboBox_Expansion.h; sourceTree = "<group>"; };
-		7484F620191D92C30038885C /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Settings.h; path = ../Settings.h; sourceTree = "<group>"; };
-		7484F621191D92C30038885C /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Settings.m; path = ../Settings.m; sourceTree = "<group>"; };
+		7484F620191D92C30038885C /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
+		7484F621191D92C30038885C /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		748B3A3219222DB100F31468 /* DisplayCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayCommand.h; sourceTree = "<group>"; };
 		748B3A3319222DB100F31468 /* DisplayCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayCommand.m; sourceTree = "<group>"; };
 		7498D2471888B226001390B9 /* TimeEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryCell.xib; sourceTree = "<group>"; };
 		749BD0BB1833E28400980494 /* NSBoxClickable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSBoxClickable.h; sourceTree = "<group>"; };
 		749BD0BC1833E28400980494 /* NSBoxClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBoxClickable.m; sourceTree = "<group>"; };
-		749CB8C918167D6E00814841 /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = SOURCE_ROOT; };
-		749CB8CA18167D6E00814841 /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowController.m; sourceTree = SOURCE_ROOT; };
-		749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferencesWindowController.xib; sourceTree = SOURCE_ROOT; };
+		749CB8C918167D6E00814841 /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreferencesWindowController.h; path = Feature/Preferences/PreferencesWindowController.h; sourceTree = SOURCE_ROOT; };
+		749CB8CA18167D6E00814841 /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PreferencesWindowController.m; path = Feature/Preferences/PreferencesWindowController.m; sourceTree = SOURCE_ROOT; };
+		749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PreferencesWindowController.xib; path = Feature/Preferences/PreferencesWindowController.xib; sourceTree = SOURCE_ROOT; };
 		74A7346818297DD100525BBC /* ConvertHexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConvertHexColor.h; sourceTree = "<group>"; };
 		74A7346918297DD100525BBC /* ConvertHexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConvertHexColor.m; sourceTree = "<group>"; };
 		74AA947718090A8E0000539F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TogglDesktopLibrary.xcodeproj; path = ../../../lib/osx/TogglDesktopLibrary.xcodeproj; sourceTree = "<group>"; };
 		74BA5FCD18B6E770009DAA2D /* NSHoverButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHoverButton.h; sourceTree = "<group>"; };
 		74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSHoverButton.m; sourceTree = "<group>"; };
-		74BAAA0917F37B140079386F /* TimeEntryViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryViewItem.h; sourceTree = SOURCE_ROOT; };
-		74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryViewItem.m; sourceTree = SOURCE_ROOT; };
+		74BAAA0917F37B140079386F /* TimeEntryViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryViewItem.h; sourceTree = "<group>"; };
+		74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryViewItem.m; sourceTree = "<group>"; };
 		74BAD31C18BD7D83002FD4CF /* ViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewItem.h; sourceTree = "<group>"; };
 		74BAD31D18BD7D83002FD4CF /* ViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewItem.m; sourceTree = "<group>"; };
-		74C15794183A8CE600550613 /* AutocompleteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AutocompleteItem.h; path = ../AutocompleteItem.h; sourceTree = "<group>"; };
-		74C15795183A8CE600550613 /* AutocompleteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AutocompleteItem.m; path = ../AutocompleteItem.m; sourceTree = "<group>"; };
-		74C15799183BA5DA00550613 /* AutocompleteDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AutocompleteDataSource.h; path = ../AutocompleteDataSource.h; sourceTree = "<group>"; };
-		74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AutocompleteDataSource.m; path = ../AutocompleteDataSource.m; sourceTree = "<group>"; };
-		74D1D25317EB713F00E709B0 /* TimeEntryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryListViewController.h; sourceTree = SOURCE_ROOT; };
-		74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryListViewController.m; sourceTree = SOURCE_ROOT; };
-		74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryListViewController.xib; sourceTree = SOURCE_ROOT; };
-		74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerEditViewController.h; sourceTree = SOURCE_ROOT; };
-		74D1D27017EB72D900E709B0 /* TimerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerEditViewController.m; sourceTree = SOURCE_ROOT; };
-		74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerEditViewController.xib; sourceTree = SOURCE_ROOT; };
+		74C15794183A8CE600550613 /* AutocompleteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutocompleteItem.h; sourceTree = "<group>"; };
+		74C15795183A8CE600550613 /* AutocompleteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutocompleteItem.m; sourceTree = "<group>"; };
+		74C15799183BA5DA00550613 /* AutocompleteDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutocompleteDataSource.h; sourceTree = "<group>"; };
+		74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutocompleteDataSource.m; sourceTree = "<group>"; };
+		74D1D25317EB713F00E709B0 /* TimeEntryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimeEntryListViewController.h; path = Feature/TimeEntryList/TimeEntryListViewController.h; sourceTree = SOURCE_ROOT; };
+		74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimeEntryListViewController.m; path = Feature/TimeEntryList/TimeEntryListViewController.m; sourceTree = SOURCE_ROOT; };
+		74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TimeEntryListViewController.xib; path = Feature/TimeEntryList/TimeEntryListViewController.xib; sourceTree = SOURCE_ROOT; };
+		74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimerEditViewController.h; path = Feature/Timer/TimerEditViewController.h; sourceTree = SOURCE_ROOT; };
+		74D1D27017EB72D900E709B0 /* TimerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimerEditViewController.m; path = Feature/Timer/TimerEditViewController.m; sourceTree = SOURCE_ROOT; };
+		74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TimerEditViewController.xib; path = Feature/Timer/TimerEditViewController.xib; sourceTree = SOURCE_ROOT; };
 		74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
-		74E857AB194F8807007A88B9 /* cacert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cacert.pem; sourceTree = "<group>"; };
-		74F106FE18993FFE00E93BD5 /* FeedbackWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeedbackWindowController.h; path = ../FeedbackWindowController.h; sourceTree = "<group>"; };
-		74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeedbackWindowController.m; path = ../FeedbackWindowController.m; sourceTree = "<group>"; };
-		74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FeedbackWindowController.xib; path = ../FeedbackWindowController.xib; sourceTree = "<group>"; };
+		74F106FE18993FFE00E93BD5 /* FeedbackWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackWindowController.h; sourceTree = "<group>"; };
+		74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackWindowController.m; sourceTree = "<group>"; };
+		74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedbackWindowController.xib; sourceTree = "<group>"; };
 		74F8FBA118313FA6000F09EE /* NSTextFieldClickable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldClickable.h; sourceTree = "<group>"; };
 		74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickable.m; sourceTree = "<group>"; };
 		74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TFDatePicker.framework; path = ../../../../third_party/TFDatePicker/TFDatePicker/build/Release/TFDatePicker.framework; sourceTree = "<group>"; };
@@ -890,8 +890,8 @@
 		BA13D2142269C01500EB3833 /* Date+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utils.swift"; sourceTree = "<group>"; };
 		BA13D2162269DE3400EB3833 /* NoVibrantPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoVibrantPopoverView.swift; sourceTree = "<group>"; };
 		BA13D2192269E0B500EB3833 /* CalendarViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarViewController.xib; sourceTree = "<group>"; };
-		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = test2/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
-		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
+		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = Feature/Other/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
+		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = Feature/Other/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
 		BA13E562243472A1005244AD /* OnboardingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingService.swift; sourceTree = "<group>"; };
 		BA13E568243472EC005244AD /* OnboardingPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPayload.swift; sourceTree = "<group>"; };
 		BA13E574243476FA005244AD /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
@@ -907,8 +907,6 @@
 		BA276A132240F5B500810C51 /* FloatingErrorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FloatingErrorView.xib; sourceTree = "<group>"; };
 		BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSWindowController+Focusable.swift"; sourceTree = "<group>"; };
 		BA2A116A247BB72A00B97FAE /* Color+Adaptive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Adaptive.swift"; sourceTree = "<group>"; };
-		BA2DA0C421A542E20027B7A5 /* NSTextField+Ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
-		BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+Ext.m"; sourceTree = "<group>"; };
 		BA2DA11E21A691FF0027B7A5 /* TrackingService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackingService.h; sourceTree = "<group>"; };
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
 		BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Appearance.swift"; sourceTree = "<group>"; };
@@ -1055,7 +1053,7 @@
 		BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDataSource.swift; sourceTree = "<group>"; };
 		BAA3107123CC476D008F2893 /* LayerBackedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerBackedViewController.swift; sourceTree = "<group>"; };
-		BAAC931A22EEF92100E2EE1C /* TogglDesktop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TogglDesktop.entitlements; path = TogglDesktop/TogglDesktop.entitlements; sourceTree = "<group>"; };
+		BAAC931A22EEF92100E2EE1C /* TogglDesktop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TogglDesktop.entitlements; sourceTree = "<group>"; };
 		BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSButton+TextColor.swift"; sourceTree = "<group>"; };
 		BAAF569D2223D4C7003D0D73 /* DotImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotImageView.swift; sourceTree = "<group>"; };
 		BAAF569F2223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VertificalTimeEntryFlowLayout.swift; sourceTree = "<group>"; };
@@ -1086,13 +1084,12 @@
 		BAE280C82490CFF300D400DA /* SSOService+Objc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SSOService+Objc.swift"; sourceTree = "<group>"; };
 		BAE6379922B225C70024DD08 /* AddTagButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagButton.swift; sourceTree = "<group>"; };
 		BAE64E4B2368334000244D2B /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		BAE64E4C2368334000244D2B /* TogglDesktop copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TogglDesktop copy-Info.plist"; path = "/Users/nghiatran/Documents/Work/Toggl/toggldesktop/src/ui/osx/TogglDesktop/TogglDesktop copy-Info.plist"; sourceTree = "<absolute>"; };
-		BAE64E4E23683E3F00244D2B /* TogglDesktop-AppStore.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = "TogglDesktop-AppStore.entitlements"; path = "TogglDesktop/TogglDesktop-AppStore.entitlements"; sourceTree = "<group>"; };
-		BAE64E4F23683F2C00244D2B /* TogglDesktop-AppStore-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TogglDesktop-AppStore-Info.plist"; sourceTree = SOURCE_ROOT; };
+		BAE64E4E23683E3F00244D2B /* TogglDesktop-AppStore.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "TogglDesktop-AppStore.entitlements"; sourceTree = "<group>"; };
+		BAE64E4F23683F2C00244D2B /* TogglDesktop-AppStore-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "TogglDesktop-AppStore-Info.plist"; path = "Supporting Files/TogglDesktop-AppStore-Info.plist"; sourceTree = SOURCE_ROOT; };
 		BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalTouchbarButton.swift; sourceTree = "<group>"; };
 		BAF3ACD22343325A00E41B33 /* TouchBarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarService.swift; sourceTree = "<group>"; };
-		BAF50DE421A29FED0090BA95 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TogglDesktop/Images.xcassets; sourceTree = "<group>"; };
+		BAF50DE421A29FED0090BA95 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppIconFactory.h; sourceTree = "<group>"; };
 		BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppIconFactory.m; sourceTree = "<group>"; };
 		BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
@@ -1104,13 +1101,12 @@
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
 		C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCell.m; sourceTree = "<group>"; };
 		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../lib/osx/build/Kopsik.dylib; sourceTree = "<group>"; };
-		C5DA1FBA17F197BF001C4565 /* toggl_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toggl_api.h; path = ../../../../toggl_api.h; sourceTree = "<group>"; };
-		C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = SOURCE_ROOT; };
-		C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = SOURCE_ROOT; };
-		C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindowController.xib; sourceTree = SOURCE_ROOT; };
-		C5DA1FC117F1B38B001C4565 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = SOURCE_ROOT; };
-		C5DA1FC217F1B38B001C4565 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = SOURCE_ROOT; };
-		C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = SOURCE_ROOT; };
+		C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainWindowController.h; path = Feature/MainWindow/MainWindowController.h; sourceTree = SOURCE_ROOT; };
+		C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainWindowController.m; path = Feature/MainWindow/MainWindowController.m; sourceTree = SOURCE_ROOT; };
+		C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainWindowController.xib; path = Feature/MainWindow/MainWindowController.xib; sourceTree = SOURCE_ROOT; };
+		C5DA1FC117F1B38B001C4565 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Feature/Auth/LoginViewController.h; sourceTree = SOURCE_ROOT; };
+		C5DA1FC217F1B38B001C4565 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Feature/Auth/LoginViewController.m; sourceTree = SOURCE_ROOT; };
+		C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginViewController.xib; path = Feature/Auth/LoginViewController.xib; sourceTree = SOURCE_ROOT; };
 		D2DDA71055B263A3287A575A /* Pods-TogglDesktopTests-AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktopTests-AppStore.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktopTests-AppStore/Pods-TogglDesktopTests-AppStore.release.xcconfig"; sourceTree = "<group>"; };
 		EFD8BD7ED08637BB01AA612E /* Pods_TogglDesktopTests_AppStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TogglDesktopTests_AppStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1186,24 +1182,114 @@
 			path = ../Pods;
 			sourceTree = "<group>";
 		};
-		3C6B246F203E01B70063FC08 /* AutoComplete */ = {
+		4917324A24C03EA4003EE7CC /* MainWindow */ = {
 			isa = PBXGroup;
 			children = (
-				3C6B2481203E01D80063FC08 /* AutoCompleteInput.h */,
-				3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */,
-				3C6B2482203E01D80063FC08 /* AutoCompleteTable.h */,
-				3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */,
-				3C6B247F203E01D60063FC08 /* AutoCompleteTableCell.h */,
-				3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */,
-				3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */,
-				3C6B24A2203FC8200063FC08 /* LiteAutoCompleteDataSource.h */,
-				3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */,
-				3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */,
-				3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */,
-				BA403BAC2230CFBC008B202C /* BetterFocusAutoCompleteInput.h */,
-				BA403BAD2230CFBC008B202C /* BetterFocusAutoCompleteInput.m */,
+				C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */,
+				C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */,
+				C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */,
 			);
-			name = AutoComplete;
+			path = MainWindow;
+			sourceTree = "<group>";
+		};
+		4917324B24C043CC003EE7CC /* TogglDesktopLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				4917325224C057D5003EE7CC /* Models */,
+				7424949C17F1E3D20030121C /* UIEvents.h */,
+				7424949D17F1E3D20030121C /* UIEvents.m */,
+				4917325524C069DD003EE7CC /* const.h */,
+				4917325424C069DD003EE7CC /* toggl_api.h */,
+			);
+			path = TogglDesktopLibrary;
+			sourceTree = "<group>";
+		};
+		4917324C24C0449F003EE7CC /* TogglDesktop */ = {
+			isa = PBXGroup;
+			children = (
+				49850A9F24BF5B7100D7E22F /* App */,
+				BA712EAF21BF904E00A2D8DD /* Feature */,
+				49850A9524BF4B8300D7E22F /* Common */,
+				4917324D24C04F36003EE7CC /* Resources */,
+				4917324B24C043CC003EE7CC /* TogglDesktopLibrary */,
+				4917325324C06604003EE7CC /* Supporting Files */,
+			);
+			name = TogglDesktop;
+			sourceTree = "<group>";
+		};
+		4917324D24C04F36003EE7CC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BAE007DD21FAF00D00404379 /* Media.xcassets */,
+				BAF50DE421A29FED0090BA95 /* Images.xcassets */,
+				3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */,
+				4917325624C06BA3003EE7CC /* cacert.pem */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		4917325024C05477003EE7CC /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				74098C311919899600CBDFB9 /* Utils.h */,
+				74098C321919899600CBDFB9 /* Utils.m */,
+				BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */,
+				BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */,
+				74A7346818297DD100525BBC /* ConvertHexColor.h */,
+				74A7346918297DD100525BBC /* ConvertHexColor.m */,
+				745126B419A28AA500390F47 /* Reachability.h */,
+				745126B519A28AA600390F47 /* Reachability.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		4917325124C05728003EE7CC /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				BAFBFCC621CD1D3C004B443F /* SystemService.h */,
+				BAFBFCC721CD1D3C004B443F /* SystemService.m */,
+				3C2F239B21A7B43300CBE6BC /* UnsupportedNotice.h */,
+				3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */,
+				BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */,
+				BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */,
+				BA2DA11E21A691FF0027B7A5 /* TrackingService.h */,
+				BA2DA11F21A691FF0027B7A5 /* TrackingService.m */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		4917325224C057D5003EE7CC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				748B3A3219222DB100F31468 /* DisplayCommand.h */,
+				748B3A3319222DB100F31468 /* DisplayCommand.m */,
+				74BAAA0917F37B140079386F /* TimeEntryViewItem.h */,
+				74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */,
+				74BAD31C18BD7D83002FD4CF /* ViewItem.h */,
+				74BAD31D18BD7D83002FD4CF /* ViewItem.m */,
+				3C3AF64C20ACC6280088A3A6 /* CountryViewItem.h */,
+				3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */,
+				BA75FF3A22BCE94100D3F08C /* TimelineDisplayCommand.h */,
+				BA75FF3B22BCE94100D3F08C /* TimelineDisplayCommand.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		4917325324C06604003EE7CC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				69FC180017E6534400B96425 /* main.m */,
+				BA0CEC5121BE528900F1BF01 /* TogglDesktop-Bridging-Header.h */,
+				69FC180217E6534400B96425 /* TogglDesktop-Prefix.pch */,
+				BAE64E4F23683F2C00244D2B /* TogglDesktop-AppStore-Info.plist */,
+				69FC17FC17E6534400B96425 /* TogglDesktop-Info.plist */,
+				743E584F1A775BB300F17CB0 /* Localizable.strings */,
+				69FC17FD17E6534400B96425 /* InfoPlist.strings */,
+				69FC180317E6534400B96425 /* Credits.rtf */,
+				BAE64E4E23683E3F00244D2B /* TogglDesktop-AppStore.entitlements */,
+				BAAC931A22EEF92100E2EE1C /* TogglDesktop.entitlements */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		49418B41249CE77D00265665 /* TogglDesktopTests-AppStore */ = {
@@ -1212,6 +1298,185 @@
 				49418B44249CE77D00265665 /* Info.plist */,
 			);
 			path = "TogglDesktopTests-AppStore";
+			sourceTree = "<group>";
+		};
+		49850A9524BF4B8300D7E22F /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				49850A9624BF4C5D00D7E22F /* Extensions */,
+				49850A9724BF4C6900D7E22F /* Views */,
+				4917325024C05477003EE7CC /* Utils */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		49850A9624BF4C5D00D7E22F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BA4791F022F0478A00E24F79 /* Collection+Safe.swift */,
+				BA4791EE22F0478900E24F79 /* NotificationCenter+MainThread.swift */,
+				BA4791EB22F0478900E24F79 /* NSColor+Utils.swift */,
+				BA4791E922F0478900E24F79 /* NSView+Animation.swift */,
+				BA4791EC22F0478900E24F79 /* NSView+Ext.swift */,
+				BA4791ED22F0478900E24F79 /* NSView+LayoutConstraint.swift */,
+				BA4791EF22F0478A00E24F79 /* NSView+Shadow+Border.swift */,
+				BA4791E822F0478900E24F79 /* NSView+Xib.swift */,
+				BA4791EA22F0478900E24F79 /* String+Search.swift */,
+				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
+				BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */,
+				BA81896923016148000710EA /* NSColor+VisibleColor.swift */,
+				BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */,
+				BA787D4E231E58C9003AD3AA /* Array+View.swift */,
+				BAA0104B22CB59ED007C1541 /* Date+Extension.swift */,
+				BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */,
+				BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */,
+				BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */,
+				BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		49850A9724BF4C6900D7E22F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BA4791FC22F0479200E24F79 /* NoInteractionView.swift */,
+				BA4791FA22F0479100E24F79 /* PopoverRootView.swift */,
+				BA4791FD22F0479200E24F79 /* TimerContainerBox.swift */,
+				BA4791FB22F0479200E24F79 /* VerticallyCenteredTextFieldCell.swift */,
+				BA03725421FE9FD400FC277B /* FlatButton.swift */,
+				749BD0BB1833E28400980494 /* NSBoxClickable.h */,
+				749BD0BC1833E28400980494 /* NSBoxClickable.m */,
+				95C0707818CDB91500A34D0D /* NSCustomComboBox.h */,
+				95C0707918CDB91500A34D0D /* NSCustomComboBox.m */,
+				95C0707518CDB67300A34D0D /* NSCustomComboBoxCell.h */,
+				95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */,
+				3C07B758193C88AE00ED6E6F /* NSCustomTimerComboBox.h */,
+				3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */,
+				74BA5FCD18B6E770009DAA2D /* NSHoverButton.h */,
+				74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */,
+				3CD7AD6D19ED579700372797 /* NSResize.h */,
+				3CD7AD6E19ED579700372797 /* NSResize.m */,
+				3C7B4EB1190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.h */,
+				3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */,
+				74F8FBA118313FA6000F09EE /* NSTextFieldClickable.h */,
+				74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */,
+				3C8979C819235EA2007061E0 /* NSTextFieldClickablePointer.h */,
+				3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */,
+				3CC450E71A31ED540012440B /* NSTextFieldDuration.h */,
+				3CC450E81A31ED540012440B /* NSTextFieldDuration.m */,
+				3C7B4E8B190FA6D200627DC3 /* NSTextFieldVerticallyAligned.h */,
+				3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */,
+				741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */,
+				741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */,
+				BA7B4C3521C24B9D00B75B14 /* UndoTextField.h */,
+				BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */,
+				BA01E89F232F77B3006B93EC /* ClickableImageView.h */,
+				BA01E8A0232F77B3006B93EC /* ClickableImageView.m */,
+				BA063BF823B06CA5003A96FE /* EditableTextField.h */,
+				BA063BF923B06CA5003A96FE /* EditableTextField.m */,
+				BA08E085222E709C0075F68E /* ProjectTextField.h */,
+				BA08E086222E709C0075F68E /* ProjectTextField.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		49850A9824BF4DF500D7E22F /* About */ = {
+			isa = PBXGroup;
+			children = (
+				7430750118204EFB009019CB /* AboutWindowController.h */,
+				7430750218204EFB009019CB /* AboutWindowController.m */,
+				7430750318204EFB009019CB /* AboutWindowController.xib */,
+			);
+			path = About;
+			sourceTree = "<group>";
+		};
+		49850A9924BF506400D7E22F /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				74F106FE18993FFE00E93BD5 /* FeedbackWindowController.h */,
+				74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */,
+				74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		49850A9A24BF50C900D7E22F /* IdleNotification */ = {
+			isa = PBXGroup;
+			children = (
+				742339391829B99C00063FA9 /* IdleNotificationWindowController.h */,
+				7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */,
+				7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */,
+				743D942D1827C633000E6F70 /* IdleEvent.h */,
+				743D942E1827C633000E6F70 /* IdleEvent.m */,
+				743D94291827A0E0000E6F70 /* idler.h */,
+				743D7829182791FA00978BCC /* idler.c */,
+			);
+			path = IdleNotification;
+			sourceTree = "<group>";
+		};
+		49850A9B24BF52C400D7E22F /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				C5DA1FC117F1B38B001C4565 /* LoginViewController.h */,
+				C5DA1FC217F1B38B001C4565 /* LoginViewController.m */,
+				C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		49850A9C24BF52D600D7E22F /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				69FC180917E6534500B96425 /* MainMenu.xib */,
+				7438B3D118253CD2002AE43C /* MenuItemTags.h */,
+				7438B3D218253CD2002AE43C /* MenuItemTags.m */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		49850A9D24BF56C200D7E22F /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				749CB8C918167D6E00814841 /* PreferencesWindowController.h */,
+				749CB8CA18167D6E00814841 /* PreferencesWindowController.m */,
+				749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */,
+				7484F620191D92C30038885C /* Settings.h */,
+				7484F621191D92C30038885C /* Settings.m */,
+				746947F81AF3FE3E0024BED7 /* AutotrackerRuleItem.h */,
+				746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */,
+			);
+			path = Preferences;
+			sourceTree = "<group>";
+		};
+		49850A9E24BF5AF700D7E22F /* Overlay */ = {
+			isa = PBXGroup;
+			children = (
+				3CD30F401F58B02C006FAA0D /* OverlayViewController.h */,
+				3CD30F411F58B02C006FAA0D /* OverlayViewController.m */,
+				3CD30F421F58B02C006FAA0D /* OverlayViewController.xib */,
+			);
+			path = Overlay;
+			sourceTree = "<group>";
+		};
+		49850A9F24BF5B7100D7E22F /* App */ = {
+			isa = PBXGroup;
+			children = (
+				69FC180617E6534400B96425 /* AppDelegate.h */,
+				69FC180717E6534400B96425 /* AppDelegate.m */,
+				BA067640233A492F00485C3C /* TogglApplication.h */,
+				BA067641233A492F00485C3C /* TogglApplication.m */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		49850AA124BF5C2000D7E22F /* Timer */ = {
+			isa = PBXGroup;
+			children = (
+				74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */,
+				74D1D27017EB72D900E709B0 /* TimerEditViewController.m */,
+				74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */,
+			);
+			path = Timer;
 			sourceTree = "<group>";
 		};
 		49D3603924878FA000527DE8 /* TogglDesktopTests */ = {
@@ -1226,24 +1491,14 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				4917324C24C0449F003EE7CC /* TogglDesktop */,
 				BA43B25C23F6706B0007DD99 /* Library */,
-				BAE64E4E23683E3F00244D2B /* TogglDesktop-AppStore.entitlements */,
-				BAAC931A22EEF92100E2EE1C /* TogglDesktop.entitlements */,
-				BAE007DD21FAF00D00404379 /* Media.xcassets */,
-				BAF50DE421A29FED0090BA95 /* Images.xcassets */,
 				74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */,
-				74E857AA194F8807007A88B9 /* ssl */,
-				BA712EAF21BF904E00A2D8DD /* Feature */,
-				BA1B7FA122E5D52F001333D9 /* Swift */,
-				BA0CEC4C21BE516F00F1BF01 /* Other */,
-				69FC17FA17E6534400B96425 /* ui */,
 				49D3603924878FA000527DE8 /* TogglDesktopTests */,
 				49418B41249CE77D00265665 /* TogglDesktopTests-AppStore */,
 				69FC17F317E6534400B96425 /* Frameworks */,
 				69FC17F217E6534400B96425 /* Products */,
-				3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */,
 				3A742A9261BE0A8B078F1749 /* Pods */,
-				BAE64E4C2368334000244D2B /* TogglDesktop copy-Info.plist */,
 				BA63ABF923829C2B004C70CF /* Recovered References */,
 			);
 			sourceTree = "<group>";
@@ -1295,161 +1550,12 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		69FC17FA17E6534400B96425 /* ui */ = {
-			isa = PBXGroup;
-			children = (
-				BA13E05B21C7B9F800835EC1 /* UserNotification */,
-				BAF87DDB21A3E1E700624EBE /* Extension */,
-				BAF50DF521A2A16D0090BA95 /* IconFactory */,
-				3C6B246F203E01B70063FC08 /* AutoComplete */,
-				BA2DA0C421A542E20027B7A5 /* NSTextField+Ext.h */,
-				BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */,
-				746947F81AF3FE3E0024BED7 /* AutotrackerRuleItem.h */,
-				746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */,
-				7430750118204EFB009019CB /* AboutWindowController.h */,
-				7430750218204EFB009019CB /* AboutWindowController.m */,
-				7430750318204EFB009019CB /* AboutWindowController.xib */,
-				69FC180617E6534400B96425 /* AppDelegate.h */,
-				69FC180717E6534400B96425 /* AppDelegate.m */,
-				74C15799183BA5DA00550613 /* AutocompleteDataSource.h */,
-				74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */,
-				74C15794183A8CE600550613 /* AutocompleteItem.h */,
-				74C15795183A8CE600550613 /* AutocompleteItem.m */,
-				7408EDB918C532C200CBE8F1 /* const.h */,
-				74A7346818297DD100525BBC /* ConvertHexColor.h */,
-				74A7346918297DD100525BBC /* ConvertHexColor.m */,
-				748B3A3219222DB100F31468 /* DisplayCommand.h */,
-				748B3A3319222DB100F31468 /* DisplayCommand.m */,
-				74F106FE18993FFE00E93BD5 /* FeedbackWindowController.h */,
-				74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */,
-				74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */,
-				743D942D1827C633000E6F70 /* IdleEvent.h */,
-				743D942E1827C633000E6F70 /* IdleEvent.m */,
-				742339391829B99C00063FA9 /* IdleNotificationWindowController.h */,
-				7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */,
-				7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */,
-				743D7829182791FA00978BCC /* idler.c */,
-				743D94291827A0E0000E6F70 /* idler.h */,
-				C5DA1FC117F1B38B001C4565 /* LoginViewController.h */,
-				C5DA1FC217F1B38B001C4565 /* LoginViewController.m */,
-				C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */,
-				69FC180917E6534500B96425 /* MainMenu.xib */,
-				C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */,
-				C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */,
-				C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */,
-				7438B3D118253CD2002AE43C /* MenuItemTags.h */,
-				7438B3D218253CD2002AE43C /* MenuItemTags.m */,
-				749BD0BB1833E28400980494 /* NSBoxClickable.h */,
-				749BD0BC1833E28400980494 /* NSBoxClickable.m */,
-				74762B9E18A12DB8004433A9 /* NSComboBox_Expansion.h */,
-				95C0707818CDB91500A34D0D /* NSCustomComboBox.h */,
-				95C0707918CDB91500A34D0D /* NSCustomComboBox.m */,
-				95C0707518CDB67300A34D0D /* NSCustomComboBoxCell.h */,
-				95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */,
-				3C07B758193C88AE00ED6E6F /* NSCustomTimerComboBox.h */,
-				3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */,
-				74BA5FCD18B6E770009DAA2D /* NSHoverButton.h */,
-				74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */,
-				3CD7AD6D19ED579700372797 /* NSResize.h */,
-				3CD7AD6E19ED579700372797 /* NSResize.m */,
-				3C7B4EB1190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.h */,
-				3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */,
-				74F8FBA118313FA6000F09EE /* NSTextFieldClickable.h */,
-				74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */,
-				3C8979C819235EA2007061E0 /* NSTextFieldClickablePointer.h */,
-				3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */,
-				3CC450E71A31ED540012440B /* NSTextFieldDuration.h */,
-				3CC450E81A31ED540012440B /* NSTextFieldDuration.m */,
-				3C7B4E8B190FA6D200627DC3 /* NSTextFieldVerticallyAligned.h */,
-				3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */,
-				741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */,
-				741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */,
-				749CB8C918167D6E00814841 /* PreferencesWindowController.h */,
-				749CB8CA18167D6E00814841 /* PreferencesWindowController.m */,
-				749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */,
-				7484F620191D92C30038885C /* Settings.h */,
-				7484F621191D92C30038885C /* Settings.m */,
-				69FC17FB17E6534400B96425 /* Supporting Files */,
-				C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */,
-				C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */,
-				7498D2471888B226001390B9 /* TimeEntryCell.xib */,
-				74D1D25317EB713F00E709B0 /* TimeEntryListViewController.h */,
-				74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */,
-				74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */,
-				74BAAA0917F37B140079386F /* TimeEntryViewItem.h */,
-				74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */,
-				74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */,
-				74D1D27017EB72D900E709B0 /* TimerEditViewController.m */,
-				74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */,
-				C5DA1FBA17F197BF001C4565 /* toggl_api.h */,
-				7424949C17F1E3D20030121C /* UIEvents.h */,
-				7424949D17F1E3D20030121C /* UIEvents.m */,
-				3CD30F401F58B02C006FAA0D /* OverlayViewController.h */,
-				3CD30F411F58B02C006FAA0D /* OverlayViewController.m */,
-				3CD30F421F58B02C006FAA0D /* OverlayViewController.xib */,
-				74098C311919899600CBDFB9 /* Utils.h */,
-				74098C321919899600CBDFB9 /* Utils.m */,
-				74BAD31C18BD7D83002FD4CF /* ViewItem.h */,
-				74BAD31D18BD7D83002FD4CF /* ViewItem.m */,
-				3C3AF64C20ACC6280088A3A6 /* CountryViewItem.h */,
-				3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */,
-				3CE1CABF1C774F2B00D0ADD5 /* LoadMoreCell.h */,
-				3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */,
-				3C0158EF1C7B414E00FE63AA /* LoadMoreCell.xib */,
-				BA2DA11E21A691FF0027B7A5 /* TrackingService.h */,
-				BA2DA11F21A691FF0027B7A5 /* TrackingService.m */,
-				3C2F239B21A7B43300CBE6BC /* UnsupportedNotice.h */,
-				3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */,
-				BA7B4C3521C24B9D00B75B14 /* UndoTextField.h */,
-				BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */,
-				BAFBFCC621CD1D3C004B443F /* SystemService.h */,
-				BAFBFCC721CD1D3C004B443F /* SystemService.m */,
-				BA08E085222E709C0075F68E /* ProjectTextField.h */,
-				BA08E086222E709C0075F68E /* ProjectTextField.m */,
-				BA75FF3A22BCE94100D3F08C /* TimelineDisplayCommand.h */,
-				BA75FF3B22BCE94100D3F08C /* TimelineDisplayCommand.m */,
-				745126B419A28AA500390F47 /* Reachability.h */,
-				745126B519A28AA600390F47 /* Reachability.m */,
-				BA01E89F232F77B3006B93EC /* ClickableImageView.h */,
-				BA01E8A0232F77B3006B93EC /* ClickableImageView.m */,
-				BA067640233A492F00485C3C /* TogglApplication.h */,
-				BA067641233A492F00485C3C /* TogglApplication.m */,
-				BA063BF823B06CA5003A96FE /* EditableTextField.h */,
-				BA063BF923B06CA5003A96FE /* EditableTextField.m */,
-			);
-			name = ui;
-			path = test2;
-			sourceTree = "<group>";
-		};
-		69FC17FB17E6534400B96425 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				743E584F1A775BB300F17CB0 /* Localizable.strings */,
-				BAE64E4F23683F2C00244D2B /* TogglDesktop-AppStore-Info.plist */,
-				69FC17FC17E6534400B96425 /* TogglDesktop-Info.plist */,
-				69FC17FD17E6534400B96425 /* InfoPlist.strings */,
-				69FC180017E6534400B96425 /* main.m */,
-				69FC180217E6534400B96425 /* TogglDesktop-Prefix.pch */,
-				69FC180317E6534400B96425 /* Credits.rtf */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		74456B871A774858002A6338 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		74E857AA194F8807007A88B9 /* ssl */ = {
-			isa = PBXGroup;
-			children = (
-				74E857AB194F8807007A88B9 /* cacert.pem */,
-			);
-			name = ssl;
-			path = ../../../ssl;
 			sourceTree = "<group>";
 		};
 		BA014026225707F1000E5B91 /* Tag */ = {
@@ -1469,16 +1575,25 @@
 			children = (
 				BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */,
 				BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */,
+				3C6B2481203E01D80063FC08 /* AutoCompleteInput.h */,
+				3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */,
+				3C6B2482203E01D80063FC08 /* AutoCompleteTable.h */,
+				3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */,
+				3C6B247F203E01D60063FC08 /* AutoCompleteTableCell.h */,
+				3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */,
+				3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */,
+				3C6B24A2203FC8200063FC08 /* LiteAutoCompleteDataSource.h */,
+				3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */,
+				3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */,
+				3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */,
+				BA403BAC2230CFBC008B202C /* BetterFocusAutoCompleteInput.h */,
+				BA403BAD2230CFBC008B202C /* BetterFocusAutoCompleteInput.m */,
+				74C15799183BA5DA00550613 /* AutocompleteDataSource.h */,
+				74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */,
+				74C15794183A8CE600550613 /* AutocompleteItem.h */,
+				74C15795183A8CE600550613 /* AutocompleteItem.m */,
 			);
 			path = AutoComplete;
-			sourceTree = "<group>";
-		};
-		BA0CEC4C21BE516F00F1BF01 /* Other */ = {
-			isa = PBXGroup;
-			children = (
-				BA0CEC5121BE528900F1BF01 /* TogglDesktop-Bridging-Header.h */,
-			);
-			path = Other;
 			sourceTree = "<group>";
 		};
 		BA13D1E42269B4F600EB3833 /* Calendar */ = {
@@ -1507,15 +1622,6 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		BA13E05B21C7B9F800835EC1 /* UserNotification */ = {
-			isa = PBXGroup;
-			children = (
-				BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */,
-				BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */,
-			);
-			name = UserNotification;
-			sourceTree = "<unknown>";
-		};
 		BA13E5612434728B005244AD /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -1529,48 +1635,6 @@
 				BA683F6E24372B3400C3A3F1 /* OnboardingBackgroundView.swift */,
 			);
 			path = Onboarding;
-			sourceTree = "<group>";
-		};
-		BA1B7FA122E5D52F001333D9 /* Swift */ = {
-			isa = PBXGroup;
-			children = (
-				BA1B7FA322E5D543001333D9 /* Extensions */,
-				BA1B7FA222E5D53A001333D9 /* Views */,
-			);
-			path = Swift;
-			sourceTree = "<group>";
-		};
-		BA1B7FA222E5D53A001333D9 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				BA4791FC22F0479200E24F79 /* NoInteractionView.swift */,
-				BA4791FA22F0479100E24F79 /* PopoverRootView.swift */,
-				BA4791FD22F0479200E24F79 /* TimerContainerBox.swift */,
-				BA4791FB22F0479200E24F79 /* VerticallyCenteredTextFieldCell.swift */,
-				BA03725421FE9FD400FC277B /* FlatButton.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		BA1B7FA322E5D543001333D9 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				BA4791F022F0478A00E24F79 /* Collection+Safe.swift */,
-				BA4791EE22F0478900E24F79 /* NotificationCenter+MainThread.swift */,
-				BA4791EB22F0478900E24F79 /* NSColor+Utils.swift */,
-				BA4791E922F0478900E24F79 /* NSView+Animation.swift */,
-				BA4791EC22F0478900E24F79 /* NSView+Ext.swift */,
-				BA4791ED22F0478900E24F79 /* NSView+LayoutConstraint.swift */,
-				BA4791EF22F0478A00E24F79 /* NSView+Shadow+Border.swift */,
-				BA4791E822F0478900E24F79 /* NSView+Xib.swift */,
-				BA4791EA22F0478900E24F79 /* String+Search.swift */,
-				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
-				BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */,
-				BA81896923016148000710EA /* NSColor+VisibleColor.swift */,
-				BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */,
-				BA787D4E231E58C9003AD3AA /* Array+View.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		BA34F0DB22439BF300C27A15 /* TimeEntryEditor */ = {
@@ -1611,13 +1675,19 @@
 			path = SystemMessage;
 			sourceTree = "<group>";
 		};
-		BA4059AD221D2147002969B8 /* TimeEntry */ = {
+		BA4059AD221D2147002969B8 /* TimeEntryList */ = {
 			isa = PBXGroup;
 			children = (
 				BA4059B2221D4697002969B8 /* Views */,
 				BA4059B8221D53E7002969B8 /* TimeEntryDatasource.swift */,
+				74D1D25317EB713F00E709B0 /* TimeEntryListViewController.h */,
+				74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */,
+				74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */,
+				C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */,
+				C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */,
+				7498D2471888B226001390B9 /* TimeEntryCell.xib */,
 			);
-			path = TimeEntry;
+			path = TimeEntryList;
 			sourceTree = "<group>";
 		};
 		BA4059B2221D4697002969B8 /* Views */ = {
@@ -1635,6 +1705,9 @@
 				BAAF569F2223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift */,
 				BA0E380F2225257D00D0121B /* BezierPath+Corner.swift */,
 				BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */,
+				3CE1CABF1C774F2B00D0ADD5 /* LoadMoreCell.h */,
+				3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */,
+				3C0158EF1C7B414E00FE63AA /* LoadMoreCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1797,6 +1870,15 @@
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				4917324A24C03EA4003EE7CC /* MainWindow */,
+				49850AA124BF5C2000D7E22F /* Timer */,
+				49850A9E24BF5AF700D7E22F /* Overlay */,
+				49850A9D24BF56C200D7E22F /* Preferences */,
+				49850A9C24BF52D600D7E22F /* Menu */,
+				49850A9B24BF52C400D7E22F /* Auth */,
+				49850A9A24BF50C900D7E22F /* IdleNotification */,
+				49850A9924BF506400D7E22F /* Feedback */,
+				49850A9824BF4DF500D7E22F /* About */,
 				BAE280C42490C78C00D400DA /* SSO */,
 				BA13E5612434728B005244AD /* Onboarding */,
 				BA5BDC2A2464077C00FF3C28 /* PasswordStrength */,
@@ -1812,8 +1894,9 @@
 				BAD15FDC223A521900A8CCC9 /* TimeEntryEmptyView */,
 				BA0C3A45223219330081C6DE /* AutoComplete */,
 				BA3E75B422291C9D009AD291 /* SystemMessage */,
-				BA4059AD221D2147002969B8 /* TimeEntry */,
+				BA4059AD221D2147002969B8 /* TimeEntryList */,
 				BA712EC021BF905B00A2D8DD /* Undo */,
+				4917325124C05728003EE7CC /* Other */,
 			);
 			path = Feature;
 			sourceTree = "<group>";
@@ -1995,27 +2078,6 @@
 				BA133ABF23740EA6003A6A3A /* LoginSignupTouchBar.swift */,
 			);
 			path = TouchBar;
-			sourceTree = "<group>";
-		};
-		BAF50DF521A2A16D0090BA95 /* IconFactory */ = {
-			isa = PBXGroup;
-			children = (
-				BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */,
-				BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */,
-			);
-			name = IconFactory;
-			sourceTree = "<group>";
-		};
-		BAF87DDB21A3E1E700624EBE /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */,
-				BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */,
-				BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */,
-				BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */,
-				BAA0104B22CB59ED007C1541 /* Date+Extension.swift */,
-			);
-			name = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2256,7 +2318,6 @@
 				BA00E9F5234C848A0011A703 /* TimeEntryScrubberItem.xib in Resources */,
 				BA13E57E24347716005244AD /* OnboardingContentViewController.xib in Resources */,
 				BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */,
-				74E857BC194F8854007A88B9 /* cacert.pem in Resources */,
 				BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */,
 				3C6B2489203E01D90063FC08 /* AutoCompleteTableCell.xib in Resources */,
 				BA3E75D822293576009AD291 /* SystemMessageView.xib in Resources */,
@@ -2268,6 +2329,7 @@
 				BA65A25222B7A66A00F895FD /* DatePickerView.xib in Resources */,
 				BA014054225711A3000E5B91 /* TagTokenView.xib in Resources */,
 				BA47DEB423966F9C005216AD /* InAppMessageViewController.xib in Resources */,
+				4917325724C06BA3003EE7CC /* cacert.pem in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
 				BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
@@ -2321,7 +2383,6 @@
 				BAE64E002368334000244D2B /* Images.xcassets in Resources */,
 				BA4A7D5223755A3D00A42095 /* TimeEntryScrubberItem.xib in Resources */,
 				BAE64E012368334000244D2B /* EditorViewController.xib in Resources */,
-				BAE64E022368334000244D2B /* cacert.pem in Resources */,
 				BAE64E032368334000244D2B /* DescriptionContentCellView.xib in Resources */,
 				BAE64E042368334000244D2B /* AutoCompleteTableCell.xib in Resources */,
 				BAE64E052368334000244D2B /* SystemMessageView.xib in Resources */,
@@ -2337,6 +2398,7 @@
 				BA47DEB523966F9C005216AD /* InAppMessageViewController.xib in Resources */,
 				BAE64E0C2368334000244D2B /* AboutWindowController.xib in Resources */,
 				BAE64E0D2368334000244D2B /* TimeHeaderView.xib in Resources */,
+				4917325824C06BA3003EE7CC /* cacert.pem in Resources */,
 				BAE64E0E2368334000244D2B /* PreferencesWindowController.xib in Resources */,
 				BAE64E0F2368334000244D2B /* InfoPlist.strings in Resources */,
 				BA13E579243476FA005244AD /* OnboardingViewController.xib in Resources */,
@@ -2756,7 +2818,6 @@
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
 				BAA3107223CC476D008F2893 /* LayerBackedViewController.swift in Sources */,
 				BAE6379A22B225C70024DD08 /* AddTagButton.swift in Sources */,
-				BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */,
 				BA712EC621BF913800A2D8DD /* TimeEntrySnapshot.swift in Sources */,
 				BAA0105222CB72E4007C1541 /* TimelineDashedCornerView.swift in Sources */,
 				BAD0E0BD22C49BAC009F5A83 /* TimelineDividerView.swift in Sources */,
@@ -2892,6 +2953,7 @@
 				BA13E576243476FA005244AD /* OnboardingViewController.swift in Sources */,
 				BA13D2062269B7C400EB3833 /* CalendarViewController.swift in Sources */,
 				BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */,
+				4917324E24C050D8003EE7CC /* NSTextField+Ext.m in Sources */,
 				BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */,
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
 				BA65A24D22B79FEC00F895FD /* OGSwitch.swift in Sources */,
@@ -2980,7 +3042,6 @@
 				BAE64D5F2368334000244D2B /* TimeEntryCell.m in Sources */,
 				BAE64D602368334000244D2B /* MainWindowController.m in Sources */,
 				BAE64D612368334000244D2B /* AddTagButton.swift in Sources */,
-				BAE64D622368334000244D2B /* NSTextField+Ext.m in Sources */,
 				BAE64D642368334000244D2B /* (null) in Sources */,
 				BAE64D652368334000244D2B /* TimeEntrySnapshot.swift in Sources */,
 				BAE64D662368334000244D2B /* DescriptionAutoCompleteTextField.swift in Sources */,
@@ -3017,6 +3078,7 @@
 				BA47DEB323966F9C005216AD /* InAppMessageViewController.swift in Sources */,
 				BA63ABEE238284D9004C70CF /* IdleNotificationTouchBar.swift in Sources */,
 				BA063BFB23B06CA5003A96FE /* EditableTextField.m in Sources */,
+				4917324F24C050D8003EE7CC /* NSTextField+Ext.m in Sources */,
 				BAE64D7C2368334000244D2B /* DisplayCommand.m in Sources */,
 				BA37ACF423D890250013EE26 /* Collection+Safe.swift in Sources */,
 				BAE64D7D2368334000244D2B /* ColorViewItem.swift in Sources */,
@@ -3502,7 +3564,7 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = TogglDesktop/TogglDesktop.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Supporting Files/TogglDesktop.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -3519,7 +3581,7 @@
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
+				GCC_PREFIX_HEADER = "Supporting Files/TogglDesktop-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -3529,7 +3591,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/Library/openssl/include",
 				);
-				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
+				INFOPLIST_FILE = "Supporting Files/TogglDesktop-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3575,7 +3637,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Other/TogglDesktop-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/TogglDesktop-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -3593,7 +3655,7 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = TogglDesktop/TogglDesktop.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Supporting Files/TogglDesktop.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -3611,7 +3673,7 @@
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
+				GCC_PREFIX_HEADER = "Supporting Files/TogglDesktop-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -3621,7 +3683,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/Library/openssl/include",
 				);
-				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
+				INFOPLIST_FILE = "Supporting Files/TogglDesktop-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3667,7 +3729,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Other/TogglDesktop-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/TogglDesktop-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				SYSTEM_HEADER_SEARCH_PATHS = "";
@@ -3770,7 +3832,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "TogglDesktop/TogglDesktop-AppStore.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Supporting Files/TogglDesktop-AppStore.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -3786,7 +3848,7 @@
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
+				GCC_PREFIX_HEADER = "Supporting Files/TogglDesktop-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -3796,7 +3858,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/Library/openssl/include",
 				);
-				INFOPLIST_FILE = "TogglDesktop-AppStore-Info.plist";
+				INFOPLIST_FILE = "Supporting Files/TogglDesktop-AppStore-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3842,7 +3904,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "Other/TogglDesktop-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/TogglDesktop-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
@@ -3856,7 +3918,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "TogglDesktop/TogglDesktop-AppStore.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Supporting Files/TogglDesktop-AppStore.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -3873,7 +3935,7 @@
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
+				GCC_PREFIX_HEADER = "Supporting Files/TogglDesktop-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -3883,7 +3945,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/Library/openssl/include",
 				);
-				INFOPLIST_FILE = "TogglDesktop-AppStore-Info.plist";
+				INFOPLIST_FILE = "Supporting Files/TogglDesktop-AppStore-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3929,7 +3991,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "Other/TogglDesktop-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/TogglDesktop-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 			};
