@@ -5489,8 +5489,6 @@ error Context::pushBatchedChanges(
 
         *had_something_to_push = true;
 
-        bool isPremium = false;
-
         std::map<std::string, BaseModel *> models;
 
         std::vector<TimeEntry *> time_entries;
@@ -5510,7 +5508,6 @@ error Context::pushBatchedChanges(
             if (api_token.empty()) {
                 return error("cannot push changes without API token");
             }
-            isPremium = user_->HasPremiumWorkspaces();
 
             collectPushableModels(
                 user_->related.TimeEntries,
@@ -5537,11 +5534,11 @@ error Context::pushBatchedChanges(
         // the conditions should be here so we don't create unnecessary empty JSON items
         // (accessing a JSON item by a name allocates an empty item)
         if (!clients.empty())
-            syncCollectJSON(request["clients"], clients, isPremium);
+            syncCollectJSON(request["clients"], clients);
         if (!projects.empty())
-            syncCollectJSON(request["projects"], projects, isPremium);
+            syncCollectJSON(request["projects"], projects);
         if (!time_entries.empty())
-            syncCollectJSON(request["time_entries"], time_entries, isPremium);
+            syncCollectJSON(request["time_entries"], time_entries);
 
         if (request.empty())
             return noError;
@@ -6407,7 +6404,7 @@ error Context::pullUserPreferences() {
 }
 
 template<typename T>
-void Context::syncCollectJSON(Json::Value &array, const std::vector<T*> &source, bool isPremium) {
+void Context::syncCollectJSON(Json::Value &array, const std::vector<T*> &source) {
     // The actual heavy lifting
     // Go through the list of pointers and ask each model to generate a Sync server JSON
     // The generation itself is split into three parts - We need to know:
@@ -6424,14 +6421,13 @@ void Context::syncCollectJSON(Json::Value &array, const std::vector<T*> &source,
 
         i->EnsureGUID();
 
-        item["type"] = i->SyncType();
-        item["meta"] = i->SyncMetadata();
-
         Json::Value payload = i->SyncPayload();
 
         // Remove some premium-feature-only data because we don't have a nullable bool property here nor in the database
-        if (!isPremium)
+        Workspace *ws = user_->related.WorkspaceByID(i->WID());
+        if (!ws || !ws->Premium()) {
             syncStripPremiumDataFromModelJSON(payload);
+        }
 
         // And also translate local GUIDs to LocalIDs because Sync server went with using TmpID instead of GUIDs
         // This is fine for now (the actual resolution of these dependencies will happen only when syncing a large chunk of offline data)
@@ -6439,10 +6435,14 @@ void Context::syncCollectJSON(Json::Value &array, const std::vector<T*> &source,
         // When removing this, see the SyncPayload method, it relies on returning GUIDs
         syncTranslateGUIDToLocalID(payload);
 
-        if (!payload.isNull())
+        if (!payload.isNull()) {
             item["payload"] = payload;
+            item["type"] = i->SyncType();
+            item["meta"] = i->SyncMetadata();
 
-        array.append(item);
+            array.append(item);
+        }
+
     }
 }
 
