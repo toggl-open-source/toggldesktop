@@ -5404,6 +5404,11 @@ error Context::pullBatchedUserData() {
         if (user_->HasValidSinceDate()) {
             since = user_->Since();
         }
+        else {
+            // just pull the last 10 days on full sync
+            since = time(nullptr) - 10 * 24 * 60 * 60;
+            user_->HasLoadedMore.Set(false);
+        }
     }
 
     if (api_token.empty()) {
