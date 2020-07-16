@@ -9,7 +9,7 @@
 namespace test {
 
 test::App::App() {
-    context_ = toggl_context_init("tests", "0.1");
+    context_ = toggl_context_init("DesktopOnlineTests", "0.1");
 
     Dispatcher::wireUp(context_, this);
 
