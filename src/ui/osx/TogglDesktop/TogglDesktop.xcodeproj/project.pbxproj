@@ -789,9 +789,9 @@
 		7498D2471888B226001390B9 /* TimeEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryCell.xib; sourceTree = "<group>"; };
 		749BD0BB1833E28400980494 /* NSBoxClickable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSBoxClickable.h; sourceTree = "<group>"; };
 		749BD0BC1833E28400980494 /* NSBoxClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBoxClickable.m; sourceTree = "<group>"; };
-		749CB8C918167D6E00814841 /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreferencesWindowController.h; path = Feature/Preferences/PreferencesWindowController.h; sourceTree = SOURCE_ROOT; };
-		749CB8CA18167D6E00814841 /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PreferencesWindowController.m; path = Feature/Preferences/PreferencesWindowController.m; sourceTree = SOURCE_ROOT; };
-		749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PreferencesWindowController.xib; path = Feature/Preferences/PreferencesWindowController.xib; sourceTree = SOURCE_ROOT; };
+		749CB8C918167D6E00814841 /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = "<group>"; };
+		749CB8CA18167D6E00814841 /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowController.m; sourceTree = "<group>"; };
+		749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferencesWindowController.xib; sourceTree = "<group>"; };
 		74A7346818297DD100525BBC /* ConvertHexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConvertHexColor.h; sourceTree = "<group>"; };
 		74A7346918297DD100525BBC /* ConvertHexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConvertHexColor.m; sourceTree = "<group>"; };
 		74AA947718090A8E0000539F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -806,12 +806,12 @@
 		74C15795183A8CE600550613 /* AutocompleteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutocompleteItem.m; sourceTree = "<group>"; };
 		74C15799183BA5DA00550613 /* AutocompleteDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutocompleteDataSource.h; sourceTree = "<group>"; };
 		74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutocompleteDataSource.m; sourceTree = "<group>"; };
-		74D1D25317EB713F00E709B0 /* TimeEntryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimeEntryListViewController.h; path = Feature/TimeEntryList/TimeEntryListViewController.h; sourceTree = SOURCE_ROOT; };
-		74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimeEntryListViewController.m; path = Feature/TimeEntryList/TimeEntryListViewController.m; sourceTree = SOURCE_ROOT; };
-		74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TimeEntryListViewController.xib; path = Feature/TimeEntryList/TimeEntryListViewController.xib; sourceTree = SOURCE_ROOT; };
-		74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimerEditViewController.h; path = Feature/Timer/TimerEditViewController.h; sourceTree = SOURCE_ROOT; };
-		74D1D27017EB72D900E709B0 /* TimerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimerEditViewController.m; path = Feature/Timer/TimerEditViewController.m; sourceTree = SOURCE_ROOT; };
-		74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TimerEditViewController.xib; path = Feature/Timer/TimerEditViewController.xib; sourceTree = SOURCE_ROOT; };
+		74D1D25317EB713F00E709B0 /* TimeEntryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryListViewController.h; sourceTree = "<group>"; };
+		74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryListViewController.m; sourceTree = "<group>"; };
+		74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryListViewController.xib; sourceTree = "<group>"; };
+		74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerEditViewController.h; sourceTree = "<group>"; };
+		74D1D27017EB72D900E709B0 /* TimerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerEditViewController.m; sourceTree = "<group>"; };
+		74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerEditViewController.xib; sourceTree = "<group>"; };
 		74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
 		74F106FE18993FFE00E93BD5 /* FeedbackWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackWindowController.h; sourceTree = "<group>"; };
@@ -867,8 +867,8 @@
 		BA13D2142269C01500EB3833 /* Date+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utils.swift"; sourceTree = "<group>"; };
 		BA13D2162269DE3400EB3833 /* NoVibrantPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoVibrantPopoverView.swift; sourceTree = "<group>"; };
 		BA13D2192269E0B500EB3833 /* CalendarViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarViewController.xib; sourceTree = "<group>"; };
-		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = Feature/Other/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
-		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = Feature/Other/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
+		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserNotificationCenter.m; sourceTree = "<group>"; };
+		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserNotificationCenter.h; sourceTree = "<group>"; };
 		BA13E562243472A1005244AD /* OnboardingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingService.swift; sourceTree = "<group>"; };
 		BA13E568243472EC005244AD /* OnboardingPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPayload.swift; sourceTree = "<group>"; };
 		BA13E574243476FA005244AD /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
@@ -1076,12 +1076,12 @@
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
 		C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCell.m; sourceTree = "<group>"; };
 		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../lib/osx/build/Kopsik.dylib; sourceTree = "<group>"; };
-		C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainWindowController.h; path = Feature/MainWindow/MainWindowController.h; sourceTree = SOURCE_ROOT; };
-		C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainWindowController.m; path = Feature/MainWindow/MainWindowController.m; sourceTree = SOURCE_ROOT; };
-		C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainWindowController.xib; path = Feature/MainWindow/MainWindowController.xib; sourceTree = SOURCE_ROOT; };
-		C5DA1FC117F1B38B001C4565 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Feature/Auth/LoginViewController.h; sourceTree = SOURCE_ROOT; };
-		C5DA1FC217F1B38B001C4565 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Feature/Auth/LoginViewController.m; sourceTree = SOURCE_ROOT; };
-		C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginViewController.xib; path = Feature/Auth/LoginViewController.xib; sourceTree = SOURCE_ROOT; };
+		C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = "<group>"; };
+		C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
+		C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindowController.xib; sourceTree = "<group>"; };
+		C5DA1FC117F1B38B001C4565 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		C5DA1FC217F1B38B001C4565 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		D2DDA71055B263A3287A575A /* Pods-TogglDesktopTests-AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktopTests-AppStore.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktopTests-AppStore/Pods-TogglDesktopTests-AppStore.release.xcconfig"; sourceTree = "<group>"; };
 		EFD8BD7ED08637BB01AA612E /* Pods_TogglDesktopTests_AppStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TogglDesktopTests_AppStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1163,6 +1163,7 @@
 				C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */,
 				C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */,
 				C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */,
+				49850A9E24BF5AF700D7E22F /* Overlay */,
 			);
 			path = MainWindow;
 			sourceTree = "<group>";
@@ -1170,13 +1171,13 @@
 		4917324B24C043CC003EE7CC /* TogglDesktopLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */,
 				BA43B25C23F6706B0007DD99 /* Dependencies */,
 				4917325224C057D5003EE7CC /* Models */,
 				7424949C17F1E3D20030121C /* UIEvents.h */,
 				7424949D17F1E3D20030121C /* UIEvents.m */,
 				4917325524C069DD003EE7CC /* const.h */,
 				4917325424C069DD003EE7CC /* toggl_api.h */,
-				74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */,
 			);
 			path = TogglDesktopLibrary;
 			sourceTree = "<group>";
@@ -1185,7 +1186,7 @@
 			isa = PBXGroup;
 			children = (
 				49850A9F24BF5B7100D7E22F /* App */,
-				BA712EAF21BF904E00A2D8DD /* Feature */,
+				BA712EAF21BF904E00A2D8DD /* Features */,
 				49850A9524BF4B8300D7E22F /* Common */,
 				4917324B24C043CC003EE7CC /* TogglDesktopLibrary */,
 				4917324D24C04F36003EE7CC /* Resources */,
@@ -1317,7 +1318,12 @@
 		49850A9624BF4C5D00D7E22F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				BA4791EA22F0478900E24F79 /* String+Search.swift */,
+				BA7B4C7B21C293E700B75B14 /* String+Optional.swift */,
 				BA4791F022F0478A00E24F79 /* Collection+Safe.swift */,
+				BA787D4E231E58C9003AD3AA /* Array+View.swift */,
+				BAA0104B22CB59ED007C1541 /* Date+Extension.swift */,
+				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
 				BA4791EE22F0478900E24F79 /* NotificationCenter+MainThread.swift */,
 				BA4791EB22F0478900E24F79 /* NSColor+Utils.swift */,
 				BA4791E922F0478900E24F79 /* NSView+Animation.swift */,
@@ -1325,12 +1331,8 @@
 				BA4791ED22F0478900E24F79 /* NSView+LayoutConstraint.swift */,
 				BA4791EF22F0478A00E24F79 /* NSView+Shadow+Border.swift */,
 				BA4791E822F0478900E24F79 /* NSView+Xib.swift */,
-				BA4791EA22F0478900E24F79 /* String+Search.swift */,
-				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
 				BA81896923016148000710EA /* NSColor+VisibleColor.swift */,
 				BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */,
-				BA787D4E231E58C9003AD3AA /* Array+View.swift */,
-				BAA0104B22CB59ED007C1541 /* Date+Extension.swift */,
 				BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */,
 				BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */,
 				BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */,
@@ -1400,18 +1402,22 @@
 				C5DA1FC117F1B38B001C4565 /* LoginViewController.h */,
 				C5DA1FC217F1B38B001C4565 /* LoginViewController.m */,
 				C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */,
+				BAB8CA8C240E3EA2002FF62B /* AppleSignIn */,
+				BA5B0E2E2330E1A8008D1DED /* GoogleLogin */,
+				BAE280C42490C78C00D400DA /* SSO */,
+				BA5BDC2A2464077C00FF3C28 /* PasswordStrength */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
 		};
-		49850A9C24BF52D600D7E22F /* Menu */ = {
+		49850A9C24BF52D600D7E22F /* MainMenu */ = {
 			isa = PBXGroup;
 			children = (
 				69FC180917E6534500B96425 /* MainMenu.xib */,
 				7438B3D118253CD2002AE43C /* MenuItemTags.h */,
 				7438B3D218253CD2002AE43C /* MenuItemTags.m */,
 			);
-			path = Menu;
+			path = MainMenu;
 			sourceTree = "<group>";
 		};
 		49850A9D24BF56C200D7E22F /* Preferences */ = {
@@ -1546,22 +1552,22 @@
 			isa = PBXGroup;
 			children = (
 				BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */,
-				BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */,
 				3C6B2481203E01D80063FC08 /* AutoCompleteInput.h */,
 				3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */,
+				BA403BAC2230CFBC008B202C /* BetterFocusAutoCompleteInput.h */,
+				BA403BAD2230CFBC008B202C /* BetterFocusAutoCompleteInput.m */,
 				3C6B2482203E01D80063FC08 /* AutoCompleteTable.h */,
 				3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */,
 				3C6B247F203E01D60063FC08 /* AutoCompleteTableCell.h */,
 				3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */,
+				BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */,
 				3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */,
-				3C6B24A2203FC8200063FC08 /* LiteAutoCompleteDataSource.h */,
-				3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */,
 				3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */,
 				3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */,
-				BA403BAC2230CFBC008B202C /* BetterFocusAutoCompleteInput.h */,
-				BA403BAD2230CFBC008B202C /* BetterFocusAutoCompleteInput.m */,
 				74C15799183BA5DA00550613 /* AutocompleteDataSource.h */,
 				74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */,
+				3C6B24A2203FC8200063FC08 /* LiteAutoCompleteDataSource.h */,
+				3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */,
 				74C15794183A8CE600550613 /* AutocompleteItem.h */,
 				74C15795183A8CE600550613 /* AutocompleteItem.m */,
 			);
@@ -1665,6 +1671,7 @@
 		BA4059B2221D4697002969B8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BAD15FDC223A521900A8CCC9 /* TimeEntryEmptyView */,
 				BA4059AE221D215A002969B8 /* TimeHeaderView.swift */,
 				BA4059B0221D2186002969B8 /* TimeHeaderView.xib */,
 				BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */,
@@ -1839,38 +1846,32 @@
 			path = Storage;
 			sourceTree = "<group>";
 		};
-		BA712EAF21BF904E00A2D8DD /* Feature */ = {
+		BA712EAF21BF904E00A2D8DD /* Features */ = {
 			isa = PBXGroup;
 			children = (
 				4917324A24C03EA4003EE7CC /* MainWindow */,
-				49850AA124BF5C2000D7E22F /* Timer */,
-				49850A9E24BF5AF700D7E22F /* Overlay */,
-				49850A9D24BF56C200D7E22F /* Preferences */,
-				49850A9C24BF52D600D7E22F /* Menu */,
+				49850A9C24BF52D600D7E22F /* MainMenu */,
 				49850A9B24BF52C400D7E22F /* Auth */,
-				49850A9A24BF50C900D7E22F /* IdleNotification */,
+				49850AA124BF5C2000D7E22F /* Timer */,
+				BA4059AD221D2147002969B8 /* TimeEntryList */,
+				BA34F0DB22439BF300C27A15 /* TimeEntryEditor */,
+				BA65A1FE22B7807300F895FD /* Timeline */,
+				49850A9D24BF56C200D7E22F /* Preferences */,
 				49850A9924BF506400D7E22F /* Feedback */,
 				49850A9824BF4DF500D7E22F /* About */,
-				BAE280C42490C78C00D400DA /* SSO */,
+				BA0C3A45223219330081C6DE /* AutoComplete */,
+				49850A9A24BF50C900D7E22F /* IdleNotification */,
 				BA13E5612434728B005244AD /* Onboarding */,
-				BA5BDC2A2464077C00FF3C28 /* PasswordStrength */,
-				BAB8CA8C240E3EA2002FF62B /* AppleSignIn */,
-				BA65A1FE22B7807300F895FD /* Timeline */,
 				BA47DEAF23966F80005216AD /* InAppMessage */,
 				BAB508E0237E8FAB00D3D468 /* Permission */,
-				BAF3ACCA2341F86300E41B33 /* TouchBar */,
-				BA5B0E2E2330E1A8008D1DED /* GoogleLogin */,
 				BA13D1E42269B4F600EB3833 /* Calendar */,
 				BA657280224DFA4F00BA4C60 /* ColorWheel */,
-				BA34F0DB22439BF300C27A15 /* TimeEntryEditor */,
-				BAD15FDC223A521900A8CCC9 /* TimeEntryEmptyView */,
-				BA0C3A45223219330081C6DE /* AutoComplete */,
 				BA3E75B422291C9D009AD291 /* SystemMessage */,
-				BA4059AD221D2147002969B8 /* TimeEntryList */,
 				BA712EC021BF905B00A2D8DD /* Undo */,
+				BAF3ACCA2341F86300E41B33 /* TouchBar */,
 				4917325124C05728003EE7CC /* Other */,
 			);
-			path = Feature;
+			path = Features;
 			sourceTree = "<group>";
 		};
 		BA712EC021BF905B00A2D8DD /* Undo */ = {
@@ -1879,7 +1880,6 @@
 				BA712EC121BF907200A2D8DD /* UndoManager.swift */,
 				BA712EC721BF9F1200A2D8DD /* UndoStack.swift */,
 				BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */,
-				BA7B4C7B21C293E700B75B14 /* String+Optional.swift */,
 			);
 			path = Undo;
 			sourceTree = "<group>";
