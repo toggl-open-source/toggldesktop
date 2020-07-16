@@ -728,7 +728,7 @@
 		3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableContainer.m; sourceTree = "<group>"; };
 		4917325424C069DD003EE7CC /* toggl_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toggl_api.h; path = ../../../../toggl_api.h; sourceTree = "<group>"; };
 		4917325524C069DD003EE7CC /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = const.h; path = ../../../../const.h; sourceTree = "<group>"; };
-		4917325624C06BA3003EE7CC /* cacert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cacert.pem; path = /Users/andrew/Projects/Toggl/Repositories/toggldesktop/src/ui/osx/TogglDesktop/Resources/../../../../ssl/cacert.pem; sourceTree = "<absolute>"; };
+		4917325624C06BA3003EE7CC /* cacert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cacert.pem; path = ../../../../ssl/cacert.pem; sourceTree = "<group>"; };
 		4917325D24C06F6F003EE7CC /* TogglDesktopLibrary.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = TogglDesktopLibrary.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineInitialDateProvider.swift; sourceTree = "<group>"; };
 		49418B40249CE77D00265665 /* TogglDesktopTests-AppStore.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TogglDesktopTests-AppStore.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1170,6 +1170,7 @@
 		4917324B24C043CC003EE7CC /* TogglDesktopLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				BA43B25C23F6706B0007DD99 /* Dependencies */,
 				4917325224C057D5003EE7CC /* Models */,
 				7424949C17F1E3D20030121C /* UIEvents.h */,
 				7424949D17F1E3D20030121C /* UIEvents.m */,
@@ -1186,8 +1187,8 @@
 				49850A9F24BF5B7100D7E22F /* App */,
 				BA712EAF21BF904E00A2D8DD /* Feature */,
 				49850A9524BF4B8300D7E22F /* Common */,
-				4917324D24C04F36003EE7CC /* Resources */,
 				4917324B24C043CC003EE7CC /* TogglDesktopLibrary */,
+				4917324D24C04F36003EE7CC /* Resources */,
 				4917325324C06604003EE7CC /* Supporting Files */,
 			);
 			name = TogglDesktop;
@@ -1472,7 +1473,6 @@
 			isa = PBXGroup;
 			children = (
 				4917324C24C0449F003EE7CC /* TogglDesktop */,
-				BA43B25C23F6706B0007DD99 /* Library */,
 				49D3603924878FA000527DE8 /* TogglDesktopTests */,
 				49418B41249CE77D00265665 /* TogglDesktopTests-AppStore */,
 				69FC17F317E6534400B96425 /* Frameworks */,
@@ -1708,13 +1708,13 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		BA43B25C23F6706B0007DD99 /* Library */ = {
+		BA43B25C23F6706B0007DD99 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
 				BA43B2E723F67ECB0007DD99 /* poco */,
 				BA43B25E23F670790007DD99 /* openssl */,
 			);
-			path = Library;
+			path = Dependencies;
 			sourceTree = "<group>";
 		};
 		BA43B25E23F670790007DD99 /* openssl */ = {
