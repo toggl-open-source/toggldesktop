@@ -453,18 +453,24 @@ void *ctx;
     toggl_login_async(ctx, [email UTF8String], [password UTF8String]);
 }
 
-- (void)loginWithEmail:(NSString *)email password:(NSString *)password andSSOConfirmationCode:(NSString *)ssoConfirmation {
-    toggl_login_sso_link(ctx, [email UTF8String], [password UTF8String], [ssoConfirmation UTF8String]);
-}
-
-- (void)getSSOIdentityProviderWithEmail:(NSString *) email
+- (void)getSSOIdentityProviderWithEmail:(NSString *)email
 {
     toggl_get_identity_provider_sso(ctx, [email UTF8String]);
 }
 
-- (void)loginSSOWithAPIToken:(NSString *) apiToken
+- (void)loginSSOWithAPIToken:(NSString *)apiToken
 {
     toggl_login_sso(ctx, [apiToken UTF8String]);
+}
+
+- (void)setNeedEnableSSOWithCode:(NSString *)code
+{
+    toggl_set_need_enable_SSO(ctx, [code UTF8String]);
+}
+
+- (void)resetEnableSSO
+{
+    toggl_reset_enable_SSO(ctx);
 }
 
 @end

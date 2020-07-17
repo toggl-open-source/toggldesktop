@@ -266,12 +266,15 @@ extern void *ctx;
     }
 
     if (sender == self.backToSSOBtn) {
+        // As we go back to the main Login view
+        // We reset all SSO states from the UI and Library
+        [self setShouldEnableSSOAfterLogin:NO];
         [self changeTabView:TabViewTypeEmailInputSSO];
         return;
     }
 
     if (sender == self.ssoCancelAndGoBackBtn) {
-        self.isLoginSignUpAsSSO = NO;
+        [self setShouldEnableSSOAfterLogin:NO];
         [self changeTabView:TabViewTypeLogin];
         return;
     }
@@ -282,7 +285,7 @@ extern void *ctx;
     [self changeTabView:type hideErrorMessage:YES];
 }
 
-- (void)changeTabView:(TabViewType)type hideErrorMessage:(BOOL) hideErrorMessage
+- (void)changeTabView:(TabViewType)type hideErrorMessage:(BOOL)hideErrorMessage
 {
     if (hideErrorMessage) {
         [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
@@ -774,23 +777,25 @@ extern void *ctx;
     [self setUserSignUp:NO];
     [self showLoaderView:YES];
 
-    if (self.isLoginSignUpAsSSO) {
+    if (self.isLoginSignUpAsSSO)
+    {
         AppDelegate *appDelegate = (AppDelegate *)[[NSApplication sharedApplication] delegate];
-        if ([email isEqualToString:self.emailSSOTextField.stringValue]) {
+
+        if ([email isEqualToString:self.emailSSOTextField.stringValue])
+        {
             // user is logging in with same email that he've used for SSO login
             appDelegate.afterLoginMessage = [[SystemMessagePayload alloc] initWithMessage:NSLocalizedString(@"SSO login successfully enabled for your account.",
                                                                                                             @"Show After user is successfully logged in with SSO and existing credentials")
                                                                                   isError:NO];
-            [[DesktopLibraryBridge shared] loginWithEmail:email password:pass andSSOConfirmationCode:self.ssoPayload.confirmationCode];
         } else {
             appDelegate.afterLoginMessage = [[SystemMessagePayload alloc] initWithMessage:NSLocalizedString(@"SSO login for this account was not enabled as login emails were different.",
                                                                                                             @"Show after SSO login, but with existing credentials where email did not match")
                                                                                   isError:YES];
-            [[DesktopLibraryBridge shared] loginWithEmail:email password:pass];
+            // this will be default login so we're reseting last SSO operation result
+            [[DesktopLibraryBridge shared] resetEnableSSO];
         }
-    } else {
-        [[DesktopLibraryBridge shared] loginWithEmail:email password:pass];
     }
+    [[DesktopLibraryBridge shared] loginWithEmail:email password:pass];
 }
 
 - (IBAction)countrySelected:(id)sender
@@ -1033,7 +1038,7 @@ extern void *ctx;
 
 - (IBAction)loginToEnableSSOOnClick:(id)sender
 {
-    self.isLoginSignUpAsSSO = YES;
+    [self setShouldEnableSSOAfterLogin:YES];
 
     // It's the same logic with Login and Sign Up, but different title
     [self changeTabView:TabViewTypeLogin];
@@ -1045,4 +1050,19 @@ extern void *ctx;
     [self changeTabView:TabViewTypeEmailExistsSSO];
     self.email.stringValue = payload.email;
 }
+
+- (void)setShouldEnableSSOAfterLogin:(BOOL)enable
+{
+    self.isLoginSignUpAsSSO = enable;
+
+    if (enable)
+    {
+        [[DesktopLibraryBridge shared] setNeedEnableSSOWithCode:self.ssoPayload.confirmationCode];
+    } else {
+        [[DesktopLibraryBridge shared] resetEnableSSO];
+        AppDelegate *appDelegate = (AppDelegate *)[[NSApplication sharedApplication] delegate];
+        appDelegate.afterLoginMessage = nil;
+    }
+}
+
 @end

@@ -1281,16 +1281,16 @@ extern "C" {
         void *context,
         const char_t *email);
 
+    TOGGL_EXPORT void toggl_set_need_enable_SSO(
+        void *context,
+        const char_t *code);
+
+    TOGGL_EXPORT void toggl_reset_enable_SSO(
+        void *context);
+
     TOGGL_EXPORT void toggl_login_sso(
         void *context,
         const char_t *api_token);
-
-    /// Login user along with enabling/linking SSO account to Toggl account
-    TOGGL_EXPORT bool_t toggl_login_sso_link(
-        void *context,
-        const char_t *email,
-        const char_t *password,
-        const char_t *ssoConfirmationCode);
     
     TOGGL_EXPORT void toggl_track_timeline_menu_context(
         void *context,
