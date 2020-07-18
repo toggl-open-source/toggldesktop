@@ -11,7 +11,6 @@
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
 		3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */; };
 		3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */; };
-		3C50BCAC1C1F0574004BAE9E /* (null) in Resources */ = {isa = PBXBuildFile; };
 		3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */; };
 		3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */; };
 		3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */; };
@@ -30,11 +29,14 @@
 		4917325E24C06F6F003EE7CC /* TogglDesktopLibrary.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4917325D24C06F6F003EE7CC /* TogglDesktopLibrary.dylib */; };
 		4917325F24C06F6F003EE7CC /* TogglDesktopLibrary.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4917325D24C06F6F003EE7CC /* TogglDesktopLibrary.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		492F5F02248550F800FFEC70 /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
-		49418B3A249CE70F00265665 /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
-		49418B3B249CE71800265665 /* Color+Adaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2A116A247BB72A00B97FAE /* Color+Adaptive.swift */; };
 		49418B4B249CEBA300265665 /* TogglDesktopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */; };
 		4943FB6124C070010000DE3C /* TogglDesktopLibrary.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4943FB5C24C06F8B0000DE3C /* TogglDesktopLibrary.dylib */; };
 		4943FB6224C070010000DE3C /* TogglDesktopLibrary.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4943FB5C24C06F8B0000DE3C /* TogglDesktopLibrary.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		49666CBE24C306CA0074C1C1 /* MenuItemTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 7438B3D218253CD2002AE43C /* MenuItemTags.m */; };
+		49666CBF24C306E20074C1C1 /* NoClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C28224E196D003CA17A /* NoClientCellView.xib */; };
+		49666CDD24C30C880074C1C1 /* OnboardingContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13E57B24347716005244AD /* OnboardingContentViewController.xib */; };
+		49666CDE24C30CD70074C1C1 /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
+		49666CDF24C30D1B0074C1C1 /* Color+Adaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2A116A247BB72A00B97FAE /* Color+Adaptive.swift */; };
 		49D3603B24878FA000527DE8 /* TogglDesktopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */; };
 		622BBF654A6A958692A4633B /* Pods_TogglDesktop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 776525112125F6AD81DF4DEF /* Pods_TogglDesktop.framework */; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
@@ -50,7 +52,6 @@
 		7424949E17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
 		7430750418204EFB009019CB /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750218204EFB009019CB /* AboutWindowController.m */; };
 		7430750518204EFB009019CB /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7430750318204EFB009019CB /* AboutWindowController.xib */; };
-		7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 7438B3D218253CD2002AE43C /* MenuItemTags.m */; };
 		743D782A182791FA00978BCC /* idler.c in Sources */ = {isa = PBXBuildFile; fileRef = 743D7829182791FA00978BCC /* idler.c */; };
 		743D942618279290000E6F70 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D942518279290000E6F70 /* IOKit.framework */; };
 		743D94281827929C000E6F70 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D94271827929C000E6F70 /* Carbon.framework */; };
@@ -131,7 +132,6 @@
 		BA13E57C24347716005244AD /* OnboardingContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13E57A24347716005244AD /* OnboardingContentViewController.swift */; };
 		BA13E57D24347716005244AD /* OnboardingContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13E57A24347716005244AD /* OnboardingContentViewController.swift */; };
 		BA13E57E24347716005244AD /* OnboardingContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13E57B24347716005244AD /* OnboardingContentViewController.xib */; };
-		BA13E57F24347716005244AD /* OnboardingContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13E57B24347716005244AD /* OnboardingContentViewController.xib */; };
 		BA13E581243480C5005244AD /* OnboardingService+Objc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13E580243480C5005244AD /* OnboardingService+Objc.swift */; };
 		BA13E582243480C5005244AD /* OnboardingService+Objc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13E580243480C5005244AD /* OnboardingService+Objc.swift */; };
 		BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
@@ -219,7 +219,6 @@
 		BA412C23224E11AC003CA17A /* ClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C22224E11AC003CA17A /* ClientCellView.xib */; };
 		BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C24224E147A003CA17A /* ClientAutoCompleteTextField.swift */; };
 		BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C26224E195C003CA17A /* NoClientCellView.swift */; };
-		BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C28224E196D003CA17A /* NoClientCellView.xib */; };
 		BA43B24E23F438AA0007DD99 /* TimelineLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA43B24D23F438AA0007DD99 /* TimelineLineView.swift */; };
 		BA43B24F23F438AA0007DD99 /* TimelineLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA43B24D23F438AA0007DD99 /* TimelineLineView.swift */; };
 		BA43B25423F525F30007DD99 /* TimelineLineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA43B25323F525F30007DD99 /* TimelineLineView.xib */; };
@@ -367,8 +366,6 @@
 		BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */; };
 		BAB0027F22731248005ECC93 /* DayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0027E22731248005ECC93 /* DayLabel.swift */; };
 		BAB0029F2273125C005ECC93 /* DayLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB0029E2273125C005ECC93 /* DayLabel.xib */; };
-		BAB42C76249B785700D7647C /* Color+Adaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2A116A247BB72A00B97FAE /* Color+Adaptive.swift */; };
-		BAB42C77249B788B00D7647C /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
 		BAB508E2237E8FBC00D3D468 /* SystemPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB508E1237E8FBC00D3D468 /* SystemPermissionManager.swift */; };
 		BAB508E4237EA54500D3D468 /* ObjcSystemPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB508E3237EA54500D3D468 /* ObjcSystemPermissionManager.swift */; };
 		BAB5FFD423F13F75003781D3 /* TimelineDraggingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB5FFD323F13F75003781D3 /* TimelineDraggingSession.swift */; };
@@ -414,7 +411,6 @@
 		BAE64D5F2368334000244D2B /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		BAE64D602368334000244D2B /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
 		BAE64D612368334000244D2B /* AddTagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE6379922B225C70024DD08 /* AddTagButton.swift */; };
-		BAE64D642368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64D652368334000244D2B /* TimeEntrySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */; };
 		BAE64D662368334000244D2B /* DescriptionAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818C2228D5847008C2367 /* DescriptionAutoCompleteTextField.swift */; };
 		BAE64D672368334000244D2B /* DateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2102269BE2F00EB3833 /* DateInfo.swift */; };
@@ -425,7 +421,6 @@
 		BAE64D6C2368334000244D2B /* ClientDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C1C224E0D61003CA17A /* ClientDataSource.swift */; };
 		BAE64D6D2368334000244D2B /* ProjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */; };
 		BAE64D6E2368334000244D2B /* NSButton+TextColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */; };
-		BAE64D6F2368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64D702368334000244D2B /* TagTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01405122571199000E5B91 /* TagTokenView.swift */; };
 		BAE64D722368334000244D2B /* ProjectWorksapceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA05367E225E238D00C26E1F /* ProjectWorksapceCellView.swift */; };
 		BAE64D732368334000244D2B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 745126B519A28AA600390F47 /* Reachability.m */; };
@@ -444,7 +439,6 @@
 		BAE64D802368334000244D2B /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 749CB8CA18167D6E00814841 /* PreferencesWindowController.m */; };
 		BAE64D822368334000244D2B /* DayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0027E22731248005ECC93 /* DayLabel.swift */; };
 		BAE64D842368334000244D2B /* TimeEntryCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */; };
-		BAE64D852368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64D862368334000244D2B /* AutotrackerRuleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */; };
 		BAE64D872368334000244D2B /* AutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */; };
 		BAE64D882368334000244D2B /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
@@ -469,15 +463,11 @@
 		BAE64D9C2368334000244D2B /* TimeEntryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */; };
 		BAE64D9D2368334000244D2B /* TimeDecoratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */; };
 		BAE64D9E2368334000244D2B /* TimeEntryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */; };
-		BAE64D9F2368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64DA02368334000244D2B /* TimeEntryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B6221D46F4002969B8 /* TimeEntryCollectionView.m */; };
 		BAE64DA12368334000244D2B /* TimeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4059AE221D215A002969B8 /* TimeHeaderView.swift */; };
-		BAE64DA22368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64DA32368334000244D2B /* ProjectColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */; };
 		BAE64DA42368334000244D2B /* TagCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404522570805000E5B91 /* TagCellView.swift */; };
 		BAE64DA52368334000244D2B /* AutoCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */; };
-		BAE64DA62368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
-		BAE64DA72368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64DA82368334000244D2B /* DesktopLibraryBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */; };
 		BAE64DA92368334000244D2B /* TimeEntryDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B8221D53E7002969B8 /* TimeEntryDatasource.swift */; };
 		BAE64DAA2368334000244D2B /* SystemMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3E75D52229356D009AD291 /* SystemMessageView.swift */; };
@@ -486,11 +476,9 @@
 		BAE64DAD2368334000244D2B /* ProjectTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA08E086222E709C0075F68E /* ProjectTextField.m */; };
 		BAE64DAE2368334000244D2B /* EditorPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E5FB0223787C300EB866E /* EditorPopover.swift */; };
 		BAE64DAF2368334000244D2B /* ProjectHeaderCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D334E224897FC00B953A8 /* ProjectHeaderCellView.swift */; };
-		BAE64DB02368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64DB12368334000244D2B /* CalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2092269BA6500EB3833 /* CalendarDataSource.swift */; };
 		BAE64DB22368334000244D2B /* CustomFocusRingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */; };
 		BAE64DB32368334000244D2B /* AutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */; };
-		BAE64DB42368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64DB62368334000244D2B /* KeyboardDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */; };
 		BAE64DB72368334000244D2B /* AutoCompleteViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */; };
 		BAE64DB82368334000244D2B /* TagStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404B22570967000E5B91 /* TagStorage.swift */; };
@@ -498,13 +486,11 @@
 		BAE64DBA2368334000244D2B /* CalendarCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA35B21E22E6E95200FA560E /* CalendarCollectionView.swift */; };
 		BAE64DBD2368334000244D2B /* ProjectDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335922489C8000B953A8 /* ProjectDataSource.swift */; };
 		BAE64DBE2368334000244D2B /* AutoCompleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */; };
-		BAE64DBF2368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64DC02368334000244D2B /* ResizablePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */; };
 		BAE64DC12368334000244D2B /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoManager.swift */; };
 		BAE64DC22368334000244D2B /* WorkspaceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */; };
 		BAE64DC32368334000244D2B /* CountryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */; };
 		BAE64DC42368334000244D2B /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2052269B7C400EB3833 /* CalendarViewController.swift */; };
-		BAE64DC52368334000244D2B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAE64DC62368334000244D2B /* SystemService.m in Sources */ = {isa = PBXBuildFile; fileRef = BAFBFCC721CD1D3C004B443F /* SystemService.m */; };
 		BAE64DC72368334000244D2B /* AppIconFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */; };
 		BAE64DC82368334000244D2B /* ConvertHexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A7346918297DD100525BBC /* ConvertHexColor.m */; };
@@ -585,7 +571,6 @@
 		BAE64E1E2368334000244D2B /* ClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C22224E11AC003CA17A /* ClientCellView.xib */; };
 		BAE64E1F2368334000244D2B /* FloatingErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA276A132240F5B500810C51 /* FloatingErrorView.xib */; };
 		BAE64E202368334000244D2B /* TimeEntryListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */; };
-		BAE64E212368334000244D2B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		BAE64E222368334000244D2B /* TagCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA0140472257080F000E5B91 /* TagCellView.xib */; };
 		BAE64E232368334000244D2B /* ProjectCreationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */; };
 		BAE64E242368334000244D2B /* NoClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C28224E196D003CA17A /* NoClientCellView.xib */; };
@@ -1174,6 +1159,8 @@
 				74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */,
 				BA43B25C23F6706B0007DD99 /* Dependencies */,
 				4917325224C057D5003EE7CC /* Models */,
+				BA84363922533A6600EF5830 /* DesktopLibraryBridge.h */,
+				BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */,
 				7424949C17F1E3D20030121C /* UIEvents.h */,
 				7424949D17F1E3D20030121C /* UIEvents.m */,
 				4917325524C069DD003EE7CC /* const.h */,
@@ -1247,8 +1234,14 @@
 				74BAD31D18BD7D83002FD4CF /* ViewItem.m */,
 				74BAAA0917F37B140079386F /* TimeEntryViewItem.h */,
 				74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */,
+				74C15794183A8CE600550613 /* AutocompleteItem.h */,
+				74C15795183A8CE600550613 /* AutocompleteItem.m */,
+				746947F81AF3FE3E0024BED7 /* AutotrackerRuleItem.h */,
+				746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */,
 				3C3AF64C20ACC6280088A3A6 /* CountryViewItem.h */,
 				3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */,
+				7484F620191D92C30038885C /* Settings.h */,
+				7484F621191D92C30038885C /* Settings.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1426,10 +1419,6 @@
 				749CB8C918167D6E00814841 /* PreferencesWindowController.h */,
 				749CB8CA18167D6E00814841 /* PreferencesWindowController.m */,
 				749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */,
-				7484F620191D92C30038885C /* Settings.h */,
-				7484F621191D92C30038885C /* Settings.m */,
-				746947F81AF3FE3E0024BED7 /* AutotrackerRuleItem.h */,
-				746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */,
 			);
 			path = Preferences;
 			sourceTree = "<group>";
@@ -1568,8 +1557,6 @@
 				74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */,
 				3C6B24A2203FC8200063FC08 /* LiteAutoCompleteDataSource.h */,
 				3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */,
-				74C15794183A8CE600550613 /* AutocompleteItem.h */,
-				74C15795183A8CE600550613 /* AutocompleteItem.m */,
 			);
 			path = AutoComplete;
 			sourceTree = "<group>";
@@ -1631,8 +1618,6 @@
 				BA34F0FE22439C3000C27A15 /* EditorViewController.swift */,
 				BA34F0FF22439C3000C27A15 /* EditorViewController.xib */,
 				BA0F67B6224A32F700ED0F91 /* CursorButton.swift */,
-				BA84363922533A6600EF5830 /* DesktopLibraryBridge.h */,
-				BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */,
 				BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */,
 				BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */,
 				BAE6379922B225C70024DD08 /* AddTagButton.swift */,
@@ -2309,6 +2294,7 @@
 				BAB0029F2273125C005ECC93 /* DayLabel.xib in Resources */,
 				BA9C2DFE224C823C002AD2A1 /* ColorPickerView.xib in Resources */,
 				BA43B25423F525F30007DD99 /* TimelineLineView.xib in Resources */,
+				49666CBF24C306E20074C1C1 /* NoClientCellView.xib in Resources */,
 				743E584D1A775BB300F17CB0 /* Localizable.strings in Resources */,
 				BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */,
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
@@ -2327,15 +2313,12 @@
 				BA412C23224E11AC003CA17A /* ClientCellView.xib in Resources */,
 				BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
-				3C50BCAC1C1F0574004BAE9E /* (null) in Resources */,
 				BA0140482257080F000E5B91 /* TagCellView.xib in Resources */,
 				BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */,
 				BA13E578243476FA005244AD /* OnboardingViewController.xib in Resources */,
 				BA75FF2822BCC1FC00D3F08C /* TimelineTimeEntryCell.xib in Resources */,
-				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
 				BA75FF2C22BCC20D00D3F08C /* TimelineActivityCell.xib in Resources */,
 				BAF9364F23E8116900EE1076 /* TimelineResizeHoverController.xib in Resources */,
-				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
 				BA65A22122B7809300F895FD /* TimelineDashboardViewController.xib in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
 				3C0158F01C7B414E00FE63AA /* LoadMoreCell.xib in Resources */,
@@ -2350,6 +2333,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49666CDD24C30C880074C1C1 /* OnboardingContentViewController.xib in Resources */,
 				BAE64DFE2368334000244D2B /* ProjectHeaderCellView.xib in Resources */,
 				BAE64DFF2368334000244D2B /* ProjectWorksapceCellView.xib in Resources */,
 				BAE64E002368334000244D2B /* Images.xcassets in Resources */,
@@ -2362,8 +2346,6 @@
 				BA37ACD723D8900C0013EE26 /* TimelineEmptyTimeEntryCell.xib in Resources */,
 				BA43B25523F525F30007DD99 /* TimelineLineView.xib in Resources */,
 				BAE64E072368334000244D2B /* DateCellViewItem.xib in Resources */,
-				BA13E57F24347716005244AD /* OnboardingContentViewController.xib in Resources */,
-				BA13E57F24347716005244AD /* OnboardingContentViewController.xib in Resources */,
 				BAE64E092368334000244D2B /* OverlayViewController.xib in Resources */,
 				BAE64E0A2368334000244D2B /* ProjectContentCellView.xib in Resources */,
 				BAE64E0B2368334000244D2B /* TagTokenView.xib in Resources */,
@@ -2396,7 +2378,6 @@
 				BAE64E1F2368334000244D2B /* FloatingErrorView.xib in Resources */,
 				BAE64E202368334000244D2B /* TimeEntryListViewController.xib in Resources */,
 				BAD4F9C8246D392C0032F0C7 /* PasswordRuleView.xib in Resources */,
-				BAE64E212368334000244D2B /* (null) in Resources */,
 				BAE64E222368334000244D2B /* TagCellView.xib in Resources */,
 				BAE64E232368334000244D2B /* ProjectCreationView.xib in Resources */,
 				BAE64E242368334000244D2B /* NoClientCellView.xib in Resources */,
@@ -2452,7 +2433,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "fix() {\n    pocolib=$1\n    lib=$2\n    oldpath=$(otool -L $pocolib|fgrep $lib|awk -F' ' '{print $1}'|grep -v @loader_path|grep -v \":\")\n    if [ -z \"$oldpath\" ]; then\n    return\n    fi\n    install_name_tool -change $oldpath @loader_path/$lib $pocolib\n    \n    # get shared library id name\n    file=$(otool -D $pocolib |grep -v \":\")\n    # get base name of the path we got\n    basename=${file##*/}\n        # change shared library id name\n        install_name_tool -id @loader_path/$basename $pocolib\n    }\n    \n    fix_poco_paths() {\n        f=$1\n        fix $f libPocoUtil.60.dylib\n        fix $f libPocoData.60.dylib\n        fix $f libPocoNetSSL.60.dylib\n        fix $f libPocoXML.60.dylib\n        fix $f libPocoDataSQLite.60.dylib\n        fix $f libPocoNet.60.dylib\n        fix $f libPocoFoundation.60.dylib\n        fix $f libPocoCrypto.60.dylib\n        fix $f libPocoJSON.60.dylib\n        fix $f libcrypto.1.1.dylib\n        fix $f libssl.1.1.dylib\n    }\n    \n    # Change dylib references in all dylibs found in Frameworks\n    for f in $BUILT_PRODUCTS_DIR/TogglDesktop.app/Contents/Frameworks/*.dylib\n                                                                                        do\n                                                                                        fix_poco_paths $f\n                                                                                        done\n";
+			shellScript = "fix() {\n    pocolib=$1\n    lib=$2\n    oldpath=$(otool -L $pocolib|fgrep $lib|awk -F' ' '{print $1}'|grep -v @loader_path|grep -v \":\")\n    if [ -z \"$oldpath\" ]; then\n        return\n    fi\n    install_name_tool -change $oldpath @loader_path/$lib $pocolib\n    \n    # get shared library id name\n    file=$(otool -D $pocolib |grep -v \":\")\n    # get base name of the path we got\n    basename=${file##*/}\n    # change shared library id name\n    install_name_tool -id @loader_path/$basename $pocolib\n}\n    \nfix_poco_paths() {\n    f=$1\n    fix $f libPocoUtil.60.dylib\n    fix $f libPocoData.60.dylib\n    fix $f libPocoNetSSL.60.dylib\n    fix $f libPocoXML.60.dylib\n    fix $f libPocoDataSQLite.60.dylib\n    fix $f libPocoNet.60.dylib\n    fix $f libPocoFoundation.60.dylib\n    fix $f libPocoCrypto.60.dylib\n    fix $f libPocoJSON.60.dylib\n    fix $f libcrypto.1.1.dylib\n    fix $f libssl.1.1.dylib\n}\n    \n# Change dylib references in all dylibs found in Frameworks\nfor f in $BUILT_PRODUCTS_DIR/TogglDesktop.app/Contents/Frameworks/*.dylib \ndo\n    fix_poco_paths $f\ndone\n";
 		};
 		74E3CDDA17FC37A500C3ADD3 /* Run Script (install bugsnag) */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2575,7 +2556,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "fix() {\n    pocolib=$1\n    lib=$2\n    oldpath=$(otool -L $pocolib|fgrep $lib|awk -F' ' '{print $1}'|grep -v @loader_path|grep -v \":\")\n    if [ -z \"$oldpath\" ]; then\n    return\n    fi\n    install_name_tool -change $oldpath @loader_path/$lib $pocolib\n    \n    # get shared library id name\n    file=$(otool -D $pocolib |grep -v \":\")\n    # get base name of the path we got\n    basename=${file##*/}\n        # change shared library id name\n        install_name_tool -id @loader_path/$basename $pocolib\n    }\n    \n    fix_poco_paths() {\n        f=$1\n        fix $f libPocoUtil.60.dylib\n        fix $f libPocoData.60.dylib\n        fix $f libPocoNetSSL.60.dylib\n        fix $f libPocoXML.60.dylib\n        fix $f libPocoDataSQLite.60.dylib\n        fix $f libPocoNet.60.dylib\n        fix $f libPocoFoundation.60.dylib\n        fix $f libPocoCrypto.60.dylib\n        fix $f libPocoJSON.60.dylib\n        fix $f libcrypto.1.1.dylib\n        fix $f libssl.1.1.dylib\n    }\n    \n    # Change dylib references in all dylibs found in Frameworks\n    for f in $BUILT_PRODUCTS_DIR/TogglDesktop.app/Contents/Frameworks/*.dylib\n                                                                                        do\n                                                                                        fix_poco_paths $f\n                                                                                        done\n";
+			shellScript = "fix() {\n    pocolib=$1\n    lib=$2\n    oldpath=$(otool -L $pocolib|fgrep $lib|awk -F' ' '{print $1}'|grep -v @loader_path|grep -v \":\")\n    if [ -z \"$oldpath\" ]; then\n        return\n    fi\n    install_name_tool -change $oldpath @loader_path/$lib $pocolib\n    \n    # get shared library id name\n    file=$(otool -D $pocolib |grep -v \":\")\n    # get base name of the path we got\n    basename=${file##*/}\n    # change shared library id name\n    install_name_tool -id @loader_path/$basename $pocolib\n}\n    \nfix_poco_paths() {\n    f=$1\n    fix $f libPocoUtil.60.dylib\n    fix $f libPocoData.60.dylib\n    fix $f libPocoNetSSL.60.dylib\n    fix $f libPocoXML.60.dylib\n    fix $f libPocoDataSQLite.60.dylib\n    fix $f libPocoNet.60.dylib\n    fix $f libPocoFoundation.60.dylib\n    fix $f libPocoCrypto.60.dylib\n    fix $f libPocoJSON.60.dylib\n    fix $f libcrypto.1.1.dylib\n    fix $f libssl.1.1.dylib\n}\n    \n# Change dylib references in all dylibs found in Frameworks\nfor f in $BUILT_PRODUCTS_DIR/TogglDesktop.app/Contents/Frameworks/*.dylib \ndo\n    fix_poco_paths $f\ndone\n";
 		};
 		BAE64E452368334000244D2B /* Run Formatter */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2832,9 +2813,7 @@
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
 				BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */,
 				BA96846722C0CD8800E07C89 /* TimeChunk.swift in Sources */,
-				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
 				BA75FF2322BCC1EA00D3F08C /* TimelineTimeLabelCell.swift in Sources */,
-				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
 				3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */,
 				749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */,
 				BAF3ACCC2341F8AC00E41B33 /* GlobalTouchbarButton.swift in Sources */,
@@ -2967,6 +2946,7 @@
 				BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */,
 				BA4791F922F0478A00E24F79 /* Collection+Safe.swift in Sources */,
 				BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */,
+				49666CBE24C306CA0074C1C1 /* MenuItemTags.m in Sources */,
 				3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */,
 				BA4791FF22F0479200E24F79 /* VerticallyCenteredTextFieldCell.swift in Sources */,
 				BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */,
@@ -2998,7 +2978,6 @@
 				BAE64D592368334000244D2B /* NSTextFieldDuration.m in Sources */,
 				BAE64D5A2368334000244D2B /* UIEvents.m in Sources */,
 				BA37ACB823D890050013EE26 /* OGSwitch.swift in Sources */,
-				BAB42C77249B788B00D7647C /* TimelineInitialDateProvider.swift in Sources */,
 				BAE64D5B2368334000244D2B /* Date+Utils.swift in Sources */,
 				BAE64D5C2368334000244D2B /* GoogleAuthenticationServer+Objc.swift in Sources */,
 				BAE64D5D2368334000244D2B /* VertificalTimeEntryFlowLayout.swift in Sources */,
@@ -3006,7 +2985,6 @@
 				BAE64D5F2368334000244D2B /* TimeEntryCell.m in Sources */,
 				BAE64D602368334000244D2B /* MainWindowController.m in Sources */,
 				BAE64D612368334000244D2B /* AddTagButton.swift in Sources */,
-				BAE64D642368334000244D2B /* (null) in Sources */,
 				BAE64D652368334000244D2B /* TimeEntrySnapshot.swift in Sources */,
 				BAE64D662368334000244D2B /* DescriptionAutoCompleteTextField.swift in Sources */,
 				BAE64D672368334000244D2B /* DateInfo.swift in Sources */,
@@ -3014,6 +2992,7 @@
 				BAE64D682368334000244D2B /* DateCellViewItem.swift in Sources */,
 				BAE64D692368334000244D2B /* UndoStack.swift in Sources */,
 				BAE64D6A2368334000244D2B /* NoVibrantPopoverView.swift in Sources */,
+				49666CDF24C30D1B0074C1C1 /* Color+Adaptive.swift in Sources */,
 				BA37ACDD23D8900C0013EE26 /* TimelineTimeEntryHoverViewController.swift in Sources */,
 				BAE64D6B2368334000244D2B /* AutoCompleteTable.m in Sources */,
 				BAE64D6C2368334000244D2B /* ClientDataSource.swift in Sources */,
@@ -3021,7 +3000,6 @@
 				BAE64D6E2368334000244D2B /* NSButton+TextColor.swift in Sources */,
 				BA37ACE623D890100013EE26 /* TimelineTimeEntry.swift in Sources */,
 				BA37ACDF23D8900C0013EE26 /* TimelineTimeEntryMenu.swift in Sources */,
-				BAE64D6F2368334000244D2B /* (null) in Sources */,
 				BAE64D702368334000244D2B /* TagTokenView.swift in Sources */,
 				BA37ACE923D890100013EE26 /* TimelineData.swift in Sources */,
 				BAE64D722368334000244D2B /* ProjectWorksapceCellView.swift in Sources */,
@@ -3055,7 +3033,6 @@
 				BA37ACDB23D8900C0013EE26 /* TimelineBackgroundCell.swift in Sources */,
 				BAE64D842368334000244D2B /* TimeEntryCell+Ext.swift in Sources */,
 				BA37AD0523D8902A0013EE26 /* VerticallyCenteredTextFieldCell.swift in Sources */,
-				BAE64D852368334000244D2B /* (null) in Sources */,
 				BAE64D862368334000244D2B /* AutotrackerRuleItem.m in Sources */,
 				BAE64D872368334000244D2B /* AutoCompleteInput.m in Sources */,
 				BA37ACBA23D890050013EE26 /* TimelineFlowLayout.swift in Sources */,
@@ -3063,7 +3040,6 @@
 				BAE64D892368334000244D2B /* Utils.m in Sources */,
 				BAE64D8A2368334000244D2B /* CursorButton.swift in Sources */,
 				BA37ACFC23D890250013EE26 /* String+Search.swift in Sources */,
-				49418B3B249CE71800265665 /* Color+Adaptive.swift in Sources */,
 				BAE64D8B2368334000244D2B /* KeyboardTableView.swift in Sources */,
 				BAE64D8D2368334000244D2B /* main.m in Sources */,
 				BA37ACE823D890100013EE26 /* TimeChunk.swift in Sources */,
@@ -3091,21 +3067,16 @@
 				BA13E582243480C5005244AD /* OnboardingService+Objc.swift in Sources */,
 				BAE64D9D2368334000244D2B /* TimeDecoratorView.swift in Sources */,
 				BAB5FFD523F13F75003781D3 /* TimelineDraggingSession.swift in Sources */,
-				49418B3A249CE70F00265665 /* TimelineInitialDateProvider.swift in Sources */,
 				BAE64D9E2368334000244D2B /* TimeEntryEmptyView.swift in Sources */,
 				BA7F4D8C24658BDB00DB5058 /* DSFSecureTextField.swift in Sources */,
 				BA37AD0923D890940013EE26 /* TimelineDisplayCommand.m in Sources */,
-				BAE64D9F2368334000244D2B /* (null) in Sources */,
 				BAE64DA02368334000244D2B /* TimeEntryCollectionView.m in Sources */,
 				BAE64DA12368334000244D2B /* TimeHeaderView.swift in Sources */,
-				BAE64DA22368334000244D2B /* (null) in Sources */,
 				BAE64DA32368334000244D2B /* ProjectColor.swift in Sources */,
 				BAE64DA42368334000244D2B /* TagCellView.swift in Sources */,
 				BAE64DA52368334000244D2B /* AutoCompleteView.swift in Sources */,
 				BAD4F9C7246D392C0032F0C7 /* PasswordRuleView.swift in Sources */,
 				BABB85AA23882D7C0084DEAC /* SystemPermissionManager.swift in Sources */,
-				BAE64DA62368334000244D2B /* (null) in Sources */,
-				BAE64DA72368334000244D2B /* (null) in Sources */,
 				BAE64DA82368334000244D2B /* DesktopLibraryBridge.m in Sources */,
 				BAE64DA92368334000244D2B /* TimeEntryDatasource.swift in Sources */,
 				BA13E577243476FA005244AD /* OnboardingViewController.swift in Sources */,
@@ -3117,15 +3088,13 @@
 				BAE64DAD2368334000244D2B /* ProjectTextField.m in Sources */,
 				BA37ACD623D8900C0013EE26 /* TimelineEmptyTimeEntryCell.swift in Sources */,
 				BAE64DAE2368334000244D2B /* EditorPopover.swift in Sources */,
-				BAB42C76249B785700D7647C /* Color+Adaptive.swift in Sources */,
 				BAE64DAF2368334000244D2B /* ProjectHeaderCellView.swift in Sources */,
-				BAE64DB02368334000244D2B /* (null) in Sources */,
 				BAE64DB12368334000244D2B /* CalendarDataSource.swift in Sources */,
 				BAE64DB22368334000244D2B /* CustomFocusRingButton.swift in Sources */,
 				BAE64DB32368334000244D2B /* AutoCompleteTextField.swift in Sources */,
+				49666CDE24C30CD70074C1C1 /* TimelineInitialDateProvider.swift in Sources */,
 				BA37ACFF23D890250013EE26 /* NSColor+VisibleColor.swift in Sources */,
 				BA37ACDA23D8900C0013EE26 /* TimelineDividerView.swift in Sources */,
-				BAE64DB42368334000244D2B /* (null) in Sources */,
 				BAE64DB62368334000244D2B /* KeyboardDatePicker.swift in Sources */,
 				BAE64DB72368334000244D2B /* AutoCompleteViewDataSource.swift in Sources */,
 				BA37ACF723D890250013EE26 /* NSView+Animation.swift in Sources */,
@@ -3137,7 +3106,6 @@
 				BA4A7D5523755A4200A42095 /* TouchBarService+Name.swift in Sources */,
 				BA37ACF923D890250013EE26 /* NSView+LayoutConstraint.swift in Sources */,
 				BA13E56A243472EC005244AD /* OnboardingPayload.swift in Sources */,
-				BAE64DBF2368334000244D2B /* (null) in Sources */,
 				BA683F7024372B3400C3A3F1 /* OnboardingBackgroundView.swift in Sources */,
 				BAE64DC02368334000244D2B /* ResizablePopover.swift in Sources */,
 				BA37ACFB23D890250013EE26 /* NSView+Xib.swift in Sources */,
@@ -3145,7 +3113,6 @@
 				BAE64DC22368334000244D2B /* WorkspaceStorage.swift in Sources */,
 				BAE64DC32368334000244D2B /* CountryViewItem.m in Sources */,
 				BAE64DC42368334000244D2B /* CalendarViewController.swift in Sources */,
-				BAE64DC52368334000244D2B /* (null) in Sources */,
 				BA37ACBE23D890050013EE26 /* LayerBackedViewController.swift in Sources */,
 				BAF9364D23E8114800EE1076 /* TimelineResizeHoverController.swift in Sources */,
 				BAE64DC62368334000244D2B /* SystemService.m in Sources */,
@@ -3535,7 +3502,6 @@
 					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/../../../../third_party",
-					"$(SRCROOT)/../../../../third_party/Sparkle",
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3547,17 +3513,15 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/Library/openssl/include",
+					"$(PROJECT_DIR)/TogglDesktopLibrary/Dependencies/openssl/include",
 				);
 				INFOPLIST_FILE = "Supporting Files/TogglDesktop-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(SRCROOT)/Library/poco/",
-					"$(SRCROOT)/Library/openssl/",
-					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/poco",
-					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
+					"$(PROJECT_DIR)/TogglDesktopLibrary/Dependencies/openssl",
+					"$(PROJECT_DIR)/TogglDesktopLibrary/Dependencies/poco",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3627,7 +3591,6 @@
 					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/../../../../third_party",
-					"$(SRCROOT)/../../../../third_party/Sparkle",
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3639,17 +3602,15 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/Library/openssl/include",
+					"$(PROJECT_DIR)/TogglDesktopLibrary/Dependencies/openssl/include",
 				);
 				INFOPLIST_FILE = "Supporting Files/TogglDesktop-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(SRCROOT)/Library/poco/",
-					"$(SRCROOT)/Library/openssl/",
-					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/poco",
-					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
+					"$(PROJECT_DIR)/TogglDesktopLibrary/Dependencies/openssl",
+					"$(PROJECT_DIR)/TogglDesktopLibrary/Dependencies/poco",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = NO;
@@ -3802,7 +3763,6 @@
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/../../../../third_party",
-					"$(SRCROOT)/../../../../third_party/Sparkle",
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3814,17 +3774,15 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/Library/openssl/include",
+					"$(PROJECT_DIR)/TogglDesktopLibrary/Dependencies/openssl/include",
 				);
 				INFOPLIST_FILE = "Supporting Files/TogglDesktop-AppStore-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(SRCROOT)/Library/poco/",
-					"$(SRCROOT)/Library/openssl/",
-					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/poco",
-					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
+					"$(PROJECT_DIR)/TogglDesktopLibrary/Dependencies/openssl",
+					"$(PROJECT_DIR)/TogglDesktopLibrary/Dependencies/poco",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3889,7 +3847,6 @@
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/../../../../third_party",
-					"$(SRCROOT)/../../../../third_party/Sparkle",
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3901,17 +3858,15 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/Library/openssl/include",
+					"$(PROJECT_DIR)/TogglDesktopLibrary/Dependencies/openssl/include",
 				);
 				INFOPLIST_FILE = "Supporting Files/TogglDesktop-AppStore-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(SRCROOT)/Library/poco/",
-					"$(SRCROOT)/Library/openssl/",
-					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/poco",
-					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
+					"$(PROJECT_DIR)/TogglDesktopLibrary/Dependencies/openssl",
+					"$(PROJECT_DIR)/TogglDesktopLibrary/Dependencies/poco",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = NO;
