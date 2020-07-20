@@ -6441,7 +6441,10 @@ void Context::syncCollectJSON(Json::Value &array, const std::vector<T*> &source)
         // When removing this, see the SyncPayload method, it relies on returning GUIDs
         syncTranslateGUIDToLocalID(payload);
 
-        if (!payload.isNull()) {
+        // If updating, there always has to be a payload
+        // When creating, it hypothetically doesn't need to be there
+        // Deleting doesn't have any payload at all
+        if (!payload.isNull() || i->SyncType() != "update") {
             item["payload"] = payload;
             item["type"] = i->SyncType();
             item["meta"] = i->SyncMetadata();
