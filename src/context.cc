@@ -6537,8 +6537,12 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
                     }
 
                     model->LoadFromJSON(i["payload"]["result"], isUsingSyncServer());
-                    model->ClearDirty();
                     model->ClearUnsynced();
+                    error err = save(false);
+                    if (err != noError) {
+                        displayError(err);
+                        return err;
+                    }
                 }
             }
             else if (i["payload"]["result"].isMember("error_message") && i["payload"]["result"]["error_message"].isMember("default_message")) {
