@@ -5572,11 +5572,17 @@ error Context::pushBatchedChanges(
         std::cerr << "RESPONSE: " << responseJson.toStyledString() << std::endl;
         logger.debug("Sync response to request ", lastRequestUUID_, ": ", request.toStyledString());
 
-        syncHandleResponse(responseJson["clients"], clients);
+        error err = syncHandleResponse(responseJson["clients"], clients);
+        if (err != noError)
+            return err;
         updateProjectClients(clients, projects);
-        syncHandleResponse(responseJson["projects"], projects);
+        err = syncHandleResponse(responseJson["projects"], projects);
+        if (err != noError)
+            return err;
         updateEntryProjects(projects, time_entries);
-        syncHandleResponse(responseJson["time_entries"], time_entries);
+        err = syncHandleResponse(responseJson["time_entries"], time_entries);
+        if (err != noError)
+            return err;
 
         stopwatch.stop();
         logger.debug("Sync success. Total = ", stopwatch.elapsed() / 1000, " ms");
@@ -6542,12 +6548,13 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
                     model->MarkAsDeletedOnServer();
                     continue;
                 }
-                logger.warning("Sync: Error when syncing ", modelInfo, ": ", errorMessage);
+                logger.error("Sync: Error when syncing ", modelInfo, ": ", errorMessage);
                 displayError(errorMessage);
+                return errorMessage;
             }
             else {
-                logger.warning("Sync: Server sent a malformed response for the item ", modelInfo);
-                logger.log("Sync: The response: ", i.toStyledString());
+                logger.error("Sync: Server sent a malformed response for the item ", modelInfo);
+                logger.debug("Sync: The response: ", i.toStyledString());
                 continue;
             }
         }
