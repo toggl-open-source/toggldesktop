@@ -294,12 +294,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error AsyncLogin(const std::string &email,
                      const std::string &password);
 
-    /// @param ssoConfirmationCode Set if this login call also needs to enable SSO for this user account. Empty by default.
     error Login(
         const std::string &email,
         const std::string &password,
-        const bool isSignup = false,
-        const std::string &ssoConfirmationCode = "");
+        const bool isSignup = false);
 
     error AsyncSignup(
         const std::string &email,
@@ -338,6 +336,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error GetSSOIdentityProvider(const std::string &email);
     error EnableSSO(const std::string &code, const std::string &api_token);
     void LoginSSO(const std::string api_token);
+    void SetNeedEnableSSO(const std::string code);
+    void ResetEnableSSO();
 
     error Logout();
 
@@ -865,6 +865,9 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     bool checkIfSkipPomodoro(TimeEntry *te);
 
     bool isUsingSyncServer() const;
+
+    bool need_enable_SSO;
+    std::string sso_confirmation_code;
 };
 void on_websocket_message(
     void *context,
