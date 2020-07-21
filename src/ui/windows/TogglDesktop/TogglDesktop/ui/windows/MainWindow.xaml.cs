@@ -912,7 +912,7 @@ namespace TogglDesktop
 
         public void ProcessStartupUri(string uri)
         {
-            SSOLoginView.ViewModel.AuthUri = new Uri(uri);
+            SSOLoginView.ViewModel.AuthUri.OnNext(new Uri(uri));
         }
 
         private void updateMinimumSize(IMainView activeView)

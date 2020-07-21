@@ -1,46 +1,56 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Web;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
 
 namespace TogglDesktop.ViewModels
 {
     public class SSOLoginViewModel : ReactiveValidationObject<SSOLoginViewModel>
     {
-        private ValidationHelper _uriValidationRule;
+        private ValidationHelper _emailValidation;
 
         public SSOLoginViewModel(Action<string, string> openLoginForm)
         {
             IsSignOnMode = true;
             LoginWithDifferentMethod = ReactiveCommand.Create(() => openLoginForm(null, null));
             LoginAndLinkSSO = ReactiveCommand.Create(() => openLoginForm(ConfirmationCode, Email));
-            Login = ReactiveCommand.Create(() => Toggl.GetIdentityProviderSSO(Email));
+            LoginCommand = ReactiveCommand.Create(Login);
             BackToSSOLogin = ReactiveCommand.Create(() => { IsSignOnMode = true; });
-            this.WhenAnyValue(x => x.AuthUri)
-                .Where(uri => uri != null)
-                .Select(uri => HttpUtility.ParseQueryString(uri.Query).Get("apiToken"))
+            var uriObservable = AuthUri.Where(uri => uri != null);
+            uriObservable.Select(uri => HttpUtility.ParseQueryString(uri.Query).Get("apiToken"))
                 .Where(token => !string.IsNullOrEmpty(token))
                 .Subscribe(Toggl.LoginSSO);
-            this.WhenAnyValue(x => x.AuthUri)
-                .Where(uri => uri != null)
-                .Select(uri => HttpUtility.ParseQueryString(uri.Query).Get("confirmation_code"))
+            uriObservable.Select(uri => HttpUtility.ParseQueryString(uri.Query).Get("confirmation_code"))
                 .ToPropertyEx(this, x => x.ConfirmationCode);
+            uriObservable.Where(uri => HttpUtility.ParseQueryString(uri.Query).Get("apiToken") == null &&
+                                       HttpUtility.ParseQueryString(uri.Query).Get("confirmation_code") == null)
+                .Subscribe(uri => Toggl.NewError("Single Sign On is not configured for your email address." +
+                                                 " Please try a different login method or contact your administrator.",
+                    true));
             this.WhenAnyValue(x => x.ConfirmationCode)
                 .Where(code => !string.IsNullOrEmpty(code))
                 .Subscribe(next => IsSignOnMode = false);
             Toggl.OnLoginSSO += HandleDisplayLoginSSO;
         }
 
-        //private bool IsAuthUriValid()
-        //{
-        //    _uriValidationRule ??= this.ValidationRule(x => x.AuthUri,
-        //        IsSuccessfulLogin, "Single Sign On is not configured for your email address." +
-        //                           " Please try a different login method or contact your administrator.");
-        //    return _uriValidationRule.IsValid;
-        //}
+        private bool IsEmailValid()
+        {
+            _emailValidation ??= this.ValidationRule(x => x.Email,
+                x => x == null || x.IsValidEmailAddress(), "Please enter a valid email");
+            return _emailValidation.IsValid;
+        }
+
+        private bool Login()
+        {
+            if (!IsEmailValid()) return false;
+            return Toggl.GetIdentityProviderSSO(Email);
+        }
 
         private void HandleDisplayLoginSSO(string ssoUrl)
         {
@@ -49,7 +59,7 @@ namespace TogglDesktop.ViewModels
 
         public ReactiveCommand<Unit, Unit> LoginWithDifferentMethod { get; }
 
-        public ReactiveCommand<Unit,bool> Login { get; }
+        public ReactiveCommand<Unit,bool> LoginCommand { get; }
 
         public ReactiveCommand<Unit, Unit> LoginAndLinkSSO { get; }
 
@@ -61,18 +71,8 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public bool IsSignOnMode { get; set; }
 
-        [Reactive]
-        public Uri AuthUri { get; set; }
+        public Subject<Uri> AuthUri { get; } = new Subject<Uri>();
 
         private string ConfirmationCode { [ObservableAsProperty] get; }
-
-        //private bool IsSuccessfulLogin(Uri uri)
-        //{
-        //    if (uri == null)
-        //        return false;
-
-        //    return HttpUtility.ParseQueryString(uri.Query).Get("confirmation_code") != null &&
-        //           HttpUtility.ParseQueryString(uri.Query).Get("email") != null;
-        //}
     }
 }

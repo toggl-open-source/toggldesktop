@@ -323,6 +323,9 @@
     <Compile Include="ui\views\SSOLoginView.xaml.cs">
       <DependentUpon>SSOLoginView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\views\ValidationErrorControl.xaml.cs">
+      <DependentUpon>ValidationErrorControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\windows\MiniTimerWindow.xaml.cs">
       <DependentUpon>MiniTimerWindow.xaml</DependentUpon>
     </Compile>
@@ -607,6 +610,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\views\TimerEntryListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\views\ValidationErrorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

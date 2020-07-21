@@ -121,19 +121,9 @@
                           Height="24"
                           Width="200"
                           Visibility="{Binding SelectedConfirmAction, Converter={StaticResource HasAnyFlagToVisibilityConverter}, ConverterParameter={x:Static viewModels:ConfirmAction.LogInAndLinkSSO}}">
-                        <Border Background="{StaticResource Toggl.ValidationErrorBackground}"
-                                Visibility="{Binding ShowLoginError, Converter={StaticResource FalseToHiddenVisibilityConverter}}">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="3"
-                                                  ShadowDepth="2"
-                                                  Direction="270"
-                                                  Opacity="0.2" />
-                            </Border.Effect>
-                        </Border>
-                        <TextBlock Style="{StaticResource Toggl.CaptionWhiteText}"
-                                   Text="Incorrect email or password"
-                                   Padding="8 3 5 8"
-                                   Visibility="{Binding ShowLoginError, Converter={StaticResource FalseToHiddenVisibilityConverter}}"/>
+                        <togglDesktop:ValidationErrorControl 
+                            Visibility="{Binding ShowLoginError, Converter={StaticResource FalseToHiddenVisibilityConverter}}"
+                            ErrorText="Incorrect email or password"/>
                     </Grid>
 
                     <ComboBox Name="countryComboBox"

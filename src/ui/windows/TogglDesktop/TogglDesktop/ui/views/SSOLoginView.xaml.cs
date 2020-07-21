@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Forms.VisualStyles;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using ReactiveUI;
 using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
@@ -26,14 +17,13 @@ namespace TogglDesktop
     {
         public SSOLoginViewModel ViewModel
         {
-            get => (SSOLoginViewModel) DataContext;
+            get => DataContext as SSOLoginViewModel;
             set => DataContext = value;
         }
 
         public SSOLoginView()
         {
             InitializeComponent();
-            
         }
 
         public void Activate(bool allowAnimation)
@@ -82,10 +72,25 @@ namespace TogglDesktop
 
         public bool TryShowErrorInsideView(string errorMessage)
         {
-            //throw new NotImplementedException();
             return false;
         }
 
         public Brush TitleBarBrush => this.Background;
+
+        private void HandleEmailTextBoxLoaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox emailTextBox)
+            {
+                ViewModel.WhenAnyValue(x => x.HasErrors)
+                    .Where(error => true)
+                    .Subscribe(_ => ShowErrorAndFocus(emailTextBox));
+            }
+        }
+
+        private void ShowErrorAndFocus(TextBox textBox)
+        {
+            textBox.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            textBox.Focus();
+        }
     }
 }
