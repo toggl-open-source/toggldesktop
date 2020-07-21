@@ -1,6 +1,15 @@
 {
     "versions": [
         {
+            "version": "7.5.226",
+            "rows": [
+                "Autocomplete input field fixes",
+                "Performance improvements"
+            ],
+            "date": "July 21st 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.4.1111",
             "rows": [
                 "Idle notification now makes the main window focused",
