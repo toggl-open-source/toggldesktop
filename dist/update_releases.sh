@@ -21,6 +21,9 @@ prepare() {
   cp dist/update_updates.sh tmp/update_updates.sh
   cp dist/update_release_links.sh tmp/update_release_links.sh
   cp dist/parse_releases.sh tmp/parse_releases.sh
+
+  git config user.name "runner"
+  git config user.email "action@github.com"
 }
 
 fetch_releases () {
