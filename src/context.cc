@@ -5502,8 +5502,6 @@ error Context::pushBatchedChanges(
 
         *had_something_to_push = true;
 
-        bool isPremium = false;
-
         std::map<std::string, BaseModel *> models;
 
         std::vector<TimeEntry *> time_entries;
@@ -5523,7 +5521,6 @@ error Context::pushBatchedChanges(
             if (api_token.empty()) {
                 return error("cannot push changes without API token");
             }
-            isPremium = user_->HasPremiumWorkspaces();
 
             collectPushableModels(
                 user_->related.TimeEntries,
@@ -5550,11 +5547,11 @@ error Context::pushBatchedChanges(
         // the conditions should be here so we don't create unnecessary empty JSON items
         // (accessing a JSON item by a name allocates an empty item)
         if (!clients.empty())
-            syncCollectJSON(request["clients"], clients, isPremium);
+            syncCollectJSON(request["clients"], clients);
         if (!projects.empty())
-            syncCollectJSON(request["projects"], projects, isPremium);
+            syncCollectJSON(request["projects"], projects);
         if (!time_entries.empty())
-            syncCollectJSON(request["time_entries"], time_entries, isPremium);
+            syncCollectJSON(request["time_entries"], time_entries);
 
         if (request.empty())
             return noError;
@@ -5588,11 +5585,17 @@ error Context::pushBatchedChanges(
         std::cerr << "RESPONSE: " << responseJson.toStyledString() << std::endl;
         logger.debug("Sync response to request ", lastRequestUUID_, ": ", request.toStyledString());
 
-        syncHandleResponse(responseJson["clients"], clients);
+        error err = syncHandleResponse(responseJson["clients"], clients);
+        if (err != noError)
+            return err;
         updateProjectClients(clients, projects);
-        syncHandleResponse(responseJson["projects"], projects);
+        err = syncHandleResponse(responseJson["projects"], projects);
+        if (err != noError)
+            return err;
         updateEntryProjects(projects, time_entries);
-        syncHandleResponse(responseJson["time_entries"], time_entries);
+        err = syncHandleResponse(responseJson["time_entries"], time_entries);
+        if (err != noError)
+            return err;
 
         stopwatch.stop();
         logger.debug("Sync success. Total = ", stopwatch.elapsed() / 1000, " ms");
@@ -6420,7 +6423,7 @@ error Context::pullUserPreferences() {
 }
 
 template<typename T>
-void Context::syncCollectJSON(Json::Value &array, const std::vector<T*> &source, bool isPremium) {
+void Context::syncCollectJSON(Json::Value &array, const std::vector<T*> &source) {
     // The actual heavy lifting
     // Go through the list of pointers and ask each model to generate a Sync server JSON
     // The generation itself is split into three parts - We need to know:
@@ -6437,14 +6440,13 @@ void Context::syncCollectJSON(Json::Value &array, const std::vector<T*> &source,
 
         i->EnsureGUID();
 
-        item["type"] = i->SyncType();
-        item["meta"] = i->SyncMetadata();
-
         Json::Value payload = i->SyncPayload();
 
         // Remove some premium-feature-only data because we don't have a nullable bool property here nor in the database
-        if (!isPremium)
+        Workspace *ws = user_->related.WorkspaceByID(i->WID());
+        if (!ws || !ws->Premium()) {
             syncStripPremiumDataFromModelJSON(payload);
+        }
 
         // And also translate local GUIDs to LocalIDs because Sync server went with using TmpID instead of GUIDs
         // This is fine for now (the actual resolution of these dependencies will happen only when syncing a large chunk of offline data)
@@ -6452,10 +6454,17 @@ void Context::syncCollectJSON(Json::Value &array, const std::vector<T*> &source,
         // When removing this, see the SyncPayload method, it relies on returning GUIDs
         syncTranslateGUIDToLocalID(payload);
 
-        if (!payload.isNull())
+        // If updating, there always has to be a payload
+        // When creating, it hypothetically doesn't need to be there
+        // Deleting doesn't have any payload at all
+        if (!payload.isNull() || i->SyncType() != "update") {
             item["payload"] = payload;
+            item["type"] = i->SyncType();
+            item["meta"] = i->SyncMetadata();
 
-        array.append(item);
+            array.append(item);
+        }
+
     }
 }
 
@@ -6544,8 +6553,12 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
                     }
 
                     model->LoadFromJSON(i["payload"]["result"], isUsingSyncServer());
-                    model->ClearDirty();
                     model->ClearUnsynced();
+                    error err = save(false);
+                    if (err != noError) {
+                        displayError(err);
+                        return err;
+                    }
                 }
             }
             else if (i["payload"]["result"].isMember("error_message") && i["payload"]["result"]["error_message"].isMember("default_message")) {
@@ -6555,12 +6568,13 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
                     model->MarkAsDeletedOnServer();
                     continue;
                 }
-                logger.warning("Sync: Error when syncing ", modelInfo, ": ", errorMessage);
+                logger.error("Sync: Error when syncing ", modelInfo, ": ", errorMessage);
                 displayError(errorMessage);
+                return errorMessage;
             }
             else {
-                logger.warning("Sync: Server sent a malformed response for the item ", modelInfo);
-                logger.log("Sync: The response: ", i.toStyledString());
+                logger.error("Sync: Server sent a malformed response for the item ", modelInfo);
+                logger.debug("Sync: The response: ", i.toStyledString());
                 continue;
             }
         }

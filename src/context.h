@@ -683,7 +683,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error pullUserPreferences();
 
     template <typename T>
-    void syncCollectJSON(Json::Value &array, const std::vector<T*> &source, bool isPremium);
+    void syncCollectJSON(Json::Value &array, const std::vector<T*> &source);
     void syncStripPremiumDataFromModelJSON(Json::Value &item);
     void syncTranslateGUIDToLocalID(Json::Value &item);
     template <typename T>

@@ -15,7 +15,7 @@ namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
  public:
-    Project() : BaseModel() {}
+    Project() : BaseModel() { EnsureGUID(); }
 
     Property<std::string> Name { "" };
     Property<std::string> Color { "" };
