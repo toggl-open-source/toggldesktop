@@ -127,7 +127,9 @@ final class TimelineDatasource: NSObject {
         collectionView.register(NSNib(nibNamed: Constants.TimeEntryCellXIB, bundle: nil), forItemWithIdentifier: Constants.TimeEntryCellID)
         collectionView.register(NSNib(nibNamed: Constants.ActivityCellXIB, bundle: nil), forItemWithIdentifier: Constants.ActivityCellID)
         collectionView.register(NSNib(nibNamed: Constants.EmptyTimeEntryCellXIB, bundle: nil), forItemWithIdentifier: Constants.EmptyTimeEntryCellID)
-        collectionView.register(TimelineDividerView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionFooter, withIdentifier: Constants.DividerViewID)
+        collectionView.register(TimelineDividerView.self,
+                                forSupplementaryViewOfKind: NSCollectionView.elementKindSectionFooter,
+                                withIdentifier: Constants.DividerViewID)
         collectionView.register(NSNib(nibNamed: Constants.BackgroundViewXIB, bundle: nil), forItemWithIdentifier: Constants.BackgroundViewID)
         registerForDragAndDrop()
     }
@@ -140,7 +142,7 @@ final class TimelineDatasource: NSObject {
         render(data)
         delegate?.shouldHandleEmptyState(data)
     }
-    
+
     private func render(_ timeline: TimelineData) {
         // Skip reload if the user is resizing
         guard !isUserOnAction else { return }
@@ -284,7 +286,9 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
         }
     }
 
-    func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
+    func collectionView(_ collectionView: NSCollectionView,
+                        viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind,
+                        at indexPath: IndexPath) -> NSView {
         guard let section = TimelineData.Section(rawValue: indexPath.section) else { return NSView() }
         if kind == NSCollectionView.elementKindSectionFooter {
             let view = collectionView.makeSupplementaryView(ofKind: kind,
@@ -534,7 +538,7 @@ extension TimelineDatasource {
     func collectionView(_ collectionView: NSCollectionView, canDragItemsAt indexPaths: Set<IndexPath>, with event: NSEvent) -> Bool {
         guard let firstIndex = indexPaths.first,
             let draggedCell = collectionView.item(at: firstIndex) else { return false }
-        
+
         // Only accept drag on Timeline Entry
         switch draggedCell {
         case let cell as TimelineTimeEntryCell:
@@ -558,12 +562,18 @@ extension TimelineDatasource {
         return pbItem
     }
 
-    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
+    func collectionView(_ collectionView: NSCollectionView,
+                        draggingSession session: NSDraggingSession,
+                        willBeginAt screenPoint: NSPoint,
+                        forItemsAt indexPaths: Set<IndexPath>) {
         draggingSession.indexPath = indexPaths.first
         delegate?.shouldHideAllPopover()
     }
 
-    func collectionView(_ collectionView: NSCollectionView, validateDrop draggingInfo: NSDraggingInfo, proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>, dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
+    func collectionView(_ collectionView: NSCollectionView,
+                        validateDrop draggingInfo: NSDraggingInfo,
+                        proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>,
+                        dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
 
         // Local position of the dragging mouse
         let position = collectionView.convert(draggingInfo.draggingLocation, from: nil)
@@ -576,7 +586,10 @@ extension TimelineDatasource {
         return .copy
     }
 
-    func collectionView(_ collectionView: NSCollectionView, acceptDrop draggingInfo: NSDraggingInfo, indexPath: IndexPath, dropOperation: NSCollectionView.DropOperation) -> Bool {
+    func collectionView(_ collectionView: NSCollectionView,
+                        acceptDrop draggingInfo: NSDraggingInfo,
+                        indexPath: IndexPath,
+                        dropOperation: NSCollectionView.DropOperation) -> Bool {
 
         // Verify that the drop position is in the Timeline Entry Section
         let position = collectionView.convert(draggingInfo.draggingLocation, from: nil)
@@ -605,7 +618,10 @@ extension TimelineDatasource {
         return true
     }
 
-    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, dragOperation operation: NSDragOperation) {
+    func collectionView(_ collectionView: NSCollectionView,
+                        draggingSession session: NSDraggingSession,
+                        endedAt screenPoint: NSPoint,
+                        dragOperation operation: NSDragOperation) {
         let startTime = draggingSession.finalStartTime
         let timeEntry = draggingSession.item
 

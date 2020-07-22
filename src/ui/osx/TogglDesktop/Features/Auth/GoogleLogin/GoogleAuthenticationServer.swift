@@ -53,7 +53,6 @@ final class GoogleAuthenticationServer {
     // MARK: Variables
 
     init() {
-        
     }
 
     // MARK: Public

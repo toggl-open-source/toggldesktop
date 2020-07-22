@@ -24,7 +24,7 @@ struct TimelineInitialDateProvider {
             let timeInterval = defaults.double(forKey: Constants.lastTimelineActiveDateKey)
             return Date(timeIntervalSince1970: timeInterval)
         }
-        set {
+        set { // swiftlint:disable:this unused_setter_value
             defaults.set(Date().timeIntervalSince1970, forKey: Constants.lastTimelineActiveDateKey)
         }
     }

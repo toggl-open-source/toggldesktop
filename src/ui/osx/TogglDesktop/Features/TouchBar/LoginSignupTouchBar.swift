@@ -34,7 +34,7 @@ final class LoginSignupTouchBar: NSObject {
 
     // MARK: Variable
 
-    @objc weak var delegate: LoginSignupTouchBarDelegate?
+    weak var delegate: LoginSignupTouchBarDelegate?
 
     private lazy var loginButton: NSButton = {
         let btn = NSButton(title: "Log in", target: self, action: #selector(self.btnOnTap(_:)))
@@ -97,15 +97,19 @@ final class LoginSignupTouchBar: NSObject {
 
     // MARK: Public
 
-    @objc func makeTouchBar(for mode: LoginSignupMode) -> NSTouchBar {
+    func makeTouchBar(for mode: LoginSignupMode) -> NSTouchBar {
         let touchBar = NSTouchBar()
         touchBar.delegate = self
         touchBar.customizationIdentifier = .loginSignUpTouchBar
         switch mode {
         case .login:
-            touchBar.defaultItemIdentifiers = isAppleSignInAvailable ? [.loginItem, .loginAppleItem, .loginGoogleItem] : [.loginItem, .loginGoogleItem]
+            touchBar.defaultItemIdentifiers = isAppleSignInAvailable ?
+                [.loginItem, .loginAppleItem, .loginGoogleItem] :
+                [.loginItem, .loginGoogleItem]
         case .signUp:
-            touchBar.defaultItemIdentifiers = isAppleSignInAvailable ? [.signUpItem, .signUpAppleItem, .signUpGoogleItem] : [.signUpItem, .signUpGoogleItem]
+            touchBar.defaultItemIdentifiers = isAppleSignInAvailable ?
+                [.signUpItem, .signUpAppleItem, .signUpGoogleItem] :
+                [.signUpItem, .signUpGoogleItem]
         }
         return touchBar
     }
@@ -129,7 +133,6 @@ final class LoginSignupTouchBar: NSObject {
         }
     }
 }
-
 
 // MARK: Private
 

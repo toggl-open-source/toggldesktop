@@ -2151,6 +2151,7 @@
 				BAE64E452368334000244D2B /* Run Formatter */,
 				BAE64E462368334000244D2B /* [CP] Embed Pods Frameworks */,
 				BAE64E472368334000244D2B /* Upload Bugsnag dSYM */,
+				4921BE2724C8CAD9006E8BB5 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -2438,7 +2439,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${PODS_ROOT}/SwiftLint/swiftlint\n";
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
+		};
+		4921BE2724C8CAD9006E8BB5 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
 		};
 		7407F1F41AA80466000380C4 /* Run Script (Fix dynamic library paths in Frameworks) */ = {
 			isa = PBXShellScriptBuildPhase;

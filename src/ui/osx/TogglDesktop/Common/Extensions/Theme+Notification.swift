@@ -20,7 +20,7 @@ extension NSWindow {
 
     @objc func observerEffectiveAppearanceNotification() -> NSKeyValueObservation {
         return observe(\.effectiveAppearance) {[weak self] (_, _) in
-            guard let _ = self else { return }
+            guard self != nil else { return }
             NotificationCenter.default.post(name: .EffectiveAppearanceChanged, object: nil)
         }
     }

@@ -12,7 +12,6 @@ final class ProjectColorPool {
 
     static let shared = ProjectColorPool()
 
-
     // MARK: Variables
 
     private(set) var colors: [ProjectColor] = []

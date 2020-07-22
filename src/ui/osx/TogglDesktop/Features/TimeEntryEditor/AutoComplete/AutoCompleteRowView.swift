@@ -19,7 +19,7 @@ final class AutoCompleteRowView: NSTableRowView {
     }()
 
     override func drawSelection(in dirtyRect: NSRect) {
-        let selectionRect = NSInsetRect(self.bounds, 5, 2)
+        let selectionRect = bounds.insetBy(dx: 5, dy: 2)
         selectionColor.setFill()
         let selectionPath = NSBezierPath(roundedRect: selectionRect, xRadius: 8, yRadius: 8)
         selectionPath.fill()

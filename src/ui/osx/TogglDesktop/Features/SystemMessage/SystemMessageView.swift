@@ -11,7 +11,7 @@ import Cocoa
 final class SystemMessageView: NSView {
 
     // MARK: OUTLET
-    
+
     @IBOutlet weak var iconContainerView: NSBox!
     @IBOutlet weak var iconBtn: NSButton!
     private var floatingViewLeftConstraint: NSLayoutConstraint!

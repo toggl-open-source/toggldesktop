@@ -64,16 +64,16 @@ final class CalendarDataSource: NSObject {
         guard let selectedDate = selectedDate else { return }
         delegate?.calendarDidSelect(buildDate(day: selectedDate.day, month: selectedDate.month, year: selectedDate.year))
     }
-    
+
     private func calculateDates(from selectedDate: Date) -> [DateInfo] {
         let firstDayOfWeek = selectedDate.firstDayOfWeek() ?? selectedDate
         let from = Calendar.current.date(byAdding: .weekOfYear, value: -Constants.shiftWeek, to: firstDayOfWeek)!
         let to = Calendar.current.date(byAdding: .weekOfYear, value: Constants.shiftWeek, to: firstDayOfWeek)!
-        let _from = DateInfo(date: from)
-        let _to = DateInfo(date: to)
+        let fromInfo = DateInfo(date: from)
+        let toInfo = DateInfo(date: to)
 
-        var currentMonth = _from.month
-        var currentYear = _from.year
+        var currentMonth = fromInfo.month
+        var currentYear = fromInfo.year
 
         var numberOfMonths = from.monthBetween(endDate: to)
         numberOfMonths += 1
@@ -96,8 +96,8 @@ final class CalendarDataSource: NSObject {
         }
 
         // Trip out the first and last
-        let first = calendar.first!.dropPrefix(at: _from.day)
-        let last = calendar.last!.dropSuffix(at: _to.day)
+        let first = calendar.first!.dropPrefix(at: fromInfo.day)
+        let last = calendar.last!.dropSuffix(at: toInfo.day)
         calendar[0] = first
         calendar[calendar.count - 1] = last
 
@@ -135,7 +135,9 @@ extension CalendarDataSource: NSCollectionViewDelegate, NSCollectionViewDataSour
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        guard let view = collectionView.makeItem(withIdentifier: Constants.cellID, for: indexPath) as? DateCellViewItem else { return NSCollectionViewItem() }
+        guard let view = collectionView.makeItem(withIdentifier: Constants.cellID, for: indexPath) as? DateCellViewItem else {
+            return NSCollectionViewItem()
+        }
         let info = calendar[indexPath.item]
         let isCurrentDate = info.isSameDay(with: currentDate!)
         let isCurrentMonth = info.month == currentDate!.month

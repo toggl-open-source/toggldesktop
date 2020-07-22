@@ -9,8 +9,7 @@
 import Cocoa
 
 @objc protocol InAppMessageViewControllerDelegate: class {
-
-    func InAppMessageViewControllerShouldDismiss()
+    func inAppMessageViewControllerShouldDismiss()
 }
 
 final class InAppMessageViewController: NSViewController {
@@ -23,7 +22,7 @@ final class InAppMessageViewController: NSViewController {
     @IBOutlet weak var actionBtn: FlatButton!
     @IBOutlet weak var bottomContraint: NSLayoutConstraint!
     @IBOutlet weak var containerWidthConstraint: NSLayoutConstraint!
-    
+
     // MARK: Variables
 
     @objc weak var delegate: InAppMessageViewControllerDelegate?
@@ -37,7 +36,7 @@ final class InAppMessageViewController: NSViewController {
     }
 
     @IBAction func closeBtnOnTap(_ sender: Any) {
-        hide();
+        hide()
         DesktopLibraryBridge.shared().setClickCloseBtnInAppMessage()
     }
 
@@ -77,7 +76,7 @@ final class InAppMessageViewController: NSViewController {
             guard let strongSelf = self else { return }
             strongSelf.bottomContraint.animator().constant = -strongSelf.containerView.frame.height
         }, complete: {[weak self] in
-                self?.delegate?.InAppMessageViewControllerShouldDismiss()
+                self?.delegate?.inAppMessageViewControllerShouldDismiss()
         })
     }
 }

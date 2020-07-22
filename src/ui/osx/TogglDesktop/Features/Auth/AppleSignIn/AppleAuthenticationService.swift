@@ -56,7 +56,7 @@ final class AppleAuthenticationService: NSObject {
         // Validate again since the user can revork the permission later
         // Logout if the credential is invalid
         let appleIDProvider = ASAuthorizationAppleIDProvider()
-        appleIDProvider.getCredentialState(forUserID: userID) { (credentialState, error) in
+        appleIDProvider.getCredentialState(forUserID: userID) { credentialState, _ in
             switch credentialState {
             case .authorized:
                 break // The Apple ID credential is valid.

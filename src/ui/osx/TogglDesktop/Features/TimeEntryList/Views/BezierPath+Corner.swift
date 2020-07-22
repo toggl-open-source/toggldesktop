@@ -103,8 +103,7 @@ extension NSBezierPath {
         if corners.contains(.bottomRight) {
             line(to: CGPoint(x: maxX - cornerRadius, y: minY))
             curve(to: CGPoint(x: maxX, y: minY + cornerRadius), controlPoint1: bottomRightCorner, controlPoint2: bottomRightCorner)
-        }
-        else {
+        } else {
             line(to: bottomRightCorner)
         }
 
@@ -113,8 +112,7 @@ extension NSBezierPath {
         if corners.contains(.topRight) {
             line(to: CGPoint(x: maxX, y: maxY - cornerRadius))
             curve(to: CGPoint(x: maxX - cornerRadius, y: maxY), controlPoint1: topRightCorner, controlPoint2: topRightCorner)
-        }
-        else {
+        } else {
             line(to: topRightCorner)
         }
 
@@ -123,8 +121,7 @@ extension NSBezierPath {
         if corners.contains(.topLeft) {
             line(to: CGPoint(x: minX + cornerRadius, y: maxY))
             curve(to: CGPoint(x: minX, y: maxY - cornerRadius), controlPoint1: topLeftCorner, controlPoint2: topLeftCorner)
-        }
-        else {
+        } else {
             line(to: topLeftCorner)
         }
 
@@ -133,8 +130,7 @@ extension NSBezierPath {
         if corners.contains(.bottomLeft) {
             line(to: CGPoint(x: minX, y: minY + cornerRadius))
             curve(to: CGPoint(x: minX + cornerRadius, y: minY), controlPoint1: bottomLeftCorner, controlPoint2: bottomLeftCorner)
-        }
-        else {
+        } else {
             line(to: bottomLeftCorner)
         }
     }
@@ -143,7 +139,7 @@ extension NSBezierPath {
 extension NSBezierPath {
 
     var cgPath: CGPath {
-        get { return self.transformToCGPath() }
+        return self.transformToCGPath()
     }
 
     /// Transforms the NSBezierPath into a CGPath
@@ -171,7 +167,9 @@ extension NSBezierPath {
                     path.addLine(to: CGPoint(x: points[0].x, y: points[0].y))
                     didClosePath = false
                 case .curveTo:
-                    path.addCurve(to: CGPoint(x: points[0].x, y: points[0].y), control1: CGPoint(x: points[1].x, y: points[1].y), control2: CGPoint(x: points[2].x, y: points[2].y))
+                    path.addCurve(to: CGPoint(x: points[0].x, y: points[0].y),
+                                  control1: CGPoint(x: points[1].x, y: points[1].y),
+                                  control2: CGPoint(x: points[2].x, y: points[2].y))
                     didClosePath = false
                 case .closePath:
                     path.closeSubpath()

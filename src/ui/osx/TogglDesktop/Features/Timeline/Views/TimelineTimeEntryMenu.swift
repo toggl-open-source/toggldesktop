@@ -61,8 +61,12 @@ extension TimelineTimeEntryMenu {
         let continueMenu = NSMenuItem(title: "Continue this entry", action: #selector(self.continueMenuOnTap), keyEquivalent: "")
         let deleteMenu = NSMenuItem(title: "Delete", action: #selector(self.deleteEntryOnTap), keyEquivalent: "")
         startNewMenu = NSMenuItem(title: "Start entry from the end of this entry", action: #selector(self.startEntryOnTap), keyEquivalent: "")
-        conflictChangeFirstMenu = NSMenuItem(title: "Change first entry stop time", action: #selector(self.changeFirstEntryStopTimeOnTap), keyEquivalent: "")
-        conflictChangeLastMenu = NSMenuItem(title: "Change last entry start time", action: #selector(self.changeLastEntryStartTimeOnTap), keyEquivalent: "")
+        conflictChangeFirstMenu = NSMenuItem(title: "Change first entry stop time",
+                                             action: #selector(self.changeFirstEntryStopTimeOnTap),
+                                             keyEquivalent: "")
+        conflictChangeLastMenu = NSMenuItem(title: "Change last entry start time",
+                                            action: #selector(self.changeLastEntryStartTimeOnTap),
+                                            keyEquivalent: "")
 
         // Default items
         let menus: [NSMenuItem] = [continueMenu,

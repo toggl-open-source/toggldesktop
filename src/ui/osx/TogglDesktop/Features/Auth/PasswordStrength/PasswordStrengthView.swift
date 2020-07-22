@@ -42,7 +42,7 @@ final class PasswordStrengthView: NSViewController {
     }
 
     // MARK: View Cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareUI()
@@ -88,7 +88,7 @@ extension PasswordStrengthView {
         view.layer?.cornerRadius = 4.0
         view.layer?.shadowOpacity = 1.0
         view.layer?.shadowColor = NSColor(calibratedWhite: 0, alpha: 0.1).cgColor
-        view.layer?.shadowOffset = NSMakeSize(0, -2)
+        view.layer?.shadowOffset = NSSize(width: 0, height: -2)
         view.layer?.shadowRadius = 4
     }
 

@@ -23,7 +23,7 @@ final class VerticallyCenteredTextFieldCell: NSTextFieldCell {
         newRect.origin.x += leftPadding
         newRect.size.width -= leftPadding
         newRect.size.width -= rightPadding
-        
+
         // When the text field is being edited or selected, we have to turn off the magic because it screws up
         // the configuration of the field editor.  We sneak around this by intercepting selectWithFrame and editWithFrame and sneaking a
         // reduced, centered rect in at the last minute.
@@ -49,9 +49,9 @@ final class VerticallyCenteredTextFieldCell: NSTextFieldCell {
                          start selStart: Int,
                          length selLength: Int) {
         let newRect = self.drawingRect(forBounds: rect)
-        isEditingOrSelecting = true;
+        isEditingOrSelecting = true
         super.select(withFrame: newRect, in: controlView, editor: textObj, delegate: delegate, start: selStart, length: selLength)
-        isEditingOrSelecting = false;
+        isEditingOrSelecting = false
     }
 
     override func edit(withFrame rect: NSRect,
@@ -60,7 +60,7 @@ final class VerticallyCenteredTextFieldCell: NSTextFieldCell {
                        delegate: Any?,
                        event: NSEvent?) {
         let newRect = self.drawingRect(forBounds: rect)
-        isEditingOrSelecting = true;
+        isEditingOrSelecting = true
         super.edit(withFrame: newRect, in: controlView, editor: textObj, delegate: delegate, event: event)
         isEditingOrSelecting = false
     }

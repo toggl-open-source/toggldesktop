@@ -23,7 +23,7 @@ final class TagTokenView: NSView {
     @IBOutlet weak var closeButton: CursorButton!
     @IBOutlet weak var gradientView: NSImageView!
     @IBOutlet weak var actionButton: NSButton!
-    
+
     // MARK: Variables
 
     weak var delegate: TagTokenViewDelegate?

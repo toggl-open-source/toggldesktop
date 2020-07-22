@@ -14,8 +14,12 @@ extension Sequence {
         var categories: [[Iterator.Element]] = []
         for element in self {
             let key = dateKey(element)
-            guard let dayIndex = categories.firstIndex(where: { $0.contains(where: { Calendar.current.isDate(dateKey($0), inSameDayAs: key) }) }) else {
-                guard let nextIndex = categories.firstIndex(where: { $0.contains(where: { dateKey($0).compare(key) == (ascending ? .orderedDescending : .orderedAscending) }) }) else {
+            guard let dayIndex = categories.firstIndex(where: {
+                $0.contains { Calendar.current.isDate(dateKey($0), inSameDayAs: key) }
+            }) else {
+                guard let nextIndex = categories.firstIndex(where: {
+                    $0.contains { dateKey($0).compare(key) == (ascending ? .orderedDescending : .orderedAscending) }
+                }) else {
                     categories.append([element])
                     continue
                 }

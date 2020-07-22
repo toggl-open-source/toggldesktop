@@ -71,7 +71,9 @@ extension SystemPermissionManager {
     private func presentScreenRecordingAlert(_ complete: () -> Void) {
         let alert = NSAlert()
         alert.messageText = "Screen Recording permission not granted!"
-        alert.informativeText = "To get the focused application window name properly for the Timeline, TogglDesktop needs to be granted the Screen Recording permission in Security & Privacy in System Preferences .\n\nPlease open System Preferences -> Security & Privacy -> Privacy Tab -> Select Screen Recording and enable TogglDesktop app."
+        alert.informativeText = "To get the focused application window name properly for the Timeline, TogglDesktop needs" +
+            "to be granted the Screen Recording permission in Security & Privacy in System Preferences." +
+            "\n\nPlease open System Preferences -> Security & Privacy -> Privacy Tab -> Select Screen Recording and enable TogglDesktop app."
         alert.alertStyle = .warning
         alert.addButton(withTitle: "Open")
         alert.addButton(withTitle: "Later")
@@ -116,20 +118,20 @@ extension SystemPermissionManager {
         let mainDisplay    = CGMainDisplayID()
         let displayBounds  = CGDisplayBounds(mainDisplay)
         let recordingQueue = DispatchQueue.global(qos: .background)
-        let displayStreamProps : [CFString : Any] = [
-            CGDisplayStream.preserveAspectRatio: kCFBooleanTrue,
-            CGDisplayStream.showCursor:          kCFBooleanTrue,
-            CGDisplayStream.minimumFrameTime:    60,
+        let displayStreamProps: [CFString: Any] = [
+            CGDisplayStream.preserveAspectRatio: kCFBooleanTrue!,
+            CGDisplayStream.showCursor: kCFBooleanTrue!,
+            CGDisplayStream.minimumFrameTime: 60
         ]
 
         let displayStream = CGDisplayStream(
             dispatchQueueDisplay: mainDisplay,
-            outputWidth:          Int(displayBounds.width),
-            outputHeight:         Int(displayBounds.height),
-            pixelFormat:          Int32(kCVPixelFormatType_32BGRA),
-            properties:           displayStreamProps as CFDictionary,
-            queue:                recordingQueue,
-            handler: { status, displayTime, frameSurface, updateRef in
+            outputWidth: Int(displayBounds.width),
+            outputHeight: Int(displayBounds.height),
+            pixelFormat: Int32(kCVPixelFormatType_32BGRA),
+            properties: displayStreamProps as CFDictionary,
+            queue: recordingQueue,
+            handler: { _, _, _, _ in
                 print("is only called once")
         }
         )

@@ -48,7 +48,10 @@ extension HoverImageView {
 
     private func initTrackingArea() {
         if trackingAreas.isEmpty {
-            let tracking = NSTrackingArea(rect: bounds, options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect], owner: self, userInfo: nil)
+            let tracking = NSTrackingArea(rect: bounds,
+                                          options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect],
+                                          owner: self,
+                                          userInfo: nil)
             addTrackingArea(tracking)
             updateTrackingAreas()
         }

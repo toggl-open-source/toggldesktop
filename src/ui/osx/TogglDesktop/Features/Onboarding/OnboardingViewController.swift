@@ -25,7 +25,7 @@ final class OnboardingViewController: NSViewController {
     weak var delegate: OnboardingViewControllerDelegate?
     private var shouldClosePopover = false
     private weak var presentView: NSView?
-    private lazy var contentController: OnboardingContentViewController = OnboardingContentViewController(nibName: "OnboardingContentViewController", bundle: nil)
+    private lazy var contentController = OnboardingContentViewController(nibName: "OnboardingContentViewController", bundle: nil)
 
     /// The inner popover to present the onboard
     private lazy var popover: NSPopover = {
@@ -151,7 +151,7 @@ extension OnboardingViewController: NSPopoverDelegate {
     func popoverShouldClose(_ popover: NSPopover) -> Bool {
         return shouldClosePopover
     }
-    
+
     func popoverWillClose(_ notification: Notification) {
         delegate?.onboardingViewControllerDidClose()
     }

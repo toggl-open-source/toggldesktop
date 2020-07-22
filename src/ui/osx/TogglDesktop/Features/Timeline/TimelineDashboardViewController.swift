@@ -126,7 +126,7 @@ final class TimelineDashboardViewController: NSViewController {
     }()
 
     // MARK: View
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -184,7 +184,7 @@ final class TimelineDashboardViewController: NSViewController {
         // After the reload finishes, we hightlight a cell again
         updatePositionOfEditorIfNeed()
     }
-    
+
     @IBAction func recordSwitchOnChanged(_ sender: Any) {
         DesktopLibraryBridge.shared().enableTimelineRecord(recordSwitcher.isOn)
         if recordSwitcher.isOn {
@@ -265,7 +265,7 @@ extension TimelineDashboardViewController {
         datePickerView.setBackgroundForTimeline()
         emptyActivityLbl.frameCenterRotation = -90
         activityRecorderInfoImageView.delegate = self
-        
+
         // Forect Render the view
         _ = activityHoverController.view
 
@@ -550,7 +550,9 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
         // Compute the position
         let bounds = cell.foregroundBox.bounds
-        let newFrame = onTopCorner ? CGRect(x: 0, y: bounds.height - 1, width: bounds.width, height: 1) : CGRect(x: 0, y: 0, width: bounds.width, height: 1)
+        let newFrame = onTopCorner ?
+            CGRect(x: 0, y: bounds.height - 1, width: bounds.width, height: 1) :
+            CGRect(x: 0, y: 0, width: bounds.width, height: 1)
 
         // Show or Update the position
         if !resizeInfoPopover.isShown {

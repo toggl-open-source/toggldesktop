@@ -9,5 +9,4 @@
 import Foundation
 
 final class DescriptionAutoCompleteTextField: AutoCompleteTextField {
-    
 }
