@@ -17,7 +17,7 @@ final class DescriptionContentCellView: HoverTableCellView {
     @IBOutlet weak var descriptionTextField: NSTextField!
     @IBOutlet weak var projectTextField: ProjectTextField!
     @IBOutlet weak var dotView: DotImageView!
-    
+
     // MARK: Public
 
     func render(_ item: DescriptionTimeEntry) {

@@ -12,7 +12,6 @@ extension Notification.Name {
     static let ClientStorageChangedNotification = Notification.Name("ClientStorageChangedNotification")
 }
 
-
 @objcMembers final class ClientStorage: NSObject {
 
     static let shared = ClientStorage()

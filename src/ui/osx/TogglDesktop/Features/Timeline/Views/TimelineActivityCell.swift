@@ -52,7 +52,10 @@ extension TimelineActivityCell {
 
     private func initTrackingArea() {
         if foregroundBox.trackingAreas.isEmpty {
-            let tracking = NSTrackingArea(rect: view.bounds, options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect], owner: self, userInfo: nil)
+            let tracking = NSTrackingArea(rect: view.bounds,
+                                          options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect],
+                                          owner: self,
+                                          userInfo: nil)
             foregroundBox.addTrackingArea(tracking)
             foregroundBox.updateTrackingAreas()
         }

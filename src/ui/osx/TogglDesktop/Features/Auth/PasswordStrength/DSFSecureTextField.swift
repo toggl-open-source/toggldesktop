@@ -34,7 +34,7 @@ public class DSFSecureTextField: NSSecureTextField {
 
 	/// Whether to display a toggle button into the control to control the visibility
 	@IBInspectable
-	@objc public dynamic var displayToggleButton: Bool = true {
+    public dynamic var displayToggleButton: Bool = true {
 		didSet {
 			self.updateForPasswordVisibility()
 		}
@@ -42,7 +42,7 @@ public class DSFSecureTextField: NSSecureTextField {
 
 	/// Allow or disallow showing plain text password
 	@IBInspectable
-	@objc public dynamic var allowShowPassword: Bool = true {
+	public dynamic var allowShowPassword: Bool = true {
 		didSet {
 			self.passwordIsVisible = false
 			self.configureButtonForState()
@@ -82,7 +82,10 @@ private extension DSFSecureTextField {
 
 		if self.allowShowPassword && self.displayToggleButton {
 
-            let button = CursorButton(frame: NSRect(x: 0, y: 0, width: DSFSecureTextField.PasswordEyeSize.width, height: DSFSecureTextField.PasswordEyeSize.height))
+            let button = CursorButton(frame: NSRect(x: 0,
+                                                    y: 0,
+                                                    width: DSFSecureTextField.PasswordEyeSize.width,
+                                                    height: DSFSecureTextField.PasswordEyeSize.height))
 
 			self.visibilityButton = button
 			button.action = #selector(visibilityChanged(_:))
@@ -105,14 +108,12 @@ private extension DSFSecureTextField {
 
 			button.needsLayout = true
 			self.needsUpdateConstraints = true
-		}
-		else {
+		} else {
 			self.visibilityButton?.removeFromSuperview()
 			self.visibilityButton = nil
 		}
 		self.window?.recalculateKeyViewLoop()
 	}
-
 
 	func setup() {
 
@@ -145,19 +146,16 @@ private extension DSFSecureTextField {
 			if self.passwordIsVisible {
 				newCell = NSTextFieldCell()
 				self.cell = newCell
-			}
-			else {
+			} else {
 				newCell = NSSecureTextFieldCell()
 				self.cell = newCell
 			}
-		}
-		else {
+		} else {
 			if self.allowShowPassword {
 				newCell = self.passwordIsVisible ? DSFPlainTextFieldCell() : DSFPasswordTextFieldCell()
                 newCell.focusRingType = .none
 				self.cell = newCell
-			}
-			else {
+			} else {
 				newCell = NSSecureTextFieldCell()
 				self.cell = newCell
 			}
@@ -183,7 +181,12 @@ private extension DSFSecureTextField {
 // MARK: - Private implementation (Text Field Cells)
 
 private class DSFPasswordTextFieldCell: NSSecureTextFieldCell {
-	override func select(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, start selStart: Int, length selLength: Int) {
+	override func select(withFrame rect: NSRect,
+                         in controlView: NSView,
+                         editor textObj: NSText,
+                         delegate: Any?,
+                         start selStart: Int,
+                         length selLength: Int) {
 		var newRect = rect
 		newRect.size.width -= DSFSecureTextField.PasswordEyeSize.width
 		super.select(withFrame: newRect, in: controlView, editor: textObj, delegate: delegate, start: selStart, length: selLength)
@@ -197,7 +200,12 @@ private class DSFPasswordTextFieldCell: NSSecureTextFieldCell {
 }
 
 private class DSFPlainTextFieldCell: NSTextFieldCell {
-	override func select(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, start selStart: Int, length selLength: Int) {
+	override func select(withFrame rect: NSRect,
+                         in controlView: NSView,
+                         editor textObj: NSText,
+                         delegate: Any?,
+                         start selStart: Int,
+                         length selLength: Int) {
 		var newRect = rect
 		newRect.size.width -= DSFSecureTextField.PasswordEyeSize.width
 		super.select(withFrame: newRect, in: controlView, editor: textObj, delegate: delegate, start: selStart, length: selLength)

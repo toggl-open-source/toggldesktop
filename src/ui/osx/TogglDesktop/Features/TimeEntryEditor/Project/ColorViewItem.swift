@@ -26,7 +26,7 @@ final class ColorViewItem: NSCollectionViewItem {
       self.view = NSView()
       self.view.wantsLayer = true
     }
-    
+
     func render(_ color: ProjectColor) {
         guard let color = ConvertHexColor.hexCode(toNSColor: color.hex) else {
             return

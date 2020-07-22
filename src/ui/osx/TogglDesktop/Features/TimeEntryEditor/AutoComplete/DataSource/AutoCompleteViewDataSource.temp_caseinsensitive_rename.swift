@@ -9,7 +9,6 @@
 import Foundation
 
 class AutoCompleteViewDataSource: NSObject {
-    
 }
 
 extension AutoCompleteViewDataSource: NSTableViewDataSource, NSTableViewDelegate {

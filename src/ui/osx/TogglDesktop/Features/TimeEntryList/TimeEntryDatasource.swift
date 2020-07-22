@@ -42,9 +42,15 @@ final class TimeEntrySection {
 
 @objc protocol TimeEntryDatasourceDraggingDelegate {
 
-    func collectionView(_ collectionView: NSCollectionView, acceptDrop draggingInfo: NSDraggingInfo, indexPath: IndexPath, dropOperation: NSCollectionView.DropOperation) -> Bool
+    func collectionView(_ collectionView: NSCollectionView,
+                        acceptDrop draggingInfo: NSDraggingInfo,
+                        indexPath: IndexPath,
+                        dropOperation: NSCollectionView.DropOperation) -> Bool
 
-    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>)
+    func collectionView(_ collectionView: NSCollectionView,
+                        draggingSession session: NSDraggingSession,
+                        willBeginAt screenPoint: NSPoint,
+                        forItemsAt indexPaths: Set<IndexPath>)
 }
 
 @objcMembers
@@ -81,7 +87,7 @@ class TimeEntryDatasource: NSObject {
     var count: Int {
         return sections.count
     }
-    
+
     private(set) var isShowLoadMore = false
 
     // MARK: Init
@@ -95,10 +101,10 @@ class TimeEntryDatasource: NSObject {
         registerAllCells()
         initCommon()
     }
-    
+
     // MARK: Public
 
-    @objc func loadMoreTimeEntryIfNeed(at date: Date) {
+    func loadMoreTimeEntryIfNeed(at date: Date) {
         guard isShowLoadMore,
             let lastDate = lastDateInSections() else { return }
 
@@ -145,40 +151,36 @@ class TimeEntryDatasource: NSObject {
         reload(with: sections)
     }
 
-    @objc func object(at indexPath: IndexPath) -> TimeEntryViewItem? {
+    func object(at indexPath: IndexPath) -> TimeEntryViewItem? {
         return queue.sync(flags: .barrier) {
             guard let section = sections[safe: indexPath.section] else { return nil }
             return section.entries[safe: indexPath.item]
         }
     }
 
-    @objc func indexPath(for viewItem: TimeEntryViewItem) -> IndexPath? {
+    func indexPath(for viewItem: TimeEntryViewItem) -> IndexPath? {
         return queue.sync(flags: .barrier) {
             for (sectionIndex, section) in sections.enumerated() {
-                for (rowIndex, entry) in section.entries.enumerated() {
-                    if entry.guid == viewItem.guid {
-                        return IndexPath(item: rowIndex, section: sectionIndex)
-                    }
+                for (rowIndex, entry) in section.entries.enumerated() where entry.guid == viewItem.guid {
+                    return IndexPath(item: rowIndex, section: sectionIndex)
                 }
             }
             return nil
         }
     }
 
-    @objc func object(with guid: String) -> TimeEntryViewItem? {
+    func object(with guid: String) -> TimeEntryViewItem? {
         return queue.sync(flags: .barrier) {
             for section in sections {
-                for entry in section.entries {
-                    if entry.guid == guid {
-                        return entry
-                    }
+                for entry in section.entries where entry.guid == guid {
+                    return entry
                 }
             }
             return nil
         }
     }
 
-    @objc func previousIndexPath(from indexPath: IndexPath) -> IndexPath? {
+    func previousIndexPath(from indexPath: IndexPath) -> IndexPath? {
 
         // It means previous row must be last cell in previous section
         if indexPath.item == 0 {
@@ -230,7 +232,7 @@ class TimeEntryDatasource: NSObject {
         DispatchQueue.main.async {
 
             // Find the cell with samw GUID
-            let cell = self.collectionView.visibleItems().first(where:{ (item) in
+            let cell = self.collectionView.visibleItems().first(where: { (item) in
                 if let cell = item as? TimeEntryCell {
                     if cell.guid == guid {
                         return true
@@ -243,7 +245,7 @@ class TimeEntryDatasource: NSObject {
             // Prevent invalid selection if we delete cell
             if let cell = cell,
                 let index = self.collectionView.indexPath(for: cell) {
-                self.collectionView.selectItems(at:  Set<IndexPath>(arrayLiteral: index),
+                self.collectionView.selectItems(at: Set<IndexPath>(arrayLiteral: index),
                                                 scrollPosition: [])
             }
         }
@@ -285,7 +287,7 @@ extension TimeEntryDatasource {
         collectionView.register(NSNib(nibNamed: Constants.TimeEntryCellNibName, bundle: nil), forItemWithIdentifier: Constants.TimeEntryCellID)
         collectionView.register(NSNib(nibNamed: Constants.LoadMoreCellNibName, bundle: nil), forItemWithIdentifier: Constants.LoadMoreCellID)
         collectionView.register(NSNib(nibNamed: Constants.TimeHeaderNibName, bundle: nil),
-                                forSupplementaryViewOfKind:NSCollectionView.elementKindSectionHeader,
+                                forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader,
                                 withIdentifier: Constants.TimeHeaderID)
     }
 
@@ -368,7 +370,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
     }
 
     private func makeTimeEntryCell(with collectionView: NSCollectionView,
-                                  indexPath: IndexPath) -> NSCollectionViewItem {
+                                   indexPath: IndexPath) -> NSCollectionViewItem {
         guard let cell = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier("TimeEntryCell"),
                                                  for: indexPath) as? TimeEntryCell else {
                                                     fatalError()
@@ -416,7 +418,10 @@ extension TimeEntryDatasource {
          return .move
     }
 
-    func collectionView(_ collectionView: NSCollectionView, acceptDrop draggingInfo: NSDraggingInfo, indexPath: IndexPath, dropOperation: NSCollectionView.DropOperation) -> Bool {
+    func collectionView(_ collectionView: NSCollectionView,
+                        acceptDrop draggingInfo: NSDraggingInfo,
+                        indexPath: IndexPath,
+                        dropOperation: NSCollectionView.DropOperation) -> Bool {
         guard let delegate = delegate else { return
             false
         }
@@ -427,7 +432,10 @@ extension TimeEntryDatasource {
         return result
     }
 
-    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
+    func collectionView(_ collectionView: NSCollectionView,
+                        draggingSession session: NSDraggingSession,
+                        willBeginAt screenPoint: NSPoint,
+                        forItemsAt indexPaths: Set<IndexPath>) {
         guard let delegate = delegate else {
             return
         }

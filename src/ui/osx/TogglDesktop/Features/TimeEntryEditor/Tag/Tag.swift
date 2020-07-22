@@ -13,7 +13,7 @@ final class Tag {
     static let noMatching = Tag(name: "", isEmptyTag: true)
     static let moreTag = Tag(name: "...", isMoreTag: true)
 
-    let name:String
+    let name: String
     let isEmptyTag: Bool
     let isMoreTag: Bool
 

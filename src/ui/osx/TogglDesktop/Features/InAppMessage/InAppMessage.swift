@@ -16,7 +16,6 @@ final class InAppMessage: NSObject {
     let buttonTitle: String
     let urlAction: String
 
-    @objc
     init(title: String, subTitle: String, buttonTitle: String, urlAction: String) {
         self.title = title
         self.subTitle = subTitle

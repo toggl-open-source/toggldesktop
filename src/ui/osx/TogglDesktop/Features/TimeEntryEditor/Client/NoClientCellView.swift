@@ -9,7 +9,5 @@
 import Foundation
 
 final class NoClientCellView: NSTableCellView {
-
     static let cellHeight: CGFloat = 38.0
-    
 }

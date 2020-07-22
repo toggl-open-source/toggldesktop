@@ -17,7 +17,7 @@ struct DateInfo {
     var isFirstDayOfMonth: Bool {
         return day == 1
     }
-    
+
     init(date: Date) {
         let calendar = Calendar.current
         let component = calendar.dateComponents([.day, .month, .year, .weekOfYear], from: date)

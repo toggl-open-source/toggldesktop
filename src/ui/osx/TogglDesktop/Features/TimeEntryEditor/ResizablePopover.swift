@@ -16,9 +16,9 @@ class ResizablePopover: NSPopover {
     }
 
     private enum Region {
-        case None
-        case Left
-        case Right
+        case none
+        case left
+        case right
     }
 
     // MARK: Variables
@@ -27,7 +27,7 @@ class ResizablePopover: NSPopover {
     private var min: NSSize
     private var max: NSSize
     private var size: NSSize?
-    private var region: Region = .None
+    private var region: Region = .none
     private var down: NSPoint?
     private var bottomHeight = CGFloat(20)
     private var trackLeft: NSView.TrackingRectTag?
@@ -80,13 +80,13 @@ class ResizablePopover: NSPopover {
             return
         }
 
-        if region == .None {
+        if region == .none {
             if event.trackingNumber == trackLeft {
-                region = .Left
+                region = .left
             } else if event.trackingNumber == trackRight {
-                region = .Right
+                region = .right
             } else {
-                region = .None
+                region = .none
             }
 
             setCursor()
@@ -100,7 +100,7 @@ class ResizablePopover: NSPopover {
         }
 
         if down == nil {
-            region = .None
+            region = .none
             setCursor()
         }
     }
@@ -121,7 +121,7 @@ class ResizablePopover: NSPopover {
             return
         }
 
-        if region == .None {
+        if region == .none {
             return
         }
 
@@ -130,7 +130,7 @@ class ResizablePopover: NSPopover {
 
         let location = NSEvent.mouseLocation
         var movedX = location.x - down.x
-        if region == .Left {
+        if region == .left {
             movedX = -movedX
         }
 
@@ -142,8 +142,8 @@ class ResizablePopover: NSPopover {
         }
 
         switch region {
-        case .Left,
-             .Right:
+        case .left,
+             .right:
             contentSize = NSSize(width: newWidth, height: contentSize.height)
         default:
             break
@@ -158,8 +158,8 @@ class ResizablePopover: NSPopover {
             return
         }
 
-        if region != .None {
-            region = .None
+        if region != .none {
+            region = .none
             setCursor()
             setTrackers()
             down = nil
@@ -186,8 +186,8 @@ class ResizablePopover: NSPopover {
 
     private func setCursor() {
         switch region {
-        case .Left,
-             .Right:
+        case .left,
+             .right:
             NSCursor.resizeLeftRight.set()
         default:
             NSCursor.arrow.set()
@@ -202,7 +202,10 @@ class ResizablePopover: NSPopover {
             var bounds = NSRect(x: 0, y: Constants.CornerHit, width: Constants.SideHit, height: bottomHeight - Constants.CornerHit)
             trackLeft = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
 
-            bounds = NSRect(x: contentSize.width - Constants.SideHit, y: Constants.CornerHit, width: Constants.SideHit, height: bottomHeight - Constants.CornerHit)
+            bounds = NSRect(x: contentSize.width - Constants.SideHit,
+                            y: Constants.CornerHit,
+                            width: Constants.SideHit,
+                            height: bottomHeight - Constants.CornerHit)
             trackRight = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
         }
     }

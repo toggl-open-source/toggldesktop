@@ -107,7 +107,11 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         sectionInset = NSEdgeInsetsZero
         scrollDirection = .vertical
         register(NSNib(nibNamed: Constants.TimelineLineView, bundle: nil), forDecorationViewOfKind: Constants.TimelineLineView)
-        timer = Timer.scheduledTimer(timeInterval: Constants.TimelineLineInterval, target: self, selector: #selector(self.updateCurrentMomemtLineOnTick), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: Constants.TimelineLineInterval,
+                                     target: self,
+                                     selector: #selector(self.updateCurrentMomemtLineOnTick),
+                                     userInfo: nil,
+                                     repeats: true)
     }
 
     override func prepare() {
@@ -168,14 +172,16 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         }
     }
 
-    override func layoutAttributesForSupplementaryView(ofKind elementKind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
+    override func layoutAttributesForSupplementaryView(ofKind elementKind: NSCollectionView.SupplementaryElementKind,
+                                                       at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
         if elementKind == NSCollectionView.elementKindSectionFooter {
             return dividerAttributes[safe: indexPath.section]
         }
         return nil
     }
 
-    override func layoutAttributesForDecorationView(ofKind elementKind: NSCollectionView.DecorationElementKind, at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
+    override func layoutAttributesForDecorationView(ofKind elementKind: NSCollectionView.DecorationElementKind,
+                                                    at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
         if elementKind == Constants.TimelineLineView {
             return currentMomentAttribute
         }

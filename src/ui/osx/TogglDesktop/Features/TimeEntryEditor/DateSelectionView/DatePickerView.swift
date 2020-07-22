@@ -50,8 +50,8 @@ final class DatePickerView: NSView {
         controller.delegate = self
         return controller
     }()
-    private lazy var dayNameAttribute: [NSAttributedString.Key : Any] = {
-        return [NSAttributedString.Key.font : NSFont.systemFont(ofSize: 14),
+    private lazy var dayNameAttribute: [NSAttributedString.Key: Any] = {
+        return [NSAttributedString.Key.font: NSFont.systemFont(ofSize: 14),
                 NSAttributedString.Key.foregroundColor: NSColor.labelColor]
     }()
     var isEnabled: Bool = true {
@@ -153,4 +153,3 @@ extension DatePickerView: CalendarViewControllerDelegate {
         calendarPopover.performClose(self)
     }
 }
-

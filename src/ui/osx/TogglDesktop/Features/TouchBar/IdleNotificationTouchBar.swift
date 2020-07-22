@@ -27,7 +27,7 @@ final class IdleNotificationTouchBar: NSObject {
 
     // MARK: Variable
 
-    @objc weak var delegate: IdleNotificationTouchBarDelegate?
+    weak var delegate: IdleNotificationTouchBarDelegate?
 
     private lazy var discardButton: NSButton = {
         let btn = NSButton(title: "Discard idle time", target: self, action: #selector(self.btnOnTap(_:)))
@@ -56,7 +56,7 @@ final class IdleNotificationTouchBar: NSObject {
 
     // MARK: Public
 
-    @objc func makeTouchBar() -> NSTouchBar {
+    func makeTouchBar() -> NSTouchBar {
         let touchBar = NSTouchBar()
         touchBar.delegate = self
         touchBar.customizationIdentifier = .idleNotificationTouchBar

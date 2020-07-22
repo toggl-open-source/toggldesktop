@@ -11,9 +11,9 @@ import Foundation
 extension NSView {
 
     @objc func applyShadow(color: NSColor = NSColor.black,
-                     opacity: Float = 0.13,
-                     radius: CGFloat = 6.0,
-                     offset: CGSize = CGSize(width: 0, height: -2)) {
+                           opacity: Float = 0.13,
+                           radius: CGFloat = 6.0,
+                           offset: CGSize = CGSize(width: 0, height: -2)) {
         wantsLayer = true
         layer?.masksToBounds = false
         shadow = NSShadow()
@@ -29,7 +29,7 @@ extension NSView {
         wantsLayer = true
         layer?.masksToBounds = false
         layer?.cornerRadius = cornerRadius
-        layer?.borderWidth = width;
+        layer?.borderWidth = width
         layer?.borderColor = color.cgColor
     }
 }

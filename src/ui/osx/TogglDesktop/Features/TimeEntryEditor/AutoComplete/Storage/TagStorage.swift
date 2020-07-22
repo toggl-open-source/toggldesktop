@@ -12,7 +12,6 @@ extension Notification.Name {
     static let TagStorageChangedNotification = Notification.Name("TagStorageChangedNotification")
 }
 
-
 @objcMembers final class TagStorage: NSObject {
 
     static let shared = TagStorage()
@@ -68,4 +67,3 @@ extension TagStorage {
         }
     }
 }
-

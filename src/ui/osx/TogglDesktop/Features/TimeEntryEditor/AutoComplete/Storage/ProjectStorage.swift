@@ -73,22 +73,21 @@ extension ProjectStorage {
                 currentClient = item.clientLabel
             }
             // In case we have task and project is not completed
-            if item.type == 1 && item.projectID != currentPID
-            {
+            if item.type == 1 && item.projectID != currentPID {
                 let projectItem = AutocompleteItem()
                 projectItem.type = 2
                 projectItem.text = item.projectLabel
                 projectItem.projectLabel = item.projectLabel
-                projectItem.projectColor = item.projectColor;
-                projectItem.projectID = item.projectID;
-                projectItem.description = item.description;
+                projectItem.projectColor = item.projectColor
+                projectItem.projectID = item.projectID
+                projectItem.description = item.description
                 projectItem.taskLabel = ""
                 projectItem.taskID = 0
-                projectItem.clientLabel = item.clientLabel;
-                projectItem.projectAndTaskLabel = item.projectAndTaskLabel;
+                projectItem.clientLabel = item.clientLabel
+                projectItem.projectAndTaskLabel = item.projectAndTaskLabel
                 newItems.append(ProjectContentItem(item: projectItem))
             }
-            currentPID = UInt64(item.projectID);
+            currentPID = UInt64(item.projectID)
 
             newItems.append(ProjectContentItem(item: item))
         }

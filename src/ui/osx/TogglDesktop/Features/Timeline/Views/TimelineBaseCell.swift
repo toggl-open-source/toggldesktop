@@ -42,7 +42,7 @@ class TimelineBaseCell: NSCollectionViewItem {
 
     @IBOutlet weak var backgroundBox: CornerBoxView?
     @IBOutlet weak var foregroundBox: CornerBoxView!
-    
+
     // MARK: Variables
 
     weak var delegate: TimelineBaseCellDelegate?
@@ -155,7 +155,10 @@ extension TimelineBaseCell {
 
     private func initHoverTrackers() {
         guard isHoverable else { return }
-        trackingArea = NSTrackingArea(rect: view.bounds, options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect, .mouseMoved], owner: self, userInfo: nil)
+        trackingArea = NSTrackingArea(rect: view.bounds,
+                                      options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect, .mouseMoved],
+                                      owner: self,
+                                      userInfo: nil)
         view.addTrackingArea(trackingArea!)
     }
 
@@ -304,7 +307,10 @@ extension TimelineBaseCell {
     private func suitableHoverRect() -> CGRect {
         if isResizable {
             if isSmallEntry {
-                return CGRect(x: 0, y: Constants.SideHideSmall, width: foregroundBox.frame.width, height: foregroundBox.frame.height - Constants.SideHideSmall * 2)
+                return CGRect(x: 0,
+                              y: Constants.SideHideSmall,
+                              width: foregroundBox.frame.width,
+                              height: foregroundBox.frame.height - Constants.SideHideSmall * 2)
             }
             return NSRect(x: 0, y: Constants.SideHit, width: resizeView.frame.width, height: foregroundBox.frame.height - Constants.SideHit * 2)
         }
@@ -316,7 +322,10 @@ extension TimelineBaseCell {
     private func suitableTopResizeRect() -> CGRect {
         guard isResizable else { return .zero }
         if isSmallEntry {
-            return NSRect(x: 0, y: foregroundBox.frame.height - Constants.SideHideSmall, width: foregroundBox.frame.width, height: Constants.SideHideSmall)
+            return NSRect(x: 0,
+                          y: foregroundBox.frame.height - Constants.SideHideSmall,
+                          width: foregroundBox.frame.width,
+                          height: Constants.SideHideSmall)
         }
         return NSRect(x: 0, y: foregroundBox.frame.height - Constants.SideHit, width: resizeView.frame.width, height: Constants.SideHit)
     }

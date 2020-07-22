@@ -63,7 +63,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     @IBOutlet weak var durationLbl: NSTextField!
     @IBOutlet weak var mainStackView: NSStackView!
     @IBOutlet weak var innerBackgroundBox: CornerBoxView! // Prevent transparent background color
-    
+
     // MARK: View
 
     override func viewDidLoad() {
@@ -126,7 +126,10 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
         // Hide if some views is out of bounds
         for view in components {
-            let bottomFrame = CGRect(x: 0, y: mainStackView.frame.height - bubbleHeight + topPadding, width: self.view.frame.width, height: bottomBarHeight)
+            let bottomFrame = CGRect(x: 0,
+                                     y: mainStackView.frame.height - bubbleHeight + topPadding,
+                                     width: self.view.frame.width,
+                                     height: bottomBarHeight)
             let isContain = view.frame.intersects(bottomFrame) || view.frame.origin.y <= bottomFrame.origin.y
             view.isHidden = isContain
         }
@@ -203,7 +206,7 @@ extension TimelineTimeEntryCell {
 // MARK: TimelineTimeEntryMenuDelegate
 
 extension TimelineTimeEntryCell: TimelineTimeEntryMenuDelegate {
-    
+
     func timelineMenuContinue(_ timeEntry: TimelineTimeEntry) {
         menuDelegate?.timeEntryCellShouldContinue(for: timeEntry, sender: self)
     }

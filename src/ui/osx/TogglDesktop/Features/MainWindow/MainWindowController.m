@@ -432,7 +432,7 @@ extern void *ctx;
     [self.inappMessageView present];
 }
 
-- (void)InAppMessageViewControllerShouldDismiss
+- (void)inAppMessageViewControllerShouldDismiss
 {
     [self.inappMessageView.view removeFromSuperview];
 }

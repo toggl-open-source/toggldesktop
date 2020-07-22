@@ -18,7 +18,7 @@ final class TagCellView: NSTableCellView {
     static let cellHeight: CGFloat = 34.0
 
     // MARK: Variables
-    
+
     weak var delegate: TagCellViewDelegate?
     private var tagItem: Tag?
     private var isSelected = false
@@ -48,7 +48,7 @@ final class TagCellView: NSTableCellView {
     @IBOutlet weak var checkButton: NSButton!
     @IBOutlet weak var backgroundView: NSBox!
     @IBOutlet weak var hoverView: NSBox!
-    
+
     // MARK: Public
 
     override func awakeFromNib() {

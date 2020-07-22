@@ -111,7 +111,10 @@ extension ColorPickerView: NSCollectionViewDelegate, NSCollectionViewDataSource,
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        guard let view = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier("ColorViewItem"), for: indexPath) as? ColorViewItem else { return NSCollectionViewItem() }
+        let viewItem = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier("ColorViewItem"), for: indexPath)
+        guard let view = viewItem as? ColorViewItem else {
+            return NSCollectionViewItem()
+        }
         let color = colors[indexPath.item]
         view.render(color)
         return view

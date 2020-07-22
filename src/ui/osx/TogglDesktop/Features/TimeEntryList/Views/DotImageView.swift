@@ -11,7 +11,7 @@ import Cocoa
 final class DotImageView: NSImageView {
 
     // MARK: Variables
-    
+
     private let icon = NSImage(named: NSImage.Name("time-entry-dot"))!
 
     // MARK: Public

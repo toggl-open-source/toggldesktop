@@ -24,7 +24,9 @@ import Foundation
     ///   - noti: The onboarding notification from the library
     ///   - atView: A block to get the view that onboarding sticks on
     ///   - switchTo: A block to ask the view controller switch to the certain tab
-    @objc class func handleOnboardingNotification(_ noti: Notification, atView: (OnboardingHint) -> NSView?, switchTo: (OnboardingPresentViewTab) -> Void) {
+    @objc class func handleOnboardingNotification(_ noti: Notification,
+                                                  atView: (OnboardingHint) -> NSView?,
+                                                  switchTo: (OnboardingPresentViewTab) -> Void) {
         guard let number = noti.object as? NSNumber else { return }
         guard let hint = OnboardingHint(rawValue: number.intValue) else {
             return

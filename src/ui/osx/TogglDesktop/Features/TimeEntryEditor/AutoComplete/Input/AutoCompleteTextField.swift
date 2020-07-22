@@ -126,7 +126,7 @@ class AutoCompleteTextField: UndoTextField, NSTextFieldDelegate, AutoCompleteVie
     func openSuggestion() {
         state = .expand
     }
-    
+
     func closeSuggestion() {
         state = .collapse
     }
