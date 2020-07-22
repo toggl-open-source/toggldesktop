@@ -58,7 +58,7 @@
                     <TextBlock Style="{DynamicResource Toggl.SubtitleText}" 
                                Visibility="{Binding SelectedConfirmAction, Converter={StaticResource HasAnyFlagToVisibilityConverter}, ConverterParameter={x:Static viewModels:ConfirmAction.LinkSSO}}"
                                TextAlignment="Center"
-                               Margin="0 12 0 0">Log in to enable SSO </TextBlock>
+                               Margin="0 12 0 10">Log in to enable SSO </TextBlock>
                     <TextBox x:Name="emailTextBox" x:FieldModifier="private"
                              Margin="0 12 0 0"
                              Width="200"
@@ -204,7 +204,7 @@
                     </Button>
                     <Label HorizontalAlignment="Center"
                            Margin="0 10 0 0"
-                           Visibility="{Binding SelectedConfirmAction, Converter={StaticResource HasAnyFlagToVisibilityConverter}, ConverterParameter={x:Static viewModels:ConfirmAction.LogIn}}">
+                           Visibility="{Binding SelectedConfirmAction, Converter={StaticResource EnumEqualToVisibilityConverter}, ConverterParameter={x:Static viewModels:ConfirmAction.LogIn}}">
                         <Hyperlink Style="{StaticResource Toggl.NormalHyperlink}"
                                    Command="{Binding LoginWithSSO}">Log in with SSO</Hyperlink>
                     </Label>

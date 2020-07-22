@@ -405,6 +405,8 @@ namespace TogglDesktop
                 loginView.ViewModel.SSOConfirmationCode = confirmationCode;
                 loginView.ViewModel.SSOEmail = email;
             }
+            else
+                loginView.ViewModel.SelectedConfirmAction = ConfirmAction.LogIn;
             setActiveView(loginView);
         }
 

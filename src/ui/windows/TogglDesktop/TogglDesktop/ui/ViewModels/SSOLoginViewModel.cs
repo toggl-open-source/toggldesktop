@@ -17,11 +17,11 @@ namespace TogglDesktop.ViewModels
 
         public SSOLoginViewModel(Action<string, string> openLoginForm)
         {
-            IsSignOnMode = true;
+            DisplaySignOnMode = true;
             LoginWithDifferentMethod = ReactiveCommand.Create(() => openLoginForm(null, null));
             LoginAndLinkSSO = ReactiveCommand.Create(() => openLoginForm(ConfirmationCode, Email));
             LoginCommand = ReactiveCommand.Create(Login);
-            BackToSSOLogin = ReactiveCommand.Create(() => { IsSignOnMode = true; });
+            BackToSSOLogin = ReactiveCommand.Create(() => { DisplaySignOnMode = true; });
             var uriObservable = AuthUri.Where(uri => uri != null);
             uriObservable.Select(uri => HttpUtility.ParseQueryString(uri.Query).Get("apiToken"))
                 .Where(token => !string.IsNullOrEmpty(token))
@@ -35,7 +35,7 @@ namespace TogglDesktop.ViewModels
                     true));
             this.WhenAnyValue(x => x.ConfirmationCode)
                 .Where(code => !string.IsNullOrEmpty(code))
-                .Subscribe(next => IsSignOnMode = false);
+                .Subscribe(next => DisplaySignOnMode = false);
             Toggl.OnLoginSSO += HandleDisplayLoginSSO;
         }
 
@@ -69,7 +69,7 @@ namespace TogglDesktop.ViewModels
         public string Email { get; set; }
 
         [Reactive]
-        public bool IsSignOnMode { get; set; }
+        public bool DisplaySignOnMode { get; set; }
 
         public Subject<Uri> AuthUri { get; } = new Subject<Uri>();
 

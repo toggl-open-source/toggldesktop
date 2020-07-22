@@ -339,10 +339,14 @@ namespace TogglDesktop.ViewModels
 
         private async Task<bool> LoginAndLinkSSO()
         {
+            bool res;
             if (SSOEmail == Email)
-                return await Task.Run(() => Toggl.LoginAndLinkSSO(Email, Password, SSOConfirmationCode));
+                res = await Task.Run(() => Toggl.LoginAndLinkSSO(Email, Password, SSOConfirmationCode));
             else
-                return await ConfirmAsync(Toggl.Login);
+                res = await ConfirmAsync(Toggl.Login);
+            SelectedConfirmAction = ConfirmAction.LogIn;
+
+            return res;
         }
 
         private static HttpClientFactory HttpClientFactoryFromProxySettings(Toggl.TogglSettingsView settings)

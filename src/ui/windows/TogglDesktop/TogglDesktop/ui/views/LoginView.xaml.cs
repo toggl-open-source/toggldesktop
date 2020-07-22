@@ -53,7 +53,7 @@ namespace TogglDesktop
             }
             else if (ViewModel.SelectedConfirmAction == ConfirmAction.LogInAndLinkSSO)
             {
-                ViewModel.LoginWithSSO.Execute();
+                ViewModel.LoginWithSSO.Execute().Subscribe();
             }
         }
 

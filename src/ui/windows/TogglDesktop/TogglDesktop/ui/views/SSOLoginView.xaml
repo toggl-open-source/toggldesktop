@@ -52,6 +52,7 @@
                         <TextBlock 
                             Style="{DynamicResource Toggl.CaptionBlackText}" 
                             HorizontalAlignment="Center"
+                            Margin="30 10 30 0"
                             TextAlignment="Center">To enable log in with SSO for this account please log in with your existing credentials</TextBlock>
                         <Button Height="32" Width="200" Margin="0 20 0 0"
                                 Style="{StaticResource Toggl.SecondaryAccentButton}"
@@ -65,7 +66,7 @@
                            DockPanel.Dock="Bottom"
                            VerticalAlignment="Bottom">
                         <Hyperlink Style="{StaticResource Toggl.NormalHyperlink}"
-                                   Command="{Binding LoginWithDifferentMethod}">
+                                   Command="{Binding BackToSSOLogin}">
                             Back to SSO login page
                         </Hyperlink>
                     </Label>
@@ -91,10 +92,10 @@
                     <ContentPresenter.Style>
                         <Style TargetType="{x:Type ContentPresenter}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsSignOnMode}" Value="true">
+                                <DataTrigger Binding="{Binding DisplaySignOnMode}" Value="true">
                                     <Setter Property="ContentTemplate" Value="{StaticResource SignOnView}"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding IsSignOnMode}" Value="false">
+                                <DataTrigger Binding="{Binding DisplaySignOnMode}" Value="false">
                                     <Setter Property="ContentTemplate" Value="{StaticResource MustLinkSSOView}">
                                     </Setter>
                                 </DataTrigger>
