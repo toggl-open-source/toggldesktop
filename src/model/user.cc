@@ -405,11 +405,6 @@ void User::SetOfflineData(const std::string &value) {
         SetDirty();
 }
 
-void User::SetStoreStartAndStopTime(bool value) {
-    if (StoreStartAndStopTime.Set(value))
-        SetDirty();
-}
-
 void User::ConfirmLoadedMore() {
     HasLoadedMore.Set(true);
 }
@@ -877,7 +872,6 @@ error User::loadUserFromJSON(const Json::Value &data) {
     SetEmail(data["email"].asString());
     SetFullname(data["fullname"].asString());
     SetRecordTimeline(data["record_timeline"].asBool());
-    SetStoreStartAndStopTime(data["store_start_and_stop_time"].asBool());
     SetTimeOfDayFormat(data["timeofday_format"].asString());
     SetDurationFormat(data["duration_format"].asString());
 
