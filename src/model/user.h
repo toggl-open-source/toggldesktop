@@ -162,8 +162,10 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     void LoadObmExperiments(Json::Value const &obm);
 
+    // excludeCollapseTimeEntries should be removed when getting rid of Context::pullUserPreferences
     bool LoadUserPreferencesFromJSON(
-        Json::Value data);
+        const Json::Value &data,
+        bool excludeCollapseTimeEntries);
 
     template <class T>
     bool SetModelID(

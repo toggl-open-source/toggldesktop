@@ -850,6 +850,7 @@ void User::LoadUserAndRelatedDataFromJSON(
 
     // user is contained in Sync API but it is in root of data in v8
     error err = loadUserFromJSON(syncApi ? data["user"] : data);
+    LoadUserPreferencesFromJSON(syncApi ? data["preferences"] : data, true);
     // other entities are contained about the same
     if (err == noError) {
         loadRelatedDataFromJSON(data, including_related_data, syncServer);
@@ -871,9 +872,6 @@ error User::loadUserFromJSON(const Json::Value &data) {
     SetAPIToken(data["api_token"].asString());
     SetEmail(data["email"].asString());
     SetFullname(data["fullname"].asString());
-    SetRecordTimeline(data["record_timeline"].asBool());
-    SetTimeOfDayFormat(data["timeofday_format"].asString());
-    SetDurationFormat(data["duration_format"].asString());
 
     return noError;
 }
@@ -1194,13 +1192,24 @@ void User::loadUserTimeEntryFromJSON(
     model->EnsureGUID();
 }
 
+// returns true if the CollapseTimeEntries property has changed (to reload UI)
 bool User::LoadUserPreferencesFromJSON(
-    Json::Value data) {
-    if (data.isMember("CollapseTimeEntries")
+    const Json::Value &data,
+    bool excludeCollapseTimeEntries) {
+    if (data.isMember("record_timeline"))
+        SetRecordTimeline(data["record_timeline"].asBool());
+    if (data.isMember("timeofday_format"))
+        SetTimeOfDayFormat(data["timeofday_format"].asString());
+    if (data.isMember("duration_format"))
+        SetDurationFormat(data["duration_format"].asString());
+
+    if (!excludeCollapseTimeEntries
+            && data.isMember("CollapseTimeEntries")
             && data["CollapseTimeEntries"].asBool() != CollapseEntries()) {
         SetCollapseEntries(data["CollapseTimeEntries"].asBool());
         return true;
     }
+
     return false;
 }
 
