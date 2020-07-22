@@ -6396,7 +6396,7 @@ error Context::pullUserPreferences() {
             return error("Failed to load user preferences");
         }
 
-        if (user_->LoadUserPreferencesFromJSON(root)) {
+        if (user_->LoadUserPreferencesFromJSON(root, false)) {
             // Reload list if user preferences
             // have changed (collapse time entries)
             UIElements render;

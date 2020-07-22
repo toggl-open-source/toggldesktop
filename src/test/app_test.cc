@@ -450,26 +450,12 @@ TEST(Database, SavesAndLoadsUserFields) {
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true, false));
 
-    ASSERT_TRUE(user.StoreStartAndStopTime());
-    // Change fields
-    user.SetStoreStartAndStopTime(false);
-
     std::vector<ModelChange> changes;
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
 
     // Load user into another instance
     User user2;
     ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user2));
-    ASSERT_FALSE(user2.StoreStartAndStopTime());
-
-    // Change fields, again
-    user.SetStoreStartAndStopTime(true);
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
-
-    // Load user into another instance
-    User user3;
-    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user3));
-    ASSERT_TRUE(user3.StoreStartAndStopTime());
 }
 
 TEST(Database, SavesAndLoadsObmExperiments) {

@@ -1191,7 +1191,6 @@ error Database::LoadUserByID(
         std::string fullname("");
         std::string email("");
         bool record_timeline(false);
-        bool store_start_and_stop_time(false);
         std::string timeofday_format("");
         std::string duration_format("");
         std::string offline_data("");
@@ -1201,7 +1200,7 @@ error Database::LoadUserByID(
         *session_ <<
                   "select local_id, id, default_wid, since, "
                   "fullname, "
-                  "email, record_timeline, store_start_and_stop_time, "
+                  "email, record_timeline, "
                   "timeofday_format, duration_format, offline_data, "
                   "default_pid, default_tid, collapse_entries "
                   "from users where id = :id limit 1",
@@ -1212,7 +1211,6 @@ error Database::LoadUserByID(
                   into(fullname),
                   into(email),
                   into(record_timeline),
-                  into(store_start_and_stop_time),
                   into(timeofday_format),
                   into(duration_format),
                   into(offline_data),
@@ -1240,7 +1238,6 @@ error Database::LoadUserByID(
         user->SetFullname(fullname);
         user->SetEmail(email);
         user->SetRecordTimeline(record_timeline);
-        user->SetStoreStartAndStopTime(store_start_and_stop_time);
         user->SetTimeOfDayFormat(timeofday_format);
         user->SetDurationFormat(duration_format);
         user->SetOfflineData(offline_data);
@@ -3391,8 +3388,6 @@ error Database::SaveUser(
                           "default_wid = :default_wid, "
                           "since = :since, id = :id, fullname = :fullname, "
                           "email = :email, record_timeline = :record_timeline, "
-                          "store_start_and_stop_time = "
-                          " :store_start_and_stop_time, "
                           "timeofday_format = :timeofday_format, "
                           "duration_format = :duration_format, "
                           "offline_data = :offline_data, "
@@ -3406,7 +3401,6 @@ error Database::SaveUser(
                           useRef(user->Fullname()),
                           useRef(user->Email()),
                           useRef(user->RecordTimeline()),
-                          useRef(user->StoreStartAndStopTime()),
                           useRef(user->TimeOfDayFormat()),
                           useRef(user->DurationFormat()),
                           useRef(user->OfflineData()),
@@ -3427,13 +3421,13 @@ error Database::SaveUser(
                 *session_ <<
                           "insert into users("
                           "id, default_wid, since, fullname, email, "
-                          "record_timeline, store_start_and_stop_time, "
+                          "record_timeline, "
                           "timeofday_format, duration_format, offline_data, "
                           "default_pid, default_tid"
                           ") values("
                           ":id, :default_wid, :since, :fullname, "
                           ":email, "
-                          ":record_timeline, :store_start_and_stop_time, "
+                          ":record_timeline, "
                           ":timeofday_format, :duration_format, :offline_data, "
                           ":default_pid, :default_tid"
                           ")",
@@ -3443,7 +3437,6 @@ error Database::SaveUser(
                           useRef(user->Fullname()),
                           useRef(user->Email()),
                           useRef(user->RecordTimeline()),
-                          useRef(user->StoreStartAndStopTime()),
                           useRef(user->TimeOfDayFormat()),
                           useRef(user->DurationFormat()),
                           useRef(user->OfflineData()),
