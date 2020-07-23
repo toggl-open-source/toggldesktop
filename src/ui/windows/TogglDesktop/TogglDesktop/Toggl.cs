@@ -225,9 +225,14 @@ public static partial class Toggl
         toggl_login_sso(ctx, api_token);
     }
 
-    public static bool LoginAndLinkSSO(string email, string password, string ssoConfirmationCode)
+    public static void SetNeedEnableSSO(string code)
     {
-        return toggl_login_sso_link(ctx, email, password, ssoConfirmationCode);
+        toggl_set_need_enable_SSO(ctx, code);
+    }
+
+    public static void ResetEnableSSO()
+    {
+        toggl_reset_enable_SSO(ctx);
     }
 
     public static bool GoogleSignup(string access_token, long country_id)

@@ -217,11 +217,11 @@ namespace TogglDesktop.ViewModels
             }
 
             var success = false;
+            if (SelectedConfirmAction.HasFlag(ConfirmAction.LinkSSO) && SSOEmail == Email)
+                Toggl.SetNeedEnableSSO(SSOConfirmationCode);
             switch (SelectedConfirmAction)
             {
                 case ConfirmAction.LogInAndLinkSSO:
-                    success = await LoginAndLinkSSO();
-                    break;
                 case ConfirmAction.LogIn:
                     success = await ConfirmAsync(Toggl.Login);
                     break;
@@ -230,6 +230,11 @@ namespace TogglDesktop.ViewModels
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+            if (SelectedConfirmAction.HasFlag(ConfirmAction.LinkSSO))
+            {
+                Toggl.ResetEnableSSO();
+                SelectedConfirmAction &= ~ConfirmAction.LinkSSO;
             }
 
             return success;
@@ -242,6 +247,8 @@ namespace TogglDesktop.ViewModels
                 return;
             }
 
+            if (SelectedConfirmAction.HasFlag(ConfirmAction.LinkSSO) && SSOEmail == Email)
+                Toggl.SetNeedEnableSSO(SSOConfirmationCode);
             switch (SelectedConfirmAction)
             {
                 case ConfirmAction.LogInAndLinkSSO:
@@ -253,6 +260,11 @@ namespace TogglDesktop.ViewModels
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+            if (SelectedConfirmAction.HasFlag(ConfirmAction.LinkSSO))
+            {
+                Toggl.ResetEnableSSO();
+                SelectedConfirmAction &= ~ConfirmAction.LinkSSO;
             }
         }
 
@@ -335,18 +347,6 @@ namespace TogglDesktop.ViewModels
             var password = Password;
             var selectedCountryId = SelectedCountry?.ID ?? -1;
             return await Task.Run(() => confirmAction(email, password, selectedCountryId));
-        }
-
-        private async Task<bool> LoginAndLinkSSO()
-        {
-            bool res;
-            if (SSOEmail == Email)
-                res = await Task.Run(() => Toggl.LoginAndLinkSSO(Email, Password, SSOConfirmationCode));
-            else
-                res = await ConfirmAsync(Toggl.Login);
-            SelectedConfirmAction = ConfirmAction.LogIn;
-
-            return res;
         }
 
         private static HttpClientFactory HttpClientFactoryFromProxySettings(Toggl.TogglSettingsView settings)

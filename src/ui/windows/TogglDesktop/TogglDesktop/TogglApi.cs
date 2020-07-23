@@ -1912,22 +1912,20 @@ private static extern bool toggl_get_identity_provider_sso(
         string email);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+private static extern void toggl_set_need_enable_SSO(
+        IntPtr context,
+[MarshalAs(UnmanagedType.LPWStr)]
+        string code);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+private static extern void toggl_reset_enable_SSO(
+        IntPtr context);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
 private static extern void toggl_login_sso(
         IntPtr context,
 [MarshalAs(UnmanagedType.LPWStr)]
         string api_token);
-
-    /// Login user along with enabling/linking SSO account to Toggl account
-[DllImport(dll, CharSet = charset, CallingConvention = convention)]
-[return:MarshalAs(UnmanagedType.I1)]
-private static extern bool toggl_login_sso_link(
-        IntPtr context,
-[MarshalAs(UnmanagedType.LPWStr)]
-        string email,
-[MarshalAs(UnmanagedType.LPWStr)]
-        string password,
-[MarshalAs(UnmanagedType.LPWStr)]
-        string ssoConfirmationCode);
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
 private static extern void toggl_track_timeline_menu_context(
         IntPtr context,
