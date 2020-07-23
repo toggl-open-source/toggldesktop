@@ -15,11 +15,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Install Danger
+      run: |
+        ls
     - name: Danger
       uses: f-meloni/danger-swift-swiftlint-action@1.2.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    # !!! got error with SwiftLint JSON decoding
     # - name: Install Danger
     #   run: |
     #     brew install danger/tap/danger-swift
@@ -28,11 +32,15 @@ jobs:
     #     danger-swift ci --dangerfile src/ui/osx/Dangerfile.swift
     #   env: 
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # !!! Cannot install well
     # - name: Danger Swift
     #   uses: danger/swift@3.3.2
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    # !!! Using separate Lint action from market
+    # !!! problem is that swift lint checks all files and not only ones from the PR
     # - name: Install SwiftLint
     #   run: |
     #     brew install swiftlint
