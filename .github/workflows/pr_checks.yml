@@ -10,8 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: GitHub Action for SwiftLint (Only files changed in the PR)
+      - name: Fetch base ref
+        run: git fetch --no-tags --prune --depth=1 origin ${{ github.base_ref }}
+      - name: Run SwiftLint
         uses: norio-nomura/action-swiftlint@3.1.0
+        with:
+          args: --force-exclude
         env:
-          DIFF_BASE: ${{ github.base_ref }}
-          
+          DIFF_BASE: origin/${{ github.base_ref }}
