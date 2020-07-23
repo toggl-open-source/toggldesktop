@@ -1,31 +1,48 @@
 name: PR Lint
 on:
   pull_request:
-    types: [opened, reopened, edited, synchronize]
     paths:
       - '.github/workflows/swiftlint.yml'
       - '.swiftlint.yml'
       - '**/*.swift'
+#    types: [opened, reopened, edited, synchronize]
 jobs:
   SwiftLint:
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Install SwiftLint
-      run: |
-        brew install swiftlint
-    - name: File Changes Action
-      id: get_file_changes
-      uses: trilom/file-changes-action@v1.2.4
-      with:
-        githubToken: ${{ secrets.GITHUB_TOKEN }}
-        plaintext: true
-    - name: Echo file changes
-      run: |
-        echo Changed files: ${{ steps.get_file_changes.outputs.files }}
-    - name: Run linters
-      uses: samuelmeuli/lint-action@v1
-      with:
-        github_token: ${{ secrets.github_token }}
-        swiftlint: true
+    - name: Danger
+      uses: f-meloni/danger-swift-swiftlint-action@1.2.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Install Danger
+    #   run: |
+    #     brew install danger/tap/danger-swift
+    # - name: Run Danger
+    #   run: |
+    #     danger-swift ci --dangerfile src/ui/osx/Dangerfile.swift
+    #   env: 
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Danger Swift
+    #   uses: danger/swift@3.3.2
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # - name: Install SwiftLint
+    #   run: |
+    #     brew install swiftlint
+    # - name: File Changes Action
+    #   id: get_file_changes
+    #   uses: trilom/file-changes-action@v1.2.4
+    #   with:
+    #     githubToken: ${{ secrets.GITHUB_TOKEN }}
+    #     plaintext: true
+    # - name: Echo file changes
+    #   run: |
+    #     echo Changed files: ${{ steps.get_file_changes.outputs.files }}
+    # - name: Run linters
+    #   uses: samuelmeuli/lint-action@v1
+    #   with:
+    #     github_token: ${{ secrets.github_token }}
+    #     swiftlint: true
 #        swiftlint_args:
