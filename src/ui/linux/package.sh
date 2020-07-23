@@ -57,7 +57,6 @@ plugindir=$($qmake -query QT_INSTALL_PLUGINS)
 translationdir=$($qmake -query QT_INSTALL_TRANSLATIONS)
 datadir=$($qmake -query QT_INSTALL_DATA)
 
-CHECK cp "$libexecdir/QtWebEngineProcess" bin
 for i in $PLUGINS; do
     newpath=lib/qt5/plugins/$(dirname $i)/
     file=$(basename $i)
@@ -74,15 +73,10 @@ for i in $(ls lib/*.so); do
 done
 
 CHECK patchelf --set-rpath '\$ORIGIN/../lib/' bin/TogglDesktop >> ../patchelf.log
-CHECK patchelf --set-rpath '\$ORIGIN/../lib/' bin/QtWebEngineProcess >> ../patchelf.log
 
 for i in $(ls lib/*.so); do
     CHECK patchelf --set-rpath '\$ORIGIN' $i >> ../patchelf.log
 done
-
-CHECK mkdir -p lib/qt5/translations lib/qt5/resources
-CHECK cp -Lrn "$translationdir/qtwebengine_locales" lib/qt5/translations
-CHECK cp -Lrn "$datadir/resources/"* lib/qt5/resources
 
 CHECK mv "bin/TogglDesktop.sh" "."
 
@@ -95,7 +89,7 @@ Translations=lib/qt5/translations
 EOF
 
 echo "Stripping" >&2
-for i in bin/QtWebEngineProcess $(find . -name \*.so); do 
+for i in $(find . -name \*.so); do
     strip --strip-unneeded $i; 2>/dev/null >/dev/null
 done
 

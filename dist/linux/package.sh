@@ -53,7 +53,6 @@ function compose() {
     translationdir=$($qmake -query QT_INSTALL_TRANSLATIONS)
     datadir=$($qmake -query QT_INSTALL_DATA)
 
-    cp "$libexecdir/QtWebEngineProcess" bin
     mkdir -p lib
     for i in $PLUGINS; do
         newpath=lib/qt5/plugins/$(dirname $i)/
@@ -81,15 +80,10 @@ function compose() {
     done
 
     patchelf --set-rpath '$ORIGIN/../lib/' bin/TogglDesktop
-    patchelf --set-rpath '$ORIGIN/../lib/' bin/QtWebEngineProcess
 
     for i in $(ls lib/*.so*); do
         patchelf --set-rpath '$ORIGIN' $i
     done
-
-    mkdir -p lib/qt5/translations lib/qt5/resources
-    cp -Lrfu "$translationdir/qtwebengine_locales" lib/qt5/translations
-    cp -Lrfu "$datadir/resources/"* lib/qt5/resources
 
     mv "bin/TogglDesktop.sh" "."
 
@@ -102,7 +96,7 @@ function compose() {
 EOF
 
     # echo "=========== Stripping" >&2
-    # for i in bin/QtWebEngineProcess $(find . -name \*.so); do
+    # for i in $(find . -name \*.so); do
     #     strip --strip-unneeded $i;
     # done
 

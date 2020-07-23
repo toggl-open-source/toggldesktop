@@ -88,7 +88,7 @@ $ make init_cocoapod
 
 ### Dependencies
 
-You'll need these Qt (at version 5.12 or higher) modules: QtWidgets (with private headers), QtWebEngine, QtWebEngineWidgets, QtNetwork, QtDBus, QtX11Extras
+You'll need these Qt (at version 5.12 or higher) modules: QtWidgets (with private headers), QtNetwork, QtNetworkAuth, QtDBus, QtX11Extras
 
 If Qt is not installed from your distribution's package manager, you will need to set the `CMAKE_PREFIX_PATH` environment variable to point to the `lib/cmake` folder in the Qt version you wish to use.
 
