@@ -10,12 +10,9 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
-
-    # Install your linters here
     - name: Install SwiftLint
       run: |
         brew install swiftlint
-
     - name: Run linters
       uses: samuelmeuli/lint-action@v1
       with:
