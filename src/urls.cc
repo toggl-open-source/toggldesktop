@@ -30,7 +30,7 @@ bool IsUsingStagingAsBackend() {
 
 std::string Main() {
     if (use_staging_as_backend) {
-        return "https://toggl.space";
+        return "https://track.toggl.space";
     }
     return "https://toggl.com";
 }
