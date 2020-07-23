@@ -122,7 +122,7 @@ error WebSocketClient::createSession() {
         Netconf::ConfigureProxy(urls::WebSocket(), session_);
 
         req_ = new Poco::Net::HTTPRequest(
-            Poco::Net::HTTPRequest::HTTP_GET, "/ws",
+            Poco::Net::HTTPRequest::HTTP_GET, "/stream",
             Poco::Net::HTTPMessage::HTTP_1_1);
         req_->set("Origin", "https://localhost");
         req_->set("User-Agent", HTTPClient::Config.UserAgent());
