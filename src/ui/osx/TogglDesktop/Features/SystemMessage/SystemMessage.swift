@@ -114,3 +114,13 @@ final class SystemMessagePayload: NSObject {
         super.init()
     }
 }
+
+class TestLinter {
+    
+    func foo() {
+        print();
+    }
+
+
+}
+
