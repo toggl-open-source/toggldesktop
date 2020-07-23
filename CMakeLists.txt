@@ -45,6 +45,7 @@ find_package(Qt5Network CONFIG REQUIRED)
 find_package(Qt5WebEngine CONFIG REQUIRED)
 find_package(Qt5WebEngineWidgets CONFIG REQUIRED)
 find_package(Qt5X11Extras CONFIG REQUIRED)
+find_package(Qt5NetworkAuth CONFIG REQUIRED)
 # We need to include private headers manually
 include_directories( ${Qt5Widgets_PRIVATE_INCLUDE_DIRS} )
 
