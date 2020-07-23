@@ -74,7 +74,11 @@ function compose() {
     qmake=$(find $libdir/../bin/ $libdir/../../bin/ -name qmake -or -name qmake-qt5 | head -n1)
     echo "qmake: " $qmake
 
-    cp -Lrfu $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e crypto -e libicu -e double-conversion -e jpeg -e re2 -e avcodec -e avformat -e avutil -e webp | sed 's/.* => \(.*\)[(]0x.*/\1/') "$THIRDPARTYDIR"
+    if [[ "$VERSION_CODENAME" == "xenial" ]]; then
+        cp -Lrfu $(ldd bin/TogglDesktop | grep "\.so" | sed 's/.* => \(.*\)[(]0x.*/\1/') "$THIRDPARTYDIR"
+    else
+        cp -Lrfu $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e crypto -e libicu -e double-conversion -e jpeg -e re2 -e avcodec -e avformat -e avutil -e webp | sed 's/.* => \(.*\)[(]0x.*/\1/') "$THIRDPARTYDIR"
+    fi
     ls "$qmake" >/dev/null
 
     libexecdir=$($qmake -query QT_INSTALL_LIBEXECS)
@@ -91,11 +95,11 @@ function compose() {
         mkdir -p $newpath
         cp -Lrfu $plugindir/$i $newpath
         patchelf --set-rpath '$ORIGIN/../../../' $newpath/$file
-        ldd $newpath/$file | grep -e libQt -e ssl
+        ldd $newpath/$file | grep -e "=>.*\.so"
         echo "========"
-        ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/'
+        ldd $newpath/$file | grep -e "=>.*\.so" | sed 's/.* => \(.*\)[(]0x.*/\1/'
         echo "========"
-        for j in $(ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/'); do
+        for j in $(ldd $newpath/$file | grep -e "=>.*\.so" | sed 's/.* => \(.*\)[(]0x.*/\1/'); do
             if [ ! -f lib/$(basename "$j") ]; then
                 cp -vLrfu $j "$THIRDPARTYDIR"
             fi
@@ -103,7 +107,7 @@ function compose() {
     done
 
     for i in $(ls "$THIRDPARTYDIR"/*.so); do
-        for j in $(ldd $i | grep -e libQt | sed 's/.* => \(.*\)[(]0x.*/\1/'); do
+        for j in $(ldd $i | grep -e "=>.*\.so" | sed 's/.* => \(.*\)[(]0x.*/\1/'); do
             if [ ! -f lib/$(basename "$j") ]; then
                 cp -vLrfu $j "$THIRDPARTYDIR"
             fi

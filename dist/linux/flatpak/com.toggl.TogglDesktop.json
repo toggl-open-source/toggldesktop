@@ -31,16 +31,15 @@
             "buildsystem": "cmake-ninja",
             "config-opts": [
                 "-DCMAKE_BUILD_TYPE=Release",
-                "-DTOGGL_VERSION=7.4.528",
-                "-DTOGGL_VERSION_RELEASE_DATE=2019-08-22",
-                "-DTOGGL_PRODUCTION_BUILD=ON",
-                "-DTOGGL_ALLOW_UPDATE_CHECK=ON"
+                "-DTOGGL_VERSION=7.0.0",
+                "-DTOGGL_PRODUCTION_BUILD=OFF",
+                "-DTOGGL_ALLOW_UPDATE_CHECK=OFF"
             ],
             "sources": [
                 {
                     "type": "git",
-                    "url": "http://github.com/toggl/toggldesktop",
-                    "tag": "v7.4.528"
+                    "url": "https://github.com/toggl-open-source/toggldesktop.git",
+                    COMMIT_PLACEHOLDER
                 }
             ]
         }

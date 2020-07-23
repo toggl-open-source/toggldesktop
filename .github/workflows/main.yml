@@ -136,7 +136,6 @@ jobs:
 
   linux-tarball:
     runs-on: ubuntu-16.04
-    if: github.event_name == 'release'
     steps:
     - uses: actions/checkout@v1
       with:
@@ -174,14 +173,20 @@ jobs:
       run: |
         export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
         bash ./dist/linux/package.sh compose
+    - name: Upload artifacts to GitHub
+      if: github.event_name != 'release'
+      uses: actions/upload-artifact@v2
+      with:
+        name: toggldesktop_x86_64.tar.gz
+        path: toggldesktop_x86_64.tar.gz
     - name: Upload to GitHub
+      if: github.event_name == 'release'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz" renameto="toggldesktop_linux_${TAG_NAME/v/}_x86_64.tar.gz"
 
-  linux-ubuntu1804:
-    runs-on: ubuntu-18.04
-    if: github.event_name == 'release'
+  linux-ubuntu2004:
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v1
       with:
@@ -200,17 +205,23 @@ jobs:
         ln -s ../../src .
         ln -s ../../CMakeLists.txt .
         ln -s ../../third_party .
-        ln -s ubuntu18 debian
+        ln -s ubuntu20 debian
         dch -b -D unstable --package "toggldesktop" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
         debuild
+    - name: Upload artifacts to GitHub
+      if: github.event_name != 'release'
+      uses: actions/upload-artifact@v2
+      with:
+        name: toggldesktop_ubuntu2004_amd64.deb
+        path: dist/toggldesktop_7.0.0_amd64.deb
     - name: Upload to GitHub
+      if: github.event_name == 'release'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/toggldesktop_${TAG_NAME/v/}_amd64.deb"
 
   linux-ubuntu1604:
     runs-on: ubuntu-16.04
-    if: github.event_name == 'create'
     steps:
     - uses: actions/checkout@v1
       with:
@@ -222,31 +233,53 @@ jobs:
       run: |
         sudo apt update
         sudo apt install devscripts cmake debhelper pkg-config libssl-dev libxss-dev libxmu-dev
-    - name: Fetch and install binary Qt
+    - name: Upgrade GCC
       run: |
-        bash ./dist/linux/install-qt.sh 5.12.5
+        sudo apt-get install -y software-properties-common
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt update
+        sudo apt install g++-7 -y
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+        sudo update-alternatives --config gcc
+    - name: Upgrade CMake
+      run: |
+        sudo apt-key add dist/linux/kitware-archive-latest.asc
+        sudo apt install apt-transport-https
+        sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ xenial main'
+        sudo apt update
+        sudo apt -y upgrade cmake\*
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        modules: qtwebengine
     - name: Build a Debian package
       run: |
-        export CMAKE_PREFIX_PATH="${PWD}/Qt/5.12.5/gcc_64/lib/cmake/"
-        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
+        export CC=/usr/bin/gcc-7
+        export CXX=/usr/bin/g++-7
+        TAG_NAME=$(./dist/get-tag-name.sh)
         cd dist/linux
         ln -s ../../src .
         ln -s ../../CMakeLists.txt .
         ln -s ../../third_party .
         ln -s ubuntu16 debian
         dch -b -D unstable --package "toggldesktop" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
-        debuild --preserve-envvar=CMAKE_PREFIX_PATH
+        debuild --preserve-envvar=CMAKE_PREFIX_PATH --preserve-envvar=CC --preserve-envvar=CXX
+    - name: Upload artifacts to GitHub
+      if: github.event_name != 'release'
+      uses: actions/upload-artifact@v2
+      with:
+        name: toggldesktop_ubuntu1604_amd64.deb
+        path: dist/toggldesktop_7.0.0_amd64.deb
     - name: Upload to GitHub
-      if: github.event_name == 'create'
+      if: github.event_name == 'release'
       run: |
-        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
-        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
-        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" renameto="toggldesktop_${TAG_NAME/v/}_ubuntu1604_amd64.deb" filename="dist/toggldesktop_${TAG_NAME/v/}_amd64.deb"
+        TAG_NAME=$(./dist/get-tag-name.sh)
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" renameto="toggldesktop_${TAG_NAME/v/}_ubuntu1604_amd64.deb" filename="dist/toggldesktop_${TAG_NAME/v/}_amd64.deb"
 
   linux-flatpak-kde:
-    runs-on: ubuntu-18.04
-    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
       with:
@@ -262,12 +295,28 @@ jobs:
         sudo flatpak install --system -y flathub org.kde.Sdk//5.12
     - name: Build Linux Flatpak package - KDE based
       run: |
+        TAG_NAME=$(./dist/get-tag-name.sh)
         pushd dist/linux/flatpak
+        echo "$TAG_NAME"
+        if [[ "$TAG_NAME" != "v7.0.0" ]]; then
+            sed -i 's/DTOGGL_PRODUCTION_BUILD=OFF/DTOGGL_PRODUCTION_BUILD=ON/' com.toggl.TogglDesktop.json
+            sed -i 's/DTOGGL_ALLOW_UPDATE_CHECK=OFF/DTOGGL_ALLOW_UPDATE_CHECK=ON/' com.toggl.TogglDesktop.json
+            sed -i "s/COMMIT_PLACEHOLDER/\"tag\": \"$TAG_NAME\"/" com.toggl.TogglDesktop.json
+        else
+            sed -i "s/COMMIT_PLACEHOLDER/\"commit\": \"$GITHUB_SHA\"/" com.toggl.TogglDesktop.json
+        fi
         sudo flatpak-builder --repo=flatpak-repo --force-clean flatpak-build com.toggl.TogglDesktop.json
         flatpak build-bundle flatpak-repo com.toggl.TogglDesktop.flatpak com.toggl.TogglDesktop
         mv com.toggl.TogglDesktop.flatpak ../../..
         popd
-    - name: Upload to GitHub
+    - name: Upload artifacts to GitHub
+      if: github.event_name != 'release'
+      uses: actions/upload-artifact@v2
+      with:
+        name: com.toggl.TogglDesktop.flatpak
+        path: com.toggl.TogglDesktop.flatpak
+    - name: Upload release to GitHub
+      if: github.event_name == 'release'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="com.toggl.TogglDesktop.flatpak" renameto="com.toggl.TogglDesktop-${TAG_NAME/v/}.flatpak"
