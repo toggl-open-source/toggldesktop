@@ -6,12 +6,17 @@ on:
       - '.swiftlint.yml'
       - '**/*.swift'
 #    types: [opened, reopened, edited, synchronize]
+
+defaults:
+  run:
+    working-directory: src/ui/osx
+
 jobs:
   SwiftLint:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: src/ui/osx
+    # defaults:
+      # run:
+        # working-directory: src/ui/osx
 
     steps:
     - uses: actions/checkout@v2
