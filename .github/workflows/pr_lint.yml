@@ -9,12 +9,17 @@ on:
 jobs:
   SwiftLint:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/ui/osx
+
     steps:
     - uses: actions/checkout@v2
     - name: Danger
       uses: f-meloni/danger-swift-swiftlint-action@1.2.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     # - name: Install Danger
     #   run: |
     #     brew install danger/tap/danger-swift
