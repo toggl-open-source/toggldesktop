@@ -30,14 +30,14 @@ bool IsUsingStagingAsBackend() {
 
 std::string Main() {
     if (use_staging_as_backend) {
-        return "https://toggl.space";
+        return "https://track.toggl.space";
     }
     return "https://toggl.com";
 }
 
 std::string API() {
     if (use_staging_as_backend) {
-        return "https://desktop.toggl.space";
+        return "https://desktop.track.toggl.space";
     }
     return "https://desktop.toggl.com";
 }
@@ -51,14 +51,14 @@ std::string SyncAPI() {
 
 std::string TimelineUpload() {
     if (use_staging_as_backend) {
-        return "https://timeline.toggl.space";
+        return "https://desktop.track.toggl.space";
     }
     return "https://timeline.toggl.com";
 }
 
 std::string WebSocket() {
     if (use_staging_as_backend) {
-        return "https://stream.toggl.space";
+        return "https://desktop.track.toggl.space";
     }
     return "https://stream.toggl.com";
 }
