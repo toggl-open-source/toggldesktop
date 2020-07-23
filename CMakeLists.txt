@@ -42,8 +42,6 @@ include(FindPkgConfig)
 find_package(Qt5Widgets CONFIG REQUIRED)
 find_package(Qt5DBus CONFIG REQUIRED)
 find_package(Qt5Network CONFIG REQUIRED)
-find_package(Qt5WebEngine CONFIG REQUIRED)
-find_package(Qt5WebEngineWidgets CONFIG REQUIRED)
 find_package(Qt5X11Extras CONFIG REQUIRED)
 find_package(Qt5NetworkAuth CONFIG REQUIRED)
 # We need to include private headers manually
