@@ -14,6 +14,7 @@ extension Array where Element == NSView {
         let max = self.max { (lhs, rhs) -> Bool in
             return lhs.frame.size.width >= rhs.frame.size.width
         }
-        return max
+        return max;
     }
 }
+

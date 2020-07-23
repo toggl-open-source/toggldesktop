@@ -1,6 +1,7 @@
 name: PR Lint
 on:
   pull_request:
+    types: [opened, reopened, edited, synchronize]
     paths:
       - '.github/workflows/swiftlint.yml'
       - '.swiftlint.yml'
@@ -13,8 +14,18 @@ jobs:
     - name: Install SwiftLint
       run: |
         brew install swiftlint
+    - name: File Changes Action
+      id: get_file_changes
+      uses: trilom/file-changes-action@v1.2.4
+      with:
+        githubToken: ${{ secrets.GITHUB_TOKEN }}
+        plaintext: true
+    - name: Echo file changes
+      run: |
+        echo Changed files: ${{ steps.get_file_changes.outputs.files }}
     - name: Run linters
       uses: samuelmeuli/lint-action@v1
       with:
         github_token: ${{ secrets.github_token }}
         swiftlint: true
+#        swiftlint_args:
