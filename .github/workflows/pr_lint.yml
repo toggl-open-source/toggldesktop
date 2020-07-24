@@ -5,24 +5,14 @@ on:
       - '.github/workflows/swiftlint.yml'
       - '.swiftlint.yml'
       - '**/*.swift'
-#    types: [opened, reopened, edited, synchronize]
+# types: [opened, reopened, edited, synchronize]
 
-# defaults:
-#   run:
-#     working-directory: src/ui/osx
 
 jobs:
   SwiftLint:
     runs-on: macOS-latest
-    # defaults:
-      # run:
-        # working-directory: src/ui/osx
-
     steps:
     - uses: actions/checkout@v2
-    - name: Install Danger
-      run: |
-        ls
     # - name: Danger
     #   uses: f-meloni/danger-swift-swiftlint-action@1.2.0
     #   env:
