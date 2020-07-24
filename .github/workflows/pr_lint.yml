@@ -7,13 +7,13 @@ on:
       - '**/*.swift'
 #    types: [opened, reopened, edited, synchronize]
 
-defaults:
-  run:
-    working-directory: src/ui/osx
+# defaults:
+#   run:
+#     working-directory: src/ui/osx
 
 jobs:
   SwiftLint:
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     # defaults:
       # run:
         # working-directory: src/ui/osx
@@ -23,20 +23,23 @@ jobs:
     - name: Install Danger
       run: |
         ls
-    - name: Danger
-      uses: f-meloni/danger-swift-swiftlint-action@1.2.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Danger
+    #   uses: f-meloni/danger-swift-swiftlint-action@1.2.0
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # !!! got error with SwiftLint JSON decoding
-    # - name: Install Danger
-    #   run: |
-    #     brew install danger/tap/danger-swift
-    # - name: Run Danger
-    #   run: |
-    #     danger-swift ci --dangerfile src/ui/osx/Dangerfile.swift
-    #   env: 
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Install Danger
+      run: |
+        brew install danger/tap/danger-swift
+    - name: Install SwiftLint
+      run: |
+        brew install swiftlint
+    - name: Run Danger
+      run: |
+        danger-swift ci --dangerfile src/ui/osx/Dangerfile.swift
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # !!! Cannot install well
     # - name: Danger Swift
