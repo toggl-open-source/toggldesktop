@@ -1288,6 +1288,8 @@ const NSString *appName = @"osx_native_app";
     // instead of stoping them when new environment value arrives
     toggl_set_environment(ctx, [self.environment UTF8String]);
 
+    // changing Objective C file to see if lint will trigger
+
 	// Using sparkle instead of self updater:
 	toggl_disable_update_check(ctx);
 
