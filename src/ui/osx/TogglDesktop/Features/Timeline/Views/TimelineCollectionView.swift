@@ -9,8 +9,10 @@
 import Cocoa
 
 protocol TimelineCollectionViewDelegate: class {
-
     func timelineShouldCreateEmptyEntry(with startTime: TimeInterval)
+    func timelineDidStartDragging(withStartTime startTime: TimeInterval, endTime: TimeInterval)
+    func timelineDidUpdateDragging(withStartTime startTime: TimeInterval, endTime: TimeInterval)
+    func timelineDidEndDragging(withStartTime startTime: TimeInterval, endTime: TimeInterval)
 }
 
 /// Main View of the Timline
@@ -22,35 +24,71 @@ final class TimelineCollectionView: NSCollectionView {
 
     weak var timelineDelegate: TimelineCollectionViewDelegate?
 
-    // MARK: View
+    private var isDragCreatingEntry = false
+    private var mouseDragStartTime: TimeInterval = 0
+    private var mouseDragEndTime: TimeInterval = 0
+
+    private var dragEntryStartTime: TimeInterval {
+        min(mouseDragStartTime, mouseDragEndTime)
+    }
+
+    private var dragEntryEndTime: TimeInterval {
+        max(mouseDragStartTime, mouseDragEndTime)
+    }
+
+    // MARK: Mouse Events
 
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
-        if #available(OSX 10.13, *) {
-            handleMouseClick(with: event)
-        }
+
+        guard isDragToCreateEvent(event) else { return }
+        guard let dragStart = timestamp(from: event) else { return }
+        mouseDragStartTime = dragStart
+        mouseDragEndTime = dragStart + 1
+        isDragCreatingEntry = true
+
+        timelineDelegate?.timelineDidStartDragging(withStartTime: dragEntryStartTime,
+                                                   endTime: dragEntryEndTime)
     }
-}
 
-// MARK: Private
+    override func mouseDragged(with event: NSEvent) {
+        super.mouseDragged(with: event)
 
-extension TimelineCollectionView {
+        guard isDragCreatingEntry else { return }
+        guard let timestamp = timestamp(from: event) else { return }
+        mouseDragEndTime = timestamp
 
-    fileprivate func handleMouseClick(with event: NSEvent) {
-        guard let flowLayout = collectionViewLayout as? TimelineFlowLayout else { return }
+        timelineDelegate?.timelineDidUpdateDragging(withStartTime: dragEntryStartTime,
+                                                    endTime: dragEntryEndTime)
+    }
 
-        // Convert to CollectionView coordinator
+    override func mouseUp(with event: NSEvent) {
+        super.mouseUp(with: event)
+
+        guard isDragCreatingEntry else { return }
+        guard let timestamp = timestamp(from: event) else { return }
+        mouseDragEndTime = timestamp
+        isDragCreatingEntry = false
+
+        timelineDelegate?.timelineDidEndDragging(withStartTime: dragEntryStartTime,
+                                                 endTime: dragEntryEndTime)
+    }
+
+    // MARK: - Private
+
+    private func isDragToCreateEvent(_ event: NSEvent) -> Bool {
         let clickedPoint = convert(event.locationInWindow, from: nil)
+        guard event.clickCount == 1 && indexPathForItem(at: clickedPoint) == nil else {
+            return false
+        }
+        guard let layout = collectionViewLayout as? TimelineFlowLayout else { return false }
 
-        // Single click and on empty space
-        guard event.clickCount == 1,
-            indexPathForItem(at: clickedPoint) == nil else { return }
+        return layout.isInTimeEntrySection(at: clickedPoint)
+    }
 
-        // Skip if the click is in Time Label and Activity section
-        guard flowLayout.isInTimeEntrySection(at: clickedPoint) else { return }
-
-        // Get timestamp from click point, depend on zoom level and position
-        let timestamp = flowLayout.convertTimestamp(from: clickedPoint)
-        timelineDelegate?.timelineShouldCreateEmptyEntry(with: timestamp)
+    private func timestamp(from event: NSEvent) -> TimeInterval? {
+        guard let layout = collectionViewLayout as? TimelineFlowLayout else { return nil }
+        let location = convert(event.locationInWindow, from: nil)
+        return layout.convertTimestamp(from: location)
     }
 }

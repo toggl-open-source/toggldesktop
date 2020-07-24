@@ -97,7 +97,7 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
     /// Small Time Entry has some different configs
     var isSmall: Bool {
         // It's small bar if duration less than 1 min
-        return abs(timeEntry.duration_in_seconds) <= 60
+        return abs(start - end) <= 60
     }
 
     // MARK: Init
@@ -119,11 +119,16 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
     // MARK: Public
 
     func isToday() -> Bool {
-        guard let date = timeEntry.ended else { return false }
+        let date = Date(timeIntervalSince1970: end)
         return Calendar.current.isDateInToday(date)
     }
 
     func updateEndTimeForRunning() {
         end = Date().timeIntervalSince1970
     }
+}
+
+/// Simple item to represent simple placeholder view in place where the time entry will be placed later.
+/// For example, used to show a view when user is creating entry with dragging action.
+final class TimelineTimeEntryPlaceholder: TimelineBaseTimeEntry {
 }

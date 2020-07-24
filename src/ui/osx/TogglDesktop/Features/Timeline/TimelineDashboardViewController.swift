@@ -106,12 +106,18 @@ final class TimelineDashboardViewController: NSViewController {
         return popover
     }()
 
-    private var isAllPopoverClosed: Bool {
-        return !editorPopover.isShown &&
-            !activityHoverPopover.isShown &&
-            !timeEntryHoverPopover.isShown &&
-            !activityRecorderPopover.isShown &&
-            !datePickerView.isShown
+    private var allPopovers: [NSPopover] {
+        [editorPopover, activityHoverPopover, activityRecorderPopover, timeEntryHoverPopover, resizeInfoPopover]
+    }
+
+    private var allPopoversClosed: Bool {
+        let isPopoverShown = allPopovers.reduce(false) { $0 || $1.isShown }
+        // including datePickerView internal popover
+        return !isPopoverShown && !datePickerView.isShown
+    }
+
+    private var canShowHoverPopover: Bool {
+        OnboardingService.shared.isShown || editorPopover.isShown
     }
 
     private var initialDateProvider = TimelineInitialDateProvider { proposedDate in
@@ -374,13 +380,11 @@ extension TimelineDashboardViewController {
     }
 
     private func closeAllPopovers() {
-        let popovers: [NSPopover] = [editorPopover, activityHoverPopover, activityRecorderPopover, timeEntryHoverPopover]
-        popovers.forEach { $0.performClose(self) }
+        allPopovers.forEach { $0.performClose(self) }
     }
 
     private func closeAllPopoverExceptEditor() {
-        let popovers: [NSPopover] = [activityHoverPopover, activityRecorderPopover, timeEntryHoverPopover]
-        popovers.forEach { $0.performClose(self) }
+        allPopovers.filter { $0 != editorPopover }.forEach { $0.performClose(self) }
     }
 
     private func getSelectedCell() -> TimelineTimeEntryCell? {
@@ -396,10 +400,6 @@ extension TimelineDashboardViewController {
 
     @objc private func runningTimeEntryNoti(_ noti: Notification) {
         datasource.updateRunningTimeEntry(noti.object)
-    }
-
-    private func isPopoversShown() -> Bool {
-        return OnboardingService.shared.isShown || editorPopover.isShown
     }
 }
 
@@ -456,13 +456,13 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     }
 
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry) {
-        guard !isPopoversShown() else { return }
+        guard !canShowHoverPopover else { return }
         timeEntryHoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         timeEntryHoverController.render(with: timeEntry)
     }
 
     func shouldPresentActivityHover(in view: NSView, activity: TimelineActivity) {
-        guard !isPopoversShown() else { return }
+        guard !canShowHoverPopover else { return }
 
         // Update new content and force render to get fit size
         activityHoverController.render(activity)
@@ -546,11 +546,13 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: start, guid: guid, keepEndTimeFixed: keepEndTimeFixed)
     }
 
-    func shouldPresentResizePopover(at cell: TimelineTimeEntryCell, onTopCorner: Bool) {
+    func shouldPresentResizePopover(at cell: TimelineBaseCell, onTopCorner: Bool) {
 
         // Compute the position
-        let bounds = cell.foregroundBox.bounds
-        let newFrame = onTopCorner ? CGRect(x: 0, y: bounds.height - 1, width: bounds.width, height: 1) : CGRect(x: 0, y: 0, width: bounds.width, height: 1)
+        let bounds = cell.view.bounds
+        let newFrame = onTopCorner ?
+            CGRect(x: 0, y: bounds.height - 1, width: bounds.width, height: 1) :
+            CGRect(x: 0, y: 0, width: bounds.width, height: 1)
 
         // Show or Update the position
         if !resizeInfoPopover.isShown {
@@ -581,16 +583,32 @@ extension TimelineDashboardViewController: TimelineCollectionViewDelegate {
 
     func timelineShouldCreateEmptyEntry(with startTime: TimeInterval) {
         // Don't create new TE if one of Popover is active
-        guard isAllPopoverClosed else {
+        guard allPopoversClosed else {
             closeAllPopovers()
             return
         }
 
         // Create
-        startNewTimeEntry(at: startTime, ended: startTime + 1)
+        let defaultDuration: TimeInterval = 1
+        startNewTimeEntry(at: startTime, ended: startTime + defaultDuration)
 
         // Onboarding
         DesktopLibraryBridge.shared().userDidEditOrAddTimeEntryDirectlyOnTimelineView()
+    }
+
+    func timelineDidStartDragging(withStartTime startTime: TimeInterval, endTime: TimeInterval) {
+        let draggTimeEntry = TimelineTimeEntryPlaceholder(start: startTime, end: endTime)
+        datasource.renderNewDraggingTimeEntry(draggTimeEntry)
+    }
+
+    func timelineDidUpdateDragging(withStartTime startTime: TimeInterval, endTime: TimeInterval) {
+        datasource.updateDraggingTimeEntry(withStartTime: startTime, endTime: endTime)
+    }
+
+    func timelineDidEndDragging(withStartTime startTime: TimeInterval, endTime: TimeInterval) {
+        closeAllPopovers()
+        datasource.createdDraggingTimeEntry(withStartTime: startTime, endTime: endTime)
+        startNewTimeEntry(at: startTime, ended: endTime)
     }
 }
 
