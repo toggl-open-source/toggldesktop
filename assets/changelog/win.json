@@ -1,15 +1,6 @@
 {
     "versions": [
         {
-            "version": "7.5.228",
-            "rows": [
-                "Improved syncing"
-            ],
-            "date": "July 23rd 2020",
-            "beta": "true",
-            "has64bit": "true"
-        },
-        {
             "version": "7.5.213",
             "rows": [
                 "Fixed a performance issue"
