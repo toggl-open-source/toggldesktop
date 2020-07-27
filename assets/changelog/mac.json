@@ -1,15 +1,6 @@
 {
     "versions": [
         {
-            "version": "7.5.228",
-            "rows": [
-                "Added support for single sign-on (SSO)",
-                "Improved syncing"
-            ],
-            "date": "July 23rd 2020",
-            "beta": "true"
-        },
-        {
             "version": "7.5.213",
             "rows": [
                 "Fixed a performance issue"
