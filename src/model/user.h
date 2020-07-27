@@ -277,7 +277,7 @@ bool User::SetModelID(Poco::UInt64 id, T *model) {
     {
         Poco::Mutex::ScopedLock lock(loadTimeEntries_m_);
         auto otherModel = related.ModelByID<T>(id);
-        if (otherModel) {
+        if (otherModel && otherModel != model) {
             // this means that somehow we already have a time entry with the ID
             // that was just returned from a response to time entry creation request
             logger().error("There is already a newer version of this ", model->ModelName(), " with ID ", id);
