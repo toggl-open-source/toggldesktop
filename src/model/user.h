@@ -280,7 +280,7 @@ bool User::SetModelID(Poco::UInt64 id, T *model) {
         if (otherModel) {
             // this means that somehow we already have a time entry with the ID
             // that was just returned from a response to time entry creation request
-            logger().error("There is already a newer version of this entry");
+            logger().error("There is already a newer version of this ", model->ModelName(), " with ID ", id);
 
             // clearing the GUID to make sure there's no GUID conflict
             model->SetGUID("");
