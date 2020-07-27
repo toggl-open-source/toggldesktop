@@ -41,6 +41,10 @@
 		49666CDD24C30C880074C1C1 /* OnboardingContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13E57B24347716005244AD /* OnboardingContentViewController.xib */; };
 		49666CDE24C30CD70074C1C1 /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
 		49666CDF24C30D1B0074C1C1 /* Color+Adaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2A116A247BB72A00B97FAE /* Color+Adaptive.swift */; };
+		4988E66024CEC8460072C1B5 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4988E65E24CEC8460072C1B5 /* TimerViewController.swift */; };
+		4988E66124CEC8460072C1B5 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4988E65E24CEC8460072C1B5 /* TimerViewController.swift */; };
+		4988E66224CEC8460072C1B5 /* TimerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4988E65F24CEC8460072C1B5 /* TimerViewController.xib */; };
+		4988E66324CEC8460072C1B5 /* TimerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4988E65F24CEC8460072C1B5 /* TimerViewController.xib */; };
 		49D3603B24878FA000527DE8 /* TogglDesktopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */; };
 		622BBF654A6A958692A4633B /* Pods_TogglDesktop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 776525112125F6AD81DF4DEF /* Pods_TogglDesktop.framework */; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
@@ -724,6 +728,8 @@
 		492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineInitialDateProvider.swift; sourceTree = "<group>"; };
 		49418B40249CE77D00265665 /* TogglDesktopTests-AppStore.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TogglDesktopTests-AppStore.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		49418B44249CE77D00265665 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4988E65E24CEC8460072C1B5 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
+		4988E65F24CEC8460072C1B5 /* TimerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimerViewController.xib; sourceTree = "<group>"; };
 		49D3603824878FA000527DE8 /* TogglDesktopTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TogglDesktopTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TogglDesktopTests.swift; sourceTree = "<group>"; };
 		49D3603C24878FA000527DE8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1457,6 +1463,8 @@
 				74D1D27017EB72D900E709B0 /* TimerEditViewController.m */,
 				74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */,
 				BA4791FD22F0479200E24F79 /* TimerContainerBox.swift */,
+				4988E65E24CEC8460072C1B5 /* TimerViewController.swift */,
+				4988E65F24CEC8460072C1B5 /* TimerViewController.xib */,
 			);
 			path = Timer;
 			sourceTree = "<group>";
@@ -2286,6 +2294,7 @@
 				BA13E57E24347716005244AD /* OnboardingContentViewController.xib in Resources */,
 				BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */,
 				BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */,
+				4988E66224CEC8460072C1B5 /* TimerViewController.xib in Resources */,
 				3C6B2489203E01D90063FC08 /* AutoCompleteTableCell.xib in Resources */,
 				BA3E75D822293576009AD291 /* SystemMessageView.xib in Resources */,
 				BA65A22522B7823200F895FD /* MainDashboardViewController.xib in Resources */,
@@ -2354,6 +2363,7 @@
 				BAE64E042368334000244D2B /* AutoCompleteTableCell.xib in Resources */,
 				BAE64E052368334000244D2B /* SystemMessageView.xib in Resources */,
 				BAE64E062368334000244D2B /* TimeEntryEmptyView.xib in Resources */,
+				4988E66324CEC8460072C1B5 /* TimerViewController.xib in Resources */,
 				BA37ACD723D8900C0013EE26 /* TimelineEmptyTimeEntryCell.xib in Resources */,
 				BA43B25523F525F30007DD99 /* TimelineLineView.xib in Resources */,
 				BAE64E072368334000244D2B /* DateCellViewItem.xib in Resources */,
@@ -2952,6 +2962,7 @@
 				4917324E24C050D8003EE7CC /* NSTextField+Ext.m in Sources */,
 				BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */,
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
+				4988E66024CEC8460072C1B5 /* TimerViewController.swift in Sources */,
 				BA65A24D22B79FEC00F895FD /* OGSwitch.swift in Sources */,
 				BA4791F822F0478A00E24F79 /* NSView+Shadow+Border.swift in Sources */,
 				BA47DEB823969EAC005216AD /* InAppMessage.swift in Sources */,
@@ -3170,6 +3181,7 @@
 				BA37ACDC23D8900C0013EE26 /* TimelineDashedCornerView.swift in Sources */,
 				BAE64DC82368334000244D2B /* ConvertHexColor.m in Sources */,
 				BAE64DC92368334000244D2B /* TimeEntryViewItem.m in Sources */,
+				4988E66124CEC8460072C1B5 /* TimerViewController.swift in Sources */,
 				BAE64DCA2368334000244D2B /* NoClientCellView.swift in Sources */,
 				BAE64DCB2368334000244D2B /* IdleNotificationWindowController.m in Sources */,
 				BAE64DCC2368334000244D2B /* Tag.swift in Sources */,

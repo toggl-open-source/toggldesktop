@@ -47,6 +47,7 @@ static NSString *kStateKey = @"state";
 @property (weak) IBOutlet DotImageView *dotImageView;
 @property (weak) IBOutlet NSLayoutConstraint *projectTextFieldLeading;
 @property (weak) IBOutlet NSButton *cancelBtn;
+@property (strong, nonatomic) TimerViewController *timerViewController;
 
 - (IBAction)durationFieldChanged:(id)sender;
 - (IBAction)autoCompleteChanged:(id)sender;
@@ -75,10 +76,10 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		self.liteAutocompleteDataSource = [[LiteAutoCompleteDataSource alloc] initWithNotificationName:kDisplayMinitimerAutocomplete];
 
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayTimerState:)
-													 name:kDisplayTimerState
-												   object:nil];
+//		[[NSNotificationCenter defaultCenter] addObserver:self
+//												 selector:@selector(startDisplayTimerState:)
+//													 name:kDisplayTimerState
+//												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(focusTimer)
 													 name:kFocusTimer
@@ -91,18 +92,18 @@ NSString *kInactiveTimerColor = @"#999999";
 												 selector:@selector(toggleManual:)
 													 name:kToggleManualMode
 												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayLogin:)
-													 name:kDisplayLogin
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(stop:)
-													 name:kCommandStop
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startTimerNotification:)
-													 name:kStartTimer
-												   object:nil];
+//		[[NSNotificationCenter defaultCenter] addObserver:self
+//												 selector:@selector(startDisplayLogin:)
+//													 name:kDisplayLogin
+//												   object:nil];
+//		[[NSNotificationCenter defaultCenter] addObserver:self
+//												 selector:@selector(stop:)
+//													 name:kCommandStop
+//												   object:nil];
+//		[[NSNotificationCenter defaultCenter] addObserver:self
+//												 selector:@selector(startTimerNotification:)
+//													 name:kStartTimer
+//												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(touchBarSettingChangedNotification:)
 													 name:kTouchBarSettingChanged
@@ -139,15 +140,18 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	self.displayMode = DisplayModeInput;
 	self.projectTextField.isInTimerBar = YES;
-	self.autoCompleteInput.displayMode = AutoCompleteDisplayModeFullscreen;
-	self.liteAutocompleteDataSource.input = self.autoCompleteInput;
-	[self.liteAutocompleteDataSource setFilter:@""];
+//	self.autoCompleteInput.displayMode = AutoCompleteDisplayModeFullscreen;
+//	self.liteAutocompleteDataSource.input = self.autoCompleteInput;
+//	[self.liteAutocompleteDataSource setFilter:@""];
 
 	[self.startButton setHoverAlpha:0.75];
-	self.autoCompleteInput.responderDelegate = self.autocompleteContainerView;
+//	self.autoCompleteInput.responderDelegate = self.autocompleteContainerView;
 
-	self.descriptionLabel.delegate = self;
+//	self.descriptionLabel.delegate = self;
 	self.tagFlag.delegate = self;
+
+    self.timerViewController = [[TimerViewController alloc] initWithNibName:@"TimerViewController" bundle:nil];
+    self.mainBox.contentView = [self.timerViewController view];
 }
 
 - (void)initKVO
@@ -163,14 +167,14 @@ NSString *kInactiveTimerColor = @"#999999";
 	[super viewDidAppear];
 	NSRect viewFrameInWindowCoords = [self.view convertRect:[self.view bounds] toView:nil];
 
-	[self.autoCompleteInput setPos:(int)viewFrameInWindowCoords.origin.y];
-	[self.autoCompleteInput.autocompleteTableView setDelegate:self];
+//	[self.autoCompleteInput setPos:(int)viewFrameInWindowCoords.origin.y];
+//	[self.autoCompleteInput.autocompleteTableView setDelegate:self];
 }
 
-- (void)startDisplayLogin:(NSNotification *)notification
-{
-	[self clear];
-}
+//- (void)startDisplayLogin:(NSNotification *)notification
+//{
+//	[self clear];
+//}
 
 - (void)focusTimer
 {
@@ -181,35 +185,36 @@ NSString *kInactiveTimerColor = @"#999999";
 			return;
 
 		case DisplayModeInput :
-			[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
+//			[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
 			break;
 		case DisplayModeTimer :
-			if (self.time_entry.isRunning)
-			{
-				[self.view.window makeFirstResponder:self.view];
-
-				// Deselect all selected in TE list
-				// Because we're focusing on the Timer bar since the TE is running
-				[[NSNotificationCenter defaultCenter] postNotificationName:kDeselectAllTimeEntryList
-																	object:nil];
-			}
+//			if (self.time_entry.isRunning)
+//			{
+//				[self.view.window makeFirstResponder:self.view];
+//
+//				// Deselect all selected in TE list
+//				// Because we're focusing on the Timer bar since the TE is running
+//				[[NSNotificationCenter defaultCenter] postNotificationName:kDeselectAllTimeEntryList
+//																	object:nil];
+//			}
 			break;
 	}
 }
 
-- (void)startDisplayTimerState:(NSNotification *)notification
-{
-	[self displayTimerState:notification.object];
-}
+//- (void)startDisplayTimerState:(NSNotification *)notification
+//{
+//	[self displayTimerState:notification.object];
+//}
 
-- (void)stop:(NSNotification *)notification
-{
-	self.descriptionLabel.editable = NO;
-	[self clear];
-	[self showDefaultTimer];
-	[self focusTimer];
-}
+//- (void)stop:(NSNotification *)notification
+//{
+//	self.descriptionLabel.editable = NO;
+//	[self clear];
+//	[self showDefaultTimer];
+//	[self focusTimer];
+//}
 
+/*
 - (void)displayTimerState:(TimeEntryViewItem *)te
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
@@ -309,6 +314,7 @@ NSString *kInactiveTimerColor = @"#999999";
     }
 
 }
+ */
 
 - (void)showDefaultTimer
 {
@@ -515,9 +521,9 @@ NSString *kInactiveTimerColor = @"#999999";
 	[self.manualBox setHidden:YES];
 
     // Don't focus if the timer is running
-    if (![self.time_entry isRunning]) {
-        [self.view.window makeFirstResponder:self.autoCompleteInput];
-    }
+//    if (![self.time_entry isRunning]) {
+//        [self.view.window makeFirstResponder:self.autoCompleteInput];
+//    }
 }
 
 - (void)toggleManual:(NSNotification *)notification
@@ -738,10 +744,10 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 }
 
-- (void)startTimerNotification:(NSNotification *)notification
-{
-	[self startButtonClicked:self];
-}
+//- (void)startTimerNotification:(NSNotification *)notification
+//{
+//	[self startButtonClicked:self];
+//}
 
 - (void)keyDown:(NSEvent *)event
 {
