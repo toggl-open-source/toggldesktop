@@ -5582,7 +5582,7 @@ error Context::pushBatchedChanges(
         reader.parse(response.body, responseJson);
 
         std::cerr << "RESPONSE: " << responseJson.toStyledString() << std::endl;
-        logger.debug("Sync response to request ", lastRequestUUID_, ": ", request.toStyledString());
+        logger.debug("Sync response to request ", lastRequestUUID_, ": ", responseJson.toStyledString());
 
         error err = syncHandleResponse(responseJson["clients"], clients);
         if (err != noError)
