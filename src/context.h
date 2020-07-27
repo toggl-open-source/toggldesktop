@@ -538,7 +538,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) override;
     error StartTimelineEvent(TimelineEvent *event) override;
     error MarkTimelineBatchAsUploaded(
-        const std::vector<TimelineEvent> &events) override;
+        const std::vector<const TimelineEvent*> &events) override;
 
     error SetPromotionResponse(
         const int64_t promotion_type,

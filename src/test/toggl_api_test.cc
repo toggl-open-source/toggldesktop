@@ -74,7 +74,7 @@ std::vector<TimeEntry> time_entries;
 std::vector<std::string> project_colors;
 
 // on_obm_experiment
-std::vector<ObmExperiment> obm_experiments;
+std::vector<ObmExperiment*> obm_experiments;
 
 TimeEntry time_entry_by_id(uint64_t id) {
     TimeEntry te;
@@ -275,10 +275,10 @@ void on_obm_experiment(
     const uint64_t nr,
     const bool_t included,
     const bool_t seen) {
-    ObmExperiment experiment;
-    experiment.SetNr(nr);
-    experiment.SetIncluded(included);
-    experiment.SetHasSeen(seen);
+    ObmExperiment *experiment = new ObmExperiment;
+    experiment->SetNr(nr);
+    experiment->SetIncluded(included);
+    experiment->SetHasSeen(seen);
     testresult::obm_experiments.push_back(experiment);
 }
 

@@ -1398,15 +1398,14 @@ bool User::CanSeeBillable(
 }
 
 void User::MarkTimelineBatchAsUploaded(
-    const std::vector<TimelineEvent> &events) {
+    const std::vector<const TimelineEvent*> &events) {
 
-    for (std::vector<TimelineEvent>::const_iterator i = events.begin();
+    for (std::vector<const TimelineEvent*>::const_iterator i = events.begin();
             i != events.end();
             ++i) {
-        TimelineEvent event = *i;
-        TimelineEvent *uploaded = related.TimelineEventByGUID(event.GUID());
+        TimelineEvent *uploaded = related.TimelineEventByGUID((*i)->GUID());
         if (!uploaded) {
-            logger().error("Could not find timeline event to mark it as uploaded: ", event.String());
+            logger().error("Could not find timeline event to mark it as uploaded: ", (*i)->String());
             continue;
         }
         uploaded->SetUploaded(true);
@@ -1509,21 +1508,21 @@ void User::CompressTimeline() {
                    related.TimelineEvents.size(), " compressed into ", compressed.size(), " chunks");
 }
 
-std::vector<TimelineEvent> User::CompressedTimelineForUI(const Poco::LocalDateTime *date) const {
+std::vector<const TimelineEvent*> User::CompressedTimelineForUI(const Poco::LocalDateTime *date) const {
     return CompressedTimeline(date, false);
 }
 
-std::vector<TimelineEvent> User::CompressedTimelineForUpload(const Poco::LocalDateTime *date) const {
+std::vector<const TimelineEvent*> User::CompressedTimelineForUpload(const Poco::LocalDateTime *date) const {
     return CompressedTimeline(date, true);
 }
 
-std::vector<TimelineEvent> User::CompressedTimeline(const Poco::LocalDateTime *date, bool is_for_upload) const {
-    std::vector<TimelineEvent> list;
+std::vector<const TimelineEvent*> User::CompressedTimeline(const Poco::LocalDateTime *date, bool is_for_upload) const {
+    std::vector<const TimelineEvent*> list;
     for (std::vector<TimelineEvent *>::const_iterator i =
         related.TimelineEvents.begin();
             i != related.TimelineEvents.end();
             ++i) {
-        TimelineEvent *event = *i;
+        const TimelineEvent *event = *i;
         poco_check_ptr(event);
 
         // Skip if this event is deleted or uploaded
@@ -1547,7 +1546,7 @@ std::vector<TimelineEvent> User::CompressedTimeline(const Poco::LocalDateTime *d
             }
         }
         // Make a copy of the timeline event
-        list.push_back(*event);
+        list.push_back(event);
     }
     return list;
 }

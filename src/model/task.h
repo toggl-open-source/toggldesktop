@@ -16,6 +16,9 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT Task : public BaseModel {
  public:
     Task() : BaseModel() {}
+    // Before undeleting, see how the copy constructor in BaseModel works
+    Task(const Task &o) = delete;
+    Task &operator=(const Task &o) = delete;
 
     Property<std::string> Name { "" };
     Property<Poco::UInt64> WID { 0 };

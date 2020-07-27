@@ -14,6 +14,9 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT Workspace : public BaseModel {
  public:
     Workspace() : BaseModel() {}
+    // Before undeleting, see how the copy constructor in BaseModel works
+    Workspace(const Workspace &o) = delete;
+    Workspace &operator=(const Workspace &o) = delete;
 
     Property<std::string> Name { "" };
     Property<time_t> LockedTime { 0 };

@@ -16,6 +16,9 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
  public:
     Project() : BaseModel() { EnsureGUID(); }
+    // Before undeleting, see how the copy constructor in BaseModel works
+    Project(const Project &o) = delete;
+    Project &operator=(const Project &o) = delete;
 
     Property<std::string> Name { "" };
     Property<std::string> Color { "" };

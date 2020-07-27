@@ -201,7 +201,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     db.instance()->SaveUser(&user, true, &changes);
 
     user.CompressTimeline();
-    std::vector<TimelineEvent> timeline_events = user.CompressedTimelineForUpload();
+    std::vector<const TimelineEvent*> timeline_events = user.CompressedTimelineForUpload();
 
     if (timeline_events.size() != 1) {
         std::cerr << "user.related.TimelineEvents:" << std::endl;
@@ -213,11 +213,11 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
         }
 
         std::cerr << "user.CompressedTimelineForUpload:" << std::endl;
-        for (std::vector<TimelineEvent>::const_iterator it =
+        for (std::vector<const TimelineEvent*>::const_iterator it =
             timeline_events.begin();
                 it != timeline_events.end(); it++) {
-            TimelineEvent ev = *it;
-            std::cerr << ev.String() << std::endl;
+            const TimelineEvent *ev = *it;
+            std::cerr << ev->String() << std::endl;
         }
     }
 
@@ -231,29 +231,29 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
 
     ASSERT_EQ(size_t(1), timeline_events.size());
 
-    TimelineEvent ready_for_upload = timeline_events[0];
-    ASSERT_TRUE(ready_for_upload.Chunked());
-    ASSERT_EQ(good->UID(), ready_for_upload.UID());
+    const TimelineEvent *ready_for_upload = timeline_events[0];
+    ASSERT_TRUE(ready_for_upload->Chunked());
+    ASSERT_EQ(good->UID(), ready_for_upload->UID());
 
-    ASSERT_NE(good2->Start(), ready_for_upload.Start());
-    ASSERT_NE(uploaded->Start(), ready_for_upload.Start());
-    ASSERT_NE(too_old->Start(), ready_for_upload.Start());
-    ASSERT_NE(too_fresh->Start(), ready_for_upload.Start());
-    ASSERT_EQ(good->Start(), ready_for_upload.Start());
+    ASSERT_NE(good2->Start(), ready_for_upload->Start());
+    ASSERT_NE(uploaded->Start(), ready_for_upload->Start());
+    ASSERT_NE(too_old->Start(), ready_for_upload->Start());
+    ASSERT_NE(too_fresh->Start(), ready_for_upload->Start());
+    ASSERT_EQ(good->Start(), ready_for_upload->Start());
 
     ASSERT_EQ(static_cast<Poco::Int64>(
         good_duration_seconds + good2_duration_seconds),
-              ready_for_upload.Duration());
-    ASSERT_EQ(good->Filename(), ready_for_upload.Filename());
-    ASSERT_EQ(good->Title(), ready_for_upload.Title());
-    ASSERT_EQ(good->Idle(), ready_for_upload.Idle());
-    ASSERT_FALSE(ready_for_upload.Uploaded());
+              ready_for_upload->Duration());
+    ASSERT_EQ(good->Filename(), ready_for_upload->Filename());
+    ASSERT_EQ(good->Title(), ready_for_upload->Title());
+    ASSERT_EQ(good->Idle(), ready_for_upload->Idle());
+    ASSERT_FALSE(ready_for_upload->Uploaded());
 
     // Fake that we have uploaded the chunked timeline event now
     user.MarkTimelineBatchAsUploaded(timeline_events);
 
     // Now, no more events should exist for upload
-    std::vector<TimelineEvent> left_for_upload = user.CompressedTimelineForUpload();
+    std::vector<const TimelineEvent*> left_for_upload = user.CompressedTimelineForUpload();
     ASSERT_EQ(std::size_t(0), left_for_upload.size());
 }
 
@@ -1576,8 +1576,8 @@ TEST(JSON, ConvertTimelineToJSON) {
     event.SetTitle("Is this just fantasy?");
     event.SetIdle(true);
     {
-        std::vector<TimelineEvent> list;
-        list.push_back(event);
+        std::vector<const TimelineEvent*> list;
+        list.push_back(&event);
 
         std::string json = convertTimelineToJSON(list, desktop_id);
         Json::Value root = jsonStringToValue(json);
@@ -1592,8 +1592,8 @@ TEST(JSON, ConvertTimelineToJSON) {
 
     event.SetIdle(false);
     {
-        std::vector<TimelineEvent> list;
-        list.push_back(event);
+        std::vector<const TimelineEvent*> list;
+        list.push_back(&event);
 
         std::string json = convertTimelineToJSON(list, desktop_id);
         Json::Value root = jsonStringToValue(json);
@@ -1610,8 +1610,8 @@ TEST(JSON, ConvertTimelineToJSON) {
 
     event.SetTitle("Õhtu jõuab, päev veereb {\"\b\t");
     {
-        std::vector<TimelineEvent> list;
-        list.push_back(event);
+        std::vector<const TimelineEvent*> list;
+        list.push_back(&event);
 
         std::string json = convertTimelineToJSON(list, desktop_id);
         Json::Value root = jsonStringToValue(json);

@@ -16,6 +16,9 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT ObmAction : public BaseModel {
  public:
     ObmAction() : BaseModel() {}
+    // Before undeleting, see how the copy constructor in BaseModel works
+    ObmAction(const ObmAction &o) = delete;
+    ObmAction &operator=(const ObmAction &o) = delete;
 
     Property<Poco::UInt64> ExperimentID { 0 };
     Property<std::string> Key { "" };
@@ -35,6 +38,9 @@ class TOGGL_INTERNAL_EXPORT ObmAction : public BaseModel {
 class TOGGL_INTERNAL_EXPORT ObmExperiment : public BaseModel {
  public:
     ObmExperiment() : BaseModel() {}
+    // Before undeleting, see how the copy constructor in BaseModel works
+    ObmExperiment(const ObmExperiment &o) = delete;
+    ObmExperiment &operator=(const ObmExperiment &o) = delete;
 
     Property<std::string> Actions { "" };
     Property<Poco::UInt64> Nr { 0 };

@@ -17,6 +17,9 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
  public:
     AutotrackerRule() : BaseModel() {}
+    // Before undeleting, see how the copy constructor in BaseModel works
+    AutotrackerRule(const AutotrackerRule &o) = delete;
+    AutotrackerRule &operator=(const AutotrackerRule &o) = delete;
     virtual ~AutotrackerRule() {}
 
     Property<std::string> Term { "" };
