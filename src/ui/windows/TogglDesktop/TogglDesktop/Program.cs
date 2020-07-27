@@ -32,7 +32,6 @@ static class Program
         Toggl.OnLogin += delegate (bool open, ulong user_id) {
             UserId = user_id;
         };
-        BugsnagService.Init();
         singleInstanceManager.BeforeStartup -= OnBeforeStartup;
     }
 

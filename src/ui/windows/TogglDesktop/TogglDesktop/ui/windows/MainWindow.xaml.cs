@@ -255,6 +255,8 @@ namespace TogglDesktop
                 return;
             }
 
+            BugsnagService.Init();
+
             this.loadPositions();
 
             this.GetWindow<AboutWindow>().ViewModel.InitUpdateChannel(Toggl.UpdateChannel());
