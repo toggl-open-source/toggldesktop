@@ -6538,7 +6538,9 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
             if (i["payload"]["success"].asBool()) {
                 if (model) {
                     auto &root = i["payload"]["result"];
-                    auto id = root["id"].asUInt64();
+                    Poco::UInt64 id = i["meta"]["id"].asUInt64();
+                    if (!id && root.isMember("id"))
+                        id = root["id"].asUInt64();
                     if (!id) {
                         continue;
                     }
@@ -6551,7 +6553,8 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
                         return error("Backend has changed the ID of the entry");
                     }
 
-                    model->LoadFromJSON(i["payload"]["result"], isUsingSyncServer());
+                    if (!root.isNull())
+                        model->LoadFromJSON(i["payload"]["result"], isUsingSyncServer());
                     model->ClearUnsynced();
                     error err = save(false);
                     if (err != noError) {
