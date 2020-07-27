@@ -6,7 +6,6 @@
 //  Copyright © 2019 Alari. All rights reserved.
 //
 
-
 import Cocoa
 
 @IBDesignable

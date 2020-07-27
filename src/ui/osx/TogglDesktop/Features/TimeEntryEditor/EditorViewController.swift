@@ -87,8 +87,8 @@ final class EditorViewController: NSViewController {
         popover.contentViewController = calendarViewControler
         return popover
     }()
-    private lazy var dayNameAttribute: [NSAttributedString.Key : Any] = {
-        return [NSAttributedString.Key.font : NSFont.systemFont(ofSize: 14),
+    private lazy var dayNameAttribute: [NSAttributedString.Key: Any] = {
+        return [NSAttributedString.Key.font: NSFont.systemFont(ofSize: 14),
                 NSAttributedString.Key.foregroundColor: NSColor.labelColor]
     }()
     fileprivate var isRegisterTimerNotification = false
@@ -147,7 +147,7 @@ final class EditorViewController: NSViewController {
     @IBAction func datePickerChanged(_ sender: Any) {
         DesktopLibraryBridge.shared().updateTimeEntry(withStart: datePickerView.dateValue, guid: timeEntry.guid)
     }
-    
+
     @IBAction func dayButtonOnTap(_ sender: Any) {
         guard !timeEntry.isRunning() else { return }
         calendarPopover.present(from: dateSelectionBox.bounds, of: dateSelectionBox, preferredEdge: .maxY)
@@ -180,7 +180,7 @@ final class EditorViewController: NSViewController {
 
     @IBAction func deleteBtnOnTap(_ sender: Any) {
         DesktopLibraryBridge.shared().deleteTimeEntryItem(timeEntry, undoManager: undoManager)
-        delegate?.editorShouldClose()   
+        delegate?.editorShouldClose()
     }
 
     override func mouseDown(with event: NSEvent) {
@@ -361,8 +361,7 @@ extension EditorViewController {
                     view.window?.makeFirstResponder(first.actionButton)
                 }
             }
-        }
-        else {
+        } else {
             tagDatasource.updateSelectedTags([])
 
             // Tab
@@ -584,7 +583,7 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
             }
         }
     }
-    
+
     func shouldClearCurrentSelection(_ sender: AutoCompleteTextField) {
         if sender == projectTextField {
             selectedProjectItem = nil

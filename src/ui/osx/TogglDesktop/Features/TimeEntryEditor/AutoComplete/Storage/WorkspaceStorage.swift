@@ -12,7 +12,6 @@ extension Notification.Name {
     static let WorkspaceStorageChangedNotification = Notification.Name("WorkspaceStorageChangedNotification")
 }
 
-
 @objcMembers final class WorkspaceStorage: NSObject {
 
     static let shared = WorkspaceStorage()

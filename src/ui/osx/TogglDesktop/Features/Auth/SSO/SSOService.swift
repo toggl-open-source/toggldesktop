@@ -124,7 +124,8 @@ extension SSOService {
         case .success(let apiToken):
             DesktopLibraryBridge.shared().loginSSO(withAPIToken: apiToken)
         case .needLinkSSO(let email, let code):
-            NotificationCenter.default.post(name: Notification.Name(rawValue: kLinkSSOEmail), object: SSOPayload(email: email, confirmationCode: code))
+            NotificationCenter.default.post(name: Notification.Name(rawValue: kLinkSSOEmail),
+                                            object: SSOPayload(email: email, confirmationCode: code))
         }
     }
 

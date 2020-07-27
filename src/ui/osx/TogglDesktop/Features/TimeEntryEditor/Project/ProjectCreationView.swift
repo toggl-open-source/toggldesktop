@@ -45,7 +45,7 @@ final class ProjectCreationView: NSView {
     @IBOutlet weak var colorBtn: CursorButton!
     @IBOutlet weak var colorPickerContainerBox: NSBox!
     @IBOutlet weak var publicProjectCheckBox: NSButton!
-    
+
     // MARK: Variables
 
     var selectedTimeEntry: TimeEntryViewItem! {
@@ -214,7 +214,7 @@ extension ProjectCreationView {
         colorBtn.cursor = .pointingHand
         cancelBtn.cursor = .pointingHand
         addBtn.cursor = .pointingHand
-        
+
         // Default value
         displayMode = .normal
         publicProjectCheckBox.state = .off

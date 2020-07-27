@@ -20,7 +20,7 @@ final class TimelineDividerView: NSView {
     override var isFlipped: Bool {
         return true
     }
-    
+
     var mode: Mode = .line
     private lazy var color: NSColor = {
         if #available(OSX 10.13, *) {
@@ -32,7 +32,7 @@ final class TimelineDividerView: NSView {
 
     // MARK: Public
 
-    func draw(for section:TimelineData.Section) {
+    func draw(for section: TimelineData.Section) {
         switch section {
         case .timeLabel:
             mode = .line
@@ -48,8 +48,8 @@ final class TimelineDividerView: NSView {
 
         // Drawing code here.
         let path = NSBezierPath()
-        path.move(to: NSPoint(x: NSMinX(bounds), y: NSMinY(bounds)))
-        path.line(to: NSPoint(x: NSMaxX(bounds), y: NSMaxY(bounds)))
+        path.move(to: NSPoint(x: bounds.minX, y: bounds.minY))
+        path.line(to: NSPoint(x: bounds.maxX, y: bounds.maxY))
         path.lineWidth = 1
 
         // Dashed line

@@ -111,7 +111,7 @@ final class TimelineDashboardViewController: NSViewController {
     }
 
     private var allPopoversClosed: Bool {
-        let isPopoverShown = allPopovers.reduce(false) { $0 || $1.isShown }
+        let isPopoverShown = allPopovers.map { $0.isShown }.contains(true)
         // including datePickerView internal popover
         return !isPopoverShown && !datePickerView.isShown
     }
@@ -132,7 +132,7 @@ final class TimelineDashboardViewController: NSViewController {
     }()
 
     // MARK: View
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -190,7 +190,7 @@ final class TimelineDashboardViewController: NSViewController {
         // After the reload finishes, we hightlight a cell again
         updatePositionOfEditorIfNeed()
     }
-    
+
     @IBAction func recordSwitchOnChanged(_ sender: Any) {
         DesktopLibraryBridge.shared().enableTimelineRecord(recordSwitcher.isOn)
         if recordSwitcher.isOn {
@@ -271,7 +271,7 @@ extension TimelineDashboardViewController {
         datePickerView.setBackgroundForTimeline()
         emptyActivityLbl.frameCenterRotation = -90
         activityRecorderInfoImageView.delegate = self
-        
+
         // Forect Render the view
         _ = activityHoverController.view
 

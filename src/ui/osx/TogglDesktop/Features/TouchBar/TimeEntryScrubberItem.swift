@@ -22,7 +22,7 @@ final class TimeEntryScrubberItem: NSScrubberItemView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        projectLbl.customClientTextColor = NSColor.secondaryLabelColor;
+        projectLbl.customClientTextColor = NSColor.secondaryLabelColor
         if titleBtn.superview == nil {
             titleBtn.setButtonType(NSButton.ButtonType.momentaryChange)
             titleBtn.translatesAutoresizingMaskIntoConstraints = false

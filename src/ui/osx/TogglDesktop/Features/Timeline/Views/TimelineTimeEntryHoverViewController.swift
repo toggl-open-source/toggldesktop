@@ -30,7 +30,7 @@ final class TimelineTimeEntryHoverViewController: LayerBackedViewController {
     private var timeEntry: TimelineTimeEntry!
 
     // MARK: View
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }

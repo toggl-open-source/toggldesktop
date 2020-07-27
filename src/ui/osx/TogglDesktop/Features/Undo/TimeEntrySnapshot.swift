@@ -96,6 +96,7 @@ extension TimeEntrySnapshot {
 			self.projectID == rhs.projectID
 	}
 
+    // swiftlint:disable:next nsobject_prefer_isequal
 	static func == (lhs: ProjectSnapshot, rhs: ProjectSnapshot) -> Bool {
 		return lhs.projectAndTaskLabel == rhs.projectAndTaskLabel &&
 			lhs.taskID == rhs.taskID &&

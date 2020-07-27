@@ -65,5 +65,3 @@ final class TimerContainerBox: NSBox, TextFieldResponderDelegate {
         }
     }
 }
-
-

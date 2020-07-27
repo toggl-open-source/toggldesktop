@@ -16,7 +16,7 @@ class TimelineEmptyTimeEntryCell: NSCollectionViewItem {
 
     private var topOffset: NSLayoutConstraint!
     private var bottomOffset: NSLayoutConstraint!
-    
+
     // MARK: Variables
 
     private lazy var dashedBorderView = TimelineDashedCornerView()

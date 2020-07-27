@@ -45,7 +45,10 @@ final class TimelineData {
     ///   - cmd: TimelineDisplayCommand from Objc
     ///   - zoomLevel: Zoom Level
     ///   - runningTimeEntry: Running Time Entry
-    init(cmd: TimelineDisplayCommand, zoomLevel: TimelineDatasource.ZoomLevel, runningTimeEntry: TimeEntryViewItem?, dragCreatedTimeEntry: TimelineTimeEntryPlaceholder? = nil) {
+    init(cmd: TimelineDisplayCommand,
+         zoomLevel: TimelineDatasource.ZoomLevel,
+         runningTimeEntry: TimeEntryViewItem?,
+         dragCreatedTimeEntry: TimelineTimeEntryPlaceholder? = nil) {
         self.zoomLevel = zoomLevel
         self.start = cmd.start
         self.end = cmd.end
@@ -72,8 +75,20 @@ final class TimelineData {
         activities = cmd.activities.compactMap { (activity) -> TimelineActivity? in
             // Map event and sub event
             let events = activity.events.map { event -> TimelineEvent in
-                let subEvents = event.subEvents.map { TimelineEvent(title: $0.title, fileName: $0.fileName, duration: $0.duration, durationStr: $0.durationStr, isHeader: $0.isHeader, subEvents: [])}
-                return TimelineEvent(title: event.title, fileName: event.fileName, duration: event.duration, durationStr: event.durationStr, isHeader: event.isHeader, subEvents: subEvents)
+                let subEvents = event.subEvents.map {
+                    TimelineEvent(title: $0.title,
+                                  fileName: $0.fileName,
+                                  duration: $0.duration,
+                                  durationStr: $0.durationStr,
+                                  isHeader: $0.isHeader,
+                                  subEvents: [])
+                }
+                return TimelineEvent(title: event.title,
+                                     fileName: event.fileName,
+                                     duration: event.duration,
+                                     durationStr: event.durationStr,
+                                     isHeader: event.isHeader,
+                                     subEvents: subEvents)
             }
 
             // Ignore activity if there is no event inside
@@ -126,7 +141,7 @@ final class TimelineData {
         // But always reload
         calculateColumnsPositionForTimeline()
     }
-    
+
     func numberOfItems(in section: Int) -> Int {
         guard let section = Section(rawValue: section) else { return 0 }
         switch section {
@@ -249,8 +264,8 @@ extension TimelineData {
     ///   - zoomLevel: Current zoom level
     /// - Returns: Array of TimelineTimestamp
     fileprivate func generateTimelineLabel(for startDate: TimeInterval,
-                                                 endDate: TimeInterval,
-                                                 zoomLevel: TimelineDatasource.ZoomLevel) -> [TimelineTimestamp] {
+                                           endDate: TimeInterval,
+                                           zoomLevel: TimelineDatasource.ZoomLevel) -> [TimelineTimestamp] {
         var times: [TimeInterval] = []
         let span = zoomLevel.span
         var current = startDate
@@ -272,7 +287,7 @@ extension TimelineData {
             // Check if this time entry intersect with previous one
             // If overlap, increase the number of columns
             var col = 0
-            var overlappedTimeEntry: TimelineBaseTimeEntry? = nil
+            var overlappedTimeEntry: TimelineBaseTimeEntry?
             repeat {
 
                 // Travesal all previous TimeEntry, if it's overlapped -> return

@@ -13,7 +13,7 @@ final class Client {
     static let noMatching = Client()
     let ID: UInt64
     let WID: UInt64
-    let name:String
+    let name: String
     let guid: String?
     let isEmpty: Bool
     let workspaceName: String
@@ -51,7 +51,7 @@ final class ClientDataSource: AutoCompleteViewDataSource {
     // MARK: Variables
 
     var selectedWorkspace: Workspace?
-    
+
     override func registerCustomeCells() {
         tableView.register(NSNib(nibNamed: Constants.ClientCellIDNibName, bundle: nil),
                            forIdentifier: Constants.ClientCellID)

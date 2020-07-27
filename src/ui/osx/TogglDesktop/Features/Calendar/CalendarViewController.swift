@@ -89,7 +89,6 @@ final class CalendarViewController: NSViewController {
             }
         }
 
-
         // Fix for the padding of scoller bar
         if let flow = collectionView.collectionViewLayout as? CalendarFlowLayout {
 
@@ -106,7 +105,7 @@ final class CalendarViewController: NSViewController {
     @IBAction func todayBtnOnTap(_ sender: Any) {
         calendarDidSelect(Date())
     }
-    
+
     @IBAction func doneBtnOnTap(_ sender: Any) {
         delegate?.calendarViewControllerDoneBtnOnTap()
     }

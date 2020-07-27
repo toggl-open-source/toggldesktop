@@ -12,7 +12,7 @@ extension NSView {
 
     func bringSubviewToFront(_ view: NSView) {
         var theView = view
-        self.sortSubviews({(viewA,viewB,rawPointer) in
+        self.sortSubviews({ viewA, viewB, rawPointer in
             let view = rawPointer?.load(as: NSView.self)
 
             switch view {

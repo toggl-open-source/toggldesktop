@@ -18,7 +18,7 @@ final class ProjectContentCellView: HoverTableCellView {
     @IBOutlet weak var projectTextField: ProjectTextField!
 
     // MARK: Public
-    
+
     func render(_ item: ProjectContentItem) {
         projectTextField.renderClient = false
         projectTextField.renderTask = (item.item.type == 1)

@@ -19,7 +19,7 @@ final class OnboardingService {
     var isShown: Bool {
         return controller.isShown
     }
-    
+
     // MARK: Init
 
     private init() {

@@ -31,13 +31,13 @@ final class MainDashboardViewController: NSViewController {
     @IBOutlet weak var timelineBtn: PanelSwitcherButton!
     @IBOutlet weak var tabButtonContainer: NSView!
     @IBOutlet weak var headerContainerView: NSView!
-    
+
     // MARK: Controllers
 
     @objc lazy var timeEntryController = TimeEntryListViewController(nibName: Constants.TimeEntryXibName, bundle: nil)
     @objc lazy var timelineController = TimelineDashboardViewController(nibName: Constants.TimelineXibName, bundle: nil)
     @objc lazy var timerController = TimerEditViewController(nibName: Constants.TimerXibName, bundle: nil)
-    
+
     // MARK: Variables
 
     private var currentTab = Tab.timeEntryList {

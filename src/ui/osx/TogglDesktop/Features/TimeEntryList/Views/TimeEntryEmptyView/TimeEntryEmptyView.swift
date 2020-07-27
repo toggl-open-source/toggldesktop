@@ -45,7 +45,7 @@ final class TimeEntryEmptyView: NSView {
     @IBOutlet weak var subTitleLabel: NSTextField!
     @IBOutlet weak var loadMoreBtn: NSButton!
     @IBOutlet weak var spinerView: NSProgressIndicator!
-    
+
     // MARK: Public
 
     override func awakeFromNib() {
@@ -57,7 +57,7 @@ final class TimeEntryEmptyView: NSView {
     @objc class func viewFromXIB() -> TimeEntryEmptyView {
         return TimeEntryEmptyView.xibView()
     }
-    
+
     @objc func setLayoutType(_ layoutType: EmptyLayoutType) {
         self.layoutType = layoutType
     }
@@ -83,7 +83,7 @@ extension TimeEntryEmptyView {
             loadMoreBtn.isHidden = true
             spinerView.stopAnimation(nil)
             spinerView.isHidden = true
-            
+
             iconImageViewWidth.constant = 200
             iconImageViewHeight.constant = 150
             iconImageViewTop.constant = 20

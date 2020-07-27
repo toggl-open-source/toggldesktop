@@ -1,0 +1,25 @@
+name: PR Lint
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/swiftlint.yml'
+      - 'src/ui/osx/Dangerfile.swift'
+      - '.swiftlint.yml'
+      - '**/*.swift'
+
+jobs:
+  SwiftLint:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Danger
+      run: |
+        brew install danger/tap/danger-swift
+    - name: Install SwiftLint
+      run: |
+        brew install swiftlint
+    - name: Run Danger
+      run: |
+        danger-swift ci --dangerfile src/ui/osx/Dangerfile.swift
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

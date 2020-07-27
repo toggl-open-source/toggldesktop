@@ -23,7 +23,7 @@ class NoVibrantPopoverView: ResizablePopover {
             }
             return NSAppearance(named: .aqua)
         }
-        set {}
+        set {} // swiftlint:disable:this unused_setter_value
     }
 
     @objc func present(from rect: NSRect, of view: NSView, preferredEdge: NSRectEdge = .maxX) {
