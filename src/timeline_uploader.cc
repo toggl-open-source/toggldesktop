@@ -96,16 +96,16 @@ error TimelineUploader::upload(TimelineBatch *batch) {
 }
 
 std::string convertTimelineToJSON(
-    const std::vector<TimelineEvent> &timeline_events,
+    const std::vector<const TimelineEvent*> &timeline_events,
     const std::string &desktop_id) {
 
     Json::Value root;
 
-    for (std::vector<TimelineEvent>::const_iterator i = timeline_events.begin();
+    for (std::vector<const TimelineEvent*>::const_iterator i = timeline_events.begin();
             i != timeline_events.end();
             ++i) {
-        TimelineEvent event = *i;
-        Json::Value n = event.SaveToJSON();
+        const TimelineEvent *event = *i;
+        Json::Value n = event->SaveToJSON();
         n["desktop_id"] = desktop_id;
         root.append(n);
     }

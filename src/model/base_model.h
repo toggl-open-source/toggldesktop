@@ -23,6 +23,7 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT BaseModel {
  public:
     BaseModel() {}
+    // The copy constructor expect the copy to be stored in the database - no ID is copied and the copy is marked as dirty
     BaseModel(const BaseModel &o);
     virtual ~BaseModel() {}
 

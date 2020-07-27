@@ -23,6 +23,9 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT User : public BaseModel {
  public:
     User() : BaseModel() {}
+    // Before undeleting, see how the copy constructor in BaseModel works
+    User(const User &o) = delete;
+    User &operator=(const User &o) = delete;
     ~User();
 
     Property<std::string> APIToken { "" };
@@ -150,11 +153,11 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     error SetAPITokenFromOfflineData(const std::string &password);
 
     void MarkTimelineBatchAsUploaded(
-        const std::vector<TimelineEvent> &events);
+        const std::vector<const TimelineEvent*> &events);
     void CompressTimeline();
 
-    std::vector<TimelineEvent> CompressedTimelineForUI(const Poco::LocalDateTime *date) const;
-    std::vector<TimelineEvent> CompressedTimelineForUpload(const Poco::LocalDateTime *date = nullptr) const;
+    std::vector<const TimelineEvent *> CompressedTimelineForUI(const Poco::LocalDateTime *date) const;
+    std::vector<const TimelineEvent *> CompressedTimelineForUpload(const Poco::LocalDateTime *date = nullptr) const;
 
     error UpdateJSON(
         std::vector<TimeEntry *> * const,
@@ -261,7 +264,7 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     void loadObmExperimentFromJson(Json::Value const &obm);
 
-    std::vector<TimelineEvent> CompressedTimeline(
+    std::vector<const TimelineEvent *> CompressedTimeline(
         const Poco::LocalDateTime *date = nullptr, bool is_for_upload = true) const;
 
     Poco::Mutex loadTimeEntries_m_;

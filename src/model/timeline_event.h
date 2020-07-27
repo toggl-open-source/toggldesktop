@@ -16,6 +16,9 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent {
  public:
     TimelineEvent() : BaseModel() {}
+    // Before undeleting, see how the copy constructor in BaseModel works
+    TimelineEvent(const TimelineEvent &o) = delete;
+    TimelineEvent &operator=(const TimelineEvent &o) = delete;
     virtual ~TimelineEvent() {}
 
     Property<std::string> Title { "" };

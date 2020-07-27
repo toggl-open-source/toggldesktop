@@ -18,6 +18,9 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT Client : public BaseModel {
  public:
     Client() : BaseModel() {}
+    // Before undeleting, see how the copy constructor in BaseModel works
+    Client(const Client &o) = delete;
+    Client &operator=(const Client &o) = delete;
 
     Property<Poco::UInt64> WID { 0 };
     Property<std::string> Name { "" };

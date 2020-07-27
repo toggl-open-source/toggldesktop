@@ -524,7 +524,7 @@ void Context::updateUI(const UIElements &what) {
     std::vector<view::Autocomplete> project_autocompletes;
 
     // For timeline UI view data
-    std::vector<TimelineEvent> timeline;
+    std::vector<const TimelineEvent*> timeline;
 
     bool use_proxy(false);
     bool record_timeline(false);
@@ -4516,7 +4516,7 @@ error Context::offerBetaChannel(bool *did_offer) {
 error Context::runObmExperiments() {
     try {
         // Collect OBM experiments
-        std::map<Poco::UInt64, ObmExperiment> experiments;
+        std::map<Poco::UInt64, ObmExperiment*> experiments;
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
@@ -4529,7 +4529,7 @@ error Context::runObmExperiments() {
                     ++it) {
                 ObmExperiment *model = *it;
                 if (!model->DeletedAt()) {
-                    experiments[model->Nr()] = *model;
+                    experiments[model->Nr()] = model;
                     model->SetHasSeen(true);
                 }
             }
@@ -4540,15 +4540,15 @@ error Context::runObmExperiments() {
             return err;
         }
         // Now pass the experiments on to UI
-        for (std::map<Poco::UInt64, ObmExperiment>::const_iterator
+        for (std::map<Poco::UInt64, ObmExperiment*>::const_iterator
                 it = experiments.begin();
                 it != experiments.end();
                 ++it) {
-            ObmExperiment experiment = it->second;
+            const ObmExperiment *experiment = it->second;
             UI()->DisplayObmExperiment(
-                experiment.Nr(),
-                experiment.Included(),
-                experiment.HasSeen());
+                experiment->Nr(),
+                experiment->Included(),
+                experiment->HasSeen());
         }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
@@ -4924,8 +4924,7 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
     return noError;
 }
 
-error Context::MarkTimelineBatchAsUploaded(
-    const std::vector<TimelineEvent> &events) {
+error Context::MarkTimelineBatchAsUploaded(const std::vector<const TimelineEvent*> &events) {
     try {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {

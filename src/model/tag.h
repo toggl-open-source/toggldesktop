@@ -14,6 +14,9 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT Tag : public BaseModel {
  public:
     Tag() : BaseModel() {}
+    // Before undeleting, see how the copy constructor in BaseModel works
+    Tag(const Tag &o) = delete;
+    Tag &operator=(const Tag &o) = delete;
 
     Property<std::string> Name { "" };
     Property<Poco::UInt64> WID { 0 };

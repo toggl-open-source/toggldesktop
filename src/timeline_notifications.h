@@ -37,10 +37,10 @@ class TOGGL_INTERNAL_EXPORT TimelineBatch {
         api_token_ = value;
     }
 
-    std::vector<TimelineEvent> &Events() {
+    std::vector<const TimelineEvent*> &Events() {
         return events_;
     }
-    void SetEvents(const std::vector<TimelineEvent> &value) {
+    void SetEvents(std::vector<const TimelineEvent*> &&value) {
         events_ = value;
     }
 
@@ -54,7 +54,7 @@ class TOGGL_INTERNAL_EXPORT TimelineBatch {
  private:
     Poco::UInt64 user_id_;
     std::string api_token_;
-    std::vector<TimelineEvent> events_;
+    std::vector<const TimelineEvent*> events_;
     std::string desktop_id_;
 };
 
@@ -75,7 +75,7 @@ class TOGGL_INTERNAL_EXPORT TimelineDatasource {
 
     // A batch of timeline events has been upladed and is marked assuch.
     virtual error MarkTimelineBatchAsUploaded(
-        const std::vector<TimelineEvent> &events) = 0;
+        const std::vector<const TimelineEvent*> &events) = 0;
 };
 
 };  // namespace toggl
