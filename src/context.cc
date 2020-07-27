@@ -6550,7 +6550,7 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
                     }
 
                     if (model->ID() != id) {
-                        return error("Backend has changed the ID of the entry");
+                        return error("Backend has changed the ID of the entry from " + std::to_string(model->ID()) + " to " + std::to_string(id));
                     }
 
                     if (!root.isNull())
