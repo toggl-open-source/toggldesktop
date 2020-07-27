@@ -1080,6 +1080,20 @@
                         "name": "TogglDesktopInstaller-x64-7.5.213.exe"
                     }
                 ]
+            },
+            {
+                "version": "7.5.234",
+                "timestamp": "27-07-2020",
+                "filename": [
+                    {
+                        "type": "windows",
+                        "name": "TogglDesktopInstaller-7.5.234.exe"
+                    },
+                    {
+                        "type": "windows64",
+                        "name": "TogglDesktopInstaller-x64-7.5.234.exe"
+                    }
+                ]
             }
         ],
         "stable": [
