@@ -54,7 +54,7 @@ namespace TogglDesktop.ViewModels
 
         private void HandleDisplayLoginSSO(string ssoUrl)
         {
-            System.Diagnostics.Process.Start(ssoUrl);
+            Toggl.OpenInBrowser(ssoUrl);
         }
 
         public ReactiveCommand<Unit, Unit> LoginWithDifferentMethod { get; }

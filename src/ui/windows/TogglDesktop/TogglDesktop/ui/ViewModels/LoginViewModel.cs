@@ -23,8 +23,6 @@ namespace TogglDesktop.ViewModels
 {
     public class LoginViewModel : ReactiveValidationObject<LoginViewModel>
     {
-        private readonly Action _refreshLoginBindings;
-        private readonly Action _refreshSignupBindings;
         private ValidationHelper _emailValidation;
         private ValidationHelper _passwordValidation;
         private ValidationHelper _passwordSignupValidation;
@@ -32,11 +30,9 @@ namespace TogglDesktop.ViewModels
         private ValidationHelper _isTosCheckedValidation;
         private HttpClientFactory _httpClientFactory;
 
-        public LoginViewModel(Action loginWithSSO/*Action refreshLoginBindings, Action refreshSignupBindings*/)
+        public LoginViewModel(Action loginWithSSO)
             : base(RxApp.TaskpoolScheduler)
         {
-            //_refreshLoginBindings = refreshLoginBindings;
-            //_refreshSignupBindings = refreshSignupBindings;
             Toggl.OnDisplayCountries += OnDisplayCountries;
             Toggl.OnSettings += OnSettings;
             this.WhenAnyValue(x => x.SelectedConfirmAction,
@@ -48,11 +44,11 @@ namespace TogglDesktop.ViewModels
             this.WhenAnyValue<LoginViewModel,string, ConfirmAction>(x => x.SelectedConfirmAction,
                     x =>
                     {
-                        switch (x)
+                        return x switch
                         {
-                            case ConfirmAction.LogInAndLinkSSO: return "Cancel and go back";
-                            case ConfirmAction.SignUp: return "Back to Log in";
-                            default: return "Sign up for free";
+                            ConfirmAction.LogInAndLinkSSO => "Cancel and go back",
+                            ConfirmAction.SignUp => "Back to Log in",
+                            _ => "Sign up for free"
                         };
                     })
                 .ToPropertyEx(this, x => x.SignupLoginToggleText);
@@ -194,16 +190,6 @@ namespace TogglDesktop.ViewModels
             else
             {
                 return true;
-            }
-
-            if (!isGoogleLogin)
-            {
-                //_refreshLoginBindings();
-            }
-
-            if (SelectedConfirmAction == ConfirmAction.SignUp)
-            {
-                //_refreshSignupBindings();
             }
 
             return false;
@@ -376,6 +362,18 @@ namespace TogglDesktop.ViewModels
             return proxyHttpClientFactory;
         }
 
+        public void SetLinkSSOMode(string confirmationCode, string email)
+        {
+            if (!string.IsNullOrEmpty(confirmationCode))
+            {
+                SelectedConfirmAction = ConfirmAction.LogInAndLinkSSO;
+                SSOConfirmationCode = confirmationCode;
+                SSOEmail = email;
+            }
+            else
+                SelectedConfirmAction = ConfirmAction.LogIn;
+        }
+
         public class CountryViewModel
         {
             private readonly Toggl.TogglCountryView _countryView;
@@ -414,7 +412,7 @@ namespace TogglDesktop.ViewModels
     {
         LogIn = 1,
         LinkSSO = 2,
-        LogInAndLinkSSO = 3,
+        LogInAndLinkSSO = LogIn | LinkSSO,
         SignUp = 4,
     }
 }

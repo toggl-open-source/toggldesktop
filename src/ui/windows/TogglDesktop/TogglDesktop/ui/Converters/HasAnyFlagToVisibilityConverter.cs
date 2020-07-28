@@ -10,7 +10,7 @@ namespace TogglDesktop.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null || parameter == null || !value.GetType().IsEnum || !value.GetType().IsEnum) return false;
+            if (value == null || parameter == null || !value.GetType().IsEnum || !parameter.GetType().IsEnum) return false;
             return ((int)value & (int)parameter) != 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 

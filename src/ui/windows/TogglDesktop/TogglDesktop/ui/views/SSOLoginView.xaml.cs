@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using ReactiveUI;
 using TogglDesktop.ViewModels;
 
@@ -40,6 +41,9 @@ namespace TogglDesktop
 
             IsEnabled = true;
             Visibility = Visibility.Visible;
+            // this isn't guaranteed to work when running without dispatcher:
+            var focusEmailFieldAction = new Action(() =>  _emailTextBox?.Focus() );
+            this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, focusEmailFieldAction);
         }
 
         private const double opacityFadeTime = 0.25;
@@ -77,13 +81,15 @@ namespace TogglDesktop
 
         public Brush TitleBarBrush => this.Background;
 
+        private TextBox _emailTextBox;
         private void HandleEmailTextBoxLoaded(object sender, RoutedEventArgs e)
         {
-            if (sender is TextBox emailTextBox)
+            _emailTextBox = sender as TextBox;
+            if (_emailTextBox != null)
             {
                 ViewModel.WhenAnyValue(x => x.HasErrors)
-                    .Where(error => true)
-                    .Subscribe(_ => ShowErrorAndFocus(emailTextBox));
+                    .Where(hasError => hasError)
+                    .Subscribe(_ => ShowErrorAndFocus(_emailTextBox));
             }
         }
 

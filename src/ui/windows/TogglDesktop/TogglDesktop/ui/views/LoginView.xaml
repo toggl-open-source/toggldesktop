@@ -9,7 +9,7 @@
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              mc:Ignorable="d" 
-             MinHeight="428" MinWidth="300"
+             MinHeight="468" MinWidth="300"
              Background="{DynamicResource Toggl.CardBackground}"
              d:DataContext="{d:DesignInstance viewModels:LoginViewModel, IsDesignTimeCreatable=False}">
     <UserControl.Resources>

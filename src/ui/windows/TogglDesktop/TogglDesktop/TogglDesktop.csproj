@@ -194,6 +194,7 @@
     <Compile Include="BugsnagService.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
+    <Compile Include="Services\DeepLinkProtocolInstaller.cs" />
     <Compile Include="Services\NsisPackageExtractor.cs" />
     <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Services\UpdateStatus.cs" />

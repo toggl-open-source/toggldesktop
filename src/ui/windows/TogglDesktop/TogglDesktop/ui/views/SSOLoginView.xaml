@@ -7,7 +7,7 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             MinHeight="468" MinWidth="300"
              Background="{DynamicResource Toggl.CardBackground}"
              d:DataContext="{d:DesignInstance viewModels:SSOLoginViewModel, IsDesignTimeCreatable=False}">
     <UserControl.Resources>
@@ -81,7 +81,7 @@
     <Grid Background="{StaticResource ViewBackground}">
         <Border BorderThickness="1"
                 BorderBrush="{DynamicResource Toggl.LoginView.Border}"
-                Width="302" Height="432"
+                Width="302" Height="472"
                 Background="{DynamicResource Toggl.CardBackground}"
                 VerticalAlignment="Center" HorizontalAlignment="Center">
             <DockPanel>

@@ -399,14 +399,7 @@ namespace TogglDesktop
 
         private void OpenLoginView(string confirmationCode, string email)
         {
-            if (!string.IsNullOrEmpty(confirmationCode))
-            {
-                loginView.ViewModel.SelectedConfirmAction = ConfirmAction.LogInAndLinkSSO;
-                loginView.ViewModel.SSOConfirmationCode = confirmationCode;
-                loginView.ViewModel.SSOEmail = email;
-            }
-            else
-                loginView.ViewModel.SelectedConfirmAction = ConfirmAction.LogIn;
+            loginView.ViewModel.SetLinkSSOMode(confirmationCode, email);
             setActiveView(loginView);
         }
 
