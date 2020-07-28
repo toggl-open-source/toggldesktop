@@ -33,6 +33,8 @@
 		4921BE2224C87136006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4921BE1F24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib */; };
 		4921BE2324C87136006E8BB5 /* TimelineTimeEntryPlaceholderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4921BE1E24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.swift */; };
 		492F5F02248550F800FFEC70 /* TimelineInitialDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */; };
+		493B01BD24D07F1200237D10 /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493B01BC24D07F1200237D10 /* TimerViewModel.swift */; };
+		493B01BE24D07F1200237D10 /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493B01BC24D07F1200237D10 /* TimerViewModel.swift */; };
 		49418B4B249CEBA300265665 /* TogglDesktopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */; };
 		4943FB6124C070010000DE3C /* TogglDesktopLibrary.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4943FB5C24C06F8B0000DE3C /* TogglDesktopLibrary.dylib */; };
 		4943FB6224C070010000DE3C /* TogglDesktopLibrary.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4943FB5C24C06F8B0000DE3C /* TogglDesktopLibrary.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -732,6 +734,7 @@
 		4921BE1E24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntryPlaceholderCell.swift; sourceTree = "<group>"; };
 		4921BE1F24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineTimeEntryPlaceholderCell.xib; sourceTree = "<group>"; };
 		492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineInitialDateProvider.swift; sourceTree = "<group>"; };
+		493B01BC24D07F1200237D10 /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		49418B40249CE77D00265665 /* TogglDesktopTests-AppStore.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TogglDesktopTests-AppStore.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		49418B44249CE77D00265665 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4988E65E24CEC8460072C1B5 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
@@ -1476,6 +1479,7 @@
 				74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */,
 				BA4791FD22F0479200E24F79 /* TimerContainerBox.swift */,
 				4988E65E24CEC8460072C1B5 /* TimerViewController.swift */,
+				493B01BC24D07F1200237D10 /* TimerViewModel.swift */,
 				4988E65F24CEC8460072C1B5 /* TimerViewController.xib */,
 			);
 			path = Timer;
@@ -2922,6 +2926,7 @@
 				BA4791F322F0478A00E24F79 /* String+Search.swift in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				BA13E581243480C5005244AD /* OnboardingService+Objc.swift in Sources */,
+				493B01BD24D07F1200237D10 /* TimerViewModel.swift in Sources */,
 				BAAF56A22223E18B003D0D73 /* TimeDecoratorView.swift in Sources */,
 				BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */,
 				BA4059B7221D46F4002969B8 /* TimeEntryCollectionView.m in Sources */,
@@ -3144,6 +3149,7 @@
 				BA13E582243480C5005244AD /* OnboardingService+Objc.swift in Sources */,
 				BAE64D9D2368334000244D2B /* TimeDecoratorView.swift in Sources */,
 				BAB5FFD523F13F75003781D3 /* TimelineDraggingSession.swift in Sources */,
+				493B01BE24D07F1200237D10 /* TimerViewModel.swift in Sources */,
 				BAE64D9E2368334000244D2B /* TimeEntryEmptyView.swift in Sources */,
 				BA7F4D8C24658BDB00DB5058 /* DSFSecureTextField.swift in Sources */,
 				BA37AD0923D890940013EE26 /* TimelineDisplayCommand.m in Sources */,
