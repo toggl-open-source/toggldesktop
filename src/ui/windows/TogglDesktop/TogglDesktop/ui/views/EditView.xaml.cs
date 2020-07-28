@@ -675,6 +675,11 @@ namespace TogglDesktop
             var item = asClientItem.Model;
 
             this.selectClient(item);
+
+            if (this.newProjectTextBox.Text.IsNullOrEmpty())
+            {
+                this.newProjectTextBox.Focus();
+            }
         }
 
         private void selectClient(Toggl.TogglGenericView item)
@@ -763,7 +768,10 @@ namespace TogglDesktop
 
             this.resetToSavedClient();
 
-            this.newProjectTextBox.Focus();
+            if (this.newProjectTextBox.Text.IsNullOrEmpty())
+            {
+                this.newProjectTextBox.Focus();
+            }
 
             return true;
         }
