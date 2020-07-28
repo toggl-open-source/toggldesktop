@@ -12,10 +12,19 @@ class TimerViewController: NSViewController {
 
     var timeEntry = TimeEntryViewItem()
 
+    private var notificationObservers: [AnyObject] = []
+
+    // MARK: - Outlets
+
     @IBOutlet weak var startButton: NSHoverButton!
     @IBOutlet weak var durationLabel: NSTextField!
     @IBOutlet weak var descriptionTextField: BetterFocusAutoCompleteInput!
     @IBOutlet weak var descriptionContainerBox: TimerContainerBox!
+    @IBOutlet weak var projectButton: SelectableButton!
+    @IBOutlet weak var tagsButton: SelectableButton!
+    @IBOutlet weak var billableButton: SelectableButton!
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,41 +34,14 @@ class TimerViewController: NSViewController {
 
         setupNotificationObservers()
 
-        return
-
-        let descriptionField = generateDescriptionField()
-        let actionButton = generateStartStopButton()
-
-        let mainStackView = NSStackView(views: [descriptionField, actionButton])
-        mainStackView.orientation = .horizontal
-//        mainStackView.distribution = .fill
-
-        let projectButton = NSButton(frame: NSRect.zero)
-        projectButton.stringValue = "Project"
-
-        let additionsStackView = NSStackView(views: [projectButton])
-        additionsStackView.orientation = .horizontal
-//        additionsStackView.distribution = .fill
-
-        let containerStackView = NSStackView(views: [mainStackView, additionsStackView])
-        containerStackView.orientation = .vertical
-        containerStackView.alignment = .leading
-
-        view.addSubview(containerStackView)
-
-        containerStackView.translatesAutoresizingMaskIntoConstraints = false
-        let offset: CGFloat = 10
-        NSLayoutConstraint.activate([
-            containerStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: offset),
-            containerStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: offset),
-            containerStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: offset),
-            containerStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -offset)
-        ])
+        configureAppearance()
     }
 
     deinit {
         cancelNotificationObservers()
     }
+
+    // MARK: - Actions
 
     @IBAction func starButtonClicked(_ sender: Any) {
         if timeEntry.isRunning() {
@@ -71,39 +53,67 @@ class TimerViewController: NSViewController {
         }
     }
 
+    @IBAction func projectButtonClicked(_ sender: Any) {
+    }
+
+    @IBAction func tagsButtonClicked(_ sender: Any) {
+        NSLog("Tag mouse clicked")
+
+        if tagsButton.controlState == .active {
+            if tagsButton.isSelected == true {
+                tagsButton.isSelected = false
+            } else {
+                tagsButton.isSelected = true
+                tagsButton.controlState = .normal
+            }
+        }
+    }
+
+    @IBAction func billableButtonClicked(_ sender: Any) {
+    }
+
     @IBAction func descriptionFieldChanged(_ sender: Any) {
         timeEntry.description = descriptionTextField.stringValue
     }
 
-//    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-//    }
-
     // MARK: - Notifications handling
 
-    func setupNotificationObservers() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(kDisplayTimerState), object: nil, queue: .main) { [weak self] notification in
+    private func setupNotificationObservers() {
+        let displayTimerStateObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kDisplayTimerState),
+                                                                               object: nil,
+                                                                               queue: .main) { [weak self] notification in
             self?.updateTimerState(with: notification.object as? TimeEntryViewItem)
         }
 
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(kFocusTimer), object: nil, queue: .main) { [weak self] notification in
+        let focusTimerObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kFocusTimer),
+                                                                        object: nil,
+                                                                        queue: .main) { [weak self] _ in
             self?.focusTimer()
         }
 
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(kCommandStop), object: nil, queue: .main) { [weak self] notification in
+        let commandStopObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kCommandStop),
+                                                                         object: nil,
+                                                                         queue: .main) { [weak self] _ in
             self?.stop()
         }
 
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(kStartTimer), object: nil, queue: .main) { [weak self] notification in
+        let startTimerObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kStartTimer),
+                                                                        object: nil,
+                                                                        queue: .main) { [weak self] _ in
             guard let self = self else { return }
             self.starButtonClicked(self)
         }
+
+        notificationObservers = [displayTimerStateObserver, focusTimerObserver, commandStopObserver, startTimerObserver]
     }
 
-    func cancelNotificationObservers() {
-        //
+    private func cancelNotificationObservers() {
+        notificationObservers.forEach {
+            NotificationCenter.default.removeObserver($0)
+        }
     }
 
-    func updateTimerState(with timeEntry: TimeEntryViewItem?) {
+    private func updateTimerState(with timeEntry: TimeEntryViewItem?) {
         let entry: TimeEntryViewItem
         if let timeEntry = timeEntry {
             entry = timeEntry
@@ -151,11 +161,11 @@ class TimerViewController: NSViewController {
         }
     }
 
-    func focusTimer() {
+    private func focusTimer() {
         descriptionTextField.window?.makeFirstResponder(descriptionTextField)
     }
 
-    func stop() {
+    private func stop() {
         startButton.toolTip = "Start"
         startButton.state = .off
         if descriptionTextField.currentEditor() == nil {
@@ -167,58 +177,18 @@ class TimerViewController: NSViewController {
         focusTimer()
     }
 
+    // MARK: - UI
 
-    // MARK: - Generate UI
-
-    // TODO: remove hardcoded values
-
-    private func generateDescriptionField() -> NSView {
-        let containerBox = TimerContainerBox(frame: NSRect.zero)
-        containerBox.titlePosition = .noTitle
-        containerBox.boxType = .custom
-        containerBox.borderType = .grooveBorder
-        containerBox.borderWidth = 1
-        containerBox.cornerRadius = 15
-        if #available(OSX 10.13, *) {
-            containerBox.borderColor = NSColor(named: "lighter-grey-color")!
-            containerBox.fillColor = NSColor(named: "preference-box-background-color")!
-        } else {
-            containerBox.borderColor = ConvertHexColor.hexCode(toNSColor: "#ACACAC")
-            containerBox.fillColor = NSColor(deviceRed: 177.0/255.0, green: 177.0/255.0, blue: 177.0/255.0, alpha: 0.07)
+    private func configureAppearance() {
+        [projectButton, tagsButton, billableButton]
+            .compactMap { $0 }
+            .forEach {
+                $0.cornerRadius = $0.bounds.height / 2
+                $0.selectedBackgroundColor = NSColor.togglGreen
+//                $0.tintColor = NSColor.togglLighterGrey
+//                $0.hoverTintColor = NSColor.togglGreyText
         }
-
-        NSLayoutConstraint.activate([
-            containerBox.heightAnchor.constraint(equalToConstant: 30)
-        ])
-
-        let field = BetterFocusAutoCompleteInput(frame: NSRect.zero)
-        let fieldCell = VerticallyCenteredTextFieldCell()
-        fieldCell.focusRingCornerRadius = 12
-        fieldCell.placeholderString = "What are you working on?"
-        field.cell = fieldCell
-
-        field.isBordered = false
-        field.placeholderString = "What are you working on?"
-
-        field.translatesAutoresizingMaskIntoConstraints = false
-        containerBox.addSubview(field)
-//        field.edgesToSuperView()
-
-        field.responderDelegate = containerBox
-
-        return containerBox
     }
-
-    private func generateStartStopButton() -> NSButton {
-        let button = NSHoverButton(frame: NSRect.zero)
-        button.image = #imageLiteral(resourceName: "start-timer-icon")
-        button.alternateImage = #imageLiteral(resourceName: "stop-timer-button")
-        button.setButtonType(.switch)
-        button.isBordered = false
-        button.title = ""
-        return button
-    }
-
 }
 
 // MARK: - NSTextFieldDelegate

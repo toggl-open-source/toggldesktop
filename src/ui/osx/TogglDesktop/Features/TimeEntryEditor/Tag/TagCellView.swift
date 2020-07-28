@@ -29,16 +29,9 @@ final class TagCellView: NSTableCellView {
             return ConvertHexColor.hexCode(toNSColor: "#e5f9e8")
         }
     }()
-    private var greenColor: NSColor {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("green-color"))!
-        } else {
-            return ConvertHexColor.hexCode(toNSColor: "#28cd41")
-        }
-    }
     private lazy var attributeDict: [NSAttributedString.Key: Any] = {
         let font = checkButton.font ?? NSFont.systemFont(ofSize: 14.0)
-        let color = greenColor
+        let color = NSColor.togglGreen
         return [NSAttributedString.Key.foregroundColor: color,
                 NSAttributedString.Key.font: font]
     }()

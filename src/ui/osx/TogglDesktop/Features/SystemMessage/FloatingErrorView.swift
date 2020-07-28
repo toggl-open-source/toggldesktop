@@ -17,20 +17,8 @@ final class FloatingErrorView: NSView {
 
     // MARK: Variables
     var onClose: (() -> Void)?
-    fileprivate lazy var errorColor: NSColor = {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("error-title-color"))!
-        } else {
-            return ConvertHexColor.hexCode(toNSColor: "#FF3B30")
-        }
-    }()
-    fileprivate lazy var informativeColor: NSColor = {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("green-color"))!
-        } else {
-            return ConvertHexColor.hexCode(toNSColor: "#28cd41")
-        }
-    }()
+    fileprivate lazy var errorColor = NSColor.togglErrorTitle
+    fileprivate lazy var informativeColor = NSColor.togglGreen
 
     // MARK: Init
 

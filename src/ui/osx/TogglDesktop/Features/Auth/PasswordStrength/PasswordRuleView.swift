@@ -19,29 +19,6 @@ final class PasswordRuleView: NSView {
     // MARK: Variable
 
     private(set) var rule: PasswordStrengthValidation.Rule?
-    private static var greenColor: NSColor {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("green-color"))!
-        } else {
-            return ConvertHexColor.hexCode(toNSColor: "#28cd41")
-        }
-    }
-
-    private static var redColor: NSColor {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("error-title-color"))!
-        } else {
-            return ConvertHexColor.hexCode(toNSColor: "#FF3B30")
-        }
-    }
-
-    private static var greyColor: NSColor {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("grey-text-color"))!
-        } else {
-            return ConvertHexColor.hexCode(toNSColor: "#555555")
-        }
-    }
 
     // MARK: Public
 
@@ -68,11 +45,11 @@ final class PasswordRuleView: NSView {
     private func getTextColor(for status: PasswordStrengthValidation.MatchStatus) -> NSColor {
         switch status {
         case .match:
-            return PasswordRuleView.greenColor
+            return NSColor.togglGreen
         case .unmatch:
-            return PasswordRuleView.redColor
+            return NSColor.togglErrorTitle
         case .none:
-            return PasswordRuleView.greyColor
+            return NSColor.togglGreyText
         }
     }
 

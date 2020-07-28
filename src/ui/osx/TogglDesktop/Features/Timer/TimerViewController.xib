@@ -9,10 +9,13 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimerViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
+                <outlet property="billableButton" destination="lkp-Tv-GfR" id="ADf-Ah-y0P"/>
                 <outlet property="descriptionContainerBox" destination="hG9-dZ-2ec" id="u09-Ec-oG5"/>
                 <outlet property="descriptionTextField" destination="ecT-b1-LZO" id="sXf-8p-YKn"/>
                 <outlet property="durationLabel" destination="6FX-Aj-eyz" id="jaz-TJ-jJJ"/>
+                <outlet property="projectButton" destination="jwm-bG-cK6" id="zt8-ru-Iob"/>
                 <outlet property="startButton" destination="4R2-ha-Q7h" id="BDU-Fw-r4V"/>
+                <outlet property="tagsButton" destination="R49-rR-d7b" id="pi0-oh-GRo"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -113,38 +116,101 @@
                         <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="6" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f3m-Ax-U74">
                             <rect key="frame" x="10" y="0.0" width="84" height="24"/>
                             <subviews>
-                                <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="95y-Az-DXW" customClass="NSHoverButton">
+                                <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jwm-bG-cK6" customClass="SelectableButton" customModule="TogglDesktop" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="8ky-J5-cD9"/>
-                                        <constraint firstAttribute="height" constant="24" id="lXy-mB-LXm"/>
+                                        <constraint firstAttribute="width" constant="24" id="0RQ-O1-nBB"/>
+                                        <constraint firstAttribute="height" constant="24" id="aos-pz-lzF"/>
                                     </constraints>
-                                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="time-entry-tag" imagePosition="overlaps" alignment="center" alternateImage="time-entry-tag" imageScaling="proportionallyUpOrDown" inset="2" id="Xc7-p3-RaX">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
+                                    <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" image="project-button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="XiJ-UQ-fKx">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" size="12" name="HelveticaNeue"/>
                                     </buttonCell>
+                                    <color key="contentTintColor" name="lighter-grey-color"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                            <color key="value" name="lighter-grey-color"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="hoverTintColor">
+                                            <color key="value" name="grey-text-color"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="activeTintColor">
+                                            <color key="value" name="green-color"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="selectedBackgroundColor">
+                                            <color key="value" name="green-color"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="12"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="projectButtonClicked:" target="-2" id="Mhn-96-g6s"/>
+                                    </connections>
                                 </button>
-                                <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="R49-rR-d7b" customClass="NSHoverButton">
+                                <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="R49-rR-d7b" customClass="SelectableButton" customModule="TogglDesktop" customModuleProvider="target">
                                     <rect key="frame" x="30" y="0.0" width="24" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="24" id="K6L-TG-EPU"/>
                                         <constraint firstAttribute="height" constant="24" id="hHI-j8-8eD"/>
                                     </constraints>
-                                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="time-entry-tag" imagePosition="overlaps" alignment="center" alternateImage="time-entry-tag" imageScaling="proportionallyUpOrDown" inset="2" id="gdT-xR-BDt">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
+                                    <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" image="tag-button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="gdT-xR-BDt">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" size="12" name="HelveticaNeue"/>
                                     </buttonCell>
+                                    <color key="contentTintColor" name="lighter-grey-color"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                            <color key="value" name="lighter-grey-color"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="hoverTintColor">
+                                            <color key="value" name="grey-text-color"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="activeTintColor">
+                                            <color key="value" name="green-color"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="selectedBackgroundColor">
+                                            <color key="value" name="green-color"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="12"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="tagsButtonClicked:" target="-2" id="Kkc-8g-rwA"/>
+                                    </connections>
                                 </button>
-                                <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NSe-eU-RqQ" customClass="NSHoverButton">
+                                <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lkp-Tv-GfR" customClass="SelectableButton" customModule="TogglDesktop" customModuleProvider="target">
                                     <rect key="frame" x="60" y="0.0" width="24" height="24"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="24" id="NQV-wO-hXj"/>
-                                        <constraint firstAttribute="width" constant="24" id="y7a-w5-DrP"/>
+                                        <constraint firstAttribute="width" constant="24" id="1aZ-p7-qEl"/>
+                                        <constraint firstAttribute="height" constant="24" id="MD6-2y-exy"/>
                                     </constraints>
-                                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="time-entry-billable" imagePosition="overlaps" alignment="center" alternateImage="time-entry-billable" imageScaling="proportionallyUpOrDown" inset="2" id="jpz-QD-bO1">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
+                                    <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" image="billable-button" imagePosition="only" alignment="center" enabled="NO" imageScaling="proportionallyDown" inset="2" id="im8-is-hrS">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" size="12" name="HelveticaNeue"/>
                                     </buttonCell>
+                                    <color key="contentTintColor" name="lighter-grey-color"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                            <color key="value" name="lighter-grey-color"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="hoverTintColor">
+                                            <color key="value" name="grey-text-color"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="activeTintColor">
+                                            <color key="value" name="green-color"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="selectedBackgroundColor">
+                                            <color key="value" name="green-color"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="12"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="billableButtonClicked:" target="-2" id="f6p-uI-GKu"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <visibilityPriorities>
@@ -182,10 +248,17 @@
         </customView>
     </objects>
     <resources>
+        <image name="billable-button" width="24" height="24"/>
+        <image name="project-button" width="24" height="24"/>
         <image name="start-timer-button" width="45" height="45"/>
         <image name="stop-timer-button" width="30" height="30"/>
-        <image name="time-entry-billable" width="17" height="17"/>
-        <image name="time-entry-tag" width="17" height="17"/>
+        <image name="tag-button" width="24" height="24"/>
+        <namedColor name="green-color">
+            <color red="0.15700000524520874" green="0.80400002002716064" blue="0.25499999523162842" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="grey-text-color">
+            <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="lighter-grey-color">
             <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

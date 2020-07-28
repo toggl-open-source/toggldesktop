@@ -287,14 +287,13 @@ extern void *ctx;
 	// Color
 	if (self.Group && self.GroupOpen)
 	{
+        [self.groupButton setTextColor:[NSColor togglGreen]];
 		if (@available(macOS 10.13, *))
 		{
-			[self.groupButton setTextColor:[NSColor colorNamed:@"green-color"]];
 			self.groupBox.fillColor = [NSColor colorNamed:@"group-box-background-color"];
 		}
 		else
 		{
-			[self.groupButton setTextColor:[ConvertHexColor hexCodeToNSColor:@"#28cd41"]];
 			self.groupBox.fillColor = [NSColor colorWithRed:40.0 / 255.0 green:205.0 / 255.0 blue:65.0 / 255.0 alpha:0.12];
 		}
 		self.groupBox.borderColor = [NSColor clearColor];

@@ -45,7 +45,13 @@
 		4988E66124CEC8460072C1B5 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4988E65E24CEC8460072C1B5 /* TimerViewController.swift */; };
 		4988E66224CEC8460072C1B5 /* TimerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4988E65F24CEC8460072C1B5 /* TimerViewController.xib */; };
 		4988E66324CEC8460072C1B5 /* TimerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4988E65F24CEC8460072C1B5 /* TimerViewController.xib */; };
+		499779BD24D01C6A0011C50E /* SelectableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499779BC24D01C6A0011C50E /* SelectableButton.swift */; };
+		499779BE24D01C6A0011C50E /* SelectableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499779BC24D01C6A0011C50E /* SelectableButton.swift */; };
 		49D3603B24878FA000527DE8 /* TogglDesktopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */; };
+		49DC602D24D05DE100E961A8 /* NSColor+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC602C24D05DE100E961A8 /* NSColor+Theme.swift */; };
+		49DC602E24D05DE100E961A8 /* NSColor+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC602C24D05DE100E961A8 /* NSColor+Theme.swift */; };
+		49DC603024D072DB00E961A8 /* NSImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC602F24D072DB00E961A8 /* NSImage+Tint.swift */; };
+		49DC603124D072DB00E961A8 /* NSImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC602F24D072DB00E961A8 /* NSImage+Tint.swift */; };
 		622BBF654A6A958692A4633B /* Pods_TogglDesktop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 776525112125F6AD81DF4DEF /* Pods_TogglDesktop.framework */; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
 		69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
@@ -730,9 +736,12 @@
 		49418B44249CE77D00265665 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4988E65E24CEC8460072C1B5 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
 		4988E65F24CEC8460072C1B5 /* TimerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimerViewController.xib; sourceTree = "<group>"; };
+		499779BC24D01C6A0011C50E /* SelectableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableButton.swift; sourceTree = "<group>"; };
 		49D3603824878FA000527DE8 /* TogglDesktopTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TogglDesktopTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TogglDesktopTests.swift; sourceTree = "<group>"; };
 		49D3603C24878FA000527DE8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49DC602C24D05DE100E961A8 /* NSColor+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Theme.swift"; sourceTree = "<group>"; };
+		49DC602F24D072DB00E961A8 /* NSImage+Tint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Tint.swift"; sourceTree = "<group>"; };
 		4BCB2D1F3BD02A806D947C18 /* Pods-TogglDesktop-AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop-AppStore.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktop-AppStore/Pods-TogglDesktop-AppStore.release.xcconfig"; sourceTree = "<group>"; };
 		523FD02C959288FBFA20F5B1 /* Pods-TogglDesktop-AppStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop-AppStore.debug.xcconfig"; path = "Target Support Files/Pods-TogglDesktop-AppStore/Pods-TogglDesktop-AppStore.debug.xcconfig"; sourceTree = "<group>"; };
 		5B60B83A6E228F2A959F5FEA /* Pods_TogglDesktopTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TogglDesktopTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1323,6 +1332,9 @@
 		49850A9624BF4C5D00D7E22F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				49DC602C24D05DE100E961A8 /* NSColor+Theme.swift */,
+				BA81896923016148000710EA /* NSColor+VisibleColor.swift */,
+				BA4791EB22F0478900E24F79 /* NSColor+Utils.swift */,
 				BA4791EA22F0478900E24F79 /* String+Search.swift */,
 				BA7B4C7B21C293E700B75B14 /* String+Optional.swift */,
 				BA4791F022F0478A00E24F79 /* Collection+Safe.swift */,
@@ -1330,18 +1342,17 @@
 				BAA0104B22CB59ED007C1541 /* Date+Extension.swift */,
 				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
 				BA4791EE22F0478900E24F79 /* NotificationCenter+MainThread.swift */,
-				BA4791EB22F0478900E24F79 /* NSColor+Utils.swift */,
 				BA4791E922F0478900E24F79 /* NSView+Animation.swift */,
 				BA4791EC22F0478900E24F79 /* NSView+Ext.swift */,
 				BA4791ED22F0478900E24F79 /* NSView+LayoutConstraint.swift */,
 				BA4791EF22F0478A00E24F79 /* NSView+Shadow+Border.swift */,
 				BA4791E822F0478900E24F79 /* NSView+Xib.swift */,
-				BA81896923016148000710EA /* NSColor+VisibleColor.swift */,
 				BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */,
 				BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */,
 				BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */,
 				BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */,
 				BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */,
+				49DC602F24D072DB00E961A8 /* NSImage+Tint.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1353,6 +1364,7 @@
 				BA4791FC22F0479200E24F79 /* NoInteractionView.swift */,
 				BA4791FB22F0479200E24F79 /* VerticallyCenteredTextFieldCell.swift */,
 				BA03725421FE9FD400FC277B /* FlatButton.swift */,
+				499779BC24D01C6A0011C50E /* SelectableButton.swift */,
 				749BD0BB1833E28400980494 /* NSBoxClickable.h */,
 				749BD0BC1833E28400980494 /* NSBoxClickable.m */,
 				95C0707818CDB91500A34D0D /* NSCustomComboBox.h */,
@@ -2882,6 +2894,7 @@
 				746947FA1AF3FE3E0024BED7 /* AutotrackerRuleItem.m in Sources */,
 				3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */,
 				BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */,
+				49DC602D24D05DE100E961A8 /* NSColor+Theme.swift in Sources */,
 				74098C331919899600CBDFB9 /* Utils.m in Sources */,
 				BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */,
 				BA9C2E0C224C8F58002AD2A1 /* KeyboardTableView.swift in Sources */,
@@ -2892,6 +2905,7 @@
 				BAB818E3228D594D008C2367 /* DescriptionTimeEntryStorage.swift in Sources */,
 				BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */,
 				BA6572AA224DFA6F00BA4C60 /* HSV.swift in Sources */,
+				49DC603024D072DB00E961A8 /* NSImage+Tint.swift in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
 				BA4791F422F0478A00E24F79 /* NSColor+Utils.swift in Sources */,
 				BA34F10022439C3000C27A15 /* EditorViewController.swift in Sources */,
@@ -2996,6 +3010,7 @@
 				BA5E988923BF496E0089A2C7 /* HoverImageView.swift in Sources */,
 				BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */,
 				BA43B24E23F438AA0007DD99 /* TimelineLineView.swift in Sources */,
+				499779BD24D01C6A0011C50E /* SelectableButton.swift in Sources */,
 				BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */,
 				BA5B0E4E2330E1C6008D1DED /* GoogleAuthenticationServer.swift in Sources */,
 				BA8B4C752251FAD500592BC7 /* WorkspaceCellView.swift in Sources */,
@@ -3101,6 +3116,7 @@
 				BAE64D8A2368334000244D2B /* CursorButton.swift in Sources */,
 				BA37ACFC23D890250013EE26 /* String+Search.swift in Sources */,
 				BAE64D8B2368334000244D2B /* KeyboardTableView.swift in Sources */,
+				49DC602E24D05DE100E961A8 /* NSColor+Theme.swift in Sources */,
 				BAE64D8D2368334000244D2B /* main.m in Sources */,
 				BA37ACE823D890100013EE26 /* TimeChunk.swift in Sources */,
 				BAE64D8E2368334000244D2B /* FeedbackWindowController.m in Sources */,
@@ -3111,6 +3127,7 @@
 				BAE64D932368334000244D2B /* EditorViewController.swift in Sources */,
 				BA37ACFD23D890250013EE26 /* Theme+Notification.swift in Sources */,
 				BAE64D942368334000244D2B /* AutoCompleteTableCell+Ext.swift in Sources */,
+				49DC603124D072DB00E961A8 /* NSImage+Tint.swift in Sources */,
 				BAE64D952368334000244D2B /* LiteAutoCompleteDataSource.m in Sources */,
 				BA4A7D5323755A4200A42095 /* GlobalTouchbarButton.swift in Sources */,
 				BAE64D962368334000244D2B /* DescriptionDataSource.swift in Sources */,
@@ -3215,6 +3232,7 @@
 				BAD4F9C5246D392C0032F0C7 /* PasswordStrengthView.swift in Sources */,
 				BA37ACD423D8900C0013EE26 /* TimelineTimeEntryCell.swift in Sources */,
 				BA37ACE023D8900C0013EE26 /* TimelineActivityHoverController.swift in Sources */,
+				499779BE24D01C6A0011C50E /* SelectableButton.swift in Sources */,
 				BAE64DE62368334000244D2B /* String+Optional.swift in Sources */,
 				BA37ACB623D890050013EE26 /* MainDashboardViewController.swift in Sources */,
 				BAE64DE72368334000244D2B /* CurrentColorView.swift in Sources */,
