@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Copy of Microsoft Managed Recommended Rules" Description="These rules focus on the most critical problems in your code, including potential security holes, application crashes, and other important logic and design errors. You should include this rule set in any custom rule set you create for your projects." ToolsVersion="15.0">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Copy of Microsoft Managed Recommended Rules" Description="These rules focus on the most critical problems in your code, including potential security holes, application crashes, and other important logic and design errors. You should include this rule set in any custom rule set you create for your projects." ToolsVersion="16.0">
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1001" Action="Warning" />
     <Rule Id="CA1009" Action="Warning" />
@@ -73,7 +73,6 @@
     <Rule Id="SA1005" Action="None" />
     <Rule Id="SA1006" Action="Error" />
     <Rule Id="SA1007" Action="Error" />
-    <Rule Id="SA1008" Action="Warning" />
     <Rule Id="SA1009" Action="None" />
     <Rule Id="SA1010" Action="Error" />
     <Rule Id="SA1011" Action="Error" />
@@ -94,21 +93,13 @@
     <Rule Id="SA1026" Action="Error" />
     <Rule Id="SA1027" Action="Error" />
     <Rule Id="SA1028" Action="None" />
-    <Rule Id="SA1100" Action="Warning" />
     <Rule Id="SA1101" Action="None" />
-    <Rule Id="SA1102" Action="Warning" />
-    <Rule Id="SA1103" Action="Warning" />
-    <Rule Id="SA1104" Action="Warning" />
-    <Rule Id="SA1105" Action="Warning" />
     <Rule Id="SA1106" Action="Error" />
-    <Rule Id="SA1107" Action="Warning" />
     <Rule Id="SA1108" Action="Error" />
     <Rule Id="SA1110" Action="None" />
     <Rule Id="SA1111" Action="None" />
     <Rule Id="SA1112" Action="Error" />
     <Rule Id="SA1113" Action="None" />
-    <Rule Id="SA1114" Action="Warning" />
-    <Rule Id="SA1115" Action="Warning" />
     <Rule Id="SA1116" Action="None" />
     <Rule Id="SA1117" Action="None" />
     <Rule Id="SA1118" Action="None" />
@@ -126,7 +117,7 @@
     <Rule Id="SA1131" Action="None" />
     <Rule Id="SA1132" Action="None" />
     <Rule Id="SA1133" Action="None" />
-    <Rule Id="SA1134" Action="Error" />
+    <Rule Id="SA1134" Action="None" />
     <Rule Id="SA1200" Action="None" />
     <Rule Id="SA1201" Action="None" />
     <Rule Id="SA1202" Action="None" />
@@ -151,8 +142,7 @@
     <Rule Id="SA1306" Action="Error" />
     <Rule Id="SA1307" Action="Error" />
     <Rule Id="SA1308" Action="Error" />
-    <Rule Id="SA1309" Action="Error" />
-    <Rule Id="SA1310" Action="Warning" />
+    <Rule Id="SA1309" Action="None" />
     <Rule Id="SA1311" Action="None" />
     <Rule Id="SA1312" Action="Error" />
     <Rule Id="SA1313" Action="None" />
@@ -168,19 +158,13 @@
     <Rule Id="SA1410" Action="None" />
     <Rule Id="SA1411" Action="None" />
     <Rule Id="SA1500" Action="Error" />
-    <Rule Id="SA1501" Action="Warning" />
     <Rule Id="SA1502" Action="None" />
     <Rule Id="SA1503" Action="None" />
     <Rule Id="SA1504" Action="None" />
-    <Rule Id="SA1505" Action="Warning" />
-    <Rule Id="SA1506" Action="Warning" />
     <Rule Id="SA1507" Action="None" />
-    <Rule Id="SA1508" Action="Warning" />
-    <Rule Id="SA1509" Action="Warning" />
     <Rule Id="SA1510" Action="Error" />
     <Rule Id="SA1511" Action="Error" />
     <Rule Id="SA1512" Action="None" />
-    <Rule Id="SA1513" Action="Warning" />
     <Rule Id="SA1514" Action="Error" />
     <Rule Id="SA1515" Action="None" />
     <Rule Id="SA1516" Action="None" />
@@ -228,5 +212,6 @@
     <Rule Id="SA1649" Action="None" />
     <Rule Id="SA1651" Action="None" />
     <Rule Id="SA1652" Action="None" />
+    <Rule Id="SX1309" Action="Warning" />
   </Rules>
 </RuleSet>
