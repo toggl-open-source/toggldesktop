@@ -675,8 +675,6 @@ namespace TogglDesktop
             var item = asClientItem.Model;
 
             this.selectClient(item);
-
-            this.newProjectTextBox.Focus();
         }
 
         private void selectClient(Toggl.TogglGenericView item)
