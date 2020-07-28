@@ -10,7 +10,7 @@ using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
 {
-    partial class AutoCompletionPopup
+    internal partial class AutoCompletionPopup
     {
         #region events
 
@@ -23,12 +23,12 @@ namespace TogglDesktop
 
         #region fields
 
-        private ExtendedTextBox textbox;
-        private ToggleButton dropDownButton;
+        private ExtendedTextBox _textbox;
+        private ToggleButton _dropDownButton;
 
-        private bool needsToRefreshList;
+        private bool _needsToRefreshList;
 
-        private IAutoCompleteController controller;
+        private IAutoCompleteController _controller;
 
         #endregion
 
@@ -72,10 +72,10 @@ namespace TogglDesktop
         #region Target
 
         public static readonly DependencyProperty TargetProperty = DependencyProperty
-            .Register("Target", typeof (FrameworkElement), typeof (AutoCompletionPopup),
+            .Register("Target", typeof(FrameworkElement), typeof(AutoCompletionPopup),
                 new FrameworkPropertyMetadata
                 {
-                    PropertyChangedCallback = (o, args) => ((AutoCompletionPopup)o).updateTarget()
+                    PropertyChangedCallback = (o, args) => ((AutoCompletionPopup)o).updateTarget(),
                 });
 
         public FrameworkElement Target
@@ -89,7 +89,7 @@ namespace TogglDesktop
 
         public string ActionButtonText
         {
-            get { return (string) GetValue(ActionButtonTextProperty); }
+            get { return (string)GetValue(ActionButtonTextProperty); }
             set { SetValue(ActionButtonTextProperty, value); }
         }
 
@@ -98,10 +98,10 @@ namespace TogglDesktop
         #region TextBox
 
         public static readonly DependencyProperty TextBoxProperty = DependencyProperty
-            .Register("TextBox", typeof (ExtendedTextBox), typeof (AutoCompletionPopup),
+            .Register("TextBox", typeof(ExtendedTextBox), typeof(AutoCompletionPopup),
                 new FrameworkPropertyMetadata
                 {
-                    PropertyChangedCallback = (o, args) => ((AutoCompletionPopup)o).initialise()
+                    PropertyChangedCallback = (o, args) => ((AutoCompletionPopup)o).initialise(),
                 });
 
         public ExtendedTextBox TextBox
@@ -118,7 +118,7 @@ namespace TogglDesktop
            .Register("DropDownButton", typeof(ToggleButton), typeof(AutoCompletionPopup),
            new FrameworkPropertyMetadata
            {
-               PropertyChangedCallback = (o, args) => ((AutoCompletionPopup)o).initDropDownButton()
+               PropertyChangedCallback = (o, args) => ((AutoCompletionPopup)o).initDropDownButton(),
            });
 
         public ToggleButton DropDownButton
@@ -138,27 +138,28 @@ namespace TogglDesktop
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
-            if (this.textbox != null)
+            if (this._textbox != null)
                 throw new Exception("Auto completion popup cannot be initialised more than once.");
 
-            this.textbox = this.TextBox;
+            this._textbox = this.TextBox;
 
-            if (this.textbox == null)
+            if (this._textbox == null)
                 throw new Exception("Auto completion popup must have a valid text box.");
 
-            this.textbox.PreviewKeyDown += this.textboxOnPreviewKeyDown;
-            this.textbox.TextChanged += this.textboxOnTextChanged;
-            this.textbox.LostKeyboardFocus += (sender, args) =>
+            this._textbox.PreviewKeyDown += this.textboxOnPreviewKeyDown;
+            this._textbox.TextChanged += this.textboxOnTextChanged;
+            this._textbox.LostKeyboardFocus += (sender, args) =>
             {
-                if (this.textbox.Focusable && this.textbox.IsEnabled)
+                if (this._textbox.Focusable && this._textbox.IsEnabled)
                 {
                     var isKeyboardFocusWithin = popup.IsKeyboardFocusWithin;
                     if (isKeyboardFocusWithin)
                     {
                         if (listBox.IsKeyboardFocusWithin)
                         {
-                            this.textbox.Focus();
+                            this._textbox.Focus();
                         }
+
                         return;
                     }
                 }
@@ -167,7 +168,7 @@ namespace TogglDesktop
             };
             this.popup.LostKeyboardFocus += (sender, args) =>
             {
-                if (!this.textbox.IsKeyboardFocusWithin && !this.popup.IsKeyboardFocusWithin)
+                if (!this._textbox.IsKeyboardFocusWithin && !this.popup.IsKeyboardFocusWithin)
                 {
                     this.close();
                 }
@@ -178,12 +179,12 @@ namespace TogglDesktop
                 {
                     if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                     {
-                        this.textbox.Focus();
+                        this._textbox.Focus();
                         args.Handled = true;
                     }
                     else
                     {
-                        if (this.textbox.PredictFocus(FocusNavigationDirection.Down) is UIElement nextElement)
+                        if (this._textbox.PredictFocus(FocusNavigationDirection.Down) is UIElement nextElement)
                         {
                             Keyboard.Focus(nextElement);
                             args.Handled = true;
@@ -192,7 +193,7 @@ namespace TogglDesktop
                 }
                 else if (args.Key == Key.Down || args.Key == Key.Up || args.Key == Key.Escape)
                 {
-                    this.textbox.Focus();
+                    this._textbox.Focus();
                     args.Handled = true;
                 }
             };
@@ -203,24 +204,24 @@ namespace TogglDesktop
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
-            if (this.dropDownButton != null)
+            if (this._dropDownButton != null)
                 throw new Exception("Cannot set auto completion drop down button more than once.");
 
-            this.dropDownButton = this.DropDownButton;
+            this._dropDownButton = this.DropDownButton;
 
-            if (this.dropDownButton == null)
+            if (this._dropDownButton == null)
                 throw new Exception("Cannot set auto completion drop down button to null.");
 
             this.IsOpenChanged += this.updateDropDownButton;
-            this.dropDownButton.Click += this.onDropDownButtonClick;
+            this._dropDownButton.Click += this.onDropDownButtonClick;
         }
 
         #endregion
 
         public void SetController(IAutoCompleteController controller)
         {
-            this.controller = controller;
-            this.needsToRefreshList = true;
+            this._controller = controller;
+            this._needsToRefreshList = true;
             if (this.popup.IsOpen)
                 this.open(true);
         }
@@ -228,8 +229,8 @@ namespace TogglDesktop
         public void OpenAndShowAll()
         {
             this.open(showAll: true);
-            this.textbox.SelectAll();
-            this.textbox.Focus();
+            this._textbox.SelectAll();
+            this._textbox.Focus();
         }
 
         public void RecalculatePosition()
@@ -269,18 +270,21 @@ namespace TogglDesktop
                         }
                         else
                         {
-                            this.controller.SelectNext();
+                            this._controller.SelectNext();
                         }
+
                         e.Handled = true;
                         return;
                     }
+
                 case Key.Up:
                     {
                         if (this.IsOpen)
-                            this.controller.SelectPrevious();
+                            this._controller.SelectPrevious();
                         e.Handled = true;
                         return;
                     }
+
                 case Key.Escape:
                     {
                         if (this.IsOpen)
@@ -288,8 +292,10 @@ namespace TogglDesktop
                             this.close();
                             e.Handled = true;
                         }
+
                         return;
                     }
+
                 case Key.Enter:
                     {
                         if (this.IsOpen)
@@ -299,20 +305,23 @@ namespace TogglDesktop
                                 e.Handled = true;
                             }
                         }
+
                         return;
                     }
+
                 case Key.Tab:
-                {
-                    if (this.IsOpen)
                     {
-                        if (actionButton.IsVisible && actionButton.Focus())
+                        if (this.IsOpen)
                         {
-                            e.Handled = true;
-                            this.listBox.SelectedIndex = -1;
+                            if (actionButton.IsVisible && actionButton.Focus())
+                            {
+                                e.Handled = true;
+                                this.listBox.SelectedIndex = -1;
+                            }
                         }
+
+                        return;
                     }
-                    return;
-                }
             }
         }
 
@@ -321,7 +330,7 @@ namespace TogglDesktop
             if (!this.IsEnabled)
                 return;
 
-            if (this.textbox.IsTextChangingProgrammatically)
+            if (this._textbox.IsTextChangingProgrammatically)
                 return;
 
             this.open(true);
@@ -329,7 +338,7 @@ namespace TogglDesktop
 
         private void onDropDownButtonClick(object s, RoutedEventArgs e)
         {
-            var open = this.dropDownButton.IsChecked ?? false;
+            var open = this._dropDownButton.IsChecked ?? false;
             if (open)
             {
                 this.OpenAndShowAll();
@@ -337,24 +346,24 @@ namespace TogglDesktop
             else
             {
                 this.close();
-                if (!this.textbox.IsKeyboardFocused)
+                if (!this._textbox.IsKeyboardFocused)
                 {
-                    this.textbox.Focus();
-                    this.textbox.CaretIndex = this.textbox.Text.Length;
+                    this._textbox.Focus();
+                    this._textbox.CaretIndex = this._textbox.Text.Length;
                 }
             }
         }
 
         private void updateDropDownButton(object sender, EventArgs e)
         {
-            this.dropDownButton.IsChecked = this.IsOpen;
+            this._dropDownButton.IsChecked = this.IsOpen;
         }
 
         #endregion
 
         private bool confirmCompletion(bool withKeyboard)
         {
-            var item = this.controller.SelectedItem;
+            var item = this._controller.SelectedItem;
             this.select(item, withKeyboard);
             return true;
         }
@@ -366,12 +375,13 @@ namespace TogglDesktop
 
             if (item == null)
             {
-                ConfirmWithoutCompletion?.Invoke(this, this.textbox.Text);
+                ConfirmWithoutCompletion?.Invoke(this, this._textbox.Text);
                 if (this.IsOpen)
                 {
                     // refresh the popup content
                     this.open();
                 }
+
                 return;
             }
 
@@ -385,7 +395,7 @@ namespace TogglDesktop
 
         private void open(bool closeIfEmpty = false, bool showAll = false)
         {
-            if (!showAll && this.textbox.Text == "" && !this.popup.IsOpen)
+            if (!showAll && this._textbox.Text == "" && !this.popup.IsOpen)
             {
                 return;
             }
@@ -410,12 +420,12 @@ namespace TogglDesktop
             }
 
             this.ensureList();
-            this.controller.Complete(showAll ? "" : this.textbox.Text);
-            this.actionButton.ShowOnlyIf(this.controller.ShowActionButton && !ActionButtonText.IsNullOrEmpty());
+            this._controller.Complete(showAll ? "" : this._textbox.Text);
+            this.actionButton.ShowOnlyIf(this._controller.ShowActionButton && !ActionButtonText.IsNullOrEmpty());
 
             if (closeIfEmpty)
             {
-                this.popup.IsOpen = this.controller.VisibleItems.Count > 0;
+                this.popup.IsOpen = this._controller.VisibleItems.Count > 0;
             }
             else
             {
@@ -431,16 +441,16 @@ namespace TogglDesktop
 
         private void ensureList()
         {
-            if (!this.needsToRefreshList)
+            if (!this._needsToRefreshList)
                 return;
 
-            using (Performance.Measure("building auto complete list {0}", this.controller.DebugIdentifier))
+            using (Performance.Measure("building auto complete list {0}", this._controller.DebugIdentifier))
             {
-                this.controller.FillList(this.listBox);
-                this.actionButton.ShowOnlyIf(this.controller.ShowActionButton && !ActionButtonText.IsNullOrEmpty());
+                this._controller.FillList(this.listBox);
+                this.actionButton.ShowOnlyIf(this._controller.ShowActionButton && !ActionButtonText.IsNullOrEmpty());
             }
 
-            this.needsToRefreshList = false;
+            this._needsToRefreshList = false;
         }
 
         private void listBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -464,9 +474,10 @@ namespace TogglDesktop
             ActionButtonClick?.Invoke(sender, e);
             if (KeepOpenWhenSelecting)
             {
-                this.textbox.Focus();
+                this._textbox.Focus();
             }
-            this.actionButton.ShowOnlyIf(this.controller.ShowActionButton && !ActionButtonText.IsNullOrEmpty());
+
+            this.actionButton.ShowOnlyIf(this._controller.ShowActionButton && !ActionButtonText.IsNullOrEmpty());
         }
 
         public bool HasKeyboardFocus() => popup.IsKeyboardFocusWithin;

@@ -1,6 +1,6 @@
 namespace TogglDesktop.AutoCompletion.Items
 {
-    class TimeEntryItem : AutoCompleteItem, IModelItem<Toggl.TogglAutocompleteView>
+    internal class TimeEntryItem : AutoCompleteItem, IModelItem<Toggl.TogglAutocompleteView>
     {
         public string Description => Model.Description;
         public string TaskLabel => Model.TaskLabel;

@@ -1,5 +1,4 @@
-﻿
-namespace TogglDesktop.Tutorial
+﻿namespace TogglDesktop.Tutorial
 {
     public partial class BasicTutorialScreen3
     {
@@ -22,6 +21,5 @@ namespace TogglDesktop.Tutorial
         {
             this.activateScreen<BasicTutorialScreen4>();
         }
-
     }
 }

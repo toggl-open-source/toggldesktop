@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,10 +8,10 @@ namespace TogglDesktop
 {
     public partial class ProjectColorPicker
     {
-        private readonly Random random = new Random();
+        private readonly Random _random = new Random();
 
-        private string selectedColor;
-        private string[] colors;
+        private string _selectedColor;
+        private string[] _colors;
 
         public ProjectColorPicker()
         {
@@ -28,7 +27,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onDisplayProjectColors, strings, count))
                 return;
 
-            this.colors = strings;
+            this._colors = strings;
             this.list.ItemsSource = strings;
         }
 
@@ -41,10 +40,10 @@ namespace TogglDesktop
 
         public string SelectedColor
         {
-            get { return this.selectedColor; }
+            get { return this._selectedColor; }
             set
             {
-                this.selectedColor = value;
+                this._selectedColor = value;
                 this.updateColor();
             }
         }
@@ -52,7 +51,7 @@ namespace TogglDesktop
         private void updateColor()
         {
             this.colorCircle.Fill =
-                Utils.AdaptedProjectColorBrushFromString(this.selectedColor);
+                Utils.AdaptedProjectColorBrushFromString(this._selectedColor);
         }
 
 
@@ -75,7 +74,7 @@ namespace TogglDesktop
             this.popup.IsOpen = false;
             if (focusButton)
             {
-                this.button.Focus();   
+                this.button.Focus();
             }
         }
 
@@ -87,27 +86,28 @@ namespace TogglDesktop
             this.popup.IsOpen = true;
 
             var i = 0;
-            if (this.selectedColor != null)
+            if (this._selectedColor != null)
             {
-                var argb = Utils.ProjectColorFromString(this.selectedColor);
+                var argb = Utils.ProjectColorFromString(this._selectedColor);
 
-                i = Array.FindIndex(this.colors,
+                i = Array.FindIndex(this._colors,
                     c => Utils.ProjectColorFromString(c) == argb);
                 if (i < 0)
                     i = 0;
             }
+
             this.list.SelectedIndex = i;
             ((Control)this.list.ItemContainerGenerator.ContainerFromIndex(i)).Focus();
         }
 
         private bool ensureProjectColors()
         {
-            if (this.colors != null)
+            if (this._colors != null)
                 return true;
 
             Toggl.GetProjectColors();
 
-            if (this.colors != null)
+            if (this._colors != null)
                 return true;
 
             Toggl.Debug("Error: Did not receive project colours when required.");
@@ -126,18 +126,19 @@ namespace TogglDesktop
             switch (e.Key)
             {
                 case Key.Escape:
-                {
-                    this.close(true);
-                    e.Handled = true;
-                    break;
-                }
+                    {
+                        this.close(true);
+                        e.Handled = true;
+                        break;
+                    }
+
                 case Key.Enter:
-                {
-                    this.SelectedColor = (string)this.list.SelectedItem;
-                    this.close(true);
-                    e.Handled = true;
-                    break;
-                }
+                    {
+                        this.SelectedColor = (string)this.list.SelectedItem;
+                        this.close(true);
+                        e.Handled = true;
+                        break;
+                    }
             }
         }
 
@@ -155,7 +156,7 @@ namespace TogglDesktop
             if (!this.ensureProjectColors())
                 return;
 
-            this.SelectedColor = this.colors.RandomElement(this.random);
+            this.SelectedColor = this._colors.RandomElement(this._random);
         }
     }
 }

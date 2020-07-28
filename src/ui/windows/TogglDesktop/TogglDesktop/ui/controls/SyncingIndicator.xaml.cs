@@ -7,17 +7,17 @@ namespace TogglDesktop
 {
     public partial class SyncingIndicator
     {
-        private readonly Storyboard spinnerAnimation;
+        private readonly Storyboard _spinnerAnimation;
 
-        private long unsyncedItems;
-        private Toggl.SyncState syncState;
-        private bool spinnerIsAnimating;
+        private long _unsyncedItems;
+        private Toggl.SyncState _syncState;
+        private bool _spinnerIsAnimating;
 
         public SyncingIndicator()
         {
             this.InitializeComponent();
 
-            this.spinnerAnimation = (Storyboard)this.Resources["RotateSpinner"];
+            this._spinnerAnimation = (Storyboard)this.Resources["RotateSpinner"];
 
             Toggl.OnDisplaySyncState += this.onDisplaySyncState;
             Toggl.OnDisplayUnsyncedItems += this.onDisplayUnsyncedItems;
@@ -27,7 +27,7 @@ namespace TogglDesktop
 
         private bool hasSomethingToShow
         {
-            get { return Program.IsLoggedIn && (this.unsyncedItems != 0 || this.syncState != Toggl.SyncState.Idle); }
+            get { return Program.IsLoggedIn && (this._unsyncedItems != 0 || this._syncState != Toggl.SyncState.Idle); }
         }
 
         #region toggl events
@@ -48,7 +48,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onDisplayUnsyncedItems, count))
                 return;
 
-            this.unsyncedItems = count;
+            this._unsyncedItems = count;
             this.update();
         }
 
@@ -57,7 +57,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onDisplaySyncState, state))
                 return;
 
-            this.syncState = state;
+            this._syncState = state;
             this.update();
         }
 
@@ -66,7 +66,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onManualSync))
                 return;
 
-            this.syncState = Toggl.SyncState.Syncing;
+            this._syncState = Toggl.SyncState.Syncing;
             this.show();
         }
 
@@ -98,23 +98,25 @@ namespace TogglDesktop
 
         private void show()
         {
-            this.unsyncedCount.Text = this.unsyncedItems == 0
-                ? "" : this.unsyncedItems.ToString();
+            this.unsyncedCount.Text = this._unsyncedItems == 0
+                ? "" : this._unsyncedItems.ToString();
 
-            switch (this.syncState)
+            switch (this._syncState)
             {
                 case Toggl.SyncState.Idle:
                     {
-                        this.ToolTip = string.Format("{0} unsynced time entries. Click to Sync.", this.syncState);
+                        this.ToolTip = string.Format("{0} unsynced time entries. Click to Sync.", this._syncState);
                         this.stopSpinnerAnimation();
                         break;
                     }
+
                 case Toggl.SyncState.Syncing:
                     {
                         this.ToolTip = "Syncing...";
                         this.startSpinnerAnimation();
                         break;
                     }
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -137,21 +139,21 @@ namespace TogglDesktop
 
         private void stopSpinnerAnimation()
         {
-            if (!this.spinnerIsAnimating)
+            if (!this._spinnerIsAnimating)
                 return;
 
-            this.spinnerAnimation.Stop();
-            this.spinnerIsAnimating = false;
+            this._spinnerAnimation.Stop();
+            this._spinnerIsAnimating = false;
             this.syncButton.IsEnabled = true;
         }
 
         private void startSpinnerAnimation()
         {
-            if (this.spinnerIsAnimating)
+            if (this._spinnerIsAnimating)
                 return;
 
-            this.spinnerAnimation.Begin();
-            this.spinnerIsAnimating = true;
+            this._spinnerAnimation.Begin();
+            this._spinnerIsAnimating = true;
             this.syncButton.IsEnabled = false;
         }
 

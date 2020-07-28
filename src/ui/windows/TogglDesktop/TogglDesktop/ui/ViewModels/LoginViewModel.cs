@@ -80,6 +80,7 @@ namespace TogglDesktop.ViewModels
             canShowPasswordStrength.CombineLatest(shouldHidePasswordStrength, (canShow, shouldHide) => canShow && !shouldHide)
                 .ToPropertyEx(this, x => x.ShowPasswordStrength);
         }
+
         public ReactiveCommand<Unit, bool> ConfirmLoginSignupCommand { get; }
         public ReactiveCommand<Unit, Unit> ConfirmGoogleLoginSignupCommand { get; }
         public IObservable<bool> IsLoginSignupExecuting { get; }
@@ -287,16 +288,16 @@ namespace TogglDesktop.ViewModels
                 ClientSecrets = new ClientSecrets
                 {
                     ClientId = "426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com",
-                    ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui"
+                    ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui",
                 },
-                HttpClientFactory = _httpClientFactory
+                HttpClientFactory = _httpClientFactory,
             };
             var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                 initializer,
                 new[]
                 {
                     Oauth2Service.Scope.UserinfoEmail,
-                    Oauth2Service.Scope.UserinfoProfile
+                    Oauth2Service.Scope.UserinfoProfile,
                 },
                 "user",
                 CancellationToken.None);
@@ -321,7 +322,7 @@ namespace TogglDesktop.ViewModels
         {
             var proxyHttpClientFactory = new ProxySupportedHttpClientFactory
             {
-                UseProxy = settings.UseProxy
+                UseProxy = settings.UseProxy,
             };
             if (settings.AutodetectProxy)
             {
@@ -337,6 +338,7 @@ namespace TogglDesktop.ViewModels
                     {
                         proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
                     }
+
                     proxyHttpClientFactory.Proxy = proxy;
                 }
             }
@@ -365,7 +367,7 @@ namespace TogglDesktop.ViewModels
                 var webRequestHandler = new WebRequestHandler
                 {
                     UseProxy = this.UseProxy,
-                    UseCookies = false
+                    UseCookies = false,
                 };
                 if (webRequestHandler.UseProxy)
                 {
@@ -380,6 +382,6 @@ namespace TogglDesktop.ViewModels
     public enum ConfirmAction
     {
         LogIn,
-        SignUp
+        SignUp,
     }
 }

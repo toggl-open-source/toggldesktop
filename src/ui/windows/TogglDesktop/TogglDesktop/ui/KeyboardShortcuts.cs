@@ -5,7 +5,7 @@ using TogglDesktop.Tutorial;
 
 namespace TogglDesktop
 {
-    static class KeyboardShortcuts
+    internal static class KeyboardShortcuts
     {
         private static MainWindow mainWindow;
 
@@ -39,10 +39,10 @@ namespace TogglDesktop
                 new CommandBinding(Quit, onQuit),
                 new CommandBinding(EditRunning, onEditRunning, canExecuteEditRunning),
                 new CommandBinding(BasicTutorial, onBasicTutorial, canExecuteBasicTutorial),
-                new CommandBinding(ToggleMiniTimerVisibility, onToggleMiniTimerVisibility, canExecuteToggleMiniTimerVisibility), 
+                new CommandBinding(ToggleMiniTimerVisibility, onToggleMiniTimerVisibility, canExecuteToggleMiniTimerVisibility),
             };
 
-            foreach(var binding in bindings)
+            foreach (var binding in bindings)
             {
                 CommandManager.RegisterClassCommandBinding(typeof(Window), binding);
             }
@@ -85,7 +85,7 @@ namespace TogglDesktop
 
         private static void onNewFromPaste(object sender, ExecutedRoutedEventArgs e)
         {
-            StartTimeEntry(description:Clipboard.GetText().Replace(Environment.NewLine, " "),
+            StartTimeEntry(description: Clipboard.GetText().Replace(Environment.NewLine, " "),
                 preventOnApp: sender is MiniTimerWindow);
         }
 

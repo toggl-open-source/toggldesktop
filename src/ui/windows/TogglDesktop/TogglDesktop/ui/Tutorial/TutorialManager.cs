@@ -7,28 +7,28 @@ namespace TogglDesktop.Tutorial
 {
     public class TutorialManager
     {
-        private readonly MainWindow mainWindow;
-        private readonly Timer timer;
-        private readonly Panel tutorialPanel;
-        private TutorialScreen activeScreen;
+        private readonly MainWindow _mainWindow;
+        private readonly Timer _timer;
+        private readonly Panel _tutorialPanel;
+        private TutorialScreen _activeScreen;
 
         public TutorialManager(
             MainWindow mainWindow,
             Timer timer,
             Panel tutorialPanel)
         {
-            this.mainWindow = mainWindow;
-            this.timer = timer;
-            this.tutorialPanel = tutorialPanel;
+            this._mainWindow = mainWindow;
+            this._timer = timer;
+            this._tutorialPanel = tutorialPanel;
         }
 
-        public MainWindow MainWindow { get { return this.mainWindow; } }
-        public Timer Timer { get { return this.timer; } }
+        public MainWindow MainWindow { get { return this._mainWindow; } }
+        public Timer Timer { get { return this._timer; } }
 
 
         public void QuitTutorial()
         {
-            if (this.mainWindow.TryBeginInvoke(this.QuitTutorial))
+            if (this._mainWindow.TryBeginInvoke(this.QuitTutorial))
                 return;
 
             this.activateScreen(null);
@@ -37,7 +37,7 @@ namespace TogglDesktop.Tutorial
         public void ActivateScreen<T>()
             where T : TutorialScreen, new()
         {
-            if (this.mainWindow.TryBeginInvoke(this.ActivateScreen<T>))
+            if (this._mainWindow.TryBeginInvoke(this.ActivateScreen<T>))
                 return;
 
             this.activateScreen(new T());
@@ -45,12 +45,12 @@ namespace TogglDesktop.Tutorial
 
         private void activateScreen(TutorialScreen screen)
         {
-            if (this.activeScreen != null)
+            if (this._activeScreen != null)
             {
-                this.removeScreen(this.activeScreen, screen != null);
+                this.removeScreen(this._activeScreen, screen != null);
             }
 
-            this.activeScreen = screen;
+            this._activeScreen = screen;
 
             if (screen != null)
             {
@@ -65,7 +65,7 @@ namespace TogglDesktop.Tutorial
             var anim = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(screenFadeTime));
             screen.BeginAnimation(UIElement.OpacityProperty, anim);
 
-            this.tutorialPanel.Children.Add(screen);
+            this._tutorialPanel.Children.Add(screen);
             screen.Initialise(this);
         }
 
@@ -74,11 +74,11 @@ namespace TogglDesktop.Tutorial
             var anim = new DoubleAnimation(0, TimeSpan.FromSeconds(screenFadeTime))
             {
                 BeginTime = TimeSpan.FromSeconds(
-                    waitForNextScreenToFadeIn ? screenFadeTime : 0)
+                    waitForNextScreenToFadeIn ? screenFadeTime : 0),
             };
             anim.Completed += (sender, args) =>
             {
-                this.tutorialPanel.Children.Remove(screen);
+                this._tutorialPanel.Children.Remove(screen);
             };
             screen.BeginAnimation(UIElement.OpacityProperty, anim);
 

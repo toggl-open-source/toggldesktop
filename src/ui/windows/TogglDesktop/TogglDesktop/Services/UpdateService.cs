@@ -53,6 +53,7 @@ namespace TogglDesktop.Services
 
             return false;
         }
+
         public void Dispose()
         {
             _updateManager.Dispose();

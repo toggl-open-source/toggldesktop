@@ -1,5 +1,4 @@
-﻿
-using System.Windows;
+﻿using System.Windows;
 
 namespace TogglDesktop.Tutorial
 {
@@ -26,6 +25,7 @@ namespace TogglDesktop.Tutorial
         {
             this.quitTutorial();
         }
+
         private void onTimerEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
         {
             this.quitTutorial();

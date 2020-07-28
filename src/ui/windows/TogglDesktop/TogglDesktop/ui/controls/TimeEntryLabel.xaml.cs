@@ -57,7 +57,7 @@ namespace TogglDesktop
 
         public Brush IconsPanelBackground
         {
-            get { return (Brush) GetValue(IconsPanelBackgroundProperty); }
+            get { return (Brush)GetValue(IconsPanelBackgroundProperty); }
             set { SetValue(IconsPanelBackgroundProperty, value); }
         }
 

@@ -24,20 +24,20 @@ namespace TogglDesktop
         object IViewFor.ViewModel
         {
             get => ViewModel;
-            set => ViewModel = (LoginViewModel) value;
+            set => ViewModel = (LoginViewModel)value;
         }
 
-        private readonly Storyboard confirmSpinnerAnimation;
-        private Action onLogin;
-        private object opacityAnimationToken;
-        private bool isLoggingIn = false;
+        private readonly Storyboard _confirmSpinnerAnimation;
+        private Action _onLogin;
+        private object _opacityAnimationToken;
+        private bool _isLoggingIn = false;
 
         private CompositeDisposable _disposable = new CompositeDisposable();
 
         public LoginView()
         {
             this.InitializeComponent();
-            this.confirmSpinnerAnimation = (Storyboard)this.Resources["RotateConfirmSpinner"];
+            this._confirmSpinnerAnimation = (Storyboard)this.Resources["RotateConfirmSpinner"];
             this.Reset();
         }
 
@@ -67,20 +67,20 @@ namespace TogglDesktop
             {
                 if (isExecuting)
                 {
-                    confirmSpinnerAnimation.Begin();
+                    _confirmSpinnerAnimation.Begin();
                 }
                 else
                 {
-                    confirmSpinnerAnimation.Stop();
+                    _confirmSpinnerAnimation.Stop();
                 }
             });
-            ViewModel.ConfirmLoginSignupCommand.IsExecuting.Subscribe(isExecuting => { isLoggingIn = isExecuting; });
+            ViewModel.ConfirmLoginSignupCommand.IsExecuting.Subscribe(isExecuting => { _isLoggingIn = isExecuting; });
             ViewModel.ConfirmLoginSignupCommand.Subscribe(isLoggedIn =>
             {
-                if (isLoggedIn && this.onLogin != null)
+                if (isLoggedIn && this._onLogin != null)
                 {
-                    var action = this.onLogin;
-                    this.onLogin = null;
+                    var action = this._onLogin;
+                    this._onLogin = null;
                     action();
                 }
             }).DisposeWith(_disposable);
@@ -99,7 +99,7 @@ namespace TogglDesktop
 
         public void Activate(bool allowAnimation)
         {
-            this.opacityAnimationToken = null;
+            this._opacityAnimationToken = null;
 
             if (allowAnimation)
             {
@@ -121,23 +121,23 @@ namespace TogglDesktop
 
         public void Deactivate(bool allowAnimation)
         {
-            this.opacityAnimationToken = null;
+            this._opacityAnimationToken = null;
 
             if (allowAnimation)
             {
                 var anim = new DoubleAnimation(0, TimeSpan.FromSeconds(opacityFadeTime));
-                this.opacityAnimationToken = anim;
+                this._opacityAnimationToken = anim;
                 anim.Completed += (sender, args) =>
                 {
-                    if (this.opacityAnimationToken == anim)
+                    if (this._opacityAnimationToken == anim)
                     {
                         this.Visibility = Visibility.Collapsed;
                         this.Reset();
                     }
                 };
-                if (this.isLoggingIn)
+                if (this._isLoggingIn)
                 {
-                    this.onLogin = () => this.BeginAnimation(OpacityProperty, anim);
+                    this._onLogin = () => this.BeginAnimation(OpacityProperty, anim);
                 }
                 else
                 {
@@ -188,7 +188,7 @@ namespace TogglDesktop
         private void RefreshEmailTextBoxBinding() => emailTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
         private void RefreshPasswordBoxBinding() => passwordBox.GetBindingExpression(PasswordBoxBindingBehavior.PasswordProperty).UpdateSource();
 
-        private void RefreshCountryComboBoxBinding() => countryComboBox.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateSource();
-        private void RefreshTosCheckBoxBinding() => tosCheckBox.GetBindingExpression(CheckBox.IsCheckedProperty).UpdateSource();
+        private void RefreshCountryComboBoxBinding() => countryComboBox.GetBindingExpression(System.Windows.Controls.Primitives.Selector.SelectedItemProperty).UpdateSource();
+        private void RefreshTosCheckBoxBinding() => tosCheckBox.GetBindingExpression(System.Windows.Controls.Primitives.ToggleButton.IsCheckedProperty).UpdateSource();
     }
 }

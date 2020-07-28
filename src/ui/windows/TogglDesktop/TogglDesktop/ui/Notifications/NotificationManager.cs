@@ -38,7 +38,8 @@ namespace TogglDesktop
             var reminder =
                 new ReminderNotification(_taskbarIcon.CloseBalloon, _parentWindow.ShowOnTop, StartButtonClick)
                 {
-                    Title = title, Message = informativeText
+                    Title = title,
+                    Message = informativeText,
                 };
 
             if (!_taskbarIcon.ShowNotification(reminder, PopupAnimation.Slide, TimeSpan.FromSeconds(10)))
@@ -69,10 +70,10 @@ namespace TogglDesktop
 
             var pomodoroNotification = new PomodoroNotification(
                     _taskbarIcon.CloseBalloon, _parentWindow.ShowOnTop, StartNewButtonClick, ContinueLatestButtonClick)
-                {
-                    Message = informativeText,
-                    Title = title
-                };
+            {
+                Message = informativeText,
+                Title = title,
+            };
 
             if (!_taskbarIcon.ShowNotification(pomodoroNotification, PopupAnimation.Slide, null))
             {
@@ -99,7 +100,7 @@ namespace TogglDesktop
             var autotrackerNotification =
                 new AutotrackerNotification(_taskbarIcon.CloseBalloon, _parentWindow.ShowOnTop, StartButtonClick)
                 {
-                    Message = @$"Start tracking ""{projectName}""?"
+                    Message = @$"Start tracking ""{projectName}""?",
                 };
 
             _taskbarIcon.ShowNotification(autotrackerNotification, PopupAnimation.Slide, TimeSpan.FromSeconds(6));

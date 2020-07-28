@@ -22,14 +22,18 @@ namespace TogglDesktop
         {
             this.InitializeComponent();
             ViewModel = new TimerViewModel(true);
-            ViewModel.WhenValueChanged(x => x.IsRunning).Subscribe(x => { if (!x) FocusFirstInput(); });
+            ViewModel.WhenValueChanged(x => x.IsRunning).Subscribe(x =>
+            {
+                if (!x)
+                    FocusFirstInput();
+            });
 
             Toggl.OnMinitimerAutocomplete += this.onMiniTimerAutocomplete;
         }
 
         public event MouseButtonEventHandler MouseCaptured;
 
-       
+
 
         #region toggl events
 

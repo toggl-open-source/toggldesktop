@@ -17,7 +17,7 @@ namespace TogglDesktop
         object IViewFor.ViewModel
         {
             get => ViewModel;
-            set => ViewModel = (DayHeaderViewModel) value;
+            set => ViewModel = (DayHeaderViewModel)value;
         }
 
         public TimeEntryCellDayHeader()

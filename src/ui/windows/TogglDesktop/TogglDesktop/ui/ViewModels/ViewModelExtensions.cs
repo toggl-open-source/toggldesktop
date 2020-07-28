@@ -25,6 +25,7 @@ namespace TogglDesktop.ViewModels
                 item.PID,
                 item.TID);
         }
+
         public static ProjectLabelViewModel ToProjectLabelViewModel(this Toggl.TogglAutocompleteView item)
         {
             return new ProjectLabelViewModel(

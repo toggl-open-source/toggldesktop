@@ -1,6 +1,6 @@
 namespace TogglDesktop.AutoCompletion.Items
 {
-    class NoProjectItem : ModelItem<Toggl.TogglAutocompleteView>
+    internal class NoProjectItem : ModelItem<Toggl.TogglAutocompleteView>
     {
         public static NoProjectItem Instance => new NoProjectItem();
         public string ProjectLabel { get; }

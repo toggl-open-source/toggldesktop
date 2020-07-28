@@ -1,5 +1,4 @@
-﻿
-namespace TogglDesktop.Tutorial
+﻿namespace TogglDesktop.Tutorial
 {
     public partial class BasicTutorialScreen6
     {

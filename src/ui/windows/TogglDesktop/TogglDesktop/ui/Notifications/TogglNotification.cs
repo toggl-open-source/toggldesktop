@@ -2,19 +2,18 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Hardcodet.Wpf.TaskbarNotification;
 
 namespace TogglDesktop
 {
     public class TogglNotification : ContentControl
     {
-        protected readonly Action Close;
-        protected readonly Action ShowParentWindow;
+        private readonly Action _close;
+        private readonly Action _showParentWindow;
 
         public TogglNotification(Action close, Action showParentWindow)
         {
-            Close = close;
-            ShowParentWindow = showParentWindow;
+            this._close = close;
+            this._showParentWindow = showParentWindow;
             this.MouseDown += OnMouseButtonEventHandler;
             void OnMouseButtonEventHandler(object sender, MouseButtonEventArgs args)
             {
@@ -32,7 +31,7 @@ namespace TogglDesktop
             void OnCloseButton(object sender, RoutedEventArgs args)
             {
                 closeButton.Click -= OnCloseButton;
-                Close();
+                _close();
             }
         }
 
@@ -46,13 +45,13 @@ namespace TogglDesktop
 
         public string Title
         {
-            get => (string) GetValue(TitleProperty);
+            get => (string)GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
         }
 
         public string Message
         {
-            get => (string) GetValue(MessageProperty);
+            get => (string)GetValue(MessageProperty);
             set => SetValue(MessageProperty, value);
         }
     }

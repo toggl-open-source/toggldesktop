@@ -49,6 +49,6 @@ namespace TogglDesktop.ViewModels
     {
         TimeEntriesList,
         Welcome,
-        NoRecentEntries
+        NoRecentEntries,
     }
 }

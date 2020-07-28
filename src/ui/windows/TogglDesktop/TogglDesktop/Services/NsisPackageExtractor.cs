@@ -35,8 +35,8 @@ namespace TogglDesktop.Services
                         {
                             FileName = installerPath,
                             Arguments = $"/S /autoupdate /D={destDirPath}",
-                            UseShellExecute = false
-                        }
+                            UseShellExecute = false,
+                        },
                     };
                     process.Start();
                     process.WaitForExit();

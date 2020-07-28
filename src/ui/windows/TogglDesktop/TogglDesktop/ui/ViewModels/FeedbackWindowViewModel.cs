@@ -34,7 +34,7 @@ namespace TogglDesktop.ViewModels
                 "Please add your feedback");
         }
 
-        public string[] PossibleTopics { get; } = {"Report bug", "Suggest a feature", "Other"};
+        public string[] PossibleTopics { get; } = { "Report bug", "Suggest a feature", "Other" };
 
         [Reactive]
         public string Topic { get; set; }

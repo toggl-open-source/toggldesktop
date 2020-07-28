@@ -1,14 +1,12 @@
-﻿
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Globalization;
 using System.Configuration;
 
 namespace TogglDesktop.Diagnostics
 {
-    static class Performance
+    internal static class Performance
     {
-
-        static bool debug = false;
+        private static readonly bool debug = false;
         // ConfigurationSettings.AppSettings["Environment"] == "development"
         public static IPerformanceToken Measure(string activity)
         {
@@ -16,6 +14,7 @@ namespace TogglDesktop.Diagnostics
             {
                 return new PerformanceToken(activity);
             }
+
             return null;
         }
 
@@ -27,22 +26,27 @@ namespace TogglDesktop.Diagnostics
             {
                 return Measure(string.Format(template, p0));
             }
+
             return null;
         }
+
         public static IPerformanceToken Measure(string template, object p0, object p1)
         {
             if (debug)
             {
                 return Measure(string.Format(template, p0, p1));
             }
+
             return null;
         }
+
         public static IPerformanceToken Measure(string template, object p0, object p1, object p2)
         {
             if (debug)
             {
                 return Measure(string.Format(template, p0, p1, p2));
             }
+
             return null;
         }
 
@@ -50,16 +54,16 @@ namespace TogglDesktop.Diagnostics
 
         private class PerformanceToken : IPerformanceToken
         {
-            private readonly string activity;
-            private readonly Stopwatch timer;
+            private readonly string _activity;
+            private readonly Stopwatch _timer;
 
-            private string additionalInformation;
+            private string _additionalInformation;
 
             public PerformanceToken(string activity)
             {
                 Toggl.Debug(string.Format("Starting activity '{0}'", activity));
-                this.activity = activity;
-                this.timer = Stopwatch.StartNew();
+                this._activity = activity;
+                this._timer = Stopwatch.StartNew();
             }
 
             public void Dispose()
@@ -69,22 +73,22 @@ namespace TogglDesktop.Diagnostics
 
             public void Stop()
             {
-                lock (this.timer)
+                lock (this._timer)
                 {
-                    if (!this.timer.IsRunning)
+                    if (!this._timer.IsRunning)
                         return;
 
-                    this.timer.Stop();
+                    this._timer.Stop();
                 }
 
                 Toggl.Debug(string.Format("Measured activity '{0}', took {1} ms",
-                    this.activity + this.additionalInformation,
-                    this.timer.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)));
+                    this._activity + this._additionalInformation,
+                    this._timer.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)));
             }
 
             public IPerformanceToken WithInfoNotNull(string additionalInfo)
             {
-                this.additionalInformation = this.additionalInformation + ", " + additionalInfo;
+                this._additionalInformation = this._additionalInformation + ", " + additionalInfo;
                 return this;
             }
         }

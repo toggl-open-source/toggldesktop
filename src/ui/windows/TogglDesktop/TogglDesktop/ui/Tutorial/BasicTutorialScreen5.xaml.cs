@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace TogglDesktop.Tutorial
 {
@@ -35,6 +34,5 @@ namespace TogglDesktop.Tutorial
         {
             this.activateScreen<BasicTutorialScreen7>();
         }
-
     }
 }

@@ -11,14 +11,14 @@ namespace TogglDesktop
 {
     public partial class MiniTimerWindow
     {
-        private readonly ContextMenu contextMenu;
+        private readonly ContextMenu _contextMenu;
 
-        private bool leftMouseDown;
-        private Point mouseDownPosition;
+        private bool _leftMouseDown;
+        private Point _mouseDownPosition;
 
         public MiniTimerWindow(MainWindow mainWindow)
         {
-            this.contextMenu = mainWindow.cogButton.ContextMenu;
+            this._contextMenu = mainWindow.cogButton.ContextMenu;
             this.InitializeComponent();
             this.Closing += OnClosing;
             var sizeChangedObservable = Observable.FromEventPattern<SizeChangedEventHandler, SizeChangedEventArgs>(
@@ -28,14 +28,14 @@ namespace TogglDesktop
                 .Where(x => x.EventArgs.WidthChanged)
                 .Throttle(TimeSpan.FromMilliseconds(500))
                 .ObserveOnDispatcher()
-                .Subscribe(x => ((Window) x.Sender).SizeToContent = SizeToContent.Height);
+                .Subscribe(x => ((Window)x.Sender).SizeToContent = SizeToContent.Height);
 
             this.timer.MouseCaptured += OnMouseCaptured;
 
             KeyboardShortcuts.RegisterShortcuts(this);
         }
 
-        static void OnClosing(object sender, CancelEventArgs e)
+        private static void OnClosing(object sender, CancelEventArgs e)
         {
             // disallow closing via Alt+F4
             e.Cancel = true;
@@ -43,12 +43,12 @@ namespace TogglDesktop
 
         protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
         {
-            this.contextMenu.PlacementTarget = this;
-            this.contextMenu.Placement = PlacementMode.Bottom;
-            this.contextMenu.HorizontalOffset = 0;
-            this.contextMenu.VerticalOffset = 0;
+            this._contextMenu.PlacementTarget = this;
+            this._contextMenu.Placement = PlacementMode.Bottom;
+            this._contextMenu.HorizontalOffset = 0;
+            this._contextMenu.VerticalOffset = 0;
 
-            this.contextMenu.IsOpen = true;
+            this._contextMenu.IsOpen = true;
 
             e.Handled = true;
         }
@@ -95,22 +95,22 @@ namespace TogglDesktop
 
         private void OnMouseCaptured(object sender, MouseButtonEventArgs e)
         {
-            this.leftMouseDown = true;
-            this.mouseDownPosition = e.GetPosition(this);
+            this._leftMouseDown = true;
+            this._mouseDownPosition = e.GetPosition(this);
         }
 
         protected override void OnPreviewMouseMove(MouseEventArgs e)
         {
-            if (this.leftMouseDown)
+            if (this._leftMouseDown)
             {
                 if (e.LeftButton != MouseButtonState.Pressed)
                 {
-                    this.leftMouseDown = false;
+                    this._leftMouseDown = false;
                     return;
                 }
 
                 var mousePosition = e.GetPosition(this);
-                if (mousePosition == this.mouseDownPosition)
+                if (mousePosition == this._mouseDownPosition)
                 {
                     return;
                 }
@@ -123,7 +123,7 @@ namespace TogglDesktop
         {
             if (Mouse.LeftButton != MouseButtonState.Pressed)
             {
-                this.leftMouseDown = false;
+                this._leftMouseDown = false;
                 return;
             }
 

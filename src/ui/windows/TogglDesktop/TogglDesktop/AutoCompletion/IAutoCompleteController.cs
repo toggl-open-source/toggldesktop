@@ -4,7 +4,7 @@ using TogglDesktop.AutoCompletion.Items;
 
 namespace TogglDesktop.AutoCompletion
 {
-    interface IAutoCompleteController
+    internal interface IAutoCompleteController
     {
         string DebugIdentifier { get; }
         IAutoCompleteItem SelectedItem { get; }

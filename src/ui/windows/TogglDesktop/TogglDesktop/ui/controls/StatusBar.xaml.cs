@@ -5,7 +5,7 @@ namespace TogglDesktop
 {
     public partial class StatusBar
     {
-        private Toggl.OnlineState onlineState;
+        private Toggl.OnlineState _onlineState;
 
         public StatusBar()
         {
@@ -31,7 +31,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onOnlineState, state))
                 return;
 
-            this.onlineState = state;
+            this._onlineState = state;
             this.update();
         }
 
@@ -43,23 +43,26 @@ namespace TogglDesktop
                 return;
             }
 
-            switch (this.onlineState)
+            switch (this._onlineState)
             {
                 case Toggl.OnlineState.Online:
-                {
-                    this.Hide();
-                    return;
-                }
+                    {
+                        this.Hide();
+                        return;
+                    }
+
                 case Toggl.OnlineState.NoNetwork:
-                {
-                    this.statusText.Text = "Offline, no network";
-                    break;
-                }
+                    {
+                        this.statusText.Text = "Offline, no network";
+                        break;
+                    }
+
                 case Toggl.OnlineState.BackendDown:
-                {
-                    this.statusText.Text = "Offline, Toggl not responding";
-                    break;
-                }
+                    {
+                        this.statusText.Text = "Offline, Toggl not responding";
+                        break;
+                    }
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }

@@ -1,6 +1,6 @@
 namespace TogglDesktop.AutoCompletion.Items
 {
-    class CustomTextItem : AutoCompleteItem
+    internal class CustomTextItem : AutoCompleteItem
     {
         public string Title { get; }
         public CustomTextItem(string title, string text)

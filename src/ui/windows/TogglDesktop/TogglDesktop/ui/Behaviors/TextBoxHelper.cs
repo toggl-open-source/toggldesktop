@@ -8,12 +8,12 @@ namespace TogglDesktop.Behaviors
     {
         public static readonly DependencyProperty IsPaddingClickableProperty =
             DependencyProperty.RegisterAttached(
-                "IsPaddingClickable", typeof (bool), typeof (TextBoxHelper),
+                "IsPaddingClickable", typeof(bool), typeof(TextBoxHelper),
                 new UIPropertyMetadata(default(bool), OnIsPaddingClickablePropertyChanged));
 
         public static bool GetIsPaddingClickable(DependencyObject obj)
         {
-            return (bool) obj.GetValue(IsPaddingClickableProperty);
+            return (bool)obj.GetValue(IsPaddingClickableProperty);
         }
 
         public static void SetIsPaddingClickable(DependencyObject obj, bool value)

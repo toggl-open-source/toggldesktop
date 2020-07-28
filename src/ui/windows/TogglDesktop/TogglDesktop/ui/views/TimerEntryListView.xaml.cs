@@ -162,6 +162,7 @@ namespace TogglDesktop
         {
             this.Entries.Focus(true);
         }
+
         private void onFocusTimer(object sender, EventArgs e)
         {
             this.Timer.Focus();

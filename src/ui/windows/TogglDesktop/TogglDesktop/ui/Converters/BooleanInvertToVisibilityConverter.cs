@@ -9,7 +9,7 @@ namespace TogglDesktop.Converters
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var input = (value is bool)
-                ? !(bool)value 
+                ? !(bool)value
                 : false;
             return input ? Visibility.Visible : Visibility.Collapsed;
         }

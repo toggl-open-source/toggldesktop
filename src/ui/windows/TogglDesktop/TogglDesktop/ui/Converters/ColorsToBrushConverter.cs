@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace TogglDesktop.Converters
 {
-    class ColorsToBrushConverter : IMultiValueConverter
+    internal class ColorsToBrushConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

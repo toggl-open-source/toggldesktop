@@ -9,9 +9,9 @@ namespace TogglDesktop
 {
     public partial class AutotrackerSettings
     {
-        private readonly List<AutotrackerRuleItem> ruleItems = new List<AutotrackerRuleItem>();
-        private Toggl.TogglAutocompleteView selectedProject;
-        private int selectedRuleId = -1;
+        private readonly List<AutotrackerRuleItem> _ruleItems = new List<AutotrackerRuleItem>();
+        private Toggl.TogglAutocompleteView _selectedProject;
+        private int _selectedRuleId = -1;
 
         public AutotrackerSettings()
         {
@@ -53,24 +53,25 @@ namespace TogglDesktop
         {
             this.rulesPanel.Children.Clear();
 
-            foreach (var item in this.ruleItems)
+            foreach (var item in this._ruleItems)
             {
                 item.Recycle();
             }
-            this.ruleItems.Clear();
+
+            this._ruleItems.Clear();
 
             foreach (var rule in rules)
             {
                 var item = AutotrackerRuleItem.Make(rule.ID, rule.Term, rule.ProjectAndTaskLabel);
 
-                this.ruleItems.Add(item);
+                this._ruleItems.Add(item);
                 this.rulesPanel.Children.Add(item);
             }
 
-            if (this.selectedRuleId != -1)
+            if (this._selectedRuleId != -1)
             {
-                var id = Math.Min(this.selectedRuleId, this.ruleItems.Count - 1);
-                this.selectedRuleId = -1;
+                var id = Math.Min(this._selectedRuleId, this._ruleItems.Count - 1);
+                this._selectedRuleId = -1;
                 this.selectRule(id);
             }
         }
@@ -81,11 +82,12 @@ namespace TogglDesktop
 
         private void projectTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.selectedProject.ProjectLabel))
+            if (!string.IsNullOrEmpty(this._selectedProject.ProjectLabel))
             {
-                this.selectProject(this.selectedProject);
+                this.selectProject(this._selectedProject);
             }
         }
+
         private void projectAutoComplete_OnConfirmCompletion(object sender, IAutoCompleteItem e)
         {
             if (e is IModelItem<Toggl.TogglAutocompleteView> modelItemViewModel)
@@ -101,8 +103,8 @@ namespace TogglDesktop
 
         private void selectProject(Toggl.TogglAutocompleteView? item)
         {
-            var project = item ?? default(Toggl.TogglAutocompleteView);
-            this.selectedProject = project;
+            var project = item ?? default;
+            this._selectedProject = project;
             this.projectTextBox.SetText(project.ProjectLabel, project.TaskLabel);
             this.projectColorCircle.Background = Utils.AdaptedProjectColorBrushFromString(project.ProjectColor);
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
@@ -133,7 +135,8 @@ namespace TogglDesktop
                 this.termTextBox.Focus();
                 return;
             }
-            if (this.selectedProject.ProjectID == 0 && this.selectedProject.TaskID == 0)
+
+            if (this._selectedProject.ProjectID == 0 && this._selectedProject.TaskID == 0)
             {
                 this.projectTextBox.Focus();
                 return;
@@ -141,8 +144,8 @@ namespace TogglDesktop
 
             if (Toggl.AddAutotrackerRule(
                 this.termTextBox.Text,
-                this.selectedProject.ProjectID,
-                this.selectedProject.TaskID) != 0)
+                this._selectedProject.ProjectID,
+                this._selectedProject.TaskID) != 0)
             {
                 this.reset();
             }
@@ -154,7 +157,7 @@ namespace TogglDesktop
 
         private void onListGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (this.selectedRuleId == -1 && this.ruleItems.Count > 0)
+            if (this._selectedRuleId == -1 && this._ruleItems.Count > 0)
             {
                 this.selectRule(0);
             }
@@ -171,52 +174,54 @@ namespace TogglDesktop
             {
                 case Key.Up:
                 case Key.Tab when Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift):
-                {
-                    if (this.selectedRuleId == 0)
+                    {
+                        if (this._selectedRuleId == 0)
+                            break;
+                        if (this._selectedRuleId == -1)
+                            this.selectRule(0);
+                        else if (this._selectedRuleId > 0)
+                            this.selectRule(this._selectedRuleId - 1);
+                        e.Handled = true;
                         break;
-                    if (this.selectedRuleId == -1)
-                        this.selectRule(0);
-                    else if(this.selectedRuleId > 0)
-                        this.selectRule(this.selectedRuleId - 1);
-                    e.Handled = true;
-                    break;
-                }
+                    }
+
                 case Key.Down:
                 case Key.Tab when !(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)):
-                {
-                    if (this.selectedRuleId == this.ruleItems.Count - 1)
+                    {
+                        if (this._selectedRuleId == this._ruleItems.Count - 1)
+                            break;
+                        if (this._selectedRuleId == -1)
+                            this.selectRule(0);
+                        else if (this._selectedRuleId < this._ruleItems.Count - 1)
+                            this.selectRule(this._selectedRuleId + 1);
+                        e.Handled = true;
                         break;
-                    if (this.selectedRuleId == -1)
-                        this.selectRule(0);
-                    else if (this.selectedRuleId < this.ruleItems.Count - 1)
-                        this.selectRule(this.selectedRuleId + 1);
-                    e.Handled = true;
-                    break;
-                }
+                    }
+
                 case Key.Delete:
                 case Key.Back:
-                {
-                    if(this.selectedRuleId != -1)
-                        this.selectedRule.DeleteRule();
-                    e.Handled = true;
-                    break;
-                }
+                    {
+                        if (this._selectedRuleId != -1)
+                            this.selectedRule.DeleteRule();
+                        e.Handled = true;
+                        break;
+                    }
             }
         }
 
         private AutotrackerRuleItem selectedRule
         {
-            get { return this.ruleItems[this.selectedRuleId]; }
+            get { return this._ruleItems[this._selectedRuleId]; }
         }
 
         private void selectRule(int i)
         {
-            if (this.selectedRuleId != -1)
+            if (this._selectedRuleId != -1)
                 this.selectedRule.IsSelected = false;
 
-            this.selectedRuleId = i;
-            
-            if (this.selectedRuleId != -1)
+            this._selectedRuleId = i;
+
+            if (this._selectedRuleId != -1)
                 this.selectedRule.IsSelected = true;
         }
 

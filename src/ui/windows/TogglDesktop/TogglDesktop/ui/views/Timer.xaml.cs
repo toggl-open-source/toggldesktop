@@ -81,7 +81,7 @@ namespace TogglDesktop
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
-            if (e.Key == Key.Down && Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Shift)
+            if (e.Key == Key.Down && Keyboard.Modifiers == ModifierKeys.Shift)
             {
                 if (this.FocusTimeEntryList != null)
                     this.FocusTimeEntryList(this, e);

@@ -22,6 +22,7 @@ namespace TogglDesktop.Converters
             {
                 return $"0 {suf[0]}";
             }
+
             var bytes = Abs(byteCount);
             var place = ToInt32(Floor(Log(bytes, 1024)));
             var num = Round(bytes / Pow(1024, place), 1);

@@ -1,5 +1,4 @@
-﻿
-namespace TogglDesktop
+﻿namespace TogglDesktop
 {
     public partial class ProgressBar
     {
@@ -14,6 +13,7 @@ namespace TogglDesktop
             get { return this.fillRectangle.Width; }
             set { this.fillRectangle.Width = value; }
         }
+
         public double MaxValue
         {
             get { return this.border.Width; }

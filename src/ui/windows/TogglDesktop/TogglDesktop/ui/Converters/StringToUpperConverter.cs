@@ -8,7 +8,8 @@ namespace TogglDesktop.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is string s) return s.ToUpper();
+            if (value is string s)
+                return s.ToUpper();
 
             return value;
         }

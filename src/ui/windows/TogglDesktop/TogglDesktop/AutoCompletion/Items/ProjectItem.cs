@@ -1,6 +1,6 @@
 namespace TogglDesktop.AutoCompletion.Items
 {
-    class ProjectItem : TimeEntryItem
+    internal class ProjectItem : TimeEntryItem
     {
         public ProjectItem(TimeEntryItem item)
             : base(CreateProjectItem(item.Model))

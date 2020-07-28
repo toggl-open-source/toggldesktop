@@ -17,7 +17,7 @@ namespace TogglDesktop
 
         public string Title
         {
-            get { return (string) GetValue(TitleProperty); }
+            get { return (string)GetValue(TitleProperty); }
             set { SetValue(TitleProperty, value); }
         }
 
@@ -26,7 +26,7 @@ namespace TogglDesktop
 
         public string Text
         {
-            get { return (string) GetValue(TextProperty); }
+            get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
         }
 
@@ -35,7 +35,7 @@ namespace TogglDesktop
 
         public string Button
         {
-            get { return (string) GetValue(ButtonProperty); }
+            get { return (string)GetValue(ButtonProperty); }
             set { SetValue(ButtonProperty, value); }
         }
 
@@ -44,7 +44,7 @@ namespace TogglDesktop
 
         public string Url
         {
-            get { return (string) GetValue(UrlProperty); }
+            get { return (string)GetValue(UrlProperty); }
             set { SetValue(UrlProperty, value); }
         }
 
@@ -56,7 +56,7 @@ namespace TogglDesktop
                 Duration = TimeSpan.FromSeconds(1),
                 From = 0,
                 To = 300,
-                DecelerationRatio = 0.3f
+                DecelerationRatio = 0.3f,
             };
             Storyboard.SetTargetProperty(slideAnimation, new PropertyPath("MaxHeight"));
             sb.Children.Add(slideAnimation);
@@ -86,7 +86,7 @@ namespace TogglDesktop
                 Duration = TimeSpan.FromSeconds(0.3),
                 From = this.ActualHeight,
                 To = 0,
-                DecelerationRatio = 0.3f
+                DecelerationRatio = 0.3f,
             };
             Storyboard.SetTargetProperty(slideAnimation, new PropertyPath("MaxHeight"));
             sb.Children.Add(slideAnimation);

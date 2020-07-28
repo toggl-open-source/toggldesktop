@@ -13,7 +13,7 @@ namespace TogglDesktop
             InitializeComponent();
         }
 
-        # region cached creation
+        #region cached creation
 
         public static Tag Make(string text)
         {

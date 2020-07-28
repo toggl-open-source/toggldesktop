@@ -1,6 +1,6 @@
 namespace TogglDesktop.AutoCompletion.Items
 {
-    abstract class ModelItem<T> : AutoCompleteItem, IModelItem<T>
+    internal abstract class ModelItem<T> : AutoCompleteItem, IModelItem<T>
     {
         protected ModelItem(T model, string text, ItemType type)
             : base(text, type)

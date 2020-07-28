@@ -19,7 +19,7 @@ namespace TogglDesktop.Behaviors
 
         public static bool GetIsCloseWindowButton(DependencyObject element)
         {
-            return (bool) element.GetValue(IsCloseWindowButtonProperty);
+            return (bool)element.GetValue(IsCloseWindowButtonProperty);
         }
 
         private static void OnDefaultButtonPropertyChanged(DependencyObject dpo, DependencyPropertyChangedEventArgs args)

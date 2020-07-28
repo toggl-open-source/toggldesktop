@@ -21,7 +21,7 @@ namespace TogglDesktop
 
         public string TotalToday
         {
-            get { return (string) GetValue(TotalTodayProperty); }
+            get { return (string)GetValue(TotalTodayProperty); }
             set { SetValue(TotalTodayProperty, value); }
         }
 
@@ -30,7 +30,7 @@ namespace TogglDesktop
 
         public bool IsTracking
         {
-            get { return (bool) GetValue(IsTrackingProperty); }
+            get { return (bool)GetValue(IsTrackingProperty); }
             set { SetValue(IsTrackingProperty, value); }
         }
 

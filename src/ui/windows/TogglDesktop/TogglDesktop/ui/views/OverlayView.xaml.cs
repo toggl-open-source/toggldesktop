@@ -6,12 +6,12 @@ using Brush = System.Windows.Media.Brush;
 namespace TogglDesktop
 {
     /// <summary>
-    /// Interaction logic for OverlayView.xaml
+    /// Interaction logic for OverlayView.xaml.
     /// </summary>
     public partial class OverlayView : IMainView
     {
-        private object opacityAnimationToken;
-        private int currentType;
+        private object _opacityAnimationToken;
+        private int _currentType;
 
         public OverlayView()
         {
@@ -22,12 +22,12 @@ namespace TogglDesktop
         #region setup
         public void setType(int type)
         {
-            this.currentType = type;
-            if (this.currentType == 0)
+            this._currentType = type;
+            if (this._currentType == 0)
             {
                 setupMissingWS();
             }
-            else if (this.currentType == 1)
+            else if (this._currentType == 1)
             {
                 setupTos();
             }
@@ -69,7 +69,7 @@ namespace TogglDesktop
 
         public void Activate(bool allowAnimation)
         {
-            this.opacityAnimationToken = null;
+            this._opacityAnimationToken = null;
 
             if (allowAnimation)
             {
@@ -87,22 +87,21 @@ namespace TogglDesktop
 
         public void Deactivate(bool allowAnimation)
         {
-            this.opacityAnimationToken = null;
+            this._opacityAnimationToken = null;
 
             if (allowAnimation)
             {
                 var anim = new DoubleAnimation(0, TimeSpan.FromSeconds(opacityFadeTime));
-                this.opacityAnimationToken = anim;
+                this._opacityAnimationToken = anim;
                 anim.Completed += (sender, args) =>
                 {
-                    if (this.opacityAnimationToken == anim)
+                    if (this._opacityAnimationToken == anim)
                     {
                         this.Visibility = Visibility.Collapsed;
                     }
                 };
 
                 this.BeginAnimation(OpacityProperty, anim);
-
             }
             else
             {

@@ -7,8 +7,8 @@ namespace TogglDesktop
 {
     public partial class IdleNotificationWindow
     {
-        private string guid;
-        private long started;
+        private string _guid;
+        private long _started;
 
         public event EventHandler AddedIdleTimeAsNewEntry;
 
@@ -24,8 +24,8 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onIdleNotification, guid, since, duration, started, description))
                 return;
 
-            this.guid = guid;
-            this.started = started;
+            this._guid = guid;
+            this._started = started;
 
             this.timeText.Text = since;
             this.durationText.Text = duration;
@@ -70,13 +70,13 @@ namespace TogglDesktop
 
         private void onDiscardTimeClick(object sender, RoutedEventArgs e)
         {
-            Toggl.DiscardTimeAt(this.guid, this.started, false);
+            Toggl.DiscardTimeAt(this._guid, this._started, false);
             this.Hide();
         }
 
         private void onAddAsNewClick(object sender, RoutedEventArgs e)
         {
-            Toggl.DiscardTimeAt(this.guid, this.started, true);
+            Toggl.DiscardTimeAt(this._guid, this._started, true);
             this.Hide();
             if (this.AddedIdleTimeAsNewEntry != null)
                 this.AddedIdleTimeAsNewEntry(this, EventArgs.Empty);
@@ -84,7 +84,7 @@ namespace TogglDesktop
 
         private void onDiscardContinueClick(object sender, RoutedEventArgs e)
         {
-            Toggl.DiscardTimeAndContinue(this.guid, this.started, false);
+            Toggl.DiscardTimeAndContinue(this._guid, this._started, false);
             this.Hide();
         }
     }

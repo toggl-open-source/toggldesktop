@@ -12,15 +12,15 @@ namespace TogglDesktop.ui.ViewModels
 {
     public class TimerViewModel : ReactiveObject
     {
-        private readonly DispatcherTimer secondsTimer = new DispatcherTimer();
-        private Toggl.TogglTimeEntryView runningTimeEntry;
-        private bool acceptNextUpdate;
-        private readonly bool isMiniTimer;
-        private Toggl.TogglAutocompleteView completedProject;
+        private readonly DispatcherTimer _secondsTimer = new DispatcherTimer();
+        private Toggl.TogglTimeEntryView _runningTimeEntry;
+        private bool _acceptNextUpdate;
+        private readonly bool _isMiniTimer;
+        private Toggl.TogglAutocompleteView _completedProject;
 
         public TimerViewModel(bool isMiniTimer)
         {
-            this.isMiniTimer = isMiniTimer;
+            this._isMiniTimer = isMiniTimer;
             StartStopCommand = ReactiveCommand.Create(startStop);
             CancelProjectSelectionCommand = ReactiveCommand.Create(clearSelectedProject);
             ManualAddButtonCommand = ReactiveCommand.Create(AddNewTimeEntry);
@@ -62,13 +62,13 @@ namespace TogglDesktop.ui.ViewModels
 
         private void setupSecondsTimer()
         {
-            secondsTimer.Interval = TimeSpan.FromSeconds(1);
-            secondsTimer.Tick += (sender, args) =>
+            _secondsTimer.Interval = TimeSpan.FromSeconds(1);
+            _secondsTimer.Tick += (sender, args) =>
             {
                 if (!IsRunning)
                     return;
 
-                DurationText = Toggl.FormatDurationInSecondsHHMMSS(runningTimeEntry.DurationInSeconds);
+                DurationText = Toggl.FormatDurationInSecondsHHMMSS(_runningTimeEntry.DurationInSeconds);
             };
         }
 
@@ -77,14 +77,14 @@ namespace TogglDesktop.ui.ViewModels
             using (Performance.Measure("timer responding to OnRunningTimerState"))
             {
                 SetRunningTimeEntry(te);
-                secondsTimer.IsEnabled = true;
+                _secondsTimer.IsEnabled = true;
             }
         }
 
         private void SetRunningTimeEntry(Toggl.TogglTimeEntryView item)
         {
             ResetRunningTimeEntry(true);
-            runningTimeEntry = item;
+            _runningTimeEntry = item;
             TimeEntryLabelViewModel = item.ToTimeEntryLabelViewModel();
             DurationText = Toggl.FormatDurationInSecondsHHMMSS(item.DurationInSeconds);
             DurationPanelToolTip = "started at " + item.StartTimeString;
@@ -94,10 +94,10 @@ namespace TogglDesktop.ui.ViewModels
         {
             var changedState = IsRunning != running;
 
-            if (!(changedState || forceUpdate || this.acceptNextUpdate))
+            if (!(changedState || forceUpdate || this._acceptNextUpdate))
                 return;
 
-            acceptNextUpdate = false;
+            _acceptNextUpdate = false;
 
             IsRunning = running;
             SetDescription("");
@@ -108,9 +108,9 @@ namespace TogglDesktop.ui.ViewModels
         {
             using (Performance.Measure("timer responding to OnStoppedTimerState"))
             {
-                secondsTimer.IsEnabled = false;
+                _secondsTimer.IsEnabled = false;
                 ResetRunningTimeEntry(false);
-                runningTimeEntry = default(Toggl.TogglTimeEntryView);
+                _runningTimeEntry = default;
             }
         }
 
@@ -118,7 +118,7 @@ namespace TogglDesktop.ui.ViewModels
 
         public void startStop()
         {
-            this.acceptNextUpdate = true;
+            this._acceptNextUpdate = true;
 
             if (!IsRunning)
             {
@@ -136,7 +136,7 @@ namespace TogglDesktop.ui.ViewModels
             {
                 using (Performance.Measure("opening edit view from timer, focussing " + focusedField))
                 {
-                    Toggl.Edit(this.runningTimeEntry.GUID, false, focusedField);
+                    Toggl.Edit(this._runningTimeEntry.GUID, false, focusedField);
                 }
             }
         }
@@ -149,17 +149,18 @@ namespace TogglDesktop.ui.ViewModels
                 var guid = Toggl.Start(
                     Description,
                     "",
-                    completedProject.TaskID,
-                    completedProject.ProjectID,
+                    _completedProject.TaskID,
+                    _completedProject.ProjectID,
                     "",
-                    completedProject.Tags,
-                    isMiniTimer
+                    _completedProject.Tags,
+                    _isMiniTimer
                     );
-                if (isMiniTimer && !string.IsNullOrEmpty(guid) && !string.IsNullOrEmpty(durationString))
+                if (_isMiniTimer && !string.IsNullOrEmpty(guid) && !string.IsNullOrEmpty(durationString))
                 {
                     Toggl.SetTimeEntryDuration(guid, durationString);
                 }
-                if (completedProject.Billable)
+
+                if (_completedProject.Billable)
                 {
                     Toggl.SetTimeEntryBillable(guid, true);
                 }
@@ -172,7 +173,7 @@ namespace TogglDesktop.ui.ViewModels
         {
             using (Performance.Measure("stopping time entry from timer"))
             {
-                Toggl.Stop(isMiniTimer);
+                Toggl.Stop(_isMiniTimer);
             }
         }
 
@@ -181,25 +182,24 @@ namespace TogglDesktop.ui.ViewModels
         public void clearSelectedProject()
         {
             ProjectLabelViewModel = null;
-            completedProject = default;
+            _completedProject = default;
         }
 
         public void DescriptionAutoCompleteConfirm(IAutoCompleteItem e)
         {
-            var asItem = e as IModelItem<Toggl.TogglAutocompleteView>;
-            if (asItem == null)
+            if (!(e is IModelItem<Toggl.TogglAutocompleteView> asItem))
                 return;
 
             var item = asItem.Model;
 
             SetDescription(item.Description);
             ProjectLabelViewModel = item.ToProjectLabelViewModel();
-            completedProject = item;
+            _completedProject = item;
         }
 
         private void AddNewTimeEntry()
         {
-            var guid = Toggl.Start("", "0", 0, 0, "", "", isMiniTimer);
+            var guid = Toggl.Start("", "0", 0, 0, "", "", _isMiniTimer);
             Toggl.Edit(guid, false, Toggl.Duration);
         }
 

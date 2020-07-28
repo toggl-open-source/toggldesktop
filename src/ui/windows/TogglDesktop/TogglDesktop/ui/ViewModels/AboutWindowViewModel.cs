@@ -9,7 +9,7 @@ namespace TogglDesktop.ViewModels
     public class AboutWindowViewModel : ReactiveObject
     {
         private readonly UpdateService _updateService;
-        public string[] Channels { get; } = {"stable", "beta", "dev"};
+        public string[] Channels { get; } = { "stable", "beta", "dev" };
 
         public AboutWindowViewModel(UpdateService updateService, string versionText)
         {
@@ -22,6 +22,7 @@ namespace TogglDesktop.ViewModels
                 updateStatus.Select(GetUpdateStatusText)
                     .ToPropertyEx(this, x => x.UpdateStatusText);
             }
+
             UpdateAndRestartCommand = ReactiveCommand.Create(UpdateAndRestart,
                 updateStatus
                     .Select(status => status.DownloadStatus == Toggl.DownloadStatus.Done)

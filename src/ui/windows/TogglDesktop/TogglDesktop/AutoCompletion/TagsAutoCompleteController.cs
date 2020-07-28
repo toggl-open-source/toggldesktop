@@ -6,7 +6,7 @@ using TogglDesktop.AutoCompletion.Items;
 
 namespace TogglDesktop.AutoCompletion
 {
-    class TagsAutoCompleteController : IAutoCompleteController
+    internal class TagsAutoCompleteController : IAutoCompleteController
     {
         private readonly ListBoxSelectionManager<IAutoCompleteItem> _selectionManager = new ListBoxSelectionManager<IAutoCompleteItem>();
         private readonly IList<IAutoCompleteItem> _fullItemsList;
@@ -73,7 +73,8 @@ namespace TogglDesktop.AutoCompletion
             private set
             {
                 _selectionManager.Items = value;
-                if (ListBox != null) ListBox.ItemsSource = value;
+                if (ListBox != null)
+                    ListBox.ItemsSource = value;
             }
         }
 

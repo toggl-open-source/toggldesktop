@@ -13,12 +13,12 @@ namespace TogglDesktop
         public event EventHandler<string> TagRemoved;
         public event EventHandler<string> TagAdded;
 
-        private readonly Dictionary<string, Tag> tags = new Dictionary<string, Tag>();
-        private readonly Stack<string> orderedTags = new Stack<string>();
-        private TagsAutoCompleteController controller;
+        private readonly Dictionary<string, Tag> _tags = new Dictionary<string, Tag>();
+        private readonly Stack<string> _orderedTags = new Stack<string>();
+        private TagsAutoCompleteController _controller;
 
-        public int TagCount => this.tags.Count;
-        public IEnumerable<string> Tags => this.tags.Keys;
+        public int TagCount => this._tags.Count;
+        public IEnumerable<string> Tags => this._tags.Keys;
 
         public TagList()
         {
@@ -44,12 +44,12 @@ namespace TogglDesktop
             // handle input if autoComplete is closed
             if (e.Key == Key.Enter || e.Key == Key.Tab)
             {
-                if(this.tryAddTagFromTextBox() || e.Key == Key.Enter)
+                if (this.tryAddTagFromTextBox() || e.Key == Key.Enter)
                 {
                     e.Handled = true;
                 }
             }
-            else if(e.Key == Key.Back && !e.IsRepeat && this.textBox.CaretIndex == 0)
+            else if (e.Key == Key.Back && !e.IsRepeat && this.textBox.CaretIndex == 0)
             {
                 if (this.tryRemoveLastTag())
                     e.Handled = true;
@@ -88,7 +88,8 @@ namespace TogglDesktop
         private bool tryAddTag(string tag)
         {
             var success = this.AddTag(tag);
-            if (success) TagAdded?.Invoke(this, tag);
+            if (success)
+                TagAdded?.Invoke(this, tag);
             return success;
         }
 
@@ -107,7 +108,7 @@ namespace TogglDesktop
 
         public bool AddTag(string tag)
         {
-            if (this.tags.ContainsKey(tag))
+            if (this._tags.ContainsKey(tag))
                 return false;
 
             this.addTag(tag);
@@ -119,9 +120,9 @@ namespace TogglDesktop
         {
             var element = TogglDesktop.Tag.Make(tag);
 
-            this.tags.Add(tag, element);
-            this.orderedTags.Push(tag);
-            this.controller?.AddTag(tag);
+            this._tags.Add(tag, element);
+            this._orderedTags.Push(tag);
+            this._controller?.AddTag(tag);
 
             this.panel.Children.Insert(this.panel.Children.Count - 1, element);
 
@@ -140,20 +141,20 @@ namespace TogglDesktop
 
         public bool RemoveTag(string tag)
         {
-            Tag element;
-            if (!this.tags.TryGetValue(tag, out element))
+            if (!this._tags.TryGetValue(tag, out Tag element))
                 return false;
 
             this.panel.Children.Remove(element);
-            this.tags.Remove(tag);
-            this.controller?.RemoveTag(tag);
+            this._tags.Remove(tag);
+            this._controller?.RemoveTag(tag);
 
-            if (this.orderedTags.Count > 0 && this.orderedTags.Peek() == tag)
-                this.orderedTags.Pop();
+            if (this._orderedTags.Count > 0 && this._orderedTags.Peek() == tag)
+                this._orderedTags.Pop();
 
             element.Dispose();
 
-            if (tags.Count == 0) this.SetEmptyText();
+            if (_tags.Count == 0)
+                this.SetEmptyText();
 
             TagRemoved?.Invoke(this, tag);
 
@@ -163,13 +164,14 @@ namespace TogglDesktop
         public void Clear(bool clearTextBox = true)
         {
             this.panel.Children.RemoveRange(0, this.panel.Children.Count - 1);
-            foreach (var tag in this.tags.Values)
+            foreach (var tag in this._tags.Values)
             {
                 tag.Dispose();
             }
-            this.tags.Clear();
-            this.orderedTags.Clear();
-            this.controller.ClearSelection();
+
+            this._tags.Clear();
+            this._orderedTags.Clear();
+            this._controller.ClearSelection();
             if (clearTextBox)
                 this.textBox.SetText("");
 
@@ -178,9 +180,9 @@ namespace TogglDesktop
 
         private bool tryRemoveLastTag()
         {
-            while (this.orderedTags.Count > 0)
+            while (this._orderedTags.Count > 0)
             {
-                var tag = this.orderedTags.Pop();
+                var tag = this._orderedTags.Pop();
                 if (this.RemoveTag(tag))
                     return true;
             }
@@ -194,8 +196,8 @@ namespace TogglDesktop
         {
             if (!autoComplete.IsOpen)
             {
-                controller = AutoCompleteControllersFactory.ForTags(tags, this.tags.ContainsKey);
-                this.autoComplete.SetController(controller);
+                _controller = AutoCompleteControllersFactory.ForTags(tags, this._tags.ContainsKey);
+                this.autoComplete.SetController(_controller);
             }
         }
 

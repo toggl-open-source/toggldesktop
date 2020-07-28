@@ -3,12 +3,12 @@ using System.Windows.Input;
 
 namespace TogglDesktop
 {
-    static class TimeEntryCellContextMenuCommands
+    internal static class TimeEntryCellContextMenuCommands
     {
-
-        static TimeEntryCellContextMenuCommands ()
+        static TimeEntryCellContextMenuCommands()
         {
-            var bindings = new[] {
+            var bindings = new[]
+            {
                 new CommandBinding(DeleteCommand, deleteTimeEntry, canDeleteTimeEntry),
                 new CommandBinding(CollapseAllDaysCommand, collapseAllDays, canCollapseAllDays),
                 new CommandBinding(ExpandAllDaysCommand, expandAllDays, canExpandAllDays),
@@ -32,8 +32,7 @@ namespace TogglDesktop
 
         private static void deleteTimeEntry(object sender, ExecutedRoutedEventArgs e)
         {
-            var cell = e.Parameter as TimeEntryCell;
-            if (cell == null)
+            if (!(e.Parameter is TimeEntryCell cell))
                 return;
 
             cell.ViewModel.DeleteTimeEntry();
@@ -53,8 +52,7 @@ namespace TogglDesktop
 
         private static void collapseAllDays(object sender, ExecutedRoutedEventArgs e)
         {
-            var window = sender as MainWindow;
-            if (window == null)
+            if (!(sender is MainWindow window))
                 return;
             window.GetView<TimerEntryListView>().Entries.CollapseAllDays();
         }
@@ -73,8 +71,7 @@ namespace TogglDesktop
 
         private static void expandAllDays(object sender, ExecutedRoutedEventArgs e)
         {
-            var window = sender as MainWindow;
-            if (window == null)
+            if (!(sender is MainWindow window))
                 return;
             window.GetView<TimerEntryListView>().Entries.ExpandAllDays();
         }

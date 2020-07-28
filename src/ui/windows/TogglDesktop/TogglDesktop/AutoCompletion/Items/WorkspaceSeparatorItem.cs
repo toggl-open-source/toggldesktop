@@ -1,6 +1,6 @@
 namespace TogglDesktop.AutoCompletion.Items
 {
-    class WorkspaceSeparatorItem : AutoCompleteItem
+    internal class WorkspaceSeparatorItem : AutoCompleteItem
     {
         public static WorkspaceSeparatorItem Instance => new WorkspaceSeparatorItem();
         private WorkspaceSeparatorItem()

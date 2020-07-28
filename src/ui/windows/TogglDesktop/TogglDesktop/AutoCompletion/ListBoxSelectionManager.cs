@@ -5,9 +5,9 @@ using TogglDesktop.AutoCompletion.Items;
 
 namespace TogglDesktop.AutoCompletion
 {
-    public class ListBoxSelectionManager<T> where T: IAutoCompleteItem
+    public class ListBoxSelectionManager<T> where T : IAutoCompleteItem
     {
-        private int selectedIndex;
+        private int _selectedIndex;
         public IList<T> Items { get; set; }
         public ListBox ListBox { get; set; }
 
@@ -23,9 +23,10 @@ namespace TogglDesktop.AutoCompletion
 
         private void SelectItem(Func<int, int> nextIndexSelector)
         {
-            if (this.Items == null || this.Items.Count == 0) return;
+            if (this.Items == null || this.Items.Count == 0)
+                return;
             var maxIterations = Items.Count;
-            var initialIndex = this.selectedIndex % Items.Count;
+            var initialIndex = this._selectedIndex % Items.Count;
             var nextIndex = initialIndex;
             for (var i = 0; i < maxIterations; i++)
             {
@@ -45,7 +46,8 @@ namespace TogglDesktop.AutoCompletion
 
         public void SelectFirstItem()
         {
-            if (Items.Count == 0) return;
+            if (Items.Count == 0)
+                return;
 
             if (Items[0].IsSelectable())
             {
@@ -53,7 +55,7 @@ namespace TogglDesktop.AutoCompletion
             }
             else
             {
-                this.selectedIndex = 0;
+                this._selectedIndex = 0;
                 SelectNext();
             }
         }
@@ -63,13 +65,12 @@ namespace TogglDesktop.AutoCompletion
             if (index < 0 || this.Items.Count == 0 || index >= this.Items.Count)
                 index = 0;
 
-            this.selectedIndex = index;
+            this._selectedIndex = index;
             ListBox.SelectedIndex = index;
 
             ListBox.UpdateLayout();
             if (this.Items.Count > 0 && ListBox.SelectedIndex != -1)
                 ListBox.ScrollIntoView(ListBox.Items[ListBox.SelectedIndex]);
         }
-
     }
 }

@@ -30,22 +30,22 @@ namespace TogglDesktop
         #region fields
 
         private const int WindowHeaderHeight = 32;
-        private readonly DispatcherTimer idleDetectionTimer =
+        private readonly DispatcherTimer _idleDetectionTimer =
             new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
 
-        private readonly WindowInteropHelper interopHelper;
-        private readonly IMainView[] views;
-        private Window[] childWindows;
+        private readonly WindowInteropHelper _interopHelper;
+        private readonly IMainView[] _views;
+        private Window[] _childWindows;
 
-        private EditViewPopup editPopup;
-        private IdleNotificationWindow idleNotificationWindow;
-        private SyncingIndicator syncingIndicator;
-        private MiniTimerWindow miniTimer;
-        private InAppNotification inAppNotification;
-        private NotificationManager notificationManager;
+        private EditViewPopup _editPopup;
+        private IdleNotificationWindow _idleNotificationWindow;
+        private SyncingIndicator _syncingIndicator;
+        private MiniTimerWindow _miniTimer;
+        private InAppNotification _inAppNotification;
+        private NotificationManager _notificationManager;
 
-        private IMainView activeView;
-        private bool closing;
+        private IMainView _activeView;
+        private bool _closing;
 
         #endregion
 
@@ -56,9 +56,9 @@ namespace TogglDesktop
 
             KeyboardShortcuts.SetMainWindow(this);
 
-            this.interopHelper = new WindowInteropHelper(this);
+            this._interopHelper = new WindowInteropHelper(this);
 
-            this.views = new IMainView[] { this.overlayView, this.loginView, this.timerEntryListView };
+            this._views = new IMainView[] { this.overlayView, this.loginView, this.timerEntryListView };
 
             this.hideAllViews();
 
@@ -72,7 +72,7 @@ namespace TogglDesktop
             this.initializeTutorialManager();
             this.initializeSessionNotification();
 
-            this.idleDetectionTimer.Tick += this.onIdleDetectionTimerTick;
+            this._idleDetectionTimer.Tick += this.onIdleDetectionTimerTick;
 
             this.finalInitialisation();
             this.trackingWindowSize();
@@ -99,14 +99,15 @@ namespace TogglDesktop
         {
             this.TutorialManager = new TutorialManager(this, this.timerEntryListView.Timer, this.tutorialPanel);
         }
+
         private void initializeSyncingIndicator()
         {
-            this.syncingIndicator = new SyncingIndicator();
+            this._syncingIndicator = new SyncingIndicator();
         }
 
         private void initializeCustomNotifications()
         {
-            this.notificationManager = new NotificationManager(this.taskbarIcon, this);
+            this._notificationManager = new NotificationManager(this.taskbarIcon, this);
         }
 
         private void initializeContextMenu()
@@ -114,8 +115,7 @@ namespace TogglDesktop
             ContextMenu = mainContextMenu;
             foreach (var item in mainContextMenu.Items)
             {
-                var asMenuItem = item as MenuItem;
-                if (asMenuItem != null)
+                if (item is MenuItem asMenuItem)
                 {
                     asMenuItem.CommandTarget = this;
                 }
@@ -164,7 +164,7 @@ namespace TogglDesktop
 
         private void hideAllViews()
         {
-            foreach (var view in this.views)
+            foreach (var view in this._views)
             {
                 view.Deactivate(false);
             }
@@ -176,26 +176,27 @@ namespace TogglDesktop
                 updateService: new UpdateService(Toggl.IsUpdateCheckDisabled(), Toggl.UpdatesPath),
                 versionText: $"Version {Program.Version()} {Utils.Bitness()}");
 
-            this.childWindows = new Window[]{
-                this.editPopup = new EditViewPopup(),
+            this._childWindows = new Window[]
+            {
+                this._editPopup = new EditViewPopup(),
                 new AboutWindow(aboutWindowViewModel),
                 new FeedbackWindow(),
                 new PreferencesWindow(),
             };
-            this.idleNotificationWindow = new IdleNotificationWindow();
+            this._idleNotificationWindow = new IdleNotificationWindow();
 
-            this.editPopup.EditView.SetTimer(this.timerEntryListView.Timer);
+            this._editPopup.EditView.SetTimer(this.timerEntryListView.Timer);
             this.timerEntryListView.Timer.ViewModel.WhenValueChanged(x => x.DurationText).Subscribe(x => updateTaskbarTooltip(this, x));
-            this.timerEntryListView.Timer.StartStopButtonClicked += ()  => closeEditPopup(true);
-            this.timerEntryListView.Entries.SetEditPopup(this.editPopup);
+            this.timerEntryListView.Timer.StartStopButtonClicked += () => closeEditPopup(true);
+            this.timerEntryListView.Entries.SetEditPopup(this._editPopup);
             this.timerEntryListView.Entries.CloseEditPopup += (sender, args) => this.closeEditPopup(true);
 
-            this.editPopup.IsVisibleChanged += this.editPopupVisibleChanged;
-            this.editPopup.SizeChanged += (sender, args) => this.updateEntriesListWidth();
+            this._editPopup.IsVisibleChanged += this.editPopupVisibleChanged;
+            this._editPopup.SizeChanged += (sender, args) => this.updateEntriesListWidth();
 
-            this.idleNotificationWindow.AddedIdleTimeAsNewEntry += (o, e) => this.ShowOnTop();
+            this._idleNotificationWindow.AddedIdleTimeAsNewEntry += (o, e) => this.ShowOnTop();
 
-            this.miniTimer = new MiniTimerWindow(this);
+            this._miniTimer = new MiniTimerWindow(this);
 
             this.IsVisibleChanged += this.ownChildWindows;
         }
@@ -209,7 +210,7 @@ namespace TogglDesktop
 
         private void ownChildWindows(object sender, DependencyPropertyChangedEventArgs args)
         {
-            foreach (var window in this.childWindows)
+            foreach (var window in this._childWindows)
             {
                 window.Owner = this;
             }
@@ -219,7 +220,7 @@ namespace TogglDesktop
 
         private void initializeColorScheme()
         {
-            Theme.CurrentColorScheme.Subscribe(x => this.updateTitleBarBackground(activeView));
+            Theme.CurrentColorScheme.Subscribe(x => this.updateTitleBarBackground(_activeView));
             Theme.CurrentColorScheme.Subscribe(x =>
             {
                 this.taskbarIcon.TrayToolTip = null;
@@ -261,23 +262,24 @@ namespace TogglDesktop
 
             this.errorBar.Hide();
             this.statusBar.Hide();
-            this.syncingIndicator.Hide();
+            this._syncingIndicator.Hide();
 
             this.SetMiniTimerVisible(Toggl.GetMiniTimerVisible(), true);
         }
 
-        public void loadPositions()
+        private void loadPositions()
         {
-            Utils.LoadWindowLocation(this, this.editPopup, this.miniTimer);
+            Utils.LoadWindowLocation(this, this._editPopup, this._miniTimer);
         }
 
         private void trackingWindowSize()
         {
-            var currentWindow = this.childWindows.First();
+            var currentWindow = this._childWindows.First();
             if (currentWindow == null)
             {
                 return;
             }
+
             Toggl.TrackWindowSize(new System.Windows.Size(currentWindow.Width, currentWindow.Height));
         }
 
@@ -357,7 +359,8 @@ namespace TogglDesktop
             var i = 0;
             for (; i < list.Count; i++)
             {
-                if (list[i].DateHeader == "Today") {
+                if (list[i].DateHeader == "Today")
+                {
                     this.trayToolTip.TotalToday = list[i].DateDuration;
                     return;
                 }
@@ -393,7 +396,6 @@ namespace TogglDesktop
 
         private void onOverlay(long type)
         {
-
             if (this.TryBeginInvoke(this.onOverlay, type))
                 return;
 
@@ -406,7 +408,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onError, errmsg, userError))
                 return;
 
-            if (this.activeView?.TryShowErrorInsideView(errmsg) != true)
+            if (this._activeView?.TryShowErrorInsideView(errmsg) != true)
             {
                 this.errorBar.ShowError(errmsg);
             }
@@ -430,7 +432,7 @@ namespace TogglDesktop
 
             Theme.SetThemeFromSettings(settings.ColorTheme);
             this.setGlobalShortcutsFromSettings();
-            this.idleDetectionTimer.IsEnabled = settings.UseIdleDetection;
+            this._idleDetectionTimer.IsEnabled = settings.UseIdleDetection;
             this.Topmost = settings.OnTop;
             this.SetManualMode(settings.ManualMode, true);
         }
@@ -440,21 +442,21 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onDisplayInAppNotification, title, text, button, url))
                 return;
 
-            if (inAppNotification == null)
+            if (_inAppNotification == null)
             {
-                inAppNotification = new InAppNotification
+                _inAppNotification = new InAppNotification
                 {
-                    Visibility = Visibility.Collapsed
+                    Visibility = Visibility.Collapsed,
                 };
-                root.Children.Add(inAppNotification);
+                root.Children.Add(_inAppNotification);
             }
 
-            inAppNotification.Title = title;
-            inAppNotification.Text = text;
-            inAppNotification.Button = button;
-            inAppNotification.Url = url;
+            _inAppNotification.Title = title;
+            _inAppNotification.Text = text;
+            _inAppNotification.Button = button;
+            _inAppNotification.Url = url;
 
-            inAppNotification.RunAppearAnimation();
+            _inAppNotification.RunAppearAnimation();
         }
 
         #endregion
@@ -463,7 +465,7 @@ namespace TogglDesktop
 
         protected void onCogButtonClick(object sender, RoutedEventArgs e)
         {
-            var button = (FrameworkElement) sender;
+            var button = (FrameworkElement)sender;
             this.mainContextMenu.PlacementTarget = button;
             this.mainContextMenu.Placement = PlacementMode.Bottom;
             this.mainContextMenu.HorizontalOffset = 0;
@@ -532,7 +534,7 @@ namespace TogglDesktop
         {
             this.updateEditPopupLocation();
             this.updateEntriesListWidth();
-            if (editPopup.IsVisible == false && ReferenceEquals(this.activeView, this.timerEntryListView))
+            if (_editPopup.IsVisible == false && ReferenceEquals(this._activeView, this.timerEntryListView))
             {
                 this.timerEntryListView.Entries.DeselectCells();
             }
@@ -558,17 +560,19 @@ namespace TogglDesktop
         private void onIdleDetectionTimerTick(object sender, EventArgs e)
         {
             Win32.LASTINPUTINFO lastInputInfo;
-            lastInputInfo.cbSize = Win32.LASTINPUTINFO.SizeOf;
-            lastInputInfo.dwTime = 0;
+            lastInputInfo.CbSize = Win32.LASTINPUTINFO.SizeOf;
+            lastInputInfo.DwTime = 0;
             if (!Win32.GetLastInputInfo(out lastInputInfo))
             {
                 return;
             }
-            var idleSeconds = (Environment.TickCount - lastInputInfo.dwTime) / 1000;
+
+            var idleSeconds = (Environment.TickCount - lastInputInfo.DwTime) / 1000;
             if (idleSeconds < 1)
             {
                 return;
             }
+
             Toggl.SetIdleSeconds((ulong)idleSeconds);
         }
 
@@ -602,12 +606,12 @@ namespace TogglDesktop
 
             this.togglMiniTimerVisibilityMenuItem.IsChecked = visible;
 
-            this.miniTimer.SetVisible(visible);
+            this._miniTimer.SetVisible(visible);
 
             if (visible)
             {
                 // Make sure minitimer is not off screen
-                Utils.CheckMinitimerVisibility(this.miniTimer);
+                Utils.CheckMinitimerVisibility(this._miniTimer);
             }
 
             if (!fromApi)
@@ -623,7 +627,7 @@ namespace TogglDesktop
             this.togglManualModeMenuItem.IsChecked = manualMode;
 
             this.timerEntryListView.SetManualMode(this.IsInManualMode);
-            this.miniTimer.SetManualMode(this.IsInManualMode);
+            this._miniTimer.SetManualMode(this.IsInManualMode);
 
             if (!fromApi)
             {
@@ -633,7 +637,7 @@ namespace TogglDesktop
 
         public void MinimizeToTray()
         {
-            Utils.SaveWindowLocation(this, this.editPopup, this.miniTimer);
+            Utils.SaveWindowLocation(this, this._editPopup, this._miniTimer);
             this.Hide();
             this.closeEditPopup(skipAnimation: true);
         }
@@ -685,10 +689,10 @@ namespace TogglDesktop
 
         public void shutdown(int exitCode)
         {
-            if (this.closing)
+            if (this._closing)
                 return;
 
-            this.closing = true;
+            this._closing = true;
 
             this.PrepareShutdown(exitCode == 0);
 
@@ -713,22 +717,22 @@ namespace TogglDesktop
                 this.mainContextMenu.Visibility = Visibility.Collapsed;
             }
 
-            if (this.editPopup != null)
+            if (this._editPopup != null)
             {
                 this.closeEditPopup(skipAnimation: true);
             }
 
-            if (this.miniTimer != null && this.miniTimer.IsVisible)
+            if (this._miniTimer != null && this._miniTimer.IsVisible)
             {
-                this.miniTimer.Hide();
+                this._miniTimer.Hide();
             }
 
             if (saveWindowLocation)
             {
-                Utils.SaveWindowLocation(this, this.editPopup, this.miniTimer);
+                Utils.SaveWindowLocation(this, this._editPopup, this._miniTimer);
             }
 
-            this.childWindows.ForEach(w => w.Hide());
+            this._childWindows.ForEach(w => w.Hide());
             this.Close();
         }
 
@@ -789,15 +793,15 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.closeEditPopup, focusTimeEntryList, skipAnimation))
                 return;
 
-            if (this.editPopup != null && this.editPopup.IsVisible)
+            if (this._editPopup != null && this._editPopup.IsVisible)
             {
                 // TODO: consider saving popup open state and restoring when window is shown
-                this.editPopup.ClosePopup(skipAnimation);
+                this._editPopup.ClosePopup(skipAnimation);
                 if (focusTimeEntryList)
                 {
                     Toggl.ViewTimeEntryList();
                 }
-                else if (this.activeView == this.timerEntryListView && !this.timerEntryListView.Entries.IsKeyboardFocusWithin)
+                else if (this._activeView == this.timerEntryListView && !this.timerEntryListView.Entries.IsKeyboardFocusWithin)
                 {
                     this.timerEntryListView.Timer.Focus();
                 }
@@ -810,9 +814,9 @@ namespace TogglDesktop
 
         private void updateEntriesListWidth()
         {
-            if (this.WindowState == WindowState.Maximized && this.editPopup.IsVisible)
+            if (this.WindowState == WindowState.Maximized && this._editPopup.IsVisible)
             {
-                this.timerEntryListView.SetListWidth(this.ActualWidth - this.editPopup.ActualWidth);
+                this.timerEntryListView.SetListWidth(this.ActualWidth - this._editPopup.ActualWidth);
             }
             else
             {
@@ -822,13 +826,12 @@ namespace TogglDesktop
 
         private void updateEditPopupLocation(bool forceUpdate = false)
         {
-            if (this.editPopup == null || (!forceUpdate && !this.editPopup.IsVisible))
+            if (this._editPopup == null || (!forceUpdate && !this._editPopup.IsVisible))
                 return;
 
             if (this.WindowState == WindowState.Maximized)
             {
-                Win32.Rectangle bounds;
-                Win32.GetWindowRect(this.interopHelper.Handle, out bounds);
+                Win32.GetWindowRect(this._interopHelper.Handle, out Win32.Rectangle bounds);
 
                 var x = (double)bounds.Left;
                 var y = (double)bounds.Top;
@@ -838,12 +841,12 @@ namespace TogglDesktop
                 y += headerHeight;
                 x += this.ActualWidth;
 
-                this.editPopup.SetPlacementMaximized(x, y, this.ActualHeight - headerHeight, this.ActualWidth - 300);
+                this._editPopup.SetPlacementMaximized(x, y, this.ActualHeight - headerHeight, this.ActualWidth - 300);
             }
             else
             {
                 var s = this.GetCurrentScreenRectangle();
-                bool left = s.Right - (this.Left + this.ActualWidth) < this.editPopup.Width;
+                bool left = s.Right - (this.Left + this.ActualWidth) < this._editPopup.Width;
 
                 var x = this.Left;
                 var y = this.Top;
@@ -853,9 +856,8 @@ namespace TogglDesktop
                     x += this.ActualWidth;
                 }
 
-                this.editPopup.SetPlacement(left, x, y, s.Width * 0.5);
+                this._editPopup.SetPlacement(left, x, y, s.Width * 0.5);
             }
-
         }
 
         private void setActiveView(IMainView activeView)
@@ -863,17 +865,17 @@ namespace TogglDesktop
             if (activeView == null)
                 throw new ArgumentNullException(nameof(activeView));
 
-            if (this.activeView != activeView)
+            if (this._activeView != activeView)
             {
-                var hadActiveView = this.activeView != null;
+                var hadActiveView = this._activeView != null;
 
                 if (hadActiveView)
                 {
-                    this.activeView.Deactivate(true);
+                    this._activeView.Deactivate(true);
                 }
 
-                this.activeView = activeView;
-                this.activeView.Activate(hadActiveView);
+                this._activeView = activeView;
+                this._activeView.Activate(hadActiveView);
                 if (hadActiveView)
                 {
                     Action focusWindowAction = this.ShowOnTop;
@@ -899,6 +901,7 @@ namespace TogglDesktop
             {
                 return;
             }
+
             this.WindowTitleBrush = activeView.TitleBarBrush;
             this.NonActiveWindowTitleBrush = activeView.TitleBarBrush;
         }
@@ -914,12 +917,12 @@ namespace TogglDesktop
         public T GetWindow<T>()
             where T : Window
         {
-            return (T)this.childWindows.First(w => w is T);
+            return (T)this._childWindows.First(w => w is T);
         }
 
         public T GetView<T>()
         {
-            return (T)this.views.FirstOrDefault(v => v is T);
+            return (T)this._views.FirstOrDefault(v => v is T);
         }
 
         private void OnMainWindowKeyDown(object sender, KeyEventArgs e)

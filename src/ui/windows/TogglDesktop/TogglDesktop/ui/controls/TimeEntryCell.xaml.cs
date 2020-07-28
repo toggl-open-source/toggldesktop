@@ -17,7 +17,7 @@ namespace TogglDesktop
         object IViewFor.ViewModel
         {
             get => ViewModel;
-            set => ViewModel = (TimeEntryCellViewModel) value;
+            set => ViewModel = (TimeEntryCellViewModel)value;
         }
 
         public bool IsDummy
@@ -89,10 +89,12 @@ namespace TogglDesktop
                 e.Handled = true;
                 return;
             }
+
             using (Performance.Measure("opening edit view from cell, focussing " + focusedField))
             {
                 Toggl.Edit(ViewModel.Guid, false, focusedField);
             }
+
             e.Handled = true;
         }
 

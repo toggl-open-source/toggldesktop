@@ -53,7 +53,8 @@ namespace TogglDesktop.ViewModels
         public bool TryExpand()
         {
             var canExpand = IsGroup && !IsGroupExpanded;
-            if (!canExpand) return false;
+            if (!canExpand)
+                return false;
             Toggl.ToggleEntriesGroup(GroupName);
             return true;
         }
@@ -61,7 +62,8 @@ namespace TogglDesktop.ViewModels
         public bool TryCollapse()
         {
             var canCollapse = IsGroup && IsGroupExpanded;
-            if (!canCollapse) return false;
+            if (!canCollapse)
+                return false;
             Toggl.ToggleEntriesGroup(GroupName);
             return true;
         }
@@ -69,7 +71,8 @@ namespace TogglDesktop.ViewModels
         public bool TryToggleExpandCollapse()
         {
             var canToggleExpandCollapse = IsGroup;
-            if (!canToggleExpandCollapse) return false;
+            if (!canToggleExpandCollapse)
+                return false;
             Toggl.ToggleEntriesGroup(GroupName);
             return true;
         }

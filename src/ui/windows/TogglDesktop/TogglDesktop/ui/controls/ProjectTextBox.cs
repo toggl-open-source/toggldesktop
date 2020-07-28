@@ -1,6 +1,6 @@
 ﻿namespace TogglDesktop
 {
-    class ProjectTextBox : ExtendedTextBox
+    internal class ProjectTextBox : ExtendedTextBox
     {
         public void SetText(string project, string task)
         {

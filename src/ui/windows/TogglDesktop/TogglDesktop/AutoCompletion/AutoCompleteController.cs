@@ -7,7 +7,7 @@ using TogglDesktop.AutoCompletion.Items;
 
 namespace TogglDesktop.AutoCompletion
 {
-    class AutoCompleteController : IAutoCompleteController
+    internal class AutoCompleteController : IAutoCompleteController
     {
         private static readonly char[] splitChars = { ' ' };
         private static readonly string[] categories = { "RECENT TIME ENTRIES", "TASKS", "PROJECTS", "WORKSPACES", "TAGS" };
@@ -20,9 +20,12 @@ namespace TogglDesktop.AutoCompletion
 
         public bool ShowActionButton
         {
-            get { return _autocompleteType == 3
+            get
+            {
+                return _autocompleteType == 3
                          || (_autocompleteType == 2
-                             && !VisibleItems.Any(it => it.Text == filterText && it.Type == ItemType.STRINGITEM)); }
+                             && !VisibleItems.Any(it => it.Text == _filterText && it.Type == ItemType.STRINGITEM));
+            }
         }
 
         private ListBox LB
@@ -43,8 +46,8 @@ namespace TogglDesktop.AutoCompletion
 
         public string DebugIdentifier { get; }
 
-        private string filterText;
-        private string[] words;
+        private string _filterText;
+        private string[] _words;
         private readonly int _autocompleteType;
         private readonly ListBoxSelectionManager<IAutoCompleteItem> _selectionManager = new ListBoxSelectionManager<IAutoCompleteItem>();
 
@@ -69,6 +72,7 @@ namespace TogglDesktop.AutoCompletion
                 {
                     return VisibleItems[LB.SelectedIndex];
                 }
+
                 return null;
             }
         }
@@ -90,7 +94,8 @@ namespace TogglDesktop.AutoCompletion
                 // Add workspace title
                 if (lastWID != (int)it.WorkspaceID)
                 {
-                    if (lastWID != -1) // workspace separator
+                    // workspace separator
+                    if (lastWID != -1)
                     {
                         items.Add(WorkspaceSeparatorItem.Instance);
                         multipleWorkspaces = true;
@@ -108,7 +113,7 @@ namespace TogglDesktop.AutoCompletion
                     // do not show 'Projects' item when auto completing projects
                     if (autocompleteType != 3)
                     {
-                        items.Add(new AutoCompleteItem(categories[(int) it.Type], ItemType.CATEGORY));
+                        items.Add(new AutoCompleteItem(categories[(int)it.Type], ItemType.CATEGORY));
                     }
 
                     // if projects autocomplete show 'no project' item
@@ -118,6 +123,7 @@ namespace TogglDesktop.AutoCompletion
                         items.Add(NoProjectItem.Instance);
                         noProjectAdded = true;
                     }
+
                     lastType = (int)it.Type;
                 }
 
@@ -161,14 +167,15 @@ namespace TogglDesktop.AutoCompletion
             }
             else
             {
-                if (filterText != null && !input.StartsWith(filterText))
+                if (_filterText != null && !input.StartsWith(_filterText))
                 {
                     VisibleItems = _fullItemsList;
                 }
-                words = input.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
-                filterText = input;
+
+                _words = input.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
+                _filterText = input;
                 var filteredItems = new List<IAutoCompleteItem>();
-                
+
                 if (_autocompleteType != 0 && _autocompleteType != 3)
                 {
                     filteredItems = VisibleItems.Where(Filter).ToList();
@@ -185,10 +192,12 @@ namespace TogglDesktop.AutoCompletion
                         // Add workspace title
                         if (multipleWorkspaces && lastWSName != item.WorkspaceName)
                         {
-                            if (lastWSName != null) // workspace separator
+                            // workspace separator
+                            if (lastWSName != null)
                             {
                                 filteredItems.Add(WorkspaceSeparatorItem.Instance);
                             }
+
                             filteredItems.Add(new AutoCompleteItem(item.WorkspaceName, ItemType.WORKSPACE));
                             lastWSName = item.WorkspaceName;
                             lastType = ItemType.CATEGORY; // WORKSPACE?
@@ -239,6 +248,7 @@ namespace TogglDesktop.AutoCompletion
 
                 VisibleItems = filteredItems;
             }
+
             LB.ItemsSource = VisibleItems;
             if (_autocompleteType == 3)
                 this._selectionManager.SelectFirstItem();
@@ -246,7 +256,7 @@ namespace TogglDesktop.AutoCompletion
 
         private bool Filter(IAutoCompleteItem item)
         {
-            return words.All(word => item.Text.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1);
+            return _words.All(word => item.Text.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1);
         }
 
         public void SelectNext()
@@ -272,29 +282,29 @@ namespace TogglDesktop.AutoCompletion
         CLIENT = -2,
         WORKSPACE = -3,
         WORKSPACE_SEPARATOR = -4,
-        CUSTOM_TEXT = -5
+        CUSTOM_TEXT = -5,
     }
 
     public class AutocompleteTemplateSelector : DataTemplateSelector
     {
         private static readonly Dictionary<ItemType, string> DataTemplateMap = new Dictionary<ItemType, string>
         {
-            {ItemType.PROJECT, "project-item-template"},
-            {ItemType.TASK, "task-item-template"},
-            {ItemType.TIMEENTRY, "timer-item-template"},
-            {ItemType.CATEGORY, "category-item-template"},
-            {ItemType.STRINGITEM, "string-item-template"},
-            {ItemType.TAG, "tag-item-template"},
-            {ItemType.CLIENT, "client-item-template"},
-            {ItemType.WORKSPACE, "workspace-item-template"},
-            {ItemType.WORKSPACE_SEPARATOR, "workspace-separator-item-template"},
-            {ItemType.CUSTOM_TEXT, "custom-text-item-template"},
+            { ItemType.PROJECT, "project-item-template" },
+            { ItemType.TASK, "task-item-template" },
+            { ItemType.TIMEENTRY, "timer-item-template" },
+            { ItemType.CATEGORY,  "category-item-template" },
+            { ItemType.STRINGITEM, "string-item-template" },
+            { ItemType.TAG, "tag-item-template" },
+            { ItemType.CLIENT, "client-item-template" },
+            { ItemType.WORKSPACE, "workspace-item-template" },
+            { ItemType.WORKSPACE_SEPARATOR,  "workspace-separator-item-template" },
+            { ItemType.CUSTOM_TEXT,  "custom-text-item-template" },
         };
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             return
                 item is IAutoCompleteItem listItem && DataTemplateMap.TryGetValue(listItem.Type, out var resourceKey)
-                    ? ((FrameworkElement) container).FindResource(resourceKey) as DataTemplate
+                    ? ((FrameworkElement)container).FindResource(resourceKey) as DataTemplate
                     : null;
         }
     }

@@ -6,7 +6,7 @@ namespace TogglDesktop.Behaviors
     {
         public static bool GetIsFocused(DependencyObject obj)
         {
-            return (bool) obj.GetValue(IsFocusedProperty);
+            return (bool)obj.GetValue(IsFocusedProperty);
         }
 
         public static void SetIsFocused(DependencyObject obj, bool value)
@@ -16,15 +16,16 @@ namespace TogglDesktop.Behaviors
 
         public static readonly DependencyProperty IsFocusedProperty =
             DependencyProperty.RegisterAttached(
-                "IsFocused", typeof (bool), typeof (FocusHelper),
+                "IsFocused", typeof(bool), typeof(FocusHelper),
                 new UIPropertyMetadata(false, OnIsFocusedPropertyChanged));
 
         private static void OnIsFocusedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var uie = (UIElement) d;
-            if ((bool) e.NewValue)
+            var uie = (UIElement)d;
+            if ((bool)e.NewValue)
             {
                 uie.Focus();
             }
         }
-    }}
+    }
+}

@@ -11,7 +11,7 @@ namespace TogglDesktop
             : base(close, showParentWindow)
         {
             _startButtonClick = startButtonClick;
-            
+
             InitializeComponent();
         }
 

@@ -59,6 +59,6 @@ namespace TogglDesktop
         }
 
         private void RefreshFeedbackTextBoxBinding() => feedbackTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-        private void RefreshTopicComboBoxBinding() => topicComboBox.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateSource();
+        private void RefreshTopicComboBoxBinding() => topicComboBox.GetBindingExpression(System.Windows.Controls.Primitives.Selector.SelectedItemProperty).UpdateSource();
     }
 }

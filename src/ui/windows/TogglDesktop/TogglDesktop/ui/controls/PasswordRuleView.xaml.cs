@@ -15,7 +15,7 @@ namespace TogglDesktop
 
         public bool IsRuleSatisfied
         {
-            get { return (bool) GetValue(IsRuleSatisfiedProperty); }
+            get { return (bool)GetValue(IsRuleSatisfiedProperty); }
             set { SetValue(IsRuleSatisfiedProperty, value); }
         }
 
@@ -24,7 +24,7 @@ namespace TogglDesktop
 
         public bool IsValidationFailed
         {
-            get { return (bool) GetValue(IsValidationFailedProperty); }
+            get { return (bool)GetValue(IsValidationFailedProperty); }
             set { SetValue(IsValidationFailedProperty, value); }
         }
 
@@ -33,7 +33,7 @@ namespace TogglDesktop
 
         public string Text
         {
-            get { return (string) GetValue(TextProperty); }
+            get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
         }
     }

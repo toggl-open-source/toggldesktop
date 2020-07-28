@@ -19,5 +19,4 @@ namespace TogglDesktop.Converters
             throw new NotImplementedException();
         }
     }
-
 }

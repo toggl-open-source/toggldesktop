@@ -8,17 +8,17 @@ namespace TogglDesktop
 {
     public partial class EditViewPopup
     {
-        enum AnimationStates
+        private enum AnimationStates
         {
             Opening,
             Closing,
         }
 
-        private AnimationStates animationState = AnimationStates.Closing;
+        private AnimationStates _animationState = AnimationStates.Closing;
 
-        private bool isLeft;
-        private bool skipAnimation;
-        private object animationToken;
+        private bool _isLeft;
+        private bool _skipAnimation;
+        private object _animationToken;
 
         private readonly Thickness _leftResizeBorderThickness = new Thickness(8, 0, 0, 0);
         private readonly Thickness _rightResizeBorderThickness = new Thickness(0, 0, 8, 0);
@@ -42,10 +42,10 @@ namespace TogglDesktop
 
             if (!this.Owner.IsVisible)
                 return;
-            
+
             using (Performance.Measure("opening edit popup"))
             {
-                if (this.skipAnimation)
+                if (this._skipAnimation)
                 {
                     this.stopAnimationOpen();
                 }
@@ -66,13 +66,13 @@ namespace TogglDesktop
 
         public void ClosePopup(bool skipAnimation = false)
         {
-            if (skipAnimation || this.skipAnimation)
+            if (skipAnimation || this._skipAnimation)
             {
                 this.stopAnimationClose();
             }
             else
             {
-                if (this.animationState == AnimationStates.Closing)
+                if (this._animationState == AnimationStates.Closing)
                     return;
 
                 this.startAnimationClose();
@@ -89,10 +89,10 @@ namespace TogglDesktop
 
         private void startAnimationOpen()
         {
-            if (this.animationState == AnimationStates.Opening)
+            if (this._animationState == AnimationStates.Opening)
                 return;
 
-            this.animationState = AnimationStates.Opening;
+            this._animationState = AnimationStates.Opening;
 
             this.setAlignmentsForAnimation();
             this.mainGrid.Width = 0;
@@ -104,9 +104,9 @@ namespace TogglDesktop
 
         private void stopAnimationOpen()
         {
-            this.animationToken = null;
+            this._animationToken = null;
 
-            this.animationState = AnimationStates.Opening;
+            this._animationState = AnimationStates.Opening;
 
             this.mainGrid.BeginAnimation(WidthProperty, null);
 
@@ -119,10 +119,10 @@ namespace TogglDesktop
 
         private void startAnimationClose()
         {
-            if (this.animationState == AnimationStates.Closing)
+            if (this._animationState == AnimationStates.Closing)
                 return;
 
-            this.animationState = AnimationStates.Closing;
+            this._animationState = AnimationStates.Closing;
 
             this.setAlignmentsForAnimation();
             this.EditView.Width = this.ActualWidth;
@@ -133,9 +133,9 @@ namespace TogglDesktop
 
         private void stopAnimationClose()
         {
-            this.animationToken = null;
+            this._animationToken = null;
 
-            this.animationState = AnimationStates.Closing;
+            this._animationState = AnimationStates.Closing;
 
             this.mainGrid.BeginAnimation(WidthProperty, null);
 
@@ -147,18 +147,19 @@ namespace TogglDesktop
         private void startAnimation(double from, double to, Action stopAction)
         {
             var token = new object();
-            this.animationToken = token;
+            this._animationToken = token;
 
             var animation = new DoubleAnimation(from, to,
                new Duration(TimeSpan.FromSeconds(0.15)),
                FillBehavior.HoldEnd);
             animation.Completed += (s, e) =>
             {
-                if (token != this.animationToken)
+                if (token != this._animationToken)
                 {
-                    this.animationToken = null;
+                    this._animationToken = null;
                     return;
                 }
+
                 stopAction();
             };
 
@@ -167,7 +168,7 @@ namespace TogglDesktop
 
         private void setAlignmentsForAnimation()
         {
-            if (this.isLeft)
+            if (this._isLeft)
             {
                 this.mainGrid.HorizontalAlignment = HorizontalAlignment.Left;
                 this.EditView.HorizontalAlignment = HorizontalAlignment.Right;
@@ -185,9 +186,9 @@ namespace TogglDesktop
         {
             this.ResizeBorderThickness = left ? _leftResizeBorderThickness : _rightResizeBorderThickness;
             this.EditView.Margin = new Thickness(8);
-            this.skipAnimation = false;
+            this._skipAnimation = false;
             this.EditView.Height = double.NaN;
-            this.isLeft = !left;
+            this._isLeft = !left;
             x += left ? (8 - this.Width) : -8;
             this.Left = x;
             this.Top = y;
@@ -198,9 +199,9 @@ namespace TogglDesktop
         {
             this.ResizeBorderThickness = new Thickness(0);
             this.EditView.Margin = new Thickness(0);
-            this.skipAnimation = true;
+            this._skipAnimation = true;
             this.EditView.Height = height;
-            this.isLeft = false;
+            this._isLeft = false;
             this.Left = x - this.Width;
             this.Top = y;
             this.MaxWidth = maxWidth;

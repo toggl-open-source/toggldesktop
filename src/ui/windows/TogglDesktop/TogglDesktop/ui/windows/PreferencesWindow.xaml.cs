@@ -19,7 +19,7 @@ using TogglDesktop.Services.Win10;
 #endif
 namespace TogglDesktop
 {
-    partial class PreferencesWindow
+    public partial class PreferencesWindow
     {
         public PreferencesWindowViewModel ViewModel
         {
@@ -27,15 +27,15 @@ namespace TogglDesktop
             private set => DataContext = value;
         }
 
-        private bool isSaving;
+        private bool _isSaving;
 
-        private Toggl.TogglAutocompleteView selectedDefaultProject;
-        private List<Toggl.TogglAutocompleteView> knownProjects;
+        private Toggl.TogglAutocompleteView _selectedDefaultProject;
+        private List<Toggl.TogglAutocompleteView> _knownProjects;
 
         public PreferencesWindow()
         {
             this.InitializeComponent();
-            this.MaxHeight = System.Windows.SystemParameters.WorkArea.Height;
+            this.MaxHeight = SystemParameters.WorkArea.Height;
 
             ViewModel = new PreferencesWindowViewModel(MessageBox.Show(this), this.Close);
 
@@ -65,7 +65,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onSettings, open, settings))
                 return;
 
-            if (this.isSaving)
+            if (this._isSaving)
                 return;
 
             using (Performance.Measure("filling settings from OnSettings"))
@@ -80,12 +80,13 @@ namespace TogglDesktop
                 this.Activate();
             }
         }
+
         private void onProjectAutocomplete(List<Toggl.TogglAutocompleteView> list)
         {
             if (this.TryBeginInvoke(this.onProjectAutocomplete, list))
                 return;
 
-            this.knownProjects = list;
+            this._knownProjects = list;
 
             this.defaultProjectAutoComplete.SetController(AutoCompleteControllersFactory.ForProjects(list));
         }
@@ -212,7 +213,7 @@ namespace TogglDesktop
 
             try
             {
-                this.isSaving = true;
+                this._isSaving = true;
                 this.IsEnabled = false;
 
                 using (Performance.Measure("saving settings"))
@@ -228,7 +229,7 @@ namespace TogglDesktop
             finally
             {
                 this.IsEnabled = true;
-                this.isSaving = false;
+                this._isSaving = false;
             }
         }
 
@@ -311,15 +312,15 @@ namespace TogglDesktop
             return new Settings
             {
                 TogglSettings = settings,
-                DefaultProject = this.selectedDefaultProject,
+                DefaultProject = this._selectedDefaultProject,
                 KeepEndTimeFixed = isChecked(this.keepEndTimeFixedCheckbox),
                 LaunchOnStartup = isChecked(this.launchOnStartupCheckBox),
                 ContinueStopTimer = ViewModel.GetContinueStopTimerIfChanged(),
-                ShowHideToggl = ViewModel.GetShowHideTogglIfChanged()
+                ShowHideToggl = ViewModel.GetShowHideTogglIfChanged(),
             };
         }
 
-        class Settings
+        private class Settings
         {
             public Toggl.TogglSettingsView TogglSettings { get; set; }
             public Toggl.TogglAutocompleteView DefaultProject { get; set; }
@@ -339,16 +340,15 @@ namespace TogglDesktop
             {
                 this.selectDefaultProject(null);
             }
-            else if (!string.IsNullOrEmpty(this.selectedDefaultProject.ProjectLabel))
+            else if (!string.IsNullOrEmpty(this._selectedDefaultProject.ProjectLabel))
             {
-                this.selectDefaultProject(this.selectedDefaultProject);
+                this.selectDefaultProject(this._selectedDefaultProject);
             }
         }
 
         private void defaultProjectAutoComplete_OnConfirmCompletion(object sender, IAutoCompleteItem e)
         {
-            var asProjectItem = e as IModelItem<Toggl.TogglAutocompleteView>;
-            if (asProjectItem == null)
+            if (!(e is IModelItem<Toggl.TogglAutocompleteView> asProjectItem))
                 return;
 
             var item = asProjectItem.Model;
@@ -364,8 +364,8 @@ namespace TogglDesktop
 
         private void selectDefaultProject(Toggl.TogglAutocompleteView? item)
         {
-            var project = item ?? default(Toggl.TogglAutocompleteView);
-            this.selectedDefaultProject = project;
+            var project = item ?? default;
+            this._selectedDefaultProject = project;
             this.defaultProjectTextBox.SetText(project.ProjectLabel, project.TaskLabel);
             this.defaultProjectColorCircle.Background = Utils.AdaptedProjectColorBrushFromString(project.ProjectColor);
             this.defaultProjectTextBox.CaretIndex = this.defaultProjectTextBox.Text.Length;
@@ -378,9 +378,9 @@ namespace TogglDesktop
 
             var project = default(Toggl.TogglAutocompleteView);
 
-            if (this.knownProjects != null)
+            if (this._knownProjects != null)
             {
-                project = this.knownProjects
+                project = this._knownProjects
                     .FirstOrDefault(p => p.ProjectID == projectID && p.TaskID == taskID);
             }
 

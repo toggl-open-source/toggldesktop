@@ -5,7 +5,7 @@ using TogglDesktop.AutoCompletion.Items;
 
 namespace TogglDesktop.AutoCompletion
 {
-    static class AutoCompleteControllersFactory
+    internal static class AutoCompleteControllersFactory
     {
         public static IAutoCompleteController ForTimer(IList<Toggl.TogglAutocompleteView> items)
         {

@@ -16,15 +16,16 @@ namespace TogglDesktop
     {
         public TimeEntryListViewModel ViewModel
         {
-            get => (TimeEntryListViewModel) DataContext;
+            get => (TimeEntryListViewModel)DataContext;
             private set => DataContext = value;
         }
+
         public event EventHandler FocusTimer;
         public event EventHandler CloseEditPopup;
 
-        private readonly Storyboard loadMoreSpinnerAnimation;
+        private readonly Storyboard _loadMoreSpinnerAnimation;
 
-        private EditViewPopup editPopup;
+        private EditViewPopup _editPopup;
         private TimeEntryCellViewModel _selectedCell;
 
         private bool IsAnyCellFocused => FocusedCellIndex >= 0;
@@ -39,18 +40,18 @@ namespace TogglDesktop
         public TimeEntryList()
         {
             this.InitializeComponent();
-            this.loadMoreSpinnerAnimation = (Storyboard)this.Resources["RotateLoadMoreSpinner"];
+            this._loadMoreSpinnerAnimation = (Storyboard)this.Resources["RotateLoadMoreSpinner"];
             ViewModel = new TimeEntryListViewModel();
             ViewModel.ObservableForProperty(x => x.IsLoading)
                 .Subscribe(isLoadingChange =>
             {
                 if (isLoadingChange.Value)
                 {
-                    loadMoreSpinnerAnimation.Begin();
+                    _loadMoreSpinnerAnimation.Begin();
                 }
                 else
                 {
-                    loadMoreSpinnerAnimation.Stop();
+                    _loadMoreSpinnerAnimation.Stop();
                 }
             });
         }
@@ -59,7 +60,7 @@ namespace TogglDesktop
 
         public void SetEditPopup(EditViewPopup editPopup)
         {
-            this.editPopup = editPopup;
+            this._editPopup = editPopup;
         }
 
         public int EntriesCount => _cellsDictionary.Count;
@@ -172,6 +173,7 @@ namespace TogglDesktop
                 }
             }
         }
+
         public int FocusedCellIndex { get; private set; }
         private DayHeaderViewModel[] _days = new DayHeaderViewModel[0];
 
@@ -283,6 +285,7 @@ namespace TogglDesktop
             {
                 return;
             }
+
             Debug.Assert(dayIndex >= 0);
             Debug.Assert(dayIndex < _days.Length);
             var dayViewModel = _days[dayIndex];
@@ -311,6 +314,7 @@ namespace TogglDesktop
             {
                 Debug.Assert(cellIndex < dayViewModel.CellsCount);
             }
+
             FocusedDayIndex = dayIndex;
             FocusedCellIndex = cellIndex;
             RefreshCellFocusIfListContainsFocus();
@@ -435,7 +439,7 @@ namespace TogglDesktop
 
         private void onFocusTimer(object sender, ExecutedRoutedEventArgs e)
         {
-            if (this.editPopup.IsVisible)
+            if (this._editPopup.IsVisible)
             {
                 CloseEditPopup?.Invoke(this, e);
             }
@@ -483,8 +487,12 @@ namespace TogglDesktop
 
         private bool TryExpandFocusedDay()
         {
-            if (FocusedCellIndex >= 0) return false; // cell is selected
-            if (FocusedDayIndex < 0) return false; // nothing is selected
+            if (FocusedCellIndex >= 0)
+                return false; // cell is selected
+
+            if (FocusedDayIndex < 0)
+                return false; // nothing is selected
+
             _days[FocusedDayIndex].Expand();
             Toggl.TrackExpandDay();
             return true;

@@ -39,6 +39,7 @@ namespace TogglDesktop.Behaviors
             {
                 _parentWindow.LocationChanged -= WindowOnLocationChanged;
             }
+
             base.OnDetaching();
         }
     }

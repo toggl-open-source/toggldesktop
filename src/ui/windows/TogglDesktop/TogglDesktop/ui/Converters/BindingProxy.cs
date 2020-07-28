@@ -17,4 +17,5 @@ namespace TogglDesktop.Converters
         {
             return new BindingProxy();
         }
-    }}
+    }
+}

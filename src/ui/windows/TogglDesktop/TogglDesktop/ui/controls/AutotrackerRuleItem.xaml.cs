@@ -4,7 +4,7 @@ namespace TogglDesktop
 {
     public partial class AutotrackerRuleItem : IRecyclable
     {
-        private long id;
+        private long _id;
 
         public AutotrackerRuleItem()
         {
@@ -17,7 +17,7 @@ namespace TogglDesktop
 
         public bool IsSelected
         {
-            get { return (bool) GetValue(IsSelectedProperty); }
+            get { return (bool)GetValue(IsSelectedProperty); }
             set { SetValue(IsSelectedProperty, value); }
         }
 
@@ -25,7 +25,7 @@ namespace TogglDesktop
         {
             var item = StaticObjectPool.PopOrNew<AutotrackerRuleItem>();
 
-            item.id = id;
+            item._id = id;
             item.termText.Text = term;
             item.projectText.Text = project;
 
@@ -34,7 +34,7 @@ namespace TogglDesktop
 
         public void Recycle()
         {
-            this.id = 0;
+            this._id = 0;
             this.IsSelected = false;
             StaticObjectPool.Push(this);
         }
@@ -46,7 +46,7 @@ namespace TogglDesktop
 
         public void DeleteRule()
         {
-            Toggl.DeleteAutotrackerRule(this.id);
+            Toggl.DeleteAutotrackerRule(this._id);
         }
     }
 }

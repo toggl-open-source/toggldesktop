@@ -2,13 +2,13 @@
 
 namespace TogglDesktop.Diagnostics
 {
-    interface IPerformanceToken : IDisposable
+    internal interface IPerformanceToken : IDisposable
     {
         void Stop();
         IPerformanceToken WithInfoNotNull(string additionalInfo);
     }
 
-    static class Extensions
+    internal static class Extensions
     {
         public static IPerformanceToken WithInfo(this IPerformanceToken token, string additionalInfo)
         {

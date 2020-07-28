@@ -36,7 +36,7 @@ namespace TogglDesktop.ViewModels
 
         private HotKey _continueStopTimerSaved;
         private HotKey _showHideTogglSaved;
-        private String _proxyHostSaved;
+        private string _proxyHostSaved;
 
         private readonly ValidationHelper _showHideTogglValidation;
         private readonly ValidationHelper _continueStopTimerValidation;
@@ -78,12 +78,12 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public HotKey ShowHideToggl { get; set; }
         public HotKey GetShowHideTogglIfChanged() =>
-            !object.Equals(ShowHideToggl, _showHideTogglSaved) ? (ShowHideToggl ?? new HotKey(Key.None)) : null;
+            !Equals(ShowHideToggl, _showHideTogglSaved) ? (ShowHideToggl ?? new HotKey(Key.None)) : null;
 
         [Reactive]
         public HotKey ContinueStopTimer { get; set; }
         public HotKey GetContinueStopTimerIfChanged() =>
-            !object.Equals(ContinueStopTimer, _continueStopTimerSaved) ? (ContinueStopTimer ?? new HotKey(Key.None)) : null;
+            !Equals(ContinueStopTimer, _continueStopTimerSaved) ? (ContinueStopTimer ?? new HotKey(Key.None)) : null;
 
         [Reactive]
         public string ProxyHost { get; set; }
@@ -103,16 +103,19 @@ namespace TogglDesktop.ViewModels
             ContinueStopTimer = _continueStopTimerSaved;
         }
 
-        public void SetSavedProxyHost(String savedProxyHost)
+        public void SetSavedProxyHost(string savedProxyHost)
         {
             _proxyHostSaved = savedProxyHost;
         }
 
         public void ResetPropsWithErrorsToPreviousValues()
         {
-            if (!_showHideTogglValidation.IsValid) ShowHideToggl = _showHideTogglSaved;
-            if (!_continueStopTimerValidation.IsValid) ContinueStopTimer = _continueStopTimerSaved;
-            if (!_proxyHostValidation.IsValid) ProxyHost = _proxyHostSaved;
+            if (!_showHideTogglValidation.IsValid)
+                ShowHideToggl = _showHideTogglSaved;
+            if (!_continueStopTimerValidation.IsValid)
+                ContinueStopTimer = _continueStopTimerSaved;
+            if (!_proxyHostValidation.IsValid)
+                ProxyHost = _proxyHostSaved;
         }
 
         private bool IsHotKeyValid(HotKey hotKey, string hotKeyDescription)
@@ -129,6 +132,7 @@ namespace TogglDesktop.ViewModels
                     _knownShortcuts.Remove(previousValue);
                 }
             }
+
             if (!newValue.IsNullOrNone())
             {
                 if (!_knownShortcuts.ContainsKey(newValue))

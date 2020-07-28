@@ -7,7 +7,7 @@ namespace TogglDesktop
 {
     public partial class MessageBox
     {
-        private MessageBoxResult result;
+        private MessageBoxResult _result;
 
         private MessageBox()
         {
@@ -45,12 +45,12 @@ namespace TogglDesktop
         {
             this.setup(owner, messageText, title, buttons, okButtonText);
 
-            this.result = MessageBoxResult.None;
+            this._result = MessageBoxResult.None;
             this.ShowDialog();
 
             this.Owner = null;
 
-            return this.result;
+            return this._result;
         }
 
         private void setup(Window owner, string messageText,
@@ -97,7 +97,7 @@ namespace TogglDesktop
 
         private void close(MessageBoxResult result)
         {
-            this.result = result;
+            this._result = result;
             this.Close();
         }
 
@@ -110,10 +110,12 @@ namespace TogglDesktop
         {
             this.close(MessageBoxResult.Yes);
         }
+
         private void onNoButtonClick(object sender, RoutedEventArgs e)
         {
             this.close(MessageBoxResult.No);
         }
+
         private void onCancelButtonClick(object sender, RoutedEventArgs e)
         {
             this.close(MessageBoxResult.Cancel);

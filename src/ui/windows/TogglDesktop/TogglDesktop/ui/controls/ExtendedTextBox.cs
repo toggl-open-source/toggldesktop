@@ -4,14 +4,14 @@ using System.Windows.Input;
 
 namespace TogglDesktop
 {
-    class ExtendedTextBox : TextBox
+    internal class ExtendedTextBox : TextBox
     {
         public static readonly DependencyProperty IsTextChangingProgrammaticallyProperty =
             DependencyProperty.Register(
             "IsTextChangingProgrammatically", typeof(bool),
             typeof(ExtendedTextBox));
-        public bool IsTextChangingProgrammatically 
-        { 
+        public bool IsTextChangingProgrammatically
+        {
             get => (bool)GetValue(IsTextChangingProgrammaticallyProperty);
             set { SetValue(IsTextChangingProgrammaticallyProperty, value); }
         }

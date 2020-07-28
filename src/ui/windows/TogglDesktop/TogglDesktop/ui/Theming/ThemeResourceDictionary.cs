@@ -5,37 +5,35 @@ using System.Windows;
 
 namespace TogglDesktop.Theming
 {
-    sealed class ThemeResourceDictionary : ResourceDictionary
+    internal sealed class ThemeResourceDictionary : ResourceDictionary
     {
-        private static readonly Dictionary<ThemeType,List<ThemeResourceDictionary>> loadedDictionaries
+        private static readonly Dictionary<ThemeType, List<ThemeResourceDictionary>> loadedDictionaries
             = new Dictionary<ThemeType, List<ThemeResourceDictionary>>();
 
-        private ThemeType type;
+        private ThemeType _type;
 
         public ThemeType Type
         {
-            get { return this.type; }
+            get { return this._type; }
             set
             {
-                if (this.type == value)
+                if (this._type == value)
                     return;
 
-                if (this.type != 0)
-                    loadedDictionaries[this.type].Remove(this);
+                if (this._type != 0)
+                    loadedDictionaries[this._type].Remove(this);
 
-                this.type = value;
+                this._type = value;
                 this.addToLoadedThemes();
             }
         }
 
         private void addToLoadedThemes()
         {
-            List<ThemeResourceDictionary> themes;
-
-            if (!loadedDictionaries.TryGetValue(this.type, out themes))
+            if (!loadedDictionaries.TryGetValue(this._type, out List<ThemeResourceDictionary> themes))
             {
                 themes = new List<ThemeResourceDictionary>();
-                loadedDictionaries.Add(this.type, themes);
+                loadedDictionaries.Add(this._type, themes);
             }
 
             themes.Add(this);
@@ -48,10 +46,9 @@ namespace TogglDesktop.Theming
                 UriKind.Relative
                 );
 
-            List<ThemeResourceDictionary> themes;
             ThemeResourceDictionary dictionary = null;
 
-            if (loadedDictionaries.TryGetValue(type, out themes))
+            if (loadedDictionaries.TryGetValue(type, out List<ThemeResourceDictionary> themes))
             {
                 dictionary = themes.FirstOrDefault(d => d.Source == uri);
             }

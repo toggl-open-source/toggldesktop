@@ -1,6 +1,6 @@
 namespace TogglDesktop
 {
-    interface IRecyclable
+    internal interface IRecyclable
     {
         void Recycle();
     }

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace TogglDesktop.AutoCompletion.Items
 {
-    class TagItem : ModelItem<string>, INotifyPropertyChanged
+    internal class TagItem : ModelItem<string>, INotifyPropertyChanged
     {
         private bool _isChecked;
         public bool IsChecked

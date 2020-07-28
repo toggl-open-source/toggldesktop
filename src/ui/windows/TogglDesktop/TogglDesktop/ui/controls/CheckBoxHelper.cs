@@ -204,7 +204,7 @@ namespace TogglDesktop
         /// <summary>
         /// Gets the the Glyph for IsChecked = null.
         /// </summary>
-        
+
         [AttachedPropertyBrowsableForType(typeof(CheckBox))]
         public static object GetIntermediateGlyph(DependencyObject obj)
         {
@@ -214,7 +214,7 @@ namespace TogglDesktop
         /// <summary>
         /// Sets the the Glyph for IsChecked = null.
         /// </summary>
-        
+
         [AttachedPropertyBrowsableForType(typeof(CheckBox))]
         public static void SetIntermediateGlyph(DependencyObject obj, object value)
         {

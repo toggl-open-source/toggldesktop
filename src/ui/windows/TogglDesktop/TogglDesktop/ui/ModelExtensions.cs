@@ -22,6 +22,7 @@ namespace TogglDesktop
                 Toggl.DeleteTimeEntry(cell.Guid);
                 return;
             }
+
             Toggl.AskToDeleteEntry(cell.Guid);
         }
 

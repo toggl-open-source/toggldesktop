@@ -8,7 +8,7 @@ using Microsoft.Win32;
 
 namespace TogglDesktop.Theming
 {
-    static class Theme
+    internal static class Theme
     {
         private static readonly Subject<ColorScheme> currentColorSchemeSubject = new Subject<ColorScheme>();
         public static IObservable<ColorScheme> CurrentColorScheme => currentColorSchemeSubject.AsObservable();
@@ -20,8 +20,8 @@ namespace TogglDesktop.Theming
 
         static Theme()
         {
-            Theme.CurrentColorScheme.Select(ColorSchemeExtensions.ToAdaptiveShapeColor).Subscribe(ShapeColorAdaptation.OnNext);
-            Theme.CurrentColorScheme.Select(ColorSchemeExtensions.ToAdaptiveTextColor).Subscribe(TextColorAdaptation.OnNext);
+            CurrentColorScheme.Select(ColorSchemeExtensions.ToAdaptiveShapeColor).Subscribe(ShapeColorAdaptation.OnNext);
+            CurrentColorScheme.Select(ColorSchemeExtensions.ToAdaptiveTextColor).Subscribe(TextColorAdaptation.OnNext);
         }
 
         public static void SetThemeFromSettings(byte selectedTheme)
