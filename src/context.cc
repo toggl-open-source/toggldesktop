@@ -5448,6 +5448,9 @@ error Context::pullBatchedUserData() {
         Json::Reader reader;
         reader.parse(user_data_json, json);
 
+        std::cerr << "PULLED: " << std::endl << json.toStyledString() << std::endl;
+        logger.debug("Sync server pull response: ", json.toStyledString());
+
         if (err != noError) {
             return err;
         }
