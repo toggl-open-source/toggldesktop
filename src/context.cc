@@ -5323,6 +5323,10 @@ void Context::SetLogPath(const std::string &path) {
                 "%Y-%m-%d %H:%M:%S.%i [%P %I]:%s:%q:%t")));
     formattingChannel->setChannel(simpleFileChannel);
 
+    std::vector<std::string> loggerNames;
+    Poco::Logger::names(loggerNames);
+    for (auto i : loggerNames)
+        Poco::Logger::destroy(i);
     Poco::Logger::get("").setChannel(formattingChannel);
 
     log_path_ = path;

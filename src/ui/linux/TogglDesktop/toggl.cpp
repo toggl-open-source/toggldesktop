@@ -219,8 +219,6 @@ TogglApi::TogglApi(
 , shutdown(false)
 , ctx(nullptr) {
     QString version = QApplication::applicationVersion();
-    ctx = toggl_context_init("linux_native_app",
-                             version.toStdString().c_str());
 
     QString appDirPath =
         QStandardPaths::writableLocation(
@@ -240,6 +238,8 @@ TogglApi::TogglApi(
     qDebug() << "Log path " << logPath;
 
     toggl_set_log_level("debug");
+    ctx = toggl_context_init("linux_native_app",
+                             version.toStdString().c_str());
 
     QString dbPath("");
     if (dbPathOverride.isEmpty()) {
