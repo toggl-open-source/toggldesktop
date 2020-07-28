@@ -5546,62 +5546,62 @@ error Context::pushBatchedChanges(
                 *had_something_to_push = false;
                 return noError;
             }
+
+            Json::Value request;
+
+            // the conditions should be here so we don't create unnecessary empty JSON items
+            // (accessing a JSON item by a name allocates an empty item)
+            if (!clients.empty())
+                syncCollectJSON(request["clients"], clients);
+            if (!projects.empty())
+                syncCollectJSON(request["projects"], projects);
+            if (!time_entries.empty())
+                syncCollectJSON(request["time_entries"], time_entries);
+
+            if (request.empty())
+                return noError;
+
+            Json::FastWriter w;
+            std::string payload = w.write(request);
+
+            lastRequestUUID_ = Poco::UUIDGenerator().createOne().toString();
+
+            HTTPRequest req;
+            req.payload = payload;
+            req.host = urls::SyncAPI();
+            req.relative_url = "/push/" + lastRequestUUID_;
+            req.basic_auth_username = api_token;
+            req.basic_auth_password = "api_token";
+
+            auto response = TogglClient::GetInstance().Post(req);
+
+            std::cerr << "REQUEST: " << request.toStyledString() << std::endl;
+            logger.debug("Sync request ", lastRequestUUID_, ": ", request.toStyledString());
+
+            if (response.err != noError) {
+                logger.log("Sync error: ", response.err);
+                return displayError(response.err);
+            }
+
+            Json::Reader reader;
+            Json::Value responseJson;
+            reader.parse(response.body, responseJson);
+
+            std::cerr << "RESPONSE: " << responseJson.toStyledString() << std::endl;
+            logger.debug("Sync response to request ", lastRequestUUID_, ": ", responseJson.toStyledString());
+
+            error err = syncHandleResponse(responseJson["clients"], clients);
+            if (err != noError)
+                return err;
+            updateProjectClients(clients, projects);
+            err = syncHandleResponse(responseJson["projects"], projects);
+            if (err != noError)
+                return err;
+            updateEntryProjects(projects, time_entries);
+            err = syncHandleResponse(responseJson["time_entries"], time_entries);
+            if (err != noError)
+                return err;
         }
-
-        Json::Value request;
-
-        // the conditions should be here so we don't create unnecessary empty JSON items
-        // (accessing a JSON item by a name allocates an empty item)
-        if (!clients.empty())
-            syncCollectJSON(request["clients"], clients);
-        if (!projects.empty())
-            syncCollectJSON(request["projects"], projects);
-        if (!time_entries.empty())
-            syncCollectJSON(request["time_entries"], time_entries);
-
-        if (request.empty())
-            return noError;
-
-        Json::FastWriter w;
-        std::string payload = w.write(request);
-
-        lastRequestUUID_ = Poco::UUIDGenerator().createOne().toString();
-
-        HTTPRequest req;
-        req.payload = payload;
-        req.host = urls::SyncAPI();
-        req.relative_url = "/push/" + lastRequestUUID_;
-        req.basic_auth_username = api_token;
-        req.basic_auth_password = "api_token";
-
-        auto response = TogglClient::GetInstance().Post(req);
-
-        std::cerr << "REQUEST: " << request.toStyledString() << std::endl;
-        logger.debug("Sync request ", lastRequestUUID_, ": ", request.toStyledString());
-
-        if (response.err != noError) {
-            logger.log("Sync error: ", response.err);
-            return displayError(response.err);
-        }
-
-        Json::Reader reader;
-        Json::Value responseJson;
-        reader.parse(response.body, responseJson);
-
-        std::cerr << "RESPONSE: " << responseJson.toStyledString() << std::endl;
-        logger.debug("Sync response to request ", lastRequestUUID_, ": ", responseJson.toStyledString());
-
-        error err = syncHandleResponse(responseJson["clients"], clients);
-        if (err != noError)
-            return err;
-        updateProjectClients(clients, projects);
-        err = syncHandleResponse(responseJson["projects"], projects);
-        if (err != noError)
-            return err;
-        updateEntryProjects(projects, time_entries);
-        err = syncHandleResponse(responseJson["time_entries"], time_entries);
-        if (err != noError)
-            return err;
 
         stopwatch.stop();
         logger.debug("Sync success. Total = ", stopwatch.elapsed() / 1000, " ms");
