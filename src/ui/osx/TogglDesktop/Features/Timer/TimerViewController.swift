@@ -30,9 +30,18 @@ class TimerViewController: NSViewController {
         descriptionTextField.displayMode = .fullscreen
         descriptionTextField.responderDelegate = descriptionContainerBox
 
+        viewModel.setAutocompleteInput(descriptionTextField)
+
         configureAppearance()
 
         setupBindings()
+    }
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+
+        let viewFrameInWindowCoords = view.convert(view.bounds, to: nil)
+        descriptionTextField.setPos(Int32(viewFrameInWindowCoords.origin.y))
     }
 
     private func setupBindings() {
@@ -52,10 +61,12 @@ class TimerViewController: NSViewController {
                 self.startButton.toolTip = "Start"
                 self.startButton.state = .off
             }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kStartButtonStateChange),
+                                            object: NSNumber(value: self.startButton.state.rawValue))
         }
 
         viewModel.onDescriptionChanged = { [unowned self] description in
-            if self.descriptionTextField.currentEditor() == nil {
+            if self.descriptionTextField.stringValue != description {
                 self.descriptionTextField.stringValue = description
             }
         }
@@ -97,7 +108,45 @@ class TimerViewController: NSViewController {
     }
 
     @IBAction func descriptionFieldChanged(_ sender: Any) {
-        viewModel.description = descriptionTextField.stringValue
+        viewModel.entryDescription = descriptionTextField.stringValue
+    }
+
+    func controlTextDidChange(_ obj: Notification) {
+        if let descriptionField = obj.object as? AutoCompleteInput {
+            viewModel.entryDescription = descriptionField.stringValue
+        }
+    }
+
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        var isHandled = false
+
+        if commandSelector == #selector(moveDown(_:)) {
+            descriptionTextField.autocompleteTableView.nextItem()
+        } else if commandSelector == #selector(moveUp(_:)) {
+            descriptionTextField.autocompleteTableView.previousItem()
+        } else if commandSelector == #selector(insertTab(_:)) {
+            // set data according to selected item
+            let lastSelectedIndex = descriptionTextField.autocompleteTableView.lastSelected
+            if lastSelectedIndex >= 0 {
+                let success = viewModel.selectAutocompleteItem(at: lastSelectedIndex)
+                if !success {
+                    return false
+                }
+            }
+        } else if commandSelector == #selector(insertNewline(_:)) {
+            // avoid firing default Enter actions
+            isHandled = true
+            let lastSelectedIndex = descriptionTextField.autocompleteTableView.lastSelected
+            if lastSelectedIndex >= 0 {
+                let success = viewModel.selectAutocompleteItem(at: lastSelectedIndex)
+                if !success {
+                    return isHandled
+                }
+            }
+            viewModel.start()
+        }
+
+        return isHandled
     }
 
     // MARK: - UI

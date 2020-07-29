@@ -13,7 +13,7 @@
 
 @interface TimeEntryViewItem : NSObject
 @property (assign, nonatomic) int64_t duration_in_seconds;
-@property (copy, nonatomic) NSString *Description; // uppercase to avoid clash with [NSObject description]
+@property (copy, nonatomic) NSString *Description NS_SWIFT_NAME(entryDescription); // uppercase to avoid clash with [NSObject description]
 @property (copy, nonatomic) NSString *descriptionName;
 @property (copy, nonatomic) NSString *ProjectAndTaskLabel;
 @property (copy, nonatomic) NSString *TaskLabel;

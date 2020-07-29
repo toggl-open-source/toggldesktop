@@ -53,7 +53,7 @@ static NSString *kStateKey = @"state";
 - (IBAction)autoCompleteChanged:(id)sender;
 - (IBAction)addEntryBtnOnTap:(id)sender;
 
-@property (strong, nonatomic) LiteAutoCompleteDataSource *liteAutocompleteDataSource;
+//@property (strong, nonatomic) LiteAutoCompleteDataSource *liteAutocompleteDataSource;
 @property (strong, nonatomic) TimeEntryViewItem *time_entry;
 @property (strong, nonatomic) NSTimer *timer;
 @property (assign, nonatomic) BOOL disableChange;
@@ -74,12 +74,8 @@ NSString *kInactiveTimerColor = @"#999999";
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self)
 	{
-		self.liteAutocompleteDataSource = [[LiteAutoCompleteDataSource alloc] initWithNotificationName:kDisplayMinitimerAutocomplete];
+//		self.liteAutocompleteDataSource = [[LiteAutoCompleteDataSource alloc] initWithNotificationName:kDisplayMinitimerAutocomplete];
 
-//		[[NSNotificationCenter defaultCenter] addObserver:self
-//												 selector:@selector(startDisplayTimerState:)
-//													 name:kDisplayTimerState
-//												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(focusTimer)
 													 name:kFocusTimer
@@ -92,18 +88,6 @@ NSString *kInactiveTimerColor = @"#999999";
 												 selector:@selector(toggleManual:)
 													 name:kToggleManualMode
 												   object:nil];
-//		[[NSNotificationCenter defaultCenter] addObserver:self
-//												 selector:@selector(startDisplayLogin:)
-//													 name:kDisplayLogin
-//												   object:nil];
-//		[[NSNotificationCenter defaultCenter] addObserver:self
-//												 selector:@selector(stop:)
-//													 name:kCommandStop
-//												   object:nil];
-//		[[NSNotificationCenter defaultCenter] addObserver:self
-//												 selector:@selector(startTimerNotification:)
-//													 name:kStartTimer
-//												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(touchBarSettingChangedNotification:)
 													 name:kTouchBarSettingChanged
@@ -127,25 +111,21 @@ NSString *kInactiveTimerColor = @"#999999";
 	[super viewDidLoad];
 
 	[self initCommon];
-	[self initKVO];
+//	[self initKVO];
 }
 
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[self.startButton removeObserver:self forKeyPath:kStateKey];
+//	[self.startButton removeObserver:self forKeyPath:kStateKey];
 }
 
 - (void)initCommon
 {
 	self.displayMode = DisplayModeInput;
 	self.projectTextField.isInTimerBar = YES;
-//	self.autoCompleteInput.displayMode = AutoCompleteDisplayModeFullscreen;
-//	self.liteAutocompleteDataSource.input = self.autoCompleteInput;
-//	[self.liteAutocompleteDataSource setFilter:@""];
 
 	[self.startButton setHoverAlpha:0.75];
-//	self.autoCompleteInput.responderDelegate = self.autocompleteContainerView;
 
 //	self.descriptionLabel.delegate = self;
 	self.tagFlag.delegate = self;
@@ -154,22 +134,13 @@ NSString *kInactiveTimerColor = @"#999999";
     self.mainBox.contentView = [self.timerViewController view];
 }
 
-- (void)initKVO
-{
-	[self.startButton addObserver:self
-					   forKeyPath:kStateKey
-						  options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
-						  context:XXContext];
-}
-
-- (void)viewDidAppear
-{
-	[super viewDidAppear];
-	NSRect viewFrameInWindowCoords = [self.view convertRect:[self.view bounds] toView:nil];
-
-//	[self.autoCompleteInput setPos:(int)viewFrameInWindowCoords.origin.y];
-//	[self.autoCompleteInput.autocompleteTableView setDelegate:self];
-}
+//- (void)initKVO
+//{
+//	[self.startButton addObserver:self
+//					   forKeyPath:kStateKey
+//						  options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+//						  context:XXContext];
+//}
 
 //- (void)startDisplayLogin:(NSNotification *)notification
 //{
@@ -370,7 +341,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.durationTextField.stringValue = @"";
 	self.autoCompleteInput.stringValue = @"";
 	[self.autoCompleteInput resetTable];
-	[self.liteAutocompleteDataSource clearFilter];
+//	[self.liteAutocompleteDataSource clearFilter];
 	self.projectTextField.stringValue = @"";
 	[self.contentContainerView setHidden:YES];
 }
@@ -402,8 +373,8 @@ NSString *kInactiveTimerColor = @"#999999";
 																object:self.time_entry];
 
 	// Reset autocomplete
-	[self.autoCompleteInput resetTable];
-	[self.liteAutocompleteDataSource clearFilter];
+//	[self.autoCompleteInput resetTable];
+//	[self.liteAutocompleteDataSource clearFilter];
 }
 
 - (IBAction)durationFieldChanged:(id)sender
@@ -443,59 +414,59 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 }
 
-- (void)fillEntryFromAutoComplete:(AutocompleteItem *)item
-{
-	// User has selected a autocomplete item.
-	// It could be a time entry, a task or a project.
-	self.time_entry.WorkspaceID = item.WorkspaceID;
-	self.time_entry.ProjectID = item.ProjectID;
-	self.time_entry.TaskID = item.TaskID;
-	self.time_entry.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
-	self.time_entry.TaskLabel = item.TaskLabel;
-	self.time_entry.ProjectLabel = item.ProjectLabel;
-	self.time_entry.ClientLabel = item.ClientLabel;
-	self.time_entry.ProjectColor = item.ProjectColor;
-	self.time_entry.tags = [[NSMutableArray alloc] initWithArray:item.tags copyItems:YES];
-	if (item.Description != nil)
-	{
-		self.time_entry.Description = ([item.Description length] != 0) ? item.Description : item.TaskLabel;
-	}
+//- (void)fillEntryFromAutoComplete:(AutocompleteItem *)item
+//{
+//	// User has selected a autocomplete item.
+//	// It could be a time entry, a task or a project.
+//	self.time_entry.WorkspaceID = item.WorkspaceID;
+//	self.time_entry.ProjectID = item.ProjectID;
+//	self.time_entry.TaskID = item.TaskID;
+//	self.time_entry.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
+//	self.time_entry.TaskLabel = item.TaskLabel;
+//	self.time_entry.ProjectLabel = item.ProjectLabel;
+//	self.time_entry.ClientLabel = item.ClientLabel;
+//	self.time_entry.ProjectColor = item.ProjectColor;
+//	self.time_entry.tags = [[NSMutableArray alloc] initWithArray:item.tags copyItems:YES];
+//	if (item.Description != nil)
+//	{
+//		self.time_entry.Description = ([item.Description length] != 0) ? item.Description : item.TaskLabel;
+//	}
+//
+//	self.autoCompleteInput.stringValue = self.time_entry.Description;
+//
+//	// Make descriptionLabel is editable and focus
+//	self.descriptionLabel.editable = YES;
+//	self.descriptionLabel.stringValue = self.time_entry.Description;
+//	self.displayMode = DisplayModeTimer;
+//	[self.view.window makeFirstResponder:self.descriptionLabel];
+//
+//	// Display project name
+//	[self renderProjectLabelWithViewItem:self.time_entry];
+//
+//	self.time_entry.billable = item.Billable;
+//}
 
-	self.autoCompleteInput.stringValue = self.time_entry.Description;
-
-	// Make descriptionLabel is editable and focus
-	self.descriptionLabel.editable = YES;
-	self.descriptionLabel.stringValue = self.time_entry.Description;
-	self.displayMode = DisplayModeTimer;
-	[self.view.window makeFirstResponder:self.descriptionLabel];
-
-	// Display project name
-	[self renderProjectLabelWithViewItem:self.time_entry];
-
-	self.time_entry.billable = item.Billable;
-}
-
-- (void)controlTextDidChange:(NSNotification *)aNotification
-{
-	if ([[aNotification object] isKindOfClass:[NSTextFieldDuration class]])
-	{
-		return;
-	}
-
-	if ([[aNotification object] isKindOfClass:[AutoCompleteInput class]])
-	{
-		AutoCompleteInput *field = [aNotification object];
-		[self.liteAutocompleteDataSource setFilter:[field stringValue]];
-		[field.autocompleteTableView resetSelected];
-
-		if (aNotification.object == self.descriptionLabel)
-		{
-			self.autoCompleteInput.stringValue = self.descriptionLabel.stringValue;
-		}
-
-		return;
-	}
-}
+//- (void)controlTextDidChange:(NSNotification *)aNotification
+//{
+//	if ([[aNotification object] isKindOfClass:[NSTextFieldDuration class]])
+//	{
+//		return;
+//	}
+//
+//	if ([[aNotification object] isKindOfClass:[AutoCompleteInput class]])
+//	{
+//		AutoCompleteInput *field = [aNotification object];
+//		[self.liteAutocompleteDataSource setFilter:[field stringValue]];
+//		[field.autocompleteTableView resetSelected];
+//
+//		if (aNotification.object == self.descriptionLabel)
+//		{
+//			self.autoCompleteInput.stringValue = self.descriptionLabel.stringValue;
+//		}
+//
+//		return;
+//	}
+//}
 
 - (void)timerFired:(NSTimer *)timer
 {
@@ -560,143 +531,143 @@ NSString *kInactiveTimerColor = @"#999999";
 	});
 }
 
-#pragma AutocompleteTableView Delegate
+#pragma mark - AutocompleteTableView Delegate
 
-- (BOOL)  tableView:(NSTableView *)aTableView
-	shouldSelectRow:(NSInteger)rowIndex
-{
-	AutoCompleteTable *table = (AutoCompleteTable *)aTableView;
+//- (BOOL)tableView:(NSTableView *)aTableView
+//	shouldSelectRow:(NSInteger)rowIndex
+//{
+//	AutoCompleteTable *table = (AutoCompleteTable *)aTableView;
+//
+//	[table setCurrentSelected:rowIndex next:YES];
+//	return YES;
+//}
 
-	[table setCurrentSelected:rowIndex next:YES];
-	return YES;
-}
+//- (void)tableViewSelectionDidChange:(NSNotification *)notification
+//{
+//	NSInteger row = [self.autoCompleteInput.autocompleteTableView selectedRow];
+//
+//	if (row < 0)
+//	{
+//		return;
+//	}
+//
+//	AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:row];
+//	// Category clicked
+//	if (item == nil || item.Type < 0)
+//	{
+//		return;
+//	}
+//	[self fillEntryFromAutoComplete:item];
+//	NSRange tRange = [[self.descriptionLabel currentEditor] selectedRange];
+//	[[self.descriptionLabel currentEditor] setSelectedRange:NSMakeRange(tRange.length, 0)];
+//	[self.autoCompleteInput resetTable];
+//	[self.liteAutocompleteDataSource clearFilter];
+//
+//	// Show cancel btn
+//	self.cancelBtn.hidden = NO;
+//}
 
-- (void)tableViewSelectionDidChange:(NSNotification *)notification
-{
-	NSInteger row = [self.autoCompleteInput.autocompleteTableView selectedRow];
+//- (NSView *) tableView:(NSTableView *)tableView
+//	viewForTableColumn:(NSTableColumn *)tableColumn
+//				   row:(NSInteger)row
+//{
+//	if (row < 0 || row >= self.liteAutocompleteDataSource.filteredOrderedKeys.count)
+//	{
+//		return nil;
+//	}
+//
+//	AutocompleteItem *item = nil;
+//	AutoCompleteTable *tb = (AutoCompleteTable *)tableView;
+//
+//	@synchronized(self)
+//	{
+//		item = [self.liteAutocompleteDataSource.filteredOrderedKeys objectAtIndex:row];
+//	}
+//	// NSLog(@"%@", item);
+//	NSAssert(item != nil, @"view item from viewitems array is nil");
+//
+//	AutoCompleteTableCell *cell = [tableView makeViewWithIdentifier:@"AutoCompleteTableCell"
+//															  owner:self];
+//
+//	[cell render:item selected:(tb.lastSelected != -1 && tb.lastSelected == row)];
+//	return cell;
+//}
 
-	if (row < 0)
-	{
-		return;
-	}
+//- (CGFloat)tableView:(NSTableView *)tableView
+//		 heightOfRow:(NSInteger)row
+//{
+//	AutocompleteItem *item = nil;
+//
+//	@synchronized(self)
+//	{
+//		item = [self.liteAutocompleteDataSource.filteredOrderedKeys objectAtIndex:row];
+//	}
+//	AutoCompleteCellType cellType = [AutoCompleteTableCell cellTypeFrom:item];
+//
+//	// Big workspace
+//	if (cellType == AutoCompleteCellTypeWorkspace)
+//	{
+//		return self.autoCompleteInput.worksapceItemHeight;
+//	}
+//
+//	// Other cells
+//	return self.autoCompleteInput.itemHeight;
+//}
 
-	AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:row];
-	// Category clicked
-	if (item == nil || item.Type < 0)
-	{
-		return;
-	}
-	[self fillEntryFromAutoComplete:item];
-	NSRange tRange = [[self.descriptionLabel currentEditor] selectedRange];
-	[[self.descriptionLabel currentEditor] setSelectedRange:NSMakeRange(tRange.length, 0)];
-	[self.autoCompleteInput resetTable];
-	[self.liteAutocompleteDataSource clearFilter];
-
-	// Show cancel btn
-	self.cancelBtn.hidden = NO;
-}
-
-- (NSView *) tableView:(NSTableView *)tableView
-	viewForTableColumn:(NSTableColumn *)tableColumn
-				   row:(NSInteger)row
-{
-	if (row < 0 || row >= self.liteAutocompleteDataSource.filteredOrderedKeys.count)
-	{
-		return nil;
-	}
-
-	AutocompleteItem *item = nil;
-	AutoCompleteTable *tb = (AutoCompleteTable *)tableView;
-
-	@synchronized(self)
-	{
-		item = [self.liteAutocompleteDataSource.filteredOrderedKeys objectAtIndex:row];
-	}
-	// NSLog(@"%@", item);
-	NSAssert(item != nil, @"view item from viewitems array is nil");
-
-	AutoCompleteTableCell *cell = [tableView makeViewWithIdentifier:@"AutoCompleteTableCell"
-															  owner:self];
-
-	[cell render:item selected:(tb.lastSelected != -1 && tb.lastSelected == row)];
-	return cell;
-}
-
-- (CGFloat)tableView:(NSTableView *)tableView
-		 heightOfRow:(NSInteger)row
-{
-	AutocompleteItem *item = nil;
-
-	@synchronized(self)
-	{
-		item = [self.liteAutocompleteDataSource.filteredOrderedKeys objectAtIndex:row];
-	}
-	AutoCompleteCellType cellType = [AutoCompleteTableCell cellTypeFrom:item];
-
-	// Big workspace
-	if (cellType == AutoCompleteCellTypeWorkspace)
-	{
-		return self.autoCompleteInput.worksapceItemHeight;
-	}
-
-	// Other cells
-	return self.autoCompleteInput.itemHeight;
-}
-
-- (BOOL)control:(NSControl *)control textView:(NSTextView *)fieldEditor doCommandBySelector:(SEL)commandSelector
-{
-	BOOL retval = NO;
-
-	if (commandSelector == @selector(moveDown:))
-	{
-		[self.autoCompleteInput.autocompleteTableView nextItem];
-	}
-	if (commandSelector == @selector(moveUp:))
-	{
-		[self.autoCompleteInput.autocompleteTableView previousItem];
-	}
-	if (commandSelector == @selector(insertTab:))
-	{
-		// Set data according to selected item
-		if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
-		{
-			AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
-			if (item == nil)
-			{
-				return retval;
-			}
-			[self fillEntryFromAutoComplete:item];
-		}
-		[self.autoCompleteInput resetTable];
-		[self.liteAutocompleteDataSource clearFilter];
-	}
-	if (commandSelector == @selector(insertNewline:))
-	{
-		// avoid firing default Enter actions
-		retval = YES;
-
-		// Disable editable
-		self.descriptionLabel.editable = NO;
-
-		// Set data according to selected item
-		if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
-		{
-			AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
-			if (item == nil)
-			{
-				return retval;
-			}
-			[self fillEntryFromAutoComplete:item];
-		}
-
-		// Start entry
-		[self startButtonClicked:nil];
-		[self.autoCompleteInput resetTable];
-		[self.liteAutocompleteDataSource clearFilter];
-	}
-
-	return retval;
-}
+//- (BOOL)control:(NSControl *)control textView:(NSTextView *)fieldEditor doCommandBySelector:(SEL)commandSelector
+//{
+//	BOOL retval = NO;
+//
+//	if (commandSelector == @selector(moveDown:))
+//	{
+//		[self.autoCompleteInput.autocompleteTableView nextItem];
+//	}
+//	if (commandSelector == @selector(moveUp:))
+//	{
+//		[self.autoCompleteInput.autocompleteTableView previousItem];
+//	}
+//	if (commandSelector == @selector(insertTab:))
+//	{
+//		// Set data according to selected item
+//		if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
+//		{
+//			AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
+//			if (item == nil)
+//			{
+//				return retval;
+//			}
+//			[self fillEntryFromAutoComplete:item];
+//		}
+//		[self.autoCompleteInput resetTable];
+//		[self.liteAutocompleteDataSource clearFilter];
+//	}
+//	if (commandSelector == @selector(insertNewline:))
+//	{
+//		// avoid firing default Enter actions
+//		retval = YES;
+//
+//		// Disable editable
+//		self.descriptionLabel.editable = NO;
+//
+//		// Set data according to selected item
+//		if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
+//		{
+//			AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
+//			if (item == nil)
+//			{
+//				return retval;
+//			}
+//			[self fillEntryFromAutoComplete:item];
+//		}
+//
+//		// Start entry
+//		[self startButtonClicked:nil];
+//		[self.autoCompleteInput resetTable];
+//		[self.liteAutocompleteDataSource clearFilter];
+//	}
+//
+//	return retval;
+//}
 
 - (void)setDisplayMode:(DisplayMode)displayMode
 {
@@ -721,28 +692,28 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 }
 
-- (void)renderProjectLabelWithViewItem:(TimeEntryViewItem *)item
-{
-	NSString *text = item.ProjectAndTaskLabel;
-
-	if (text != nil && text.length > 0)
-	{
-		NSColor *projectColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
-		[self.dotImageView fillWith:projectColor];
-		self.dotImageView.hidden = NO;
-		[self.projectTextField setTitleWithTimeEntry:item];
-		self.projectTextField.toolTip = text;
-		self.projectTextFieldLeading.constant = 16.0;
-	}
-	else
-	{
-		self.dotImageView.hidden = YES;
-		self.projectTextField.stringValue = @"";
-		self.projectTextField.toolTip = nil;
-		self.projectTextField.placeholderString = @"+ Add project";
-		self.projectTextFieldLeading.constant = 0;
-	}
-}
+//- (void)renderProjectLabelWithViewItem:(TimeEntryViewItem *)item
+//{
+//	NSString *text = item.ProjectAndTaskLabel;
+//
+//	if (text != nil && text.length > 0)
+//	{
+//		NSColor *projectColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
+//		[self.dotImageView fillWith:projectColor];
+//		self.dotImageView.hidden = NO;
+//		[self.projectTextField setTitleWithTimeEntry:item];
+//		self.projectTextField.toolTip = text;
+//		self.projectTextFieldLeading.constant = 16.0;
+//	}
+//	else
+//	{
+//		self.dotImageView.hidden = YES;
+//		self.projectTextField.stringValue = @"";
+//		self.projectTextField.toolTip = nil;
+//		self.projectTextField.placeholderString = @"+ Add project";
+//		self.projectTextFieldLeading.constant = 0;
+//	}
+//}
 
 //- (void)startTimerNotification:(NSNotification *)notification
 //{
@@ -776,30 +747,30 @@ NSString *kInactiveTimerColor = @"#999999";
 	[self textFieldClicked:sender];
 }
 
-- (IBAction)cancelBtnOnTap:(id)sender
-{
-	NSString *description = self.time_entry.Description;
+//- (IBAction)cancelBtnOnTap:(id)sender
+//{
+//	NSString *description = self.time_entry.Description;
+//
+//	self.time_entry = [[TimeEntryViewItem alloc] init];
+//	self.time_entry.Description = description;
+//	self.tagFlag.hidden = YES;
+//	self.billableFlag.hidden = YES;
+//	self.cancelBtn.hidden = YES;
+//	[self renderProjectLabelWithViewItem:nil];
+//}
 
-	self.time_entry = [[TimeEntryViewItem alloc] init];
-	self.time_entry.Description = description;
-	self.tagFlag.hidden = YES;
-	self.billableFlag.hidden = YES;
-	self.cancelBtn.hidden = YES;
-	[self renderProjectLabelWithViewItem:nil];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-	if (context == XXContext)
-	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:kStartButtonStateChange
-															object:[NSNumber numberWithInteger:self.startButton.state]];
-	}
-	else
-	{
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-	}
-}
+//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+//{
+//	if (context == XXContext)
+//	{
+//		[[NSNotificationCenter defaultCenter] postNotificationName:kStartButtonStateChange
+//															object:[NSNumber numberWithInteger:self.startButton.state]];
+//	}
+//	else
+//	{
+//		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+//	}
+//}
 
 - (NSTouchBar *)makeTouchBar
 {

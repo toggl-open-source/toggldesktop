@@ -11,13 +11,16 @@
 @class AutocompleteItem;
 @class AutoCompleteInput;
 
+NS_ASSUME_NONNULL_BEGIN
 @interface LiteAutoCompleteDataSource : NSObject
 @property (nonatomic, strong, readonly) NSMutableArray *filteredOrderedKeys;
-@property (nonatomic, strong) AutoCompleteInput *input;
-@property (nonatomic, copy) NSString *currentFilter;
+@property (nonatomic, strong, nullable) AutoCompleteInput *input;
+@property (nonatomic, copy, nullable) NSString *currentFilter;
+
+- (id)initWithNotificationName:(NSString *)notificationName;
 - (NSString *)completedString:(NSString *)partialString;
 - (void)clearFilter;
-- (void)setFilter:(NSString *)filter;
-- (id)initWithNotificationName:(NSString *)notificationName;
-- (AutocompleteItem *)itemAtIndex:(NSInteger)row;
+- (void)setFilter:(nullable NSString *)filter;
+- (nullable AutocompleteItem *)itemAtIndex:(NSInteger)row;
 @end
+NS_ASSUME_NONNULL_END

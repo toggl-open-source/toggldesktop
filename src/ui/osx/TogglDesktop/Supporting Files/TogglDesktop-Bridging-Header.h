@@ -6,8 +6,6 @@
 #import "UIEvents.h"
 #import "TimeEntryCell.h"
 #import "LoadMoreCell.h"
-#import "AutocompleteItem.h"
-#import "AutoCompleteTableCell.h"
 #import "ProjectTextField.h"
 #import "ViewItem.h"
 #import "DesktopLibraryBridge.h"
@@ -19,6 +17,13 @@
 #import "TimelineDisplayCommand.h"
 #import "TimeEntryCollectionView.h"
 #import "ConvertHexColor.h"
+
+#import "AutocompleteItem.h"
+#import "AutoCompleteTable.h"
+#import "AutoCompleteTableCell.h"
+#import "AutoCompleteInput.h"
 #import "BetterFocusAutoCompleteInput.h"
-#import "Settings.h"
+#import "LiteAutoCompleteDataSource.h"
+
 #import "AppDelegate.h"
+#import "Settings.h"
