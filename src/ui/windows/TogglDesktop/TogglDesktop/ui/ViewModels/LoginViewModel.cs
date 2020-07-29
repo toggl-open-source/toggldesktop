@@ -404,7 +404,7 @@ namespace TogglDesktop.ViewModels
             }
         }
 
-        public void ResetData()
+        public void Reset()
         {
             SnoozeValidation();
             

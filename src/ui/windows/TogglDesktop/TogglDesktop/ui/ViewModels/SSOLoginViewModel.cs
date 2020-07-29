@@ -11,11 +11,11 @@ using ReactiveUI.Validation.Helpers;
 
 namespace TogglDesktop.ViewModels
 {
-    public class SSOLoginViewModel : ReactiveValidationObject<SSOLoginViewModel>
+    public class SSOLoginViewModel : ReactiveValidationViewModel<SSOLoginViewModel>
     {
         private ValidationHelper _emailValidation;
 
-        public SSOLoginViewModel(Action<string, string> openLoginForm)
+        public SSOLoginViewModel(Action<string, string> openLoginForm) : base(false)
         {
             DisplaySignOnMode = true;
             LoginWithDifferentMethod = ReactiveCommand.Create(() => openLoginForm(null, null));
@@ -37,18 +37,14 @@ namespace TogglDesktop.ViewModels
                 .Where(code => !string.IsNullOrEmpty(code))
                 .Subscribe(next => DisplaySignOnMode = false);
             Toggl.OnLoginSSO += HandleDisplayLoginSSO;
-        }
-
-        private bool IsEmailValid()
-        {
-            _emailValidation ??= this.ValidationRule(x => x.Email,
+            _emailValidation = this.ValidationRule(x => x.Email,
                 x => x == null || x.IsValidEmailAddress(), "Please enter a valid email");
-            return _emailValidation.IsValid;
         }
 
         private bool Login()
         {
-            if (!IsEmailValid()) return false;
+            ActivateValidation();
+            if (!_emailValidation.IsValid) return false;
             return Toggl.GetIdentityProviderSSO(Email);
         }
 
@@ -74,5 +70,11 @@ namespace TogglDesktop.ViewModels
         public Subject<Uri> AuthUri { get; } = new Subject<Uri>();
 
         private string ConfirmationCode { [ObservableAsProperty] get; }
+
+        public void Reset()
+        {
+            SnoozeValidation();
+            Email = null;
+        }
     }
 }

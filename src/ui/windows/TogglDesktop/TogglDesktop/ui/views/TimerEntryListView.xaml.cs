@@ -15,6 +15,7 @@ namespace TogglDesktop
         public TimerEntryListView()
         {
             this.InitializeComponent();
+            Visibility = Visibility.Collapsed;
 
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
             Toggl.OnTimeEntryList += this.onTimeEntryList;
@@ -169,6 +170,7 @@ namespace TogglDesktop
 
         public void Activate(bool allowAnimation)
         {
+            Visibility = Visibility.Visible;
             this.IsEnabled = true;
             var focusTimerAction = new Action(() => { this.Timer.Focus(); });
             this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, focusTimerAction);
@@ -176,6 +178,7 @@ namespace TogglDesktop
 
         public void Deactivate(bool allowAnimation)
         {
+            Visibility = Visibility.Collapsed;
             this.IsEnabled = false;
         }
 

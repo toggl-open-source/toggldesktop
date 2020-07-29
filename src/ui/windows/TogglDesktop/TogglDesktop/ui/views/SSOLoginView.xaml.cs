@@ -50,6 +50,7 @@ namespace TogglDesktop
         private object opacityAnimationToken;
         public void Deactivate(bool allowAnimation)
         {
+            ViewModel?.Reset();
             this.opacityAnimationToken = null;
 
             if (allowAnimation)
