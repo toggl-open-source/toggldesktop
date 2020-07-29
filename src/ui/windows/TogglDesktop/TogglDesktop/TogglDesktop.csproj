@@ -311,6 +311,7 @@
     <Compile Include="ui\ViewModels\PasswordEx.cs" />
     <Compile Include="ui\ViewModels\PreferencesWindowViewModel.cs" />
     <Compile Include="ui\ViewModels\ProjectLabelViewModel.cs" />
+    <Compile Include="ui\ViewModels\ReactiveValidationViewModel.cs" />
     <Compile Include="ui\ViewModels\SSOLoginViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryCellViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryLabelViewModel.cs" />

@@ -21,7 +21,7 @@ using ReactiveUI.Validation.Helpers;
 
 namespace TogglDesktop.ViewModels
 {
-    public class LoginViewModel : ReactiveValidationObject<LoginViewModel>
+    public class LoginViewModel : ReactiveValidationViewModel<LoginViewModel>
     {
         private ValidationHelper _emailValidation;
         private ValidationHelper _passwordValidation;
@@ -31,7 +31,7 @@ namespace TogglDesktop.ViewModels
         private HttpClientFactory _httpClientFactory;
 
         public LoginViewModel(Action loginWithSSO)
-            : base(RxApp.TaskpoolScheduler)
+            : base(false, RxApp.TaskpoolScheduler)
         {
             Toggl.OnDisplayCountries += OnDisplayCountries;
             Toggl.OnSettings += OnSettings;
@@ -85,6 +85,7 @@ namespace TogglDesktop.ViewModels
             canShowPasswordStrength.CombineLatest(shouldHidePasswordStrength, (canShow, shouldHide) => canShow && !shouldHide)
                 .ToPropertyEx(this, x => x.ShowPasswordStrength);
             SelectedConfirmAction = ConfirmAction.LogIn;
+            InitializeValidation();
         }
         public ReactiveCommand<Unit, bool> ConfirmLoginSignupCommand { get; }
         public ReactiveCommand<Unit, Unit> ConfirmGoogleLoginSignupCommand { get; }
@@ -135,37 +136,34 @@ namespace TogglDesktop.ViewModels
         public bool IsLowercaseAndUppercase { [ObservableAsProperty] get; }
         public bool IsAtLeastOneNumber { [ObservableAsProperty] get; }
 
-        private void EnsureValidationApplied()
+        private void InitializeValidation()
         {
-            if (_emailValidation == null)
-            {
-                _emailValidation = this.ValidationRule(
-                    x => x.Email,
-                    email => email.IsValidEmailAddress(),
-                    "Please enter a valid email");
-                _passwordValidation = this.ValidationRule(
-                    x => x.Password,
-                    password => !string.IsNullOrEmpty(password),
-                    "A password is required");
-                _passwordSignupValidation = this.ValidationRule(
-                    x => x.Password,
-                    PasswordEx.AllRulesSatisfied,
-                    string.Empty);
-                _selectedCountryValidation = this.ValidationRule(
-                    x => x.SelectedCountry,
-                    selectedCountry => selectedCountry != null,
-                    "Please select country");
-                _isTosCheckedValidation = this.ValidationRule(
-                    x => x.IsTosChecked,
-                    isTosChecked => isTosChecked,
-                    "Please accept the terms");
-            }
+            _emailValidation = this.ValidationRule(
+                x => x.Email,
+                email => email.IsValidEmailAddress(),
+                "Please enter a valid email");
+            _passwordValidation = this.ValidationRule(
+                x => x.Password,
+                password => !string.IsNullOrEmpty(password),
+                "A password is required");
+            _passwordSignupValidation = this.ValidationRule(
+                x => x.Password,
+                PasswordEx.AllRulesSatisfied,
+                string.Empty);
+            _selectedCountryValidation = this.ValidationRule(
+                x => x.SelectedCountry,
+                selectedCountry => selectedCountry != null,
+                "Please select country");
+            _isTosCheckedValidation = this.ValidationRule(
+                x => x.IsTosChecked,
+                isTosChecked => isTosChecked,
+                "Please accept the terms");
         }
 
         private bool PerformValidation(bool isGoogleLogin = false)
         {
             ShowLoginError = false;
-            EnsureValidationApplied();
+            ActivateValidation();
 
             if (!isGoogleLogin && !_emailValidation.IsValid)
             {
@@ -404,6 +402,16 @@ namespace TogglDesktop.ViewModels
 
                 return webRequestHandler;
             }
+        }
+
+        public void ResetData()
+        {
+            SnoozeValidation();
+            
+            Email = null;
+            Password = null;
+            SelectedCountry = null;
+            IsTosChecked = false;
         }
     }
 

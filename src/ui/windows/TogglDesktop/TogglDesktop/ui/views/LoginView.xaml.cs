@@ -80,11 +80,6 @@ namespace TogglDesktop
                 }
             });
             ViewModel.ConfirmLoginSignupCommand.IsExecuting.Subscribe(isExecuting => { isLoggingIn = isExecuting; });
-            ViewModel.ConfirmLoginSignupCommand.IsExecuting.Where(isExecuting => 
-                !isExecuting && ViewModel.SelectedConfirmAction == ConfirmAction.SignUp)
-                .Subscribe(_ => RefreshSignupBindings()).DisposeWith(_disposable);
-            ViewModel.ConfirmLoginSignupCommand.IsExecuting.Where(isExecuting => !isExecuting)
-                .Subscribe(_ => RefreshLoginBindings()).DisposeWith(_disposable);
             ViewModel.ConfirmLoginSignupCommand.Subscribe(isLoggedIn =>
             {
                 if (isLoggedIn && this.onLogin != null)
@@ -131,6 +126,7 @@ namespace TogglDesktop
 
         public void Deactivate(bool allowAnimation)
         {
+            ViewModel?.ResetData();
             this.opacityAnimationToken = null;
 
             if (allowAnimation)
