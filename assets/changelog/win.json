@@ -1,6 +1,17 @@
 {
     "versions": [
         {
+            "version": "7.5.238",
+            "rows": [
+                "Improved syncing",
+                "Added support for single sign-on (SSO)",
+                "Do not set focus to project text box after new client is created"
+            ],
+            "date": "July 30th 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.234",
             "rows": [
                 "Improved syncing"
