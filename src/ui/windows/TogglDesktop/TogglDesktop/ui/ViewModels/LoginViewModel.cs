@@ -163,7 +163,6 @@ namespace TogglDesktop.ViewModels
         private bool PerformValidation(bool isGoogleLogin = false)
         {
             ShowLoginError = false;
-            ActivateValidation();
 
             if (!isGoogleLogin && !_emailValidation.IsValid)
             {
@@ -189,6 +188,7 @@ namespace TogglDesktop.ViewModels
             {
                 return true;
             }
+            ActivateValidation();
 
             return false;
         }
