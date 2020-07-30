@@ -231,7 +231,7 @@ namespace TogglDesktop.ViewModels
                 return;
             }
 
-            if (SelectedConfirmAction.HasFlag(ConfirmAction.LinkSSO) && SSOEmail == Email)
+            if (SelectedConfirmAction.HasFlag(ConfirmAction.LinkSSO))
                 Toggl.SetNeedEnableSSO(SSOConfirmationCode);
             switch (SelectedConfirmAction)
             {
