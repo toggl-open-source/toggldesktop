@@ -21,10 +21,8 @@ using ReactiveUI.Validation.Helpers;
 
 namespace TogglDesktop.ViewModels
 {
-    public class LoginViewModel : ReactiveValidationObject<LoginViewModel>
+    public class LoginViewModel : ReactiveValidationViewModel<LoginViewModel>
     {
-        private readonly Action _refreshLoginBindings;
-        private readonly Action _refreshSignupBindings;
         private ValidationHelper _emailValidation;
         private ValidationHelper _passwordValidation;
         private ValidationHelper _passwordSignupValidation;
@@ -32,21 +30,27 @@ namespace TogglDesktop.ViewModels
         private ValidationHelper _isTosCheckedValidation;
         private HttpClientFactory _httpClientFactory;
 
-        public LoginViewModel(Action refreshLoginBindings, Action refreshSignupBindings)
-            : base(RxApp.TaskpoolScheduler)
+        public LoginViewModel(Action loginWithSSO)
+            : base(false, RxApp.TaskpoolScheduler)
         {
-            _refreshLoginBindings = refreshLoginBindings;
-            _refreshSignupBindings = refreshSignupBindings;
             Toggl.OnDisplayCountries += OnDisplayCountries;
             Toggl.OnSettings += OnSettings;
             this.WhenAnyValue(x => x.SelectedConfirmAction,
-                    x => x == ConfirmAction.LogIn ? "Log in" : "Sign up")
+                    x => x.HasFlag(ConfirmAction.LogIn) ? "Log in" : "Sign up")
                 .ToPropertyEx(this, x => x.ConfirmButtonText);
             this.WhenAnyValue(x => x.SelectedConfirmAction,
-                    x => x == ConfirmAction.LogIn ? "Log in with Google" : "Sign up with Google")
+                    x => x.HasFlag(ConfirmAction.LogIn) ? "Log in with Google" : "Sign up with Google")
                 .ToPropertyEx(this, x => x.GoogleLoginButtonText);
-            this.WhenAnyValue(x => x.SelectedConfirmAction,
-                    x => x == ConfirmAction.LogIn ? "Sign up for free" : "Back to Log in")
+            this.WhenAnyValue<LoginViewModel,string, ConfirmAction>(x => x.SelectedConfirmAction,
+                    x =>
+                    {
+                        return x switch
+                        {
+                            ConfirmAction.LogInAndLinkSSO => "Cancel and go back",
+                            ConfirmAction.SignUp => "Back to Log in",
+                            _ => "Sign up for free"
+                        };
+                    })
                 .ToPropertyEx(this, x => x.SignupLoginToggleText);
             this.ObservableForProperty(x => x.SelectedConfirmAction)
                 .Where(x => x.Value == ConfirmAction.SignUp)
@@ -55,6 +59,7 @@ namespace TogglDesktop.ViewModels
                 .Subscribe(_ => Toggl.GetCountries());
             ConfirmLoginSignupCommand = ReactiveCommand.CreateFromTask(ConfirmLoginSignupAsync);
             ConfirmGoogleLoginSignupCommand = ReactiveCommand.Create(ConfirmGoogleLoginSignup);
+            LoginWithSSO = ReactiveCommand.Create(loginWithSSO);
             IsLoginSignupExecuting = ConfirmLoginSignupCommand.IsExecuting
                 .CombineLatest(ConfirmGoogleLoginSignupCommand.IsExecuting,
                     (isExecuting1, isExecuting2) => isExecuting1 || isExecuting2);
@@ -79,9 +84,13 @@ namespace TogglDesktop.ViewModels
                 .Delay(satisfied => satisfied ? Observable.Timer(TimeSpan.FromSeconds(1)) : Observable.Return(0L));
             canShowPasswordStrength.CombineLatest(shouldHidePasswordStrength, (canShow, shouldHide) => canShow && !shouldHide)
                 .ToPropertyEx(this, x => x.ShowPasswordStrength);
+            SelectedConfirmAction = ConfirmAction.LogIn;
+            InitializeValidation();
         }
         public ReactiveCommand<Unit, bool> ConfirmLoginSignupCommand { get; }
         public ReactiveCommand<Unit, Unit> ConfirmGoogleLoginSignupCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> LoginWithSSO { get; }
         public IObservable<bool> IsLoginSignupExecuting { get; }
 
         [Reactive]
@@ -98,6 +107,10 @@ namespace TogglDesktop.ViewModels
 
         [Reactive]
         public string Password { get; set; }
+
+        public string SSOConfirmationCode { get; set; }
+
+        public string SSOEmail { get; set; }
 
         public Subject<Unit> FocusEmail { get; } = new Subject<Unit>();
         public Subject<Unit> FocusPassword { get; } = new Subject<Unit>();
@@ -123,37 +136,33 @@ namespace TogglDesktop.ViewModels
         public bool IsLowercaseAndUppercase { [ObservableAsProperty] get; }
         public bool IsAtLeastOneNumber { [ObservableAsProperty] get; }
 
-        private void EnsureValidationApplied()
+        private void InitializeValidation()
         {
-            if (_emailValidation == null)
-            {
-                _emailValidation = this.ValidationRule(
-                    x => x.Email,
-                    email => email.IsValidEmailAddress(),
-                    "Please enter a valid email");
-                _passwordValidation = this.ValidationRule(
-                    x => x.Password,
-                    password => !string.IsNullOrEmpty(password),
-                    "A password is required");
-                _passwordSignupValidation = this.ValidationRule(
-                    x => x.Password,
-                    PasswordEx.AllRulesSatisfied,
-                    string.Empty);
-                _selectedCountryValidation = this.ValidationRule(
-                    x => x.SelectedCountry,
-                    selectedCountry => selectedCountry != null,
-                    "Please select country");
-                _isTosCheckedValidation = this.ValidationRule(
-                    x => x.IsTosChecked,
-                    isTosChecked => isTosChecked,
-                    "Please accept the terms");
-            }
+            _emailValidation = this.ValidationRule(
+                x => x.Email,
+                email => email.IsValidEmailAddress(),
+                "Please enter a valid email");
+            _passwordValidation = this.ValidationRule(
+                x => x.Password,
+                password => !string.IsNullOrEmpty(password),
+                "A password is required");
+            _passwordSignupValidation = this.ValidationRule(
+                x => x.Password,
+                PasswordEx.AllRulesSatisfied,
+                string.Empty);
+            _selectedCountryValidation = this.ValidationRule(
+                x => x.SelectedCountry,
+                selectedCountry => selectedCountry != null,
+                "Please select country");
+            _isTosCheckedValidation = this.ValidationRule(
+                x => x.IsTosChecked,
+                isTosChecked => isTosChecked,
+                "Please accept the terms");
         }
 
         private bool PerformValidation(bool isGoogleLogin = false)
         {
             ShowLoginError = false;
-            EnsureValidationApplied();
 
             if (!isGoogleLogin && !_emailValidation.IsValid)
             {
@@ -179,16 +188,7 @@ namespace TogglDesktop.ViewModels
             {
                 return true;
             }
-
-            if (!isGoogleLogin)
-            {
-                _refreshLoginBindings();
-            }
-
-            if (SelectedConfirmAction == ConfirmAction.SignUp)
-            {
-                _refreshSignupBindings();
-            }
+            ActivateValidation();
 
             return false;
         }
@@ -201,8 +201,11 @@ namespace TogglDesktop.ViewModels
             }
 
             var success = false;
+            if (SelectedConfirmAction.HasFlag(ConfirmAction.LinkSSO) && SSOEmail == Email)
+                Toggl.SetNeedEnableSSO(SSOConfirmationCode);
             switch (SelectedConfirmAction)
             {
+                case ConfirmAction.LogInAndLinkSSO:
                 case ConfirmAction.LogIn:
                     success = await ConfirmAsync(Toggl.Login);
                     break;
@@ -211,6 +214,11 @@ namespace TogglDesktop.ViewModels
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+            if (SelectedConfirmAction.HasFlag(ConfirmAction.LinkSSO))
+            {
+                Toggl.ResetEnableSSO();
+                SelectedConfirmAction &= ~ConfirmAction.LinkSSO;
             }
 
             return success;
@@ -223,8 +231,11 @@ namespace TogglDesktop.ViewModels
                 return;
             }
 
+            if (SelectedConfirmAction.HasFlag(ConfirmAction.LinkSSO))
+                Toggl.SetNeedEnableSSO(SSOConfirmationCode);
             switch (SelectedConfirmAction)
             {
+                case ConfirmAction.LogInAndLinkSSO:
                 case ConfirmAction.LogIn:
                     await GoogleLoginAsync();
                     break;
@@ -233,6 +244,11 @@ namespace TogglDesktop.ViewModels
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+            if (SelectedConfirmAction.HasFlag(ConfirmAction.LinkSSO))
+            {
+                Toggl.ResetEnableSSO();
+                SelectedConfirmAction &= ~ConfirmAction.LinkSSO;
             }
         }
 
@@ -344,6 +360,18 @@ namespace TogglDesktop.ViewModels
             return proxyHttpClientFactory;
         }
 
+        public void SetLinkSSOMode(string confirmationCode, string email)
+        {
+            if (!string.IsNullOrEmpty(confirmationCode))
+            {
+                SelectedConfirmAction = ConfirmAction.LogInAndLinkSSO;
+                SSOConfirmationCode = confirmationCode;
+                SSOEmail = email;
+            }
+            else
+                SelectedConfirmAction = ConfirmAction.LogIn;
+        }
+
         public class CountryViewModel
         {
             private readonly Toggl.TogglCountryView _countryView;
@@ -375,11 +403,24 @@ namespace TogglDesktop.ViewModels
                 return webRequestHandler;
             }
         }
+
+        public void Reset()
+        {
+            SnoozeValidation();
+            
+            Email = null;
+            Password = null;
+            SelectedCountry = null;
+            IsTosChecked = false;
+        }
     }
 
+    [Flags]
     public enum ConfirmAction
     {
-        LogIn,
-        SignUp
+        LogIn = 1,
+        LinkSSO = 2,
+        LogInAndLinkSSO = LogIn | LinkSSO,
+        SignUp = 4,
     }
 }

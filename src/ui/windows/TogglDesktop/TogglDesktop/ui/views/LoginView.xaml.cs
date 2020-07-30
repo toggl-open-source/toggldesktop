@@ -17,7 +17,7 @@ namespace TogglDesktop
     {
         public LoginViewModel ViewModel
         {
-            get => (LoginViewModel)DataContext;
+            get => DataContext as LoginViewModel;
             set => DataContext = value;
         }
 
@@ -38,7 +38,7 @@ namespace TogglDesktop
         {
             this.InitializeComponent();
             this.confirmSpinnerAnimation = (Storyboard)this.Resources["RotateConfirmSpinner"];
-            this.Reset();
+            DataContextChanged += (s, args) => this.Reset();
         }
 
         private void onSignupLoginToggleClick(object sender, RoutedEventArgs e)
@@ -51,6 +51,10 @@ namespace TogglDesktop
             {
                 ViewModel.SelectedConfirmAction = ConfirmAction.LogIn;
             }
+            else if (ViewModel.SelectedConfirmAction == ConfirmAction.LogInAndLinkSSO)
+            {
+                ViewModel.LoginWithSSO.Execute().Subscribe();
+            }
         }
 
         private void onForgotPasswordLinkClick(object sender, RoutedEventArgs e)
@@ -60,9 +64,10 @@ namespace TogglDesktop
 
         private void Reset()
         {
+            if (ViewModel == null) return;
+
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();
-            ViewModel = new LoginViewModel(RefreshLoginBindings, RefreshSignupBindings);
             ViewModel.IsLoginSignupExecuting.Subscribe(isExecuting =>
             {
                 if (isExecuting)
@@ -121,6 +126,7 @@ namespace TogglDesktop
 
         public void Deactivate(bool allowAnimation)
         {
+            ViewModel?.Reset();
             this.opacityAnimationToken = null;
 
             if (allowAnimation)

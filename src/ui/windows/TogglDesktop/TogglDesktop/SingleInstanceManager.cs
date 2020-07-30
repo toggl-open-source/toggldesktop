@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using TogglDesktop.Services;
 
 namespace TogglDesktop
 {
@@ -24,6 +26,11 @@ public class SingleInstanceManager<T> : Microsoft.VisualBasic.ApplicationService
     protected override void OnStartupNextInstance(Microsoft.VisualBasic.ApplicationServices.StartupNextInstanceEventArgs e)
     {
         app.MainWindow?.ShowOnTop();
+        var deepLink = e.CommandLine.FirstOrDefault();
+        if (deepLink != null && deepLink.StartsWith(DeepLinkProtocolInstaller.StartupUri))
+        {
+            (app.MainWindow as MainWindow)?.ProcessStartupUri(deepLink);
+        }
     }
 }
 }

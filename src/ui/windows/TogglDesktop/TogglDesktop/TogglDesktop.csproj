@@ -151,6 +151,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Runtime.WindowsRuntime.UI.Xaml.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -193,6 +194,7 @@
     <Compile Include="BugsnagService.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
+    <Compile Include="Services\DeepLinkProtocolInstaller.cs" />
     <Compile Include="Services\NsisPackageExtractor.cs" />
     <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Services\UpdateStatus.cs" />
@@ -246,6 +248,7 @@
     <Compile Include="ui\Converters\BooleanInvertToVisibilityConverter.cs" />
     <Compile Include="ui\Converters\CapitalizeConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
+    <Compile Include="ui\Converters\HasAnyFlagToVisibilityConverter.cs" />
     <Compile Include="ui\Converters\IsSelectableItemConverter.cs" />
     <Compile Include="ui\Converters\PopupAlignmentAwareConverter.cs" />
     <Compile Include="ui\Converters\StringFormatIfNotEmptyConverter.cs" />
@@ -308,6 +311,8 @@
     <Compile Include="ui\ViewModels\PasswordEx.cs" />
     <Compile Include="ui\ViewModels\PreferencesWindowViewModel.cs" />
     <Compile Include="ui\ViewModels\ProjectLabelViewModel.cs" />
+    <Compile Include="ui\ViewModels\ReactiveValidationViewModel.cs" />
+    <Compile Include="ui\ViewModels\SSOLoginViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryCellViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryLabelViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryListViewModel.cs" />
@@ -316,6 +321,12 @@
     <Compile Include="ui\views\IMainView.cs" />
     <Compile Include="ui\views\OverlayView.xaml.cs">
       <DependentUpon>OverlayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\views\SSOLoginView.xaml.cs">
+      <DependentUpon>SSOLoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\views\ValidationErrorControl.xaml.cs">
+      <DependentUpon>ValidationErrorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\windows\MiniTimerWindow.xaml.cs">
       <DependentUpon>MiniTimerWindow.xaml</DependentUpon>
@@ -596,7 +607,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\views\SSOLoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ui\views\TimerEntryListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\views\ValidationErrorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

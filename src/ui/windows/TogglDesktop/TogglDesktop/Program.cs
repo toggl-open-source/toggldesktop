@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Security;
 using System.Windows.Interop;
 using System.Windows.Media;
+using Microsoft.Win32;
+using TogglDesktop.Services;
 using Application = System.Windows.Forms.Application;
 
 namespace TogglDesktop
@@ -25,6 +28,7 @@ static class Program
         singleInstanceManager = new SingleInstanceManager<App>();
         singleInstanceManager.BeforeStartup += OnBeforeStartup;
         singleInstanceManager.Run(args);
+        
     }
 
     private static void OnBeforeStartup()
@@ -33,6 +37,7 @@ static class Program
             UserId = user_id;
         };
         BugsnagService.Init();
+        DeepLinkProtocolInstaller.InstallProtocol();
         singleInstanceManager.BeforeStartup -= OnBeforeStartup;
     }
 
@@ -48,5 +53,6 @@ static class Program
         var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
         return $"{versionInfo.ProductMajorPart}.{versionInfo.ProductMinorPart}.{versionInfo.ProductBuildPart}";
     }
+
 }
 }
