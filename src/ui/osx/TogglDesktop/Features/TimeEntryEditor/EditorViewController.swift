@@ -19,7 +19,7 @@ final class EditorViewController: NSViewController {
     private struct Constans {
 
         static let TokenViewSpacing: CGFloat = 5.0
-        static let TimerNotification = NSNotification.Name("TimerForRunningTimeEntryOnTicket")
+        static let TimerNotification = TimerViewModel.timerOnTickNotification
     }
 
     // MARK: OUTLET

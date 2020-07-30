@@ -55,7 +55,7 @@ static NSString *kStateKey = @"state";
 
 //@property (strong, nonatomic) LiteAutoCompleteDataSource *liteAutocompleteDataSource;
 @property (strong, nonatomic) TimeEntryViewItem *time_entry;
-@property (strong, nonatomic) NSTimer *timer;
+//@property (strong, nonatomic) NSTimer *timer;
 @property (assign, nonatomic) BOOL disableChange;
 @property (assign, nonatomic) BOOL focusNotSet;
 @property (assign, nonatomic) DisplayMode displayMode;
@@ -95,11 +95,11 @@ NSString *kInactiveTimerColor = @"#999999";
 
 		self.time_entry = [[TimeEntryViewItem alloc] init];
 
-		self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-													  target:self
-													selector:@selector(timerFired:)
-													userInfo:nil
-													 repeats:YES];
+//		self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+//													  target:self
+//													selector:@selector(timerFired:)
+//													userInfo:nil
+//													 repeats:YES];
 		self.disableChange = NO;
 	}
 
@@ -468,23 +468,23 @@ NSString *kInactiveTimerColor = @"#999999";
 //	}
 //}
 
-- (void)timerFired:(NSTimer *)timer
-{
-	if (self.time_entry == nil || self.time_entry.duration_in_seconds >= 0)
-	{
-		return;
-	}
-
-	char *str = toggl_format_tracking_time_duration(self.time_entry.duration_in_seconds);
-	NSString *newValue = [NSString stringWithUTF8String:str];
-	free(str);
-
-	[self.durationTextField setStringValue:newValue];
-	self.durationTextField.hidden = newValue.length == 0;
-
-	// Update
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"TimerForRunningTimeEntryOnTicket" object:nil];
-}
+//- (void)timerFired:(NSTimer *)timer
+//{
+//	if (self.time_entry == nil || self.time_entry.duration_in_seconds >= 0)
+//	{
+//		return;
+//	}
+//
+//	char *str = toggl_format_tracking_time_duration(self.time_entry.duration_in_seconds);
+//	NSString *newValue = [NSString stringWithUTF8String:str];
+//	free(str);
+//
+//	[self.durationTextField setStringValue:newValue];
+//	self.durationTextField.hidden = newValue.length == 0;
+//
+//	// Update
+//	[[NSNotificationCenter defaultCenter] postNotificationName:@"TimerForRunningTimeEntryOnTicket" object:nil];
+//}
 
 - (void)toggleTimer:(NSNotification *)notification
 {

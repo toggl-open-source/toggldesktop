@@ -39,17 +39,28 @@ final class TimerViewModel: NSObject {
     var onDescriptionFocusChanged: ((Bool) -> Void)?
     var onTouchBarUpdateRunningItem: ((TimeEntryViewItem) -> Void)?
 
+    /// Timer tick notification will be posted every second if there is a running time entry.
+    static let timerOnTickNotification = NSNotification.Name("TimerForRunningTimeEntryOnTicket")
+
     private var timeEntry = TimeEntryViewItem()
     private var notificationObservers: [AnyObject] = []
     private var autocompleteDataSource = LiteAutoCompleteDataSource(notificationName: kDisplayMinitimerAutocomplete)
+    private var timer: Timer!
 
     override init() {
         super.init()
         setupNotificationObservers()
+
+        timer = Timer.scheduledTimer(timeInterval: 1.0,
+                                     target: self,
+                                     selector: #selector(timerFired(_:)),
+                                     userInfo: nil,
+                                     repeats: true)
     }
 
     deinit {
         cancelNotificationObservers()
+        timer.invalidate()
     }
 
     func start() {
@@ -82,12 +93,22 @@ final class TimerViewModel: NSObject {
         return true
     }
 
+    // MARK: - Other
+
+    @objc
+    private func timerFired(_ timer: Timer) {
+        guard timeEntry.isRunning() else { return }
+
+        let formattedDuration = DesktopLibraryBridge.shared().convertDuraton(inSecond: timeEntry.duration_in_seconds)
+        durationString = formattedDuration
+
+        NotificationCenter.default.post(name: Self.timerOnTickNotification, object: nil)
+    }
+
     private func updateAutocomplete() {
         autocompleteDataSource.setFilter(entryDescription)
         autocompleteDataSource.input?.autocompleteTableView.resetSelected()
     }
-
-    // MARK: - Other
 
     private func updateTimerState(with timeEntry: TimeEntryViewItem?) {
         let entry: TimeEntryViewItem
