@@ -832,10 +832,6 @@ void User::LoadUserAndRelatedDataFromJSON(
     bool including_related_data,
     bool syncServer) {
 
-    // if the root of the json contains "data", then we're using /v8/me
-    // otherwise, it's Sync API
-    bool syncApi { !root.isMember("data") };
-
     if (root.isMember("since")) {
         SetSince(root["since"].asInt64());
         Logger("json").debug("User data as of: ", Since());
@@ -846,11 +842,11 @@ void User::LoadUserAndRelatedDataFromJSON(
     }
 
     // legacy API sends the data in a "data" nested member
-    const Json::Value &data { syncApi ? root : root["data"] };
+    const Json::Value &data { root.isMember("data") ? root["data"] : root };
 
     // user is contained in Sync API but it is in root of data in v8
-    error err = loadUserFromJSON(syncApi ? data["user"] : data);
-    LoadUserPreferencesFromJSON(syncApi ? data["preferences"] : data, true);
+    error err = loadUserFromJSON(data.isMember("user") ? data["user"] : data);
+    LoadUserPreferencesFromJSON(data.isMember("preferences") ? data["preferences"] : data, true);
     // other entities are contained about the same
     if (err == noError) {
         loadRelatedDataFromJSON(data, including_related_data, syncServer);

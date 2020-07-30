@@ -5323,6 +5323,10 @@ void Context::SetLogPath(const std::string &path) {
                 "%Y-%m-%d %H:%M:%S.%i [%P %I]:%s:%q:%t")));
     formattingChannel->setChannel(simpleFileChannel);
 
+    std::vector<std::string> loggerNames;
+    Poco::Logger::names(loggerNames);
+    for (auto i : loggerNames)
+        Poco::Logger::destroy(i);
     Poco::Logger::get("").setChannel(formattingChannel);
 
     log_path_ = path;
@@ -5444,6 +5448,9 @@ error Context::pullBatchedUserData() {
         Json::Reader reader;
         reader.parse(user_data_json, json);
 
+        std::cerr << "PULLED: " << std::endl << json.toStyledString() << std::endl;
+        logger.debug("Sync server pull response: ", json.toStyledString());
+
         if (err != noError) {
             return err;
         }
@@ -5539,62 +5546,62 @@ error Context::pushBatchedChanges(
                 *had_something_to_push = false;
                 return noError;
             }
+
+            Json::Value request;
+
+            // the conditions should be here so we don't create unnecessary empty JSON items
+            // (accessing a JSON item by a name allocates an empty item)
+            if (!clients.empty())
+                syncCollectJSON(request["clients"], clients);
+            if (!projects.empty())
+                syncCollectJSON(request["projects"], projects);
+            if (!time_entries.empty())
+                syncCollectJSON(request["time_entries"], time_entries);
+
+            if (request.empty())
+                return noError;
+
+            Json::FastWriter w;
+            std::string payload = w.write(request);
+
+            lastRequestUUID_ = Poco::UUIDGenerator().createOne().toString();
+
+            HTTPRequest req;
+            req.payload = payload;
+            req.host = urls::SyncAPI();
+            req.relative_url = "/push/" + lastRequestUUID_;
+            req.basic_auth_username = api_token;
+            req.basic_auth_password = "api_token";
+
+            auto response = TogglClient::GetInstance().Post(req);
+
+            std::cerr << "REQUEST: " << request.toStyledString() << std::endl;
+            logger.debug("Sync request ", lastRequestUUID_, ": ", request.toStyledString());
+
+            if (response.err != noError) {
+                logger.log("Sync error: ", response.err);
+                return displayError(response.err);
+            }
+
+            Json::Reader reader;
+            Json::Value responseJson;
+            reader.parse(response.body, responseJson);
+
+            std::cerr << "RESPONSE: " << responseJson.toStyledString() << std::endl;
+            logger.debug("Sync response to request ", lastRequestUUID_, ": ", responseJson.toStyledString());
+
+            error err = syncHandleResponse(responseJson["clients"], clients);
+            if (err != noError)
+                return err;
+            updateProjectClients(clients, projects);
+            err = syncHandleResponse(responseJson["projects"], projects);
+            if (err != noError)
+                return err;
+            updateEntryProjects(projects, time_entries);
+            err = syncHandleResponse(responseJson["time_entries"], time_entries);
+            if (err != noError)
+                return err;
         }
-
-        Json::Value request;
-
-        // the conditions should be here so we don't create unnecessary empty JSON items
-        // (accessing a JSON item by a name allocates an empty item)
-        if (!clients.empty())
-            syncCollectJSON(request["clients"], clients);
-        if (!projects.empty())
-            syncCollectJSON(request["projects"], projects);
-        if (!time_entries.empty())
-            syncCollectJSON(request["time_entries"], time_entries);
-
-        if (request.empty())
-            return noError;
-
-        Json::FastWriter w;
-        std::string payload = w.write(request);
-
-        lastRequestUUID_ = Poco::UUIDGenerator().createOne().toString();
-
-        HTTPRequest req;
-        req.payload = payload;
-        req.host = urls::SyncAPI();
-        req.relative_url = "/push/" + lastRequestUUID_;
-        req.basic_auth_username = api_token;
-        req.basic_auth_password = "api_token";
-
-        auto response = TogglClient::GetInstance().Post(req);
-
-        std::cerr << "REQUEST: " << request.toStyledString() << std::endl;
-        logger.debug("Sync request ", lastRequestUUID_, ": ", request.toStyledString());
-
-        if (response.err != noError) {
-            logger.log("Sync error: ", response.err);
-            return displayError(response.err);
-        }
-
-        Json::Reader reader;
-        Json::Value responseJson;
-        reader.parse(response.body, responseJson);
-
-        std::cerr << "RESPONSE: " << responseJson.toStyledString() << std::endl;
-        logger.debug("Sync response to request ", lastRequestUUID_, ": ", responseJson.toStyledString());
-
-        error err = syncHandleResponse(responseJson["clients"], clients);
-        if (err != noError)
-            return err;
-        updateProjectClients(clients, projects);
-        err = syncHandleResponse(responseJson["projects"], projects);
-        if (err != noError)
-            return err;
-        updateEntryProjects(projects, time_entries);
-        err = syncHandleResponse(responseJson["time_entries"], time_entries);
-        if (err != noError)
-            return err;
 
         stopwatch.stop();
         logger.debug("Sync success. Total = ", stopwatch.elapsed() / 1000, " ms");
@@ -6538,7 +6545,9 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
             if (i["payload"]["success"].asBool()) {
                 if (model) {
                     auto &root = i["payload"]["result"];
-                    auto id = root["id"].asUInt64();
+                    Poco::UInt64 id = i["meta"]["id"].asUInt64();
+                    if (!id && root.isMember("id"))
+                        id = root["id"].asUInt64();
                     if (!id) {
                         continue;
                     }
@@ -6548,10 +6557,11 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
                     }
 
                     if (model->ID() != id) {
-                        return error("Backend has changed the ID of the entry");
+                        return error("Backend has changed the ID of the entry from " + std::to_string(model->ID()) + " to " + std::to_string(id));
                     }
 
-                    model->LoadFromJSON(i["payload"]["result"], isUsingSyncServer());
+                    if (!root.isNull())
+                        model->LoadFromJSON(i["payload"]["result"], isUsingSyncServer());
                     model->ClearUnsynced();
                     error err = save(false);
                     if (err != noError) {
