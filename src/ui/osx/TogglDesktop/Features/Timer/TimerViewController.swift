@@ -75,6 +75,23 @@ class TimerViewController: NSViewController {
             self.durationLabel.stringValue = duration
         }
 
+        viewModel.onTagSelected = { [unowned self] isSelected in
+            self.tagsButton.isSelected = isSelected
+        }
+
+        viewModel.onProjectSelected = { [unowned self] project in
+            if let project = project {
+                self.projectButton.selectedBackgroundColor = project.color.withAlphaComponent(0.3)
+                self.projectButton.attributedTitle = project.attributedTitle
+                self.projectButton.image = nil
+                self.projectButton.isSelected = true
+            } else {
+                self.projectButton.title = ""
+                self.projectButton.image = NSImage(named: "project-button")
+                self.projectButton.isSelected = false
+            }
+        }
+
         viewModel.onTouchBarUpdateRunningItem = { entry in
             if #available(macOS 10.12.2, *) {
                 TouchBarService.shared.updateRunningItem(entry)
@@ -92,16 +109,6 @@ class TimerViewController: NSViewController {
     }
 
     @IBAction func tagsButtonClicked(_ sender: Any) {
-        NSLog("Tag mouse clicked")
-
-        if tagsButton.controlState == .active {
-            if tagsButton.isSelected == true {
-                tagsButton.isSelected = false
-            } else {
-                tagsButton.isSelected = true
-                tagsButton.controlState = .normal
-            }
-        }
     }
 
     @IBAction func billableButtonClicked(_ sender: Any) {

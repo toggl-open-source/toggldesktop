@@ -178,30 +178,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    self.Description = nil;
-    self.descriptionName = nil;
-    self.ProjectAndTaskLabel = nil;
-    self.TaskLabel = nil;
-    self.ProjectLabel = nil;
-    self.ClientLabel = nil;
-    self.duration = nil;
-    self.ProjectColor = nil;
-    self.ProjectGUID = nil;
-    self.GUID = nil;
-    self.started = nil;
-    self.ended = nil;
-    self.startTimeString = nil;
-    self.endTimeString = nil;
-    self.tags = nil;
-    self.updatedAt = nil;
-    self.formattedDate = nil;
-    self.dateDuration = nil;
-    self.WorkspaceName = nil;
-    self.Error = nil;
-}
-
 - (void)setLoadMore
 {
 	self.loadMore = YES;
@@ -216,7 +192,7 @@
 }
 
 - (NSUInteger)hash {
-	return self.duration_in_seconds ^ self.Description.hash ^ self.ProjectAndTaskLabel.hash ^ self.TaskLabel.hash ^ self.ProjectLabel.hash ^ self.ClientLabel.hash ^ self.WorkspaceID ^ self.ProjectID ^ self.TaskID ^ self.duration.hash ^ self.ProjectColor.hash ^ self.ProjectGUID.hash ^ self.GUID.hash ^ self.billable ^ self.unsynced ^ self.started.hash ^ self.ended.hash ^ self.startTimeString.hash ^ self.endTimeString.hash ^ self.tags.hash ^ self.updatedAt.hash ^ self.formattedDate.hash ^ self.isHeader.hash ^ self.dateDuration.hash ^ self.focusedFieldName.hash ^ self.CanSeeBillable ^ self.DefaultWID ^ self.CanAddProjects ^ self.WorkspaceName.hash ^ self.Error.hash ^ self.loadMore ^ self.confirmlessDelete ^ self.Group ^ self.GroupOpen ^ self.GroupName.hash ^ self.GroupDuration.hash ^ self.GroupItemCount;
+	return self.duration_in_seconds ^ self.Description.hash ^ self.ProjectAndTaskLabel.hash ^ self.TaskLabel.hash ^ self.ProjectLabel.hash ^ self.ClientLabel.hash ^ self.WorkspaceID ^ self.ProjectID ^ self.TaskID ^ self.duration.hash ^ self.ProjectColor.hash ^ self.GUID.hash ^ self.billable ^ self.unsynced ^ self.started.hash ^ self.ended.hash ^ self.startTimeString.hash ^ self.endTimeString.hash ^ self.tags.hash ^ self.updatedAt.hash ^ self.formattedDate.hash ^ self.isHeader.hash ^ self.dateDuration.hash ^ self.focusedFieldName.hash ^ self.CanSeeBillable ^ self.DefaultWID ^ self.CanAddProjects ^ self.WorkspaceName.hash ^ self.Error.hash ^ self.loadMore ^ self.confirmlessDelete ^ self.Group ^ self.GroupOpen ^ self.GroupName.hash ^ self.GroupDuration.hash ^ self.GroupItemCount;
 }
 
 - (NSString *)descriptionEntry {

@@ -22,6 +22,8 @@
 		3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CD30F421F58B02C006FAA0D /* OverlayViewController.xib */; };
 		3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */; };
 		3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */; };
+		490CCCE724D30382007D392B /* ProjectTitleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490CCCE624D30382007D392B /* ProjectTitleFactory.swift */; };
+		490CCCE824D30382007D392B /* ProjectTitleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490CCCE624D30382007D392B /* ProjectTitleFactory.swift */; };
 		4917324E24C050D8003EE7CC /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */; };
 		4917324F24C050D8003EE7CC /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */; };
 		4917325724C06BA3003EE7CC /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = 4917325624C06BA3003EE7CC /* cacert.pem */; };
@@ -727,6 +729,7 @@
 		3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadMoreCell.m; sourceTree = "<group>"; };
 		3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoCompleteTableContainer.h; sourceTree = "<group>"; };
 		3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableContainer.m; sourceTree = "<group>"; };
+		490CCCE624D30382007D392B /* ProjectTitleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTitleFactory.swift; sourceTree = "<group>"; };
 		4917325424C069DD003EE7CC /* toggl_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toggl_api.h; path = ../../../../toggl_api.h; sourceTree = "<group>"; };
 		4917325524C069DD003EE7CC /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = const.h; path = ../../../../const.h; sourceTree = "<group>"; };
 		4917325624C06BA3003EE7CC /* cacert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cacert.pem; path = ../../../../ssl/cacert.pem; sourceTree = "<group>"; };
@@ -1228,6 +1231,7 @@
 				74A7346918297DD100525BBC /* ConvertHexColor.m */,
 				745126B419A28AA500390F47 /* Reachability.h */,
 				745126B519A28AA600390F47 /* Reachability.m */,
+				490CCCE624D30382007D392B /* ProjectTitleFactory.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3008,6 +3012,7 @@
 				BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */,
 				BA6F81E422C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift in Sources */,
 				BA75FF3C22BCE94100D3F08C /* TimelineDisplayCommand.m in Sources */,
+				490CCCE724D30382007D392B /* ProjectTitleFactory.swift in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				BA2807E02306A2FA001A9E48 /* NSWindowController+Focusable.swift in Sources */,
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
@@ -3231,6 +3236,7 @@
 				BAE64DE12368334000244D2B /* WorkspaceCellView.swift in Sources */,
 				BA13E57D24347716005244AD /* OnboardingContentViewController.swift in Sources */,
 				BA37ACD823D8900C0013EE26 /* TimelineActivityCell.swift in Sources */,
+				490CCCE824D30382007D392B /* ProjectTitleFactory.swift in Sources */,
 				BAD4F9C4246D392C0032F0C7 /* PasswordStrengthValidation.swift in Sources */,
 				BAE64DE32368334000244D2B /* idler.c in Sources */,
 				BAE64DE42368334000244D2B /* ProjectCreationView.swift in Sources */,

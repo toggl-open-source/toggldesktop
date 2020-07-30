@@ -24,7 +24,6 @@
 @property (assign, nonatomic) uint64_t TaskID;
 @property (copy, nonatomic) NSString *duration;
 @property (copy, nonatomic) NSString *ProjectColor;
-@property (copy, nonatomic) NSString *ProjectGUID; // when project is not saved to backend yet
 @property (copy, nonatomic) NSString *GUID;
 @property (assign, nonatomic) BOOL billable;
 @property (assign, nonatomic) BOOL unsynced;

@@ -122,10 +122,10 @@
                                 <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jwm-bG-cK6" customClass="SelectableButton" customModule="TogglDesktop" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="24" id="0RQ-O1-nBB"/>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="0RQ-O1-nBB"/>
                                         <constraint firstAttribute="height" constant="24" id="aos-pz-lzF"/>
                                     </constraints>
-                                    <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" image="project-button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="XiJ-UQ-fKx">
+                                    <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" image="project-button" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" imageScaling="proportionallyDown" inset="2" id="XiJ-UQ-fKx">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" size="12" name="HelveticaNeue"/>
                                     </buttonCell>

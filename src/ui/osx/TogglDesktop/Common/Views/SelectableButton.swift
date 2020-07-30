@@ -40,6 +40,15 @@ class SelectableButton: NSButton {
         }
     }
 
+    override var intrinsicContentSize: NSSize {
+        var defaultSize = super.intrinsicContentSize
+        // add padding around button for better appearance
+        if defaultSize.width > cornerRadius * 2 {
+            defaultSize.width += cornerRadius
+        }
+        return defaultSize
+    }
+
     // MARK: - Init
 
     override init(frame frameRect: NSRect) {

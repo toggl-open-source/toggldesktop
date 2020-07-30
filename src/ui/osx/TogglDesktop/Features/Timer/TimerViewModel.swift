@@ -31,10 +31,12 @@ final class TimerViewModel: NSObject {
         }
     }
 
-    var onDescriptionFocusChanged: ((Bool) -> Void)?
     var onIsRunning: ((Bool) -> Void)?
     var onDescriptionChanged: ((String) -> Void)?
     var onDurationChanged: ((String) -> Void)?
+    var onTagSelected: ((Bool) -> Void)?
+    var onProjectSelected: ((Project?) -> Void)?
+    var onDescriptionFocusChanged: ((Bool) -> Void)?
     var onTouchBarUpdateRunningItem: ((TimeEntryViewItem) -> Void)?
 
     private var timeEntry = TimeEntryViewItem()
@@ -54,7 +56,6 @@ final class TimerViewModel: NSObject {
         if timeEntry.isRunning() {
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kCommandStop), object: nil, userInfo: nil)
         } else {
-            timeEntry.entryDescription = entryDescription
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kCommandNew), object: timeEntry, userInfo: nil)
             onDescriptionFocusChanged?(false)
 
@@ -84,42 +85,6 @@ final class TimerViewModel: NSObject {
     private func updateAutocomplete() {
         autocompleteDataSource.setFilter(entryDescription)
         autocompleteDataSource.input?.autocompleteTableView.resetSelected()
-    }
-
-    // MARK: - Notifications handling
-
-    private func setupNotificationObservers() {
-        let displayTimerStateObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kDisplayTimerState),
-                                                                               object: nil,
-                                                                               queue: .main) { [weak self] notification in
-            self?.updateTimerState(with: notification.object as? TimeEntryViewItem)
-        }
-
-        let focusTimerObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kFocusTimer),
-                                                                        object: nil,
-                                                                        queue: .main) { [weak self] _ in
-            self?.focusTimer()
-        }
-
-        let commandStopObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kCommandStop),
-                                                                         object: nil,
-                                                                         queue: .main) { [weak self] _ in
-            self?.stop()
-        }
-
-        let startTimerObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kStartTimer),
-                                                                        object: nil,
-                                                                        queue: .main) { [weak self] _ in
-            self?.start()
-        }
-
-        notificationObservers = [displayTimerStateObserver, focusTimerObserver, commandStopObserver, startTimerObserver]
-    }
-
-    private func cancelNotificationObservers() {
-        notificationObservers.forEach {
-            NotificationCenter.default.removeObserver($0)
-        }
     }
 
     // MARK: - Other
@@ -166,6 +131,9 @@ final class TimerViewModel: NSObject {
         focusTimer()
 
         timeEntry = TimeEntryViewItem()
+
+        onTagSelected?(false)
+        onProjectSelected?(nil)
     }
 
     private func fillEntry(from autocompleteItem: AutocompleteItem) {
@@ -187,9 +155,53 @@ final class TimerViewModel: NSObject {
         }
         entryDescription = timeEntry.entryDescription
 
-        focusTimer()
+        onTagSelected?(timeEntry.tags?.isEmpty == false)
 
-        // TODO: set buttons to new state if needed
+        let hasProject = timeEntry.projectLabel != nil && timeEntry.projectLabel.isEmpty == false
+        if hasProject {
+            let project = Project(timeEntry: timeEntry)
+            onProjectSelected?(project)
+        } else {
+            onProjectSelected?(nil)
+        }
+
+        focusTimer()
+    }
+
+    // MARK: - Notifications handling
+
+    private func setupNotificationObservers() {
+        let displayTimerStateObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kDisplayTimerState),
+                                                                               object: nil,
+                                                                               queue: .main) { [weak self] notification in
+            self?.updateTimerState(with: notification.object as? TimeEntryViewItem)
+        }
+
+        let focusTimerObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kFocusTimer),
+                                                                        object: nil,
+                                                                        queue: .main) { [weak self] _ in
+            self?.focusTimer()
+        }
+
+        let commandStopObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kCommandStop),
+                                                                         object: nil,
+                                                                         queue: .main) { [weak self] _ in
+            self?.stop()
+        }
+
+        let startTimerObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kStartTimer),
+                                                                        object: nil,
+                                                                        queue: .main) { [weak self] _ in
+            self?.start()
+        }
+
+        notificationObservers = [displayTimerStateObserver, focusTimerObserver, commandStopObserver, startTimerObserver]
+    }
+
+    private func cancelNotificationObservers() {
+        notificationObservers.forEach {
+            NotificationCenter.default.removeObserver($0)
+        }
     }
 }
 
@@ -250,6 +262,21 @@ extension TimerViewModel: NSTableViewDelegate {
             return inputField.worksapceItemHeight
         default:
             return inputField.itemHeight
+        }
+    }
+}
+
+// MARK: - Project struct
+
+extension TimerViewModel {
+
+    struct Project {
+        let color: NSColor
+        let attributedTitle: NSAttributedString
+
+        init(timeEntry: TimeEntryViewItem) {
+            self.color = ConvertHexColor.hexCode(toNSColor: timeEntry.projectColor)
+            self.attributedTitle = ProjectTitleFactory().title(for: timeEntry)
         }
     }
 }
