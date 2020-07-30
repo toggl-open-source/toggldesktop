@@ -1816,16 +1816,6 @@
     "osx": {
         "dev": [
             {
-                "version": "7.5.227",
-                "timestamp": "22-07-2020",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_5_227.dmg"
-                    }
-                ]
-            },
-            {
                 "version": "7.5.228",
                 "timestamp": "22-07-2020",
                 "filename": [
@@ -1912,6 +1902,16 @@
                     {
                         "type": "macos",
                         "name": "TogglDesktop-7_5_236.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.5.237",
+                "timestamp": "30-07-2020",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_5_237.dmg"
                     }
                 ]
             }
