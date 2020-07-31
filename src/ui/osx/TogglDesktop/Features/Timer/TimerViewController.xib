@@ -39,8 +39,8 @@
                                         <subviews>
                                             <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecT-b1-LZO" customClass="BetterFocusAutoCompleteInput">
                                                 <rect key="frame" x="-2" y="0.0" width="353" height="28"/>
-                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" placeholderString="What are you doing?" usesSingleLineMode="YES" id="O0F-G7-GmN" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
-                                                    <font key="font" metaFont="menu" size="14"/>
+                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" placeholderString="What are you working on?" usesSingleLineMode="YES" id="O0F-G7-GmN" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                                    <font key="font" metaFont="system" size="14"/>
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     <userDefinedRuntimeAttributes>
@@ -66,7 +66,6 @@
                                         <constraint firstAttribute="height" constant="30" id="V6l-a9-lWL"/>
                                     </constraints>
                                     <color key="borderColor" name="lighter-grey-color"/>
-                                    <color key="fillColor" name="preference-box-background-color"/>
                                 </box>
                                 <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hnb-qT-7zu">
                                     <rect key="frame" x="391" y="0.0" width="98" height="30"/>
@@ -264,9 +263,6 @@
         </namedColor>
         <namedColor name="lighter-grey-color">
             <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="preference-box-background-color">
-            <color red="0.69019607843137254" green="0.69019607843137254" blue="0.69019607843137254" alpha="0.070000000298023224" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

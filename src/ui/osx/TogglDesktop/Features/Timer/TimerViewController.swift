@@ -92,6 +92,11 @@ class TimerViewController: NSViewController {
             }
         }
 
+        viewModel.onBillableChanged = { [unowned self] billable in
+            self.billableButton.isEnabled = billable != .notAvailable
+            self.billableButton.isSelected = billable == .on
+        }
+
         viewModel.onTouchBarUpdateRunningItem = { entry in
             if #available(macOS 10.12.2, *) {
                 TouchBarService.shared.updateRunningItem(entry)

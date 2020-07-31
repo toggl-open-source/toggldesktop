@@ -31,11 +31,24 @@ final class TimerViewModel: NSObject {
         }
     }
 
+    enum BillableState {
+        case on
+        case off
+        case notAvailable
+    }
+
+    private(set) var billableState: BillableState = .notAvailable {
+        didSet {
+            onBillableChanged?(billableState)
+        }
+    }
+
     var onIsRunning: ((Bool) -> Void)?
     var onDescriptionChanged: ((String) -> Void)?
     var onDurationChanged: ((String) -> Void)?
     var onTagSelected: ((Bool) -> Void)?
     var onProjectSelected: ((Project?) -> Void)?
+    var onBillableChanged: ((BillableState) -> Void)?
     var onDescriptionFocusChanged: ((Bool) -> Void)?
     var onTouchBarUpdateRunningItem: ((TimeEntryViewItem) -> Void)?
 
@@ -121,6 +134,12 @@ final class TimerViewModel: NSObject {
 
         isRunning = entry.isRunning()
 
+        if entry.canSeeBillable {
+            billableState = entry.billable ? .on : .off
+        } else {
+            billableState = .notAvailable
+        }
+
         if let description = entry.descriptionName, !description.isEmpty {
             self.entryDescription = description
 //            descriptionTextField.toolTip = description
@@ -184,6 +203,12 @@ final class TimerViewModel: NSObject {
             onProjectSelected?(project)
         } else {
             onProjectSelected?(nil)
+        }
+
+        if timeEntry.canSeeBillable {
+            billableState = timeEntry.billable ? .on : .off
+        } else {
+            billableState = .notAvailable
         }
 
         focusTimer()

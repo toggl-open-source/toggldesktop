@@ -43,4 +43,12 @@ extension NSColor {
             return ConvertHexColor.hexCode(toNSColor: "#acacac")
         }
     }
+
+    static var togglTextFieldHoverBackground: NSColor {
+        if #available(OSX 10.13, *) {
+            return NSColor(named: NSColor.Name("text-field-hover-background"))!
+        } else {
+            return NSColor(red: 0, green: 0, blue: 0, alpha: 0.05)
+        }
+    }
 }
