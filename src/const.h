@@ -53,6 +53,7 @@
 #define kInvalidDateError "Date year must be between 2006 and 2030"
 #define kStartNotBeforeStopError "Stop time must be after start time"
 #define kMaximumDescriptionLengthError "Maximum length for description (3000 chars) exceeded"
+#define kForeignEntityLost "Assigned foreign entity could not be found"
 
 #define kCheckYourSignupError "Signup failed - please check your details. The e-mail might be already taken."  // NOLINT
 #define kEndpointGoneError "The API endpoint used by this app is gone. Please contact Toggl support!"  // NOLINT
