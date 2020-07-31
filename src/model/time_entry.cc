@@ -621,6 +621,9 @@ Json::Value TimeEntry::SyncPayload() const {
         if (PID() > 0) {
             insertIfValue("project_id", PID, Json::Int64(PID()));
         }
+        else if (PID.IsDirty()) {
+            result["project_id"] = Json::nullValue;
+        }
         else {
             insertIf("project_id", ProjectGUID);
         }
