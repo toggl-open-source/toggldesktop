@@ -9,11 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @protocol TimeEntryListViewControllerDelegate <NSObject>
-
-- (BOOL)isTimerFocusing;
 - (NSView *)containerViewForTimer;
-- (void) shouldFocusTimer;
-
 @end
 
 @interface TimeEntryListViewController : NSViewController

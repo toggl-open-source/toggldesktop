@@ -15,7 +15,7 @@ final class TimerViewModel: NSObject {
             guard entryDescription != oldValue else { return }
             timeEntry.entryDescription = entryDescription
             updateAutocomplete()
-            onDescriptionChanged?(entryDescription)
+            onDescriptionChanged?(entryDescription) // cycle
         }
     }
 
@@ -76,10 +76,11 @@ final class TimerViewModel: NSObject {
         timer.invalidate()
     }
 
-    func start() {
+    func startStopAction() {
         if timeEntry.isRunning() {
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kCommandStop), object: nil, userInfo: nil)
         } else {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kForceCloseEditPopover), object: nil)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kCommandNew), object: timeEntry, userInfo: nil)
             onDescriptionFocusChanged?(false)
 
@@ -140,6 +141,7 @@ final class TimerViewModel: NSObject {
             billableState = .notAvailable
         }
 
+        // TODO: should not update if description is in edit mode
         if let description = entry.descriptionName, !description.isEmpty {
             self.entryDescription = description
 //            descriptionTextField.toolTip = description
@@ -238,7 +240,7 @@ final class TimerViewModel: NSObject {
         let startTimerObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kStartTimer),
                                                                         object: nil,
                                                                         queue: .main) { [weak self] _ in
-            self?.start()
+            self?.startStopAction()
         }
 
         notificationObservers = [displayTimerStateObserver, focusTimerObserver, commandStopObserver, startTimerObserver]

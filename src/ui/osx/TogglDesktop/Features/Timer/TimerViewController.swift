@@ -47,7 +47,7 @@ class TimerViewController: NSViewController {
     private func setupBindings() {
         viewModel.onDescriptionFocusChanged = { [unowned self] shouldFocus in
             if shouldFocus {
-                self.descriptionTextField.window?.makeFirstResponder(self.descriptionTextField)
+                self.focusDescriptionField()
             } else {
                 self.descriptionTextField.window?.makeFirstResponder(nil)
             }
@@ -104,10 +104,21 @@ class TimerViewController: NSViewController {
         }
     }
 
+    @objc
+    func focusDescriptionField() {
+        descriptionTextField.window?.makeFirstResponder(self.descriptionTextField)
+    }
+
+    // TODO: consider removing this after refactoring TimerEditViewController
+    @objc
+    func triggerStartStopAction() {
+        viewModel.startStopAction()
+    }
+
     // MARK: - Actions
 
     @IBAction func starButtonClicked(_ sender: Any) {
-        viewModel.start()
+        viewModel.startStopAction()
     }
 
     @IBAction func projectButtonClicked(_ sender: Any) {
@@ -155,7 +166,7 @@ class TimerViewController: NSViewController {
                     return isHandled
                 }
             }
-            viewModel.start()
+            viewModel.startStopAction()
         }
 
         return isHandled

@@ -153,13 +153,11 @@ extension MainDashboardViewController {
     fileprivate func updateNextKeyView() {
         switch currentTab {
         case .timeline:
-            timerController.autoCompleteInput?.nextKeyView = listBtn
             listBtn.nextKeyView = timelineBtn
             timelineBtn.nextKeyView = timelineController.recordSwitcher
             timelineController.updateNextKeyView()
-            timelineController.datePickerView.nextDateBtn.nextKeyView = timerController.autoCompleteInput
         case .timeEntryList:
-            timerController.autoCompleteInput?.nextKeyView = listBtn
+            break
         }
     }
 
@@ -186,17 +184,8 @@ extension MainDashboardViewController {
 // It's for backward compatible in TimeEntryListViewController
 
 extension MainDashboardViewController: TimeEntryListViewControllerDelegate {
-
-    func isTimerFocusing() -> Bool {
-        return timerController.autoCompleteInput?.currentEditor() != nil
-    }
-
     func containerViewForTimer() -> NSView! {
         return timerContainerView
-    }
-
-    func shouldFocusTimer() {
-        timerController.focusTimer()
     }
 }
 
