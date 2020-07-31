@@ -6458,12 +6458,20 @@ void Context::syncCollectJSON(Json::Value &array, const std::vector<T*> &source)
         // This is fine for now (the actual resolution of these dependencies will happen only when syncing a large chunk of offline data)
         // but in the future we should think about using entity pointers instead of storing foreign IDs and GUIDs for Clients and Projects
         // When removing this, see the SyncPayload method, it relies on returning GUIDs
-        syncTranslateGUIDToLocalID(payload);
+        bool found = syncTranslateGUIDToLocalID(payload);
+
+        // When looking for the foreign entry GUID, sometimes (in case of a bug, most likely), it can not be found
+        // That causes the whole syncing process to grind to a halt, so let's not sync those entities
+        if (!found) {
+            logger.error("Was not able to sync entity: ", i->String());
+            i->SetUnsynced();
+            i->SetValidationError(kForeignEntityLost);
+        }
 
         // If updating, there always has to be a payload
         // When creating, it hypothetically doesn't need to be there
         // Deleting doesn't have any payload at all
-        if (!payload.isNull() || i->SyncType() != "update") {
+        if (found && (!payload.isNull() || i->SyncType() != "update")) {
             item["payload"] = payload;
             item["type"] = i->SyncType();
             item["meta"] = i->SyncMetadata();
@@ -6481,7 +6489,7 @@ void Context::syncStripPremiumDataFromModelJSON(Json::Value &item) {
         item.removeMember("task_id");
 }
 
-void Context::syncTranslateGUIDToLocalID(Json::Value &item) {
+bool Context::syncTranslateGUIDToLocalID(Json::Value &item) {
     if (item.isMember("project_id") && item["project_id"].isString()) {
         auto guid = item["project_id"].asString();
         if (guid.empty()) {
@@ -6489,9 +6497,12 @@ void Context::syncTranslateGUIDToLocalID(Json::Value &item) {
         }
         else {
             Project *project = this->user_->related.ProjectByGUID(guid);
-            if (project) {
+            if (project && project->ValidationError() != kForeignEntityLost) {
                 auto localID = project->LocalID();
                 item["project_id"] = Json::Int64(-localID);
+            }
+            else {
+                return false;
             }
         }
     }
@@ -6502,12 +6513,16 @@ void Context::syncTranslateGUIDToLocalID(Json::Value &item) {
         }
         else {
             Client *client = this->user_->related.ClientByGUID(guid);
-            if (client) {
+            if (client && client->ValidationError() != kForeignEntityLost) {
                 auto localID = client->LocalID();
                 item["client_id"] = Json::Int64(-localID);
             }
+            else {
+                return false;
+            }
         }
     }
+    return true;
 }
 
 template<typename T>
@@ -6577,6 +6592,8 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
                     model->MarkAsDeletedOnServer();
                     continue;
                 }
+                model->SetUnsynced();
+                model->SetValidationError(errorMessage);
                 logger.error("Sync: Error when syncing ", modelInfo, ": ", errorMessage);
                 displayError(errorMessage);
                 return errorMessage;
