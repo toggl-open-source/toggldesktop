@@ -272,8 +272,8 @@ extension EditorViewController {
         projectTextField.setTimeEntry(timeEntry)
         calendarViewControler.prepareLayout(with: timeEntry.started)
 
-        // do not update description if user is editing but update if it's first `fillData()` call
-        if descriptionTextField.currentEditor() == nil || oldValue == nil {
+        // do not update description if user is editing but update if it's first `fillData()` call or it's a new timeEntry
+        if descriptionTextField.currentEditor() == nil || oldValue == nil || timeEntry.guid != oldValue?.guid {
             descriptionTextField.stringValue = timeEntry.descriptionName
         }
 
