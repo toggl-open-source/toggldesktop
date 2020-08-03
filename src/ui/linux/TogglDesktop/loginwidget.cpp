@@ -22,7 +22,7 @@ oauth2(new OAuth2(this)) {
 
     oauth2->setScope("profile email");
     oauth2->setAppName("Toggl Desktop");
-    oauth2->setClientID("426090949585.apps.googleusercontent.com");
+    oauth2->setClientID("426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com");
     oauth2->setRedirectURI("http://www.google.com/robots.txt");
 
     connect(oauth2, SIGNAL(loginDone()), this, SLOT(loginDone()));
