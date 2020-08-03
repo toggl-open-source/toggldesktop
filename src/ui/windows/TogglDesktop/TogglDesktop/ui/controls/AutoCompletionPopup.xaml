@@ -266,7 +266,7 @@
                             <Path Height="25"
                                   Width="25"
                                   Margin="0 -2 0 0"
-                                  Fill="{DynamicResource Toggl.DisabledTextBrush}"
+                                  Fill="{DynamicResource Toggl.AccentBrush}"
                                   Data="M12.894 6.5V12h5.5v1h-5.5v5.5h-1V13h-5.5v-1h5.5V6.5h1z" />
                             <TextBlock Style="{DynamicResource Toggl.BodyText}"
                                        Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=togglDesktop:AutoCompletionPopup}, Path=ActionButtonText}" />

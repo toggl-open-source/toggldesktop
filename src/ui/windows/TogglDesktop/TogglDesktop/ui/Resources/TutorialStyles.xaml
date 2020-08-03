@@ -6,12 +6,12 @@
 
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="Padding" Value="24 12" />
-        <Setter Property="Background" Value="#4dd965" />
+        <Setter Property="Background" Value="{DynamicResource Toggl.AccentBrush}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontSize" Value="14" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#3eb052"/>
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Accent.MouseOverBackground}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="White"/>

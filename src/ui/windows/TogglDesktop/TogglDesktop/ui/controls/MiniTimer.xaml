@@ -44,7 +44,7 @@
                                 <Trigger Property="IsChecked" Value="True">
                                     <Setter TargetName="StopButton" Property="Visibility" Value="Visible" />
                                     <Setter TargetName="StartButton" Property="Visibility" Value="Collapsed" />
-                                    <Setter TargetName="BackgroundRectangle" Property="Fill" Value="{DynamicResource Toggl.ValidationErrorBackground}" />
+                                    <Setter TargetName="BackgroundRectangle" Property="Fill" Value="{DynamicResource Toggl.SecondaryAccentBrush}" />
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter TargetName="OverlayRectangle" Property="Fill">
@@ -140,7 +140,7 @@
                                        Padding="5 1"
                                        Height="Auto"
                                        MinHeight="28"
-                                       MaxHeight="44"
+                                       MaxHeight="46"
                                        Style="{StaticResource Toggl.Timer.DescriptionTextBox}"
                                        Visibility="{Binding IsRunning, Converter={StaticResource BooleanInvertToVisibilityConverter}}"
                                        Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
