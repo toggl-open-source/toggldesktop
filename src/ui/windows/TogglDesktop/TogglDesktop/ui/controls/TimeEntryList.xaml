@@ -7,18 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance viewModels:TimeEntryListViewModel, IsDesignTimeCreatable=False}"
-             Focusable="True">
-
-    <UserControl.Style>
-        <Style TargetType="UserControl">
-            <Setter Property="Background" Value="{DynamicResource Toggl.Background}" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding CurrentScreen}" Value="{x:Static viewModels:Screen.TimeEntriesList}">
-                    <Setter Property="Background" Value="{DynamicResource Toggl.TimeEntryListBackground}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Style>
+             Focusable="True"
+             Background="{DynamicResource Toggl.Background}">
 
     <UserControl.Resources>
         <!-- ReSharper disable once Xaml.RedundantResource -->

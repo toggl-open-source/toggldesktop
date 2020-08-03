@@ -34,7 +34,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" VerticalAlignment="Top">
-            <Viewbox Width="63" Height="19" Margin="0 50 0 8">
+            <Viewbox Width="72" Height="14" Stretch="UniformToFill" Margin="0 50 0 8">
                 <ContentControl Content="{StaticResource Toggl.LogoSvg}" />
             </Viewbox>
             <TextBlock Text="Toggl Desktop" HorizontalAlignment="Center"
@@ -67,7 +67,7 @@
                             1-.344-.012.443.443 0 0 1-.235-.249l-2.22-5.88a.448.448 0 0 1 .26-.579 3.151 3.151 0 0 0
                             2.032-2.933 3.144 3.144 0 0 0-3.14-3.14 3.144 3.144 0 0 0-3.14 3.14c0 1.296.816 2.476 2.03
                              2.933a.448.448 0 0 1 .261.578l-2.22 5.88a.446.446 0 0 1-.419.29z"
-                      Fill="#ff7b7b7b" />
+                      Fill="{DynamicResource Toggl.DarkGrayBrush}" />
             </Canvas>
             <TextBlock HorizontalAlignment="Center"
                        Margin="0,8,0,0"
