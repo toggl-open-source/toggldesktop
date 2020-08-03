@@ -16,6 +16,8 @@ namespace TogglDesktop
         {
             this.InitializeComponent();
             Visibility = Visibility.Collapsed;
+            DataContext = this;
+            TabControl.SelectedIndex = 0;
 
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
             Toggl.OnTimeEntryList += this.onTimeEntryList;
@@ -24,6 +26,8 @@ namespace TogglDesktop
 
         public Brush TitleBarBrush => this.Timer.Background;
         public double TimerHeight => this.Timer.Height;
+
+        public bool IsTimelineViewEnabled => Toggl.IsTimelineUiEnabled();
 
         protected override void OnInitialized(EventArgs e)
         {
