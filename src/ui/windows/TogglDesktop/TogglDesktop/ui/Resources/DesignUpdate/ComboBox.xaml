@@ -78,7 +78,7 @@
         <Setter Property="Background" Value="{DynamicResource Toggl.SelectionElements.Background}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.TextBox.Border}" />
-        <Setter Property="Controls:ControlsHelper.FocusBorderBrush" Value="{StaticResource Toggl.AccentBrush}" />
+        <Setter Property="Controls:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
         <Setter Property="Controls:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Toggl.TextBox.MouseOverBorder}" />
         <Setter Property="ItemContainerStyle" Value="{x:Null}" />
         <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
@@ -437,12 +437,12 @@
         <Setter Property="Height" Value="32" />
         <Setter Property="Controls:ItemHelper.ActiveSelectionBackgroundBrush">
             <Setter.Value>
-                <SolidColorBrush Color="{StaticResource Toggl.AccentColor}" Opacity="0.4" />
+                <SolidColorBrush Color="{DynamicResource Toggl.AccentColor}" Opacity="0.4" />
             </Setter.Value>
         </Setter>
         <Setter Property="Controls:ItemHelper.HoverSelectedBackgroundBrush">
             <Setter.Value>
-                <SolidColorBrush Color="{StaticResource Toggl.AccentColor}" Opacity="0.4" />
+                <SolidColorBrush Color="{DynamicResource Toggl.AccentColor}" Opacity="0.4" />
             </Setter.Value>
         </Setter>
         <Setter Property="Controls:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource Toggl.ComboBox.HoverBackground}" />

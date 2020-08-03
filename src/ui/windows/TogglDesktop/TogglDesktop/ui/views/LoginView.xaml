@@ -34,7 +34,7 @@
                 Background="{DynamicResource Toggl.CardBackground}"
                 VerticalAlignment="Center" HorizontalAlignment="Center">
             <DockPanel>
-                <Viewbox Width="63" Height="19" DockPanel.Dock="Top" Margin="0 40 0 0">
+                <Viewbox Width="91" Height="18" Stretch="UniformToFill" DockPanel.Dock="Top" Margin="0 36 0 0">
                     <ContentControl Content="{StaticResource Toggl.LogoSvg}" Focusable="False" />
                 </Viewbox>
                 <StackPanel DockPanel.Dock="Bottom"
@@ -54,7 +54,8 @@
                         </Hyperlink>
                     </Label>
                 </StackPanel>
-                <StackPanel IsEnabled="{Binding IsViewEnabled}">
+                <StackPanel IsEnabled="{Binding IsViewEnabled}"
+                            Margin="0 8 0 0">
                     <TextBlock Style="{DynamicResource Toggl.SubtitleText}" 
                                Visibility="{Binding SelectedConfirmAction, Converter={StaticResource HasAnyFlagToVisibilityConverter}, ConverterParameter={x:Static viewModels:ConfirmAction.LinkSSO}}"
                                TextAlignment="Center"
@@ -170,7 +171,7 @@
 
                     <Grid>
                         <Border Height="32" Width="200"
-                                Background="{DynamicResource Toggl.SecondaryAccentBrush}"
+                                Background="{DynamicResource Toggl.AccentBrush}"
                                 Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Image Source="/TogglDesktop;component/Resources/login-spinner.png"
                                    Name="confirmButtonSpinner" x:FieldModifier="private"
@@ -184,7 +185,7 @@
                             </Image>
                         </Border>
                         <Button Height="32" Width="200"
-                                Style="{StaticResource Toggl.SecondaryAccentButton}"
+                                Style="{StaticResource Toggl.AccentButton}"
                                 Command="{Binding ConfirmLoginSignupCommand}"
                                 Content="{Binding ConfirmButtonText}"
                                 Visibility="{Binding IsViewEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"/>

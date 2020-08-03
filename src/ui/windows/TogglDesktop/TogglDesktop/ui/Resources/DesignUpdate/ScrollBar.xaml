@@ -9,13 +9,13 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
                     <Border Name="Border"
-                            Background="{DynamicResource Toggl.SecondaryAccentBrush}"
+                            Background="{DynamicResource Toggl.AccentBrush}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="0"
                     />
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseCaptured" Value="true">
-                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource Toggl.Button.Accent.Red.PressedBackground}" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource Toggl.Button.Accent.PressedBackground}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Border" Property="Opacity" Value="0" />

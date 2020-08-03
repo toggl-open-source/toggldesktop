@@ -8,16 +8,14 @@
              HorizontalAlignment="Stretch"
              VerticalAlignment="Bottom"
              x:Name="me" x:FieldModifier="private">
-    <StackPanel Background="#06AAF5">
+    <StackPanel Background="{DynamicResource Toggl.AccentBrush}">
         <Button HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Foreground="White"
                 Click="CloseButton_OnClick"
                 Width="24"
                 Height="24"
-                Content="/TogglDesktop;component/Resources/ic_close_white600_36dp.png"
-                Style="{StaticResource Toggl.CrossButton}">
-        </Button>
+                Style="{StaticResource Toggl.CrossButton}" />
         <TextBlock Text="{Binding ElementName=me, Path=Title}"
                    FontWeight="Bold"
                    TextWrapping="Wrap"
@@ -38,7 +36,6 @@
                    FontSize="14"
                    LineHeight="20"/>
         <Button Style="{StaticResource Toggl.OutlinedButton}"
-                BorderThickness="1"
                 BorderBrush="White"
                 Foreground="White"
                 Content="{Binding ElementName=me, Path=Button}"

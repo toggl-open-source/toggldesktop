@@ -2,11 +2,19 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
-                    xmlns:togglDesktop="clr-namespace:TogglDesktop">
+                    xmlns:togglDesktop="clr-namespace:TogglDesktop"
+                    xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBlock.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
+    <Storyboard x:Key="MahApps.Storyboard.EnterGotFocus" po:Freeze="True">
+        <DoubleAnimation Storyboard.TargetName="PART_Message"
+                         Storyboard.TargetProperty="Opacity"
+                         To=".33"
+                         Duration="0:0:0.2" />
+    </Storyboard>
 
     <ContextMenu x:Key="Toggl.TextBox.ContextMenu" Width="200">
         <MenuItem Command="ApplicationCommands.Cut"  />
@@ -18,7 +26,7 @@
            BasedOn="{StaticResource MahApps.Styles.TextBlock}"
            TargetType="{x:Type TextBlock}">
         <Setter Property="IsHitTestVisible" Value="False" />
-        <Setter Property="Opacity" Value="0.33" />
+        <Setter Property="Opacity" Value="0.5" />
     </Style>
 
     <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">
@@ -46,8 +54,8 @@
     <Style TargetType="{x:Type togglDesktop:ProjectTextBox}" BasedOn="{StaticResource {x:Type TextBox}}" />
 
     <Style x:Key="Toggl.Timer.DescriptionTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-        <Setter Property="Background" Value="{DynamicResource Toggl.Background}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Background}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Toggl.TextBox.Timer.MouseOverBackground}" />
         <Setter Property="mah:TextBoxHelper.Watermark" Value="What are you working on?" />
         <Style.Triggers>

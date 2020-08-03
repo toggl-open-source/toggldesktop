@@ -171,7 +171,7 @@
 
     <Style TargetType="Button" x:Key="Toggl.ContinueButton">
         <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
         <Setter Property="Height" Value="32" />
         <Setter Property="Width" Value="32" />
         <Setter Property="Template">
@@ -192,10 +192,10 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{DynamicResource Toggl.HoverElementBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.Button.Accent.PressedBackground}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -341,7 +341,7 @@
             <Trigger Property="IsChecked" Value="True">
                 <Setter Property="Background" Value="{DynamicResource Toggl.GroupIcon.ExpandedBackground}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource Toggl.GroupIcon.ExpandedBackground}" />
-                <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentPlusOneBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>

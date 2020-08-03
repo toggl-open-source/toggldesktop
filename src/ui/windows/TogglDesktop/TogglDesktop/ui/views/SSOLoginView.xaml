@@ -24,7 +24,7 @@
                                  Loaded="HandleEmailTextBoxLoaded">
                         </TextBox>
                         <Button Height="32" Width="200" Margin="0 20 0 0"
-                                Style="{StaticResource Toggl.SecondaryAccentButton}"
+                                Style="{StaticResource Toggl.AccentButton}"
                                 Content="Continue"
                                 HorizontalContentAlignment="Center"
                                 VerticalAlignment="Center"
@@ -85,7 +85,7 @@
                 Background="{DynamicResource Toggl.CardBackground}"
                 VerticalAlignment="Center" HorizontalAlignment="Center">
             <DockPanel>
-                <Viewbox Width="63" Height="19" DockPanel.Dock="Top" Margin="0 40 0 40">
+                <Viewbox Width="91" Height="18" Stretch="UniformToFill" DockPanel.Dock="Top" Margin="0 40 0 40">
                     <ContentControl Content="{StaticResource Toggl.LogoSvg}" Focusable="False" />
                 </Viewbox>
                 <ContentPresenter Content="{Binding}" DockPanel.Dock="Top" Name="ContentPresenter">
