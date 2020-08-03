@@ -48,6 +48,19 @@ class AutoCompleteViewDataSource: NSObject {
     func setup(with textField: AutoCompleteTextField) {
         self.textField = textField
         self.autoCompleteView = textField.autoCompleteView
+        commonSetup()
+    }
+
+    func setup(with autoCompleteView: AutoCompleteView) {
+        self.autoCompleteView = autoCompleteView
+
+        // TODO: think what to do with this fake text field
+        self.textField = AutoCompleteTextField(frame: .zero)
+
+        commonSetup()
+    }
+
+    private func commonSetup() {
         self.autoCompleteView.prepare(with: self)
         registerCustomeCells()
         tableView.delegate = self

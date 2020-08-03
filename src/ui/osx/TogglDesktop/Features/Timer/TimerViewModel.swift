@@ -14,7 +14,8 @@ final class TimerViewModel: NSObject {
         didSet {
             guard entryDescription != oldValue else { return }
             timeEntry.entryDescription = entryDescription
-            updateAutocomplete()
+            descriptionAutoCompleteDataSource.setFilter(entryDescription)
+            descriptionAutoCompleteDataSource.input?.autocompleteTableView.resetSelected()
             onDescriptionChanged?(entryDescription) // cycle
         }
     }
@@ -57,7 +58,12 @@ final class TimerViewModel: NSObject {
 
     private var timeEntry = TimeEntryViewItem()
     private var notificationObservers: [AnyObject] = []
-    private var autocompleteDataSource = LiteAutoCompleteDataSource(notificationName: kDisplayMinitimerAutocomplete)
+
+    private var descriptionAutoCompleteDataSource = LiteAutoCompleteDataSource(notificationName: kDisplayMinitimerAutocomplete)
+
+    private lazy var projectDataSource = ProjectDataSource(items: ProjectStorage.shared.items,
+                                                           updateNotificationName: .ProjectStorageChangedNotification)
+
     private var timer: Timer!
 
     override init() {
@@ -69,6 +75,8 @@ final class TimerViewModel: NSObject {
                                      selector: #selector(timerFired(_:)),
                                      userInfo: nil,
                                      repeats: true)
+
+        projectDataSource.delegate = self
     }
 
     deinit {
@@ -84,25 +92,29 @@ final class TimerViewModel: NSObject {
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kCommandNew), object: timeEntry, userInfo: nil)
             onDescriptionFocusChanged?(false)
 
-            autocompleteDataSource.input?.resetTable()
-            autocompleteDataSource.clearFilter()
+            descriptionAutoCompleteDataSource.input?.resetTable()
+            descriptionAutoCompleteDataSource.clearFilter()
         }
     }
 
-    func setAutocompleteInput(_ input: BetterFocusAutoCompleteInput) {
-        autocompleteDataSource.setFilter("")
-        autocompleteDataSource.input = input
+    func setDescriptionAutoCompleteInput(_ input: BetterFocusAutoCompleteInput) {
+        descriptionAutoCompleteDataSource.setFilter("")
+        descriptionAutoCompleteDataSource.input = input
         input.autocompleteTableView.delegate = self
     }
 
-    func selectAutocompleteItem(at index: Int) -> Bool {
-        guard let item = autocompleteDataSource.item(at: index) else {
+    func setProjectAutoCompleteView(_ view: AutoCompleteView) {
+        projectDataSource.setup(with: view)
+    }
+
+    func selectDescriptionAutoCompleteItem(at index: Int) -> Bool {
+        guard let item = descriptionAutoCompleteDataSource.item(at: index) else {
             return false
         }
         fillEntry(from: item)
 
-        autocompleteDataSource.input?.resetTable()
-        autocompleteDataSource.clearFilter()
+        descriptionAutoCompleteDataSource.input?.resetTable()
+        descriptionAutoCompleteDataSource.clearFilter()
 
         return true
     }
@@ -117,11 +129,6 @@ final class TimerViewModel: NSObject {
         durationString = formattedDuration
 
         NotificationCenter.default.post(name: Self.timerOnTickNotification, object: nil)
-    }
-
-    private func updateAutocomplete() {
-        autocompleteDataSource.setFilter(entryDescription)
-        autocompleteDataSource.input?.autocompleteTableView.resetSelected()
     }
 
     private func updateTimerState(with timeEntry: TimeEntryViewItem?) {
@@ -193,7 +200,7 @@ final class TimerViewModel: NSObject {
         timeEntry.billable = autocompleteItem.billable
 
         if let newDescription = autocompleteItem.description {
-            timeEntry.entryDescription = newDescription.isEmpty ? autocompleteItem.taskLabel : newDescription
+            timeEntry.entryDescription = newDescription
         }
         entryDescription = timeEntry.entryDescription
 
@@ -265,11 +272,11 @@ extension TimerViewModel: NSTableViewDelegate {
     }
 
     func tableViewSelectionDidChange(_ notification: Notification) {
-        guard let row = autocompleteDataSource.input?.autocompleteTableView.selectedRow, row >= 0 else {
+        guard let row = descriptionAutoCompleteDataSource.input?.autocompleteTableView.selectedRow, row >= 0 else {
             return
         }
 
-        guard let item = autocompleteDataSource.item(at: row),
+        guard let item = descriptionAutoCompleteDataSource.item(at: row),
             item.type >= 0 else {
                 // category clicked
                 return
@@ -277,16 +284,16 @@ extension TimerViewModel: NSTableViewDelegate {
 
         fillEntry(from: item)
 
-        autocompleteDataSource.input?.resetTable()
-        autocompleteDataSource.clearFilter()
+        descriptionAutoCompleteDataSource.input?.resetTable()
+        descriptionAutoCompleteDataSource.clearFilter()
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        guard row >= 0, row < autocompleteDataSource.filteredOrderedKeys.count else {
+        guard row >= 0, row < descriptionAutoCompleteDataSource.filteredOrderedKeys.count else {
             return nil
         }
 
-        guard let item = autocompleteDataSource.filteredOrderedKeys.object(at: row) as? AutocompleteItem else {
+        guard let item = descriptionAutoCompleteDataSource.filteredOrderedKeys.object(at: row) as? AutocompleteItem else {
             return nil
         }
         let autocompleteTable = tableView as! AutoCompleteTable
@@ -299,8 +306,8 @@ extension TimerViewModel: NSTableViewDelegate {
     }
 
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        guard let item = autocompleteDataSource.filteredOrderedKeys.object(at: row) as? AutocompleteItem,
-            let inputField = autocompleteDataSource.input else {
+        guard let item = descriptionAutoCompleteDataSource.filteredOrderedKeys.object(at: row) as? AutocompleteItem,
+            let inputField = descriptionAutoCompleteDataSource.input else {
                 return 0
         }
         let cellType = AutoCompleteTableCell.cellType(from: item)
@@ -325,6 +332,22 @@ extension TimerViewModel {
         init(timeEntry: TimeEntryViewItem) {
             self.color = ConvertHexColor.hexCode(toNSColor: timeEntry.projectColor)
             self.attributedTitle = ProjectTitleFactory().title(for: timeEntry)
+        }
+    }
+}
+
+// MARK: - AutoCompleteViewDataSourceDelegate
+
+extension TimerViewModel: AutoCompleteViewDataSourceDelegate {
+    func autoCompleteSelectionDidChange(sender: AutoCompleteViewDataSource, item: Any) {
+        NSLog("<<< autoCompleteSelectionDidChange")
+        if sender == projectDataSource {
+            guard let projectItem = item as? ProjectContentItem else {
+                return
+            }
+
+            // TODO: make sure it's not reseting tags and other data
+            fillEntry(from: projectItem.item)
         }
     }
 }

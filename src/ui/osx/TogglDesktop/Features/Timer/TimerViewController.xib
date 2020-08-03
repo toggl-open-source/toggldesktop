@@ -40,7 +40,7 @@
                                             <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecT-b1-LZO" customClass="BetterFocusAutoCompleteInput">
                                                 <rect key="frame" x="-2" y="0.0" width="353" height="28"/>
                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" placeholderString="What are you working on?" usesSingleLineMode="YES" id="O0F-G7-GmN" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
-                                                    <font key="font" metaFont="system" size="14"/>
+                                                    <font key="font" metaFont="menu" size="14"/>
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     <userDefinedRuntimeAttributes>
