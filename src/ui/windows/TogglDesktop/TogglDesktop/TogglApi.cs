@@ -1939,7 +1939,7 @@ private static extern TogglRgbColor toggl_get_adaptive_rgb_color_from_hex(
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
 [return:MarshalAs(UnmanagedType.I1)]
-private static extern bool is_timeline_ui_enabled(
+private static extern bool toggl_is_timeline_ui_enabled(
         IntPtr context);
 
 

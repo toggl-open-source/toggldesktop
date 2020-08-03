@@ -1301,7 +1301,7 @@ extern "C" {
         const char_t *hexColor,
         TogglAdaptiveColor type);
 
-    TOGGL_EXPORT bool is_timeline_ui_enabled(
+    TOGGL_EXPORT bool toggl_is_timeline_ui_enabled(
         void* context);
 
 #undef TOGGL_EXPORT

@@ -12,12 +12,17 @@ namespace TogglDesktop
 {
     public partial class TimerEntryListView : IMainView
     {
+        public TimerEntryListViewViewModel ViewModel
+        {
+            get => DataContext as TimerEntryListViewViewModel;
+            set => DataContext = value;
+        }
+
         public TimerEntryListView()
         {
             this.InitializeComponent();
             Visibility = Visibility.Collapsed;
-            DataContext = this;
-            TabControl.SelectedIndex = 0;
+            ViewModel = new TimerEntryListViewViewModel();
 
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
             Toggl.OnTimeEntryList += this.onTimeEntryList;
@@ -26,8 +31,6 @@ namespace TogglDesktop
 
         public Brush TitleBarBrush => this.Timer.Background;
         public double TimerHeight => this.Timer.Height;
-
-        public bool IsTimelineViewEnabled => Toggl.IsTimelineUiEnabled();
 
         protected override void OnInitialized(EventArgs e)
         {
