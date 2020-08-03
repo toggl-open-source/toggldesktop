@@ -315,6 +315,7 @@
     <Compile Include="ui\ViewModels\TimeEntryCellViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryLabelViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryListViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimerEntryListViewViewModel.cs" />
     <Compile Include="ui\ViewModels\TimerViewModel.cs" />
     <Compile Include="ui\ViewModels\ViewModelExtensions.cs" />
     <Compile Include="ui\views\IMainView.cs" />

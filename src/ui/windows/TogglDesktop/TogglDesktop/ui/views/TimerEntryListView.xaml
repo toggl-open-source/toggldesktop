@@ -4,15 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:vm="clr-namespace:TogglDesktop.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400">
+             d:DesignHeight="300" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance vm:TimerEntryListViewViewModel, IsDesignTimeCreatable=False}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <TabControl Grid.Row="1" Name="TabControl">
+        <TabControl Grid.Row="1" Name="TabControl" SelectedIndex="{Binding SelectedTab}">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Setter Property="Template">
