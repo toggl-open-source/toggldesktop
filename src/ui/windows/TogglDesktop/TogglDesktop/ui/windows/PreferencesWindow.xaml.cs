@@ -161,7 +161,7 @@ namespace TogglDesktop
 #if MS_STORE
             return await RunOnStartup.IsRunOnStartupEnabled();
 #else
-            return Utils.GetLaunchOnStartupRegistry();
+            return await Task.Run(() => Utils.GetLaunchOnStartupRegistry());
 #endif
         }
 
