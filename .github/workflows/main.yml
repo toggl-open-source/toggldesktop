@@ -386,7 +386,7 @@ jobs:
     
   windows-store:
     runs-on: windows-2019
-    if: github.event_name == 'release'
+    #if: github.event_name == 'release'
     steps:
     - uses: actions/checkout@v1
       with:
@@ -414,6 +414,7 @@ jobs:
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=StoreRelease /p:Platform="x64" /p:UapAppxPackageBuildMode=CI /p:AppxBundle=Always /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="322D8592D0FDB01F1C8FCA56ED3FBFAF646D3739" /p:AppxPackageDir="..\\..\\..\\..\\..\\" /t:Clean,Build /restore -m src\ui\windows\TogglDesktop\TogglDesktop.sln
         dir
     - name: Upload to GitHub
+      if: github.event_name == 'release'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="TogglDesktop.Package_${TAG_NAME/v/}.0_x86_x64_bundle_StoreRelease.appxupload"
