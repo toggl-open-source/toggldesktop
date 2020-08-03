@@ -13,6 +13,7 @@
             "version": "7.5.234",
             "rows": [
                 "Added support for single sign-on (SSO)",
+                "Added click and drag to create time entries", 
                 "Improved syncing"
             ],
             "date": "July 27th 2020",
