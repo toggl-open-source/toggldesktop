@@ -1420,5 +1420,10 @@ public static partial class Toggl
     {
         toggl_toggle_entries_group(ctx, groupName);
     }
+
+    public static bool IsTimelineUiEnabled()
+    {
+        return is_timeline_ui_enabled(ctx);
+    }
 }
 }

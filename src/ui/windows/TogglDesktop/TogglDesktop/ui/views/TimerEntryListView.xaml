@@ -12,12 +12,83 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <toggl:TimeEntryList Grid.Row="1"
-                             x:Name="Entries"
-                             FocusTimer="onFocusTimer"/>
+        <TabControl Grid.Row="1" Name="TabControl">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <StackPanel Background="{DynamicResource Toggl.CardBackground}">
+                                    <TextBlock x:Name="ContentSite"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   Text="{TemplateBinding Header}"
+                                                   Margin="12,2,12,2"
+                                                   Style="{StaticResource Toggl.BodyText}"/>
+                                    <Border Name="Border"
+                                                BorderBrush="{DynamicResource Toggl.AccentBrush}" 
+                                                BorderThickness="1,1,1,1">
+                                    </Border>
+                                </StackPanel>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="BorderThickness" Value="1" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Border" Property="BorderThickness" Value="0" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="TabControl">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TabControl}">
+                                    <Grid KeyboardNavigation.TabNavigation="Local">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border BorderThickness="0" Margin="0,0,0,0">
+                                            <UniformGrid Rows="1" x:Name="HeaderPanel" IsItemsHost="True"
+                                                Visibility="{Binding Path=IsTimelineViewEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                        </Border>
+
+                                        <Border x:Name="Border"
+                                                Grid.Row="1" Grid.ColumnSpan="2"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}">
+                                            <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" />
+                                        </Border>
+                                </Grid>
+                            </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+            </TabControl.Resources>
+            <TabItem Header="List">
+                <toggl:TimeEntryList
+                                     x:Name="Entries"
+                                     FocusTimer="onFocusTimer"/>
+            </TabItem>
+            <TabItem Header="Timeline" Visibility="{Binding Path=IsTimelineViewEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel></StackPanel>
+            </TabItem>
+        </TabControl>
+
 
         <Border Grid.Row="0" Height="4" VerticalAlignment="Bottom"
-                Background="{Binding ElementName=Timer, Path=Background}">
+                Background="{Binding ElementName=Timer, Path=Background}"
+                Visibility="{Binding Path=IsTimelineViewEnabled, Converter={StaticResource BooleanInvertToVisibilityConverter}}">
             <Border.Effect>
                 <DropShadowEffect Direction="270" Color="Black" Opacity="0.22"
                                   BlurRadius="8" ShadowDepth="2" />
