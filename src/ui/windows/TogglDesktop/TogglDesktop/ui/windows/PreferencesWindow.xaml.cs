@@ -245,7 +245,7 @@ namespace TogglDesktop
 #if MS_STORE
             await RunOnStartup.TrySetRunOnStartup(settings.LaunchOnStartup);
 #else
-            Utils.SaveLaunchOnStartupRegistry(settings.LaunchOnStartup);
+            await Task.Run(() => Utils.SaveLaunchOnStartupRegistry(settings.LaunchOnStartup));
 #endif
             return Toggl.SetSettings(settings.TogglSettings);
         }
