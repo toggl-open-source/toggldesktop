@@ -89,9 +89,8 @@
                 <toggl:TimeEntryList x:Name="Entries"
                                      FocusTimer="onFocusTimer"/>
             </TabItem>
-            <TabItem Header="Timeline"
-                     Visibility="{Binding Path=IsTimelineViewEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <StackPanel></StackPanel>
+	        <TabItem Header="Timeline" Visibility="{Binding Path=IsTimelineViewEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <toggl:Timeline/>
             </TabItem>
         </TabControl>
 
