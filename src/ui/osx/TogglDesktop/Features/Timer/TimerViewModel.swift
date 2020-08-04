@@ -64,6 +64,9 @@ final class TimerViewModel: NSObject {
     private lazy var projectDataSource = ProjectDataSource(items: ProjectStorage.shared.items,
                                                            updateNotificationName: .ProjectStorageChangedNotification)
 
+    private lazy var tagDataSource = TagDataSource(items: TagStorage.shared.tags,
+                                                   updateNotificationName: .TagStorageChangedNotification)
+
     private var timer: Timer!
 
     override init() {
@@ -77,6 +80,9 @@ final class TimerViewModel: NSObject {
                                      repeats: true)
 
         projectDataSource.delegate = self
+
+        tagDataSource.delegate = self
+        tagDataSource.tagDelegate = self
     }
 
     deinit {
@@ -119,7 +125,20 @@ final class TimerViewModel: NSObject {
         return true
     }
 
+    func setTagAutoCompleteView(_ view: AutoCompleteView) {
+        tagDataSource.setup(with: view)
+        fetchTags()
+    }
+
     // MARK: - Other
+
+    private func fetchTags() {
+        var workspaceID = timeEntry.workspaceID
+        if workspaceID <= 0 {
+            workspaceID = DesktopLibraryBridge.shared().defaultWorkspaceID()
+        }
+        DesktopLibraryBridge.shared().fetchTags(forWorkspaceID: workspaceID)
+    }
 
     @objc
     private func timerFired(_ timer: Timer) {
@@ -167,6 +186,8 @@ final class TimerViewModel: NSObject {
         if entry.isRunning() {
             onTouchBarUpdateRunningItem?(entry)
         }
+
+        onProjectSelected?(Project(timeEntry: self.timeEntry))
     }
 
     private func focusTimer() {
@@ -188,6 +209,9 @@ final class TimerViewModel: NSObject {
     private func fillEntry(from autocompleteItem: AutocompleteItem) {
         // User has selected a autocomplete item.
         // It could be a time entry, a task or a project.
+
+        let isNewWorkspace = autocompleteItem.workspaceID != timeEntry.workspaceID
+
         timeEntry.workspaceID = UInt64(autocompleteItem.workspaceID)
         timeEntry.projectID = UInt64(autocompleteItem.projectID)
         timeEntry.taskID = UInt64(autocompleteItem.taskID)
@@ -218,6 +242,10 @@ final class TimerViewModel: NSObject {
             billableState = timeEntry.billable ? .on : .off
         } else {
             billableState = .notAvailable
+        }
+
+        if isNewWorkspace {
+            fetchTags()
         }
 
         focusTimer()
@@ -329,7 +357,10 @@ extension TimerViewModel {
         let color: NSColor
         let attributedTitle: NSAttributedString
 
-        init(timeEntry: TimeEntryViewItem) {
+        init?(timeEntry: TimeEntryViewItem) {
+            guard timeEntry.projectLabel != nil, timeEntry.projectLabel.isEmpty == false else {
+                return nil
+            }
             self.color = ConvertHexColor.hexCode(toNSColor: timeEntry.projectColor)
             self.attributedTitle = ProjectTitleFactory().title(for: timeEntry)
         }
@@ -339,6 +370,7 @@ extension TimerViewModel {
 // MARK: - AutoCompleteViewDataSourceDelegate
 
 extension TimerViewModel: AutoCompleteViewDataSourceDelegate {
+
     func autoCompleteSelectionDidChange(sender: AutoCompleteViewDataSource, item: Any) {
         NSLog("<<< autoCompleteSelectionDidChange")
         if sender == projectDataSource {
@@ -349,5 +381,15 @@ extension TimerViewModel: AutoCompleteViewDataSourceDelegate {
             // TODO: make sure it's not reseting tags and other data
             fillEntry(from: projectItem.item)
         }
+    }
+}
+
+extension TimerViewModel: TagDataSourceDelegate {
+
+    func tagSelectionChanged(with selectedTags: [Tag]) {
+        let tags = selectedTags.toNames()
+        self.timeEntry.tags = tags
+
+        onTagSelected?(!tags.isEmpty)
     }
 }

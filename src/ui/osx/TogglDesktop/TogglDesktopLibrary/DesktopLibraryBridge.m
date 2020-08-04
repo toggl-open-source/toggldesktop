@@ -473,4 +473,14 @@ void *ctx;
     toggl_reset_enable_SSO(ctx);
 }
 
+#pragma mark - General
+
+- (uint64_t)defaultWorkspaceID {
+    return toggl_get_default_or_first_workspace_id(ctx);
+}
+
+- (void)fetchTagsForWorkspaceID:(uint64_t)workspaceID {
+    toggl_fetch_tags(ctx, workspaceID);
+}
+
 @end

@@ -221,6 +221,7 @@ extension EditorViewController {
         view.layer?.masksToBounds = false
         closeBtn.cursor = .pointingHand
 
+        tagTextField.autoCompleteDelegate = self
         descriptionTextField.autoCompleteDelegate = self
         projectTextField.autoCompleteDelegate = self
         projectTextField.dotImageView = projectDotImageView
@@ -254,12 +255,12 @@ extension EditorViewController {
     fileprivate func initDatasource() {
         projectDatasource.delegate = self
         projectDatasource.setup(with: projectTextField)
+
         descriptionDatasource.delegate = self
         descriptionDatasource.setup(with: descriptionTextField)
 
-        tagTextField.autoCompleteDelegate = self
         tagDatasource.delegate = self
-        tagDatasource.tagDelegte = self
+        tagDatasource.tagDelegate = self
         tagDatasource.setup(with: tagTextField)
     }
 

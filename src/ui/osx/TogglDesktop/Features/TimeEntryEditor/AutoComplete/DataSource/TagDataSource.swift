@@ -25,7 +25,7 @@ final class TagDataSource: AutoCompleteViewDataSource {
 
     // MARK: Variables
 
-    weak var tagDelegte: TagDataSourceDelegate?
+    weak var tagDelegate: TagDataSourceDelegate?
     private(set) var selectedTags: [Tag] = []
 
     // MARK: Override
@@ -39,6 +39,15 @@ final class TagDataSource: AutoCompleteViewDataSource {
 
     override func setup(with textField: AutoCompleteTextField) {
         super.setup(with: textField)
+        commonSetup()
+    }
+
+    override func setup(with autoCompleteView: AutoCompleteView) {
+        super.setup(with: autoCompleteView)
+        commonSetup()
+    }
+
+    private func commonSetup() {
         tableView.allowsEmptySelection = true
         autoCompleteView.setCreateButtonSectionHidden(true)
     }
@@ -131,11 +140,11 @@ extension TagDataSource: TagCellViewDelegate {
         if isSelected {
             guard !selectedTags.contains(where: { $0.name == tag.name }) else { return }
             selectedTags.append(tag)
-            tagDelegte?.tagSelectionChanged(with: selectedTags)
+            tagDelegate?.tagSelectionChanged(with: selectedTags)
         } else {
             guard let index = selectedTags.firstIndex(where: { $0.name == tag.name }) else { return }
             selectedTags.remove(at: index)
-            tagDelegte?.tagSelectionChanged(with: selectedTags)
+            tagDelegate?.tagSelectionChanged(with: selectedTags)
         }
     }
 }

@@ -112,12 +112,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Formatter
 
-- (NSString * _Nullable) formatDurationTimestampt:(NSTimeInterval) duration;
+- (NSString * _Nullable)formatDurationTimestampt:(NSTimeInterval)duration;
 
 #pragma mark - Colors
 
-- (NSColor *) getAdaptiveColorForShapeFromColor:(NSColor *) color;
-- (NSColor *) getAdaptiveColorForTextFromColor:(NSColor *) color;
+- (NSColor *)getAdaptiveColorForShapeFromColor:(NSColor *)color;
+- (NSColor *)getAdaptiveColorForTextFromColor:(NSColor *)color;
 
 #pragma mark - Onboarding Actions
 
@@ -128,14 +128,19 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Auth
 
 - (void)loginWithEmail:(NSString *)email password:(NSString *)password;
-- (void)getSSOIdentityProviderWithEmail:(NSString *) email;
-- (void)loginSSOWithAPIToken:(NSString *) apiToken;
-- (void)setNeedEnableSSOWithCode:(NSString *) code;
+- (void)getSSOIdentityProviderWithEmail:(NSString *)email;
+- (void)loginSSOWithAPIToken:(NSString *)apiToken;
+- (void)setNeedEnableSSOWithCode:(NSString *)code;
 - (void)resetEnableSSO;
 
 #pragma mark - Tracking
 
--(void) trackTimelineMenuContextType:(TimelineMenuContextType) type;
+- (void)trackTimelineMenuContextType:(TimelineMenuContextType)type;
+
+#pragma mark - General
+
+- (uint64_t)defaultWorkspaceID;
+- (void)fetchTagsForWorkspaceID:(uint64_t)workspaceID;
 
 @end
 

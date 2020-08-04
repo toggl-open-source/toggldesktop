@@ -984,6 +984,12 @@ bool_t toggl_timeline_is_recording_enabled(
     return app(context)->IsTimelineRecordingEnabled();
 }
 
+void toggl_fetch_tags(
+    void *context,
+    const int64_t workspaceID) {
+    app(context)->FetchTags(workspaceID);
+}
+
 bool_t toggl_feedback_send(
     void *context,
     const char_t *topic,
@@ -1068,6 +1074,13 @@ uint64_t toggl_get_default_task_id(
     void *context) {
     Poco::UInt64 ret(0);
     app(context)->DefaultTID(&ret);
+    return ret;
+}
+
+uint64_t toggl_get_default_or_first_workspace_id(
+    void *context) {
+    Poco::UInt64 ret(0);
+    app(context)->DefaultOrFirstWID(&ret);
     return ret;
 }
 

@@ -3917,6 +3917,26 @@ TimeEntry *Context::RunningTimeEntry() {
     return user_->RunningTimeEntry();
 }
 
+void Context::FetchTags(const Poco::UInt64 workspaceID) {
+    if (!user_) {
+        return;
+    }
+
+    std::vector<view::Generic> tag_views;
+    std::vector<std::string> tags;
+    user_->related.TagList(&tags, workspaceID);
+    for (std::vector<std::string>::const_iterator
+            it = tags.begin();
+            it != tags.end();
+            ++it) {
+        view::Generic view;
+        view.Name = *it;
+        tag_views.push_back(view);
+    }
+
+    UI()->DisplayTags(tag_views);
+}
+
 error Context::ToggleTimelineRecording(const bool record_timeline) {
     Poco::Mutex::ScopedLock lock(user_m_);
     if (!user_) {
@@ -4084,6 +4104,38 @@ error Context::DefaultTID(Poco::UInt64 *result) {
                 return noError;
             }
             *result = user_->DefaultTID();
+        }
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string & ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
+error Context::DefaultOrFirstWID(Poco::UInt64 *result) {
+    try {
+        poco_check_ptr(result);
+        *result = 0;
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger.warning("Cannot get default PID, user logged out");
+                return noError;
+            }
+
+            if (user_->DefaultWID()) {
+                *result = user_->DefaultWID();
+            } else {
+                // try to get first WID available
+                std::vector<Workspace *>::const_iterator it = user_->related.Workspaces.begin();
+                if (it != user_->related.Workspaces.end()) {
+                    Workspace *ws = *it;
+                    *result = ws->ID();
+                }
+            }
         }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());

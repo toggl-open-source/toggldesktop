@@ -18,6 +18,11 @@ class TimerViewController: NSViewController {
     private var projectAutoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
     private var projectAutocompleteDidResignObserver: Any?
 
+    private lazy var tagsAutoCompleteWindow: AutoCompleteViewWindow = {
+        return AutoCompleteViewWindow(view: tagsAutoCompleteView)
+    }()
+    private var tagsAutoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
+
     // MARK: - Outlets
 
     @IBOutlet weak var startButton: NSHoverButton!
@@ -36,9 +41,6 @@ class TimerViewController: NSViewController {
         descriptionTextField.displayMode = .fullscreen
         descriptionTextField.responderDelegate = descriptionContainerBox
 
-        viewModel.setDescriptionAutoCompleteInput(descriptionTextField)
-        viewModel.setProjectAutoCompleteView(projectAutoCompleteView)
-
         configureAppearance()
         configureHideAutoCompleteWhenLostFocus()
 
@@ -50,6 +52,13 @@ class TimerViewController: NSViewController {
 
         let viewFrameInWindowCoords = view.convert(view.bounds, to: nil)
         descriptionTextField.setPos(Int32(viewFrameInWindowCoords.origin.y))
+
+        // !!!: we're passing views into view model - refactor this someday
+        // this is needed because current Autocomplete functionality
+        // is tightly coupled with text input views
+        viewModel.setDescriptionAutoCompleteInput(descriptionTextField)
+        viewModel.setProjectAutoCompleteView(projectAutoCompleteView)
+        viewModel.setTagAutoCompleteView(tagsAutoCompleteView)
     }
 
     override func viewDidDisappear() {
@@ -94,7 +103,7 @@ class TimerViewController: NSViewController {
         }
 
         viewModel.onProjectSelected = { [unowned self] project in
-            self.closeProjectAutocomplete()
+            self.closeProjectAutoComplete()
 
             if let project = project {
                 self.projectButton.selectedBackgroundColor = project.color.withAlphaComponent(0.3)
@@ -140,7 +149,7 @@ class TimerViewController: NSViewController {
     @IBAction func projectButtonClicked(_ sender: Any) {
         NSLog("<<< Project button clicked")
         if projectAutoCompleteWindow.isVisible {
-            closeProjectAutocomplete()
+            closeProjectAutoComplete()
         } else {
             presentProjectAutoComplete()
             projectButton.controlState = .active
@@ -148,6 +157,12 @@ class TimerViewController: NSViewController {
     }
 
     @IBAction func tagsButtonClicked(_ sender: Any) {
+        if tagsAutoCompleteWindow.isVisible {
+            closeTagsAutoComplete()
+        } else {
+            presentTagsAutoComplete()
+            tagsButton.controlState = .active
+        }
     }
 
     @IBAction func billableButtonClicked(_ sender: Any) {
@@ -202,60 +217,45 @@ class TimerViewController: NSViewController {
             .compactMap { $0 }
             .forEach {
                 $0.cornerRadius = $0.bounds.height / 2
-                $0.selectedBackgroundColor = NSColor.togglGreen
+                $0.selectedBackgroundColor = NSColor.togglGreen.withAlphaComponent(0.3)
         }
-    }
-
-    private func configureHideAutoCompleteWhenLostFocus() {
-        projectAutocompleteDidResignObserver = NotificationCenter.default.addObserver(
-            forName: NSWindow.didResignKeyNotification,
-            object: projectAutoCompleteWindow,
-            queue: .main
-        ) { [unowned self] _ in
-            if self.projectAutoCompleteWindow.isVisible {
-                NSLog("<<< Lost focus -> closing project autocomplete")
-                self.closeProjectAutocomplete()
-            }
-        }
-    }
-
-    private func closeProjectAutocomplete() {
-        projectAutoCompleteWindow.cancel()
-        projectButton.controlState = .normal
     }
 
     // MARK: - Autocomplete
 
     private func presentProjectAutoComplete() {
+        let fromPoint = NSPoint(x: projectButton.frame.minX, y: projectButton.frame.maxY)
+        presentAutoComplete(window: projectAutoCompleteWindow, withContentView: projectAutoCompleteView, fromPoint: fromPoint)
+    }
 
-        // Set auto complete table
-        projectAutoCompleteWindow.contentView = projectAutoCompleteView
-        projectAutoCompleteWindow.setContentSize(projectAutoCompleteView.frame.size)
+    private func presentTagsAutoComplete() {
+        let fromPoint = NSPoint(x: tagsButton.frame.minX, y: tagsButton.frame.maxY)
+        presentAutoComplete(window: tagsAutoCompleteWindow, withContentView: tagsAutoCompleteView, fromPoint: fromPoint)
+    }
 
-        // Present if need
-        if !projectAutoCompleteWindow.isVisible {
+    private func presentAutoComplete(window: NSWindow, withContentView contentView: NSView, fromPoint: NSPoint) {
+        window.contentView = contentView
+        window.setContentSize(contentView.frame.size)
 
-            // Layout frame and position
-            let windowRect = autoCompleteWindowRect()
-            projectAutoCompleteWindow.setFrame(windowRect, display: false)
-            projectAutoCompleteWindow.setFrameTopLeftPoint(windowRect.origin)
+        if !window.isVisible {
+            let windowRect = autoCompleteWindowRect(fromPoint: fromPoint)
+            window.setFrame(windowRect, display: false)
+            window.setFrameTopLeftPoint(windowRect.origin)
 
-            // Add or make key
-            if view.window != projectAutoCompleteWindow {
-                view.window?.addChildWindow(projectAutoCompleteWindow, ordered: .above)
+            if view.window != window {
+                view.window?.addChildWindow(window, ordered: .above)
             }
-            projectAutoCompleteWindow.makeKeyAndOrderFront(nil)
-            projectAutoCompleteWindow.makeFirstResponder(projectAutoCompleteView)
+            window.makeKeyAndOrderFront(nil)
+            window.makeFirstResponder(contentView)
         }
     }
 
-    private func autoCompleteWindowRect() -> NSRect {
+    private func autoCompleteWindowRect(fromPoint: NSPoint) -> NSRect {
         let padding: CGFloat = 6
         let initialHeight: CGFloat = 500
         let windowSize = NSSize(width: view.frame.width - padding * 2, height: initialHeight)
         var rect = NSRect(origin: .zero, size: windowSize)
 
-        let fromPoint = NSPoint(x: projectButton.frame.minX, y: projectButton.frame.maxY)
         let windowPoint = projectButton.convert(fromPoint, to: nil)
         var screenPoint = CGPoint.zero
         if #available(OSX 10.12, *) {
@@ -266,6 +266,29 @@ class TimerViewController: NSViewController {
         rect.origin = screenPoint
 
         return rect
+    }
+
+    private func configureHideAutoCompleteWhenLostFocus() {
+        projectAutocompleteDidResignObserver = NotificationCenter.default.addObserver(
+            forName: NSWindow.didResignKeyNotification,
+            object: projectAutoCompleteWindow,
+            queue: .main
+        ) { [unowned self] _ in
+            if self.projectAutoCompleteWindow.isVisible {
+                NSLog("<<< Lost focus -> closing project autocomplete")
+                self.closeProjectAutoComplete()
+            }
+        }
+    }
+
+    private func closeProjectAutoComplete() {
+        projectAutoCompleteWindow.cancel()
+        projectButton.controlState = .normal
+    }
+
+    private func closeTagsAutoComplete() {
+        tagsAutoCompleteWindow.cancel()
+        tagsButton.controlState = .normal
     }
 }
 
