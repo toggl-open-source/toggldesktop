@@ -3,6 +3,9 @@ appname=`basename "$(test -L "$0" && readlink "$0" || echo "$0")" | sed s,\.sh$,
 dirname=`dirname "$(test -L "$0" && readlink "$0" || echo "$0")"/`
 if [ -f "$dirname/bin/TogglDesktop" ]; then
   dirname="$dirname/bin"
+elif [ -f "/usr/lib/toggldesktop/bin/TogglDesktop" ]; then
+  export LD_LIBRARY_PATH="/usr/lib/toggldesktop/lib/:${LD_LIBRARY_PATH}"
+  dirname="/usr/lib/toggldesktop/bin"
 fi
 tmp="${dirname#?}"
 
