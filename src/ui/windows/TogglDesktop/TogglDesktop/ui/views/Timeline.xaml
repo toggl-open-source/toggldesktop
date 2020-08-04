@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="TogglDesktop.Timeline"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
+             xmlns:togglDesktop="clr-namespace:TogglDesktop"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance viewModels:TimelineViewModel, IsDesignTimeCreatable=False}">
+    <Grid Background="{DynamicResource Toggl.Background}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <mah:ToggleSwitch Margin="10 14 0 0"
+                          OnLabel=""
+                          OffLabel=""
+                          IsChecked="{Binding RecordActivity}"
+                          Grid.Row="0" Grid.Column="0">
+            Record activity
+        </mah:ToggleSwitch>
+        <Viewbox Width="15" Height="15" Grid.Row="0" Grid.Column="1"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Bottom"
+                 Margin="12 0 0 0"
+                 Name="RecordActivityInfoBox"
+                 MouseEnter="RecordActivityInfoBoxOnMouseEnter">
+            <Grid>
+                <Ellipse Fill="{DynamicResource Toggl.DisabledTextBrush}"
+                         Width="15" Height="15"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Center">
+                </Ellipse>
+                <TextBlock HorizontalAlignment="Center" 
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource Toggl.CardBackground}"
+                           FontWeight="UltraBold"
+                           FontFamily="Verdana">i</TextBlock>
+                <Popup IsOpen="False" Name="RecordActivityInfoPopup" StaysOpen="False" UseLayoutRounding="True" >
+                    <Border BorderThickness="1" Background="{DynamicResource Toggl.CardBackground}"
+                            BorderBrush="{DynamicResource Toggl.Background}">
+                        <StackPanel MaxWidth="250" Margin="10 10 10 10">
+                            <TextBlock Style="{StaticResource Toggl.CaptionSemiBoldText}">
+                                Having trouble recalling what you were working on?
+                            </TextBlock>
+                            <TextBlock Style="{StaticResource Toggl.CaptionBlackText}"
+                                       Margin="0 12 0 0">
+                                Record your computer activity and revisit it later in the day to fill in gaps in your Timeline.
+                            </TextBlock>
+                            <TextBlock Style="{StaticResource Toggl.CaptionBlackText}"
+                                       Margin="0 12 0 0">
+                                All data is private. Only you can see it.
+                            </TextBlock>
+                            <Label HorizontalAlignment="Center"
+                                   Margin="0 12 0 0">
+                                <Hyperlink NavigateUri="https://support.toggl.com/en/articles/3836325-toggl-desktop-for-windows"
+                                           Style="{StaticResource Toggl.NormalHyperlink}"
+                                           Command="{Binding OpenTogglHelpUri}">
+                                    Learn more
+                                </Hyperlink>
+                            </Label>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+            </Grid>
+        </Viewbox>
+    </Grid>
+</UserControl>
