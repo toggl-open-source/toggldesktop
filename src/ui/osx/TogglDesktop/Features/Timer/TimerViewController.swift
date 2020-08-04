@@ -217,7 +217,7 @@ class TimerViewController: NSViewController {
             .compactMap { $0 }
             .forEach {
                 $0.cornerRadius = $0.bounds.height / 2
-                $0.selectedBackgroundColor = NSColor.togglGreen.withAlphaComponent(0.3)
+                $0.selectedBackgroundColor = NSColor.togglGreen
         }
     }
 
