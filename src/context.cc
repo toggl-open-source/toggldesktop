@@ -6844,6 +6844,10 @@ bool Context::checkIfSkipPomodoro(TimeEntry *te) {
     return false;
 }
 
+bool Context::IsTimelineUiEnabled() {
+    return user_->timeline_ui_flag;
+}
+
 bool Context::isUsingSyncServer() const {
     return user_->AlphaFeatureSettings->IsSyncEnabled();
 }

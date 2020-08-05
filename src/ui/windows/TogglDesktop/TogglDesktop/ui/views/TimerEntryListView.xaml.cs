@@ -22,7 +22,8 @@ namespace TogglDesktop
         {
             this.InitializeComponent();
             Visibility = Visibility.Collapsed;
-            ViewModel = new TimerEntryListViewViewModel();
+            Loaded += (s, e) => ViewModel = new TimerEntryListViewViewModel(); ;
+            
 
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
             Toggl.OnTimeEntryList += this.onTimeEntryList;

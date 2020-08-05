@@ -1319,7 +1319,7 @@ typedef enum {
         const char_t *hexColor,
         TogglAdaptiveColor type);
 
-    TOGGL_EXPORT bool toggl_is_timeline_ui_enabled(
+    TOGGL_EXPORT bool_t toggl_is_timeline_ui_enabled(
         void* context);
 
 #undef TOGGL_EXPORT
