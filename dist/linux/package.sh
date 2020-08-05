@@ -47,7 +47,7 @@ function build() {
     pushd $builddir >/dev/null
 
     echo "=========== Configuring" >&2
-    cmake -DTOGGL_PRODUCTION_BUILD=ON -DTOGGL_ALLOW_UPDATE_CHECK=ON $VERSION_DEFINE -DUSE_BUNDLED_LIBRARIES=ON -DCMAKE_INSTALL_PREFIX="$PREFIX" -DTOGGL_INTERNAL_LIB_DIR="$THIRDPARTYDIR" ..
+    cmake -DTOGGL_BUILD_TESTS=OFF -DTOGGL_PRODUCTION_BUILD=ON -DTOGGL_ALLOW_UPDATE_CHECK=ON $VERSION_DEFINE -DUSE_BUNDLED_LIBRARIES=ON -DCMAKE_INSTALL_PREFIX="$PREFIX" -DTOGGL_INTERNAL_LIB_DIR="$THIRDPARTYDIR" ..
     echo "=========== Building..." >&2
     make -j4
     echo "=========== Installing" >&2
@@ -75,9 +75,9 @@ function compose() {
     echo "qmake: " $qmake
 
     if [[ "$VERSION_CODENAME" == "xenial" ]]; then
-        cp -Lrfu $(ldd bin/TogglDesktop | grep "\.so" | sed 's/.* => \(.*\)[(]0x.*/\1/') "$THIRDPARTYDIR"
+        cp -Lrfu $(ldd bin/TogglDesktop | grep "\.so" | grep "=>" | grep -v "not found" | sed 's/.* => \(.*\)[(]0x.*/\1/') "$THIRDPARTYDIR"
     else
-        cp -Lrfu $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e crypto -e libicu -e double-conversion -e jpeg -e re2 -e avcodec -e avformat -e avutil -e webp | sed 's/.* => \(.*\)[(]0x.*/\1/') "$THIRDPARTYDIR"
+        cp -Lrfu $(ldd bin/TogglDesktop | grep "=>" | grep -v "not found" | grep -e libQt -e ssl -e crypto -e libicu -e double-conversion -e jpeg -e re2 -e avcodec -e avformat -e avutil -e webp | sed 's/.* => \(.*\)[(]0x.*/\1/') "$THIRDPARTYDIR"
     fi
     ls "$qmake" >/dev/null
 
