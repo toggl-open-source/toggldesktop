@@ -127,7 +127,16 @@ final class TimerViewModel: NSObject {
 
     func setTagAutoCompleteView(_ view: AutoCompleteView) {
         tagDataSource.setup(with: view)
+    }
+
+    func prepareData() {
         fetchTags()
+        updateBillableStatus()
+    }
+
+    func setBillable(_ isOn: Bool) {
+        billableState = isOn ? .on : .off
+        timeEntry.billable = isOn
     }
 
     // MARK: - Other
@@ -138,6 +147,25 @@ final class TimerViewModel: NSObject {
             workspaceID = DesktopLibraryBridge.shared().defaultWorkspaceID()
         }
         DesktopLibraryBridge.shared().fetchTags(forWorkspaceID: workspaceID)
+    }
+
+    private func updateBillableStatus() {
+        var canSeeBillable: Bool
+        if timeEntry.isRunning() {
+            canSeeBillable = timeEntry.canSeeBillable || timeEntry.billable
+        } else {
+            var workspaceID = timeEntry.workspaceID
+            if workspaceID <= 0 {
+                workspaceID = DesktopLibraryBridge.shared().defaultWorkspaceID()
+            }
+            canSeeBillable = DesktopLibraryBridge.shared().canSeeBillable(forWorkspaceID: workspaceID)
+        }
+
+        if canSeeBillable {
+            billableState = timeEntry.billable ? .on : .off
+        } else {
+            billableState = .notAvailable
+        }
     }
 
     @objc
@@ -161,7 +189,7 @@ final class TimerViewModel: NSObject {
 
         isRunning = entry.isRunning()
 
-        if entry.canSeeBillable {
+        if entry.canSeeBillable || entry.billable {
             billableState = entry.billable ? .on : .off
         } else {
             billableState = .notAvailable
@@ -246,6 +274,7 @@ final class TimerViewModel: NSObject {
 
         if isNewWorkspace {
             fetchTags()
+            updateBillableStatus()
         }
 
         focusTimer()

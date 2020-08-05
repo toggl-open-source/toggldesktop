@@ -451,6 +451,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     TimeEntry *RunningTimeEntry();
 
+    bool CanSeeBillable(const Poco::UInt64 workspaceID) const;
+
     void FetchTags(const Poco::UInt64 workspaceID);
 
     error ToggleTimelineRecording(

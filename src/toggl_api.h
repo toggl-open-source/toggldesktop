@@ -790,6 +790,10 @@ extern "C" {
         const char_t *guid,
         const int64_t at);
 
+    TOGGL_EXPORT bool_t toggl_can_see_billable(
+        void *context,
+        const int64_t workspaceID);
+
     TOGGL_EXPORT void toggl_fetch_tags(
         void *context,
         const int64_t workspaceID);

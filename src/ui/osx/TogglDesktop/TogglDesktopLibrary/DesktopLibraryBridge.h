@@ -141,6 +141,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (uint64_t)defaultWorkspaceID;
 - (void)fetchTagsForWorkspaceID:(uint64_t)workspaceID;
+- (BOOL)canSeeBillableForWorkspaceID:(uint64_t)workspaceID;
 
 @end
 

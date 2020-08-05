@@ -984,6 +984,12 @@ bool_t toggl_timeline_is_recording_enabled(
     return app(context)->IsTimelineRecordingEnabled();
 }
 
+bool_t toggl_can_see_billable(
+    void *context,
+    const int64_t workspaceID) {
+    return app(context)->CanSeeBillable(workspaceID);
+}
+
 void toggl_fetch_tags(
     void *context,
     const int64_t workspaceID) {

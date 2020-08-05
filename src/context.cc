@@ -3917,6 +3917,16 @@ TimeEntry *Context::RunningTimeEntry() {
     return user_->RunningTimeEntry();
 }
 
+bool Context::CanSeeBillable(const Poco::UInt64 workspaceID) const {
+    Workspace *ws = nullptr;
+    ws = user_->related.WorkspaceByID(workspaceID);
+    if (ws) {
+        return user_->CanSeeBillable(ws);
+    } else {
+        return false;
+    }
+}
+
 void Context::FetchTags(const Poco::UInt64 workspaceID) {
     if (!user_) {
         return;

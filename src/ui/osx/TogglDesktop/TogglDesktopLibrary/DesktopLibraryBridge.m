@@ -483,4 +483,8 @@ void *ctx;
     toggl_fetch_tags(ctx, workspaceID);
 }
 
+- (BOOL)canSeeBillableForWorkspaceID:(uint64_t)workspaceID {
+    return toggl_can_see_billable(ctx, workspaceID);
+}
+
 @end

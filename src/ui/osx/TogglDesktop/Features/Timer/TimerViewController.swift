@@ -59,6 +59,8 @@ class TimerViewController: NSViewController {
         viewModel.setDescriptionAutoCompleteInput(descriptionTextField)
         viewModel.setProjectAutoCompleteView(projectAutoCompleteView)
         viewModel.setTagAutoCompleteView(tagsAutoCompleteView)
+
+        viewModel.prepareData()
     }
 
     override func viewDidDisappear() {
@@ -147,12 +149,10 @@ class TimerViewController: NSViewController {
     }
 
     @IBAction func projectButtonClicked(_ sender: Any) {
-        NSLog("<<< Project button clicked")
         if projectAutoCompleteWindow.isVisible {
             closeProjectAutoComplete()
         } else {
             presentProjectAutoComplete()
-            projectButton.controlState = .active
         }
     }
 
@@ -161,11 +161,11 @@ class TimerViewController: NSViewController {
             closeTagsAutoComplete()
         } else {
             presentTagsAutoComplete()
-            tagsButton.controlState = .active
         }
     }
 
     @IBAction func billableButtonClicked(_ sender: Any) {
+        viewModel.setBillable(!billableButton.isSelected)
     }
 
     @IBAction func descriptionFieldChanged(_ sender: Any) {
@@ -219,6 +219,7 @@ class TimerViewController: NSViewController {
                 $0.cornerRadius = $0.bounds.height / 2
                 $0.selectedBackgroundColor = NSColor.togglGreen
         }
+        billableButton.isActiveOnClick = false
     }
 
     // MARK: - Autocomplete

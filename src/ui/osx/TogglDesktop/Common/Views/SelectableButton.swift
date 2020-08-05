@@ -40,6 +40,9 @@ class SelectableButton: NSButton {
         }
     }
 
+    /// Set to `true` if button should switch `controlState` to `.active` automatically after click action.
+    var isActiveOnClick = true
+
     override var intrinsicContentSize: NSSize {
         var defaultSize = super.intrinsicContentSize
         // add padding around button for better appearance
@@ -113,15 +116,23 @@ class SelectableButton: NSButton {
     }
 
     override func mouseDown(with event: NSEvent) {
-        // leaving empty so we can receive `mouseUp` event
+        guard isEnabled else { return }
+        controlState = .active
+
+        // not calling `super` so we can receive `mouseUp` event
     }
 
     override func mouseUp(with event: NSEvent) {
         super.mouseUp(with: event)
+
+        guard isEnabled else { return }
+
         let isUpInside = bounds.contains(convert(event.locationInWindow, from: nil))
         if isUpInside {
-            controlState = .active
+            controlState = isActiveOnClick ? .active : .normal
             sendAction(action, to: target)
+        } else {
+            controlState = .normal
         }
     }
 }
