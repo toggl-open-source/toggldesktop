@@ -1680,5 +1680,5 @@ TogglRgbColor toggl_get_adaptive_rgb_color_from_hex(
 }
 
 bool toggl_is_timeline_ui_enabled(void *context) {
-    return app(context)->timeline_ui_flag;
+    return app(context)->IsTimelineUiEnabled();
 }

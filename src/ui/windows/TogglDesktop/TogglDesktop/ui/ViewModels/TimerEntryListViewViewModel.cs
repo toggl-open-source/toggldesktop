@@ -1,23 +1,20 @@
-﻿using ReactiveUI;
+﻿using System;
+using DynamicData.Binding;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace TogglDesktop.ViewModels
 {
     public class TimerEntryListViewViewModel : ReactiveObject
     {
-        private byte? _selectedTab;
-        public byte SelectedTab
+        public TimerEntryListViewViewModel()
         {
-            get
-            {
-                _selectedTab ??= Toggl.GetActiveTab();
-                return _selectedTab.Value;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _selectedTab, value);
-                Toggl.SetActiveTab(SelectedTab);
-            }
+            this.WhenValueChanged(x => SelectedTab)
+                .Subscribe(value => Toggl.SetActiveTab(value));
         }
+
+        [Reactive] 
+        public byte SelectedTab { get; set; } = Toggl.GetActiveTab();
 
         public bool IsTimelineViewEnabled => Toggl.IsTimelineUiEnabled();
     }

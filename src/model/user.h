@@ -210,6 +210,8 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         const std::string &password,
         std::string *result);
 
+    bool timeline_ui_flag = true;
+
  private:
     void loadUserTagFromJSON(
         Json::Value data,
