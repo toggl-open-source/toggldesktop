@@ -220,8 +220,8 @@ jobs:
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/toggldesktop_${TAG_NAME/v/}_amd64.deb"
 
-  linux-ubuntu1804:
-    runs-on: ubuntu-18.04
+  linux-ubuntu1604:
+    runs-on: ubuntu-16.04
     steps:
     - uses: actions/checkout@v1
       with:
@@ -233,6 +233,21 @@ jobs:
       run: |
         sudo apt update
         sudo apt install devscripts cmake debhelper pkg-config libssl-dev libxss-dev libxmu-dev
+    - name: Upgrade GCC
+      run: |
+        sudo apt-get install -y software-properties-common
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt update
+        sudo apt install g++-7 -y
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+        sudo update-alternatives --config gcc
+    - name: Upgrade CMake
+      run: |
+        sudo apt-key add dist/linux/kitware-archive-latest.asc
+        sudo apt install apt-transport-https
+        sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ xenial main'
+        sudo apt update
+        sudo apt -y upgrade cmake\*
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
@@ -241,6 +256,8 @@ jobs:
     - name: Build a Debian package
       run: |
         export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
+        export CC=/usr/bin/gcc-7
+        export CXX=/usr/bin/g++-7
         TAG_NAME=$(./dist/get-tag-name.sh)
         cd dist/linux
         ln -s ../../src .
@@ -248,7 +265,7 @@ jobs:
         ln -s ../../third_party .
         ln -s ubuntu16 debian
         dch -b -D unstable --package "toggldesktop" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
-        debuild --preserve-envvar=CMAKE_PREFIX_PATH
+        debuild --preserve-envvar=CMAKE_PREFIX_PATH --preserve-envvar=CC --preserve-envvar=CXX
     - name: Upload artifacts to GitHub
       if: github.event_name != 'release'
       uses: actions/upload-artifact@v2
