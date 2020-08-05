@@ -6465,7 +6465,7 @@ void Context::syncCollectJSON(Json::Value &array, const std::vector<T*> &source)
         if (!found) {
             logger.error("Was not able to sync entity: ", i->String());
             i->SetUnsynced();
-            i->SetValidationError(kForeignEntityLost);
+            i->SetValidationError(kForeignEntityLostError);
         }
 
         // If updating, there always has to be a payload
@@ -6497,7 +6497,7 @@ bool Context::syncTranslateGUIDToLocalID(Json::Value &item) {
         }
         else {
             Project *project = this->user_->related.ProjectByGUID(guid);
-            if (project && project->ValidationError() != kForeignEntityLost) {
+            if (project && project->ValidationError() != kForeignEntityLostError) {
                 auto localID = project->LocalID();
                 item["project_id"] = Json::Int64(-localID);
             }
@@ -6513,7 +6513,7 @@ bool Context::syncTranslateGUIDToLocalID(Json::Value &item) {
         }
         else {
             Client *client = this->user_->related.ClientByGUID(guid);
-            if (client && client->ValidationError() != kForeignEntityLost) {
+            if (client && client->ValidationError() != kForeignEntityLostError) {
                 auto localID = client->LocalID();
                 item["client_id"] = Json::Int64(-localID);
             }
