@@ -259,6 +259,7 @@ namespace TogglDesktop
             this.loadPositions();
 
             this.GetWindow<AboutWindow>().ViewModel.InitUpdateChannel(Toggl.UpdateChannel());
+            this.timerEntryListView.ViewModel = new TimerEntryListViewViewModel();
 
             this.errorBar.Hide();
             this.statusBar.Hide();
