@@ -55,7 +55,96 @@ function build() {
     popd > /dev/null
 }
 
+function listdeps() {
+    local file=""
+    if [[ "$2" == "" ]]; then
+        file=$1
+    else
+        file=$2
+    fi
+    ldd $file | grep "=>" | sed "s/.*=> //" | sed "s/ [(]0x[0-9a-fA-F]*[)]//" | grep -v "^/usr/lib" | grep -v "^/lib" | grep -v "^$PREFIX/[^/]*" | grep -v "not found" | sed '/^ *$/d'
+
+}
+
 function compose() {
+    pushd "$PREFIX" >/dev/null
+
+    mkdir -p "$BINDIR" "$LIBDIR" "$THIRDPARTYDIR" "$LIBEXECDIR" "$SCRIPTDIR"
+
+    echo "=========== Composing the package" >&2
+    rm -fr include lib/cmake
+    if [ ! -z "$CMAKE_PREFIX_PATH" ]; then
+        export LD_LIBRARY_PATH="$CMAKE_PREFIX_PATH/../"
+    fi
+
+    ldd bin/TogglDesktop
+    corelib=$(ldd bin/TogglDesktop | grep -e libQt5Core  | sed 's/.* => \(.*\)[(]0x.*/\1/')
+    echo "corelib: " $corelib
+    libdir=$(dirname "$corelib")
+    echo "libdir: " $libdir
+    qmake=$(find $libdir/../bin/ $libdir/../../bin/ -name qmake -or -name qmake-qt5 | head -n1)
+    echo "qmake: " $qmake
+    
+    libexecdir=$($qmake -query QT_INSTALL_LIBEXECS)
+    plugindir=$($qmake -query QT_INSTALL_PLUGINS)
+    translationdir=$($qmake -query QT_INSTALL_TRANSLATIONS)
+    datadir=$($qmake -query QT_INSTALL_DATA)
+    
+    echo hu
+    for i in `listdeps bin/TogglDesktop`; do
+        cp -Lrfu $i lib
+    done
+    echo ha
+    
+    if [[ -f /usr/lib/x86_64-linux-gnu/libssl.so.1.1 ]]; then
+        cp -Lrfu /usr/lib/x86_64-linux-gnu/libssl.so.1.1 lib
+        cp -Lrfu /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1 lib
+    fi
+    
+    for i in `ls -1 lib/*.so`; do
+        for j in `listdeps $i`; do
+            cp -Lrfu $j lib
+        done
+    done
+    
+    for i in $PLUGINS; do
+        newpath="$THIRDPARTYDIR/qt5/plugins/$(dirname $i)/"
+        file=$(basename $i)
+        mkdir -p $newpath
+        cp -Lrfu $plugindir/$i $newpath
+        patchelf --set-rpath '$ORIGIN/../../../' $newpath/$file
+        for j in `listdeps $newpath/$file`; do
+            cp -Lrfu $j lib
+        done
+    done
+    
+    for i in `ls -1 lib/*.so`; do
+        for j in `listdeps $i`; do
+            cp -Lrfu $j lib
+        done
+    done
+
+    echo he
+    
+    for i in `ls -1 bin/* | grep -v "sh$"`; do
+        patchelf --set-rpath '$ORIGIN/../lib' $i
+    done
+    for i in `ls -1 lib/*so*`; do
+        patchelf --set-rpath '$ORIGIN' $i
+    done
+    
+    cat <<EOF >"bin/qt.conf"
+[Paths]
+Prefix=../lib
+Plugins=qt5/plugins
+Data=qt5
+Translations=qt5/translations
+EOF
+    
+    popd >/dev/null
+}
+
+function compose_old() {
     pushd "$PREFIX" >/dev/null
 
     mkdir -p "$BINDIR" "$LIBDIR" "$THIRDPARTYDIR" "$LIBEXECDIR" "$SCRIPTDIR"
@@ -108,7 +197,7 @@ function compose() {
 
     for i in $(ls "$THIRDPARTYDIR"/*.so); do
         for j in $(ldd $i | grep -e "=>.*\.so" | sed 's/.* => \(.*\)[(]0x.*/\1/'); do
-            if [ ! -f lib/$(basename "$j") ]; then
+            if [ ! -f lib/$(basename "$j") ]; then 
                 cp -vLrfu $j "$THIRDPARTYDIR"
             fi
         done
