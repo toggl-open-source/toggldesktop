@@ -1462,6 +1462,25 @@ public static partial class Toggl
 
     #endregion
 
+    #region timeline ui
+
+    public static bool SetActiveTab(byte tab)
+    {
+        return toggl_set_settings_active_tab(ctx, tab);
+    }
+
+    public static byte GetActiveTab()
+    {
+        return toggl_get_active_tab(ctx);
+    }
+
+    public static bool IsTimelineUiEnabled()
+    {
+        return toggl_is_timeline_ui_enabled(ctx);
+    }
+
+    #endregion
+
 
     public static void ToggleEntriesGroup(string groupName)
     {

@@ -332,7 +332,8 @@ extern "C" {
     typedef void (*TogglContinueSignIn)(
     );
 
-    typedef void (*TogglDisplayLoginSSO)(const char_t *sso_url);
+    typedef void (*TogglDisplayLoginSSO)(
+        const char_t *sso_url);
 
     typedef void (*TogglDisplayIdleNotification)(
         const char_t *guid,
@@ -1299,6 +1300,9 @@ extern "C" {
     TOGGL_EXPORT TogglRgbColor toggl_get_adaptive_rgb_color_from_hex(
         const char_t *hexColor,
         TogglAdaptiveColor type);
+
+    TOGGL_EXPORT bool_t toggl_is_timeline_ui_enabled(
+        void* context);
 
 #undef TOGGL_EXPORT
 

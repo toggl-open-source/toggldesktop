@@ -71,12 +71,12 @@ namespace TogglDesktop
             this.initializeSyncingIndicator();
             this.initializeTutorialManager();
             this.initializeSessionNotification();
-            InitializeViews();
 
             this.idleDetectionTimer.Tick += this.onIdleDetectionTimerTick;
 
             this.finalInitialisation();
             this.trackingWindowSize();
+            InitializeViews();
             this.Loaded += onMainWindowLoaded;
         }
 

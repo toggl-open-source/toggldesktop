@@ -1678,3 +1678,7 @@ TogglRgbColor toggl_get_adaptive_rgb_color_from_hex(
     TogglAdaptiveColor type) {
     return toggl::ColorConverter::GetRgbAdaptiveColor(to_string(hexColor), type);
 }
+
+bool_t toggl_is_timeline_ui_enabled(void *context) {
+    return app(context)->IsTimelineUiEnabled();
+}

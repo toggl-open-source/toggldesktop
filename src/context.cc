@@ -7028,6 +7028,10 @@ bool Context::checkIfSkipPomodoro(TimeEntry *te) {
     return false;
 }
 
+bool Context::IsTimelineUiEnabled() {
+    return user_->timeline_ui_flag;
+}
+
 bool Context::isUsingSyncServer() const {
     return is_using_sync_server_;
 }

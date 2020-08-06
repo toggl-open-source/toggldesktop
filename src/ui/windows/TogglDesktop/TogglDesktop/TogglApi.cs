@@ -533,7 +533,7 @@ private delegate void     TogglContinueSignIn(
     );
 
 [UnmanagedFunctionPointer(convention)]
-private delegate void TogglDisplayLoginSSO(
+private delegate void     TogglDisplayLoginSSO(
 [MarshalAs(UnmanagedType.LPWStr)]
         string sso_url);
 
@@ -1936,6 +1936,11 @@ private static extern TogglRgbColor toggl_get_adaptive_rgb_color_from_hex(
 [MarshalAs(UnmanagedType.LPWStr)]
         string hexColor,
         TogglAdaptiveColor type);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+[return:MarshalAs(UnmanagedType.I1)]
+private static extern bool toggl_is_timeline_ui_enabled(
+        IntPtr context);
 
 
 

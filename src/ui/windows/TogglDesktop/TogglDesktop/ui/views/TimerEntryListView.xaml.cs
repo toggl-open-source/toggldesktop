@@ -12,6 +12,12 @@ namespace TogglDesktop
 {
     public partial class TimerEntryListView : IMainView
     {
+        public TimerEntryListViewViewModel ViewModel
+        {
+            get => DataContext as TimerEntryListViewViewModel;
+            set => DataContext = value;
+        }
+
         public TimerEntryListView()
         {
             this.InitializeComponent();
@@ -45,6 +51,10 @@ namespace TogglDesktop
             if (open || userID == 0)
             {
                 this.Entries.Children.Clear();
+            }
+            if (userID != 0)
+            {
+                ViewModel = new TimerEntryListViewViewModel();
             }
         }
 

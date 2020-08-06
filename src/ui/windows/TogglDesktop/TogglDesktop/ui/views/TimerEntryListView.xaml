@@ -4,20 +4,101 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:vm="clr-namespace:TogglDesktop.ViewModels"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400">
+             d:DesignHeight="300" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance vm:TimerEntryListViewViewModel, IsDesignTimeCreatable=False}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TabControl" BasedOn="{StaticResource MahApps.Styles.TabControl}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TabControl}">
+                            <Grid KeyboardNavigation.TabNavigation="Local">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border BorderThickness="0" Margin="0,0,0,0" Background="{DynamicResource Toggl.CardBackground}" Height="40"
+                                        Visibility="{Binding Path=IsTimelineViewEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <UniformGrid Rows="1" x:Name="HeaderPanel" IsItemsHost="True"
+                                                 VerticalAlignment="Stretch"/>
+                                </Border>
+                                <ContentPresenter ContentSource="SelectedContent" Grid.Row="1" Grid.ColumnSpan="2" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="TabItem" BasedOn="{StaticResource MahApps.Styles.TabItem}">
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
+                <Setter Property="FontSize" Value="14"></Setter>
+                <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabItem">
+                            <DockPanel Background="{DynamicResource Toggl.CardBackground}" LastChildFill="True" Name="DockPanel">
+                                <Border Name="Border"
+                                            BorderBrush="{DynamicResource Toggl.AccentBrush}" 
+                                            BorderThickness="1,1,1,1"
+                                            VerticalAlignment="Bottom"
+                                            DockPanel.Dock="Bottom"/>
+                                <TextBlock Name="ContentSite"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               Text="{TemplateBinding Header}"
+                                               Margin="12,2,12,2"/>
+                            </DockPanel>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="Border" Property="BorderThickness" Value="1" />
+                                    <Setter TargetName="ContentSite" Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="False">
+                                    <Setter TargetName="Border" Property="BorderThickness" Value="0" />
+                                </Trigger>
+
+                                <Trigger SourceName="DockPanel" Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="ContentSite" Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+                                    <Setter Property="Cursor" Value="Hand" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <toggl:TimeEntryList Grid.Row="1"
-                             x:Name="Entries"
-                             FocusTimer="onFocusTimer"/>
+        <TabControl Grid.Row="1" Name="TabControl" SelectedIndex="{Binding SelectedTab}"
+                    UseLayoutRounding="True">
+            <TabItem Header="List">
+                <toggl:TimeEntryList x:Name="Entries"
+                                     FocusTimer="onFocusTimer"/>
+            </TabItem>
+            <TabItem Header="Timeline"
+                     Visibility="{Binding Path=IsTimelineViewEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel></StackPanel>
+            </TabItem>
+        </TabControl>
+
 
         <Border Grid.Row="0" Height="4" VerticalAlignment="Bottom"
-                Background="{Binding ElementName=Timer, Path=Background}">
+                Background="{Binding ElementName=Timer, Path=Background}"
+                Visibility="{Binding Path=IsTimelineViewEnabled, Converter={StaticResource BooleanInvertToVisibilityConverter}}">
             <Border.Effect>
                 <DropShadowEffect Direction="270" Color="Black" Opacity="0.22"
                                   BlurRadius="8" ShadowDepth="2" />
