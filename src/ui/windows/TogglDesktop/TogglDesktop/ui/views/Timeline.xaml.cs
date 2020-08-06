@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
@@ -20,12 +21,7 @@ namespace TogglDesktop
         public Timeline()
         {
             InitializeComponent();
-            this.Loaded += OnLoaded;
-        }
-
-        private void OnLoaded(object sender, EventArgs args)
-        {
-            ViewModel = new TimelineViewModel();
+            Loaded += (s, e) => ViewModel = new TimelineViewModel();
         }
 
         private void RecordActivityInfoBoxOnMouseEnter(object sender, MouseEventArgs e)
