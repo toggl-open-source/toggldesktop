@@ -50,7 +50,6 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </textFieldCell>
                                                 <connections>
-                                                    <action selector="descriptionFieldChanged:" target="-2" id="Y5L-EE-dtm"/>
                                                     <outlet property="delegate" destination="-2" id="LHe-Ky-bSV"/>
                                                 </connections>
                                             </textField>

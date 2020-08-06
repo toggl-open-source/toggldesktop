@@ -42,7 +42,6 @@ class TimerViewController: NSViewController {
         descriptionTextField.responderDelegate = descriptionContainerBox
 
         configureAppearance()
-        configureHideAutoCompleteWhenLostFocus()
 
         setupBindings()
     }
@@ -61,6 +60,8 @@ class TimerViewController: NSViewController {
         viewModel.setTagAutoCompleteView(tagsAutoCompleteView)
 
         viewModel.prepareData()
+
+        configureHideAutoCompleteWhenLostFocus()
     }
 
     override func viewDidDisappear() {
@@ -168,13 +169,9 @@ class TimerViewController: NSViewController {
         viewModel.setBillable(!billableButton.isSelected)
     }
 
-    @IBAction func descriptionFieldChanged(_ sender: Any) {
-        viewModel.entryDescription = descriptionTextField.stringValue
-    }
-
     func controlTextDidChange(_ obj: Notification) {
         if let descriptionField = obj.object as? AutoCompleteInput {
-            viewModel.entryDescription = descriptionField.stringValue
+            viewModel.setDescription(descriptionField.stringValue)
         }
     }
 

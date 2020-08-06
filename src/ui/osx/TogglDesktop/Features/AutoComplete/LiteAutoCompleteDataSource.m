@@ -274,7 +274,7 @@ extern void *ctx;
                 {
                     self.textLength = [key length];
                 }
-            // Add workspace title
+                // Add workspace title
                 if (item.WorkspaceID != self.lastWID
                     && item.WorkspaceName != nil)
                 {
@@ -389,6 +389,7 @@ extern void *ctx;
 {
 	_input = input;
 	_input.inputDelegate = self;
+    _input.autocompleteTableView.dataSource = self;
 }
 
 #pragma mark - AutoCompleteInputDelegate
