@@ -14,6 +14,9 @@ final class TimerViewModel: NSObject {
         didSet {
             guard entryDescription != oldValue else { return }
             timeEntry.entryDescription = entryDescription
+            if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
+                DesktopLibraryBridge.shared().updateTimeEntry(withDescription: entryDescription, guid: timeEntryGUID)
+            }
             onDescriptionChanged?(entryDescription)
         }
     }
@@ -38,15 +41,24 @@ final class TimerViewModel: NSObject {
 
     private(set) var billableState: BillableState = .notAvailable {
         didSet {
+            guard billableState != oldValue else { return }
+            timeEntry.billable = billableState == .on
+            if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
+                let isBillable = billableState == .on
+                DesktopLibraryBridge.shared().setBillableForTimeEntryWithTimeEntryGUID(timeEntryGUID, isBillable: isBillable)
+            }
             onBillableChanged?(billableState)
         }
     }
 
-    private var tags: [String] = [] {
+    private var selectedTags: [String] = [] {
         didSet {
-            timeEntry.tags = tags
-            tagDataSource.updateSelectedTags(tags.map { Tag(name: $0) })
-            onTagSelected?(!tags.isEmpty)
+            timeEntry.tags = selectedTags
+            tagDataSource.updateSelectedTags(selectedTags.map { Tag(name: $0) })
+            if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
+                DesktopLibraryBridge.shared().updateTimeEntry(withTags: selectedTags, guid: timeEntryGUID)
+            }
+            onTagSelected?(!selectedTags.isEmpty)
         }
     }
 
@@ -148,7 +160,6 @@ final class TimerViewModel: NSObject {
 
     func setBillable(_ isOn: Bool) {
         billableState = isOn ? .on : .off
-        timeEntry.billable = isOn
     }
 
     // MARK: - Other
@@ -201,17 +212,17 @@ final class TimerViewModel: NSObject {
 
         isRunning = entry.isRunning()
 
-        if entry.canSeeBillable || entry.billable {
-            billableState = entry.billable ? .on : .off
-        } else {
-            billableState = .notAvailable
-        }
+//        if entry.canSeeBillable || entry.billable {
+//            billableState = entry.billable ? .on : .off
+//        } else {
+//            billableState = .notAvailable
+//        }
 
         // TODO: should not update if description is in edit mode
-        if let description = entry.descriptionName, !description.isEmpty {
-            self.entryDescription = description
+//        if let description = entry.descriptionName, !description.isEmpty {
+//            self.entryDescription = description
 //            descriptionTextField.toolTip = description
-        }
+//        }
 
         durationString = entry.duration ?? ""
 
@@ -227,7 +238,7 @@ final class TimerViewModel: NSObject {
             onTouchBarUpdateRunningItem?(entry)
         }
 
-        onProjectSelected?(Project(timeEntry: self.timeEntry))
+//        onProjectSelected?(Project(timeEntry: self.timeEntry))
     }
 
     private func focusTimer() {
@@ -235,13 +246,14 @@ final class TimerViewModel: NSObject {
     }
 
     private func stop() {
+        timeEntry = TimeEntryViewItem()
+
         isRunning = false
         entryDescription = ""
         durationString = ""
-        tags = []
+        selectedTags = []
+        updateBillableStatus()
         focusTimer()
-
-        timeEntry = TimeEntryViewItem()
 
         onProjectSelected?(nil)
     }
@@ -256,11 +268,10 @@ final class TimerViewModel: NSObject {
 
         fillEntryProject(from: autocompleteItem)
 
-        tags = autocompleteItem.tags ?? []
+        selectedTags = autocompleteItem.tags ?? []
 
-        timeEntry.billable = autocompleteItem.billable
         if timeEntry.canSeeBillable {
-            billableState = timeEntry.billable ? .on : .off
+            billableState = autocompleteItem.billable ? .on : .off
         } else {
             billableState = .notAvailable
         }
@@ -278,6 +289,13 @@ final class TimerViewModel: NSObject {
         timeEntry.clientLabel = autocompleteItem.clientLabel
         timeEntry.projectColor = autocompleteItem.projectColor
 
+        if timeEntry.isRunning() {
+            DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
+                                                                         taskID: timeEntry.taskID,
+                                                                         projectID: timeEntry.projectID,
+                                                                         projectGUID: autocompleteItem.projectGUID)
+        }
+
         onProjectSelected?(Project(timeEntry: timeEntry))
 
         if isNewWorkspace {
@@ -288,7 +306,7 @@ final class TimerViewModel: NSObject {
     private func workspaceDidChange() {
         fetchTags()
         updateBillableStatus()
-        tags = []
+        selectedTags = []
     }
 
     // MARK: - Notifications handling
@@ -424,9 +442,6 @@ extension TimerViewModel: AutoCompleteViewDataSourceDelegate {
 extension TimerViewModel: TagDataSourceDelegate {
 
     func tagSelectionChanged(with selectedTags: [Tag]) {
-        let tags = selectedTags.toNames()
-        self.timeEntry.tags = tags
-
-        onTagSelected?(!tags.isEmpty)
+        self.selectedTags = selectedTags.map { $0.name }
     }
 }

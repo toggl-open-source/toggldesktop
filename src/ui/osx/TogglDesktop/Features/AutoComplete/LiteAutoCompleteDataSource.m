@@ -347,6 +347,10 @@ extern void *ctx;
 
 - (void)setFilter:(NSString *)filter
 {
+    if ([filter isEqualToString:self.currentFilter]) {
+        return;
+    }
+
 	self.textLength = 0;
     bool lastFilterWasNonEmpty = ((filter == nil || filter.length == 0) && (self.currentFilter != nil && self.currentFilter.length > 0));
 

@@ -134,7 +134,10 @@ class TimerViewController: NSViewController {
 
     @objc
     func focusDescriptionField() {
-        descriptionTextField.window?.makeFirstResponder(self.descriptionTextField)
+        guard let window = view.window, window.firstResponder != descriptionTextField.currentEditor() else {
+            return
+        }
+        window.makeFirstResponder(descriptionTextField)
     }
 
     // TODO: consider removing this after refactoring TimerEditViewController
@@ -170,8 +173,8 @@ class TimerViewController: NSViewController {
     }
 
     func controlTextDidChange(_ obj: Notification) {
-        if let descriptionField = obj.object as? AutoCompleteInput {
-            viewModel.setDescription(descriptionField.stringValue)
+        if let textField = obj.object as? AutoCompleteInput, textField == descriptionTextField {
+            viewModel.setDescription(textField.stringValue)
         }
     }
 
@@ -201,7 +204,12 @@ class TimerViewController: NSViewController {
                     return isHandled
                 }
             }
-            viewModel.startStopAction()
+            if !viewModel.isRunning {
+                viewModel.startStopAction()
+            } else {
+                view.window?.makeFirstResponder(nil)
+                descriptionTextField.resetTable()
+            }
         }
 
         return isHandled
