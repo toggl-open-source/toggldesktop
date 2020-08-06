@@ -14,6 +14,7 @@ final class TimerViewModel: NSObject {
         didSet {
             guard entryDescription != oldValue else { return }
             timeEntry.entryDescription = entryDescription
+            onDescriptionChanged?(entryDescription)
         }
     }
 
@@ -38,6 +39,14 @@ final class TimerViewModel: NSObject {
     private(set) var billableState: BillableState = .notAvailable {
         didSet {
             onBillableChanged?(billableState)
+        }
+    }
+
+    private var tags: [String] = [] {
+        didSet {
+            timeEntry.tags = tags
+            tagDataSource.updateSelectedTags(tags.map { Tag(name: $0) })
+            onTagSelected?(!tags.isEmpty)
         }
     }
 
@@ -114,7 +123,7 @@ final class TimerViewModel: NSObject {
         guard let item = descriptionDataSource.item(at: index) else {
             return false
         }
-        fillEntry(from: item)
+        fillEntry(fromDescriptionAutocomplete: item)
 
         descriptionDataSource.input?.resetTable()
         descriptionDataSource.clearFilter()
@@ -229,21 +238,35 @@ final class TimerViewModel: NSObject {
         isRunning = false
         entryDescription = ""
         durationString = ""
+        tags = []
         focusTimer()
 
         timeEntry = TimeEntryViewItem()
 
-        onDescriptionChanged?("")
-        onTagSelected?(false)
         onProjectSelected?(nil)
-
-        tagDataSource.updateSelectedTags([])
     }
 
-    private func fillEntry(from autocompleteItem: AutocompleteItem) {
+    private func fillEntry(fromDescriptionAutocomplete autocompleteItem: AutocompleteItem) {
         // User has selected a autocomplete item.
         // It could be a time entry, a task or a project.
 
+        if let newDescription = autocompleteItem.description {
+            entryDescription = newDescription
+        }
+
+        fillEntryProject(from: autocompleteItem)
+
+        tags = autocompleteItem.tags ?? []
+
+        timeEntry.billable = autocompleteItem.billable
+        if timeEntry.canSeeBillable {
+            billableState = timeEntry.billable ? .on : .off
+        } else {
+            billableState = .notAvailable
+        }
+    }
+
+    private func fillEntryProject(from autocompleteItem: AutocompleteItem) {
         let isNewWorkspace = autocompleteItem.workspaceID != timeEntry.workspaceID
 
         timeEntry.workspaceID = UInt64(autocompleteItem.workspaceID)
@@ -254,35 +277,18 @@ final class TimerViewModel: NSObject {
         timeEntry.projectLabel = autocompleteItem.projectLabel
         timeEntry.clientLabel = autocompleteItem.clientLabel
         timeEntry.projectColor = autocompleteItem.projectColor
-        timeEntry.tags = autocompleteItem.tags
-        timeEntry.billable = autocompleteItem.billable
 
-        if let newDescription = autocompleteItem.description {
-            timeEntry.entryDescription = newDescription
-        }
-        entryDescription = timeEntry.entryDescription
-
-        onTagSelected?(timeEntry.tags?.isEmpty == false)
-
-        let hasProject = timeEntry.projectLabel != nil && timeEntry.projectLabel.isEmpty == false
-        if hasProject {
-            let project = Project(timeEntry: timeEntry)
-            onProjectSelected?(project)
-        } else {
-            onProjectSelected?(nil)
-        }
-
-        if timeEntry.canSeeBillable {
-            billableState = timeEntry.billable ? .on : .off
-        } else {
-            billableState = .notAvailable
-        }
+        onProjectSelected?(Project(timeEntry: timeEntry))
 
         if isNewWorkspace {
-            fetchTags()
-            updateBillableStatus()
-            tagDataSource.updateSelectedTags([])
+            workspaceDidChange()
         }
+    }
+
+    private func workspaceDidChange() {
+        fetchTags()
+        updateBillableStatus()
+        tags = []
     }
 
     // MARK: - Notifications handling
@@ -344,7 +350,7 @@ extension TimerViewModel: NSTableViewDelegate {
                 return
         }
 
-        fillEntry(from: item)
+        fillEntry(fromDescriptionAutocomplete: item)
 
         descriptionDataSource.input?.resetTable()
         descriptionDataSource.clearFilter()
@@ -406,14 +412,11 @@ extension TimerViewModel {
 extension TimerViewModel: AutoCompleteViewDataSourceDelegate {
 
     func autoCompleteSelectionDidChange(sender: AutoCompleteViewDataSource, item: Any) {
-        NSLog("<<< autoCompleteSelectionDidChange")
         if sender == projectDataSource {
             guard let projectItem = item as? ProjectContentItem else {
                 return
             }
-
-            // TODO: make sure it's not reseting tags and other data
-            fillEntry(from: projectItem.item)
+            fillEntryProject(from: projectItem.item)
         }
     }
 }
