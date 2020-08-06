@@ -33,17 +33,7 @@
                  Name="RecordActivityInfoBox"
                  MouseEnter="RecordActivityInfoBoxOnMouseEnter">
             <Grid>
-                <Ellipse Fill="{DynamicResource Toggl.DisabledTextBrush}"
-                         Width="15" Height="15"
-                         VerticalAlignment="Center"
-                         HorizontalAlignment="Center">
-                </Ellipse>
-                <TextBlock HorizontalAlignment="Center" 
-                           TextAlignment="Center"
-                           VerticalAlignment="Center"
-                           Foreground="{DynamicResource Toggl.CardBackground}"
-                           FontWeight="UltraBold"
-                           FontFamily="Verdana">i</TextBlock>
+                <Path Fill="#B1B1B5" Data="{StaticResource Toggl.InfoIconGeometry}"/>
                 <Popup IsOpen="False" Name="RecordActivityInfoPopup" StaysOpen="False" UseLayoutRounding="True" >
                     <Border BorderThickness="1" Background="{DynamicResource Toggl.CardBackground}"
                             BorderBrush="{DynamicResource Toggl.Background}">
