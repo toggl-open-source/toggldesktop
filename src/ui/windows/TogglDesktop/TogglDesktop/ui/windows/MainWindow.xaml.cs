@@ -71,12 +71,12 @@ namespace TogglDesktop
             this.initializeSyncingIndicator();
             this.initializeTutorialManager();
             this.initializeSessionNotification();
-            InitializeViews();
 
             this.idleDetectionTimer.Tick += this.onIdleDetectionTimerTick;
 
             this.finalInitialisation();
             this.trackingWindowSize();
+            InitializeViews();
             this.Loaded += onMainWindowLoaded;
         }
 
@@ -904,6 +904,7 @@ namespace TogglDesktop
         {
             loginView.ViewModel = new LoginViewModel(OpenSSOLoginView);
             SSOLoginView.ViewModel = new SSOLoginViewModel(OpenLoginView);
+            timerEntryListView.ViewModel = new TimerEntryListViewViewModel();
         }
 
         public void ProcessStartupUri(string uri)
