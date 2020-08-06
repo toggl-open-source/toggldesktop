@@ -39,7 +39,7 @@ std::string API() {
     if (use_staging_as_backend) {
         return "https://desktop.track.toggl.space";
     }
-    return "https://desktop.toggl.com";
+    return "https://desktop.track.toggl.com";
 }
 
 std::string SyncAPI() {
@@ -53,14 +53,14 @@ std::string TimelineUpload() {
     if (use_staging_as_backend) {
         return "https://desktop.track.toggl.space";
     }
-    return "https://timeline.toggl.com";
+    return "https://desktop.track.toggl.com";
 }
 
 std::string WebSocket() {
     if (use_staging_as_backend) {
         return "https://desktop.track.toggl.space";
     }
-    return "https://stream.toggl.com";
+    return "https://desktop.track.toggl.com";
 }
 
 bool ImATeapot() {
