@@ -21,7 +21,7 @@ namespace TogglDesktop
         public Timeline()
         {
             InitializeComponent();
-            Loaded += (s, e) => ViewModel = new TimelineViewModel();
+            Toggl.OnLogin += (open, userId) => ViewModel = new TimelineViewModel();
         }
 
         private void RecordActivityInfoBoxOnMouseEnter(object sender, MouseEventArgs e)
