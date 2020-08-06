@@ -903,7 +903,6 @@ namespace TogglDesktop
         {
             loginView.ViewModel = new LoginViewModel(OpenSSOLoginView);
             SSOLoginView.ViewModel = new SSOLoginViewModel(OpenLoginView);
-            timerEntryListView.ViewModel = new TimerEntryListViewViewModel();
         }
 
         public void ProcessStartupUri(string uri)

@@ -52,6 +52,10 @@ namespace TogglDesktop
             {
                 this.Entries.Children.Clear();
             }
+            if (userID != 0)
+            {
+                ViewModel = new TimerEntryListViewViewModel();
+            }
         }
 
         private void onTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list, bool showLoadMoreButton)
