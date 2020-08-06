@@ -26,7 +26,11 @@ final class TagDataSource: AutoCompleteViewDataSource {
     // MARK: Variables
 
     weak var tagDelegate: TagDataSourceDelegate?
-    private(set) var selectedTags: [Tag] = []
+    private(set) var selectedTags: [Tag] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     // MARK: Override
 

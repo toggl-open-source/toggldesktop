@@ -236,6 +236,8 @@ final class TimerViewModel: NSObject {
         onDescriptionChanged?("")
         onTagSelected?(false)
         onProjectSelected?(nil)
+
+        tagDataSource.updateSelectedTags([])
     }
 
     private func fillEntry(from autocompleteItem: AutocompleteItem) {
@@ -279,6 +281,7 @@ final class TimerViewModel: NSObject {
         if isNewWorkspace {
             fetchTags()
             updateBillableStatus()
+            tagDataSource.updateSelectedTags([])
         }
     }
 
