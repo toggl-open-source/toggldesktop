@@ -175,16 +175,11 @@ final class TimerViewModel: NSObject {
     }
 
     private func updateBillableStatus() {
-        var canSeeBillable: Bool
-        if timeEntry.isRunning() {
-            canSeeBillable = timeEntry.canSeeBillable || timeEntry.billable
-        } else {
-            var workspaceID = timeEntry.workspaceID
-            if workspaceID <= 0 {
-                workspaceID = DesktopLibraryBridge.shared().defaultWorkspaceID()
-            }
-            canSeeBillable = DesktopLibraryBridge.shared().canSeeBillable(forWorkspaceID: workspaceID)
+        var workspaceID = timeEntry.workspaceID
+        if workspaceID <= 0 {
+            workspaceID = DesktopLibraryBridge.shared().defaultWorkspaceID()
         }
+        let canSeeBillable = DesktopLibraryBridge.shared().canSeeBillable(forWorkspaceID: workspaceID)
 
         if canSeeBillable {
             billableState = timeEntry.billable ? .on : .off
