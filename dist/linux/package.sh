@@ -1,5 +1,8 @@
 #!/bin/bash
 
+scriptdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+reporoot="${scriptdir}/../.."
+
 set -e
 PLUGINS="imageformats/libqsvg.so iconengines/libqsvgicon.so platforms/libqxcb.so"
 
@@ -13,6 +16,29 @@ errorlog=$fullbuilddir/error.log
 if [ ! -z "$TOGGL_VERSION" ]; then
     VERSION_DEFINE="-DTOGGL_VERSION=$TOGGL_VERSION"
 fi
+if [ -z "$BUILD_TESTS" ]; then
+    BUILD_TESTS="OFF"
+else
+    BUILD_TESTS="ON"
+fi
+
+if [ -z "$PREFIX" ]; then
+    PREFIX="$PWD/package"
+fi
+if [ -z "$BINDIR" ]; then
+    BINDIR="$PREFIX/bin"
+fi
+if [ -z "$LIBDIR" ]; then
+    LIBDIR="$PREFIX/lib"
+fi
+
+function relpath() {
+    if [ -f "$1" ]; then
+        realpath --relative-to="$(dirname $1)" "$2"
+    else
+        realpath --relative-to="$1" "$2"
+    fi
+}
 
 function build() {
     echo "=========== Will build in $fullbuilddir" >&2
@@ -20,7 +46,7 @@ function build() {
     pushd $builddir >/dev/null
 
     echo "=========== Configuring" >&2
-    cmake -DTOGGL_PRODUCTION_BUILD=ON -DTOGGL_ALLOW_UPDATE_CHECK=ON $VERSION_DEFINE -DUSE_BUNDLED_LIBRARIES=ON -DCMAKE_INSTALL_PREFIX="$PWD/package" ..
+    cmake -DTOGGL_BUILD_TESTS=$BUILD_TESTS -DTOGGL_PRODUCTION_BUILD=ON -DTOGGL_ALLOW_UPDATE_CHECK=ON $VERSION_DEFINE -DUSE_BUNDLED_LIBRARIES=ON -DCMAKE_INSTALL_PREFIX="$PREFIX" -DTOGGL_INTERNAL_LIB_DIR="$LIBDIR" ..
     echo "=========== Building..." >&2
     make -j4
     echo "=========== Installing" >&2
@@ -28,8 +54,21 @@ function build() {
     popd > /dev/null
 }
 
+function listdeps() {
+    local file=""
+    if [[ "$2" == "" ]]; then
+        file=$1
+    else
+        file=$2
+    fi
+    ldd $file | grep "=>" | sed "s/.*=> //" | sed "s/ [(]0x[0-9a-fA-F]*[)]//" | grep -v "^/usr/lib" | grep -v "^/lib" | grep -v "^$PREFIX/[^/]*" | grep -v "not found" | sed '/^ *$/d'
+
+}
+
 function compose() {
-    pushd "$builddir/package" >/dev/null
+    pushd "$PREFIX" >/dev/null
+
+    mkdir -p "$BINDIR" "$LIBDIR" "$LIBDIR"
 
     echo "=========== Composing the package" >&2
     rm -fr include lib/cmake
@@ -37,85 +76,93 @@ function compose() {
         export LD_LIBRARY_PATH="$CMAKE_PREFIX_PATH/../"
     fi
 
-    ldd bin/TogglDesktop
-    corelib=$(ldd bin/TogglDesktop | grep -e libQt5Core  | sed 's/.* => \(.*\)[(]0x.*/\1/')
+    ldd "$BINDIR"/TogglDesktop
+    corelib=$(ldd "$BINDIR"/TogglDesktop | grep -e libQt5Core  | sed 's/.* => \(.*\)[(]0x.*/\1/')
     echo "corelib: " $corelib
     libdir=$(dirname "$corelib")
     echo "libdir: " $libdir
     qmake=$(find $libdir/../bin/ $libdir/../../bin/ -name qmake -or -name qmake-qt5 | head -n1)
     echo "qmake: " $qmake
 
-    cp -Lrfu $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e crypto -e libicu -e double-conversion -e jpeg -e re2 -e avcodec -e avformat -e avutil -e webp | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
-    ls "$qmake" >/dev/null
-
-    libexecdir=$($qmake -query QT_INSTALL_LIBEXECS)
     plugindir=$($qmake -query QT_INSTALL_PLUGINS)
     translationdir=$($qmake -query QT_INSTALL_TRANSLATIONS)
     datadir=$($qmake -query QT_INSTALL_DATA)
 
-    cp "$libexecdir/QtWebEngineProcess" bin
-    mkdir -p lib
+    for i in `listdeps "${BINDIR}/TogglDesktop"`; do
+        cp -Lrfu $i "$LIBDIR"
+    done
+
+    if [[ -f /usr/lib/x86_64-linux-gnu/libssl.so.1.1 ]]; then
+        cp -Lrfu /usr/lib/x86_64-linux-gnu/libssl.so.1.1 "$LIBDIR"
+        cp -Lrfu /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1 "$LIBDIR"
+    fi
+    if [[ -f /usr/lib/x86_64-linux-gnu/libstdc++.so.6 ]]; then
+        cp -Lrfu /usr/lib/x86_64-linux-gnu/libstdc++.so.6 "$LIBDIR"
+    fi
+    
+    for i in `ls -1 "${LIBDIR}"/*.so`; do
+        for j in `listdeps $i`; do
+            cp -Lrfu $j "$LIBDIR"
+        done
+    done
+
     for i in $PLUGINS; do
-        newpath=lib/qt5/plugins/$(dirname $i)/
+        newpath="$LIBDIR/qt5/plugins/$(dirname $i)/"
         file=$(basename $i)
         mkdir -p $newpath
         cp -Lrfu $plugindir/$i $newpath
         patchelf --set-rpath '$ORIGIN/../../../' $newpath/$file
-        ldd $newpath/$file | grep -e libQt -e ssl
-        echo "========"
-        ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/'
-        echo "========"
-        for j in $(ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/'); do
-            if [ ! -f lib/$(basename "$j") ]; then
-                cp -vLrfu $j lib
-            fi
+        for j in `listdeps $newpath/$file`; do
+            cp -Lrfu $j "$LIBDIR"
         done
     done
 
-    for i in $(ls lib/*.so); do
-        for j in $(ldd $i | grep -e libQt | sed 's/.* => \(.*\)[(]0x.*/\1/'); do
-            if [ ! -f lib/$(basename "$j") ]; then
-                cp -vLrfu $j lib
-            fi
+    for i in `ls -1 "$LIBDIR"/*.so`; do
+        for j in `listdeps $i`; do
+            cp -Lrfu $j "$LIBDIR"
         done
     done
 
-    patchelf --set-rpath '$ORIGIN/../lib/' bin/TogglDesktop
-    patchelf --set-rpath '$ORIGIN/../lib/' bin/QtWebEngineProcess
-
-    for i in $(ls lib/*.so*); do
+    for i in `ls -1 "${BINDIR}"/* | grep -v "sh$"`; do
+        patchelf --set-rpath '$ORIGIN/../lib' $i
+    done
+    for i in `ls -1 "${LIBDIR}"/*.so*`; do
         patchelf --set-rpath '$ORIGIN' $i
     done
 
-    mkdir -p lib/qt5/translations lib/qt5/resources
-    cp -Lrfu "$translationdir/qtwebengine_locales" lib/qt5/translations
-    cp -Lrfu "$datadir/resources/"* lib/qt5/resources
-
-    mv "bin/TogglDesktop.sh" "."
-
-    cat <<EOF >bin/qt.conf
-    [Paths]
-    Prefix=..
-    Plugins=lib/qt5/plugins
-    Data=lib/qt5
-    Translations=lib/qt5/translations
+    cat <<EOF >"bin/qt.conf"
+[Paths]
+Prefix=../lib
+Plugins=qt5/plugins
+Data=qt5
+Translations=qt5/translations
 EOF
 
+    cp "${reporoot}/src/ssl/cacert.pem" bin
+
+    popd >/dev/null
+}
+
+function package() {
+    pushd "$PREFIX" >/dev/null
+    
     # echo "=========== Stripping" >&2
-    # for i in bin/QtWebEngineProcess $(find . -name \*.so); do
+    # for i in $(find . -name \*.so); do
     #     strip --strip-unneeded $i;
     # done
 
     echo "=========== Packaging" >&2
-    tar cvfz ../../toggldesktop_$(uname -m).tar.gz * >/dev/null
+    mv "$BINDIR/TogglDesktop.sh" "$BINDIR"/..
+    tar cvfz $reporoot/toggldesktop_$(uname -m).tar.gz * >/dev/null
 
     popd >/dev/null
-    echo "=========== Result is: $PWD/toggldesktop_$(uname -m).tar.gz ==========="
+    echo "=========== Result is: $reporoot/toggldesktop_$(uname -m).tar.gz ==========="
 }
 
 if [[ "$#" -ne 1 ]]; then
     build
     compose
+    package
 else
     $1
 fi

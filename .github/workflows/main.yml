@@ -115,7 +115,7 @@ jobs:
         bash ./dist/osx/build.sh update_release
    
   linux-basic:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     if: github.event_name != 'release'
     steps:
     - uses: actions/checkout@v1
@@ -124,10 +124,11 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 qt5-default libqt5gui5 libqt5webengine5 libqt5webenginecore5 libqt5webenginewidgets5 libqt5printsupport5 libqt5quickwidgets5 libqt5x11extras5 libxss1 
-        sudo apt install patchelf binutils cmake pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev  qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
+        sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 qt5-default libqt5gui5 libqt5printsupport5 libqt5quickwidgets5 libqt5x11extras5 libqt5networkauth5 libxss1
+        sudo apt install patchelf binutils cmake pkg-config qtbase5-dev libqt5x11extras5-dev qtbase5-private-dev libqt5networkauth5-dev libssl-dev libxss-dev libxmu-dev
     - name: Build the Linux binary
       run: |
+        export BUILD_TESTS=ON
         bash ./dist/linux/package.sh build
     - name: Run App test
       run: |
@@ -136,7 +137,6 @@ jobs:
 
   linux-tarball:
     runs-on: ubuntu-16.04
-    if: github.event_name == 'release'
     steps:
     - uses: actions/checkout@v1
       with:
@@ -160,28 +160,38 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ../Qt
-        key: QtCache512
+        key: QtCache512-networkauth
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
-        modules: qtwebengine
+        modules: qtnetworkauth
     - name: Build the Linux binary
       run: |
         export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
         bash ./dist/linux/package.sh build
-    - name: Package the binaries, create tarball
+    - name: Collect the binaries
       run: |
         export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
         bash ./dist/linux/package.sh compose
+    - name: Create tarball
+      run: |
+        export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
+        bash ./dist/linux/package.sh package
+    - name: Upload artifacts to GitHub
+      if: github.event_name != 'release'
+      uses: actions/upload-artifact@v2
+      with:
+        name: toggldesktop_x86_64.tar.gz
+        path: toggldesktop_x86_64.tar.gz
     - name: Upload to GitHub
+      if: github.event_name == 'release'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz" renameto="toggldesktop_linux_${TAG_NAME/v/}_x86_64.tar.gz"
 
-  linux-ubuntu1804:
-    runs-on: ubuntu-18.04
-    if: github.event_name == 'release'
+  linux-ubuntu1604:
+    runs-on: ubuntu-16.04
     steps:
     - uses: actions/checkout@v1
       with:
@@ -192,20 +202,52 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install devscripts cmake debhelper pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
+        sudo apt install devscripts debhelper pkg-config libssl-dev libxss-dev libxmu-dev
+    - name: Get clang 8
+      run: |
+        sudo apt install clang-8 libc++-8-dev libc++abi-8-dev
+    - name: Upgrade CMake
+      run: |
+        sudo apt-key add dist/linux/kitware-archive-latest.asc
+        sudo apt install apt-transport-https
+        sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ xenial main'
+        sudo apt update
+        sudo apt -y install cmake
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1
+      with:
+        path: ../Qt
+        key: QtCache512-networkauth
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        modules: qtnetworkauth
     - name: Build a Debian package
       run: |
+        export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
         TAG_NAME=$(./dist/get-tag-name.sh)
+        export CC=/usr/bin/clang-8
+        export CXX=/usr/bin/clang++-8
         cd dist/linux
         ln -s ../../src .
         ln -s ../../CMakeLists.txt .
         ln -s ../../third_party .
+        ln -s ubuntu16 debian
         dch -b -D unstable --package "toggldesktop" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
-        debuild
+        debuild --preserve-envvar=CMAKE_PREFIX_PATH --preserve-envvar=CC --preserve-envvar=CXX
+    - name: Upload artifacts to GitHub
+      if: github.event_name != 'release'
+      uses: actions/upload-artifact@v2
+      with:
+        name: toggldesktop_ubuntu1604_amd64.deb
+        path: dist/toggldesktop_7.0.0_amd64.deb
     - name: Upload to GitHub
+      if: github.event_name == 'release'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/toggldesktop_${TAG_NAME/v/}_amd64.deb"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" renameto="toggldesktop_${TAG_NAME/v/}_ubuntu1604_amd64.deb" filename="dist/toggldesktop_${TAG_NAME/v/}_amd64.deb"
 
   linux-flatpak-kde:
     runs-on: ubuntu-18.04

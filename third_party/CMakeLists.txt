@@ -10,20 +10,8 @@ set(BUGSNAG_INCLUDE_DIR
 
 # And include dirs
 include_directories(
-    qt-oauth-lib
     bugsnag-qt
 )
-
-# OAuth has to be bundled
-set(OAUTH2_SOURCE_FILES
-    qt-oauth-lib/logindialog.cpp
-    qt-oauth-lib/oauth2.cpp
-)
-add_library(OAuth2 SHARED ${OAUTH2_SOURCE_FILES})
-target_link_libraries(OAuth2 PRIVATE
-    Qt5::Widgets Qt5::WebEngine Qt5::WebEngineWidgets
-)
-install(TARGETS OAuth2 DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
 
 # Bugsnag has to be bundled
 set(BUGSNAG_SOURCE_FILES
