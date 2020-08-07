@@ -351,7 +351,7 @@ extern void *ctx;
         return;
     }
 
-	self.textLength = 0;
+    self.textLength = 0;
     bool lastFilterWasNonEmpty = ((filter == nil || filter.length == 0) && (self.currentFilter != nil && self.currentFilter.length > 0));
 
     self.currentFilter = filter;

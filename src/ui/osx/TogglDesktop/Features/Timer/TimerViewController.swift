@@ -22,6 +22,7 @@ class TimerViewController: NSViewController {
         return AutoCompleteViewWindow(view: tagsAutoCompleteView)
     }()
     private var tagsAutoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
+    private var tagsAutocompleteDidResignObserver: Any?
 
     // MARK: - Outlets
 
@@ -67,7 +68,9 @@ class TimerViewController: NSViewController {
     override func viewDidDisappear() {
         super.viewDidDisappear()
 
-        projectAutocompleteDidResignObserver.map { NotificationCenter.default.removeObserver($0) }
+        [projectAutocompleteDidResignObserver, tagsAutocompleteDidResignObserver]
+            .compactMap { $0 }
+            .forEach { NotificationCenter.default.removeObserver($0) }
     }
 
     private func setupBindings() {
@@ -80,13 +83,8 @@ class TimerViewController: NSViewController {
         }
 
         viewModel.onIsRunning = { [unowned self] isRunning in
-            if isRunning {
-                self.startButton.toolTip = "Stop"
-                self.startButton.state = .on
-            } else {
-                self.startButton.toolTip = "Start"
-                self.startButton.state = .off
-            }
+            self.startButton.toolTip = isRunning ? "Stop" : "Start"
+            self.startButton.state = isRunning ? .on : .off
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kStartButtonStateChange),
                                             object: NSNumber(value: self.startButton.state.rawValue))
         }
@@ -121,7 +119,7 @@ class TimerViewController: NSViewController {
         }
 
         viewModel.onBillableChanged = { [unowned self] billable in
-            self.billableButton.isEnabled = billable != .notAvailable
+            self.billableButton.isEnabled = billable != .unavailable
             self.billableButton.isSelected = billable == .on
         }
 
@@ -258,6 +256,7 @@ class TimerViewController: NSViewController {
 
     private func autoCompleteWindowRect(fromPoint: NSPoint) -> NSRect {
         let padding: CGFloat = 6
+        // TODO: passing any height is not working. This value here is random and should be fixed.
         let initialHeight: CGFloat = 500
         let windowSize = NSSize(width: view.frame.width - padding * 2, height: initialHeight)
         var rect = NSRect(origin: .zero, size: windowSize)
@@ -283,6 +282,16 @@ class TimerViewController: NSViewController {
             if self.projectAutoCompleteWindow.isVisible {
                 NSLog("<<< Lost focus -> closing project autocomplete")
                 self.closeProjectAutoComplete()
+            }
+        }
+
+        tagsAutocompleteDidResignObserver = NotificationCenter.default.addObserver(
+            forName: NSWindow.didResignKeyNotification,
+            object: tagsAutoCompleteWindow,
+            queue: .main
+        ) { [unowned self] _ in
+            if self.tagsAutoCompleteWindow.isVisible {
+                self.closeTagsAutoComplete()
             }
         }
     }

@@ -27,7 +27,6 @@ static NSString *const upArrow = @"\u25B2";
 @property (assign, nonatomic) CGFloat totalHeight;
 @property (assign, nonatomic) CGFloat itemHeight;
 @property (assign, nonatomic) CGFloat worksapceItemHeight;
-@property (nonatomic, readwrite) BOOL autocompleteHidden;
 @end
 
 @implementation AutoCompleteInput
@@ -45,7 +44,6 @@ static NSString *const upArrow = @"\u25B2";
 		self.wantsLayer = YES;
 		self.layer.masksToBounds = NO;
 		self.displayMode = AutoCompleteDisplayModeCompact;
-        self.autocompleteHidden = NO;
 		[self initBackgroundView];
         if (@available(macOS 10.12.2, *))
         {
@@ -236,7 +234,6 @@ static NSString *const upArrow = @"\u25B2";
 {
 	if (show)
 	{
-        self.autocompleteHidden = NO;
 		self.autocompleteTableContainer.hidden = NO;
 		self.backgroundView.hidden = NO;
 		[[self currentEditor] setSelectedRange:NSMakeRange(0, 0)];
@@ -248,7 +245,6 @@ static NSString *const upArrow = @"\u25B2";
 	}
 	else
 	{
-        self.autocompleteHidden = YES;
 		self.autocompleteTableContainer.hidden = YES;
 		self.backgroundView.hidden = YES;
 		if (self.actionButton != nil)

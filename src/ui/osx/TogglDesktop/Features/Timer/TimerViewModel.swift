@@ -36,10 +36,10 @@ final class TimerViewModel: NSObject {
     enum BillableState {
         case on
         case off
-        case notAvailable
+        case unavailable
     }
 
-    private(set) var billableState: BillableState = .notAvailable {
+    private(set) var billableState: BillableState = .unavailable {
         didSet {
             guard billableState != oldValue else { return }
             timeEntry.billable = billableState == .on
@@ -62,6 +62,7 @@ final class TimerViewModel: NSObject {
         }
     }
 
+    // Bindings
     var onIsRunning: ((Bool) -> Void)?
     var onDescriptionChanged: ((String) -> Void)?
     var onDurationChanged: ((String) -> Void)?
@@ -71,6 +72,7 @@ final class TimerViewModel: NSObject {
     var onDescriptionFocusChanged: ((Bool) -> Void)?
     var onTouchBarUpdateRunningItem: ((TimeEntryViewItem) -> Void)?
 
+    // !!!: it is needed for EditorViewController. Maybe it can be removed later.
     /// Timer tick notification will be posted every second if there is a running time entry.
     static let timerOnTickNotification = NSNotification.Name("TimerForRunningTimeEntryOnTicket")
 
@@ -131,6 +133,10 @@ final class TimerViewModel: NSObject {
         projectDataSource.setup(with: view)
     }
 
+    func setTagAutoCompleteView(_ view: AutoCompleteView) {
+        tagDataSource.setup(with: view)
+    }
+
     func selectDescriptionAutoCompleteItem(at index: Int) -> Bool {
         guard let item = descriptionDataSource.item(at: index) else {
             return false
@@ -141,10 +147,6 @@ final class TimerViewModel: NSObject {
         descriptionDataSource.clearFilter()
 
         return true
-    }
-
-    func setTagAutoCompleteView(_ view: AutoCompleteView) {
-        tagDataSource.setup(with: view)
     }
 
     func prepareData() {
@@ -187,7 +189,7 @@ final class TimerViewModel: NSObject {
         if canSeeBillable {
             billableState = timeEntry.billable ? .on : .off
         } else {
-            billableState = .notAvailable
+            billableState = .unavailable
         }
     }
 
@@ -212,10 +214,12 @@ final class TimerViewModel: NSObject {
 
         isRunning = entry.isRunning()
 
+        // TODO: finish this method
+
 //        if entry.canSeeBillable || entry.billable {
 //            billableState = entry.billable ? .on : .off
 //        } else {
-//            billableState = .notAvailable
+//            billableState = .unavailable
 //        }
 
         // TODO: should not update if description is in edit mode
@@ -259,7 +263,7 @@ final class TimerViewModel: NSObject {
     }
 
     private func fillEntry(fromDescriptionAutocomplete autocompleteItem: AutocompleteItem) {
-        // User has selected a autocomplete item.
+        // User has selected an autocomplete item.
         // It could be a time entry, a task or a project.
 
         if let newDescription = autocompleteItem.description {
@@ -273,7 +277,7 @@ final class TimerViewModel: NSObject {
         if timeEntry.canSeeBillable {
             billableState = autocompleteItem.billable ? .on : .off
         } else {
-            billableState = .notAvailable
+            billableState = .unavailable
         }
     }
 
