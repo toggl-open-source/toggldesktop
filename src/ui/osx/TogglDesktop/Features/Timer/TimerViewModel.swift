@@ -14,9 +14,6 @@ final class TimerViewModel: NSObject {
         didSet {
             guard entryDescription != oldValue else { return }
             timeEntry.entryDescription = entryDescription
-            if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
-                DesktopLibraryBridge.shared().updateTimeEntry(withDescription: entryDescription, guid: timeEntryGUID)
-            }
             onDescriptionChanged?(entryDescription)
         }
     }
@@ -42,22 +39,35 @@ final class TimerViewModel: NSObject {
     private(set) var billableState: BillableState = .unavailable {
         didSet {
             guard billableState != oldValue else { return }
-            timeEntry.billable = billableState == .on
-            if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
-                let isBillable = billableState == .on
-                DesktopLibraryBridge.shared().setBillableForTimeEntryWithTimeEntryGUID(timeEntryGUID, isBillable: isBillable)
+            let isBillable = billableState == .on
+
+            if timeEntry.billable != isBillable {
+                timeEntry.billable = isBillable
+
+                if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
+                    DesktopLibraryBridge.shared().setBillableForTimeEntryWithTimeEntryGUID(timeEntryGUID, isBillable: isBillable)
+                }
             }
+
             onBillableChanged?(billableState)
         }
     }
 
     private var selectedTags: [String] = [] {
         didSet {
-            timeEntry.tags = selectedTags
-            tagDataSource.updateSelectedTags(selectedTags.map { Tag(name: $0) })
-            if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
-                DesktopLibraryBridge.shared().updateTimeEntry(withTags: selectedTags, guid: timeEntryGUID)
+            if tagDataSource.autoCompleteView != nil {
+                tagDataSource.updateSelectedTags(selectedTags.map { Tag(name: $0) })
             }
+
+            let currentTags: [String] = timeEntry.tags ?? []
+            if currentTags != selectedTags {
+                timeEntry.tags = selectedTags
+
+                if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
+                    DesktopLibraryBridge.shared().updateTimeEntry(withTags: selectedTags, guid: timeEntryGUID)
+                }
+            }
+
             onTagSelected?(!selectedTags.isEmpty)
         }
     }
@@ -71,6 +81,9 @@ final class TimerViewModel: NSObject {
     var onBillableChanged: ((BillableState) -> Void)?
     var onDescriptionFocusChanged: ((Bool) -> Void)?
     var onTouchBarUpdateRunningItem: ((TimeEntryViewItem) -> Void)?
+
+    // View outputs
+    var isEditingDescription: (() -> Bool)?
 
     // !!!: it is needed for EditorViewController. Maybe it can be removed later.
     /// Timer tick notification will be posted every second if there is a running time entry.
@@ -160,6 +173,12 @@ final class TimerViewModel: NSObject {
         descriptionDataSource.input?.autocompleteTableView.resetSelected()
     }
 
+    func descriptionDidEndEditing() {
+        if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
+            DesktopLibraryBridge.shared().updateTimeEntry(withDescription: entryDescription, guid: timeEntryGUID)
+        }
+    }
+
     func setBillable(_ isOn: Bool) {
         billableState = isOn ? .on : .off
     }
@@ -198,53 +217,59 @@ final class TimerViewModel: NSObject {
         NotificationCenter.default.post(name: Self.timerOnTickNotification, object: nil)
     }
 
-    private func updateTimerState(with timeEntry: TimeEntryViewItem?) {
+    private func updateTimerState(with newTimeEntry: TimeEntryViewItem?) {
         let entry: TimeEntryViewItem
-        if let timeEntry = timeEntry {
+        if let timeEntry = newTimeEntry {
             entry = timeEntry
         } else {
             entry = TimeEntryViewItem()
         }
-        self.timeEntry = entry
+
+        let isNewWorkspace = entry.workspaceID != timeEntry.workspaceID
+        let wasNotRunning = timeEntry.isRunning() == false
+
+        timeEntry = entry
 
         isRunning = entry.isRunning()
-
-        // TODO: finish this method
-
-//        if entry.canSeeBillable || entry.billable {
-//            billableState = entry.billable ? .on : .off
-//        } else {
-//            billableState = .unavailable
-//        }
-
-        // TODO: should not update if description is in edit mode
-//        if let description = entry.descriptionName, !description.isEmpty {
-//            self.entryDescription = description
-//            descriptionTextField.toolTip = description
-//        }
-
         durationString = entry.duration ?? ""
+        billableState = entry.billable ? .on : .off
+        selectedTags = entry.tags ?? []
 
-//        if let durationString = entry.startTimeString {
-//            durationLabel.toolTip = "Started: \(durationString)"
-//        }
-
-        // TODO: don't know if needed
-        // Switch to timer mode in setting
-//        toggl_set_settings_manual_mode(ctx, false);
+        if isRunning {
+            let isEditing = isEditingDescription?() ?? true
+            if entryDescription.isEmpty || wasNotRunning || !isEditing {
+                entryDescription = entry.entryDescription ?? ""
+            }
+        } else {
+            // don't update the description if user haven't yet started TE
+            // so we don't interfere with his editing
+        }
 
         if entry.isRunning() {
             onTouchBarUpdateRunningItem?(entry)
         }
 
-//        onProjectSelected?(Project(timeEntry: self.timeEntry))
+        onProjectSelected?(Project(timeEntry: timeEntry))
+
+        if isNewWorkspace {
+            fetchTags()
+        }
+
+        updateBillableStatus()
     }
 
     private func focusTimer() {
         onDescriptionFocusChanged?(true)
     }
 
-    private func stop() {
+    private func timeEntryOnStop() {
+        // updating description in case it wasn't yet updated
+        // e.g. if TE was stopped by keyboard shortcut
+        // and Timer haven't yet updated the contents of description field
+        if !entryDescription.isEmpty {
+            DesktopLibraryBridge.shared().updateTimeEntry(withDescription: entryDescription, guid: timeEntry.guid)
+        }
+
         timeEntry = TimeEntryViewItem()
 
         isRunning = false
@@ -298,14 +323,10 @@ final class TimerViewModel: NSObject {
         onProjectSelected?(Project(timeEntry: timeEntry))
 
         if isNewWorkspace {
-            workspaceDidChange()
+            fetchTags()
+            updateBillableStatus()
+            selectedTags = []
         }
-    }
-
-    private func workspaceDidChange() {
-        fetchTags()
-        updateBillableStatus()
-        selectedTags = []
     }
 
     // MARK: - Notifications handling
@@ -326,7 +347,7 @@ final class TimerViewModel: NSObject {
         let commandStopObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kCommandStop),
                                                                          object: nil,
                                                                          queue: .main) { [weak self] _ in
-            self?.stop()
+            self?.timeEntryOnStop()
         }
 
         let startTimerObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kStartTimer),

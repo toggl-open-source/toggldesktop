@@ -45,6 +45,10 @@ class TimerViewController: NSViewController {
         configureAppearance()
 
         setupBindings()
+
+        viewModel.isEditingDescription = { [weak self] in
+            self?.descriptionTextField.currentEditor() != nil
+        }
     }
 
     override func viewDidAppear() {
@@ -174,6 +178,10 @@ class TimerViewController: NSViewController {
         if let textField = obj.object as? AutoCompleteInput, textField == descriptionTextField {
             viewModel.setDescription(textField.stringValue)
         }
+    }
+
+    func controlTextDidEndEditing(_ obj: Notification) {
+        viewModel.descriptionDidEndEditing()
     }
 
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
