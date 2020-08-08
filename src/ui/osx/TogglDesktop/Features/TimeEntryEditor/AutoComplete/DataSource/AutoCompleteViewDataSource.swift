@@ -103,7 +103,7 @@ class AutoCompleteViewDataSource: NSObject {
         delegate?.autoCompleteSelectionDidChange(sender: self, item: item)
     }
 
-    private func sizeToFit() {
+    func sizeToFit() {
         if items.isEmpty {
             autoCompleteView.update(height: 0.0)
             return

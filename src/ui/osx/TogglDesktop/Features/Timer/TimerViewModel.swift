@@ -55,8 +55,8 @@ final class TimerViewModel: NSObject {
 
     private var selectedTags: [String] = [] {
         didSet {
-            if tagDataSource.autoCompleteView != nil {
-                tagDataSource.updateSelectedTags(selectedTags.map { Tag(name: $0) })
+            if tagsDataSource.autoCompleteView != nil {
+                tagsDataSource.updateSelectedTags(selectedTags.map { Tag(name: $0) })
             }
 
             let currentTags: [String] = timeEntry.tags ?? []
@@ -92,13 +92,13 @@ final class TimerViewModel: NSObject {
     private var timeEntry = TimeEntryViewItem()
     private var notificationObservers: [AnyObject] = []
 
-    private var descriptionDataSource = LiteAutoCompleteDataSource(notificationName: kDisplayMinitimerAutocomplete)
+    var descriptionDataSource = LiteAutoCompleteDataSource(notificationName: kDisplayMinitimerAutocomplete)
 
-    private var projectDataSource = ProjectDataSource(items: ProjectStorage.shared.items,
-                                                           updateNotificationName: .ProjectStorageChangedNotification)
+    var projectDataSource = ProjectDataSource(items: ProjectStorage.shared.items,
+                                                      updateNotificationName: .ProjectStorageChangedNotification)
 
-    private var tagDataSource = TagDataSource(items: TagStorage.shared.tags,
-                                                   updateNotificationName: .TagStorageChangedNotification)
+    var tagsDataSource = TagDataSource(items: TagStorage.shared.tags,
+                                              updateNotificationName: .TagStorageChangedNotification)
 
     private var timer: Timer!
 
@@ -114,8 +114,8 @@ final class TimerViewModel: NSObject {
 
         projectDataSource.delegate = self
 
-        tagDataSource.delegate = self
-        tagDataSource.tagDelegate = self
+        tagsDataSource.delegate = self
+        tagsDataSource.tagDelegate = self
     }
 
     deinit {
@@ -140,14 +140,6 @@ final class TimerViewModel: NSObject {
         descriptionDataSource.setFilter("")
         descriptionDataSource.input = input
         input.autocompleteTableView.delegate = self
-    }
-
-    func setProjectAutoCompleteView(_ view: AutoCompleteView) {
-        projectDataSource.setup(with: view)
-    }
-
-    func setTagAutoCompleteView(_ view: AutoCompleteView) {
-        tagDataSource.setup(with: view)
     }
 
     func selectDescriptionAutoCompleteItem(at index: Int) -> Bool {

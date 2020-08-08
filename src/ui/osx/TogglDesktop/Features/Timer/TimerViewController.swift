@@ -61,8 +61,9 @@ class TimerViewController: NSViewController {
         // this is needed because current Autocomplete functionality
         // is tightly coupled with text input views
         viewModel.setDescriptionAutoCompleteInput(descriptionTextField)
-        viewModel.setProjectAutoCompleteView(projectAutoCompleteView)
-        viewModel.setTagAutoCompleteView(tagsAutoCompleteView)
+
+        viewModel.projectDataSource.setup(with: projectAutoCompleteView)
+        viewModel.tagsDataSource.setup(with: tagsAutoCompleteView)
 
         viewModel.prepareData()
 
@@ -233,16 +234,18 @@ class TimerViewController: NSViewController {
         billableButton.isActiveOnClick = false
     }
 
-    // MARK: - Autocomplete
+    // MARK: - Autocomplete/Dropdown
 
     private func presentProjectAutoComplete() {
         let fromPoint = NSPoint(x: projectButton.frame.minX, y: projectButton.frame.maxY)
         presentAutoComplete(window: projectAutoCompleteWindow, withContentView: projectAutoCompleteView, fromPoint: fromPoint)
+        viewModel.projectDataSource.sizeToFit()
     }
 
     private func presentTagsAutoComplete() {
         let fromPoint = NSPoint(x: tagsButton.frame.minX, y: tagsButton.frame.maxY)
         presentAutoComplete(window: tagsAutoCompleteWindow, withContentView: tagsAutoCompleteView, fromPoint: fromPoint)
+        viewModel.tagsDataSource.sizeToFit()
     }
 
     private func presentAutoComplete(window: NSWindow, withContentView contentView: NSView, fromPoint: NSPoint) {
@@ -264,8 +267,8 @@ class TimerViewController: NSViewController {
 
     private func autoCompleteWindowRect(fromPoint: NSPoint) -> NSRect {
         let padding: CGFloat = 6
-        // TODO: passing any height is not working. This value here is random and should be fixed.
-        let initialHeight: CGFloat = 500
+        // passing random height value as it should be updated with to its content size later
+        let initialHeight: CGFloat = 100
         let windowSize = NSSize(width: view.frame.width - padding * 2, height: initialHeight)
         var rect = NSRect(origin: .zero, size: windowSize)
 
