@@ -3,29 +3,13 @@
         {
             "version": "7.5.242",
             "rows": [
-                "Fixed syncing issues when removing a project from the time entry"
-            ],
-            "date": "August 5th 2020",
-            "beta": "true"
-        },
-        {
-            "version": "7.5.239",
-            "rows": [
+                "Fixed syncing issues when removing a project from the time entry",
                 "Fixed a bug with description cleared while the user is typing",
-                "Improved syncing"
-            ],
-            "date": "July 31st 2020",
-            "beta": "true"
-        },
-        {
-            "version": "7.5.234",
-            "rows": [
+                "Improved syncing",
                 "Added support for single sign-on (SSO)",
-                "Added click and drag to create time entries",
-                "Improved syncing"
+                "Added click and drag to create time entries"
             ],
-            "date": "July 27th 2020",
-            "beta": "true"
+            "date": "August 10th 2020"
         },
         {
             "version": "7.5.213",
