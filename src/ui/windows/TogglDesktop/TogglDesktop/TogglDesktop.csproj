@@ -316,6 +316,7 @@
     <Compile Include="ui\ViewModels\TimeEntryCellViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryLabelViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryListViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimelineViewModel.cs" />
     <Compile Include="ui\ViewModels\TimerEntryListViewViewModel.cs" />
     <Compile Include="ui\ViewModels\TimerViewModel.cs" />
     <Compile Include="ui\ViewModels\ViewModelExtensions.cs" />
@@ -325,6 +326,9 @@
     </Compile>
     <Compile Include="ui\views\SSOLoginView.xaml.cs">
       <DependentUpon>SSOLoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\views\Timeline.xaml.cs">
+      <DependentUpon>Timeline.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\views\ValidationErrorControl.xaml.cs">
       <DependentUpon>ValidationErrorControl.xaml</DependentUpon>
@@ -609,6 +613,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\views\SSOLoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\views\Timeline.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
