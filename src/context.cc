@@ -1589,8 +1589,8 @@ error Context::fetchMessage(const bool periodic) {
             HTTPRequest req;
             if ("production" != environment_) {
                 // testing location
-                req.host = "https://indrekv.github.io";
-                req.relative_url = "/message.json";
+                req.host = "https://raw.githubusercontent.com";
+                req.relative_url = "/toggl-open-source/toggldesktop/rebranding/upcoming-rebranding-notification/releases/message.json";
             } else {
                 req.host = "https://raw.githubusercontent.com";
                 req.relative_url = "/toggl-open-source/toggldesktop/master/releases/message.json";
