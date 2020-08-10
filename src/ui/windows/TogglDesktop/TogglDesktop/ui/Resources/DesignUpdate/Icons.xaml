@@ -86,4 +86,54 @@
         <Rectangle Width="14" Height="14" RadiusX="7" RadiusY="7" Fill="{StaticResource Toggl.AccentBrush}" StrokeThickness="1"/>
         <Path Canvas.Top="3.2" Canvas.Left="2.5" Fill="{DynamicResource Toggl.CardBackground}" StrokeThickness="1" Data="M3.75914017 5.02308449 L7.00866193 0.411902318 C7.30820656 -0.0131617185 7.91527881 -0.128022547 8.36459575 0.155353478 C8.81391269 0.438729502 8.93532714 1.01303364 8.63578251 1.43809768 L4.7246714 6.98809768 C4.38240853 7.47378037 3.65601908 7.54182469 3.21971781 7.12907377 L0.77527337 4.81657377 C0.393427395 4.4553388 0.393427395 3.8696612 0.77527337 3.50842623 C1.15711934 3.14719126 1.77621399 3.14719126 2.15805996 3.50842623 L3.75914017 5.02308449 Z"/>
     </Canvas>
+    <Viewbox Stretch="Uniform" x:Key="Toggl.DatePickerLeft">
+        <Canvas Width="24" Height="25">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="0" Y="0"/>
+            </Canvas.RenderTransform>
+            <Canvas.Resources/>
+            <Canvas>
+                <Path Fill="#00000000">
+                    <Path.Data>
+                        <PathGeometry Figures="M24 25V1H0v24z" FillRule="EvenOdd"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#00000000">
+                    <Path.Data>
+                        <PathGeometry Figures="M18 19V7H6v12z" FillRule="EvenOdd"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#FF333333">
+                    <Path.Data>
+                        <PathGeometry Figures="M9.902 13l5.362-5.361-.528-.528L8.848 13l5.888 5.889.528-.528z" FillRule="EvenOdd"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+        </Canvas>
+    </Viewbox>
+    <Viewbox Stretch="Uniform" x:Key="Toggl.DatePickerRight">
+        <Canvas Width="24" Height="25">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="0" Y="0"/>
+            </Canvas.RenderTransform>
+            <Canvas.Resources/>
+            <Canvas Name="g8">
+                <Path Fill="#00000000">
+                    <Path.Data>
+                        <PathGeometry Figures="M0 24V0h24v24z" FillRule="EvenOdd"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#00000000">
+                    <Path.Data>
+                        <PathGeometry Figures="M6 18V6h12v12z" FillRule="EvenOdd"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#FF333333">
+                    <Path.Data>
+                        <PathGeometry Figures="M14.098 12L8.736 6.639l.528-.528L15.152 12l-5.888 5.889-.528-.528z" FillRule="EvenOdd"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+        </Canvas>
+    </Viewbox>
 </ResourceDictionary>

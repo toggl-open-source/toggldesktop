@@ -224,6 +224,7 @@
                                            LostKeyboardFocus="endTimeTextBox_OnLostKeyboardFocus"
                                            KeyDown="endTimeTextBox_OnKeyDown">12:55</toggl:ExtendedTextBox>
                     <DatePicker Name="startDatePicker" x:FieldModifier="private" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"
+                                Style="{StaticResource EditViewDatePickerStyle}"
                                 Margin="0 8 0 0"
                                 Height="32"
                                 SelectedDate="05.01.2015"
