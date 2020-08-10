@@ -42,7 +42,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="{x:Type DatePicker}">
+    <Style TargetType="{x:Type DatePicker}" x:Key="EditViewDatePickerStyle">
         <Setter Property="FontFamily" Value="{DynamicResource BaseFont}" />
         <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}" />
         <Setter Property="Background" Value="{DynamicResource Toggl.SelectionElements.Background}" />
@@ -327,6 +327,98 @@
                             </Trigger.ExitActions>
                         </Trigger>
                     </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="DatePickerButtonStyle" TargetType="{x:Type ButtonBase}">
+        <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Titlebar.MouseOver}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="DatePickerSelectDateButtonStyle" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource DatePickerButtonStyle}">
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Titlebar.MouseOver}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type DatePicker}" x:Key="TimelineDatePickerStyle">
+        <Setter Property="CalendarStyle" Value="{StaticResource Toggl.Calendar.WithShadow}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DatePicker}">
+                    <Border BorderThickness="1" BorderBrush="{DynamicResource Toggl.TextBox.Border}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Style="{StaticResource DatePickerButtonStyle}"
+                                    Command="{Binding SelectPreviousDay}">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Grid Background="{TemplateBinding Background}">
+                                            <ContentControl Content="{StaticResource Toggl.DatePickerLeft}"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <ToggleButton Grid.Column="1" x:Name="PART_Button"
+                                FontWeight="{TemplateBinding FontWeight}"
+                                FontSize="{TemplateBinding FontSize}"
+                                Style="{StaticResource DatePickerSelectDateButtonStyle}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                        <Grid Background="{TemplateBinding Background}">
+                                            <DatePickerTextBox x:Name = "PART_TextBox"
+                                                           HorizontalContentAlignment = "{TemplateBinding HorizontalContentAlignment}"
+                                                           VerticalContentAlignment = "{TemplateBinding VerticalContentAlignment}"
+                                                           mah:TextBoxHelper.Watermark = "{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:TextBoxHelper.Watermark), Mode=OneWay}"
+                                                           mah:TextBoxHelper.WatermarkAlignment = "{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:TextBoxHelper.WatermarkAlignment), Mode=OneWay}"
+                                                           mah:TextBoxHelper.WatermarkTrimming = "{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:TextBoxHelper.WatermarkTrimming), Mode=OneWay}"
+                                                           CaretBrush = "{DynamicResource Toggl.PrimaryTextBrush}"
+                                                           IsEnabled="False"
+                                                           FontSize = "{TemplateBinding FontSize}"
+                                                           Foreground = "{TemplateBinding Foreground}"
+                                                           SelectionBrush = "{DynamicResource MahApps.Brushes.Highlight}"
+                                                           Text = "{Binding Path=SelectedDate, StringFormat='ddd, dd/MM/yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" >
+                                                <i:Interaction.Behaviors >
+                                                    <behaviours:DatePickerTextBoxBehavior />
+                                                </i:Interaction.Behaviors >
+                                            </DatePickerTextBox >
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <Popup x:Name="PART_Popup"
+                               Grid.Column="1"
+                               AllowsTransparency="True"
+                               Placement="Bottom"
+                               PlacementTarget="{Binding ElementName=PART_Button}"
+                               StaysOpen="False"
+                               IsOpen="{Binding ElementName=PART_Button, Path=IsChecked}"
+                               HorizontalOffset="{Binding Converter={StaticResource PopupAlignmentAwareConverter}, ConverterParameter='-8'}">
+                            </Popup>
+                            <Button Grid.Column="2" Style="{StaticResource DatePickerButtonStyle}"
+                                    Command="{Binding SelectNextDay}">
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Grid Background="{TemplateBinding Background}">
+                                            <ContentControl Content="{StaticResource Toggl.DatePickerRight}"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

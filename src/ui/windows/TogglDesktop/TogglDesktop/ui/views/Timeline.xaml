@@ -6,6 +6,8 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:TimelineViewModel, IsDesignTimeCreatable=False}">
@@ -17,7 +19,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <mah:ToggleSwitch Margin="10 14 0 0"
                           OnLabel=""
@@ -29,7 +31,8 @@
         <Grid Grid.Column="1" Grid.Row="0"
               Width="16" Height="16"
               VerticalAlignment="Center"
-              Margin="0 12 0 0">
+              HorizontalAlignment="Left"
+              Margin="5 12 0 0">
             <Canvas MouseEnter="RecordActivityInfoBoxOnMouseEnter" x:Name="InfoIcon">
                 <Path Fill="#B1B1B5" Data="{StaticResource Toggl.InfoIconGeometry}"/>
             </Canvas>
@@ -61,5 +64,17 @@
                 </Border>
             </Popup>
         </Grid>
+        <DatePicker Name="datePicker" x:FieldModifier="private"
+                    Margin="8 14 8 8"
+                    Height="32"
+                    SelectedDate="{Binding SelectedDate}"
+                    Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                    Background="{DynamicResource Toggl.CardBackground}"
+                    VerticalContentAlignment="Stretch"
+                    Style="{StaticResource TimelineDatePickerStyle}">
+            <b:Interaction.Behaviors>
+                <behaviors:DatePickerKeyboardHandlingBehavior />
+            </b:Interaction.Behaviors>
+        </DatePicker>
     </Grid>
 </UserControl>

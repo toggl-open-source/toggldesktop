@@ -163,6 +163,13 @@ public static partial class Toggl
     public delegate void DisplayInAppNotification(
         string title, string text, string button, string url);
 
+    public delegate void DisplayTimeline(
+        bool open, string date,
+        List<TogglTimelineChunkView> first,
+        List<TogglTimeEntryView> firstTimeEntry,
+        long startDay,
+        long endDay);
+
     #endregion
 
     #region api calls
@@ -818,6 +825,7 @@ public static partial class Toggl
     public static event DisplayInAppNotification OnDisplayInAppNotification = delegate { };
     public static readonly BehaviorSubject<UpdateStatus> OnUpdateDownloadStatus
         = new BehaviorSubject<UpdateStatus>(new UpdateStatus());
+    public static event DisplayTimeline OnTimeline = delegate { };
     private static void listenToLibEvents()
     {
         toggl_on_show_app(ctx, open =>
@@ -1064,6 +1072,14 @@ public static partial class Toggl
                 OnDisplayInAppNotification(title, text, button, url);
             }
         });
+        toggl_on_timeline(ctx, (open, date, first, firstTimeEntry, startDay, endDay) =>
+        {
+            using (Performance.Measure("Calling OnTimeline"))
+            {
+                OnTimeline(open, date, convertToTimelineChunkList(first), convertToTimeEntryList(firstTimeEntry),
+                    startDay, endDay);
+            }
+        });
     }
 
     #endregion
@@ -1272,6 +1288,11 @@ public static partial class Toggl
     private static List<TogglCountryView> convertToCountryList(IntPtr first)
     {
         return marshalList<TogglCountryView>(first, n => n.Next);
+    }
+
+    private static List<TogglTimelineChunkView> convertToTimelineChunkList(IntPtr first)
+    {
+        return marshalList<TogglTimelineChunkView>(first, n => n.Next);
     }
 
     #endregion
@@ -1484,6 +1505,30 @@ public static partial class Toggl
         return toggl_timeline_toggle_recording(ctx, recordTimeline);
     }
 
+    public static void SetViewTimelineDay(long timestamp)
+    {
+        toggl_view_timeline_set_day(ctx, timestamp);
+    }
+
+    public static void ViewTimelineCurrentDay()
+    {
+        toggl_view_timeline_current_day(ctx);
+    }
+
+    public static void ViewTimelinePreviousDay()
+    {
+        toggl_view_timeline_prev_day(ctx);
+    }
+
+    public static void ViewTimelineNextDay()
+    {
+        toggl_view_timeline_next_day(ctx);
+    }
+
+    public static void ViewTimelineData()
+    {
+        toggl_view_timeline_data(ctx);
+    }
     #endregion
 
 
