@@ -1,13 +1,11 @@
 {
-	"id": 2,
-	"from": 1576573200,
-	"to": 1591747200,
-	"type": 0,
-  "appversion": "7.5.46",
-	"title": "Update your app to continue using Toggl",
-	"text": "To ensure that your Toggl app continues to sync entries, please update the app by clicking on the cogwheel menu icon -> About -> Restart now. Alternatively, download and install the latest version manually.",
-	"button": "Download here",
-	"url-mac": "https://toggl.com/toggl-desktop/",
-	"url-win": "https://toggl.com/toggl-desktop/",
-	"url-linux": "https://toggl.com/toggl-desktop/"
+	"id": 3,
+	"from": 1598857200,
+	"to": 1599462000,
+	"title": "We're Getting a New Name!",
+	"text": "Toggl is becoming Toggl Track! We'll still be the Toggl you know and love on mobile, desktop, and web - but we've welcomed Toggl Plan and Toggl Hire into the family.",
+	"button": "Learn More",
+	"url-mac": "https://support.toggl.com/en/articles/4338240-frequently-asked-questions-toggl-track-toggl-plan-and-toggl-hire",
+	"url-win": "https://support.toggl.com/en/articles/4338240-frequently-asked-questions-toggl-track-toggl-plan-and-toggl-hire",
+	"url-linux": "https://support.toggl.com/en/articles/4338240-frequently-asked-questions-toggl-track-toggl-plan-and-toggl-hire"
 }
