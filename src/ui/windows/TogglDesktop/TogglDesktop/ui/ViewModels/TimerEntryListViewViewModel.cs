@@ -17,5 +17,7 @@ namespace TogglDesktop.ViewModels
         public byte SelectedTab { get; set; } = Toggl.GetActiveTab();
 
         public bool IsTimelineViewEnabled => Toggl.IsTimelineUiEnabled();
+
+        public TimelineViewModel TimelineViewModel { get; } = new TimelineViewModel();
     }
 }

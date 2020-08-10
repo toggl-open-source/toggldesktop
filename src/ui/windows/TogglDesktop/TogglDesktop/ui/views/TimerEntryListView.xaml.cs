@@ -55,6 +55,7 @@ namespace TogglDesktop
             if (userID != 0)
             {
                 ViewModel = new TimerEntryListViewViewModel();
+                Timeline.ViewModel = ViewModel.TimelineViewModel;
             }
         }
 
