@@ -18,14 +18,14 @@ class AutoCompleteViewDataSource: NSObject {
     // MARK: Variables
     private let maxHeight: CGFloat = 600.0
     private(set) var items: [Any] = []
-    private(set) var autoCompleteView: AutoCompleteView!
-    private(set) var textField: AutoCompleteTextField!
+    private(set) var autoCompleteView: AutoCompleteView?
+    private(set) var textField: AutoCompleteTextField = AutoCompleteTextField(frame: .zero)
     weak var delegate: AutoCompleteViewDataSourceDelegate?
     var count: Int {
         return items.count
     }
     var tableView: NSTableView {
-        return autoCompleteView.tableView
+        return autoCompleteView?.tableView ?? NSTableView()
     }
 
     // MARK: Init
@@ -61,7 +61,7 @@ class AutoCompleteViewDataSource: NSObject {
     }
 
     private func commonSetup() {
-        self.autoCompleteView.prepare(with: self)
+        autoCompleteView?.prepare(with: self)
         registerCustomeCells()
         tableView.delegate = self
         tableView.dataSource = self
@@ -105,7 +105,7 @@ class AutoCompleteViewDataSource: NSObject {
 
     func sizeToFit() {
         if items.isEmpty {
-            autoCompleteView.update(height: 0.0)
+            autoCompleteView?.update(height: 0.0)
             return
         }
 
@@ -123,7 +123,7 @@ class AutoCompleteViewDataSource: NSObject {
             suitableHeight += scrollView.contentInsets.bottom + scrollView.contentInsets.top
         }
 
-        autoCompleteView.update(height: suitableHeight)
+        autoCompleteView?.update(height: suitableHeight)
     }
 
     func keyboardDidEnter() {

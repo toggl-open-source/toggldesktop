@@ -37,7 +37,7 @@ final class WorkspaceDataSource: AutoCompleteViewDataSource {
 
     override func setup(with textField: AutoCompleteTextField) {
         super.setup(with: textField)
-        autoCompleteView.setCreateButtonSectionHidden(true)
+        autoCompleteView?.setCreateButtonSectionHidden(true)
     }
 
     override func registerCustomeCells() {

@@ -53,7 +53,7 @@ final class TagDataSource: AutoCompleteViewDataSource {
 
     private func commonSetup() {
         tableView.allowsEmptySelection = true
-        autoCompleteView.setCreateButtonSectionHidden(true)
+        autoCompleteView?.setCreateButtonSectionHidden(true)
     }
 
     override func registerCustomeCells() {
@@ -92,10 +92,10 @@ final class TagDataSource: AutoCompleteViewDataSource {
         }
 
         if shouldShowCreateBtn {
-            autoCompleteView.setCreateButtonSectionHidden(false)
-            autoCompleteView.updateTitleForCreateButton(with: "Create new tag \"\(text)\"")
+            autoCompleteView?.setCreateButtonSectionHidden(false)
+            autoCompleteView?.updateTitleForCreateButton(with: "Create new tag \"\(text)\"")
         } else {
-            autoCompleteView.setCreateButtonSectionHidden(true)
+            autoCompleteView?.setCreateButtonSectionHidden(true)
         }
     }
 

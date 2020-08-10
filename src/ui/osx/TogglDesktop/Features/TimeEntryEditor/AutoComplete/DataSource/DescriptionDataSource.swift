@@ -36,7 +36,7 @@ final class DescriptionDataSource: AutoCompleteViewDataSource {
     override func setup(with textField: AutoCompleteTextField) {
         super.setup(with: textField)
         tableView.allowsEmptySelection = true
-        autoCompleteView.setCreateButtonSectionHidden(true)
+        autoCompleteView?.setCreateButtonSectionHidden(true)
     }
 
     override func registerCustomeCells() {
@@ -50,7 +50,7 @@ final class DescriptionDataSource: AutoCompleteViewDataSource {
 
     override func render(with items: [Any]) {
         super.render(with: items)
-        autoCompleteView.isHidden = items.isEmpty
+        autoCompleteView?.isHidden = items.isEmpty
     }
 
     override func filter(with text: String) {
