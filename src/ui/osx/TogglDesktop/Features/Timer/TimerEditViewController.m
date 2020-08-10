@@ -81,9 +81,20 @@ extern void *ctx;
 - (void)initCommon
 {
 	self.displayMode = DisplayModeInput;
+    [self embeddTimerViewController];
+}
 
+- (void)embeddTimerViewController {
     self.timerViewController = [[TimerViewController alloc] initWithNibName:@"TimerViewController" bundle:nil];
-    self.mainBox.contentView = [self.timerViewController view];
+    NSView *timerView = [self.timerViewController view];
+    timerView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [self.mainBox.contentView addSubview:timerView];
+
+    [timerView.leadingAnchor constraintEqualToAnchor:self.mainBox.contentView.leadingAnchor].active = YES;
+    [timerView.trailingAnchor constraintEqualToAnchor:self.mainBox.contentView.trailingAnchor].active = YES;
+    [timerView.topAnchor constraintEqualToAnchor:self.mainBox.contentView.topAnchor].active = YES;
+    [timerView.bottomAnchor constraintEqualToAnchor:self.mainBox.contentView.bottomAnchor].active = YES;
 }
 
 - (void)focusTimer

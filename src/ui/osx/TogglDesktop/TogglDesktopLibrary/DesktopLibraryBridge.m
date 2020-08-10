@@ -383,7 +383,7 @@ void *ctx;
     return nil;
 }
 
-- (NSString *) formatDurationTimestampt:(NSTimeInterval) duration
+- (NSString *)formatDurationTimestampt:(NSTimeInterval)duration
 {
     char *durationStr = toggl_format_duration_time(ctx, duration);
     if (durationStr) {
@@ -392,6 +392,10 @@ void *ctx;
         return duration;
     }
     return nil;
+}
+
+- (int64_t)secondsFromDurationString:(NSString *)durationString {
+    return toggl_parse_duration_string_into_seconds([durationString UTF8String]);
 }
 
 - (NSColor *) getAdaptiveColorForShapeFromColor:(NSColor *) color {

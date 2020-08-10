@@ -18,11 +18,11 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="M2u-7B-WCs">
-            <rect key="frame" x="0.0" y="0.0" width="411" height="84"/>
+            <rect key="frame" x="0.0" y="0.0" width="411" height="172"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="d3A-e0-VV6" userLabel="titleBox">
-                    <rect key="frame" x="0.0" y="62" width="411" height="22"/>
+                    <rect key="frame" x="0.0" y="150" width="411" height="22"/>
                     <view key="contentView" id="cd1-aB-ksZ">
                         <rect key="frame" x="0.0" y="0.0" width="411" height="22"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -47,13 +47,13 @@
                     <color key="fillColor" name="white-background-color"/>
                 </box>
                 <box hidden="YES" autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NZl-PW-g8z" userLabel="manualBox" customClass="NSBoxClickable">
-                    <rect key="frame" x="0.0" y="0.0" width="411" height="62"/>
+                    <rect key="frame" x="0.0" y="0.0" width="411" height="150"/>
                     <view key="contentView" id="Ott-qi-Egp">
-                        <rect key="frame" x="0.0" y="0.0" width="411" height="62"/>
+                        <rect key="frame" x="0.0" y="0.0" width="411" height="150"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <box autoresizesSubviews="NO" boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Noa-Sc-kzT">
-                                <rect key="frame" x="10" y="16" width="391" height="30"/>
+                                <rect key="frame" x="10" y="60" width="391" height="30"/>
                                 <view key="contentView" id="2bC-QJ-uuN">
                                     <rect key="frame" x="1" y="1" width="389" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -99,9 +99,9 @@
                     <color key="fillColor" name="white-background-color"/>
                 </box>
                 <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G" userLabel="timerBox" customClass="NSBoxClickable">
-                    <rect key="frame" x="0.0" y="0.0" width="411" height="62"/>
+                    <rect key="frame" x="0.0" y="0.0" width="411" height="150"/>
                     <view key="contentView" id="gK5-Lo-ktx">
-                        <rect key="frame" x="0.0" y="0.0" width="411" height="62"/>
+                        <rect key="frame" x="0.0" y="0.0" width="411" height="150"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                     <color key="fillColor" name="white-background-color"/>

@@ -20,6 +20,17 @@ final class TimerViewModel: NSObject {
 
     private(set) var durationString: String = "" {
         didSet {
+            guard durationString != oldValue else { return }
+
+            if timeEntry.duration != durationString {
+                if durationString.isEmpty {
+                    timeEntry.started = Date(timeIntervalSince1970: 0)
+                } else {
+                    let durationSec = DesktopLibraryBridge.shared().seconds(fromDurationString: durationString)
+                    timeEntry.started = Date(timeIntervalSinceNow: Double(-durationSec))
+                }
+            }
+
             onDurationChanged?(durationString)
         }
     }
@@ -84,6 +95,7 @@ final class TimerViewModel: NSObject {
 
     // View outputs
     var isEditingDescription: (() -> Bool)?
+    var isEditingDuration: (() -> Bool)?
 
     // !!!: it is needed for EditorViewController. Maybe it can be removed later.
     /// Timer tick notification will be posted every second if there is a running time entry.
@@ -129,7 +141,6 @@ final class TimerViewModel: NSObject {
         } else {
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kForceCloseEditPopover), object: nil)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kCommandNew), object: timeEntry, userInfo: nil)
-            onDescriptionFocusChanged?(false)
 
             descriptionDataSource.input?.resetTable()
             descriptionDataSource.clearFilter()
@@ -175,6 +186,14 @@ final class TimerViewModel: NSObject {
         billableState = isOn ? .on : .off
     }
 
+    func setDuration(_ duration: String) {
+        self.durationString = duration
+
+        if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
+            DesktopLibraryBridge.shared().updateTimeEntry(withDuration: durationString, guid: timeEntryGUID)
+        }
+    }
+
     // MARK: - Other
 
     private func fetchTags() {
@@ -203,8 +222,10 @@ final class TimerViewModel: NSObject {
     private func timerFired(_ timer: Timer) {
         guard timeEntry.isRunning() else { return }
 
-        let formattedDuration = DesktopLibraryBridge.shared().convertDuraton(inSecond: timeEntry.duration_in_seconds)
-        durationString = formattedDuration
+        let isDurationEditing = isEditingDuration?() ?? true
+        if !isDurationEditing {
+            durationString = DesktopLibraryBridge.shared().convertDuraton(inSecond: timeEntry.duration_in_seconds)
+        }
 
         NotificationCenter.default.post(name: Self.timerOnTickNotification, object: nil)
     }
@@ -213,29 +234,37 @@ final class TimerViewModel: NSObject {
         let entry: TimeEntryViewItem
         if let timeEntry = newTimeEntry {
             entry = timeEntry
-        } else {
+        } else if isRunning {
+            // e.g. TE was removed
             entry = TimeEntryViewItem()
+        } else {
+            return
         }
 
         let isNewWorkspace = entry.workspaceID != timeEntry.workspaceID
-        let wasNotRunning = timeEntry.isRunning() == false
+        let isRunningChanged = entry.isRunning() != timeEntry.isRunning()
 
         timeEntry = entry
 
-        isRunning = entry.isRunning()
-        durationString = entry.duration ?? ""
-        billableState = entry.billable ? .on : .off
-        selectedTags = entry.tags ?? []
-
         if isRunning {
-            let isEditing = isEditingDescription?() ?? true
-            if entryDescription.isEmpty || wasNotRunning || !isEditing {
+            let isDescriptionEditing = isEditingDescription?() ?? true
+            if entryDescription.isEmpty || isRunningChanged || !isDescriptionEditing {
                 entryDescription = entry.entryDescription ?? ""
             }
+
+            let isDurationEditing = isEditingDuration?() ?? true
+            if durationString.isEmpty || isRunningChanged || !isDurationEditing {
+                durationString = entry.duration ?? ""
+            }
+
         } else {
-            // don't update the description if user haven't yet started TE
+            // don't update text fields if user haven't yet started TE
             // so we don't interfere with his editing
         }
+
+        isRunning = entry.isRunning()
+        billableState = entry.billable ? .on : .off
+        selectedTags = entry.tags ?? []
 
         if entry.isRunning() {
             onTouchBarUpdateRunningItem?(entry)

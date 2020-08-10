@@ -13,7 +13,7 @@ final class VerticallyCenteredTextFieldCell: NSTextFieldCell {
 
     @IBInspectable var focusRingCornerRadius: CGFloat = 0
     @IBInspectable var leftPadding: CGFloat = 10.0
-    @IBInspectable var rightPadding: CGFloat = 0
+    @IBInspectable var rightPadding: CGFloat = 10.0
     private var isEditingOrSelecting = false
 
     override func drawingRect(forBounds theRect: NSRect) -> NSRect {

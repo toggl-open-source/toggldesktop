@@ -53,6 +53,7 @@ final class TimerContainerBox: NSBox, TextFieldResponderDelegate {
                                                options: [.activeInActiveApp, .mouseEnteredAndExited, .assumeInside, .inVisibleRect],
                                                owner: self)
         addTrackingArea(trackingArea)
+        renderLayout(for: state)
     }
 
     // MARK: Mouse Events

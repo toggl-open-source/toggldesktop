@@ -491,8 +491,8 @@ void *ctx;
 								 0,
 								 tag_list,
 								 false,
-								 0,
-								 0);
+                                 [new_time_entry.started timeIntervalSince1970],
+                                 [new_time_entry.ended timeIntervalSince1970]);
 
 		if (new_time_entry.billable)
 		{

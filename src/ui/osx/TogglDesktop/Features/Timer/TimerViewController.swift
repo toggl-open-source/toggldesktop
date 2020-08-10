@@ -27,9 +27,10 @@ class TimerViewController: NSViewController {
     // MARK: - Outlets
 
     @IBOutlet weak var startButton: NSHoverButton!
-    @IBOutlet weak var durationLabel: NSTextField!
     @IBOutlet weak var descriptionTextField: BetterFocusAutoCompleteInput!
     @IBOutlet weak var descriptionContainerBox: TimerContainerBox!
+    @IBOutlet weak var durationContainerBox: TimerContainerBox!
+    @IBOutlet weak var durationTextField: ResponderTextField!
     @IBOutlet weak var projectButton: SelectableButton!
     @IBOutlet weak var tagsButton: SelectableButton!
     @IBOutlet weak var billableButton: SelectableButton!
@@ -42,12 +43,18 @@ class TimerViewController: NSViewController {
         descriptionTextField.displayMode = .fullscreen
         descriptionTextField.responderDelegate = descriptionContainerBox
 
+        durationTextField.responderDelegate = durationContainerBox
+
         configureAppearance()
 
         setupBindings()
 
         viewModel.isEditingDescription = { [weak self] in
             self?.descriptionTextField.currentEditor() != nil
+        }
+
+        viewModel.isEditingDuration = { [weak self] in
+            return self?.durationTextField.currentEditor() != nil
         }
     }
 
@@ -101,7 +108,9 @@ class TimerViewController: NSViewController {
         }
 
         viewModel.onDurationChanged = { [unowned self] duration in
-            self.durationLabel.stringValue = duration
+            if self.durationTextField.stringValue != duration {
+                self.durationTextField.stringValue = duration
+            }
         }
 
         viewModel.onTagSelected = { [unowned self] isSelected in
@@ -152,6 +161,7 @@ class TimerViewController: NSViewController {
     // MARK: - Actions
 
     @IBAction func starButtonClicked(_ sender: Any) {
+        view.window?.makeFirstResponder(nil)
         viewModel.startStopAction()
     }
 
@@ -182,10 +192,24 @@ class TimerViewController: NSViewController {
     }
 
     func controlTextDidEndEditing(_ obj: Notification) {
-        viewModel.descriptionDidEndEditing()
+        if let textField = obj.object as? AutoCompleteInput, textField == descriptionTextField {
+            viewModel.descriptionDidEndEditing()
+        } else if let textField = obj.object as? NSTextField, textField == durationTextField {
+            viewModel.setDuration(textField.stringValue)
+        }
     }
 
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        if textView == descriptionTextField.currentEditor() {
+            return descriptionControl(doCommandBy: commandSelector)
+        } else if textView == durationTextField.currentEditor() {
+            return durationControl(doCommandBy: commandSelector)
+        } else {
+            return false
+        }
+    }
+
+    private func descriptionControl(doCommandBy commandSelector: Selector) -> Bool {
         var isHandled = false
 
         if commandSelector == #selector(moveDown(_:)) {
@@ -220,6 +244,14 @@ class TimerViewController: NSViewController {
         }
 
         return isHandled
+    }
+
+    private func durationControl(doCommandBy commandSelector: Selector) -> Bool {
+        if commandSelector == #selector(insertNewline(_:)) {
+            view.window?.makeFirstResponder(nil)
+        }
+
+        return false
     }
 
     // MARK: - UI

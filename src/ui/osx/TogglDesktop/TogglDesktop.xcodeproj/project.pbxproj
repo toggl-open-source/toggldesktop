@@ -30,6 +30,8 @@
 		4917325824C06BA3003EE7CC /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = 4917325624C06BA3003EE7CC /* cacert.pem */; };
 		4917325E24C06F6F003EE7CC /* TogglDesktopLibrary.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4917325D24C06F6F003EE7CC /* TogglDesktopLibrary.dylib */; };
 		4917325F24C06F6F003EE7CC /* TogglDesktopLibrary.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4917325D24C06F6F003EE7CC /* TogglDesktopLibrary.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		4917563724E13964008CAB88 /* ResponderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4917563624E13964008CAB88 /* ResponderTextField.swift */; };
+		4917563824E13964008CAB88 /* ResponderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4917563624E13964008CAB88 /* ResponderTextField.swift */; };
 		4921BE2024C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4921BE1E24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.swift */; };
 		4921BE2124C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4921BE1F24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib */; };
 		4921BE2224C87136006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4921BE1F24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib */; };
@@ -734,6 +736,7 @@
 		4917325524C069DD003EE7CC /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = const.h; path = ../../../../const.h; sourceTree = "<group>"; };
 		4917325624C06BA3003EE7CC /* cacert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cacert.pem; path = ../../../../ssl/cacert.pem; sourceTree = "<group>"; };
 		4917325D24C06F6F003EE7CC /* TogglDesktopLibrary.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = TogglDesktopLibrary.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		4917563624E13964008CAB88 /* ResponderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponderTextField.swift; sourceTree = "<group>"; };
 		4921BE1E24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntryPlaceholderCell.swift; sourceTree = "<group>"; };
 		4921BE1F24C8705C006E8BB5 /* TimelineTimeEntryPlaceholderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineTimeEntryPlaceholderCell.xib; sourceTree = "<group>"; };
 		492F5F01248550F800FFEC70 /* TimelineInitialDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineInitialDateProvider.swift; sourceTree = "<group>"; };
@@ -1322,6 +1325,7 @@
 				BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */,
 				BA08E085222E709C0075F68E /* ProjectTextField.h */,
 				BA08E086222E709C0075F68E /* ProjectTextField.m */,
+				4917563624E13964008CAB88 /* ResponderTextField.swift */,
 			);
 			path = TextFields;
 			sourceTree = "<group>";
@@ -2928,6 +2932,7 @@
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
 				BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */,
 				BA4791F322F0478A00E24F79 /* String+Search.swift in Sources */,
+				4917563724E13964008CAB88 /* ResponderTextField.swift in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				BA13E581243480C5005244AD /* OnboardingService+Objc.swift in Sources */,
 				493B01BD24D07F1200237D10 /* TimerViewModel.swift in Sources */,
@@ -3152,6 +3157,7 @@
 				BAE64D9C2368334000244D2B /* TimeEntryListViewController.m in Sources */,
 				BA37ACE223D8900C0013EE26 /* PanelSwitcherButton.swift in Sources */,
 				BA13E582243480C5005244AD /* OnboardingService+Objc.swift in Sources */,
+				4917563824E13964008CAB88 /* ResponderTextField.swift in Sources */,
 				BAE64D9D2368334000244D2B /* TimeDecoratorView.swift in Sources */,
 				BAB5FFD523F13F75003781D3 /* TimelineDraggingSession.swift in Sources */,
 				493B01BE24D07F1200237D10 /* TimerViewModel.swift in Sources */,

@@ -12,7 +12,8 @@
                 <outlet property="billableButton" destination="lkp-Tv-GfR" id="ADf-Ah-y0P"/>
                 <outlet property="descriptionContainerBox" destination="hG9-dZ-2ec" id="u09-Ec-oG5"/>
                 <outlet property="descriptionTextField" destination="ecT-b1-LZO" id="sXf-8p-YKn"/>
-                <outlet property="durationLabel" destination="6FX-Aj-eyz" id="jaz-TJ-jJJ"/>
+                <outlet property="durationContainerBox" destination="gmz-ld-awU" id="TDb-In-h3a"/>
+                <outlet property="durationTextField" destination="W5p-vA-d55" id="SMZ-TE-Wwy"/>
                 <outlet property="projectButton" destination="jwm-bG-cK6" id="zt8-ru-Iob"/>
                 <outlet property="startButton" destination="4R2-ha-Q7h" id="BDU-Fw-r4V"/>
                 <outlet property="tagsButton" destination="R49-rR-d7b" id="pi0-oh-GRo"/>
@@ -21,24 +22,23 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="509" height="90"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+        <customView translatesAutoresizingMaskIntoConstraints="NO" id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="1634" height="94"/>
             <subviews>
-                <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Re1-LM-H1v">
-                    <rect key="frame" x="10" y="10" width="489" height="70"/>
+                <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Re1-LM-H1v">
+                    <rect key="frame" x="10" y="10" width="1614" height="74"/>
                     <subviews>
-                        <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="40" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k4i-6V-NQ3">
-                            <rect key="frame" x="0.0" y="40" width="489" height="30"/>
+                        <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k4i-6V-NQ3">
+                            <rect key="frame" x="0.0" y="44" width="1611" height="30"/>
                             <subviews>
-                                <box autoresizesSubviews="NO" boxType="custom" cornerRadius="15" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="hG9-dZ-2ec" customClass="TimerContainerBox" customModule="TogglDesktop" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="351" height="30"/>
+                                <box horizontalCompressionResistancePriority="749" boxType="custom" cornerRadius="15" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="hG9-dZ-2ec" customClass="TimerContainerBox" customModule="TogglDesktop" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="1469" height="30"/>
                                     <view key="contentView" id="DSU-FV-W4q">
-                                        <rect key="frame" x="1" y="1" width="349" height="28"/>
+                                        <rect key="frame" x="1" y="1" width="1467" height="28"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecT-b1-LZO" customClass="BetterFocusAutoCompleteInput">
-                                                <rect key="frame" x="-2" y="0.0" width="353" height="28"/>
+                                            <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecT-b1-LZO" userLabel="Description" customClass="BetterFocusAutoCompleteInput">
+                                                <rect key="frame" x="-2" y="0.0" width="1471" height="28"/>
                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" placeholderString="What are you working on?" usesSingleLineMode="YES" id="O0F-G7-GmN" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                     <font key="font" metaFont="menu" size="14"/>
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -66,22 +66,52 @@
                                     </constraints>
                                     <color key="borderColor" name="lighter-grey-color"/>
                                 </box>
-                                <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hnb-qT-7zu">
-                                    <rect key="frame" x="391" y="0.0" width="98" height="30"/>
+                                <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hnb-qT-7zu">
+                                    <rect key="frame" x="1473" y="0.0" width="138" height="30"/>
                                     <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6FX-Aj-eyz">
-                                            <rect key="frame" x="-2" y="7" width="56" height="17"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" placeholderString="0:00:00" id="nf8-dK-K8h">
-                                                <font key="font" metaFont="menu" size="14"/>
-                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                        </textField>
-                                        <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4R2-ha-Q7h" customClass="NSHoverButton">
-                                            <rect key="frame" x="68" y="0.0" width="30" height="30"/>
+                                        <box boxType="custom" cornerRadius="15" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="gmz-ld-awU" customClass="TimerContainerBox" customModule="TogglDesktop" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="98" height="30"/>
+                                            <view key="contentView" id="NlQ-wO-aE5">
+                                                <rect key="frame" x="1" y="1" width="96" height="28"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="W5p-vA-d55" userLabel="Duration" customClass="ResponderTextField" customModule="TogglDesktop" customModuleProvider="target">
+                                                        <rect key="frame" x="-2" y="0.0" width="100" height="28"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="96" id="Uzp-uz-Lwn"/>
+                                                        </constraints>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" alignment="right" placeholderString="0:00:00" usesSingleLineMode="YES" id="jU8-mo-9tb" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                                            <font key="font" metaFont="menu" size="14"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                                    <real key="value" value="12"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </textFieldCell>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="-2" id="g9v-YR-W3Q"/>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="W5p-vA-d55" secondAttribute="bottom" id="gJR-25-2cw"/>
+                                                    <constraint firstItem="W5p-vA-d55" firstAttribute="top" secondItem="NlQ-wO-aE5" secondAttribute="top" id="uEf-m3-ZEM"/>
+                                                    <constraint firstItem="W5p-vA-d55" firstAttribute="leading" secondItem="NlQ-wO-aE5" secondAttribute="leading" id="uba-yP-gOh"/>
+                                                    <constraint firstAttribute="trailing" secondItem="W5p-vA-d55" secondAttribute="trailing" id="zqD-rc-yWF"/>
+                                                </constraints>
+                                            </view>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="30" id="AjU-T9-gbT"/>
-                                                <constraint firstAttribute="height" constant="30" id="cmg-aH-a3r"/>
+                                                <constraint firstAttribute="height" constant="30" id="1kA-pP-1e7"/>
+                                            </constraints>
+                                            <color key="borderColor" name="lighter-grey-color"/>
+                                        </box>
+                                        <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4R2-ha-Q7h" customClass="NSHoverButton">
+                                            <rect key="frame" x="108" y="0.0" width="30" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="30" id="9sU-HM-bNp"/>
+                                                <constraint firstAttribute="height" constant="30" id="WIU-1C-bOA"/>
                                             </constraints>
                                             <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="start-timer-button" imagePosition="overlaps" alignment="center" alternateImage="stop-timer-button" imageScaling="proportionallyUpOrDown" inset="2" id="3Ub-u1-Aof">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -115,12 +145,11 @@
                             </customSpacing>
                         </stackView>
                         <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="6" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f3m-Ax-U74">
-                            <rect key="frame" x="10" y="0.0" width="84" height="24"/>
+                            <rect key="frame" x="10" y="0.0" width="84" height="36"/>
                             <subviews>
                                 <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jwm-bG-cK6" customClass="SelectableButton" customModule="TogglDesktop" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                    <rect key="frame" x="0.0" y="6" width="24" height="24"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="0RQ-O1-nBB"/>
                                         <constraint firstAttribute="height" constant="24" id="aos-pz-lzF"/>
                                     </constraints>
                                     <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" image="project-button" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" imageScaling="proportionallyDown" inset="2" id="XiJ-UQ-fKx">
@@ -150,7 +179,7 @@
                                     </connections>
                                 </button>
                                 <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="R49-rR-d7b" customClass="SelectableButton" customModule="TogglDesktop" customModuleProvider="target">
-                                    <rect key="frame" x="30" y="0.0" width="24" height="24"/>
+                                    <rect key="frame" x="30" y="6" width="24" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="24" id="K6L-TG-EPU"/>
                                         <constraint firstAttribute="height" constant="24" id="hHI-j8-8eD"/>
@@ -182,7 +211,7 @@
                                     </connections>
                                 </button>
                                 <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lkp-Tv-GfR" customClass="SelectableButton" customModule="TogglDesktop" customModuleProvider="target">
-                                    <rect key="frame" x="60" y="0.0" width="24" height="24"/>
+                                    <rect key="frame" x="60" y="6" width="24" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="24" id="1aZ-p7-qEl"/>
                                         <constraint firstAttribute="height" constant="24" id="MD6-2y-exy"/>
@@ -245,7 +274,7 @@
                 <constraint firstItem="Re1-LM-H1v" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="10" id="H58-G5-0qe"/>
                 <constraint firstAttribute="bottom" secondItem="Re1-LM-H1v" secondAttribute="bottom" constant="10" id="hmj-6x-bMe"/>
             </constraints>
-            <point key="canvasLocation" x="139" y="154"/>
+            <point key="canvasLocation" x="-586.5" y="156"/>
         </customView>
     </objects>
     <resources>
