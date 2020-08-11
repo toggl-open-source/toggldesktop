@@ -17,6 +17,7 @@ class TimerViewController: NSViewController {
     }()
     private var projectAutoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
     private var projectAutocompleteDidResignObserver: Any?
+    private var projectAutocompleteResignTime: TimeInterval = 0
 
     private lazy var projectCreationView: ProjectCreationView = {
         let view = ProjectCreationView.xibView() as ProjectCreationView
@@ -29,6 +30,7 @@ class TimerViewController: NSViewController {
     }()
     private var tagsAutoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
     private var tagsAutocompleteDidResignObserver: Any?
+    private var tagsAutocompleteResignTime: TimeInterval = 0
 
     // MARK: - Outlets
 
@@ -175,18 +177,34 @@ class TimerViewController: NSViewController {
     }
 
     @IBAction func projectButtonClicked(_ sender: Any) {
-        if projectAutoCompleteWindow.isVisible {
-            closeProjectAutoComplete()
-        } else {
+        // Small hack:
+        // It is user friendly to close the dropdown if user click outside of it
+        // and also if user click on the same button that opens this dropdown.
+        // To prevent reopening the dropdown after user clicks on tagsButton
+        // we don't show the dropdown if it was closed just half a second ago.
+        let wasNotClosedJustNow = (Date().timeIntervalSince1970 - projectAutocompleteResignTime) > 0.5
+
+        if wasNotClosedJustNow {
             presentProjectAutoComplete()
+        } else {
+            // returning state back to normal if click is not handled
+            projectButton.controlState = .normal
         }
     }
 
     @IBAction func tagsButtonClicked(_ sender: Any) {
-        if tagsAutoCompleteWindow.isVisible {
-            closeTagsAutoComplete()
-        } else {
+        // Small hack:
+        // It is user friendly to close the dropdown if user click outside of it
+        // and also if user click on the same button that opens this dropdown.
+        // To prevent reopening the dropdown after user clicks on tagsButton
+        // we don't show the dropdown if it was closed just half a second ago.
+        let wasNotClosedJustNow = (Date().timeIntervalSince1970 - tagsAutocompleteResignTime) > 0.5
+
+        if wasNotClosedJustNow {
             presentTagsAutoComplete()
+        } else {
+            // returning state back to normal if click is not handled
+            tagsButton.controlState = .normal
         }
     }
 
@@ -334,7 +352,7 @@ class TimerViewController: NSViewController {
             queue: .main
         ) { [unowned self] _ in
             if self.projectAutoCompleteWindow.isVisible {
-                NSLog("<<< Lost focus -> closing project autocomplete")
+                self.projectAutocompleteResignTime = Date().timeIntervalSince1970
                 self.closeProjectAutoComplete()
             }
         }
@@ -345,6 +363,7 @@ class TimerViewController: NSViewController {
             queue: .main
         ) { [unowned self] _ in
             if self.tagsAutoCompleteWindow.isVisible {
+                self.tagsAutocompleteResignTime = Date().timeIntervalSince1970
                 self.closeTagsAutoComplete()
             }
         }
