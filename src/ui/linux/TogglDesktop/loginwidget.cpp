@@ -9,8 +9,8 @@
 #include <QtNetworkAuth>
 #include <QDesktopServices>
 
-#define OAUTH_SCOPE "profile email"
-#define OAUTH_AUTHORIZATION_URL "https://accounts.google.com/o/oauth2/auth"
+#define OAUTH_SCOPE "email profile https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid"
+#define OAUTH_AUTHORIZATION_URL "https://accounts.google.com/o/oauth2/v2/auth"
 #define OAUTH_TOKEN_URL "https://accounts.google.com/o/oauth2/token"
 #define OAUTH_CLIENT_ID "426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com"
 #define OAUTH_CLIENT_KEY "6IHWKIfTAMF7cPJsBvoGxYui"
@@ -30,6 +30,7 @@ ui(new Ui::LoginWidget) {
 
     auto handler = new QOAuthHttpServerReplyHandler(this);
     handler->setCallbackText("Received verification code. You may now close this window.");
+
     oauth2.setReplyHandler(handler);
     oauth2.setAuthorizationUrl(QUrl(OAUTH_AUTHORIZATION_URL));
     oauth2.setAccessTokenUrl(QUrl(OAUTH_TOKEN_URL));
@@ -39,6 +40,18 @@ ui(new Ui::LoginWidget) {
 
     connect(&oauth2, &QOAuth2AuthorizationCodeFlow::error, this, &LoginWidget::oauthError);
     connect(&oauth2, &QOAuth2AuthorizationCodeFlow::granted, this, &LoginWidget::oauthGranted);
+    connect(&oauth2, &QOAuth2AuthorizationCodeFlow::authorizationCallbackReceived, [=](const QVariantMap &data) {
+        // The code gets somehow sometimes HTTP-escaped so fix that
+        temporaryOAuthCode = data.value("code").toString();
+        temporaryOAuthCode.replace("%2F", "/", Qt::CaseInsensitive);
+        temporaryOAuthCode.replace("%3A", ":", Qt::CaseInsensitive);
+        temporaryOAuthCode.replace("+", " ", Qt::CaseInsensitive);
+    });
+    oauth2.setModifyParametersFunction([this](QAbstractOAuth::Stage stage, QVariantMap* parameters) {
+        if (stage == QAbstractOAuth::Stage::RequestingAccessToken) {
+            parameters->insert("code", temporaryOAuthCode);
+        }
+    });
 
     connect(&oauth2, &QAbstractOAuth::authorizeWithBrowser, [=](QUrl url) {
         QUrlQuery query(url);
