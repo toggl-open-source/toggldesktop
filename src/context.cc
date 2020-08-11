@@ -2645,12 +2645,7 @@ error Context::Login(
             ResetEnableSSO();
         }
 
-        err = pullWorkspacePreferences();
-        if (err != noError) {
-            return displayError(err);
-        }
-
-        err = pullUserPreferences();
+        err = pullAllPreferencesData();
         if (err != noError) {
             return displayError(err);
         }
@@ -5391,9 +5386,7 @@ error Context::pullAllUserData() {
             return err;
         }
 
-        pullWorkspacePreferences();
-
-        pullUserPreferences();
+        pullAllPreferencesData();
 
         stopwatch.stop();
         logger.debug("User with related data JSON fetched and parsed in ", stopwatch.elapsed() / 1000, " ms");
@@ -5481,9 +5474,7 @@ error Context::pullBatchedUserData() {
             return err;
         }
 
-        pullWorkspacePreferences();
-
-        pullUserPreferences();
+        pullAllPreferencesData();
 
         stopwatch.stop();
         logger.debug("User with related data JSON fetched and parsed in ", stopwatch.elapsed() / 1000, " ms");
@@ -6424,6 +6415,25 @@ error Context::pullUserPreferences() {
     }
     catch (const std::string & ex) {
         return ex;
+    }
+    return noError;
+}
+
+error Context::pullAllPreferencesData() {
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            logger().warning("cannot pull preferences data when logged out");
+            return noError;
+        }
+    }
+    error err = pullWorkspacePreferences();
+    if (err != noError) {
+        return err;
+    }
+    err = pullUserPreferences();
+    if (err != noError) {
+        return err;
     }
     return noError;
 }

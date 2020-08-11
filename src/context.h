@@ -681,6 +681,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error pullBatchedUserData();
     error pullChanges();
     error pullUserPreferences();
+    error pullAllPreferencesData();
 
     template <typename T>
     void syncCollectJSON(Json::Value &array, const std::vector<T*> &source);
