@@ -54,6 +54,7 @@ final class TagDataSource: AutoCompleteViewDataSource {
     private func commonSetup() {
         tableView.allowsEmptySelection = true
         autoCompleteView?.setCreateButtonSectionHidden(true)
+        autoCompleteView?.defaultTextField.placeholderString = "Find tags"
     }
 
     override func registerCustomeCells() {

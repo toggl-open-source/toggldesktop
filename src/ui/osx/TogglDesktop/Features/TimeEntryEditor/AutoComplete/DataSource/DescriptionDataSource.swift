@@ -73,8 +73,10 @@ final class DescriptionDataSource: AutoCompleteViewDataSource {
         if items[safe: tableView.selectedRow] == nil {
 
             // Close and update
-            textField.closeSuggestion()
-            textField.autoCompleteDelegate?.autoCompleteTextFieldDidEndEditing(textField)
+            if let textField = autoCompleteTextField {
+                textField.closeSuggestion()
+                textField.autoCompleteDelegate?.autoCompleteTextFieldDidEndEditing(textField)
+            }
         }
     }
 

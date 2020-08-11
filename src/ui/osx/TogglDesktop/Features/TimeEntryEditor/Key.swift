@@ -16,6 +16,8 @@ enum Key {
     case tab
     case backspace
     case delete
+    case upArrow
+    case downArrow
 
     init?(rawValue: Int) {
         switch rawValue {
@@ -31,6 +33,10 @@ enum Key {
             self = .backspace
         case kVK_Delete:
             self = .delete
+        case kVK_UpArrow:
+            self = .upArrow
+        case kVK_DownArrow:
+            self = .downArrow
         default:
             return nil
         }

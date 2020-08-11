@@ -88,6 +88,7 @@ final class AutoCompleteView: NSView {
     @IBOutlet weak var stackView: NSStackView!
     @IBOutlet weak var placeholderBox: NSView!
     @IBOutlet weak var placeholderBoxContainerView: NSView!
+    @IBOutlet weak var defaultTextField: ResponderTextField!
 
     // MARK: Variables
 
@@ -158,8 +159,43 @@ final class AutoCompleteView: NSView {
         createNewItemBtn.title = text
     }
 
+    func clean() {
+        defaultTextField.stringValue = ""
+        filter(with: "")
+    }
+
     @IBAction func createNewItemOnTap(_ sender: Any) {
         delegate?.didTapOnCreateButton()
+    }
+}
+
+// MARK: - NSTextFieldDelegate for defaultTextField
+
+extension AutoCompleteView: NSTextFieldDelegate {
+    func controlTextDidChange(_ obj: Notification) {
+        if let textField = obj.object as? NSTextField, textField == defaultTextField {
+            filter(with: textField.stringValue)
+        }
+    }
+
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        guard let currentEvent = NSApp.currentEvent, textView == defaultTextField.currentEditor() else {
+            return false
+        }
+
+        if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
+            delegate?.shouldClose()
+            return true
+        }
+
+        if commandSelector == #selector(NSResponder.moveDown(_:))
+            || commandSelector == #selector(NSResponder.moveUp(_:))
+            || commandSelector == #selector(NSResponder.insertTab(_:))
+            || commandSelector == #selector(NSResponder.insertNewline(_:)) {
+            return tableView.handleKeyboardEvent(currentEvent)
+        }
+
+        return false
     }
 }
 
@@ -189,7 +225,9 @@ extension AutoCompleteView {
                 }
 
                 // Only focus to create button if the view is expaned
-                if let textField = strongSelf.dataSource?.textField, textField.state == .expand {
+                let isAutoCompleteTextFieldExpanded = strongSelf.dataSource?.autoCompleteTextField?.state == .expand
+                let isDefaultTextFieldVisible = strongSelf.placeholderBox.isHidden == false
+                if isAutoCompleteTextFieldExpanded || isDefaultTextFieldVisible {
                     strongSelf.window?.makeKeyAndOrderFront(nil)
                     strongSelf.window?.makeFirstResponder(strongSelf.createNewItemBtn)
                     return true

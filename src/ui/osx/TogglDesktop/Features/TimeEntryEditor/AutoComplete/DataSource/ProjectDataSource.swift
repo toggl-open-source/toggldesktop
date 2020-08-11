@@ -54,7 +54,11 @@ final class ProjectDataSource: AutoCompleteViewDataSource {
         static let ProjectNibName = NSNib.Name("ProjectContentCellView")
     }
 
-    // MARK: Variables
+    override func setup(with autoCompleteView: AutoCompleteView) {
+        super.setup(with: autoCompleteView)
+
+        autoCompleteView.defaultTextField.placeholderString = "Search by project, task or client"
+    }
 
     override func registerCustomeCells() {
         tableView.register(NSNib(nibNamed: Constants.HeaderNibName, bundle: nil),
@@ -68,7 +72,7 @@ final class ProjectDataSource: AutoCompleteViewDataSource {
     override func selectRow(at index: Int) {
         if tableView.selectedRow == -1 && items.isEmpty {
             // Open the New Project view
-            textField.didTapOnCreateButton()
+            autoCompleteTextField?.didTapOnCreateButton()
         } else {
             super.selectRow(at: index)
         }

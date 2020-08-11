@@ -45,6 +45,9 @@ class TimerViewController: NSViewController {
 
         durationTextField.responderDelegate = durationContainerBox
 
+        projectAutoCompleteView.delegate = self
+        tagsAutoCompleteView.delegate = self
+
         configureAppearance()
 
         setupBindings()
@@ -280,7 +283,7 @@ class TimerViewController: NSViewController {
         viewModel.tagsDataSource.sizeToFit()
     }
 
-    private func presentAutoComplete(window: NSWindow, withContentView contentView: NSView, fromPoint: NSPoint) {
+    private func presentAutoComplete(window: AutoCompleteViewWindow, withContentView contentView: AutoCompleteView, fromPoint: NSPoint) {
         window.contentView = contentView
         window.setContentSize(contentView.frame.size)
 
@@ -295,6 +298,8 @@ class TimerViewController: NSViewController {
             window.makeKeyAndOrderFront(nil)
             window.makeFirstResponder(contentView)
         }
+
+        _ = contentView.defaultTextField.becomeFirstResponder()
     }
 
     private func autoCompleteWindowRect(fromPoint: NSPoint) -> NSRect {
@@ -342,11 +347,13 @@ class TimerViewController: NSViewController {
     private func closeProjectAutoComplete() {
         projectAutoCompleteWindow.cancel()
         projectButton.controlState = .normal
+        projectAutoCompleteView.clean()
     }
 
     private func closeTagsAutoComplete() {
         tagsAutoCompleteWindow.cancel()
         tagsButton.controlState = .normal
+        tagsAutoCompleteView.clean()
     }
 }
 
@@ -354,4 +361,18 @@ class TimerViewController: NSViewController {
 
 extension TimerViewController: NSTextFieldDelegate {
     //
+}
+
+extension TimerViewController: AutoCompleteViewDelegate {
+    func didTapOnCreateButton() {
+        //
+    }
+
+    func shouldClose() {
+        if projectAutoCompleteWindow.isVisible {
+            closeProjectAutoComplete()
+        } else if tagsAutoCompleteWindow.isVisible {
+            closeTagsAutoComplete()
+        }
+    }
 }

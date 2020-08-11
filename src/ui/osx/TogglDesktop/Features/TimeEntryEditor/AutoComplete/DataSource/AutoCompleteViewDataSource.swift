@@ -19,7 +19,10 @@ class AutoCompleteViewDataSource: NSObject {
     private let maxHeight: CGFloat = 600.0
     private(set) var items: [Any] = []
     private(set) var autoCompleteView: AutoCompleteView?
-    private(set) var textField: AutoCompleteTextField = AutoCompleteTextField(frame: .zero)
+    private(set) var textField: NSTextField = NSTextField(frame: .zero)
+
+    var autoCompleteTextField: AutoCompleteTextField? { textField as? AutoCompleteTextField }
+
     weak var delegate: AutoCompleteViewDataSourceDelegate?
     var count: Int {
         return items.count
@@ -54,8 +57,8 @@ class AutoCompleteViewDataSource: NSObject {
     func setup(with autoCompleteView: AutoCompleteView) {
         self.autoCompleteView = autoCompleteView
 
-        // TODO: think what to do with this fake text field
-        self.textField = AutoCompleteTextField(frame: .zero)
+        textField = autoCompleteView.defaultTextField
+        autoCompleteView.placeholderBox.isHidden = false
 
         commonSetup()
     }
@@ -89,7 +92,7 @@ class AutoCompleteViewDataSource: NSObject {
 
         // If there is new data during searching on auto-complete
         // We should filter gain
-        if textField.state == .expand && !textField.stringValue.isEmpty {
+        if autoCompleteTextField?.state == .expand && !textField.stringValue.isEmpty {
             filter(with: textField.stringValue)
         }
     }

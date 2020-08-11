@@ -28,13 +28,23 @@ final class KeyboardTableView: NSTableView {
     // MARK: Public
 
     func handleKeyboardEvent(_ event: NSEvent) -> Bool {
-
-        // Pass the key to table view
         keyDown(with: event)
+        return true
+    }
 
-        // Handle if need
-        guard let key = Key(rawValue: event.keyCode) else { return false }
-        return keyDidDownOnPress?(key) ?? false
+    override func keyDown(with event: NSEvent) {
+        let key = TogglDesktop.Key(rawValue: Int(event.keyCode))
+        switch key {
+        case .upArrow, .downArrow:
+            // pass the key to table view
+            super.keyDown(with: event)
+        default:
+            break
+        }
+
+        // handle if need
+        guard let scopeKey = Key(rawValue: event.keyCode) else { return }
+        _ = keyDidDownOnPress?(scopeKey)
     }
 
     override func mouseDown(with event: NSEvent) {
