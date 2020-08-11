@@ -488,7 +488,7 @@ void *ctx;
 								 [duration UTF8String],
 								 new_time_entry.TaskID,
 								 new_time_entry.ProjectID,
-								 0,
+                                 [new_time_entry.ProjectGUID UTF8String],
 								 tag_list,
 								 false,
                                  [new_time_entry.started timeIntervalSince1970],

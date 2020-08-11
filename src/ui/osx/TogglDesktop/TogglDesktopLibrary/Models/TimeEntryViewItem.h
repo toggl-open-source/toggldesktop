@@ -21,6 +21,7 @@
 @property (copy, nonatomic) NSString *ClientLabel;
 @property (assign, nonatomic) uint64_t WorkspaceID;
 @property (assign, nonatomic) uint64_t ProjectID;
+@property (copy, nonatomic) NSString *ProjectGUID; // when project is not saved to backend yet
 @property (assign, nonatomic) uint64_t TaskID;
 @property (copy, nonatomic) NSString *duration;
 @property (copy, nonatomic) NSString *ProjectColor;

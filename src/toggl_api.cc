@@ -608,15 +608,17 @@ char_t *toggl_add_project(
     poco_check_ptr(p);
 
     char_t *guid = copy_string(p->GUID());
-    toggl_set_time_entry_project(
-        context,
-        time_entry_guid,
-        0, /* no task ID */
-        p->ID(),
-        guid);
+    if (time_entry_guid) {
+        toggl_set_time_entry_project(
+            context,
+            time_entry_guid,
+            0, /* no task ID */
+            p->ID(),
+            guid);
+    }
 
     // Update billable if new project is billable
-    if (p->Billable()) {
+    if (p->Billable() && time_entry_guid) {
         toggl_set_time_entry_billable(
             context,
             time_entry_guid,

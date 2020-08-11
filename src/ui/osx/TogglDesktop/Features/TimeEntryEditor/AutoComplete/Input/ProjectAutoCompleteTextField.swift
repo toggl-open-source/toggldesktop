@@ -37,7 +37,9 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
     }
 
     func setTimeEntry(_ timeEntry: TimeEntryViewItem) {
-        projectCreationView.selectedTimeEntry = timeEntry
+        projectCreationView.workspaceID = timeEntry.workspaceID
+        projectCreationView.timeEntryGUID = timeEntry.guid
+        projectCreationView.timeEntryIsBillable = timeEntry.billable
 
         if currentEditor() == nil {
             var label = timeEntry.projectLabel ?? ""

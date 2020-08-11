@@ -83,6 +83,9 @@ final class TimerViewModel: NSObject {
         }
     }
 
+    var timeEntryGUID: String? { timeEntry.guid }
+    var workspaceID: UInt64 { timeEntry.workspaceID }
+
     // Bindings
     var onIsRunning: ((Bool) -> Void)?
     var onDescriptionChanged: ((String) -> Void)?
@@ -192,6 +195,12 @@ final class TimerViewModel: NSObject {
         if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
             DesktopLibraryBridge.shared().updateTimeEntry(withDuration: durationString, guid: timeEntryGUID)
         }
+    }
+
+    func createNewTag(withName name: String) {
+        TagStorage.shared.addNewTag(Tag(name: name))
+        selectedTags.append(name)
+        tagsDataSource.filter(with: name)
     }
 
     // MARK: - Other
@@ -327,6 +336,7 @@ final class TimerViewModel: NSObject {
 
         timeEntry.workspaceID = UInt64(autocompleteItem.workspaceID)
         timeEntry.projectID = UInt64(autocompleteItem.projectID)
+        timeEntry.projectGUID = autocompleteItem.projectGUID
         timeEntry.taskID = UInt64(autocompleteItem.taskID)
         timeEntry.projectAndTaskLabel = autocompleteItem.projectAndTaskLabel
         timeEntry.taskLabel = autocompleteItem.taskLabel

@@ -18,6 +18,12 @@ class TimerViewController: NSViewController {
     private var projectAutoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
     private var projectAutocompleteDidResignObserver: Any?
 
+    private lazy var projectCreationView: ProjectCreationView = {
+        let view = ProjectCreationView.xibView() as ProjectCreationView
+        view.delegate = self
+        return view
+    }()
+
     private lazy var tagsAutoCompleteWindow: AutoCompleteViewWindow = {
         return AutoCompleteViewWindow(view: tagsAutoCompleteView)
     }()
@@ -363,10 +369,9 @@ extension TimerViewController: NSTextFieldDelegate {
     //
 }
 
+// MARK: - AutoCompleteViewDelegate
+
 extension TimerViewController: AutoCompleteViewDelegate {
-    func didTapOnCreateButton() {
-        //
-    }
 
     func shouldClose() {
         if projectAutoCompleteWindow.isVisible {
@@ -374,5 +379,57 @@ extension TimerViewController: AutoCompleteViewDelegate {
         } else if tagsAutoCompleteWindow.isVisible {
             closeTagsAutoComplete()
         }
+    }
+
+    func didTapOnCreateButton() {
+        if projectAutoCompleteWindow.isVisible {
+            showProjectCreationView()
+        } else if tagsAutoCompleteWindow.isVisible {
+            tagsAutocompleteDidTapOnCreateButton()
+        }
+    }
+
+    private func showProjectCreationView() {
+        projectCreationView.workspaceID = viewModel.workspaceID
+        projectCreationView.timeEntryGUID = viewModel.timeEntryGUID
+        projectCreationView.timeEntryIsBillable = viewModel.billableState == .on
+
+        updateProjectAutocompleteWindowContent(with: projectCreationView, height: projectCreationView.suitableHeight)
+        projectCreationView.setTitleAndFocus(projectAutoCompleteView.defaultTextField.stringValue)
+    }
+
+    private func updateProjectAutocompleteWindowContent(with view: NSView, height: CGFloat) {
+        projectAutoCompleteWindow.contentView = view
+
+        let fromPoint = NSPoint(x: projectButton.frame.minX, y: projectButton.frame.maxY)
+        let windowRect = autoCompleteWindowRect(fromPoint: fromPoint)
+        projectAutoCompleteWindow.setFrame(windowRect, display: false)
+        projectAutoCompleteWindow.setFrameTopLeftPoint(windowRect.origin)
+
+        projectAutoCompleteWindow.makeKey()
+    }
+
+    private func tagsAutocompleteDidTapOnCreateButton() {
+        viewModel.createNewTag(withName: tagsAutoCompleteView.defaultTextField.stringValue)
+        _ = tagsAutoCompleteView.defaultTextField.becomeFirstResponder()
+    }
+}
+
+// MARK: - ProjectCreationViewDelegate
+
+extension TimerViewController: ProjectCreationViewDelegate {
+    func projectCreationDidCancel() {
+        closeProjectAutoComplete()
+    }
+
+    func projectCreationDidAdd(with name: String, color: String, projectGUID: String) {
+        closeProjectAutoComplete()
+
+        // TODO: set project on UI
+        // problem is we don't have library method to get project by GUID and pass it to view model
+    }
+
+    func projectCreationDidUpdateSize() {
+        updateProjectAutocompleteWindowContent(with: projectCreationView, height: projectCreationView.suitableHeight)
     }
 }
