@@ -21,16 +21,6 @@ final class TimerViewModel: NSObject {
     private(set) var durationString: String = "" {
         didSet {
             guard durationString != oldValue else { return }
-
-            if timeEntry.duration != durationString {
-                if durationString.isEmpty {
-                    timeEntry.started = Date(timeIntervalSince1970: 0)
-                } else {
-                    let durationSec = DesktopLibraryBridge.shared().seconds(fromDurationString: durationString)
-                    timeEntry.started = Date(timeIntervalSinceNow: Double(-durationSec))
-                }
-            }
-
             onDurationChanged?(durationString)
         }
     }
@@ -138,15 +128,13 @@ final class TimerViewModel: NSObject {
         timer.invalidate()
     }
 
+    // MARK: - Public
+
     func startStopAction() {
         if timeEntry.isRunning() {
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kCommandStop), object: nil, userInfo: nil)
+            stopTimeEntry()
         } else {
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kForceCloseEditPopover), object: nil)
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kCommandNew), object: timeEntry, userInfo: nil)
-
-            descriptionDataSource.input?.resetTable()
-            descriptionDataSource.clearFilter()
+            startTimeEntry()
         }
     }
 
@@ -190,10 +178,15 @@ final class TimerViewModel: NSObject {
     }
 
     func setDuration(_ duration: String) {
+        guard durationString != duration else { return }
         self.durationString = duration
 
-        if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
-            DesktopLibraryBridge.shared().updateTimeEntry(withDuration: durationString, guid: timeEntryGUID)
+        if timeEntry.isRunning() {
+            timeEntry.started = startDate(fromDurationString: durationString)
+
+            if let timeEntryGUID = timeEntry.guid {
+                DesktopLibraryBridge.shared().updateTimeEntry(withDuration: durationString, guid: timeEntryGUID)
+            }
         }
     }
 
@@ -203,7 +196,23 @@ final class TimerViewModel: NSObject {
         tagsDataSource.filter(with: name)
     }
 
-    // MARK: - Other
+    // MARK: - Private
+
+    private func startTimeEntry() {
+        if !durationString.isEmpty {
+            timeEntry.started = startDate(fromDurationString: durationString)
+        }
+
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kForceCloseEditPopover), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kCommandNew), object: timeEntry, userInfo: nil)
+
+        descriptionDataSource.input?.resetTable()
+        descriptionDataSource.clearFilter()
+    }
+
+    private func stopTimeEntry() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kCommandStop), object: nil, userInfo: nil)
+    }
 
     private func fetchTags() {
         var workspaceID = timeEntry.workspaceID
@@ -224,6 +233,15 @@ final class TimerViewModel: NSObject {
             billableState = timeEntry.billable ? .on : .off
         } else {
             billableState = .unavailable
+        }
+    }
+
+    private func startDate(fromDurationString durationString: String) -> Date {
+        if durationString.isEmpty {
+            return Date(timeIntervalSince1970: 0)
+        } else {
+            let durationSec = DesktopLibraryBridge.shared().seconds(fromDurationString: durationString)
+            return Date(timeIntervalSinceNow: Double(-durationSec))
         }
     }
 
