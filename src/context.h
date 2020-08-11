@@ -811,6 +811,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     bool trigger_sync_;
     bool trigger_push_;
+    bool trigger_full_sync_;
 
     Poco::LocalDateTime last_time_entry_list_render_at_;
 
