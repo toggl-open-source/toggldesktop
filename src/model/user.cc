@@ -1504,6 +1504,37 @@ void User::CompressTimeline() {
                    related.TimelineEvents.size(), " compressed into ", compressed.size(), " chunks");
 }
 
+void User::SetIsTimelineUiEnabled() {
+    bool res = false;
+    HTTPRequest req;
+    req.host = urls::API();
+    req.relative_url = "/api/v9/me/preferences";
+    req.basic_auth_username = APIToken();
+    req.basic_auth_password = "api_token";
+
+    HTTPResponse resp = TogglClient::GetInstance().Get(req);
+    if (resp.err == noError && resp.status_code==200) {
+        Json::Value root;
+        Json::Reader reader;
+        if (!reader.parse(resp.body, root)) {
+            logger().log("Syncer - /me/preferences response couldn't be parsed as JSON");
+        }
+        else {
+            if (root.isMember("alpha_features")) {
+                for (auto i : root["alpha_features"]) {
+                    if (i.isMember("code")) {
+                        auto tmp = i["code"];
+                        if (i["code"] == "desktop_timeline_ui" && i["enabled"].asBool()) {
+                            IsTimelineUiEnabled = true;
+                        }
+                    }
+                }
+                logger().log("Timeline UI visible: ", res);
+            }
+        }
+    }
+}
+
 std::vector<const TimelineEvent*> User::CompressedTimelineForUI(const Poco::LocalDateTime *date) const {
     return CompressedTimeline(date, false);
 }

@@ -289,6 +289,7 @@ error Context::StartEvents() {
 
         // Set since param to 0 to force full sync on app start
         user->SetSince(0);
+        user->SetIsTimelineUiEnabled();
         logger.debug("fullSyncOnAppStart");
 
         updateUI(UIElements::Reset());
@@ -2877,6 +2878,7 @@ error Context::SetLoggedInUserFromJSON(
         delete user;
         return displayError(err);
     }
+    user->SetIsTimelineUiEnabled();
 
     err = db()->SetCurrentAPIToken(user->APIToken(), user->ID());
     if (err != noError) {
@@ -7029,7 +7031,7 @@ bool Context::checkIfSkipPomodoro(TimeEntry *te) {
 }
 
 bool Context::IsTimelineUiEnabled() {
-    return user_->timeline_ui_flag;
+    return user_->IsTimelineUiEnabled;
 }
 
 bool Context::isUsingSyncServer() const {
