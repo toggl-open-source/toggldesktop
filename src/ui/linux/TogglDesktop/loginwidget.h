@@ -61,6 +61,7 @@ class LoginWidget : public QWidget {
     Ui::LoginWidget *ui;
 
     QOAuth2AuthorizationCodeFlow oauth2;
+    QString temporaryOAuthCode;
 
     bool signupVisible;
 
