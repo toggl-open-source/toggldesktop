@@ -58,6 +58,8 @@ class TimerViewController: NSViewController {
 
         configureAppearance()
 
+        setupProjectButtonContextMenu()
+
         setupBindings()
 
         viewModel.isEditingDescription = { [weak self] in
@@ -139,6 +141,7 @@ class TimerViewController: NSViewController {
                 self.projectButton.image = NSImage(named: "project-button")
                 self.projectButton.isSelected = false
             }
+            self.setupProjectButtonContextMenu()
         }
 
         viewModel.onProjectSelected = { [unowned self] project in
@@ -293,6 +296,22 @@ class TimerViewController: NSViewController {
                 $0.selectedBackgroundColor = NSColor.togglGreen
         }
         billableButton.isActiveOnClick = false
+    }
+
+    private func setupProjectButtonContextMenu() {
+        if projectButton.isSelected {
+            let menu = NSMenu()
+            let remove = NSMenuItem(title: "Remove project", action: #selector(clearProject), keyEquivalent: "")
+            menu.addItem(remove)
+            projectButton.menu = menu
+        } else {
+            projectButton.menu = nil
+        }
+    }
+
+    @objc
+    private func clearProject() {
+        viewModel.clearProject()
     }
 
     // MARK: - Autocomplete/Dropdown

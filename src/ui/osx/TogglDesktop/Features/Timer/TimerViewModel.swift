@@ -198,6 +198,26 @@ final class TimerViewModel: NSObject {
         tagsDataSource.filter(with: name)
     }
 
+    func clearProject() {
+        timeEntry.projectID = 0
+        timeEntry.projectGUID = ""
+        timeEntry.taskID = 0
+        timeEntry.projectAndTaskLabel = ""
+        timeEntry.taskLabel = ""
+        timeEntry.projectLabel = ""
+        timeEntry.clientLabel = ""
+        timeEntry.projectColor = ""
+
+        if timeEntry.isRunning() {
+            DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
+                                                                         taskID: timeEntry.taskID,
+                                                                         projectID: timeEntry.projectID,
+                                                                         projectGUID: timeEntry.projectGUID)
+        }
+
+        onProjectUpdated?(Project(timeEntry: timeEntry))
+    }
+
     // MARK: - Private
 
     private func startTimeEntry() {
