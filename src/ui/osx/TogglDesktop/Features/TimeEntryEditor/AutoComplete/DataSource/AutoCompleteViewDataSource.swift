@@ -51,6 +51,7 @@ class AutoCompleteViewDataSource: NSObject {
     func setup(with textField: AutoCompleteTextField) {
         self.textField = textField
         self.autoCompleteView = textField.autoCompleteView
+        self.autoCompleteView?.defaultTextField.isHidden = true
         commonSetup()
     }
 
@@ -58,6 +59,7 @@ class AutoCompleteViewDataSource: NSObject {
         self.autoCompleteView = autoCompleteView
 
         textField = autoCompleteView.defaultTextField
+        textField.isHidden = false
         autoCompleteView.placeholderBox.isHidden = false
 
         commonSetup()
