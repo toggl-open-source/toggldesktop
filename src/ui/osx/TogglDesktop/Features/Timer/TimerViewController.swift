@@ -128,9 +128,7 @@ class TimerViewController: NSViewController {
             self.tagsButton.isSelected = isSelected
         }
 
-        viewModel.onProjectSelected = { [unowned self] project in
-            self.closeProjectAutoComplete()
-
+        viewModel.onProjectUpdated = { [unowned self] project in
             if let project = project {
                 self.projectButton.selectedBackgroundColor = project.color.withAlphaComponent(0.3)
                 self.projectButton.attributedTitle = project.attributedTitle
@@ -141,6 +139,10 @@ class TimerViewController: NSViewController {
                 self.projectButton.image = NSImage(named: "project-button")
                 self.projectButton.isSelected = false
             }
+        }
+
+        viewModel.onProjectSelected = { [unowned self] project in
+            self.closeProjectAutoComplete()
         }
 
         viewModel.onBillableChanged = { [unowned self] billable in

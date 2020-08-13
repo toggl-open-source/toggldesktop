@@ -81,6 +81,8 @@ final class TimerViewModel: NSObject {
     var onDescriptionChanged: ((String) -> Void)?
     var onDurationChanged: ((String) -> Void)?
     var onTagSelected: ((Bool) -> Void)?
+    var onProjectUpdated: ((Project?) -> Void)?
+    /// Called when project was selected via autocomplete data source
     var onProjectSelected: ((Project?) -> Void)?
     var onBillableChanged: ((BillableState) -> Void)?
     var onDescriptionFocusChanged: ((Bool) -> Void)?
@@ -297,7 +299,7 @@ final class TimerViewModel: NSObject {
             onTouchBarUpdateRunningItem?(entry)
         }
 
-        onProjectSelected?(Project(timeEntry: timeEntry))
+        onProjectUpdated?(Project(timeEntry: timeEntry))
 
         if isNewWorkspace {
             fetchTags()
@@ -327,7 +329,7 @@ final class TimerViewModel: NSObject {
         updateBillableStatus()
         focusTimer()
 
-        onProjectSelected?(nil)
+        onProjectUpdated?(nil)
     }
 
     private func fillEntry(fromDescriptionAutocomplete autocompleteItem: AutocompleteItem) {
@@ -369,7 +371,7 @@ final class TimerViewModel: NSObject {
                                                                          projectGUID: autocompleteItem.projectGUID)
         }
 
-        onProjectSelected?(Project(timeEntry: timeEntry))
+        onProjectUpdated?(Project(timeEntry: timeEntry))
 
         if isNewWorkspace {
             fetchTags()
@@ -504,6 +506,7 @@ extension TimerViewModel: AutoCompleteViewDataSourceDelegate {
                 return
             }
             fillEntryProject(from: projectItem.item)
+            onProjectSelected?(Project(timeEntry: timeEntry))
         }
     }
 }
