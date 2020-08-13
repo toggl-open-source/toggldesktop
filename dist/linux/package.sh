@@ -13,8 +13,15 @@ fi
 fullbuilddir=$PWD/$builddir
 errorlog=$fullbuilddir/error.log
 
+if [ -z "$TOGGL_VERSION" ]; then
+    TOGGL_VERSION=${TAG_NAME/v/}
+fi
+if [ -z "$TOGGL_VERSION" ]; then
+    TOGGL_VERSION="7.0.0"
+fi
+
 if [ ! -z "$TOGGL_VERSION" ]; then
-    VERSION_DEFINE="-DTOGGL_VERSION=$TOGGL_VERSION"
+    VERSION_DEFINE="-DTOGGL_VERSION=${TOGGL_VERSION}"
 fi
 if [ -z "$BUILD_TESTS" ]; then
     BUILD_TESTS="OFF"

@@ -168,14 +168,17 @@ jobs:
         modules: qtnetworkauth
     - name: Build the Linux binary
       run: |
+        export TAG_NAME=$(./dist/get-tag-name.sh)
         export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
         bash ./dist/linux/package.sh build
     - name: Collect the binaries
       run: |
+        export TAG_NAME=$(./dist/get-tag-name.sh)
         export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
         bash ./dist/linux/package.sh compose
     - name: Create tarball
       run: |
+        export TAG_NAME=$(./dist/get-tag-name.sh)
         export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
         bash ./dist/linux/package.sh package
     - name: Upload artifacts to GitHub
@@ -227,7 +230,7 @@ jobs:
     - name: Build a Debian package
       run: |
         export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
-        TAG_NAME=$(./dist/get-tag-name.sh)
+        export TAG_NAME=$(./dist/get-tag-name.sh)
         export CC=/usr/bin/clang-8
         export CXX=/usr/bin/clang++-8
         cd dist/linux
@@ -236,7 +239,7 @@ jobs:
         ln -s ../../third_party .
         ln -s ubuntu16 debian
         dch -b -D unstable --package "toggldesktop" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
-        debuild --preserve-envvar=CMAKE_PREFIX_PATH --preserve-envvar=CC --preserve-envvar=CXX
+        debuild --preserve-envvar=CMAKE_PREFIX_PATH --preserve-envvar=CC --preserve-envvar=CXX --preserve-envvar=TAG_NAME
     - name: Upload artifacts to GitHub
       if: github.event_name != 'release'
       uses: actions/upload-artifact@v2
