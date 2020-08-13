@@ -1,11 +1,13 @@
 {
-	"id": 3,
-	"from": 1598857200,
-	"to": 1599462000,
-	"title": "We're Getting a New Name!",
-	"text": "Toggl is becoming Toggl Track! We'll still be the Toggl you know and love on mobile, desktop, and web - but we've welcomed Toggl Plan and Toggl Hire into the family.",
-	"button": "Learn More",
-	"url-mac": "https://support.toggl.com/en/articles/4338240-frequently-asked-questions-toggl-track-toggl-plan-and-toggl-hire",
-	"url-win": "https://support.toggl.com/en/articles/4338240-frequently-asked-questions-toggl-track-toggl-plan-and-toggl-hire",
-	"url-linux": "https://support.toggl.com/en/articles/4338240-frequently-asked-questions-toggl-track-toggl-plan-and-toggl-hire"
+	"id": 4,
+	"from": 1599462000,
+	"to": 1600671600,
+	"type": 2,
+	"appversion": "TODO: replace this with the version immediately before the rebranded one",
+	"title": "Toggl is now Toggl Track!",
+	"text": "We're still the Toggl you know and love on mobile, desktop, and web - but we've welcomed Toggl Plan and Toggl Hire into the family.",
+	"button": "Check us out!",
+	"url-mac": "https://toggl.com/blog/toggl-rebrand-toggltrack",
+	"url-win": "https://toggl.com/blog/toggl-rebrand-toggltrack",
+	"url-linux": "https://toggl.com/blog/toggl-rebrand-toggltrack"
 }
