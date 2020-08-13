@@ -170,8 +170,8 @@ final class TimerViewModel: NSObject {
     }
 
     func descriptionDidEndEditing() {
-        if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
-            DesktopLibraryBridge.shared().updateTimeEntry(withDescription: entryDescription, guid: timeEntryGUID)
+        if timeEntry.isRunning() {
+            saveCurrentDescription()
         }
     }
 
@@ -214,6 +214,12 @@ final class TimerViewModel: NSObject {
 
     private func stopTimeEntry() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: kCommandStop), object: nil, userInfo: nil)
+    }
+
+    private func saveCurrentDescription() {
+        if let timeEntryGUID = timeEntry.guid {
+            DesktopLibraryBridge.shared().updateTimeEntry(withDescription: entryDescription, guid: timeEntryGUID)
+        }
     }
 
     private func fetchTags() {
@@ -317,7 +323,7 @@ final class TimerViewModel: NSObject {
         // e.g. if TE was stopped by keyboard shortcut
         // and Timer haven't yet updated the contents of description field
         if !entryDescription.isEmpty {
-            DesktopLibraryBridge.shared().updateTimeEntry(withDescription: entryDescription, guid: timeEntry.guid)
+            saveCurrentDescription()
         }
 
         timeEntry = TimeEntryViewItem()
@@ -338,6 +344,9 @@ final class TimerViewModel: NSObject {
 
         if let newDescription = autocompleteItem.description {
             entryDescription = newDescription
+            if timeEntry.isRunning() {
+                saveCurrentDescription()
+            }
         }
 
         fillEntryProject(from: autocompleteItem)
