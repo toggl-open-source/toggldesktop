@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Security;
 using System.Windows.Interop;
 using System.Windows.Media;
-using Microsoft.Win32;
 using TogglDesktop.Services;
 using Application = System.Windows.Forms.Application;
 
@@ -37,6 +35,9 @@ static class Program
             UserId = user_id;
         };
         BugsnagService.Init();
+#if TOGGL_ALLOW_UPDATE_CHECK
+        Toggl.UpdateService.InstallPendingUpdatesOnStartup();
+#endif
         DeepLinkProtocolInstaller.InstallProtocol();
         singleInstanceManager.BeforeStartup -= OnBeforeStartup;
     }

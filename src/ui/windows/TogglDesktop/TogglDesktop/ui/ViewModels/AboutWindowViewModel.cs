@@ -1,5 +1,6 @@
 using System;
 using System.Reactive.Linq;
+using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using TogglDesktop.Services;
@@ -15,6 +16,9 @@ namespace TogglDesktop.ViewModels
         {
             VersionText = versionText;
             _updateService = updateService;
+            SelectedChannel = _updateService.UpdateChannel.Value;
+            this.WhenValueChanged(x => x.SelectedChannel)
+                .Subscribe(_updateService.UpdateChannel.OnNext);
             var updateStatus = updateService.UpdateStatus;
             IsUpdateCheckEnabled = updateService.IsUpdateCheckEnabled;
             if (IsUpdateCheckEnabled)
@@ -39,27 +43,12 @@ namespace TogglDesktop.ViewModels
 
         public IReactiveCommand UpdateAndRestartCommand { get; }
 
-        public bool InstallPendingUpdate()
-        {
-            return _updateService.InstallPendingUpdate();
-        }
-
         private void UpdateAndRestart()
         {
             Toggl.PrepareShutdown();
             _updateService.InstallPendingUpdate();
             Program.Shutdown(0);
         }
-
-        public void InitUpdateChannel(string channel)
-        {
-            SelectedChannel = channel;
-            this.ObservableForProperty(x => x.SelectedChannel)
-                .Select(x => x.Value)
-                .Subscribe(SetUpdateChannel);
-        }
-
-        private static void SetUpdateChannel(string channel) => Toggl.SetUpdateChannel(channel);
 
         private static string GetUpdateStatusText(UpdateStatus status) =>
             status.HasUpdate

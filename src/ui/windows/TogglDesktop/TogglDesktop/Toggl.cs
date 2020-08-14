@@ -42,6 +42,13 @@ public static partial class Toggl
 
     public static readonly string UpdatesPath = Path.Combine(WritableAppDirPath, "updates");
 
+    static Toggl()
+    {
+        UpdateService = new UpdateService(Toggl.IsUpdateCheckDisabled(), Toggl.UpdatesPath);
+    }
+
+    public static UpdateService UpdateService { get; }
+
 #if TOGGL_PRODUCTION_BUILD
     public static string Env = "production";
 #else
@@ -1154,17 +1161,13 @@ public static partial class Toggl
 
         listenToLibEvents();
 
-        if (Utils.GetIsUpdateCheckDisabledFromRegistry())
+        if (!UpdateService.IsUpdateCheckEnabled)
         {
             toggl_disable_update_check(ctx);
         }
 
         string path = Path.Combine(Environment.GetFolderPath(
             Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
-
-#if TOGGL_ALLOW_UPDATE_CHECK
-        installPendingUpdates();
-#endif
 
         // Configure log, db path
         Directory.CreateDirectory(path);
@@ -1183,57 +1186,6 @@ public static partial class Toggl
 
         // Start pumping UI events
         return toggl_ui_start(ctx);
-    }
-
-    // ReSharper disable once UnusedMember.Local
-    // (updates are disabled in Debug configuration to allow for proper debugging)
-    private static void installPendingUpdates()
-    {
-        var aboutWindowViewModel = mainWindow.GetWindow<AboutWindow>().ViewModel;
-        if (aboutWindowViewModel.InstallPendingUpdate())
-        {
-            // quit, updater will restart the app
-            Process.GetCurrentProcess().Kill();
-        }
-
-        DeleteOldUpdates();
-    }
-
-    private static void DeleteOldUpdates()
-    {
-        Directory.CreateDirectory(UpdatesPath); // make sure the directory exists
-        var di = new DirectoryInfo(UpdatesPath);
-        foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
-        {
-            try
-            {
-                Utils.DeleteFile(file.FullName);
-            }
-            catch (Exception e)
-            {
-                BugsnagService.NotifyBugsnag(e);
-                Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
-            }
-        }
-        var updatesDir = new DirectoryInfo(
-            Path.Combine(
-                Environment.GetFolderPath(
-                    Environment.SpecialFolder.LocalApplicationData), "Onova", "TogglDesktop"));
-        if (updatesDir.Exists)
-        {
-            foreach (var file in updatesDir.GetFiles("*.exe", SearchOption.TopDirectoryOnly))
-            {
-                try
-                {
-                    Utils.DeleteFile(file.FullName);
-                }
-                catch (Exception e)
-                {
-                    BugsnagService.NotifyBugsnag(e);
-                    Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
-                }
-            }
-        }
     }
 
     public static bool IsUpdateCheckDisabled()
