@@ -52,6 +52,8 @@ class SelectableButton: NSButton {
         return defaultSize
     }
 
+    override var canBecomeKeyView: Bool { true }
+
     // MARK: - Init
 
     override init(frame frameRect: NSRect) {

@@ -57,8 +57,8 @@ class TimerViewController: NSViewController {
         tagsAutoCompleteView.delegate = self
 
         configureAppearance()
-
         setupProjectButtonContextMenu()
+        setupKeyViewLoop()
 
         setupBindings()
 
@@ -253,9 +253,12 @@ class TimerViewController: NSViewController {
             let lastSelectedIndex = descriptionTextField.autocompleteTableView.lastSelected
             if lastSelectedIndex >= 0 {
                 let success = viewModel.selectDescriptionAutoCompleteItem(at: lastSelectedIndex)
-                if !success {
-                    return false
+                if success {
+                    return true
                 }
+            } else {
+                descriptionTextField.resetTable()
+                return false
             }
         } else if commandSelector == #selector(insertNewline(_:)) {
             // avoid firing default Enter actions
@@ -312,6 +315,14 @@ class TimerViewController: NSViewController {
     @objc
     private func clearProject() {
         viewModel.clearProject()
+    }
+
+    private func setupKeyViewLoop() {
+        descriptionTextField.nextKeyView = durationTextField
+        durationTextField.nextKeyView = projectButton
+        projectButton.nextKeyView = tagsButton
+        tagsButton.nextKeyView = billableButton
+        billableButton.nextKeyView = descriptionTextField
     }
 
     // MARK: - Autocomplete/Dropdown
