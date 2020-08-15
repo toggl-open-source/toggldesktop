@@ -113,7 +113,7 @@
                                                 <constraint firstAttribute="width" constant="30" id="9sU-HM-bNp"/>
                                                 <constraint firstAttribute="height" constant="30" id="WIU-1C-bOA"/>
                                             </constraints>
-                                            <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="start-timer-button" imagePosition="overlaps" alignment="center" alternateImage="stop-timer-button" imageScaling="proportionallyUpOrDown" inset="2" id="3Ub-u1-Aof">
+                                            <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="start-timer-button" imagePosition="overlaps" alignment="center" alternateImage="start-timer-button-onpress" imageScaling="proportionallyUpOrDown" inset="2" id="3Ub-u1-Aof">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -280,8 +280,8 @@
     <resources>
         <image name="billable-button" width="24" height="24"/>
         <image name="project-button" width="24" height="24"/>
-        <image name="start-timer-button" width="45" height="45"/>
-        <image name="stop-timer-button" width="30" height="30"/>
+        <image name="start-timer-button" width="30" height="30"/>
+        <image name="start-timer-button-onpress" width="30" height="30"/>
         <image name="tag-button" width="24" height="24"/>
         <namedColor name="green-color">
             <color red="0.15700000524520874" green="0.80400002002716064" blue="0.25499999523162842" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

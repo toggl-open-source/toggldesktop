@@ -135,8 +135,10 @@ final class TimerViewModel: NSObject {
     func startStopAction() {
         if timeEntry.isRunning() {
             stopTimeEntry()
+            isRunning = false
         } else {
             startTimeEntry()
+            isRunning = true
         }
     }
 

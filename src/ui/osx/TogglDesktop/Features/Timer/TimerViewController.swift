@@ -108,8 +108,7 @@ class TimerViewController: NSViewController {
         }
 
         viewModel.onIsRunning = { [unowned self] isRunning in
-            self.startButton.toolTip = isRunning ? "Stop" : "Start"
-            self.startButton.state = isRunning ? .on : .off
+            self.updateStartButton(forRunningState: isRunning)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kStartButtonStateChange),
                                             object: NSNumber(value: self.startButton.state.rawValue))
         }
@@ -299,6 +298,8 @@ class TimerViewController: NSViewController {
                 $0.selectedBackgroundColor = NSColor.togglGreen
         }
         billableButton.isActiveOnClick = false
+
+        startButton.hoverImage = NSImage(named: "start-timer-button-hover")
     }
 
     private func setupProjectButtonContextMenu() {
@@ -319,10 +320,26 @@ class TimerViewController: NSViewController {
 
     private func setupKeyViewLoop() {
         descriptionTextField.nextKeyView = durationTextField
-        durationTextField.nextKeyView = projectButton
+        durationTextField.nextKeyView = startButton
+        startButton.nextKeyView = projectButton
         projectButton.nextKeyView = tagsButton
         tagsButton.nextKeyView = billableButton
         billableButton.nextKeyView = descriptionTextField
+    }
+
+    private func updateStartButton(forRunningState isRunning: Bool) {
+        if isRunning {
+            startButton.toolTip = "Stop"
+            startButton.image = NSImage(named: "stop-timer-button")
+            startButton.alternateImage = NSImage(named: "stop-timer-button-onpress")
+            startButton.hoverImage = NSImage(named: "stop-timer-button-hover")
+        } else {
+            startButton.toolTip = "Start"
+            startButton.image = NSImage(named: "start-timer-button")
+            startButton.alternateImage = NSImage(named: "start-timer-button-onpress")
+            startButton.hoverImage = NSImage(named: "start-timer-button-hover")
+        }
+        startButton.state = .off
     }
 
     // MARK: - Autocomplete/Dropdown

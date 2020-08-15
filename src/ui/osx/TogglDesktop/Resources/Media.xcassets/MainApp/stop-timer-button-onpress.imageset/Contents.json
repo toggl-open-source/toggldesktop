@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Stop.png",
+      "filename" : "Stop-1.png",
       "idiom" : "mac",
       "scale" : "1x"
     },
@@ -12,7 +12,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Stop-1.png",
+      "filename" : "Stop.png",
       "idiom" : "mac",
       "scale" : "1x"
     },

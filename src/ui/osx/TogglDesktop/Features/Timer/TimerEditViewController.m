@@ -7,22 +7,10 @@
 //  Copyright (c) 2013 TogglDesktop developers. All rights reserved.
 //
 #import "TimerEditViewController.h"
-#import "AutocompleteItem.h"
-#import "LiteAutoCompleteDataSource.h"
-#import "ConvertHexColor.h"
-#import "TimeEntryViewItem.h"
 #import "DisplayCommand.h"
 #import "TogglDesktop-Swift.h"
-#import "ProjectTextField.h"
-#import "NSTextFieldDuration.h"
-#import "NSHoverButton.h"
 #import "NSBoxClickable.h"
-#import "AutoCompleteInput.h"
-#import "BetterFocusAutoCompleteInput.h"
-#import "AutoCompleteTable.h"
 #import <Carbon/Carbon.h>
-#import "Utils.h"
-#import "ClickableImageView.h"
 
 typedef enum : NSUInteger
 {

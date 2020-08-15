@@ -9,8 +9,5 @@
 #import <Cocoa/Cocoa.h>
 
 @interface NSHoverButton : NSButton
-@property (nonatomic, assign) CGFloat alpha;
-- (void)setHoverAlpha:(CGFloat)alpha;
-- (void)mouseEntered:(NSEvent *)theEvent;
-- (void)mouseExited:(NSEvent *)theEvent;
+@property (nonatomic, strong) NSImage *hoverImage;
 @end
