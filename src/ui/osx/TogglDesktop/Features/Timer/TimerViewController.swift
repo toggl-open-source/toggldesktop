@@ -32,6 +32,13 @@ class TimerViewController: NSViewController {
     private var tagsAutocompleteDidResignObserver: Any?
     private var tagsAutocompleteResignTime: TimeInterval = 0
 
+    private static let emptyProjectButtonTooltip = NSLocalizedString("Select project", comment: "Tooltip for timer project button")
+    private static let emptyTagsButtonTooltip = NSLocalizedString("Select tags", comment: "Tooltip for timer tags button")
+    private static let billableOnTooltip = NSLocalizedString("Billable", comment: "Tooltip for timer billable button when On")
+    private static let billableOffTooltip = NSLocalizedString("Non-billable", comment: "Tooltip for timer billable button when Off")
+    private static let billableUnavailableTooltip = NSLocalizedString("Billable rates is not on your plan",
+                                                                      comment: "Tooltip for timer billable button when disabled")
+
     // MARK: - Outlets
 
     @IBOutlet weak var startButton: NSHoverButton!
@@ -127,6 +134,7 @@ class TimerViewController: NSViewController {
 
         viewModel.onTagSelected = { [unowned self] isSelected in
             self.tagsButton.isSelected = isSelected
+            self.tagsButton.toolTip = isSelected ? nil : Self.emptyTagsButtonTooltip
         }
 
         viewModel.onProjectUpdated = { [unowned self] project in
@@ -135,10 +143,12 @@ class TimerViewController: NSViewController {
                 self.projectButton.attributedTitle = project.attributedTitle
                 self.projectButton.image = nil
                 self.projectButton.isSelected = true
+                self.projectButton.toolTip = nil
             } else {
                 self.projectButton.title = ""
                 self.projectButton.image = NSImage(named: "project-button")
                 self.projectButton.isSelected = false
+                self.projectButton.toolTip = Self.emptyProjectButtonTooltip
             }
             self.setupProjectButtonContextMenu()
         }
@@ -150,6 +160,15 @@ class TimerViewController: NSViewController {
         viewModel.onBillableChanged = { [unowned self] billable in
             self.billableButton.isEnabled = billable != .unavailable
             self.billableButton.isSelected = billable == .on
+
+            switch billable {
+            case .on:
+                self.billableButton.toolTip = Self.billableOnTooltip
+            case .off:
+                self.billableButton.toolTip = Self.billableOffTooltip
+            case .unavailable:
+                self.billableButton.toolTip = Self.billableUnavailableTooltip
+            }
         }
 
         viewModel.onTouchBarUpdateRunningItem = { entry in
@@ -300,6 +319,10 @@ class TimerViewController: NSViewController {
         billableButton.isActiveOnClick = false
 
         startButton.hoverImage = NSImage(named: "start-timer-button-hover")
+
+        projectButton.toolTip = Self.emptyProjectButtonTooltip
+        tagsButton.toolTip = Self.emptyTagsButtonTooltip
+        billableButton.toolTip = Self.billableOffTooltip
     }
 
     private func setupProjectButtonContextMenu() {
@@ -311,11 +334,6 @@ class TimerViewController: NSViewController {
         } else {
             projectButton.menu = nil
         }
-    }
-
-    @objc
-    private func clearProject() {
-        viewModel.clearProject()
     }
 
     private func setupKeyViewLoop() {
@@ -428,6 +446,13 @@ class TimerViewController: NSViewController {
         tagsAutoCompleteWindow.cancel()
         tagsButton.controlState = .normal
         tagsAutoCompleteView.clean()
+    }
+
+    // MARK: - Other
+
+    @objc
+    private func clearProject() {
+        viewModel.clearProject()
     }
 }
 
