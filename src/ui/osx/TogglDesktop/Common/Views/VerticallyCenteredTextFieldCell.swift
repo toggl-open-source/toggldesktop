@@ -14,6 +14,7 @@ final class VerticallyCenteredTextFieldCell: NSTextFieldCell {
     @IBInspectable var focusRingCornerRadius: CGFloat = 0
     @IBInspectable var leftPadding: CGFloat = 10.0
     @IBInspectable var rightPadding: CGFloat = 10.0
+    @IBInspectable var shouldDrawFocusRing: Bool = true
     private var isEditingOrSelecting = false
 
     override func drawingRect(forBounds theRect: NSRect) -> NSRect {
@@ -66,6 +67,9 @@ final class VerticallyCenteredTextFieldCell: NSTextFieldCell {
     }
 
     override func drawFocusRingMask(withFrame cellFrame: NSRect, in controlView: NSView) {
+        guard shouldDrawFocusRing else {
+            return
+        }
 
         // Draw default
         guard focusRingCornerRadius > 0.0 else {

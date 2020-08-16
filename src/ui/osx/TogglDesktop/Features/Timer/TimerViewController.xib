@@ -37,7 +37,7 @@
                                         <rect key="frame" x="1" y="1" width="1467" height="28"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecT-b1-LZO" userLabel="Description" customClass="BetterFocusAutoCompleteInput">
+                                            <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecT-b1-LZO" userLabel="Description" customClass="ResponderAutoCompleteInput" customModule="TogglDesktop" customModuleProvider="target">
                                                 <rect key="frame" x="-2" y="0.0" width="1471" height="28"/>
                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" placeholderString="What are you working on?" usesSingleLineMode="YES" id="O0F-G7-GmN" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                     <font key="font" metaFont="menu" size="14"/>
@@ -47,6 +47,7 @@
                                                         <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
                                                             <real key="value" value="12"/>
                                                         </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="shouldDrawFocusRing" value="NO"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </textFieldCell>
                                                 <connections>
@@ -88,6 +89,7 @@
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
                                                                     <real key="value" value="12"/>
                                                                 </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="shouldDrawFocusRing" value="NO"/>
                                                             </userDefinedRuntimeAttributes>
                                                         </textFieldCell>
                                                         <connections>

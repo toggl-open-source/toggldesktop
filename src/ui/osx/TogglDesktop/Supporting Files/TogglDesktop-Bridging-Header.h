@@ -22,7 +22,6 @@
 #import "AutoCompleteTable.h"
 #import "AutoCompleteTableCell.h"
 #import "AutoCompleteInput.h"
-#import "BetterFocusAutoCompleteInput.h"
 #import "LiteAutoCompleteDataSource.h"
 
 #import "AppDelegate.h"

@@ -1,19 +1,14 @@
 //
-//  ResponderTextField.swift
+//  ResponderAutoCompleteInput.swift
 //  TogglDesktop
 //
-//  Created by Andrew Nester on 10.08.2020.
+//  Created by Andrew Nester on 16.08.2020.
 //  Copyright © 2020 Toggl. All rights reserved.
 //
 
 import Foundation
 
-protocol TextFieldResponderDelegate: AnyObject {
-    func didBecomeFirstResponder(_ sender: NSTextField)
-    func didResignFirstResponder(_ sender: NSTextField)
-}
-
-class ResponderTextField: NSTextField {
+class ResponderAutoCompleteInput: AutoCompleteInput {
     weak var responderDelegate: TextFieldResponderDelegate?
 
     override func becomeFirstResponder() -> Bool {

@@ -142,7 +142,7 @@ final class TimerViewModel: NSObject {
         }
     }
 
-    func setDescriptionAutoCompleteInput(_ input: BetterFocusAutoCompleteInput) {
+    func setDescriptionAutoCompleteInput(_ input: AutoCompleteInput) {
         descriptionDataSource.setFilter("")
         descriptionDataSource.input = input
         input.autocompleteTableView.delegate = self
@@ -303,7 +303,7 @@ final class TimerViewModel: NSObject {
 
         timeEntry = entry
 
-        if isRunning {
+        if entry.isRunning() {
             let isDescriptionEditing = isEditingDescription?() ?? true
             if entryDescription.isEmpty || isRunningChanged || !isDescriptionEditing {
                 entryDescription = entry.entryDescription ?? ""

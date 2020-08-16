@@ -32,6 +32,10 @@ final class TimerContainerBox: NSBox, TextFieldResponderDelegate {
                 return .togglLighterGrey
             }
         }
+
+        var borderWidth: CGFloat {
+            return 0.5
+        }
     }
 
     private var state = State.inactive
@@ -87,6 +91,7 @@ final class TimerContainerBox: NSBox, TextFieldResponderDelegate {
     private func renderLayout(for state: State) {
         self.state = state
         borderColor = state.borderColor
+        borderWidth = state.borderWidth
         fillColor = state.fillColor
     }
 }

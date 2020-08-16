@@ -42,7 +42,7 @@ class TimerViewController: NSViewController {
     // MARK: - Outlets
 
     @IBOutlet weak var startButton: NSHoverButton!
-    @IBOutlet weak var descriptionTextField: BetterFocusAutoCompleteInput!
+    @IBOutlet weak var descriptionTextField: ResponderAutoCompleteInput!
     @IBOutlet weak var descriptionContainerBox: TimerContainerBox!
     @IBOutlet weak var durationContainerBox: TimerContainerBox!
     @IBOutlet weak var durationTextField: ResponderTextField!
@@ -305,6 +305,11 @@ class TimerViewController: NSViewController {
         }
 
         return false
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        super.mouseDown(with: event)
+        view.window?.makeFirstResponder(nil)
     }
 
     // MARK: - UI
