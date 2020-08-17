@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
@@ -1192,7 +1193,7 @@ public static partial class Toggl
         if (aboutWindowViewModel.InstallPendingUpdate())
         {
             // quit, updater will restart the app
-            Environment.Exit(0);
+            Process.GetCurrentProcess().Kill();
         }
 
         DeleteOldUpdates();
