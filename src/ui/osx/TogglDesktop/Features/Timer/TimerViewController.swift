@@ -302,6 +302,9 @@ class TimerViewController: NSViewController {
     private func durationControl(doCommandBy commandSelector: Selector) -> Bool {
         if commandSelector == #selector(insertNewline(_:)) {
             view.window?.makeFirstResponder(nil)
+            if !viewModel.isRunning {
+                viewModel.startStopAction()
+            }
         }
 
         return false
