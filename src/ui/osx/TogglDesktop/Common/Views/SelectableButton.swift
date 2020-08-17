@@ -103,7 +103,7 @@ class SelectableButton: NSButton {
         if isSelected {
             switch controlState {
             case .normal:
-                layer?.backgroundColor = selectedBackgroundColor.withAlphaComponent(0.1).cgColor
+                layer?.backgroundColor = selectedBackgroundColor.withAlphaComponent(0.15).cgColor
             case .hover:
                 layer?.backgroundColor = selectedBackgroundColor.withAlphaComponent(0.2).cgColor
             case .active:
