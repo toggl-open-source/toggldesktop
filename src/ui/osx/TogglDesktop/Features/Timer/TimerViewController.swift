@@ -184,6 +184,10 @@ class TimerViewController: NSViewController {
 
     @objc
     func focusDescriptionField() {
+        if viewModel.isRunning {
+            return
+        }
+
         guard let window = view.window, window.firstResponder != descriptionTextField.currentEditor() else {
             return
         }
@@ -294,10 +298,9 @@ class TimerViewController: NSViewController {
             }
             if !viewModel.isRunning {
                 viewModel.startStopAction()
-            } else {
-                view.window?.makeFirstResponder(nil)
-                descriptionTextField.resetTable()
             }
+            view.window?.makeFirstResponder(nil)
+            descriptionTextField.resetTable()
         }
 
         return isHandled
