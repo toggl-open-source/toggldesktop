@@ -16,7 +16,7 @@ namespace TogglDesktop.ViewModels
         {
             VersionText = versionText;
             _updateService = updateService;
-            SelectedChannel = _updateService.UpdateChannel.Value;
+            _updateService.UpdateChannel.DistinctUntilChanged().Subscribe(channel => SelectedChannel = channel);
             this.WhenValueChanged(x => x.SelectedChannel)
                 .Subscribe(_updateService.UpdateChannel.OnNext);
             var updateStatus = updateService.UpdateStatus;
