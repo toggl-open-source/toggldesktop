@@ -118,8 +118,12 @@ final class EditorViewController: NSViewController {
 
     override func viewWillDisappear() {
         super.viewWillDisappear()
-
         unregisterTimerNotification()
+    }
+
+    override func viewDidDisappear() {
+        timeEntry = nil
+        super.viewDidDisappear()
     }
 
     @IBAction func closeBtnOnTap(_ sender: Any) {
