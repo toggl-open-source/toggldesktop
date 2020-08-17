@@ -28,7 +28,10 @@ final class TagDataSource: AutoCompleteViewDataSource {
     weak var tagDelegate: TagDataSourceDelegate?
     private(set) var selectedTags: [Tag] = [] {
         didSet {
+            let selection = tableView.selectedRowIndexes
             tableView.reloadData()
+            // Re-select previous selection because reloadData causes lost the user selection
+            tableView.selectRowIndexes(selection, byExtendingSelection: false)
         }
     }
 
