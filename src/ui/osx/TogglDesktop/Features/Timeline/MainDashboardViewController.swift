@@ -119,6 +119,10 @@ extension MainDashboardViewController {
                                                selector: #selector(self.timelineDataNotification(_:)),
                                                name: NSNotification.Name(kDisplayTimeline),
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.windowDidBecomeMainNoti(_:)),
+                                               name: NSApplication.didBecomeActiveNotification,
+                                               object: nil)
     }
 
     fileprivate func initTabs() {
@@ -155,6 +159,20 @@ extension MainDashboardViewController {
         case .timeEntryList:
             break
         }
+    }
+
+    @objc private func windowDidBecomeMainNoti(_ noti: Notification) {
+        // Don't focus on Timer Bar if the Editor is presented
+        if timeEntryController.isEditorOpen {
+            return
+        }
+
+        // Only focus if the window is main
+        // Otherwise, shouldn't override the firstResponder
+        if let window = noti.object as? NSWindow, window === self.view.window {
+            return
+        }
+        timerController.focusTimer()
     }
 
     private func saveTabState() {
