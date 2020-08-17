@@ -174,7 +174,7 @@ namespace TogglDesktop
         private void initializeWindows()
         {
             var aboutWindowViewModel = new AboutWindowViewModel(
-                updateService: new UpdateService(Toggl.IsUpdateCheckDisabled(), Toggl.UpdatesPath),
+                updateService: Toggl.UpdateService,
                 versionText: $"Version {Program.Version()} {Utils.Bitness()}");
 
             this.childWindows = new Window[]{
@@ -258,7 +258,8 @@ namespace TogglDesktop
 
             this.loadPositions();
 
-            this.GetWindow<AboutWindow>().ViewModel.InitUpdateChannel(Toggl.UpdateChannel());
+            var updateChannelFromLocalDb = Toggl.UpdateChannel();
+            Toggl.UpdateService.UpdateChannel.OnNext(updateChannelFromLocalDb);
 
             this.errorBar.Hide();
             this.statusBar.Hide();

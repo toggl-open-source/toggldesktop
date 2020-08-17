@@ -35,7 +35,7 @@ public static class BugsnagService
             report.Event.Metadata.Add("Details", new Dictionary<string, string>
             {
                 {
-                    "Channel", Toggl.UpdateChannel()
+                    "Channel", Toggl.UpdateService.UpdateChannel.Value
                 },
                 {
                     "Bitness", Utils.Bitness()

@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -29,10 +31,13 @@ namespace TogglDesktop.Services
                 .Where(x => x.DownloadStatus == Toggl.DownloadStatus.Done)
                 .Subscribe(PrepareUpdate);
             UpdateStatus = _updateStatusSubject.AsObservable();
+            UpdateChannel = new BehaviorSubject<string>("stable");
+            UpdateChannel.DistinctUntilChanged().Skip(1).Subscribe(channel => Toggl.SetUpdateChannel(channel));
         }
 
         public bool IsUpdateCheckEnabled { get; }
         public IObservable<UpdateStatus> UpdateStatus { get; }
+        public BehaviorSubject<string> UpdateChannel { get; }
 
         public bool InstallPendingUpdate(bool withRestart = true)
         {
@@ -53,6 +58,56 @@ namespace TogglDesktop.Services
 
             return false;
         }
+
+        // ReSharper disable once UnusedMember.Global
+        public void InstallPendingUpdatesOnStartup()
+        {
+            if (InstallPendingUpdate())
+            {
+                // quit, updater will restart the app
+                Process.GetCurrentProcess().Kill();
+            }
+
+            DeleteOldUpdates();
+        }
+
+        private static void DeleteOldUpdates()
+        {
+            Directory.CreateDirectory(Toggl.UpdatesPath); // make sure the directory exists
+            var di = new DirectoryInfo(Toggl.UpdatesPath);
+            foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
+            {
+                try
+                {
+                    Utils.DeleteFile(file.FullName);
+                }
+                catch (Exception e)
+                {
+                    BugsnagService.NotifyBugsnag(e);
+                    Toggl.NewError($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
+                }
+            }
+            var updatesDir = new DirectoryInfo(
+                Path.Combine(
+                    Environment.GetFolderPath(
+                        Environment.SpecialFolder.LocalApplicationData), "Onova", "TogglDesktop"));
+            if (updatesDir.Exists)
+            {
+                foreach (var file in updatesDir.GetFiles("*.exe", SearchOption.TopDirectoryOnly))
+                {
+                    try
+                    {
+                        Utils.DeleteFile(file.FullName);
+                    }
+                    catch (Exception e)
+                    {
+                        BugsnagService.NotifyBugsnag(e);
+                        Toggl.NewError($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
+                    }
+                }
+            }
+        }
+
         public void Dispose()
         {
             _updateManager.Dispose();
