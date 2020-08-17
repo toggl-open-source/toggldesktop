@@ -169,6 +169,10 @@ class TimerViewController: NSViewController {
             case .unavailable:
                 self.billableButton.toolTip = Self.billableUnavailableTooltip
             }
+
+            // billable button is excluded from key view loop when disabled
+            // so need to update it when it is changed
+            self.setupKeyViewLoop()
         }
 
         viewModel.onTouchBarUpdateRunningItem = { entry in
@@ -349,8 +353,13 @@ class TimerViewController: NSViewController {
         durationTextField.nextKeyView = startButton
         startButton.nextKeyView = projectButton
         projectButton.nextKeyView = tagsButton
-        tagsButton.nextKeyView = billableButton
-        billableButton.nextKeyView = descriptionTextField
+
+        if billableButton.isEnabled {
+            tagsButton.nextKeyView = billableButton
+            billableButton.nextKeyView = descriptionTextField
+        } else {
+            tagsButton.nextKeyView = descriptionTextField
+        }
     }
 
     private func updateStartButton(forRunningState isRunning: Bool) {
