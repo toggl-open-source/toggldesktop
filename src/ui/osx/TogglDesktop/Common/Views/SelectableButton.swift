@@ -10,10 +10,29 @@ import Cocoa
 
 class SelectableButton: NSButton {
 
-    @IBInspectable var tintColor: NSColor = .togglLighterGrey
-    @IBInspectable var hoverTintColor: NSColor = .togglGreyText
-    @IBInspectable var activeTintColor: NSColor = .togglGreen
-    @IBInspectable var selectedBackgroundColor: NSColor = NSColor.togglGreen.withAlphaComponent(0.3)
+    @IBInspectable var tintColor: NSColor = .togglLighterGrey {
+        didSet {
+           updateAppearance()
+        }
+    }
+
+    @IBInspectable var hoverTintColor: NSColor = .togglGreyText {
+        didSet {
+           updateAppearance()
+        }
+    }
+
+    @IBInspectable var activeTintColor: NSColor = .togglGreen {
+        didSet {
+           updateAppearance()
+        }
+    }
+
+    @IBInspectable var selectedBackgroundColor: NSColor = NSColor.togglGreen.withAlphaComponent(0.3) {
+        didSet {
+           updateAppearance()
+        }
+    }
 
     @IBInspectable var cornerRadius: CGFloat = 0 {
         didSet {
@@ -71,7 +90,10 @@ class SelectableButton: NSButton {
                                                options: [.activeInActiveApp, .mouseEnteredAndExited, .assumeInside, .inVisibleRect],
                                                owner: self)
         addTrackingArea(trackingArea)
+    }
 
+    override func layout() {
+        super.layout()
         updateAppearance()
     }
 
