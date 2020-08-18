@@ -80,6 +80,7 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , update_check_disabled_(UPDATE_CHECK_DISABLED)
 , trigger_sync_(false)
 , trigger_push_(false)
+, trigger_full_sync_(false)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , reminder_(this, &Context::reminderActivity)
@@ -1080,6 +1081,7 @@ void Context::scheduleSync() {
 }
 
 void Context::FullSync() {
+    trigger_full_sync_ = true;
     user_->SetSince(0);
     Sync();
 }
@@ -2645,12 +2647,7 @@ error Context::Login(
             ResetEnableSSO();
         }
 
-        err = pullWorkspacePreferences();
-        if (err != noError) {
-            return displayError(err);
-        }
-
-        err = pullUserPreferences();
+        err = pullAllPreferencesData();
         if (err != noError) {
             return displayError(err);
         }
@@ -5131,6 +5128,14 @@ void Context::legacySyncerActivity() {
                 displayError(err);
             }
 
+            if (trigger_full_sync_) {
+                err = pullAllPreferencesData();
+                if (err != noError) {
+                    displayError(err);
+                }
+                trigger_full_sync_ = false;
+            }
+
             setOnline("Data pulled");
 
             err = pushChanges(&trigger_sync_);
@@ -5190,6 +5195,14 @@ void Context::batchedSyncerActivity() {
             error err = pullBatchedUserData();
             if (err != noError) {
                 displayError(err);
+            }
+
+            if (trigger_full_sync_) {
+                err = pullAllPreferencesData();
+                if (err != noError) {
+                    displayError(err);
+                }
+                trigger_full_sync_ = false;
             }
 
             setOnline("Data pulled");
@@ -5391,10 +5404,6 @@ error Context::pullAllUserData() {
             return err;
         }
 
-        pullWorkspacePreferences();
-
-        pullUserPreferences();
-
         stopwatch.stop();
         logger.debug("User with related data JSON fetched and parsed in ", stopwatch.elapsed() / 1000, " ms");
     } catch(const Poco::Exception& exc) {
@@ -5480,10 +5489,6 @@ error Context::pullBatchedUserData() {
         if (err != noError) {
             return err;
         }
-
-        pullWorkspacePreferences();
-
-        pullUserPreferences();
 
         stopwatch.stop();
         logger.debug("User with related data JSON fetched and parsed in ", stopwatch.elapsed() / 1000, " ms");
@@ -5930,6 +5935,12 @@ error Context::pushEntries(
         if (resp.err != noError) {
             // if we're able to solve the error
             if ((*it)->ResolveError(resp.body)) {
+                displayError(save(false));
+            }
+
+            // if time entry is locked pull the updated info about locked reports in the workspaces
+            if ((*it)->isLocked(resp.body)) {
+                pullWorkspacePreferences();
                 displayError(save(false));
             }
 
@@ -6424,6 +6435,25 @@ error Context::pullUserPreferences() {
     }
     catch (const std::string & ex) {
         return ex;
+    }
+    return noError;
+}
+
+error Context::pullAllPreferencesData() {
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            logger.warning("cannot pull preferences data when logged out");
+            return noError;
+        }
+    }
+    error err = pullWorkspacePreferences();
+    if (err != noError) {
+        return err;
+    }
+    err = pullUserPreferences();
+    if (err != noError) {
+        return err;
     }
     return noError;
 }

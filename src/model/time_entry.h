@@ -78,6 +78,7 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     void StopTracking();
 
     static bool isNotFound(const error &err);
+    static bool isLocked(const error &err);
 
     const std::string GroupHash() const;
 
