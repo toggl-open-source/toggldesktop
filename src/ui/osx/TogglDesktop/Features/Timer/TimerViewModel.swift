@@ -248,6 +248,7 @@ final class TimerViewModel: NSObject {
         var workspaceID = timeEntry.workspaceID
         if workspaceID <= 0 {
             workspaceID = DesktopLibraryBridge.shared().defaultWorkspaceID()
+            timeEntry.workspaceID = workspaceID
         }
         DesktopLibraryBridge.shared().fetchTags(forWorkspaceID: workspaceID)
     }
@@ -256,6 +257,7 @@ final class TimerViewModel: NSObject {
         var workspaceID = timeEntry.workspaceID
         if workspaceID <= 0 {
             workspaceID = DesktopLibraryBridge.shared().defaultWorkspaceID()
+            timeEntry.workspaceID = workspaceID
         }
         let canSeeBillable = DesktopLibraryBridge.shared().canSeeBillable(forWorkspaceID: workspaceID)
 
