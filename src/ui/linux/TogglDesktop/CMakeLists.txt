@@ -42,6 +42,7 @@ set(BINARY_SOURCE_FILES
     timeentryview.cpp
     timerwidget.cpp
     toggl.cpp
+    updatenotification.cpp
 
     # Resources have to be listed
     Resources.qrc
@@ -60,6 +61,7 @@ set(BINARY_SOURCE_FILES
     timeentryeditorwidget.ui
     timeentrylistwidget.ui
     timerwidget.ui
+    updatenotification.ui
 
 )
 

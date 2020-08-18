@@ -24,6 +24,7 @@
 #include "./timeentrylistwidget.h"
 #include "./timeentryeditorwidget.h"
 #include "./idlenotificationwidget.h"
+#include "updatenotification.h"
 
 namespace Ui {
 class MainWindowController;
@@ -116,6 +117,7 @@ class MainWindowController : public QMainWindow {
     PreferencesDialog *preferencesDialog;
     AboutDialog *aboutDialog;
     FeedbackDialog *feedbackDialog;
+    UpdateNotification *updateNotification;
 
     QIcon icon;
     QIcon iconDisabled;

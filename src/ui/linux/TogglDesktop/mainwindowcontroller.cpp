@@ -40,6 +40,7 @@ MainWindowController::MainWindowController(
   preferencesDialog(new PreferencesDialog(this)),
   aboutDialog(new AboutDialog(this)),
   feedbackDialog(new FeedbackDialog(this)),
+  updateNotification(new UpdateNotification(this)),
   icon(":/icons/1024x1024/toggldesktop.png"),
   iconDisabled(":/icons/1024x1024/toggldesktop_gray.png"),
   trayIcon(nullptr),

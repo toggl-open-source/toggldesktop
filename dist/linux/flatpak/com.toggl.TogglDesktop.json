@@ -1,7 +1,7 @@
 {
     "id": "com.toggl.TogglDesktop",
     "runtime": "org.kde.Platform",
-    "runtime-version": "5.12",
+    "runtime-version": "5.14",
     "sdk": "org.kde.Sdk",
     "rename-icon": "toggldesktop",
     "command": "TogglDesktop.sh",
@@ -13,7 +13,9 @@
         "--share=network",
         "--share=ipc",
         "--talk-name=org.kde.StatusNotifierWatcher",
-        "--talk-name=org.freedesktop.Notifications"
+        "--talk-name=org.freedesktop.Notifications",
+        "--talk-name=org.freedesktop.portal.Flatpak",
+        "--talk-name=org.freedesktop.portal.Flatpak.UpdateMonitor"
     ],
     "modules": [
         {
@@ -31,16 +33,13 @@
             "buildsystem": "cmake-ninja",
             "config-opts": [
                 "-DCMAKE_BUILD_TYPE=Release",
-                "-DTOGGL_VERSION=7.4.528",
-                "-DTOGGL_VERSION_RELEASE_DATE=2019-08-22",
                 "-DTOGGL_PRODUCTION_BUILD=ON",
                 "-DTOGGL_ALLOW_UPDATE_CHECK=ON"
             ],
             "sources": [
                 {
-                    "type": "git",
-                    "url": "http://github.com/toggl/toggldesktop",
-                    "tag": "v7.4.528"
+                    "type": "dir",
+                    "path": "../../.."
                 }
             ]
         }
