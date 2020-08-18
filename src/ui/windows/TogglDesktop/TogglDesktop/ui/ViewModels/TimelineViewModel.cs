@@ -24,9 +24,9 @@ namespace TogglDesktop.ViewModels
             Toggl.OnTimeline += HandleDisplayTimeline;
         }
 
-        private void HandleDisplayTimeline(bool open, string date, List<Toggl.TogglTimelineChunkView> first, List<Toggl.TogglTimeEntryView> firstTimeEntry, long startDay, long endDay)
+        private void HandleDisplayTimeline(bool open, string date, List<Toggl.TogglTimelineChunkView> first, List<Toggl.TogglTimeEntryView> firstTimeEntry, ulong startDay, ulong endDay)
         {
-            SelectedDate = Toggl.DateTimeFromUnix((ulong)startDay);
+            SelectedDate = Toggl.DateTimeFromUnix(startDay);
         }
 
         [Reactive] 

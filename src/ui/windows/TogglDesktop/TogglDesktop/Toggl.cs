@@ -175,8 +175,8 @@ public static partial class Toggl
         bool open, string date,
         List<TogglTimelineChunkView> first,
         List<TogglTimeEntryView> firstTimeEntry,
-        long startDay,
-        long endDay);
+        ulong startDay,
+        ulong endDay);
 
     #endregion
 
