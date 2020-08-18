@@ -71,7 +71,9 @@
                     Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                     Background="{DynamicResource Toggl.CardBackground}"
                     VerticalContentAlignment="Stretch"
-                    Style="{StaticResource TimelineDatePickerStyle}">
+                    Style="{StaticResource TimelineDatePickerStyle}"
+                    togglDesktop:DatePickerHelper.PreviousDayCommand="{Binding SelectPreviousDay}"
+                    togglDesktop:DatePickerHelper.NextDayCommand="{Binding SelectNextDay}">
             <b:Interaction.Behaviors>
                 <behaviors:DatePickerKeyboardHandlingBehavior />
             </b:Interaction.Behaviors>
