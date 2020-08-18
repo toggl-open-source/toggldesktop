@@ -36,8 +36,8 @@ struct TimelineEvent {
 /// It might consist of many sub-events (TimelineEvent)
 struct TimelineActivity {
 
-    private static let LightestBlueColor = NSColor(red: 0.020, green: 0.667, blue: 0.961, alpha: 1.0)
-    private static let DarkestBlueColor = NSColor(red: 0.702, green: 0.898, blue: 0.988, alpha: 1.0)
+    private static let LightestBlueColor: NSColor = NSColor(calibratedRed: 223 / 255.0, green: 104 / 255.0, blue: 208 / 255.0, alpha: 0.2)
+    private static let DarkestBlueColor: NSColor = .togglGreen
 
     // MARK: Variables
 

@@ -48,8 +48,7 @@ extern void *ctx;
 	self.window.titleVisibility = NSWindowTitleHidden;
 	self.window.titlebarAppearsTransparent = YES;
 	self.window.styleMask |= NSFullSizeContentViewWindowMask;
-
-	[self.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]]];
+	self.window.backgroundColor = NSColor.collectionViewBackgroundColor;
 
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
 	NSString *version = [infoDict objectForKey:@"CFBundleShortVersionString"];

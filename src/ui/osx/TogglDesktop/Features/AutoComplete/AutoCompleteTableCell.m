@@ -46,7 +46,7 @@
 
 - (void)setFocused:(BOOL)focus
 {
-	NSColor *color = [NSColor textBackgroundColor];
+	NSColor *color = [NSColor clearColor];
 
 	if (focus == YES)
 	{

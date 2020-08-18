@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Group.png",
+      "filename" : "Start 2.png",
       "idiom" : "mac",
       "scale" : "1x"
     },
@@ -17,7 +17,7 @@
       "scale" : "1x"
     },
     {
-      "filename" : "Group@2x.png",
+      "filename" : "Start hover.png",
       "idiom" : "mac",
       "scale" : "2x"
     },
@@ -28,7 +28,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Start@2x-1.png",
+      "filename" : "Start@2x.png",
       "idiom" : "mac",
       "scale" : "2x"
     }

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="TimelineTimeEntryHoverViewController" customModule="TogglDesktop" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="TimelineTimeEntryHoverViewController" customModule="Toggl_Track" customModuleProvider="target">
             <connections>
                 <outlet property="billableImageView" destination="MTc-gd-Nd5" id="SGa-me-1YJ"/>
                 <outlet property="clientLbl" destination="NSd-ph-aKM" id="REd-Am-d9W"/>
@@ -30,33 +31,33 @@
                     <rect key="frame" x="0.0" y="0.0" width="180" height="130"/>
                     <subviews>
                         <textField horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FXj-H8-jgM">
-                            <rect key="frame" x="8" y="104" width="87" height="16"/>
+                            <rect key="frame" x="8" y="105" width="87" height="15"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" title="08:20 - 08:45" id="oPm-56-SlF">
                                 <font key="font" metaFont="systemMedium" size="12"/>
-                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="textColor" name="black-text-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TBC-6I-6yZ">
-                            <rect key="frame" x="148" y="104" width="24" height="16"/>
+                            <rect key="frame" x="148" y="105" width="24" height="15"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="12h" id="7OT-AC-5Kb">
-                                <font key="font" metaFont="cellTitle"/>
-                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <font key="font" metaFont="label" size="12"/>
+                                <color key="textColor" name="black-text-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7hE-S1-toX">
-                            <rect key="frame" x="8" y="78" width="77" height="16"/>
+                            <rect key="frame" x="8" y="80" width="77" height="15"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" title="Copy Review" id="bZN-uC-UKm">
-                                <font key="font" metaFont="cellTitle"/>
-                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <font key="font" metaFont="label" size="12"/>
+                                <color key="textColor" name="black-text-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
                         <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="7" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="far-SV-8qd">
-                            <rect key="frame" x="10" y="56" width="100" height="16"/>
+                            <rect key="frame" x="10" y="59" width="100" height="15"/>
                             <subviews>
-                                <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="EXI-Wu-mqe" customClass="DotImageView" customModule="TogglDesktop" customModuleProvider="target">
+                                <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="EXI-Wu-mqe" customClass="DotImageView" customModule="Toggl_Track" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="4" width="8" height="8"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="8" id="8R6-Os-NTW"/>
@@ -65,9 +66,9 @@
                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="bKn-7y-stQ"/>
                                 </imageView>
                                 <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="son-9U-IIp" customClass="ProjectTextField">
-                                    <rect key="frame" x="13" y="0.0" width="89" height="16"/>
+                                    <rect key="frame" x="13" y="0.0" width="89" height="15"/>
                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL " placeholderString="+ Add project" id="jGe-In-bFI">
-                                        <font key="font" metaFont="cellTitle"/>
+                                        <font key="font" metaFont="label" size="12"/>
                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
@@ -83,13 +84,13 @@
                             </customSpacing>
                         </stackView>
                         <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n9f-oV-dff">
-                            <rect key="frame" x="10" y="7" width="68" height="41"/>
+                            <rect key="frame" x="10" y="11" width="68" height="40"/>
                             <subviews>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NSd-ph-aKM">
-                                    <rect key="frame" x="-2" y="25" width="72" height="16"/>
+                                    <rect key="frame" x="-2" y="25" width="72" height="15"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" title="Client name" id="K7c-MB-Q8i">
-                                        <font key="font" metaFont="cellTitle"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <font key="font" metaFont="label" size="12"/>
+                                        <color key="textColor" name="black-text-color"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
@@ -161,8 +162,11 @@
         </customView>
     </objects>
     <resources>
-        <image name="time-entry-billable" width="17" height="17"/>
+        <image name="time-entry-billable" width="16" height="16"/>
         <image name="time-entry-dot" width="8" height="8"/>
-        <image name="time-entry-tag" width="17" height="17"/>
+        <image name="time-entry-tag" width="16" height="16"/>
+        <namedColor name="black-text-color">
+            <color red="0.17254901960784313" green="0.074509803921568626" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

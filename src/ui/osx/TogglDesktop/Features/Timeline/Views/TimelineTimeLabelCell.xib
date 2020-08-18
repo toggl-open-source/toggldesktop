@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="TimelineTimeLabelCell" customModule="TogglDesktop" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="TimelineTimeLabelCell" customModule="Toggl_Track" customModuleProvider="target">
             <connections>
                 <outlet property="titleLbl" destination="8e0-5i-0FT" id="Ccr-C6-CPD"/>
             </connections>
@@ -19,10 +19,10 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8e0-5i-0FT">
-                    <rect key="frame" x="3" y="0.0" width="48" height="32"/>
+                    <rect key="frame" x="3" y="2" width="48" height="30"/>
                     <textFieldCell key="cell" selectable="YES" alignment="center" title="08:00 AM" id="2RG-t3-gBA">
-                        <font key="font" metaFont="cellTitle"/>
-                        <color key="textColor" name="timeline-time-label-color"/>
+                        <font key="font" metaFont="label" size="12"/>
+                        <color key="textColor" name="grey-text-color"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
@@ -35,7 +35,7 @@
             </constraints>
             <point key="canvasLocation" x="133" y="103"/>
         </customView>
-        <collectionViewItem identifier="TimelineTimeLabelCell" id="gRv-IT-5bS" customClass="TimelineTimeLabelCell" customModule="TogglDesktop" customModuleProvider="target">
+        <collectionViewItem identifier="TimelineTimeLabelCell" id="gRv-IT-5bS" customClass="TimelineTimeLabelCell" customModule="Toggl_Track" customModuleProvider="target">
             <connections>
                 <outlet property="titleLbl" destination="8e0-5i-0FT" id="e4Z-Qr-EvX"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="OrH-pg-LOo"/>
@@ -43,8 +43,8 @@
         </collectionViewItem>
     </objects>
     <resources>
-        <namedColor name="timeline-time-label-color">
-            <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="grey-text-color">
+            <color red="0.33725490196078434" green="0.2627450980392157" blue="0.37647058823529411" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

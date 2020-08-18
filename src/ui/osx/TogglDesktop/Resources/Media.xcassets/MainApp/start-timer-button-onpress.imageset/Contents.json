@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Group 2.png",
+      "filename" : "Start pressed 2.png",
       "idiom" : "mac",
       "scale" : "1x"
     },
@@ -12,12 +12,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Start-1.png",
+      "filename" : "Start.png",
       "idiom" : "mac",
       "scale" : "1x"
     },
     {
-      "filename" : "Group 2@2x.png",
+      "filename" : "Start pressed.png",
       "idiom" : "mac",
       "scale" : "2x"
     },
@@ -28,7 +28,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Start@2x-1.png",
+      "filename" : "Start@2x.png",
       "idiom" : "mac",
       "scale" : "2x"
     }

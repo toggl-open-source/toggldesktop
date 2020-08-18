@@ -34,7 +34,7 @@ final class TimerContainerBox: NSBox, TextFieldResponderDelegate {
         }
 
         var borderWidth: CGFloat {
-            return 0.5
+            return 1
         }
     }
 
