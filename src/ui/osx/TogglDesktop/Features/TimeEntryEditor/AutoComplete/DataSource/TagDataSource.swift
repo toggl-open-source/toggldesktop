@@ -25,8 +25,15 @@ final class TagDataSource: AutoCompleteViewDataSource {
 
     // MARK: Variables
 
-    weak var tagDelegte: TagDataSourceDelegate?
-    private(set) var selectedTags: [Tag] = []
+    weak var tagDelegate: TagDataSourceDelegate?
+    private(set) var selectedTags: [Tag] = [] {
+        didSet {
+            let selection = tableView.selectedRowIndexes
+            tableView.reloadData()
+            // Re-select previous selection because reloadData causes lost the user selection
+            tableView.selectRowIndexes(selection, byExtendingSelection: false)
+        }
+    }
 
     // MARK: Override
 
@@ -39,8 +46,18 @@ final class TagDataSource: AutoCompleteViewDataSource {
 
     override func setup(with textField: AutoCompleteTextField) {
         super.setup(with: textField)
+        commonSetup()
+    }
+
+    override func setup(with autoCompleteView: AutoCompleteView) {
+        super.setup(with: autoCompleteView)
+        commonSetup()
+    }
+
+    private func commonSetup() {
         tableView.allowsEmptySelection = true
-        autoCompleteView.setCreateButtonSectionHidden(true)
+        autoCompleteView?.setCreateButtonSectionHidden(true)
+        autoCompleteView?.defaultTextField.placeholderString = "Find tags"
     }
 
     override func registerCustomeCells() {
@@ -79,10 +96,10 @@ final class TagDataSource: AutoCompleteViewDataSource {
         }
 
         if shouldShowCreateBtn {
-            autoCompleteView.setCreateButtonSectionHidden(false)
-            autoCompleteView.updateTitleForCreateButton(with: "Create new tag \"\(text)\"")
+            autoCompleteView?.setCreateButtonSectionHidden(false)
+            autoCompleteView?.updateTitleForCreateButton(with: "Create new tag \"\(text)\"")
         } else {
-            autoCompleteView.setCreateButtonSectionHidden(true)
+            autoCompleteView?.setCreateButtonSectionHidden(true)
         }
     }
 
@@ -131,11 +148,11 @@ extension TagDataSource: TagCellViewDelegate {
         if isSelected {
             guard !selectedTags.contains(where: { $0.name == tag.name }) else { return }
             selectedTags.append(tag)
-            tagDelegte?.tagSelectionChanged(with: selectedTags)
+            tagDelegate?.tagSelectionChanged(with: selectedTags)
         } else {
             guard let index = selectedTags.firstIndex(where: { $0.name == tag.name }) else { return }
             selectedTags.remove(at: index)
-            tagDelegte?.tagSelectionChanged(with: selectedTags)
+            tagDelegate?.tagSelectionChanged(with: selectedTags)
         }
     }
 }

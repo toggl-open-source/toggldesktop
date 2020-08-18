@@ -90,7 +90,11 @@
 	if (data->Tags)
 	{
 		NSString *tagList = [NSString stringWithUTF8String:data->Tags];
-		self.tags = [tagList componentsSeparatedByString:@"\t"];
+        if (tagList.length > 0) {
+            self.tags = [tagList componentsSeparatedByString:@"\t"];
+        } else {
+            self.tags = nil;
+        }
 	}
 	else
 	{

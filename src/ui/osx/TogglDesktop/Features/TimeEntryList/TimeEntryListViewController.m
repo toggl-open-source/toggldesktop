@@ -13,7 +13,6 @@
 #import "ConvertHexColor.h"
 #import "TogglDesktop-Swift.h"
 #import "TimeEntryCollectionView.h"
-#import "BetterFocusAutoCompleteInput.h"
 
 static void *XXContext = &XXContext;
 static NSString *kFrameKey = @"frame";

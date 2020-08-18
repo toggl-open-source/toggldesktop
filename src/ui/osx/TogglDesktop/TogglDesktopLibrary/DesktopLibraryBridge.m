@@ -383,7 +383,7 @@ void *ctx;
     return nil;
 }
 
-- (NSString *) formatDurationTimestampt:(NSTimeInterval) duration
+- (NSString *)formatDurationTimestampt:(NSTimeInterval)duration
 {
     char *durationStr = toggl_format_duration_time(ctx, duration);
     if (durationStr) {
@@ -392,6 +392,10 @@ void *ctx;
         return duration;
     }
     return nil;
+}
+
+- (int64_t)secondsFromDurationString:(NSString *)durationString {
+    return toggl_parse_duration_string_into_seconds([durationString UTF8String]);
 }
 
 - (NSColor *) getAdaptiveColorForShapeFromColor:(NSColor *) color {
@@ -471,6 +475,20 @@ void *ctx;
 - (void)resetEnableSSO
 {
     toggl_reset_enable_SSO(ctx);
+}
+
+#pragma mark - General
+
+- (uint64_t)defaultWorkspaceID {
+    return toggl_get_default_or_first_workspace_id(ctx);
+}
+
+- (void)fetchTagsForWorkspaceID:(uint64_t)workspaceID {
+    toggl_fetch_tags(ctx, workspaceID);
+}
+
+- (BOOL)canSeeBillableForWorkspaceID:(uint64_t)workspaceID {
+    return toggl_can_see_billable(ctx, workspaceID);
 }
 
 @end

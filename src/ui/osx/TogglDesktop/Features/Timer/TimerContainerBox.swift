@@ -12,33 +12,69 @@ final class TimerContainerBox: NSBox, TextFieldResponderDelegate {
 
     enum State {
         case inactive
+        case hover
         case active
-    }
 
-    // MARK: Variables
-    private var state = State.inactive
+        var fillColor: NSColor {
+            switch self {
+            case .active, .inactive:
+                return .clear
+            case .hover:
+                return .togglTextFieldHoverBackground
+            }
+        }
 
-    private var activeBorderColor: NSColor {
-        return NSColor.clear
-    }
+        var borderColor: NSColor {
+            switch self {
+            case .inactive, .hover:
+                return .clear
+            case .active:
+                return .togglLighterGrey
+            }
+        }
 
-    private var inactiveBorderColor: NSColor {
-        return NSColor.clear
-    }
-
-    private var activeFillColor: NSColor {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("upload-background-color"))!
-        } else {
-            return NSColor.white
+        var borderWidth: CGFloat {
+            return 0.5
         }
     }
 
-    private var inactiveFillColor: NSColor {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("preference-box-background-color"))!
-        } else {
-            return NSColor(deviceRed: 177.0/255.0, green: 177.0/255.0, blue: 177.0/255.0, alpha: 0.07)
+    private var state = State.inactive
+
+    // MARK: Init
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        initCommon()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        initCommon()
+    }
+
+    private func initCommon() {
+        let trackingArea = NSTrackingArea(rect: NSRect.zero,
+                                               options: [.activeInActiveApp, .mouseEnteredAndExited, .assumeInside, .inVisibleRect],
+                                               owner: self)
+        addTrackingArea(trackingArea)
+        renderLayout(for: state)
+    }
+
+    // MARK: Mouse Events
+
+    override func mouseEntered(with event: NSEvent) {
+        super.mouseEntered(with: event)
+
+        if state == .inactive {
+            renderLayout(for: .hover)
+        }
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        super.mouseExited(with: event)
+
+        if state == .hover {
+            renderLayout(for: .inactive)
         }
     }
 
@@ -54,14 +90,8 @@ final class TimerContainerBox: NSBox, TextFieldResponderDelegate {
 
     private func renderLayout(for state: State) {
         self.state = state
-
-        switch state {
-        case .active:
-            borderColor = activeBorderColor
-            fillColor = activeFillColor
-        case .inactive:
-            borderColor = inactiveBorderColor
-            fillColor = inactiveFillColor
-        }
+        borderColor = state.borderColor
+        borderWidth = state.borderWidth
+        fillColor = state.fillColor
     }
 }

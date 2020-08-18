@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -31,6 +31,30 @@
                                                 <view key="contentView" id="beQ-V1-NYT">
                                                     <rect key="frame" x="1" y="1" width="228" height="23"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <subviews>
+                                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ocO-7W-Vai" userLabel="Default text field" customClass="ResponderTextField" customModule="TogglDesktop" customModuleProvider="target">
+                                                            <rect key="frame" x="-2" y="0.0" width="232" height="23"/>
+                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" alignment="left" usesSingleLineMode="YES" id="gVw-B2-ZLF" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                                                <font key="font" metaFont="menu" size="14"/>
+                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                                        <integer key="value" value="8"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
+                                                            </textFieldCell>
+                                                            <connections>
+                                                                <outlet property="delegate" destination="c22-O7-iKe" id="SwI-uJ-Ya1"/>
+                                                            </connections>
+                                                        </textField>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="ocO-7W-Vai" secondAttribute="trailing" id="F7L-hi-bZ7"/>
+                                                        <constraint firstItem="ocO-7W-Vai" firstAttribute="top" secondItem="beQ-V1-NYT" secondAttribute="top" id="GCi-2s-HZE"/>
+                                                        <constraint firstAttribute="bottom" secondItem="ocO-7W-Vai" secondAttribute="bottom" id="Mcp-3i-RPs"/>
+                                                        <constraint firstItem="ocO-7W-Vai" firstAttribute="leading" secondItem="beQ-V1-NYT" secondAttribute="leading" id="riq-W0-94p"/>
+                                                    </constraints>
                                                 </view>
                                                 <color key="borderColor" name="upload-border-color"/>
                                                 <color key="fillColor" name="editor-background-color"/>
@@ -60,7 +84,6 @@
                                                     <tableColumns>
                                                         <tableColumn width="237" minWidth="40" maxWidth="1000" id="oJU-jg-bNN">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
-                                                                <font key="font" metaFont="message" size="11"/>
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                             </tableHeaderCell>
@@ -166,6 +189,7 @@
             <connections>
                 <outlet property="createNewItemBtn" destination="sT2-gq-IUf" id="tMw-df-FD7"/>
                 <outlet property="createNewItemContainerView" destination="gfh-56-r1Z" id="tRe-UZ-WTK"/>
+                <outlet property="defaultTextField" destination="ocO-7W-Vai" id="a0f-a9-aGl"/>
                 <outlet property="horizontalLine" destination="qiv-1e-vax" id="5iE-dj-kav"/>
                 <outlet property="placeholderBox" destination="p5b-iT-O8A" id="xwL-fP-30A"/>
                 <outlet property="placeholderBoxContainerView" destination="beQ-V1-NYT" id="AIi-01-oac"/>

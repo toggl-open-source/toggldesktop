@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)createClientWithWorkspaceID:(uint64_t)workspaceID
 							   clientName:(NSString *)clientName;
 
-- (NSString * __nullable)createProjectWithTimeEntryGUID:(NSString *)timeEntryGUID
+- (NSString * __nullable)createProjectWithTimeEntryGUID:(nullable NSString *)timeEntryGUID
 								 workspaceID:(uint64_t)workspaceID
 									clientID:(uint64_t)clientID
 								  clientGUID:(NSString *_Nullable)clientGUID
@@ -112,12 +112,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Formatter
 
-- (NSString * _Nullable) formatDurationTimestampt:(NSTimeInterval) duration;
+- (NSString * _Nullable)formatDurationTimestampt:(NSTimeInterval)duration;
+- (int64_t)secondsFromDurationString:(NSString *)durationString;
 
 #pragma mark - Colors
 
-- (NSColor *) getAdaptiveColorForShapeFromColor:(NSColor *) color;
-- (NSColor *) getAdaptiveColorForTextFromColor:(NSColor *) color;
+- (NSColor *)getAdaptiveColorForShapeFromColor:(NSColor *)color;
+- (NSColor *)getAdaptiveColorForTextFromColor:(NSColor *)color;
 
 #pragma mark - Onboarding Actions
 
@@ -128,14 +129,20 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Auth
 
 - (void)loginWithEmail:(NSString *)email password:(NSString *)password;
-- (void)getSSOIdentityProviderWithEmail:(NSString *) email;
-- (void)loginSSOWithAPIToken:(NSString *) apiToken;
-- (void)setNeedEnableSSOWithCode:(NSString *) code;
+- (void)getSSOIdentityProviderWithEmail:(NSString *)email;
+- (void)loginSSOWithAPIToken:(NSString *)apiToken;
+- (void)setNeedEnableSSOWithCode:(NSString *)code;
 - (void)resetEnableSSO;
 
 #pragma mark - Tracking
 
--(void) trackTimelineMenuContextType:(TimelineMenuContextType) type;
+- (void)trackTimelineMenuContextType:(TimelineMenuContextType)type;
+
+#pragma mark - General
+
+- (uint64_t)defaultWorkspaceID;
+- (void)fetchTagsForWorkspaceID:(uint64_t)workspaceID;
+- (BOOL)canSeeBillableForWorkspaceID:(uint64_t)workspaceID;
 
 @end
 

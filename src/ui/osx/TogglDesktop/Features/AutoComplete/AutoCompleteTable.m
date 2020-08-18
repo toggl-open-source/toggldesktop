@@ -125,7 +125,7 @@
 
 - (AutoCompleteTableCell *)getSelectedCell:(NSInteger)row
 {
-	if (row < 0)
+    if (row < 0 || row > [self numberOfRows] - 1)
 	{
 		return nil;
 	}

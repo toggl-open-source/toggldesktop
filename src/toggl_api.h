@@ -790,6 +790,14 @@ extern "C" {
         const char_t *guid,
         const int64_t at);
 
+    TOGGL_EXPORT bool_t toggl_can_see_billable(
+        void *context,
+        const int64_t workspaceID);
+
+    TOGGL_EXPORT void toggl_fetch_tags(
+        void *context,
+        const int64_t workspaceID);
+
     TOGGL_EXPORT bool_t toggl_set_settings_remind_days(
         void *context,
         const bool_t remind_mon,
@@ -1058,6 +1066,9 @@ extern "C" {
         void *context);
 
     TOGGL_EXPORT uint64_t toggl_get_default_task_id(
+        void *context);
+
+    TOGGL_EXPORT uint64_t toggl_get_default_or_first_workspace_id(
         void *context);
 
     TOGGL_EXPORT bool_t toggl_set_update_channel(

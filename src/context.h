@@ -451,6 +451,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     TimeEntry *RunningTimeEntry();
 
+    bool CanSeeBillable(const Poco::UInt64 workspaceID) const;
+
+    void FetchTags(const Poco::UInt64 workspaceID);
+
     error ToggleTimelineRecording(
         const bool record_timeline);
 
@@ -464,6 +468,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error DefaultProjectName(std::string *name);
     error DefaultPID(Poco::UInt64 *result);
     error DefaultTID(Poco::UInt64 *result);
+    error DefaultOrFirstWID(Poco::UInt64 *result);
 
     void SearchHelpArticles(
         const std::string &keywords);

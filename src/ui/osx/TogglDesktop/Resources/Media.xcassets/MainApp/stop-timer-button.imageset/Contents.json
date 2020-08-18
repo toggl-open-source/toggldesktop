@@ -1,18 +1,40 @@
 {
   "images" : [
     {
+      "filename" : "Stop-light.png",
       "idiom" : "mac",
-      "filename" : "stop.png",
       "scale" : "1x"
     },
     {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Stop-1.png",
       "idiom" : "mac",
-      "filename" : "stop@2x.png",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "Stop-light@2x.png",
+      "idiom" : "mac",
+      "scale" : "2x"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Stop@2x-1.png",
+      "idiom" : "mac",
       "scale" : "2x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }

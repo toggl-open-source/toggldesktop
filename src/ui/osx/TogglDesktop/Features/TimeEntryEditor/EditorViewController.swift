@@ -19,7 +19,7 @@ final class EditorViewController: NSViewController {
     private struct Constans {
 
         static let TokenViewSpacing: CGFloat = 5.0
-        static let TimerNotification = NSNotification.Name("TimerForRunningTimeEntryOnTicket")
+        static let TimerNotification = TimerViewModel.timerOnTickNotification
     }
 
     // MARK: OUTLET
@@ -118,8 +118,12 @@ final class EditorViewController: NSViewController {
 
     override func viewWillDisappear() {
         super.viewWillDisappear()
-
         unregisterTimerNotification()
+    }
+
+    override func viewDidDisappear() {
+        timeEntry = nil
+        super.viewDidDisappear()
     }
 
     @IBAction func closeBtnOnTap(_ sender: Any) {
@@ -221,6 +225,7 @@ extension EditorViewController {
         view.layer?.masksToBounds = false
         closeBtn.cursor = .pointingHand
 
+        tagTextField.autoCompleteDelegate = self
         descriptionTextField.autoCompleteDelegate = self
         projectTextField.autoCompleteDelegate = self
         projectTextField.dotImageView = projectDotImageView
@@ -254,12 +259,12 @@ extension EditorViewController {
     fileprivate func initDatasource() {
         projectDatasource.delegate = self
         projectDatasource.setup(with: projectTextField)
+
         descriptionDatasource.delegate = self
         descriptionDatasource.setup(with: descriptionTextField)
 
-        tagTextField.autoCompleteDelegate = self
         tagDatasource.delegate = self
-        tagDatasource.tagDelegte = self
+        tagDatasource.tagDelegate = self
         tagDatasource.setup(with: tagTextField)
     }
 

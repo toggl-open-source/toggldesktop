@@ -43,6 +43,7 @@ extension Notification.Name {
 
     func addNewTag(_ tag: Tag) {
         newTags.append(tag)
+        tags.append(tag)
     }
 }
 
@@ -55,7 +56,7 @@ extension TagStorage {
 
             // We have to add new tags manually
             // It's a bug in Library
-            // There is no new tags, even it synced properly, until we open the TimeEntryEditor again
+            // There is no new tags, even if synced properly, until we open the TimeEntryEditor again
             strongSelf.newTags.forEach { tag in
                 if !tags.contains(where: { $0.name == tag.name }) {
                     tags.append(tag)

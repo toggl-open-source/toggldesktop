@@ -488,11 +488,11 @@ void *ctx;
 								 [duration UTF8String],
 								 new_time_entry.TaskID,
 								 new_time_entry.ProjectID,
-								 0,
+                                 [new_time_entry.ProjectGUID UTF8String],
 								 tag_list,
 								 false,
-								 0,
-								 0);
+                                 [new_time_entry.started timeIntervalSince1970],
+                                 [new_time_entry.ended timeIntervalSince1970]);
 
 		if (new_time_entry.billable)
 		{

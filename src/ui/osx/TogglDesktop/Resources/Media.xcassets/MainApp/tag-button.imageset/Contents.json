@@ -1,0 +1,26 @@
+{
+  "images" : [
+    {
+      "filename" : "_base 24px for 20px icons (used for icons from web library).png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "_base 24px for 20px icons (used for icons from web library)@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "_base 24px for 20px icons (used for icons from web library)@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "template"
+  }
+}

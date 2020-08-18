@@ -9,12 +9,14 @@
 #import "NSHoverButton.h"
 #import "ConvertHexColor.h"
 
+@interface NSHoverButton ()
+@property (nonatomic, strong) NSImage *originalImage;
+@end
+
 @implementation NSHoverButton
 
-// http://stackoverflow.com/questions/7889419/cocoa-button-rollovers-with-mouseentered-and-mouseexited
 - (void)awakeFromNib
 {
-	self.alpha = 0.5;
 	NSTrackingAreaOptions focusTrackingAreaOptions = NSTrackingActiveInActiveApp;
 
 	focusTrackingAreaOptions |= NSTrackingMouseEnteredAndExited;
@@ -28,17 +30,48 @@
 
 - (void)mouseEntered:(NSEvent *)theEvent
 {
-	[self.animator setAlphaValue:self.alpha];
+    self.originalImage = self.image;
+    [self.animator setImage:self.hoverImage];
 }
 
 - (void)mouseExited:(NSEvent *)theEvent
 {
-	[self.animator setAlphaValue:1];
+    if (self.originalImage) {
+        [self.animator setImage:self.originalImage];
+    }
 }
 
-- (void)setHoverAlpha:(CGFloat)alphaValue
-{
-	self.alpha = alphaValue;
+- (void)mouseDown:(NSEvent *)event {
+    [self setState:NSControlStateValueOn];
+    // not calling `super` so we can receive `mouseUp` event
+}
+
+- (void)mouseUp:(NSEvent *)event {
+    [super mouseUp:event];
+
+    if ([self isEnabled] != YES)
+    {
+        return;
+    }
+
+    NSPoint mousePoint = [self convertPoint:event.locationInWindow fromView:nil];
+    BOOL isUpInside = CGRectContainsPoint(self.bounds, mousePoint);
+    if (isUpInside)
+    {
+        [self sendAction:self.action to:self.target];
+    }
+    [self setState:NSControlStateValueOff];
+}
+
+- (void)setState:(NSControlStateValue)state {
+    [super setState:state];
+    if (state == NSControlStateValueOff) {
+        self.originalImage = nil;
+    }
+}
+
+- (BOOL)canBecomeKeyView {
+    return YES;
 }
 
 @end

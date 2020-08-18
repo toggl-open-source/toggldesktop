@@ -285,7 +285,7 @@ static NSString *const upArrow = @"\u25B2";
 			return 0;
 
 		case AutoCompleteDisplayModeFullscreen :
-			return 18;
+			return 10;
 	}
 }
 

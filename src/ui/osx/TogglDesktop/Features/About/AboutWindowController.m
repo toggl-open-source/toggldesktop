@@ -271,14 +271,7 @@ extern void *ctx;
 			self.restartButton.enabled = YES;
 			self.restartButton.hidden = NO;
 			self.restartButton.title = @"Restart";
-			if (@available(macOS 10.13, *))
-			{
-				self.restartButton.bgColor = [NSColor colorNamed:@"green-color"];
-			}
-			else
-			{
-				self.restartButton.bgColor = [ConvertHexColor hexCodeToNSColor:@"#28cd41"];
-			}
+            self.restartButton.bgColor = [NSColor togglGreen];
 			self.restartButton.textColor = [NSColor whiteColor];
 			break;
 	}

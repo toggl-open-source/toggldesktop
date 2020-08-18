@@ -48,11 +48,22 @@ final class ProjectCreationView: NSView {
 
     // MARK: Variables
 
-    var selectedTimeEntry: TimeEntryViewItem! {
+    var workspaceID: UInt64? {
         didSet {
             resetViews()
         }
     }
+    var timeEntryGUID: String? {
+        didSet {
+            resetViews()
+        }
+    }
+    var timeEntryIsBillable: Bool = false {
+        didSet {
+            resetViews()
+        }
+    }
+
     private(set) var selectedWorkspace: Workspace? {
         didSet {
             clientDatasource.selectedWorkspace = selectedWorkspace
@@ -145,16 +156,13 @@ final class ProjectCreationView: NSView {
 
     @IBAction func addBtnOnTap(_ sender: Any) {
         guard isValidDataForProjectCreation else { return }
-        guard let selectedWorkspace = selectedWorkspace else {
-            return
-        }
+        guard let selectedWorkspace = selectedWorkspace else { return }
 
         closeAllSuggestions()
         let clientData = getSelectedClientData()
 
         // Safe for unwrapped
-        let isBillable = selectedTimeEntry.billable
-        let timeEntryGUID = selectedTimeEntry.guid!
+        let isBillable = timeEntryIsBillable
         let workspaceID = selectedWorkspace.ID
         let clientID = clientData.0
         let clientGUID = clientData.1
@@ -169,7 +177,7 @@ final class ProjectCreationView: NSView {
                                                                     colorHex: colorHex,
                                                                     isPublic: isPublic)
             else { return }
-        if selectedTimeEntry.billable {
+        if isBillable, let timeEntryGUID = timeEntryGUID {
             DesktopLibraryBridge.shared().setBillableForTimeEntryWithTimeEntryGUID(timeEntryGUID,
                                                                                    isBillable: isBillable)
         }
@@ -310,9 +318,10 @@ extension ProjectCreationView {
     }
 
     fileprivate func selectDefaultWorkspace() {
-        guard let workspaceID = selectedTimeEntry?.workspaceID else { return }
+        guard let workspaceID = workspaceID else { return }
         guard let workspaces = workspaceDatasource.items as? [Workspace] else { return }
         let index = workspaces.firstIndex(where: { $0.WID == workspaceID }) ?? 0
+        selectedWorkspace = workspaces[index]
         workspaceDatasource.selectRow(at: index)
     }
 

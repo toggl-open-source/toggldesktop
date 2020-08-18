@@ -8,20 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class BetterFocusAutoCompleteInput;
-@class AutocompleteItem;
 @class NSBoxClickable;
 
-@interface TimerEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate, NSTableViewDelegate>
-@property (weak) IBOutlet BetterFocusAutoCompleteInput *autoCompleteInput;
-@property (strong, nonatomic) NSArray *projectComboConstraint;
-@property (strong, nonatomic) NSArray *projectLabelConstraint;
+@interface TimerEditViewController : NSViewController
 @property (weak) IBOutlet NSBoxClickable *manualBox;
 @property (weak) IBOutlet NSBoxClickable *mainBox;
 
-- (IBAction)startButtonClicked:(id)sender;
-- (void)timerFired:(NSTimer *)timer;
-- (void)fillEntryFromAutoComplete:(AutocompleteItem *)item;
+- (void)startButtonClicked;
 - (void)focusTimer;
 
 @end

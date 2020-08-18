@@ -13,7 +13,7 @@
 
 @interface TimeEntryViewItem : NSObject
 @property (assign, nonatomic) int64_t duration_in_seconds;
-@property (copy, nonatomic) NSString *Description; // uppercase to avoid clash with [NSObject description]
+@property (copy, nonatomic) NSString *Description NS_SWIFT_NAME(entryDescription); // uppercase to avoid clash with [NSObject description]
 @property (copy, nonatomic) NSString *descriptionName;
 @property (copy, nonatomic) NSString *ProjectAndTaskLabel;
 @property (copy, nonatomic) NSString *TaskLabel;
@@ -21,10 +21,10 @@
 @property (copy, nonatomic) NSString *ClientLabel;
 @property (assign, nonatomic) uint64_t WorkspaceID;
 @property (assign, nonatomic) uint64_t ProjectID;
+@property (copy, nonatomic) NSString *ProjectGUID; // when project is not saved to backend yet
 @property (assign, nonatomic) uint64_t TaskID;
 @property (copy, nonatomic) NSString *duration;
 @property (copy, nonatomic) NSString *ProjectColor;
-@property (copy, nonatomic) NSString *ProjectGUID; // when project is not saved to backend yet
 @property (copy, nonatomic) NSString *GUID;
 @property (assign, nonatomic) BOOL billable;
 @property (assign, nonatomic) BOOL unsynced;
@@ -32,7 +32,7 @@
 @property (strong, nonatomic) NSDate *ended;
 @property (copy, nonatomic) NSString *startTimeString;
 @property (copy, nonatomic) NSString *endTimeString;
-@property (strong, nonatomic) NSArray *tags;
+@property (strong, nonatomic) NSArray<NSString *> *tags;
 @property (strong, nonatomic) NSDate *updatedAt;
 @property (copy, nonatomic) NSString *formattedDate;
 // If this is set to YES, a date header is displayed on top of
@@ -67,8 +67,8 @@
 - (BOOL)confirmlessDelete;
 - (BOOL)isRunning;
 + (NSColor *)defaultProjectColor;
-- (BOOL) isSameContentWithTimeEntryViewItem:(TimeEntryViewItem *) item;
+- (BOOL)isSameContentWithTimeEntryViewItem:(TimeEntryViewItem *)item;
 
-- (instancetype) initWithView:(TogglTimeEntryView *) te;
+- (instancetype)initWithView:(TogglTimeEntryView *)te;
 
 @end

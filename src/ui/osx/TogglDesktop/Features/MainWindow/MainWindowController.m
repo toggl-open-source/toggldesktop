@@ -371,7 +371,7 @@ extern void *ctx;
 
 - (void)touchBarServiceStartTimeEntryOnTap
 {
-    [self.mainDashboardViewController.timerController startButtonClicked:self];
+    [self.mainDashboardViewController.timerController startButtonClicked];
 }
 
 #pragma mark - Timeline Menu

@@ -18,14 +18,17 @@ class AutoCompleteViewDataSource: NSObject {
     // MARK: Variables
     private let maxHeight: CGFloat = 600.0
     private(set) var items: [Any] = []
-    private(set) var autoCompleteView: AutoCompleteView!
-    private(set) var textField: AutoCompleteTextField!
+    private(set) var autoCompleteView: AutoCompleteView?
+    private(set) var textField: NSTextField = NSTextField(frame: .zero)
+
+    var autoCompleteTextField: AutoCompleteTextField? { textField as? AutoCompleteTextField }
+
     weak var delegate: AutoCompleteViewDataSourceDelegate?
     var count: Int {
         return items.count
     }
     var tableView: NSTableView {
-        return autoCompleteView.tableView
+        return autoCompleteView?.tableView ?? NSTableView()
     }
 
     // MARK: Init
@@ -48,7 +51,22 @@ class AutoCompleteViewDataSource: NSObject {
     func setup(with textField: AutoCompleteTextField) {
         self.textField = textField
         self.autoCompleteView = textField.autoCompleteView
-        self.autoCompleteView.prepare(with: self)
+        self.autoCompleteView?.defaultTextField.isHidden = true
+        commonSetup()
+    }
+
+    func setup(with autoCompleteView: AutoCompleteView) {
+        self.autoCompleteView = autoCompleteView
+
+        textField = autoCompleteView.defaultTextField
+        textField.isHidden = false
+        autoCompleteView.placeholderBox.isHidden = false
+
+        commonSetup()
+    }
+
+    private func commonSetup() {
+        autoCompleteView?.prepare(with: self)
         registerCustomeCells()
         tableView.delegate = self
         tableView.dataSource = self
@@ -76,7 +94,7 @@ class AutoCompleteViewDataSource: NSObject {
 
         // If there is new data during searching on auto-complete
         // We should filter gain
-        if textField.state == .expand && !textField.stringValue.isEmpty {
+        if autoCompleteTextField?.state == .expand && !textField.stringValue.isEmpty {
             filter(with: textField.stringValue)
         }
     }
@@ -90,9 +108,9 @@ class AutoCompleteViewDataSource: NSObject {
         delegate?.autoCompleteSelectionDidChange(sender: self, item: item)
     }
 
-    private func sizeToFit() {
+    func sizeToFit() {
         if items.isEmpty {
-            autoCompleteView.update(height: 0.0)
+            autoCompleteView?.update(height: 0.0)
             return
         }
 
@@ -110,7 +128,7 @@ class AutoCompleteViewDataSource: NSObject {
             suitableHeight += scrollView.contentInsets.bottom + scrollView.contentInsets.top
         }
 
-        autoCompleteView.update(height: suitableHeight)
+        autoCompleteView?.update(height: suitableHeight)
     }
 
     func keyboardDidEnter() {
