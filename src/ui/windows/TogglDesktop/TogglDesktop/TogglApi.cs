@@ -495,8 +495,8 @@ private delegate void     TogglDisplayTimeline(
         string date,
         IntPtr first,
         IntPtr first_entry,
-        long start_day,
-        long end_day);
+        UInt64 start_day,
+        UInt64 end_day);
 
 [UnmanagedFunctionPointer(convention)]
 private delegate void     TogglDisplayAutocomplete(
