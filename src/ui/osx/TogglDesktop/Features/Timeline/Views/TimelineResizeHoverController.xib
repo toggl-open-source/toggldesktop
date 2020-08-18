@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="TimelineResizeHoverController" customModule="TogglDesktop" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="TimelineResizeHoverController" customModule="Toggl_Track" customModuleProvider="target">
             <connections>
                 <outlet property="durationLabel" destination="Bv4-lU-O2T" id="ZTC-IG-dpa"/>
                 <outlet property="timeLabel" destination="6wS-r8-FQ9" id="N32-zk-Rdc"/>
@@ -26,15 +27,15 @@
                             <rect key="frame" x="-2" y="19" width="86" height="15"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="08:00 - 08:15" id="Dbh-m7-yRg">
                                 <font key="font" metaFont="systemMedium" size="12"/>
-                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="textColor" name="black-text-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bv4-lU-O2T">
                             <rect key="frame" x="-2" y="0.0" width="33" height="15"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="0.5 h" id="G8d-Iq-95r">
-                                <font key="font" metaFont="system" size="12"/>
-                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <font key="font" metaFont="label" size="12"/>
+                                <color key="textColor" name="black-text-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
@@ -58,4 +59,9 @@
             <point key="canvasLocation" x="-161" y="-103.5"/>
         </customView>
     </objects>
+    <resources>
+        <namedColor name="black-text-color">
+            <color red="0.17254901960784313" green="0.074509803921568626" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

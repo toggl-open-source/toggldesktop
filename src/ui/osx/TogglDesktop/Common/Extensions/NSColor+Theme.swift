@@ -16,7 +16,7 @@ extension NSColor {
         if #available(OSX 10.13, *) {
             return NSColor(named: NSColor.Name("green-color"))!
         } else {
-            return ConvertHexColor.hexCode(toNSColor: "#28cd41")
+            return ConvertHexColor.hexCode(toNSColor: "#DF68D0")
         }
     }
 
@@ -32,7 +32,7 @@ extension NSColor {
         if #available(OSX 10.13, *) {
             return NSColor(named: NSColor.Name("grey-text-color"))!
         } else {
-            return ConvertHexColor.hexCode(toNSColor: "#555555")
+            return ConvertHexColor.hexCode(toNSColor: "#564360")
         }
     }
 
@@ -40,7 +40,7 @@ extension NSColor {
         if #available(OSX 10.13, *) {
             return NSColor(named: NSColor.Name("lighter-grey-color"))!
         } else {
-            return ConvertHexColor.hexCode(toNSColor: "#acacac")
+            return ConvertHexColor.hexCode(toNSColor: "#ABA0AF")
         }
     }
 
@@ -49,6 +49,30 @@ extension NSColor {
             return NSColor(named: NSColor.Name("text-field-hover-background"))!
         } else {
             return NSColor(red: 0, green: 0, blue: 0, alpha: 0.05)
+        }
+    }
+
+    static var timelineBackgroundColor: NSColor {
+        if #available(OSX 10.13, *) {
+            return NSColor(named: NSColor.Name("timeline-background-color"))!
+        } else {
+            return NSColor.clear
+        }
+    }
+
+    static var collectionViewBackgroundColor: NSColor {
+        if #available(OSX 10.13, *) {
+            return NSColor(named: NSColor.Name("collectionview-background-color"))!
+        } else {
+            return ConvertHexColor.hexCode(toNSColor: "#FEF9F8")
+        }
+    }
+
+    static var togglBlackText: NSColor {
+        if #available(OSX 10.13, *) {
+            return NSColor(named: NSColor.Name("black-text-color"))!
+        } else {
+            return ConvertHexColor.hexCode(toNSColor: "#2C1338")
         }
     }
 }

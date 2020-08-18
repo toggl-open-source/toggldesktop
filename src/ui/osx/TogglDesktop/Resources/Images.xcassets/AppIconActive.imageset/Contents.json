@@ -1,18 +1,18 @@
 {
   "images" : [
     {
+      "filename" : "Running@1x.png",
       "idiom" : "mac",
-      "filename" : "icon_256@1x.png",
       "scale" : "1x"
     },
     {
+      "filename" : "Running@2x.png",
       "idiom" : "mac",
-      "filename" : "icon_256@2x.png",
       "scale" : "2x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }

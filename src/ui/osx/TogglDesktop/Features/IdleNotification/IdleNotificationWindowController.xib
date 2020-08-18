@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,10 +27,10 @@
         <window title="Toggl Track" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" frameAutosaveName="idleNotificationWindow" animationBehavior="default" tabbingMode="disallowed" titlebarAppearsTransparent="YES" id="OXh-s9-LHB">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <rect key="contentRect" x="517" y="489" width="300" height="410"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="IAa-lP-ER3">
                 <rect key="frame" x="0.0" y="0.0" width="300" height="410"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="31J-mN-zmo">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="410"/>
@@ -44,7 +44,7 @@
                         <rect key="frame" x="36" y="353" width="229" height="17"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="You have been idle since 12:34:50" id="M7R-YX-LRb">
                             <font key="font" metaFont="menu" size="14"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="textColor" name="black-text-color"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
@@ -52,17 +52,17 @@
                         <rect key="frame" x="109" y="331" width="82" height="17"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="(5 minutes)" id="xfZ-e6-g8a">
                             <font key="font" metaFont="menu" size="14"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="textColor" name="black-text-color"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button toolTip="Stops timer with the same time when the idle was triggered" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gae-h6-aWA" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                    <button toolTip="Stops timer with the same time when the idle was triggered" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gae-h6-aWA" customClass="FlatButton" customModule="Toggl_Track" customModuleProvider="target">
                         <rect key="frame" x="20" y="181" width="260" height="30"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="260" id="WVR-29-5dM"/>
                             <constraint firstAttribute="height" constant="30" id="u8q-1m-Hpd"/>
                         </constraints>
-                        <buttonCell key="cell" type="bevel" title="Discard idle time" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="SPr-5Y-gLE" customClass="VerticallyCenteredButtonCell" customModule="TogglDesktop" customModuleProvider="target">
+                        <buttonCell key="cell" type="bevel" title="Discard idle time" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="SPr-5Y-gLE" customClass="VerticallyCenteredButtonCell" customModule="Toggl_Track" customModuleProvider="target">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                             <userDefinedRuntimeAttributes>
@@ -78,6 +78,9 @@
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                 <real key="value" value="8"/>
                             </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                <color key="value" name="white"/>
+                            </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                         <connections>
                             <action selector="stopButtonClicked:" target="-2" id="U8b-ud-zy9"/>
@@ -92,13 +95,13 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button toolTip="Adds the time you were idle as a new empty entry" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3DH-9w-EQH" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                    <button toolTip="Adds the time you were idle as a new empty entry" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3DH-9w-EQH" customClass="FlatButton" customModule="Toggl_Track" customModuleProvider="target">
                         <rect key="frame" x="20" y="61" width="260" height="30"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="260" id="56T-8y-5cD"/>
                             <constraint firstAttribute="height" constant="30" id="ONB-DD-jbd"/>
                         </constraints>
-                        <buttonCell key="cell" type="squareTextured" title="Add idle time as new time entry" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="DjU-En-tIH" customClass="VerticallyCenteredButtonCell" customModule="TogglDesktop" customModuleProvider="target">
+                        <buttonCell key="cell" type="squareTextured" title="Add idle time as new time entry" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="DjU-En-tIH" customClass="VerticallyCenteredButtonCell" customModule="Toggl_Track" customModuleProvider="target">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                             <userDefinedRuntimeAttributes>
@@ -113,6 +116,9 @@
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                 <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                <color key="value" name="lighter-grey-color"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                         <connections>
@@ -120,13 +126,13 @@
                             <outlet property="nextKeyView" destination="B6d-ef-DQm" id="m5K-Pj-a0h"/>
                         </connections>
                     </button>
-                    <button toolTip="Stops timer with the same time when the idle was triggered and continues the same entry" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wVL-xX-wZ5" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                    <button toolTip="Stops timer with the same time when the idle was triggered and continues the same entry" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wVL-xX-wZ5" customClass="FlatButton" customModule="Toggl_Track" customModuleProvider="target">
                         <rect key="frame" x="20" y="141" width="260" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="9xO-j1-Pvh"/>
                             <constraint firstAttribute="width" constant="260" id="ijY-lk-gN9"/>
                         </constraints>
-                        <buttonCell key="cell" type="squareTextured" title="Discard idle and continue" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="Fyj-Z5-ATc" customClass="VerticallyCenteredButtonCell" customModule="TogglDesktop" customModuleProvider="target">
+                        <buttonCell key="cell" type="squareTextured" title="Discard idle and continue" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="Fyj-Z5-ATc" customClass="VerticallyCenteredButtonCell" customModule="Toggl_Track" customModuleProvider="target">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                             <userDefinedRuntimeAttributes>
@@ -141,6 +147,9 @@
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                 <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                <color key="value" name="lighter-grey-color"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                         <connections>
@@ -148,13 +157,13 @@
                             <outlet property="nextKeyView" destination="kSB-vE-PGM" id="zTa-bw-YXs"/>
                         </connections>
                     </button>
-                    <button toolTip="Keeps timer running" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kSB-vE-PGM" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                    <button toolTip="Keeps timer running" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kSB-vE-PGM" customClass="FlatButton" customModule="Toggl_Track" customModuleProvider="target">
                         <rect key="frame" x="20" y="101" width="260" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="8h3-BU-EUb"/>
                             <constraint firstAttribute="width" constant="260" id="jXF-av-6cN"/>
                         </constraints>
-                        <buttonCell key="cell" type="squareTextured" title="Keep idle time" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="mUm-BX-YWb" customClass="VerticallyCenteredButtonCell" customModule="TogglDesktop" customModuleProvider="target">
+                        <buttonCell key="cell" type="squareTextured" title="Keep idle time" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="mUm-BX-YWb" customClass="VerticallyCenteredButtonCell" customModule="Toggl_Track" customModuleProvider="target">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                             <userDefinedRuntimeAttributes>
@@ -169,6 +178,9 @@
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                 <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                <color key="value" name="lighter-grey-color"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                         <connections>
@@ -190,7 +202,7 @@
                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TlK-w3-a82">
                                 <rect key="frame" x="94" y="0.0" width="93" height="15"/>
                                 <subviews>
-                                    <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Ply-4x-AyP" customClass="DotImageView" customModule="TogglDesktop" customModuleProvider="target">
+                                    <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Ply-4x-AyP" customClass="DotImageView" customModule="Toggl_Track" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="4" width="8" height="8"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="8" id="UkZ-A0-z6f"/>
@@ -273,16 +285,22 @@
     <resources>
         <image name="time-entry-dot" width="8" height="8"/>
         <namedColor name="black-text-color">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.17254901960784313" green="0.074509803921568626" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="feedback-background-color">
-            <color red="0.98000001907348633" green="0.98400002717971802" blue="0.98799997568130493" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="green-color">
-            <color red="0.15700000524520874" green="0.80400002002716064" blue="0.25499999523162842" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.87450980392156863" green="0.40784313725490196" blue="0.81568627450980391" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="grey-text-color">
-            <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.33725490196078434" green="0.2627450980392157" blue="0.37647058823529411" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="lighter-grey-color">
+            <color red="0.6705882352941176" green="0.62745098039215685" blue="0.68627450980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="white">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="TimelineTimeEntryCell" customModule="TogglDesktop" customModuleProvider="target"/>
+        <customObject id="-2" userLabel="File's Owner" customClass="TimelineTimeEntryCell" customModule="Toggl_Track" customModuleProvider="target"/>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
             <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="ZlO-hY-zkZ" customClass="CornerBoxView" customModule="TogglDesktop" customModuleProvider="target">
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="ZlO-hY-zkZ" customClass="CornerBoxView" customModule="Toggl_Track" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -28,7 +28,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </customView>
-                <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="IJ4-qg-XP7" customClass="CornerBoxView" customModule="TogglDesktop" customModuleProvider="target">
+                <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="IJ4-qg-XP7" customClass="CornerBoxView" customModule="Toggl_Track" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
                     <subviews>
                         <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dpe-7G-baj">
@@ -38,14 +38,14 @@
                                     <rect key="frame" x="-2" y="66" width="77" height="15"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" title="Copy Review" id="x7F-x0-ynb">
                                         <font key="font" metaFont="label" size="12"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="textColor" name="black-text-color"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
                                 <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="7" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Azu-a1-gfT">
                                     <rect key="frame" x="0.0" y="47" width="100" height="15"/>
                                     <subviews>
-                                        <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="IRd-GO-o1l" customClass="DotImageView" customModule="TogglDesktop" customModuleProvider="target">
+                                        <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="IRd-GO-o1l" customClass="DotImageView" customModule="Toggl_Track" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="4" width="8" height="8"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="8" id="CyW-Lz-h7S"/>
@@ -105,7 +105,7 @@
                                                     <rect key="frame" x="76" y="1" width="24" height="15"/>
                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" alignment="right" title="12h" id="k25-lb-1QZ">
                                                         <font key="font" metaFont="label" size="12"/>
-                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="textColor" name="black-text-color"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
@@ -166,7 +166,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </customView>
-                <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="CHS-wV-aVu" customClass="CornerBoxView" customModule="TogglDesktop" customModuleProvider="target">
+                <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="CHS-wV-aVu" customClass="CornerBoxView" customModule="Toggl_Track" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="20" height="107"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="20" id="QaL-zX-gSd"/>
@@ -199,7 +199,7 @@
             </constraints>
             <point key="canvasLocation" x="32.5" y="162.5"/>
         </customView>
-        <collectionViewItem identifier="TimelineTimeEntryCell" id="7AB-0R-5ZL" customClass="TimelineTimeEntryCell" customModule="TogglDesktop" customModuleProvider="target">
+        <collectionViewItem identifier="TimelineTimeEntryCell" id="7AB-0R-5ZL" customClass="TimelineTimeEntryCell" customModule="Toggl_Track" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundBox" destination="IJ4-qg-XP7" id="q8G-r5-CnQ"/>
                 <outlet property="billableImageView" destination="KGC-LT-pQG" id="6hB-b9-5ra"/>
@@ -219,11 +219,14 @@
         </collectionViewItem>
     </objects>
     <resources>
-        <image name="time-entry-billable" width="17" height="17"/>
+        <image name="time-entry-billable" width="16" height="16"/>
         <image name="time-entry-dot" width="8" height="8"/>
-        <image name="time-entry-tag" width="17" height="17"/>
+        <image name="time-entry-tag" width="16" height="16"/>
+        <namedColor name="black-text-color">
+            <color red="0.17254901960784313" green="0.074509803921568626" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="timeline-background-color">
-            <color red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
