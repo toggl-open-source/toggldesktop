@@ -48,6 +48,13 @@ class FlatButton: NSButton {
         drawTextColor()
     }
 
+    override func layout() {
+        super.layout()
+
+        layer?.borderColor = borderColor?.cgColor
+        drawTextColor()
+    }
+
     override func draw(_ dirtyRect: NSRect) {
         if let bgColor = bgColor {
             bgColor.setFill()

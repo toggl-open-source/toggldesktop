@@ -186,6 +186,7 @@ extern void *ctx;
 	self.emptyView.delegate = self;
 	[self.emptyViewContainerView addSubview:self.emptyView];
 	[self.emptyView edgesToSuperView];
+	self.emptyViewContainerView.fillColor = NSColor.collectionViewBackgroundColor;
 	self.emptyViewContainerView.hidden = YES;
 }
 
@@ -540,7 +541,7 @@ extern void *ctx;
 			 }
 			 else
 			 {
-				 backgroundColor = [ConvertHexColor hexCodeToNSColor:@"#f9f9f9"];
+				 backgroundColor = [ConvertHexColor hexCodeToNSColor:@"#F4F5F6"];
 			 }
 
 		     // fill content

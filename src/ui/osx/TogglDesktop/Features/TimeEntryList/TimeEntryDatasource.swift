@@ -266,11 +266,7 @@ extension TimeEntryDatasource {
 
         // Background
         collectionView.wantsLayer = true
-        if #available(OSX 10.13, *) {
-            collectionView.backgroundColors = [NSColor(named: NSColor.Name("collectionview-background-color"))!]
-        } else {
-            collectionView.backgroundColors = [NSColor.init(white: 0.95, alpha: 1.0)]
-        }
+        collectionView.backgroundColors = [NSColor.collectionViewBackgroundColor]
 
         // Flow
         let flowLayout = VertificalTimeEntryFlowLayout()

@@ -88,7 +88,7 @@ extern void *ctx;
 	}
 	else
 	{
-		self.backgroundColor = [ConvertHexColor hexCodeToNSColor:@"#f9f9f9"];
+		self.backgroundColor = [ConvertHexColor hexCodeToNSColor:@"#F4F5F6"];
 		self.selectedSubItemBackgroundColor = [ConvertHexColor hexCodeToNSColor:@"#e8e8e8"];
 	}
 }
@@ -287,14 +287,14 @@ extern void *ctx;
 	// Color
 	if (self.Group && self.GroupOpen)
 	{
-        [self.groupButton setTextColor:[NSColor togglGreen]];
+		[self.groupButton setTextColor:[NSColor togglGreen]];
 		if (@available(macOS 10.13, *))
 		{
 			self.groupBox.fillColor = [NSColor colorNamed:@"group-box-background-color"];
 		}
 		else
 		{
-			self.groupBox.fillColor = [NSColor colorWithRed:40.0 / 255.0 green:205.0 / 255.0 blue:65.0 / 255.0 alpha:0.12];
+			self.groupBox.fillColor = [NSColor colorWithRed:223.0 / 255.0 green:104.0 / 255.0 blue:208.0 / 255.0 alpha:0.12];
 		}
 		self.groupBox.borderColor = [NSColor clearColor];
 	}
@@ -308,9 +308,9 @@ extern void *ctx;
 		}
 		else
 		{
-			[self.groupButton setTextColor:[ConvertHexColor hexCodeToNSColor:@"#555555"]];
+			[self.groupButton setTextColor:[ConvertHexColor hexCodeToNSColor:@"#564360"]];
 			self.groupBox.fillColor = [NSColor whiteColor];
-			self.groupBox.borderColor = [NSColor lightGrayColor];
+			self.groupBox.borderColor = [ConvertHexColor hexCodeToNSColor:@"ACACAC"];
 		}
 	}
 

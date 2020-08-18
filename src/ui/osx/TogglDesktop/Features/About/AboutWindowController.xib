@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,7 +25,7 @@
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <rect key="contentRect" x="196" y="240" width="314" height="400"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="314" height="400"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -37,11 +37,11 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nKH-KV-DqZ">
-                                    <rect key="frame" x="89" y="285" width="50" height="16"/>
+                                    <rect key="frame" x="80" y="286" width="68" height="15"/>
                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="toggl-logo" id="xwP-1g-P8n"/>
                                 </imageView>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0nj-Ur-G2E">
-                                    <rect key="frame" x="65" y="251" width="98" height="14"/>
+                                    <rect key="frame" x="72" y="252" width="84" height="14"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="TOGGL TRACK" id="5cr-k5-6Pf">
                                         <font key="font" metaFont="systemMedium" size="11"/>
                                         <color key="textColor" name="login-text-color"/>
@@ -49,31 +49,31 @@
                                     </textFieldCell>
                                 </textField>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VEr-3F-c8C">
-                                    <rect key="frame" x="70" y="230" width="89" height="16"/>
+                                    <rect key="frame" x="70" y="232" width="89" height="15"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Version 7.3.321" id="5Rk-hH-pJd">
-                                        <font key="font" metaFont="cellTitle"/>
+                                        <font key="font" metaFont="label" size="12"/>
                                         <color key="textColor" name="login-text-color"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4jV-sw-sae">
-                                    <rect key="frame" x="46" y="169" width="136" height="16"/>
+                                    <rect key="frame" x="46" y="172" width="136" height="15"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="An open source project" id="A9H-gz-0AR">
-                                        <font key="font" metaFont="cellTitle"/>
+                                        <font key="font" metaFont="label" size="12"/>
                                         <color key="textColor" name="login-text-color"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
                                 <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dXj-q9-pzn">
-                                    <rect key="frame" x="50" y="105" width="128" height="16"/>
+                                    <rect key="frame" x="50" y="110" width="128" height="15"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Checking new version" id="B76-qi-z4Q">
-                                        <font key="font" metaFont="cellTitle"/>
+                                        <font key="font" metaFont="label" size="12"/>
                                         <color key="textColor" name="green-color"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Zng-kf-hL6" customClass="NSTextFieldClickablePointer">
-                                    <rect key="frame" x="61" y="151" width="106" height="16"/>
+                                    <rect key="frame" x="61" y="155" width="106" height="15"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Find us on Github" id="AcO-um-1vS">
                                         <font key="font" metaFont="systemMedium" size="12"/>
                                         <color key="textColor" name="login-text-color"/>
@@ -81,7 +81,7 @@
                                     </textFieldCell>
                                 </textField>
                                 <comboBox hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xcc-XB-zJU">
-                                    <rect key="frame" x="126" y="18" width="85" height="26"/>
+                                    <rect key="frame" x="126" y="18" width="85" height="25"/>
                                     <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="3" id="Kv9-hE-dtb">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -97,19 +97,19 @@
                                     </connections>
                                 </comboBox>
                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fgK-FX-13n">
-                                    <rect key="frame" x="104" y="190" width="21" height="20"/>
+                                    <rect key="frame" x="104" y="192" width="21" height="20"/>
                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="open-source-logo" id="OwW-R4-R9w"/>
                                 </imageView>
                                 <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zGj-DF-e90">
-                                    <rect key="frame" x="18" y="24" width="100" height="16"/>
+                                    <rect key="frame" x="18" y="24" width="100" height="15"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Release channel:" id="ibS-Ll-PIY">
-                                        <font key="font" metaFont="cellTitle"/>
+                                        <font key="font" metaFont="label" size="12"/>
                                         <color key="textColor" name="login-text-color"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <button hidden="YES" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Brr-F9-HyT" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
-                                    <rect key="frame" x="54" y="71" width="120" height="24"/>
+                                <button hidden="YES" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Brr-F9-HyT" customClass="FlatButton" customModule="Toggl_Track" customModuleProvider="target">
+                                    <rect key="frame" x="54" y="76" width="120" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="120" id="eka-c1-zrN"/>
                                         <constraint firstAttribute="height" constant="24" id="hmw-x4-6Yn"/>
@@ -163,7 +163,7 @@
                             <constraint firstAttribute="width" constant="230" id="qjN-ot-gFd"/>
                         </constraints>
                         <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="fillColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <color key="fillColor" name="white-background-color"/>
                     </box>
                 </subviews>
                 <constraints>
@@ -183,15 +183,18 @@
     </objects>
     <resources>
         <image name="open-source-logo" width="21" height="20"/>
-        <image name="toggl-logo" width="50" height="16"/>
+        <image name="toggl-logo" width="68" height="15"/>
         <namedColor name="green-color">
-            <color red="0.15700000524520874" green="0.80400002002716064" blue="0.25499999523162842" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.87450980392156863" green="0.40784313725490196" blue="0.81568627450980391" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="login-button-foreground">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="login-text-color">
-            <color red="0.33300000429153442" green="0.33300000429153442" blue="0.33300000429153442" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.33725490196078434" green="0.2627450980392157" blue="0.37647058823529411" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="white-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

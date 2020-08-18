@@ -89,7 +89,7 @@ final class EditorViewController: NSViewController {
     }()
     private lazy var dayNameAttribute: [NSAttributedString.Key: Any] = {
         return [NSAttributedString.Key.font: NSFont.systemFont(ofSize: 14),
-                NSAttributedString.Key.foregroundColor: NSColor.labelColor]
+                NSAttributedString.Key.foregroundColor: NSColor.togglBlackText]
     }()
     fileprivate var isRegisterTimerNotification = false
     private lazy var dateFormatter: DateFormatter = {

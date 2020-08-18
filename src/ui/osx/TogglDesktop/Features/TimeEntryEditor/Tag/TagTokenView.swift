@@ -101,6 +101,7 @@ extension TagTokenView {
 
     fileprivate func initCommon() {
         boxContainerView.alphaValue = 1
+        boxContainerView.borderWidth = 0.5
         closeButton.alphaValue = 0
         gradientView.alphaValue = 0
         closeButton.cursor = .pointingHand

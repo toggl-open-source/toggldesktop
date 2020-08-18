@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -10,7 +10,7 @@
         <customObject id="-2" userLabel="File's Owner"/>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView id="c22-O7-iKe" customClass="DatePickerView" customModule="TogglDesktop" customModuleProvider="target">
+        <customView id="c22-O7-iKe" customClass="DatePickerView" customModule="Toggl_Track" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="460" height="30"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
@@ -27,9 +27,9 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <stackView distribution="equalSpacing" orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LJw-bl-vsP">
-                                            <rect key="frame" x="125" y="1" width="147" height="24"/>
+                                            <rect key="frame" x="125" y="1" width="146" height="24"/>
                                             <subviews>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DEI-4B-6HO" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DEI-4B-6HO" customClass="CursorButton" customModule="Toggl_Track" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="5" width="61" height="17"/>
                                                     <buttonCell key="cell" type="bevel" title="Tuesday," bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="i0g-Ws-dGd">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -39,8 +39,8 @@
                                                         <action selector="dayButtonOnTap:" target="c22-O7-iKe" id="QAQ-ei-Qiy"/>
                                                     </connections>
                                                 </button>
-                                                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Jw-f6-4jC" customClass="KeyboardDatePicker" customModule="TogglDesktop" customModuleProvider="target">
-                                                    <rect key="frame" x="61" y="0.0" width="86" height="22"/>
+                                                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Jw-f6-4jC" customClass="KeyboardDatePicker" customModule="Toggl_Track" customModuleProvider="target">
+                                                    <rect key="frame" x="61" y="0.0" width="85" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="22" id="n6b-X9-Tlz"/>
                                                     </constraints>
@@ -50,7 +50,7 @@
                                                             <!--1982-12-12 16:00:00 +0000-->
                                                         </date>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="textColor" name="black-text-color"/>
                                                     </datePickerCell>
                                                     <connections>
                                                         <action selector="datePickerChanged:" target="c22-O7-iKe" id="lkx-dk-H5S"/>
@@ -140,8 +140,11 @@
     <resources>
         <image name="next_date_arrow" width="4" height="7"/>
         <image name="previous_date_arrow" width="4" height="7"/>
+        <namedColor name="black-text-color">
+            <color red="0.17254901960784313" green="0.074509803921568626" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="upload-border-color">
-            <color red="0.67500001192092896" green="0.67500001192092896" blue="0.67500001192092896" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

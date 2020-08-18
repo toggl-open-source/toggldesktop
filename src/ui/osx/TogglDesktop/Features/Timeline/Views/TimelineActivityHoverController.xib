@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="TimelineActivityHoverController" customModule="TogglDesktop" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="TimelineActivityHoverController" customModule="Toggl_Track" customModuleProvider="target">
             <connections>
                 <outlet property="eventStackView" destination="rwS-sw-Itv" id="5eQ-4a-h0a"/>
                 <outlet property="timeLbl" destination="yUv-wJ-ujD" id="Auw-Mj-Xod"/>
@@ -23,15 +24,15 @@
                     <rect key="frame" x="0.0" y="0.0" width="200" height="41"/>
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yUv-wJ-ujD">
-                            <rect key="frame" x="8" y="15" width="85" height="16"/>
+                            <rect key="frame" x="8" y="16" width="85" height="15"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="08:00 - 08:15" id="thW-lH-ZkV">
                                 <font key="font" metaFont="systemMedium" size="12"/>
-                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="textColor" name="black-text-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
                         <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rwS-sw-Itv">
-                            <rect key="frame" x="10" y="10" width="180" height="0.0"/>
+                            <rect key="frame" x="10" y="10" width="180" height="1"/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="lessThanOrEqual" constant="500" id="f7T-Z0-gis"/>
                             </constraints>
@@ -56,4 +57,9 @@
             <point key="canvasLocation" x="-161" y="-103.5"/>
         </customView>
     </objects>
+    <resources>
+        <namedColor name="black-text-color">
+            <color red="0.17254901960784313" green="0.074509803921568626" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

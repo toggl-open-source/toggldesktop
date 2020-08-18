@@ -174,7 +174,7 @@ extension LoginSignupTouchBar: NSTouchBarDelegate {
         if #available(OSX 10.13, *) {
             return NSColor(named: "login-button-background")
         } else {
-            return ConvertHexColor.hexCode(toNSColor: "#FF2D55")!
+            return ConvertHexColor.hexCode(toNSColor: "#DF68D0")!
         }
     }
 }

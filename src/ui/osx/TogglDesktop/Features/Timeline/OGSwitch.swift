@@ -30,7 +30,7 @@ import QuartzCore
         }
     }
 
-    @IBInspectable public var tintColor: NSColor = NSColor(calibratedRed: 0.27, green: 0.86, blue: 0.36, alpha: 1.0) {
+    @IBInspectable public var tintColor: NSColor = .togglGreen {
         didSet {
             reloadLayer()
         }
@@ -40,7 +40,7 @@ import QuartzCore
             reloadLayer()
         }
     }
-    @IBInspectable public var disabledBorderColor: NSColor = NSColor(calibratedWhite: 0.0, alpha: 0.2) {
+    @IBInspectable public var disabledBorderColor: NSColor = .togglLighterGrey {
         didSet {
             reloadLayer()
         }

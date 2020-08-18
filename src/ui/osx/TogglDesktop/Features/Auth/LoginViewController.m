@@ -169,7 +169,7 @@ extern void *ctx;
     self.boxView.layer.shadowRadius = 6;
 
     self.view.wantsLayer = YES;
-    self.view.layer.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]].CGColor;
+    self.view.layer.backgroundColor = NSColor.collectionViewBackgroundColor.CGColor;
 
     self.userAction = UserActionAccountLogin;
 

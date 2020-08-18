@@ -1,62 +1,62 @@
 {
   "images" : [
     {
+      "filename" : "Toggl.png",
       "idiom" : "mac",
-      "filename" : "toggl-logo.png",
       "scale" : "1x"
     },
     {
-      "idiom" : "mac",
-      "filename" : "toggl-logo-1.png",
       "appearances" : [
         {
           "appearance" : "luminosity",
           "value" : "light"
         }
       ],
+      "filename" : "Toggl-1.png",
+      "idiom" : "mac",
       "scale" : "1x"
     },
     {
-      "idiom" : "mac",
-      "filename" : "toggl-logo-2.png",
       "appearances" : [
         {
           "appearance" : "luminosity",
           "value" : "dark"
         }
       ],
+      "filename" : "Toggl-2.png",
+      "idiom" : "mac",
       "scale" : "1x"
     },
     {
+      "filename" : "Toggl@2x.png",
       "idiom" : "mac",
-      "filename" : "toggl-logo@2x.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "mac",
-      "filename" : "toggl-logo@2x-1.png",
       "appearances" : [
         {
           "appearance" : "luminosity",
           "value" : "light"
         }
       ],
+      "filename" : "Toggl@2x-1.png",
+      "idiom" : "mac",
       "scale" : "2x"
     },
     {
-      "idiom" : "mac",
-      "filename" : "toggl-logo@2x-2.png",
       "appearances" : [
         {
           "appearance" : "luminosity",
           "value" : "dark"
         }
       ],
+      "filename" : "Toggl@2x-2.png",
+      "idiom" : "mac",
       "scale" : "2x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }
