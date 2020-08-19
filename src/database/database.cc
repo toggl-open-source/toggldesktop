@@ -12,7 +12,6 @@
 #include "model/client.h"
 #include "const.h"
 #include "migrations.h"
-#include "model/obm_action.h"
 #include "model/project.h"
 #include "proxy.h"
 #include "model/settings.h"
@@ -180,15 +179,7 @@ error Database::DeleteUser(
         if (err != noError) {
             return err;
         }
-        err = deleteAllFromTableByUID("obm_actions", model->ID());
-        if (err != noError) {
-            return err;
-        }
         err = deleteAllFromTableByUID("timeline_events", model->ID());
-        if (err != noError) {
-            return err;
-        }
-        err = deleteAllFromTableByUID("obm_experiments", model->ID());
         if (err != noError) {
             return err;
         }
@@ -1153,16 +1144,6 @@ error Database::loadUsersRelatedData(User *user) {
         return err;
     }
 
-    err = loadObmActions(user->ID(), &user->related.ObmActions);
-    if (err != noError) {
-        return err;
-    }
-
-    err = loadObmExperiments(user->ID(), &user->related.ObmExperiments);
-    if (err != noError) {
-        return err;
-    }
-
     return noError;
 }
 
@@ -1649,111 +1630,6 @@ error Database::loadAutotrackerRules(
         return ex;
     }
     return last_error("loadAutotrackerRules");
-}
-
-error Database::loadObmActions(
-    const Poco::UInt64 &UID,
-    std::vector<ObmAction *> *list) {
-
-    if (!UID) {
-        return error("Cannot load OBM actions without an user ID");
-    }
-
-    try {
-        poco_check_ptr(list);
-
-        list->clear();
-
-        Poco::Mutex::ScopedLock lock(session_m_);
-
-        Poco::Data::Statement select(*session_);
-        select <<
-               "SELECT local_id, uid, "
-               "experiment_id, key, value "
-               "FROM obm_actions "
-               "WHERE uid = :uid ",
-               useRef(UID);
-        error err = last_error("loadObmActions");
-        if (err != noError) {
-            return err;
-        }
-        Poco::Data::RecordSet rs(select);
-        while (!select.done()) {
-            select.execute();
-            bool more = rs.moveFirst();
-            while (more) {
-                ObmAction *model = new ObmAction();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
-                model->SetUID(rs[1].convert<Poco::UInt64>());
-                model->SetExperimentID(rs[2].convert<Poco::UInt64>());
-                model->SetKey(rs[3].convert<std::string>());
-                model->SetValue(rs[4].convert<std::string>());
-                model->ClearDirty();
-                list->push_back(model);
-                more = rs.moveNext();
-            }
-        }
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string & ex) {
-        return ex;
-    }
-    return last_error("loadObmActions");
-}
-
-error Database::loadObmExperiments(
-    const Poco::UInt64 &UID,
-    std::vector<ObmExperiment *> *list) {
-
-    if (!UID) {
-        return error("Cannot load OBM experiments without an user ID");
-    }
-
-    try {
-        poco_check_ptr(list);
-
-        list->clear();
-
-        Poco::Mutex::ScopedLock lock(session_m_);
-
-        Poco::Data::Statement select(*session_);
-        select <<
-               "SELECT local_id, uid, "
-               "nr, included, has_seen, actions "
-               "FROM obm_experiments "
-               "WHERE uid = :uid ",
-               useRef(UID);
-        error err = last_error("loadObmExperiments");
-        if (err != noError) {
-            return err;
-        }
-        Poco::Data::RecordSet rs(select);
-        while (!select.done()) {
-            select.execute();
-            bool more = rs.moveFirst();
-            while (more) {
-                ObmExperiment *model = new ObmExperiment();
-                model->SetLocalID(rs[0].convert<Poco::Int64>());
-                model->SetUID(rs[1].convert<Poco::UInt64>());
-                model->SetNr(rs[2].convert<Poco::UInt64>());
-                model->SetIncluded(rs[3].convert<bool>());
-                model->SetHasSeen(rs[4].convert<bool>());
-                model->SetActions(rs[5].convert<std::string>());
-                model->ClearDirty();
-                list->push_back(model);
-                more = rs.moveNext();
-            }
-        }
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string & ex) {
-        return ex;
-    }
-    return last_error("loadObmExperiments");
 }
 
 error Database::loadTimelineEvents(
@@ -2599,96 +2475,6 @@ error Database::saveModel(
                       into(local_id),
                       now;
             err = last_error("saveAutotrackerRule");
-            if (err != noError) {
-                return err;
-            }
-            model->SetLocalID(local_id);
-            changes->push_back(ModelChange(
-                model->ModelName(),
-                kChangeTypeInsert,
-                model->ID(),
-                model->GUID()));
-        }
-
-        model->ClearDirty();
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string & ex) {
-        return ex;
-    }
-    return noError;
-}
-
-error Database::saveModel(
-    ObmAction *model,
-    std::vector<ModelChange> *changes) {
-
-    try {
-        poco_check_ptr(model);
-
-        if (model->LocalID() && !model->Dirty()) {
-            return noError;
-        }
-
-        Poco::Mutex::ScopedLock lock(session_m_);
-        poco_check_ptr(session_);
-
-        if (model->LocalID()) {
-            logger.trace("Updating OBM action ", model->String(), " in thread ", Poco::Thread::currentTid());
-
-            *session_ <<
-                      "update obm_actions set "
-                      "uid = :uid, "
-                      "experiment_id = :experiment_id, "
-                      "key = :key, "
-                      "value = :value "
-                      "where local_id = :local_id",
-                      useRef(model->UID()),
-                      useRef(model->ExperimentID()),
-                      useRef(model->Key()),
-                      useRef(model->Value()),
-                      useRef(model->LocalID()),
-                      now;
-            error err = last_error("saveObmAction");
-            if (err != noError) {
-                return err;
-            }
-            if (model->DeletedAt()) {
-                changes->push_back(ModelChange(
-                    model->ModelName(),
-                    kChangeTypeDelete,
-                    model->ID(),
-                    model->GUID()));
-            } else {
-                changes->push_back(ModelChange(
-                    model->ModelName(),
-                    kChangeTypeUpdate,
-                    model->ID(),
-                    model->GUID()));
-            }
-
-        } else {
-            logger.trace("Inserting OBM action ", model->String(), " in thread ", Poco::Thread::currentTid());
-            *session_ <<
-                      "insert into obm_actions(uid, experiment_id, key, value) "
-                      "values(:uid, :experiment_id, :key, :value)",
-                      useRef(model->UID()),
-                      useRef(model->ExperimentID()),
-                      useRef(model->Key()),
-                      useRef(model->Value()),
-                      now;
-            error err = last_error("saveObmAction");
-            if (err != noError) {
-                return err;
-            }
-            Poco::Int64 local_id(0);
-            *session_ <<
-                      "select last_insert_rowid()",
-                      into(local_id),
-                      now;
-            err = last_error("saveObmAction");
             if (err != noError) {
                 return err;
             }
@@ -3593,26 +3379,6 @@ error Database::SaveUser(
             return err;
         }
 
-        // OBM actions
-        err = saveRelatedModels(user->ID(),
-                                "obm_actions",
-                                &user->related.ObmActions,
-                                changes);
-        if (err != noError) {
-            session_->rollback();
-            return err;
-        }
-
-        // OBM experiments
-        err = saveRelatedModels(user->ID(),
-                                "obm_experiments",
-                                &user->related.ObmExperiments,
-                                changes);
-        if (err != noError) {
-            session_->rollback();
-            return err;
-        }
-
         // Timeline events
         err = saveRelatedModels(user->ID(),
                                 "timeline_events",
@@ -4072,102 +3838,6 @@ error Database::saveDesktopID() {
         return ex;
     }
     return last_error("saveDesktopID");
-}
-
-error Database::saveModel(
-    ObmExperiment *model,
-    std::vector<ModelChange> *changes) {
-
-    try {
-        poco_check_ptr(model);
-
-        if (model->LocalID() && !model->Dirty()) {
-            return noError;
-        }
-
-        Poco::Mutex::ScopedLock lock(session_m_);
-        poco_check_ptr(session_);
-
-        if (model->LocalID()) {
-            logger.trace("Updating OBM experiment ", model->String(), " in thread ", Poco::Thread::currentTid());
-
-            *session_ <<
-                      "update obm_experiments set "
-                      "uid = :uid, "
-                      "nr = :nr, "
-                      "included = :included, "
-                      "has_seen = :has_seen, "
-                      "actions = :actions "
-                      "where local_id = :local_id",
-                      useRef(model->UID()),
-                      useRef(model->Nr()),
-                      useRef(model->Included()),
-                      useRef(model->HasSeen()),
-                      useRef(model->Actions()),
-                      useRef(model->LocalID()),
-                      now;
-            error err = last_error("saveObmExperiment");
-            if (err != noError) {
-                return err;
-            }
-            if (model->DeletedAt()) {
-                changes->push_back(ModelChange(
-                    model->ModelName(),
-                    kChangeTypeDelete,
-                    model->ID(),
-                    model->GUID()));
-            } else {
-                changes->push_back(ModelChange(
-                    model->ModelName(),
-                    kChangeTypeUpdate,
-                    model->ID(),
-                    model->GUID()));
-            }
-
-        } else {
-            logger.trace("Inserting OBM action ", model->String(), " in thread ", Poco::Thread::currentTid());
-            *session_ <<
-                      "insert into obm_experiments("
-                      "uid, nr, included, has_seen, actions "
-                      ") values("
-                      ":uid, :nr, :included, :has_seen, :actions"
-                      ")",
-                      useRef(model->UID()),
-                      useRef(model->Nr()),
-                      useRef(model->Included()),
-                      useRef(model->HasSeen()),
-                      useRef(model->Actions()),
-                      now;
-            error err = last_error("saveObmExperiment");
-            if (err != noError) {
-                return err;
-            }
-            Poco::Int64 local_id(0);
-            *session_ <<
-                      "select last_insert_rowid()",
-                      into(local_id),
-                      now;
-            err = last_error("saveObmExperiment");
-            if (err != noError) {
-                return err;
-            }
-            model->SetLocalID(local_id);
-            changes->push_back(ModelChange(
-                model->ModelName(),
-                kChangeTypeInsert,
-                model->ID(),
-                model->GUID()));
-        }
-
-        model->ClearDirty();
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string & ex) {
-        return ex;
-    }
-    return noError;
 }
 
 error Database::LoadOnboardingState(const Poco::UInt64 &UID, OnboardingState *state) {

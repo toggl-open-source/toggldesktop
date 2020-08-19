@@ -491,11 +491,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const Poco::UInt64 workspace_id,
         const std::string &client_name);
 
-    error AddObmAction(
-        const Poco::UInt64 experiment_id,
-        const std::string &key,
-        const std::string &value);
-
     void SetSleep();
 
     void SetWake();
@@ -676,8 +671,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error offerBetaChannel(bool *did_offer);
 
-    error runObmExperiments();
-
     error compressTimeline();
 
     error applySettingsSaveResultToUI(const error &err);
@@ -757,10 +750,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error pullWorkspacePreferences();
     error pullWorkspacePreferences(Workspace *workspace, std::string* json);
-
-    error pushObmAction();
-
-    error pullObmExperiments();
 
     template<typename T>
     void collectPushableModels(

@@ -112,12 +112,6 @@ void Dispatcher::Main::on_project_colors(const std::vector<TestType> &args) {
                            std::get<uint64_t>(args[1]));
 }
 
-void Dispatcher::Main::on_obm_experiment(const std::vector<TestType> &args) {
-    app->on_obm_experiment(std::get<uint64_t>(args[0]),
-                           std::get<bool>(args[1]),
-                           std::get<bool>(args[2]));
-}
-
 void Dispatcher::Main::on_display_timer_state(const std::vector<TestType> &args) {
     app->on_display_timer_state(std::get<TimeEntry>(args[0]));
 }
@@ -246,11 +240,6 @@ void Dispatcher::Worker::on_countries(TogglCountryView *first) {
     tasks.emplace_back(std::make_pair( Main::on_countries, std::vector<TestType>{ listFromView<test::Country>(first) } ));
 }
 
-void Dispatcher::Worker::on_obm_experiment(const uint64_t nr, const bool_t included, const bool_t seen) {
-    std::scoped_lock l(tasks_lock);
-    tasks.emplace_back(std::make_pair( Main::on_obm_experiment, std::vector<TestType>{ nr, static_cast<bool>(included), static_cast<bool>(seen) } ));
-}
-
 void Dispatcher::Worker::on_display_settings(const bool_t open, TogglSettingsView *settings) {
     std::scoped_lock l(tasks_lock);
     tasks.emplace_back(std::make_pair( Main::on_display_settings, std::vector<TestType>{ static_cast<bool>(open), oneFromView<test::Settings>(settings) } ));
@@ -346,7 +335,6 @@ void Dispatcher::wireUp(void *context, App *app) {
     toggl_on_idle_notification(context, Worker::on_display_idle_notification);
     toggl_on_project_colors(context, Worker::on_project_colors);
     toggl_on_help_articles(context, Worker::on_help_articles);
-    toggl_on_obm_experiment(context, Worker::on_obm_experiment);
     toggl_on_pomodoro(context, Worker::on_pomodoro);
     toggl_on_pomodoro_break(context, Worker::on_pomodoro_break);
     toggl_on_countries(context, Worker::on_countries);

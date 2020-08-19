@@ -388,7 +388,6 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     , on_display_help_articles_(nullptr)
     , on_display_project_colors_(nullptr)
     , on_display_countries_(nullptr)
-    , on_display_obm_experiment_(nullptr)
     , on_continue_sign_in(nullptr)
     , lastSyncState(-1)
     , lastUnsyncedItemsCount(-1)
@@ -638,10 +637,6 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         on_display_promotion_ = cb;
     }
 
-    void OnDisplayObmExperiment(TogglDisplayObmExperiment cb) {
-        on_display_obm_experiment_ = cb;
-    }
-
     void OnContinueSignIn(TogglContinueSignIn cb) {
         on_continue_sign_in = cb;
     }
@@ -673,15 +668,6 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     void DisplayPromotion(const int64_t promotion_type) {
         if (on_display_promotion_) {
             on_display_promotion_(promotion_type);
-        }
-    }
-
-    void DisplayObmExperiment(
-        const uint64_t nr,
-        const bool_t included,
-        const bool_t seen) {
-        if (on_display_obm_experiment_) {
-            on_display_obm_experiment_(nr, included, seen);
         }
     }
 
@@ -751,7 +737,6 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     TogglDisplayHelpArticles on_display_help_articles_;
     TogglDisplayProjectColors on_display_project_colors_;
     TogglDisplayCountries on_display_countries_;
-    TogglDisplayObmExperiment on_display_obm_experiment_;
     TogglDisplayOnboarding on_display_onboarding_;
     TogglContinueSignIn on_continue_sign_in;
     TogglDisplayLoginSSO on_display_login_sso;

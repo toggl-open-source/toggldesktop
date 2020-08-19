@@ -163,8 +163,6 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         std::vector<TimeEntry *> * const,
         std::string *result) const;
 
-    void LoadObmExperiments(Json::Value const &obm);
-
     // excludeCollapseTimeEntries should be removed when getting rid of Context::pullUserPreferences
     bool LoadUserPreferencesFromJSON(
         const Json::Value &data,
@@ -261,8 +259,6 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     std::string dirtyObjectsJSON(std::vector<TimeEntry *> * const) const;
 
     std::string generateKey(const std::string &password);
-
-    void loadObmExperimentFromJson(Json::Value const &obm);
 
     std::vector<const TimelineEvent *> CompressedTimeline(
         const Poco::LocalDateTime *date = nullptr, bool is_for_upload = true) const;

@@ -30,8 +30,6 @@ namespace toggl {
 
 class AutotrackerRule;
 class Client;
-class ObmAction;
-class ObmExperiment;
 class Project;
 class Proxy;
 class Settings;
@@ -318,14 +316,6 @@ class TOGGL_INTERNAL_EXPORT Database {
         const Poco::UInt64 &UID,
         std::vector<AutotrackerRule *> *list);
 
-    error loadObmActions(
-        const Poco::UInt64 &UID,
-        std::vector<ObmAction *> *list);
-
-    error loadObmExperiments(
-        const Poco::UInt64 &UID,
-        std::vector<ObmExperiment *> *list);
-
     error loadTimeEntries(
         const Poco::UInt64 &UID,
         std::vector<TimeEntry *> *list);
@@ -355,14 +345,6 @@ class TOGGL_INTERNAL_EXPORT Database {
     error deleteAllFromTableByUID(
         const std::string &table_name,
         const Poco::UInt64 &UID);
-
-    error saveModel(
-        ObmAction *model,
-        std::vector<ModelChange> *changes);
-
-    error saveModel(
-        ObmExperiment *model,
-        std::vector<ModelChange> *changes);
 
     error saveModel(
         AutotrackerRule *model,

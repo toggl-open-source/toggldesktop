@@ -78,7 +78,6 @@
 		B8B6EC93244616B10008FA32 /* context.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6EC64244616B10008FA32 /* context.cc */; };
 		B8B6ECAE244617000008FA32 /* project.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC96244616FF0008FA32 /* project.h */; };
 		B8B6ECAF244617000008FA32 /* settings.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6EC97244616FF0008FA32 /* settings.cc */; };
-		B8B6ECB0244617000008FA32 /* obm_action.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6EC98244616FF0008FA32 /* obm_action.cc */; };
 		B8B6ECB1244617000008FA32 /* project.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6EC99244616FF0008FA32 /* project.cc */; };
 		B8B6ECB2244617000008FA32 /* tag.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC9A244616FF0008FA32 /* tag.h */; };
 		B8B6ECB3244617000008FA32 /* task.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6EC9B244616FF0008FA32 /* task.h */; };
@@ -88,7 +87,6 @@
 		B8B6ECB7244617000008FA32 /* time_entry.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6EC9F244616FF0008FA32 /* time_entry.cc */; };
 		B8B6ECB8244617000008FA32 /* user.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6ECA0244616FF0008FA32 /* user.h */; };
 		B8B6ECB9244617000008FA32 /* client.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6ECA1244617000008FA32 /* client.cc */; };
-		B8B6ECBA244617000008FA32 /* obm_action.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6ECA2244617000008FA32 /* obm_action.h */; };
 		B8B6ECBB244617000008FA32 /* workspace.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6ECA3244617000008FA32 /* workspace.cc */; };
 		B8B6ECBC244617000008FA32 /* autotracker.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B6ECA4244617000008FA32 /* autotracker.h */; };
 		B8B6ECBD244617000008FA32 /* autotracker.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B6ECA5244617000008FA32 /* autotracker.cc */; };
@@ -208,7 +206,6 @@
 		B8B6EC64244616B10008FA32 /* context.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = context.cc; sourceTree = "<group>"; };
 		B8B6EC96244616FF0008FA32 /* project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = project.h; sourceTree = "<group>"; };
 		B8B6EC97244616FF0008FA32 /* settings.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = settings.cc; sourceTree = "<group>"; };
-		B8B6EC98244616FF0008FA32 /* obm_action.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = obm_action.cc; sourceTree = "<group>"; };
 		B8B6EC99244616FF0008FA32 /* project.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = project.cc; sourceTree = "<group>"; };
 		B8B6EC9A244616FF0008FA32 /* tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tag.h; sourceTree = "<group>"; };
 		B8B6EC9B244616FF0008FA32 /* task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = task.h; sourceTree = "<group>"; };
@@ -218,7 +215,6 @@
 		B8B6EC9F244616FF0008FA32 /* time_entry.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = time_entry.cc; sourceTree = "<group>"; };
 		B8B6ECA0244616FF0008FA32 /* user.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user.h; sourceTree = "<group>"; };
 		B8B6ECA1244617000008FA32 /* client.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = client.cc; sourceTree = "<group>"; };
-		B8B6ECA2244617000008FA32 /* obm_action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = obm_action.h; sourceTree = "<group>"; };
 		B8B6ECA3244617000008FA32 /* workspace.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = workspace.cc; sourceTree = "<group>"; };
 		B8B6ECA4244617000008FA32 /* autotracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = autotracker.h; sourceTree = "<group>"; };
 		B8B6ECA5244617000008FA32 /* autotracker.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = autotracker.cc; sourceTree = "<group>"; };
@@ -333,8 +329,6 @@
 				B8B6ECA6244617000008FA32 /* base_model.h */,
 				B8B6ECA1244617000008FA32 /* client.cc */,
 				B8B6ECAD244617000008FA32 /* client.h */,
-				B8B6EC98244616FF0008FA32 /* obm_action.cc */,
-				B8B6ECA2244617000008FA32 /* obm_action.h */,
 				B8B6EC99244616FF0008FA32 /* project.cc */,
 				B8B6EC96244616FF0008FA32 /* project.h */,
 				B8B6EC97244616FF0008FA32 /* settings.cc */,
@@ -532,7 +526,6 @@
 				B8B6EC7A244616B10008FA32 /* platforminfo.h in Headers */,
 				B8B6ECD22446170D0008FA32 /* custom_error_handler.h in Headers */,
 				B8B6EC7E244616B10008FA32 /* toggl_api_private.h in Headers */,
-				B8B6ECBA244617000008FA32 /* obm_action.h in Headers */,
 				B8B6ECBE244617000008FA32 /* base_model.h in Headers */,
 				B8B6EC68244616B10008FA32 /* analytics.h in Headers */,
 				B8B6ECC3244617000008FA32 /* workspace.h in Headers */,
@@ -669,7 +662,6 @@
 				B890837624AE388100E40C38 /* json.cc in Sources */,
 				B8B6ECDF2446173A0008FA32 /* database.cc in Sources */,
 				B8B6ECC0244617000008FA32 /* task.cc in Sources */,
-				B8B6ECB0244617000008FA32 /* obm_action.cc in Sources */,
 				B8B6ECE02446173A0008FA32 /* migrations.cc in Sources */,
 				BA71F4F7246D242900DB2D97 /* onboarding_service.cpp in Sources */,
 				B8B6EC8F244616B10008FA32 /* https_client.cc in Sources */,

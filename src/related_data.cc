@@ -11,7 +11,6 @@
 #include "util/formatter.h"
 #include "model/client.h"
 #include "gui.h"
-#include "model/obm_action.h"
 #include "model/project.h"
 #include "model/tag.h"
 #include "model/task.h"
@@ -48,8 +47,6 @@ void RelatedData::Clear() {
     clearList(&TimeEntries);
     clearList(&AutotrackerRules);
     clearList(&TimelineEvents);
-    clearList(&ObmActions);
-    clearList(&ObmExperiments);
 }
 
 error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {

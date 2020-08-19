@@ -9,7 +9,7 @@
 namespace toggl {
 
 error Migrations::migrateObmActions() {
-    return db_->Migrate(
+    error err = db_->Migrate(
         "obm_actions",
         "create table obm_actions("
         "local_id integer primary key,"
@@ -20,6 +20,18 @@ error Migrations::migrateObmActions() {
         "constraint fk_obm_actions_uid foreign key (uid) "
         "   references users(id) on delete no action on update no action"
         "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "obm_actions.drop",
+        "drop table obm_actions;");
+    if (err != noError) {
+        return err;
+    }
+
+    return err;
 }
 
 error Migrations::migrateObmExperiments() {
@@ -58,6 +70,14 @@ error Migrations::migrateObmExperiments() {
         "correct obm_experiments.idx_obm_experiments_nr",
         "CREATE UNIQUE INDEX idx_obm_experiments_nr_uid "
         "   ON obm_experiments (uid, nr);");
+    if (err != noError) {
+        return err;
+    }
+
+
+    err = db_->Migrate(
+        "obm_experiments.drop",
+        "drop table obm_experiments;");
     if (err != noError) {
         return err;
     }

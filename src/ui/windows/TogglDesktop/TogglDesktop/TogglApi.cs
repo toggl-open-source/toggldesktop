@@ -472,14 +472,6 @@ private delegate void     TogglDisplayPromotion(
         Int64 promotion_type);
 
 [UnmanagedFunctionPointer(convention)]
-private delegate void     TogglDisplayObmExperiment(
-        UInt64 nr,
-[MarshalAs(UnmanagedType.I1)]
-        bool included,
-[MarshalAs(UnmanagedType.I1)]
-        bool seen);
-
-[UnmanagedFunctionPointer(convention)]
 private delegate void     TogglDisplayTimeEntryList(
 [MarshalAs(UnmanagedType.I1)]
         bool open,
@@ -857,11 +849,6 @@ private static extern void toggl_on_countries(
 private static extern void toggl_on_promotion(
         IntPtr context,
         TogglDisplayPromotion cb);
-
-[DllImport(dll, CharSet = charset, CallingConvention = convention)]
-private static extern void toggl_on_obm_experiment(
-        IntPtr context,
-        TogglDisplayObmExperiment cb);
 
     // After UI callbacks are configured, start pumping UI events
 
@@ -1568,20 +1555,6 @@ private static extern string toggl_create_client(
         UInt64 workspace_id,
 [MarshalAs(UnmanagedType.LPWStr)]
         string client_name);
-
-[DllImport(dll, CharSet = charset, CallingConvention = convention)]
-[return:MarshalAs(UnmanagedType.I1)]
-private static extern bool toggl_add_obm_action(
-        IntPtr context,
-        UInt64 experiment_id,
-[MarshalAs(UnmanagedType.LPWStr)]
-        string key,
-[MarshalAs(UnmanagedType.LPWStr)]
-        string value);
-
-[DllImport(dll, CharSet = charset, CallingConvention = convention)]
-private static extern void toggl_add_obm_experiment_nr(
-        UInt64 nr);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
 [return:MarshalAs(UnmanagedType.I1)]

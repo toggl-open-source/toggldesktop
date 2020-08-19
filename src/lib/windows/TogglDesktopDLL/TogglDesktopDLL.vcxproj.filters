@@ -126,9 +126,6 @@
     <ClInclude Include="..\..\..\database\migrations.h">
       <Filter>Header Files\database</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\model\obm_action.h">
-      <Filter>Header Files\model</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\util\random.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
@@ -253,9 +250,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\database\migrations.cc">
       <Filter>Source Files\database</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\model\obm_action.cc">
-      <Filter>Source Files\model</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\util\random.cc">
       <Filter>Source Files\util</Filter>
