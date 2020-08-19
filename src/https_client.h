@@ -79,16 +79,10 @@ class TOGGL_INTERNAL_EXPORT HTTPClientConfig {
     bool UseProxy;
     toggl::Proxy ProxySettings;
     bool AutodetectProxy;
-    std::vector<Poco::UInt64> OBMExperimentNrs;
 
     std::string UserAgent() const {
         std::stringstream ss;
         ss << AppName + "/" + AppVersion;
-        for (auto it = OBMExperimentNrs.begin();
-                it != OBMExperimentNrs.end();
-                ++it) {
-            ss << "-obm-" << *it;
-        }
         return ss.str();
     }
 

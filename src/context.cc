@@ -20,7 +20,6 @@
 #include "error.h"
 #include "util/formatter.h"
 #include "https_client.h"
-#include "model/obm_action.h"
 #include "model/project.h"
 #include "util/random.h"
 #include "model/settings.h"
@@ -2893,18 +2892,6 @@ error Context::SetLoggedInUserFromJSON(
         return displayError(err);
     }
 
-    // Fetch OBM experiments..
-    err = pullObmExperiments();
-    if (err != noError) {
-        logger.error("Error pulling OBM experiments: " + err);
-    }
-
-    // ..and run the OBM experiments
-    err = runObmExperiments();
-    if (err != noError) {
-        logger.error("Error running OBM experiments: " + err);
-    }
-
     return noError;
 }
 
@@ -4352,47 +4339,6 @@ Project *Context::CreateProject(
     return result;
 }
 
-error Context::AddObmAction(
-    const Poco::UInt64 experiment_id,
-    const std::string &key,
-    const std::string &value) {
-    // Check input
-    if (!experiment_id) {
-        return error("missing experiment_id");
-    }
-    std::string trimmed_key("");
-    error err = db_->Trim(key, &trimmed_key);
-    if (err != noError) {
-        return displayError(err);
-    }
-    if (trimmed_key.empty()) {
-        return error("missing key");
-    }
-    std::string trimmed_value("");
-    err = db_->Trim(value, &trimmed_value);
-    if (err != noError) {
-        return displayError(err);
-    }
-    if (trimmed_value.empty()) {
-        return error("missing value");
-    }
-    // Add OBM action and save
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            logger.warning("Cannot create a OBM action, user logged out");
-            return noError;
-        }
-        ObmAction *action = new ObmAction();
-        action->SetExperimentID(experiment_id);
-        action->SetUID(user_->ID());
-        action->SetKey(trimmed_key);
-        action->SetValue(trimmed_value);
-        user_->related.ObmActions.push_back(action);
-    }
-    return displayError(save(false));
-}
-
 Client *Context::CreateClient(
     const Poco::UInt64 workspace_id,
     const std::string &client_name) {
@@ -4562,53 +4508,6 @@ error Context::offerBetaChannel(bool *did_offer) {
         updateUI(render);
 
         *did_offer = true;
-    } catch(const Poco::Exception& exc) {
-        return displayError(exc.displayText());
-    } catch(const std::exception& ex) {
-        return displayError(ex.what());
-    } catch(const std::string & ex) {
-        return displayError(ex);
-    }
-    return noError;
-}
-
-error Context::runObmExperiments() {
-    try {
-        // Collect OBM experiments
-        std::map<Poco::UInt64, ObmExperiment*> experiments;
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            if (!user_) {
-                logger.warning("User logged out, cannot OBM experiment");
-                return noError;
-            }
-            for (std::vector<ObmExperiment *>::const_iterator it =
-                user_->related.ObmExperiments.begin();
-                    it != user_->related.ObmExperiments.end();
-                    ++it) {
-                ObmExperiment *model = *it;
-                if (!model->DeletedAt()) {
-                    experiments[model->Nr()] = model;
-                    model->SetHasSeen(true);
-                }
-            }
-        }
-        // Save the (seen/unseen) state
-        error err = save(false);
-        if (err != noError) {
-            return err;
-        }
-        // Now pass the experiments on to UI
-        for (std::map<Poco::UInt64, ObmExperiment*>::const_iterator
-                it = experiments.begin();
-                it != experiments.end();
-                ++it) {
-            const ObmExperiment *experiment = it->second;
-            UI()->DisplayObmExperiment(
-                experiment->Nr(),
-                experiment->Included(),
-                experiment->HasSeen());
-        }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -5211,13 +5110,6 @@ void Context::legacySyncerActivity() {
             }
             trigger_sync_ = false;
 
-            // Push cached OBM action
-            err = pushObmAction();
-            if (err != noError) {
-                std::cout << "SYNC: sync-pushObm ERROR\n";
-                logger.error("Error pushing OBM action: " + err);
-            }
-
             displayError(save(false));
         }
 
@@ -5235,13 +5127,6 @@ void Context::legacySyncerActivity() {
                 setOnline("Data pushed");
             }
             trigger_push_ = false;
-
-            // Push cached OBM action
-            err = pushObmAction();
-            if (err != noError) {
-                std::cout << "SYNC: pushObm ERROR\n";
-                logger.error("Error pushing OBM action: " + err);
-            }
 
             displayError(save(false));
         }
@@ -5279,13 +5164,6 @@ void Context::batchedSyncerActivity() {
                 setOnline("Data pushed");
             }
             trigger_sync_ = false;
-
-            // Push cached OBM action
-            err = pushObmAction();
-            if (err != noError) {
-                std::cout << "SYNC: sync-pushObm ERROR\n";
-                logger.error("Error pushing OBM action: " + err);
-            }
 
             displayError(save(false));
         }
@@ -6069,131 +5947,6 @@ error Context::pushEntries(
     }
     return noError;
 }
-
-error Context::pullObmExperiments() {
-    try {
-        if (HTTPClient::Config.OBMExperimentNrs.empty()) {
-            logger.debug("No OBM experiment enabled by UI");
-            return noError;
-        }
-
-        logger.trace("Fetching OBM experiments from backend");
-
-        std::string apitoken("");
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            if (!user_) {
-                logger.warning("Cannot fetch OBM experiments without user");
-                return noError;
-            }
-            apitoken = user_->APIToken();
-        }
-
-        HTTPRequest req;
-        req.host = urls::API();
-        req.relative_url = "/api/v9/me/experiments";
-        req.basic_auth_username = apitoken;
-        req.basic_auth_password = "api_token";
-
-        HTTPResponse resp = TogglClient::GetInstance().Get(req);
-        if (resp.err != noError) {
-            return resp.err;
-        }
-
-        Json::Value json;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, json)) {
-            return error("Error in OBM experiments response body");
-        }
-
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            if (!user_) {
-                logger.warning("Cannot apply OBM experiments without user");
-                return noError;
-            }
-            user_->LoadObmExperiments(json);
-        }
-
-        return noError;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string & ex) {
-        return ex;
-    }
-}
-
-error Context::pushObmAction() {
-    try {
-        ObmAction *for_upload = nullptr;
-        HTTPRequest req;
-        req.host = urls::API();
-        req.basic_auth_password = "api_token";
-
-        // Get next OBM action for upload
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            if (!user_) {
-                logger.warning("cannot push changes when logged out");
-                return noError;
-            }
-
-            if (user_->related.ObmActions.empty()) {
-                return noError;
-            }
-
-            req.basic_auth_username = user_->APIToken();
-            if (req.basic_auth_username.empty()) {
-                return error("cannot push OBM actions without API token");
-            }
-
-            // find action that has not been uploaded yet
-            for (std::vector<ObmAction *>::iterator it =
-                user_->related.ObmActions.begin();
-                    it != user_->related.ObmActions.end();
-                    ++it) {
-                ObmAction *model = *it;
-                if (!model->IsMarkedAsDeletedOnServer()) {
-                    for_upload = model;
-                    break;
-                }
-            }
-
-            if (!for_upload) {
-                return noError;
-            }
-
-            Json::Value root = for_upload->SaveToJSON();
-            req.relative_url = for_upload->ModelURL();
-            req.payload = Json::StyledWriter().write(root);
-        }
-
-        logger.debug(req.payload);
-
-        HTTPResponse resp = TogglClient::GetInstance().silentPost(req);
-        if (resp.err != noError) {
-            // backend responds 204 on success
-            if (resp.status_code != 204) {
-                return resp.err;
-            }
-        }
-
-        // mark as deleted to prevent duplicate uploading
-        // (and make sure all other actions are uploaded)
-        for_upload->MarkAsDeletedOnServer();
-        for_upload->Delete();
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string & ex) {
-        return ex;
-    }
-    return noError;
-}
-
 
 error Context::me(
     const std::string &email,

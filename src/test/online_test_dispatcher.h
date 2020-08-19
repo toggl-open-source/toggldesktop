@@ -74,7 +74,6 @@ private:
         static void on_time_entry_editor(const std::vector<TestType> &args);
         static void on_display_settings(const std::vector<TestType> &args);
         static void on_project_colors(const std::vector<TestType> &args);
-        static void on_obm_experiment(const std::vector<TestType> &args);
         static void on_display_timer_state(const std::vector<TestType> &args);
         static void on_display_idle_notification(const std::vector<TestType> &args);
         static void on_countries(const std::vector<TestType> &args);
@@ -109,7 +108,6 @@ private:
         static void on_time_entry_editor(const bool_t open, TogglTimeEntryView *te, const char *focused_field_name);
         static void on_display_settings(const bool_t open, TogglSettingsView *settings);
         static void on_project_colors(string_list_t color_list, const uint64_t color_count);
-        static void on_obm_experiment(const uint64_t nr, const bool_t included, const bool_t seen);
         static void on_display_timer_state(TogglTimeEntryView *te);
         static void on_display_idle_notification(const char_t *guid, const char_t *since, const char_t *duration, const int64_t started, const char_t *description, const char_t *project, const char_t *task, const char_t *projectColor);
         static void on_countries(TogglCountryView *first);

@@ -10,7 +10,6 @@
 #include "const.h"
 #include "util/formatter.h"
 #include "https_client.h"
-#include "model/obm_action.h"
 #include "model/project.h"
 #include "model/tag.h"
 #include "model/task.h"
@@ -789,42 +788,6 @@ error User::LoadTimeEntriesFromJSONString(const std::string & json) {
     deleteZombies(related.TimeEntries, alive);
 
     return noError;
-}
-
-void User::LoadObmExperiments(Json::Value const &obm) {
-    if (obm.isObject()) {
-        loadObmExperimentFromJson(obm);
-    } else if (obm.isArray()) {
-        for (unsigned int i = 0; i < obm.size(); i++) {
-            loadObmExperimentFromJson(obm[i]);
-        }
-    }
-}
-
-void User::loadObmExperimentFromJson(Json::Value const &obm) {
-    Poco::UInt64 nr = obm["nr"].asUInt64();
-    if (!nr) {
-        return;
-    }
-    ObmExperiment *model = nullptr;
-    for (std::vector<ObmExperiment *>::const_iterator it =
-        related.ObmExperiments.begin();
-            it != related.ObmExperiments.end();
-            ++it) {
-        ObmExperiment *existing = *it;
-        if (existing->Nr() == nr) {
-            model = existing;
-            break;
-        }
-    }
-    if (!model) {
-        model = new ObmExperiment();
-        model->SetUID(ID());
-        model->SetNr(nr);
-        related.ObmExperiments.push_back(model);
-    }
-    model->SetIncluded(obm["included"].asBool());
-    model->SetActions(obm["actions"].asString());
 }
 
 void User::LoadUserAndRelatedDataFromJSON(

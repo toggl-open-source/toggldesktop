@@ -544,24 +544,6 @@ void toggl_fullsync(void *context) {
     app(context)->FullSync();
 }
 
-bool_t toggl_add_obm_action(
-    void *context,
-    const uint64_t experiment_id,
-    const char_t *key,
-    const char_t *value) {
-
-    return toggl::noError == app(context)->AddObmAction(
-        experiment_id,
-        to_string(key),
-        to_string(value));
-}
-
-void toggl_add_obm_experiment_nr(
-    const uint64_t nr) {
-
-    toggl::HTTPClient::Config.OBMExperimentNrs.push_back(nr);
-}
-
 char_t *toggl_create_client(
     void *context,
     const uint64_t workspace_id,
@@ -1224,12 +1206,6 @@ void toggl_on_promotion(
     void *context,
     TogglDisplayPromotion cb) {
     app(context)->UI()->OnDisplayPromotion(cb);
-}
-
-void toggl_on_obm_experiment(
-    void *context,
-    TogglDisplayObmExperiment cb) {
-    app(context)->UI()->OnDisplayObmExperiment(cb);
 }
 
 void toggl_set_sleep(void *context) {

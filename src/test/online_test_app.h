@@ -124,7 +124,6 @@ private:
     void on_time_entry_editor(bool open, const TimeEntry &te, const std::string &focused_field_name);
     void on_display_settings(bool open, const Settings &settings);
     void on_project_colors(const std::list<std::string> &color_list, uint64_t color_count);
-    void on_obm_experiment(uint64_t nr, bool included, bool seen);
     void on_display_timer_state(const TimeEntry &te);
     void on_display_idle_notification(const std::string &guid, const std::string &since, const std::string &duration, uint64_t started, const std::string &description, const std::string &project, const std::string &task, const std::string &projectColor);
     void on_countries(const std::list<Country> &list);

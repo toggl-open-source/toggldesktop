@@ -6,7 +6,6 @@
 
 #include "toggl_api_test.h"
 #include "https_client.h"
-#include "model/obm_action.h"
 #include "proxy.h"
 #include "model/settings.h"
 #include "model/time_entry.h"
@@ -72,9 +71,6 @@ std::vector<TimeEntry> time_entries;
 
 // on_project_colors
 std::vector<std::string> project_colors;
-
-// on_obm_experiment
-std::vector<ObmExperiment*> obm_experiments;
 
 TimeEntry time_entry_by_id(uint64_t id) {
     TimeEntry te;
@@ -271,17 +267,6 @@ void on_project_colors(
     }
 }
 
-void on_obm_experiment(
-    const uint64_t nr,
-    const bool_t included,
-    const bool_t seen) {
-    ObmExperiment *experiment = new ObmExperiment;
-    experiment->SetNr(nr);
-    experiment->SetIncluded(included);
-    experiment->SetHasSeen(seen);
-    testresult::obm_experiments.push_back(experiment);
-}
-
 void on_display_timer_state(TogglTimeEntryView *te) {
     testing::testresult::timer_state = TimeEntry();
     if (te) {
@@ -356,7 +341,6 @@ class App {
         toggl_on_idle_notification(ctx_, on_display_idle_notification);
         toggl_on_project_colors(ctx_, on_project_colors);
         toggl_on_help_articles(ctx_, on_help_articles);
-        toggl_on_obm_experiment(ctx_, on_obm_experiment);
 
         poco_assert(!toggl_ui_start(ctx_));
     }
@@ -422,16 +406,6 @@ TEST(toggl_api, testing_sleep) {
     int elapsed_seconds = time(0) - start;
     ASSERT_GE(elapsed_seconds, 1);
     ASSERT_LT(elapsed_seconds, 2);
-}
-
-TEST(toggl_api, toggl_add_obm_experiment_nr) {
-    testing::App app;
-
-    toggl_add_obm_experiment_nr(123);
-    ASSERT_EQ("tests/0.1-obm-123", toggl::HTTPClient::Config.UserAgent());
-
-    toggl_add_obm_experiment_nr(456);
-    ASSERT_EQ("tests/0.1-obm-123-obm-456", toggl::HTTPClient::Config.UserAgent());
 }
 
 TEST(toggl_api, toggl_set_settings) {
@@ -884,19 +858,6 @@ TEST(toggl_api, toggl_google_login) {
 TEST(toggl_api, toggl_sync) {
     testing::App app;
     toggl_sync(app.ctx());
-}
-
-TEST(toggl_api, toggl_add_obm_action) {
-    testing::App app;
-
-    std::string json = loadTestData();
-    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
-
-    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 0, STR("key"), STR("value")));
-    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 1, STR("key"), STR(" ")));
-    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 2, STR(" "), STR("")));
-    ASSERT_TRUE(toggl_add_obm_action(app.ctx(), 3, STR("key"), STR("value")));
-    ASSERT_TRUE(toggl_add_obm_action(app.ctx(), 3, STR("key"), STR("value")));
 }
 
 TEST(toggl_api, toggl_add_project) {

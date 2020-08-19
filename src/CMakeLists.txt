@@ -48,7 +48,6 @@ set(LIBRARY_SOURCE_FILES
     model/base_model.cc
     model_change.cc
     model/client.cc
-    model/obm_action.cc
     model/project.cc
     model/settings.cc
     model/tag.cc

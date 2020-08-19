@@ -26,7 +26,7 @@ public:
         previous_ = current_;
     }
     // on some beautiful day in the future, we could also be able to delete the copy assignment operator
-    // it's required for settings, obmexperiments and timeline for now
+    // it's required for settings and timeline for now
     // Property& operator=(const Property &o) = delete;
     /* Dirtiness implementation */
     // Property is dirty when the current and previous versions of it are different.

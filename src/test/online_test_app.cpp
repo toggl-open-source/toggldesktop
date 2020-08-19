@@ -449,10 +449,6 @@ void test::App::on_project_colors(const std::list<std::string> &color_list, cons
     WHEREAMI;
 }
 
-void test::App::on_obm_experiment(const uint64_t nr, bool included, bool seen) {
-    WHEREAMI;
-}
-
 void test::App::on_display_timer_state(const test::TimeEntry &te) {
     WHEREAMI;
     runningTimeEntry_ = te;
