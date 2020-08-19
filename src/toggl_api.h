@@ -250,6 +250,11 @@ extern "C" {
         TimerEditActionTypeBillable = 1u << 4
     } TimerEditActionType;
 
+typedef enum {
+        TogglServerStaging = 0,
+        TogglServerProduction
+    } TogglServerType;
+
     // Callbacks that need to be implemented in UI
 
     typedef void (*TogglDisplayApp)(
@@ -439,6 +444,10 @@ extern "C" {
 
     TOGGL_EXPORT void toggl_set_staging_override(
         bool_t value);
+
+    // To request what server is set up in the library
+
+    TOGGL_EXPORT TogglServerType toggl_get_server_type();
 
     // Various parts of UI can tell the app to show itself.
 

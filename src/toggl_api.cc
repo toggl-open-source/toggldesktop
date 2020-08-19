@@ -1695,3 +1695,10 @@ TogglRgbColor toggl_get_adaptive_rgb_color_from_hex(
     TogglAdaptiveColor type) {
     return toggl::ColorConverter::GetRgbAdaptiveColor(to_string(hexColor), type);
 }
+
+TogglServerType toggl_get_server_type() {
+    if (toggl::urls::IsUsingStagingAsBackend())
+        return TogglServerStaging;
+    else
+        return TogglServerProduction;
+}
