@@ -405,4 +405,26 @@ void Analytics::TrackTimelineMenuContext(const std::string &client_id, const Tim
     }
 }
 
+void Analytics::TrackTimerEdit(const std::string &client_id, const TimerEditActionType action) {
+    std::string category = "timer-edit";
+    std::string action_str = timer_action_types.at(action);
+    Track(client_id, category, action_str);
+}
+
+void Analytics::TrackTimerStart(const std::string &client_id, const TimerEditActionType actions) {
+    std::string category = "timer-start";
+    std::string action_str = "";
+
+    for (auto const& action_pair : timer_action_types) {
+        if (actions & action_pair.first) {
+            if (!action_str.empty()) {
+                action_str += "-";
+            }
+            action_str += action_pair.second;
+        }
+    }
+
+    Track(client_id, category, action_str);
+}
+
 }  // namespace toggl

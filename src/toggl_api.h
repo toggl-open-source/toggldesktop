@@ -242,6 +242,14 @@ extern "C" {
         TimelineMenuContextTypeChangeLastEntryStartTime
     } TimelineMenuContextType;
 
+    typedef enum {
+        TimerEditActionTypeDescription = 1u << 0,
+        TimerEditActionTypeDuration = 1u << 1,
+        TimerEditActionTypeProject = 1u << 2,
+        TimerEditActionTypeTags = 1u << 3,
+        TimerEditActionTypeBillable = 1u << 4
+    } TimerEditActionType;
+
     // Callbacks that need to be implemented in UI
 
     typedef void (*TogglDisplayApp)(
@@ -1230,6 +1238,14 @@ extern "C" {
 
     TOGGL_EXPORT void track_expand_all_days(
         void *context);
+
+    TOGGL_EXPORT void track_timer_edit(
+        void *context,
+        TimerEditActionType action);
+
+    TOGGL_EXPORT void track_timer_start(
+        void *context,
+        TimerEditActionType actions);
 
     TOGGL_EXPORT bool_t toggl_update_time_entry(
         void *context,

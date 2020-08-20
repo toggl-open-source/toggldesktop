@@ -4,7 +4,7 @@
 #define SRC_ANALYTICS_H_
 
 #include <string>
-
+#include <unordered_map>
 #include <Poco/Task.h>
 #include <Poco/TaskManager.h>
 #include <Poco/LocalDateTime.h>
@@ -86,8 +86,27 @@ class Analytics : public Poco::TaskManager {
 
     void TrackTimelineMenuContext(const std::string &client_id, const TimelineMenuContextType type);
 
+    /// Tracks that user performed an edit operation on a running time entry via the Timer component
+    /// @param action Single action that was used to edit the running time entry.
+    void TrackTimerEdit(const std::string &client_id, const TimerEditActionType action);
+
+    /// Tracks that user started new time entry from the Timer component.
+    /// @param actions Bitmask of used timer action types before starting the time entry. For example, if user set project and billable values
+    ///                 this param can be set to `TimerEditActionTypeProject | TimerEditActionTypeBillable`.
+    ///                 @c TimerEditActionTypeDescription is ignored for this analytics event.
+    void TrackTimerStart(const std::string &client_id, const TimerEditActionType actions);
+
  private:
     Poco::LocalDateTime settings_sync_date;
+
+    inline static const
+    std::unordered_map<TimerEditActionType, std::string> timer_action_types {
+        {TimerEditActionTypeDescription, "description"},
+        {TimerEditActionTypeDuration, "duration"},
+        {TimerEditActionTypeProject, "project"},
+        {TimerEditActionTypeTags, "tags"},
+        {TimerEditActionTypeBillable, "billable"}
+    };
 
     void TrackSize(const std::string &client_id,
                    const std::string &os,
