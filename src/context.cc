@@ -6814,6 +6814,18 @@ void Context::TrackExpandAllDays() {
     }
 }
 
+void Context::TrackTimerEdit(TimerEditActionType action) {
+    if ("production" == environment_) {
+        analytics_.TrackTimerEdit(db_->AnalyticsClientID(), action);
+    }
+}
+
+void Context::TrackTimerStart(TimerEditActionType actions) {
+    if ("production" == environment_) {
+        analytics_.TrackTimerStart(db_->AnalyticsClientID(), actions);
+    }
+}
+
 error Context::UpdateTimeEntry(
     const std::string &GUID,
     const std::string &description,

@@ -79,7 +79,7 @@ void *ctx;
 - (void)setProjectForTimeEntryWithGUID:(NSString *)guid
 								taskID:(uint64_t)taskID
 							 projectID:(uint64_t)projectID
-						   projectGUID:(NSString *)projectGUID
+						   projectGUID:(nullable NSString *)projectGUID
 {
 	toggl_set_time_entry_project(ctx,
 								 [guid UTF8String],
@@ -446,11 +446,6 @@ void *ctx;
     toggl_user_did_edit_add_timeentry_on_timeline_view(ctx);
 }
 
--(void)trackTimelineMenuContextType:(TimelineMenuContextType)type
-{
-    toggl_track_timeline_menu_context(ctx, type);
-}
-
 #pragma mark - Auth
 
 - (void)loginWithEmail:(NSString *)email password:(NSString *)password {
@@ -475,6 +470,21 @@ void *ctx;
 - (void)resetEnableSSO
 {
     toggl_reset_enable_SSO(ctx);
+}
+
+#pragma mark - Analytics
+
+- (void)trackTimelineMenuContextType:(TimelineMenuContextType)type
+{
+    toggl_track_timeline_menu_context(ctx, type);
+}
+
+- (void)trackTimerEditUsingAction:(TimerEditActionType)action {
+    track_timer_edit(ctx, action);
+}
+
+- (void)trackTimerStartUsingActions:(TimerEditActionType)actions {
+    track_timer_start(ctx, actions);
 }
 
 #pragma mark - General

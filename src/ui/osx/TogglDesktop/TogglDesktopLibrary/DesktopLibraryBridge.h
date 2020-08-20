@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setProjectForTimeEntryWithGUID:(NSString *)guid
 								taskID:(uint64_t)taskID
 							 projectID:(uint64_t)projectID
-						   projectGUID:(NSString *)projectGUID;
+						   projectGUID:(nullable NSString *)projectGUID;
 
 - (void)updateTimeEntryWithDescription:(NSString *)descriptionName guid:(NSString *)guid;
 
@@ -134,9 +134,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setNeedEnableSSOWithCode:(NSString *)code;
 - (void)resetEnableSSO;
 
-#pragma mark - Tracking
+#pragma mark - Analytics
 
 - (void)trackTimelineMenuContextType:(TimelineMenuContextType)type;
+- (void)trackTimerEditUsingAction:(TimerEditActionType)action;
+- (void)trackTimerStartUsingActions:(TimerEditActionType)actions;
 
 #pragma mark - General
 

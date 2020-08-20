@@ -46,7 +46,7 @@ final class TimerViewModel: NSObject {
                 timeEntry.billable = isBillable
 
                 if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
-                    DesktopLibraryBridge.shared().setBillableForTimeEntryWithTimeEntryGUID(timeEntryGUID, isBillable: isBillable)
+                    save(isBillable: isBillable, forEntryWithGUID: timeEntryGUID)
                 }
             }
 
@@ -65,7 +65,7 @@ final class TimerViewModel: NSObject {
                 timeEntry.tags = selectedTags
 
                 if timeEntry.isRunning(), let timeEntryGUID = timeEntry.guid {
-                    DesktopLibraryBridge.shared().updateTimeEntry(withTags: selectedTags, guid: timeEntryGUID)
+                    save(tags: selectedTags, forEntryWithGUID: timeEntryGUID)
                 }
             }
 
@@ -108,6 +108,10 @@ final class TimerViewModel: NSObject {
                                               updateNotificationName: .TagStorageChangedNotification)
 
     private var timer: Timer!
+
+    private var actionsUsedBeforeStart: Set<TimerEditActionType> = Set()
+
+    // MARK: - Lifecycle
 
     override init() {
         super.init()
@@ -179,6 +183,8 @@ final class TimerViewModel: NSObject {
 
     func setBillable(_ isOn: Bool) {
         billableState = isOn ? .on : .off
+
+        actionsUsedBeforeStart.insert(TimerEditActionTypeBillable)
     }
 
     func setDuration(_ duration: String) {
@@ -189,9 +195,11 @@ final class TimerViewModel: NSObject {
             timeEntry.started = startDate(fromDurationString: durationString)
 
             if let timeEntryGUID = timeEntry.guid {
-                DesktopLibraryBridge.shared().updateTimeEntry(withDuration: durationString, guid: timeEntryGUID)
+                save(duration: durationString, forEntryWithGUID: timeEntryGUID)
             }
         }
+
+        actionsUsedBeforeStart.insert(TimerEditActionTypeDuration)
     }
 
     func createNewTag(withName name: String) {
@@ -211,13 +219,12 @@ final class TimerViewModel: NSObject {
         timeEntry.projectColor = ""
 
         if timeEntry.isRunning() {
-            DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
-                                                                         taskID: timeEntry.taskID,
-                                                                         projectID: timeEntry.projectID,
-                                                                         projectGUID: timeEntry.projectGUID)
+            save(taskID: timeEntry.taskID, projectID: timeEntry.projectID, projectGUID: timeEntry.projectGUID, forEntryWithGUID: timeEntry.guid)
         }
 
         onProjectUpdated?(Project(timeEntry: timeEntry))
+
+        actionsUsedBeforeStart.insert(TimerEditActionTypeProject)
     }
 
     // MARK: - Private
@@ -232,16 +239,44 @@ final class TimerViewModel: NSObject {
 
         descriptionDataSource.input?.resetTable()
         descriptionDataSource.clearFilter()
+
+        analyticsTrackTimerStart()
     }
 
     private func stopTimeEntry() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: kCommandStop), object: nil, userInfo: nil)
     }
 
-    private func saveCurrentDescription() {
+    private func saveCurrentDescription(trackAnalytics: Bool = true) {
         if let timeEntryGUID = timeEntry.guid {
             DesktopLibraryBridge.shared().updateTimeEntry(withDescription: entryDescription, guid: timeEntryGUID)
+            if trackAnalytics {
+                DesktopLibraryBridge.shared().trackTimerEdit(using: TimerEditActionTypeDescription)
+            }
         }
+    }
+
+    private func save(duration: String, forEntryWithGUID entryGUID: String) {
+        DesktopLibraryBridge.shared().updateTimeEntry(withDuration: duration, guid: entryGUID)
+        DesktopLibraryBridge.shared().trackTimerEdit(using: TimerEditActionTypeDuration)
+    }
+
+    private func save(taskID: UInt64, projectID: UInt64, projectGUID: String?, forEntryWithGUID entryGUID: String) {
+        DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(entryGUID,
+                                                                     taskID: taskID,
+                                                                     projectID: projectID,
+                                                                     projectGUID: projectGUID)
+        DesktopLibraryBridge.shared().trackTimerEdit(using: TimerEditActionTypeProject)
+    }
+
+    private func save(isBillable: Bool, forEntryWithGUID entryGUID: String) {
+        DesktopLibraryBridge.shared().setBillableForTimeEntryWithTimeEntryGUID(entryGUID, isBillable: isBillable)
+        DesktopLibraryBridge.shared().trackTimerEdit(using: TimerEditActionTypeBillable)
+    }
+
+    private func save(tags: [String], forEntryWithGUID entryGUD: String) {
+        DesktopLibraryBridge.shared().updateTimeEntry(withTags: tags, guid: entryGUD)
+        DesktopLibraryBridge.shared().trackTimerEdit(using: TimerEditActionTypeTags)
     }
 
     private func fetchTags() {
@@ -322,7 +357,6 @@ final class TimerViewModel: NSObject {
         }
 
         isRunning = entry.isRunning()
-        billableState = entry.billable ? .on : .off
         selectedTags = entry.tags ?? []
 
         if entry.isRunning() {
@@ -347,7 +381,7 @@ final class TimerViewModel: NSObject {
         // e.g. if TE was stopped by keyboard shortcut
         // and Timer haven't yet updated the contents of description field
         if !entryDescription.isEmpty {
-            saveCurrentDescription()
+            saveCurrentDescription(trackAnalytics: false)
         }
 
         timeEntry = TimeEntryViewItem()
@@ -358,6 +392,7 @@ final class TimerViewModel: NSObject {
         selectedTags = []
         updateBillableStatus()
         focusTimer()
+        actionsUsedBeforeStart = Set()
 
         onProjectUpdated?(nil)
     }
@@ -398,10 +433,10 @@ final class TimerViewModel: NSObject {
         timeEntry.projectColor = autocompleteItem.projectColor
 
         if timeEntry.isRunning() {
-            DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
-                                                                         taskID: timeEntry.taskID,
-                                                                         projectID: timeEntry.projectID,
-                                                                         projectGUID: autocompleteItem.projectGUID)
+            save(taskID: timeEntry.taskID,
+                 projectID: timeEntry.projectID,
+                 projectGUID: autocompleteItem.projectGUID,
+                 forEntryWithGUID: timeEntry.guid)
         }
 
         onProjectUpdated?(Project(timeEntry: timeEntry))
@@ -411,6 +446,12 @@ final class TimerViewModel: NSObject {
             updateBillableStatus()
             selectedTags = []
         }
+    }
+
+    private func analyticsTrackTimerStart() {
+        let actions = actionsUsedBeforeStart.map { $0.rawValue }.reduce(0, { $0 | $1 })
+        DesktopLibraryBridge.shared().trackTimerStart(usingActions: TimerEditActionType(rawValue: actions))
+        actionsUsedBeforeStart = Set()
     }
 
     // MARK: - Notifications handling
@@ -540,6 +581,8 @@ extension TimerViewModel: AutoCompleteViewDataSourceDelegate {
             }
             fillEntryProject(from: projectItem.item)
             onProjectSelected?(Project(timeEntry: timeEntry))
+
+            actionsUsedBeforeStart.insert(TimerEditActionTypeProject)
         }
     }
 }
@@ -548,5 +591,9 @@ extension TimerViewModel: TagDataSourceDelegate {
 
     func tagSelectionChanged(with selectedTags: [Tag]) {
         self.selectedTags = selectedTags.map { $0.name }
+
+        actionsUsedBeforeStart.insert(TimerEditActionTypeTags)
     }
 }
+
+extension TimerEditActionType: Hashable {}

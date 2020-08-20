@@ -1574,6 +1574,26 @@ void track_expand_all_days(void *context) {
     app(context)->TrackExpandAllDays();
 }
 
+void track_timer_edit(
+    void *context,
+    TimerEditActionType action) {
+
+    if (!context) {
+        return;
+    }
+    app(context)->TrackTimerEdit(action);
+}
+
+void track_timer_start(
+    void *context,
+    TimerEditActionType actions) {
+
+    if (!context) {
+        return;
+    }
+    app(context)->TrackTimerStart(actions);
+}
+
 bool_t toggl_update_time_entry(
     void *context,
     const char_t *guid,
