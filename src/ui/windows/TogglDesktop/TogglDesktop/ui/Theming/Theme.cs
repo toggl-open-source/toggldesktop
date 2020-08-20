@@ -31,11 +31,8 @@ namespace TogglDesktop.Theming
                 case 0:
                     ActivateDetectedColorSchemeOrDefault();
                     break;
-                case 1:
-                    ActivateColorScheme(ColorScheme.Light);
-                    break;
-                case 2:
-                    ActivateColorScheme(ColorScheme.Dark);
+                default:
+                    ActivateColorScheme((ColorScheme) selectedTheme);
                     break;
             }
         }

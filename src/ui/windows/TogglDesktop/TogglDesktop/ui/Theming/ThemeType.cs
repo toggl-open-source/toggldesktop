@@ -9,6 +9,7 @@ namespace TogglDesktop.Theming
     public enum ColorScheme
     {
         Light = 1,
-        Dark = 2
+        Dark = 2,
+        Dark_Legacy = 3
     }
 }

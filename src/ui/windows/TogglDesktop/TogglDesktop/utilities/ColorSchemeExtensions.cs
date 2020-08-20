@@ -9,6 +9,7 @@ namespace TogglDesktop
             return scheme switch
             {
                 ColorScheme.Dark => Toggl.TogglAdaptiveColor.AdaptiveColorShapeOnDarkBackground,
+                ColorScheme.Dark_Legacy => Toggl.TogglAdaptiveColor.AdaptiveColorShapeOnDarkBackground,
                 _ => Toggl.TogglAdaptiveColor.AdaptiveColorShapeOnLightBackground
             };
         }
@@ -18,6 +19,7 @@ namespace TogglDesktop
             return scheme switch
             {
                 ColorScheme.Dark => Toggl.TogglAdaptiveColor.AdaptiveColorTextOnDarkBackground,
+                ColorScheme.Dark_Legacy => Toggl.TogglAdaptiveColor.AdaptiveColorTextOnDarkBackground,
                 _ => Toggl.TogglAdaptiveColor.AdaptiveColorTextOnLightBackground
             };
         }

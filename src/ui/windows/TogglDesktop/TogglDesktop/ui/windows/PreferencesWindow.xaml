@@ -45,6 +45,7 @@
                             <ComboBoxItem IsSelected="True">Use my Windows mode</ComboBoxItem>
                             <ComboBoxItem>Light</ComboBoxItem>
                             <ComboBoxItem>Dark</ComboBoxItem>
+                            <ComboBoxItem>Dark - Legacy</ComboBoxItem>
                         </ComboBox>
                         <TextBlock Margin="0 32 0 0" Style="{DynamicResource Toggl.TitleText}" Text="Set up shortcuts" />
                         <Grid Margin="0 16 0 0" HorizontalAlignment="Left">
