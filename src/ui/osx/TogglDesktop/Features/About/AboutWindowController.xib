@@ -42,7 +42,7 @@
                                 </imageView>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0nj-Ur-G2E">
                                     <rect key="frame" x="65" y="251" width="98" height="14"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="TOGGL DESKTOP" id="5cr-k5-6Pf">
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="TOGGL TRACK" id="5cr-k5-6Pf">
                                         <font key="font" metaFont="systemMedium" size="11"/>
                                         <color key="textColor" name="login-text-color"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

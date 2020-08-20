@@ -15,10 +15,10 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <menu title="AMainMenu" systemMenu="main" id="29">
             <items>
-                <menuItem title="Toggl Desktop" id="56">
-                    <menu key="submenu" title="Toggl Desktop" systemMenu="apple" id="57">
+                <menuItem title="Toggl Track" id="56">
+                    <menu key="submenu" title="Toggl Track" systemMenu="apple" id="57">
                         <items>
-                            <menuItem title="About Toggl Desktop" id="58">
+                            <menuItem title="About Toggl Track" id="58">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="onAboutMenuItem:" target="494" id="tGk-iF-fGC"/>
@@ -47,7 +47,7 @@
                             <menuItem isSeparatorItem="YES" id="143">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Hide Toggl Desktop" keyEquivalent="h" id="134">
+                            <menuItem title="Hide Toggl Track" keyEquivalent="h" id="134">
                                 <connections>
                                     <action selector="hide:" target="-1" id="eMV-wj-GQh"/>
                                 </connections>
@@ -71,7 +71,7 @@
                             <menuItem isSeparatorItem="YES" id="149">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Quit Toggl Desktop" keyEquivalent="q" id="136">
+                            <menuItem title="Quit Toggl Track" keyEquivalent="q" id="136">
                                 <connections>
                                     <action selector="terminate:" target="-3" id="449"/>
                                 </connections>
@@ -287,7 +287,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="491">
                         <items>
-                            <menuItem title="Toggl Desktop Help" keyEquivalent="?" id="492">
+                            <menuItem title="Toggl Track Help" keyEquivalent="?" id="492">
                                 <connections>
                                     <action selector="onHelpMenuItem:" target="494" id="Yuo-YB-F1l"/>
                                 </connections>

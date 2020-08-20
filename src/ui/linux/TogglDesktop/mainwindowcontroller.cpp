@@ -540,7 +540,7 @@ void MainWindowController::closeEvent(QCloseEvent *event) {
 
     QMessageBox::StandardButton dialog;
     dialog = QMessageBox::question(this,
-                                   "Quit Toggl Desktop",
+                                   "Quit Toggl Track",
                                    "Really quit the app?",
                                    QMessageBox::Ok | QMessageBox::Cancel);
     if (QMessageBox::Ok == dialog) {
@@ -562,7 +562,7 @@ void MainWindowController::displayUpdate(const QString url) {
     if (QMessageBox::Yes == QMessageBox(
         QMessageBox::Question,
         "Download new version?",
-        "A new version of Toggl Desktop is available. Continue with download?",
+        "A new version of Toggl Track is available. Continue with download?",
         QMessageBox::No|QMessageBox::Yes).exec()) {
         QDesktopServices::openUrl(QUrl(url));
         quitApp();

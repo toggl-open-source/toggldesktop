@@ -126,7 +126,7 @@
 
 - (void)scheduleAutoTrackerWithProjectName:(NSString *)projectName projectID:(NSNumber *)projectID taskID:(NSNumber *)taskID
 {
-	NSUserNotification *notification = [self defaultUserNotificationWithTitle:@"Toggl Desktop Autotracker"
+	NSUserNotification *notification = [self defaultUserNotificationWithTitle:@"Toggl Track Autotracker"
 															  informativeText:[NSString stringWithFormat:@"Track %@?", projectName]];
 
 	notification.hasActionButton = YES;
@@ -145,7 +145,7 @@
 
 - (void)scheduleUpdateReady
 {
-    NSUserNotification *notification = [self defaultUserNotificationWithTitle:@"A new version of Toggl Desktop is ready!"
+    NSUserNotification *notification = [self defaultUserNotificationWithTitle:@"A new version of Toggl Track is ready!"
                                                               informativeText:@"Click here to restart and install"];
 
     notification.userInfo = @{ @"update-restart": @"YES" };

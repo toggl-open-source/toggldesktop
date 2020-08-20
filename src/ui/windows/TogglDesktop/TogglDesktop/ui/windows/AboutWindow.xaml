@@ -37,7 +37,7 @@
             <Viewbox Width="63" Height="19" Margin="0 50 0 8">
                 <ContentControl Content="{StaticResource Toggl.LogoSvg}" />
             </Viewbox>
-            <TextBlock Text="Toggl Desktop" HorizontalAlignment="Center"
+            <TextBlock Text="Toggl Track" HorizontalAlignment="Center"
                        Style="{StaticResource Toggl.TitleText}"
                        Margin="0 0 0 10"/>
             <TextBlock Style="{StaticResource Toggl.CaptionText}"

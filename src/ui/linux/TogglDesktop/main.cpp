@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) try {
     qRegisterMetaType<QVector<AutocompleteView*> >("QVector<AutocompleteView*>");
     qRegisterMetaType<QVector<GenericView*> >("QVector<GenericView*>");
 
-    QApplication::setApplicationName("Toggl Desktop");
+    QApplication::setApplicationName("Toggl Track");
     QApplication::setOrganizationName("Toggl");
 
     TogglApplication a(argc, argv);
@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) try {
     Bugsnag::app.version = APP_VERSION;
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("Toggl Desktop");
+    parser.setApplicationDescription("Toggl Track");
     parser.addHelpOption();
     parser.addVersionOption();
 

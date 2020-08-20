@@ -289,7 +289,7 @@ extern void *ctx;
             [[SystemMessage shared] presentOffline:@"Error" subTitle:@"Offline, no network"];
             break;
         case 2 :
-            [[SystemMessage shared] presentOffline:@"Error" subTitle:@"Offline, Toggl not responding"];
+            [[SystemMessage shared] presentOffline:@"Error" subTitle:@"Offline, Toggl Track not responding"];
             break;
         default :
             [self closeError];
