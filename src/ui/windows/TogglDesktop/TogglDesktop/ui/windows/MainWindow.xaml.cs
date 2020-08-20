@@ -780,8 +780,8 @@ namespace TogglDesktop
                 var description = timeEntry.Value.Description;
 
                 this.Title = string.IsNullOrEmpty(description)
-                    ? "Toggl Desktop"
-                    : description + " - Toggl Desktop";
+                    ? "Toggl Track"
+                    : description + " - Toggl Track";
 
                 if (this.IsInManualMode)
                     this.SetManualMode(false);
@@ -789,7 +789,7 @@ namespace TogglDesktop
             else
             {
                 this.trayToolTip.TimeEntryLabel = null;
-                this.Title = "Toggl Desktop";
+                this.Title = "Toggl Track";
             }
 
             var iconName = this.IsTracking ? "toggl" : "toggl_inactive";
