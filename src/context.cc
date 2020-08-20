@@ -308,7 +308,6 @@ error Context::StartEvents() {
             analytics_.TrackOs(db_->AnalyticsClientID(), os_info.str());
             analytics_.TrackOSDetails(db_->AnalyticsClientID());
         }
-        fetchMessage(0);
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -2819,6 +2818,8 @@ void Context::setUser(User *value, const bool logged_in) {
     }
 
     fetchUpdates();
+
+    fetchMessage(0);
 
     if (!ui_updater_.isRunning()) {
         ui_updater_.start();
