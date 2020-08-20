@@ -29,6 +29,8 @@
 		4943FBA624C085160000DE3C /* libPocoUtil.60.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 4943FBA424C085160000DE3C /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		4943FBA824C085190000DE3C /* libPocoXML.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4943FBA724C085190000DE3C /* libPocoXML.60.dylib */; };
 		4943FBA924C085190000DE3C /* libPocoXML.60.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 4943FBA724C085190000DE3C /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		495F133E24EEACAE00B7C3E9 /* alpha_features.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 495F133C24EEACAE00B7C3E9 /* alpha_features.cpp */; };
+		495F133F24EEACAE00B7C3E9 /* alpha_features.h in Headers */ = {isa = PBXBuildFile; fileRef = 495F133D24EEACAE00B7C3E9 /* alpha_features.h */; };
 		74AA947A18091AE10000539F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947918091AE10000539F /* WebKit.framework */; };
 		74CAAD0318185A9B001B77BB /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CAAD0218185A9B001B77BB /* Carbon.framework */; };
 		B890837624AE388100E40C38 /* json.cc in Sources */ = {isa = PBXBuildFile; fileRef = B890837324AE388100E40C38 /* json.cc */; };
@@ -157,6 +159,8 @@
 		4943FBA124C085140000DE3C /* libPocoNetSSL.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.60.dylib; path = ../../ui/osx/TogglDesktop/TogglDesktopLibrary/Dependencies/poco/libPocoNetSSL.60.dylib; sourceTree = "<group>"; };
 		4943FBA424C085160000DE3C /* libPocoUtil.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.60.dylib; path = ../../ui/osx/TogglDesktop/TogglDesktopLibrary/Dependencies/poco/libPocoUtil.60.dylib; sourceTree = "<group>"; };
 		4943FBA724C085190000DE3C /* libPocoXML.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoXML.60.dylib; path = ../../ui/osx/TogglDesktop/TogglDesktopLibrary/Dependencies/poco/libPocoXML.60.dylib; sourceTree = "<group>"; };
+		495F133C24EEACAE00B7C3E9 /* alpha_features.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = alpha_features.cpp; sourceTree = "<group>"; };
+		495F133D24EEACAE00B7C3E9 /* alpha_features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alpha_features.h; sourceTree = "<group>"; };
 		74AA947918091AE10000539F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		74CAAD0218185A9B001B77BB /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		B890837324AE388100E40C38 /* json.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = json.cc; sourceTree = "<group>"; };
@@ -345,6 +349,8 @@
 				B8B6ECA0244616FF0008FA32 /* user.h */,
 				B8B6ECA3244617000008FA32 /* workspace.cc */,
 				B8B6ECAB244617000008FA32 /* workspace.h */,
+				495F133C24EEACAE00B7C3E9 /* alpha_features.cpp */,
+				495F133D24EEACAE00B7C3E9 /* alpha_features.h */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -531,6 +537,7 @@
 				B8B6ECC3244617000008FA32 /* workspace.h in Headers */,
 				B8B6EC70244616B10008FA32 /* types.h in Headers */,
 				B8B6EC65244616B10008FA32 /* netconf.h in Headers */,
+				495F133F24EEACAE00B7C3E9 /* alpha_features.h in Headers */,
 				B8B6EC7C244616B10008FA32 /* get_focused_window.h in Headers */,
 				B8B6EC67244616B10008FA32 /* timeline_uploader.h in Headers */,
 				B8B6EC76244616B10008FA32 /* context.h in Headers */,
@@ -658,6 +665,7 @@
 				B8B6EC89244616B10008FA32 /* help_article.cc in Sources */,
 				B8B6ECBB244617000008FA32 /* workspace.cc in Sources */,
 				B8B6EC84244616B10008FA32 /* timeline_uploader.cc in Sources */,
+				495F133E24EEACAE00B7C3E9 /* alpha_features.cpp in Sources */,
 				B8B6EC75244616B10008FA32 /* websocket_client.cc in Sources */,
 				B890837624AE388100E40C38 /* json.cc in Sources */,
 				B8B6ECDF2446173A0008FA32 /* database.cc in Sources */,
