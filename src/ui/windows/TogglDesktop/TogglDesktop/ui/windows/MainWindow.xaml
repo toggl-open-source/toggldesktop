@@ -10,7 +10,7 @@
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              mc:Ignorable="d" 
              d:DesignWidth="400"
-             Title="Toggl Desktop"
+             Title="Toggl Track"
              Style="{StaticResource Toggl.MainWindow}"
              KeyDown="OnMainWindowKeyDown">
 
@@ -89,7 +89,7 @@
                                   Command="{x:Static toggl:KeyboardShortcuts.ToggleMiniTimerVisibility}"
                                   IsCheckable="True"/>
                         <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
-                        <MenuItem Header="Toggl Desktop Tutorial"
+                        <MenuItem Header="Toggl Track Tutorial"
                                   Command="{x:Static toggl:KeyboardShortcuts.BasicTutorial}"
                                   Icon="{StaticResource Toggl.TutorialIcon}"/>
                         <MenuItem Header="Send Feedback"

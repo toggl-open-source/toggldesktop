@@ -58,7 +58,7 @@
 ;--------------------------------
 ;General
 
-  Name "Toggl Desktop"
+  Name "Toggl Track"
 
   Icon "..\..\src\ui\windows\TogglDesktop\TogglDesktop\Resources\toggl.ico"
 
@@ -99,16 +99,16 @@
 ;Run App after install
 
   !define MUI_FINISHPAGE_RUN "$INSTDIR\TogglDesktop.exe"
-  !define MUI_FINISHPAGE_RUN_TEXT "Launch Toggl Desktop"
+  !define MUI_FINISHPAGE_RUN_TEXT "Launch Toggl Track"
 
 ;Install Location page
   !define MUI_PAGE_HEADER_TEXT "Install location"
   !define MUI_PAGE_HEADER_SUBTEXT ""
-  !define MUI_DIRECTORYPAGE_TEXT_TOP "Setup will install Toggl Desktop into $INSTDIR. Click Install to start the installation"
+  !define MUI_DIRECTORYPAGE_TEXT_TOP "Setup will install Toggl Track into $INSTDIR. Click Install to start the installation"
 
 ;Run App on Windows login
   !define MUI_FINISHPAGE_SHOWREADME
-  !define MUI_FINISHPAGE_SHOWREADME_TEXT "Run Toggl Desktop on Windows login"
+  !define MUI_FINISHPAGE_SHOWREADME_TEXT "Run Toggl Track on Windows login"
   !define MUI_FINISHPAGE_SHOWREADME_FUNCTION runOnStartup
 
 ;--------------------------------
@@ -185,19 +185,14 @@ Section
   ;Create Desktop shortcut at first install
   ${If} $isOldUpdater == 0
   ${AndIf} $isNewUpdater == 0
-    CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$INSTDIR\TogglDesktop.exe" ""
-  ${Else}
-    ; Overwrite the possibly faulty shortcut (#4005)
-    IfFileExists $DESKTOP\TogglDesktop.lnk 0 +3
-      SetOutPath "$LOCALAPPDATA\TogglDesktop"
-      CreateShortCut "$DESKTOP\TogglDesktop.lnk" "$LOCALAPPDATA\TogglDesktop\TogglDesktop.exe" ""
+    CreateShortCut "$DESKTOP\Toggl Track.lnk" "$INSTDIR\TogglDesktop.exe" ""
   ${EndIf}
 
   ${If} $isOldUpdater == 0
   ${AndIf} $isNewUpdater == 0
     ;Add/Remove programs entry
     !define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\TogglDesktop"
-    WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayName" "Toggl Desktop"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayName" "Toggl Track"
     WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayIcon" "$\"$INSTDIR\TogglDesktop.exe$\""
     WriteRegStr HKCU "${REG_UNINSTALL}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
     WriteRegStr HKCU "${REG_UNINSTALL}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
@@ -207,12 +202,12 @@ Section
     WriteRegStr HKCU "${REG_UNINSTALL}" "InstallLocation" "$\"$INSTDIR$\""
     WriteRegStr HKCU "${REG_UNINSTALL}" "NoModify" 1
     WriteRegStr HKCU "${REG_UNINSTALL}" "NoRepair" 1
-    WriteRegStr HKCU "${REG_UNINSTALL}" "Comments" "Uninstalls Toggl Desktop"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "Comments" "Uninstalls Toggl Track"
 
     ;Create start menu entry
     createDirectory "$SMPROGRAMS\Toggl"
-    createShortCut "$SMPROGRAMS\Toggl\Toggl Desktop.lnk" "$INSTDIR\TogglDesktop.exe" "" "$INSTDIR\toggl.ico"
-    createShortCut "$SMPROGRAMS\Toggl\Uninstall Toggl Desktop.lnk" "$INSTDIR\uninstall.exe" "" ""
+    createShortCut "$SMPROGRAMS\Toggl\Toggl Track.lnk" "$INSTDIR\TogglDesktop.exe" "" "$INSTDIR\toggl.ico"
+    createShortCut "$SMPROGRAMS\Toggl\Uninstall Toggl Track.lnk" "$INSTDIR\uninstall.exe" "" ""
   ${EndIf}
 SectionEnd
 
@@ -238,6 +233,7 @@ Section "Uninstall"
 
   ;Delete desktop shortcut
   Delete "$DESKTOP\TogglDesktop.lnk"
+  Delete "$DESKTOP\Toggl Track.lnk"
 
   RMDir "$INSTDIR"
 
@@ -251,7 +247,9 @@ Section "Uninstall"
 
   ;remove start menu links
   Delete "$SMPROGRAMS\Toggl\Toggl Desktop.lnk"
+  Delete "$SMPROGRAMS\Toggl\Toggl Track.lnk"
   Delete "$SMPROGRAMS\Toggl\Uninstall Toggl Desktop.lnk"
+  Delete "$SMPROGRAMS\Toggl\Uninstall Toggl Track.lnk"
   RMDir "$SMPROGRAMS\Toggl"
 
 SectionEnd

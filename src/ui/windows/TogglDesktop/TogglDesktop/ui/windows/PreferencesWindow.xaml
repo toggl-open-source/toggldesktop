@@ -56,7 +56,7 @@
                                 <ColumnDefinition Width="200" />
                                 <ColumnDefinition Width="160"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource Toggl.BodyText}" VerticalAlignment="Center" Text="Show/Hide Toggl application" />
+                            <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource Toggl.BodyText}" VerticalAlignment="Center" Text="Show/Hide Toggl Track" />
                             <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource Toggl.BodyText}" VerticalAlignment="Center" Text="Continue/Stop timer" />
                             <mah:HotKeyBox Grid.Column="1" Grid.Row="0"
                                            Margin="16 0 0 0"

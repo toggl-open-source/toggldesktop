@@ -263,7 +263,7 @@ error GUI::findMissingCallbacks() {
 void GUI::DisplayReminder() {
     logger.debug("DisplayReminder");
 
-    char_t *s1 = copy_string("Reminder from Toggl Desktop");
+    char_t *s1 = copy_string("Reminder from Toggl Track");
     char_t *s2 = copy_string("Don't forget to track your time!");
     on_display_reminder_(s1, s2);
     free(s1);
@@ -272,7 +272,7 @@ void GUI::DisplayReminder() {
 
 void GUI::DisplayPomodoro(const Poco::Int64 minutes) {
     logger.debug("DisplayPomodoro");
-    char_t *s1 = copy_string("Toggl Desktop Pomodoro Timer");
+    char_t *s1 = copy_string("Toggl Track Pomodoro Timer");
 
     std::stringstream ss;
     ss << "You've been working for " << minutes << " min, time to take a break!";
@@ -285,7 +285,7 @@ void GUI::DisplayPomodoro(const Poco::Int64 minutes) {
 
 void GUI::DisplayPomodoroBreak(const Poco::Int64 minutes) {
     logger.debug("DisplayPomodoroBreak");
-    char_t *s1 = copy_string("Toggl Desktop Pomodoro Break");
+    char_t *s1 = copy_string("Toggl Track Pomodoro Break");
 
     std::stringstream ss;
     ss << "Hope you enjoyed your " << minutes << " min break, time for work!";

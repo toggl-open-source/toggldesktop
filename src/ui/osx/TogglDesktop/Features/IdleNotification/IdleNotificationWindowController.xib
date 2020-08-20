@@ -24,7 +24,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Toggl Desktop" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" frameAutosaveName="idleNotificationWindow" animationBehavior="default" tabbingMode="disallowed" titlebarAppearsTransparent="YES" id="OXh-s9-LHB">
+        <window title="Toggl Track" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" frameAutosaveName="idleNotificationWindow" animationBehavior="default" tabbingMode="disallowed" titlebarAppearsTransparent="YES" id="OXh-s9-LHB">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <rect key="contentRect" x="517" y="489" width="300" height="410"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>

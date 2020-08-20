@@ -68,10 +68,10 @@
 
 	if (result == NSOrderedAscending)
 	{
-		text = @"Toggl Desktop will stop working with your current version of OS X from the 1st of January 2019.\n\n";
+		text = @"Toggl Track will stop working with your current version of OS X from the 1st of January 2019.\n\n";
 	}
 
-	text = [text stringByAppendingString:@"Please upgrade your system to macOS 10.11 or later to continue using Toggl Desktop."];
+	text = [text stringByAppendingString:@"Please upgrade your system to macOS 10.11 or later to continue using Toggl Track."];
 
 	[self setMessageText:title];
 	[self setInformativeText:text];
