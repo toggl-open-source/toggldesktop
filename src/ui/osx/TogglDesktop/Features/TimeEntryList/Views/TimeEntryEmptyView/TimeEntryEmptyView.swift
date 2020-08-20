@@ -78,7 +78,7 @@ extension TimeEntryEmptyView {
         switch layoutType {
         case .welcome:
             iconImageView.image = NSImage(named: Constants.stopwatchImage)
-            titleLabel.stringValue = "Welcome to Toggl"
+            titleLabel.stringValue = "Welcome to Toggl Track"
             subTitleLabel.stringValue = "Time each activity you do and see where your hours go"
             loadMoreBtn.isHidden = true
             spinerView.stopAnimation(nil)
