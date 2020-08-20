@@ -6,6 +6,15 @@
                 "Reintroduced Ubuntu 16.04 support",
                 "Google login now relies on user-provided web browser (and works again)"
             ],
+            "date": "August 20th 2020",
+            "beta": "false"
+        },
+        {
+            "version": "7.5.247",
+            "rows": [
+                "Reintroduced Ubuntu 16.04 support",
+                "Google login now relies on user-provided web browser (and works again)"
+            ],
             "date": "August 13rd 2020",
             "beta": "true"
         },
