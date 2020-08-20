@@ -879,7 +879,7 @@
                                                         <rect key="frame" x="158" y="310" width="136" height="14"/>
                                                         <string key="toolTip">Screen Recording permission not granted!
 
-To get the focused application window name properly for the Timeline, TogglDesktop needs to be granted the Screen Recording permission in Security &amp; Privacy in System Preferences .</string>
+To get the focused application window name properly for the Timeline, Toggl Track needs to be granted the Screen Recording permission in Security &amp; Privacy in System Preferences .</string>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="14" id="Hyi-7L-dBb"/>
                                                         </constraints>

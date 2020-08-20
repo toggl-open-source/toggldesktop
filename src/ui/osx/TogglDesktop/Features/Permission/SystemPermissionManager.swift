@@ -71,9 +71,9 @@ extension SystemPermissionManager {
     private func presentScreenRecordingAlert(_ complete: () -> Void) {
         let alert = NSAlert()
         alert.messageText = "Screen Recording permission not granted!"
-        alert.informativeText = "To get the focused application window name properly for the Timeline, TogglDesktop needs" +
+        alert.informativeText = "To get the focused application window name properly for the Timeline, Toggl Track needs" +
             "to be granted the Screen Recording permission in Security & Privacy in System Preferences." +
-            "\n\nPlease open System Preferences -> Security & Privacy -> Privacy Tab -> Select Screen Recording and enable TogglDesktop app."
+            "\n\nPlease open System Preferences -> Security & Privacy -> Privacy Tab -> Select Screen Recording and enable Toggl Track app."
         alert.alertStyle = .warning
         alert.addButton(withTitle: "Open")
         alert.addButton(withTitle: "Later")
