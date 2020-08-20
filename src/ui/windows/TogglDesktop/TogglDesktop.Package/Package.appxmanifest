@@ -13,7 +13,7 @@
     Publisher="CN=E1BE5469-4101-4334-A5A2-69B684F3BA70"/>
 
   <Properties>
-    <DisplayName>Toggl Desktop</DisplayName>
+    <DisplayName>Toggl Track</DisplayName>
     <PublisherDisplayName>Toggl OÜ</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
@@ -33,8 +33,8 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="Toggl Desktop"
-        Description="Toggl Desktop is a desktop app for leading time tracking tool Toggl."
+        DisplayName="Toggl Track"
+        Description="Desktop app for the leading time tracking tool Toggl Track."
         BackgroundColor="white"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">
@@ -54,7 +54,7 @@
           <desktop:StartupTask
               TaskId="TogglDesktopStartupTask"
               Enabled="false"
-              DisplayName="Toggl Desktop" />
+              DisplayName="Toggl Track" />
         </desktop:Extension>
       </Extensions>
     </Application>
