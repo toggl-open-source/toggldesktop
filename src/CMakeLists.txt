@@ -44,6 +44,7 @@ set(LIBRARY_SOURCE_FILES
     database/database.cc
     database/migrations.cc
 
+    model/alpha_features.cpp
     model/autotracker.cc
     model/base_model.cc
     model_change.cc
