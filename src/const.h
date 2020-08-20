@@ -134,6 +134,7 @@
 // there was a typo in the initial set of flags, use both variants
 #define kSyncStrategyLegacy1 "dekstop_sync_client"
 #define kSyncStrategyLegacy2 "desktop_sync_client"
+#define kTimelineUi "desktop_timeline_ui"
 
 #define kDesktopClient "desktop"
 

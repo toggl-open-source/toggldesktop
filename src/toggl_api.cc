@@ -1705,9 +1705,14 @@ TogglRgbColor toggl_get_adaptive_rgb_color_from_hex(
     return toggl::ColorConverter::GetRgbAdaptiveColor(to_string(hexColor), type);
 }
 
+<<<<<<< HEAD
 TogglServerType toggl_get_server_type() {
     if (toggl::urls::IsUsingStagingAsBackend())
         return TogglServerStaging;
     else
         return TogglServerProduction;
+=======
+bool IsTimelineUiEnabled(void *context) {
+    return app(context)->GetAlphaFeatures()->IsTimelineUiEnabled();
+>>>>>>> 841ff34c1... Perform only one v9/me/preferences call
 }

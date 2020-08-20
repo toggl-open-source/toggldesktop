@@ -86,10 +86,10 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , syncer_(this, &Context::syncerActivityWrapper)
 , update_path_("")
 , overlay_visible_(false)
-, is_using_sync_server_(false)
 , last_message_id_("")
 , need_enable_SSO(false)
-, sso_confirmation_code("") {
+, sso_confirmation_code("")
+, alpha_features_(new AlphaFeatures()){
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
     }
@@ -172,6 +172,13 @@ Context::~Context() {
     }
 
     Poco::Net::uninitializeSSL();
+
+    {
+        if (alpha_features_) {
+            delete alpha_features_;
+            alpha_features_ = nullptr;
+        }
+    }
 }
 
 void Context::stopActivities() {
@@ -4999,83 +5006,21 @@ void Context::syncerActivityWrapper() {
         }
 
         switch (state) {
-        case STARTUP: {
-            logger.log("Syncer bootup, will attempt to determine which protocol to use");
-
-            Poco::Mutex::ScopedLock lock(user_m_);
-            std::string api_token = user_->APIToken();
-
-            HTTPRequest req;
-            req.host = urls::API();
-            req.relative_url = "/api/v9/me/preferences";
-            req.basic_auth_username = api_token;
-            req.basic_auth_password = "api_token";
-
-            HTTPResponse resp = TogglClient::GetInstance().Get(req);
-
-            // don't do anything if the error is not noError, that's usually network error and this will try to connect every second
-            if (resp.err == noError) {
-                // if the server doesn't respond OK to this request, fall back to the legacy sync protocol
-                if (resp.status_code != 200) {
-                    logger.log("Syncer - Server didn't respond 200 to /me/preferences, fallback to LEGACY");
-                    state = LEGACY;
-                }
-                else { // is OK - 200
-                    // otherwise, parse the response and see if the desktop_sync_client flag is there
-                    Json::Value root;
-                    Json::Reader reader;
-                    if (!reader.parse(resp.body, root)) {
-                        logger.log("Syncer - /me/preferences response couldn't be parsed as JSON, fallback to LEGACY");
-                        state = LEGACY;
-                    }
-                    else {
-                        if (root.isMember("alpha_features")) {
-                            state = LEGACY;
-                            for (auto i : root["alpha_features"]) {
-                                if (i.isMember("code")) {
-                                    // there was a typo in the initial set of flags, use both variants to be sure
-                                    if (i["code"] == kSyncStrategyLegacy1 && i["enabled"].asBool()) {
-                                        state = BATCHED;
-                                        break;
-                                    }
-                                    if (i["code"] == kSyncStrategyLegacy2 && i["enabled"].asBool()) {
-                                        state = BATCHED;
-                                        break;
-                                    }
-                                }
-                            }
-                            logger.log("Syncer - Syncing protocol was selected: ", (state == BATCHED ? "BATCHED" : "LEGACY"));
-                        }
-                        else {
-                            logger.log("Syncer - /me/preferences response didn't contain alpha_features, fallback to LEGACY");
-                            state = LEGACY;
-                        }
-                    }
-                }
-                if (state == BATCHED)
-                    is_using_sync_server_ = true;
-                else
-                    is_using_sync_server_ = false;
+            case STARTUP: {
+                logger.log("Syncer bootup, will attempt to determine which protocol to use");
+                //Do it here to know the type of syncing before syncerActivityWrapper() pulls the preferences
+                pullUserPreferences();
+                logger.log("Syncer - Syncing protocol was selected: ", (state == BATCHED ? "BATCHED" : "LEGACY"));
+                break;
             }
-            // it is a HTTP error in disguise which means the server is alive, fallback to LEGACY
-            else if (resp.err == HTTPClient::StatusCodeToError(resp.status_code)) {
-                logger.log("Syncer - Server didn't respond 200 to /me/preferences, fallback to LEGACY");
-                state = LEGACY;
-            }
-            if (state == LEGACY)
-                is_using_sync_server_ = false;
-            else
-                is_using_sync_server_ = true;
-            break;
+            case LEGACY:
+                legacySyncerActivity();
+                break;
+            case BATCHED:
+                batchedSyncerActivity();
+                break;
         }
-        case LEGACY:
-            legacySyncerActivity();
-            break;
-        case BATCHED:
-            is_using_sync_server_ = true;
-            batchedSyncerActivity();
-            break;
-        }
+        state = alpha_features_->IsSyncEnabled() ? state = BATCHED : LEGACY;
     }
 }
 
@@ -6242,6 +6187,8 @@ error Context::pullUserPreferences() {
             overlay_visible_ = true;
             UI()->DisplayTosAccept();
         }
+
+        alpha_features_->ReadAlphaFeatures(root);
     }
     catch (const Poco::Exception& exc) {
         return exc.displayText();
@@ -6904,7 +6851,7 @@ bool Context::checkIfSkipPomodoro(TimeEntry *te) {
 }
 
 bool Context::isUsingSyncServer() const {
-    return is_using_sync_server_;
+    return alpha_features_->IsSyncEnabled();
 }
 
 void Context::TrackTimelineMenuContext(const TimelineMenuContextType type) {

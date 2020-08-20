@@ -22,6 +22,7 @@
 #include "timeline_notifications.h"
 #include "types.h"
 #include "websocket_client.h"
+#include "model/alpha_features.h"
 
 #include <Poco/Activity.h>
 #include <Poco/LocalDateTime.h>
@@ -576,6 +577,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     void TrackTimelineMenuContext(const TimelineMenuContextType type);
 
+    AlphaFeatures* GetAlphaFeatures() {
+        return alpha_features_;
+    }
+
  protected:
     void uiUpdaterActivity();
     void checkReminders();
@@ -838,8 +843,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     TimeEntry *pomodoro_break_entry_;
 
-    bool is_using_sync_server_;
-
     // To cache grouped entries open/close status
     std::map<std::string, bool_t> entry_groups;
 
@@ -867,6 +870,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     bool need_enable_SSO;
     std::string sso_confirmation_code;
+
+    AlphaFeatures *alpha_features_;
 };
 void on_websocket_message(
     void *context,
