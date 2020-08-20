@@ -24,14 +24,14 @@ namespace TogglDesktop.ViewModels
                 { new HotKey(Key.N, ModifierKeys.Control), "New time entry" },
                 { new HotKey(Key.O, ModifierKeys.Control), "Continue last entry" },
                 { new HotKey(Key.S, ModifierKeys.Control), "Stop time entry" },
-                { new HotKey(Key.W, ModifierKeys.Control), "Hide Toggl Desktop" },
+                { new HotKey(Key.W, ModifierKeys.Control), "Hide Toggl Track" },
                 { new HotKey(Key.R, ModifierKeys.Control), "Sync" },
                 { new HotKey(Key.E, ModifierKeys.Control), "Edit time entry" },
                 { new HotKey(Key.D, ModifierKeys.Control), "Toggle manual mode" },
                 { new HotKey(Key.V, ModifierKeys.Control), "New time entry from clipboard" },
             };
 
-        private const string ShowHideTogglDescription = "Show/Hide Toggl";
+        private const string ShowHideTogglDescription = "Show/Hide Toggl Track";
         private const string ContinueStopTimerDescription = "Continue/Stop Timer";
 
         private HotKey _continueStopTimerSaved;
@@ -147,7 +147,7 @@ namespace TogglDesktop.ViewModels
         private void ClearCache()
         {
             var result = _showMessageBox(
-                "This will remove your Toggl user data from this PC and log you out of the Toggl Desktop app. " +
+                "This will remove your Toggl user data from this PC and log you out of the Toggl Track app. " +
                 "Any unsynced data will be lost.\n\nDo you want to continue?", "Clear Cache",
                 MessageBoxButton.OKCancel, "Clear cache");
 
