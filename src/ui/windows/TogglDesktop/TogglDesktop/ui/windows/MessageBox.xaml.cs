@@ -16,7 +16,7 @@ namespace TogglDesktop
 
         public delegate MessageBoxResult ShowMessageBoxDelegate(
             string messageText,
-            string title = "Toggl Desktop",
+            string title = "Toggl Track",
             MessageBoxButton buttons = MessageBoxButton.OK,
             string okButtonText = "OK");
 
@@ -27,7 +27,7 @@ namespace TogglDesktop
         }
 
         public static MessageBoxResult Show(Window owner, string messageText,
-            string title = "Toggl Desktop", MessageBoxButton buttons = MessageBoxButton.OK,
+            string title = "Toggl Track", MessageBoxButton buttons = MessageBoxButton.OK,
             string okButtonText = "OK")
         {
             var box = StaticObjectPool.PopOrDefault<MessageBox>()

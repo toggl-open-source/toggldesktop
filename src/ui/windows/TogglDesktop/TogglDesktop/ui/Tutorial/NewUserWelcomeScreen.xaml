@@ -15,12 +15,12 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0"
-                   Text="Welcome to&#10;Toggl Desktop!" TextAlignment="Center"
+                   Text="Welcome to&#10;Toggl Track!" TextAlignment="Center"
                    FontSize="20" FontWeight="Regular" Margin="20"/>
 
         <StackPanel Grid.Row="1">
             <TextBlock 
-                   Text="Would you like us to show you how to&#10;use Toggl Desktop to track your time?"
+                   Text="Would you like us to show you how to&#10;use Toggl Track to track your time?"
                    TextAlignment="Center" Margin="0 0 0 10"/>
             <Button Content="TAKE THE TOUR" Margin="0 0 0 20"
                     Click="startTutorialButtonClick"
