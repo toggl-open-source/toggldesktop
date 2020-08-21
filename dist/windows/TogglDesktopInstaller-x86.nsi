@@ -185,6 +185,9 @@ Section
   ${If} $isOldUpdater == 0
   ${AndIf} $isNewUpdater == 0
     CreateShortCut "$DESKTOP\Toggl Track.lnk" "$INSTDIR\TogglDesktop.exe" ""
+  ${Else}
+    IfFileExists "$DESKTOP\TogglDesktop.lnk" 0 +2
+    Rename /REBOOTOK "$DESKTOP\TogglDesktop.lnk" "$DESKTOP\Toggl Track.lnk"
   ${EndIf}
 
   ${If} $isOldUpdater == 0
@@ -231,7 +234,6 @@ Section "Uninstall"
   RMDir /r "$LOCALAPPDATA\Onova\TogglDesktop" ;Remove the prepared updates
 
   ;Delete desktop shortcut
-  Delete "$DESKTOP\TogglDesktop.lnk"
   Delete "$DESKTOP\Toggl Track.lnk"
 
   RMDir "$INSTDIR"
