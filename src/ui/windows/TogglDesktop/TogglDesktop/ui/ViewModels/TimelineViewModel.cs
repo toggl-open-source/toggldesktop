@@ -22,6 +22,16 @@ namespace TogglDesktop.ViewModels
             SelectPreviousDay = ReactiveCommand.Create(Toggl.ViewTimelinePreviousDay);
             SelectNextDay = ReactiveCommand.Create(Toggl.ViewTimelineNextDay);
             Toggl.OnTimeline += HandleDisplayTimeline;
+
+            HourViews = new List<HourView>();
+            for (int i = 0; i < 24; i++)
+            {
+                HourViews.Add(new HourView()
+                {
+                    Hour = new DateTime(1,1,1, i, 0,0),
+                    ChunkViews = new List<Toggl.TogglTimelineChunkView>()
+                });
+            }
         }
 
         private void HandleDisplayTimeline(bool open, string date, List<Toggl.TogglTimelineChunkView> first, List<Toggl.TogglTimeEntryView> firstTimeEntry, ulong startDay, ulong endDay)
@@ -40,5 +50,14 @@ namespace TogglDesktop.ViewModels
         public ReactiveCommand<Unit,Unit> SelectPreviousDay { get; }
 
         public ReactiveCommand<Unit, Unit> SelectNextDay { get; }
+
+        public List<HourView> HourViews { get; }
+
+        public class HourView
+        {
+            public DateTime Hour { get; set; }
+
+            public List<Toggl.TogglTimelineChunkView> ChunkViews { get; set; }
+        }
     }
 }

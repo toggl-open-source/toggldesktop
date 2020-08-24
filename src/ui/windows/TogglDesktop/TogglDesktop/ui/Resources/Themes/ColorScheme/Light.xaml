@@ -28,6 +28,7 @@
     <Color x:Key="Toggl.ErrorMessageBackgroundColor">#F15E41</Color>
 
     <!-- derived colors: -->
+    <Color x:Key="Toggl.TimelineTimeColor">#555500</Color>
     <Color x:Key="Toggl.AccentColorFivePercentDarker">#D463C6</Color>
     <Color x:Key="Toggl.AccentColorTenPercentDarker">#C95EBB</Color>
     <Color x:Key="Toggl.AccentColorTwentyFivePercentDarker">#A74E9C</Color>
@@ -102,4 +103,5 @@
     <SolidColorBrush x:Key="Toggl.PopupBorderBrush" Color="{StaticResource Toggl.LightGrayColor}" />
     <SolidColorBrush x:Key="Toggl.WorkspaceSeparator" Color="{StaticResource Toggl.BlackColor}" Opacity="0.1" po:Freeze="True"/>
     <DropShadowEffect x:Key="Toggl.DropDownShadow" ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.1" Color="{DynamicResource Toggl.BlackColor}"/>
+    <SolidColorBrush x:Key="Toggl.TimelineTimeBrush" Color="{StaticResource Toggl.TimelineTimeColor}" po:Freeze="True"/>
 </ResourceDictionary>

@@ -11,60 +11,68 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:TimelineViewModel, IsDesignTimeCreatable=False}">
-    <Grid Background="{DynamicResource Toggl.Background}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <mah:ToggleSwitch Margin="10 14 0 0"
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalAlignment="Stretch"
+                  Margin="0 0"
+                  Focusable="False"
+                  IsTabStop="False"
+                  UseLayoutRounding="True"
+                  SnapsToDevicePixels="True"
+                  PreviewMouseWheel="HandleScrollViewerMouseWheel">
+        <Grid Background="{DynamicResource Toggl.Background}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <mah:ToggleSwitch Margin="10 14 0 0"
                           OnLabel=""
                           OffLabel=""
                           IsChecked="{Binding RecordActivity}"
                           Grid.Row="0" Grid.Column="0">
-            Record activity
-        </mah:ToggleSwitch>
-        <Grid Grid.Column="1" Grid.Row="0"
+                Record activity
+            </mah:ToggleSwitch>
+            <Grid Grid.Column="1" Grid.Row="0"
               Width="16" Height="16"
               VerticalAlignment="Center"
               HorizontalAlignment="Left"
               Margin="5 12 0 0">
-            <Canvas MouseEnter="RecordActivityInfoBoxOnMouseEnter" x:Name="InfoIcon">
-                <Path Fill="#B1B1B5" Data="{StaticResource Toggl.InfoIconGeometry}"/>
-            </Canvas>
-            <Popup IsOpen="False" Name="RecordActivityInfoPopup" StaysOpen="False" UseLayoutRounding="True"
+                <Canvas MouseEnter="RecordActivityInfoBoxOnMouseEnter" x:Name="InfoIcon">
+                    <Path Fill="#B1B1B5" Data="{StaticResource Toggl.InfoIconGeometry}"/>
+                </Canvas>
+                <Popup IsOpen="False" Name="RecordActivityInfoPopup" StaysOpen="False" UseLayoutRounding="True"
                    PlacementTarget="{Binding ElementName=InfoIcon}" AllowsTransparency="True">
-                <Border BorderThickness="1" Background="{DynamicResource Toggl.CardBackground}"
+                    <Border BorderThickness="1" Background="{DynamicResource Toggl.CardBackground}"
                             BorderBrush="{DynamicResource Toggl.Background}">
-                    <StackPanel MaxWidth="250" Margin="10 10 10 10">
-                        <TextBlock Style="{StaticResource Toggl.CaptionSemiBoldText}">
+                        <StackPanel MaxWidth="250" Margin="10 10 10 10">
+                            <TextBlock Style="{StaticResource Toggl.CaptionSemiBoldText}">
                                 Having trouble recalling what you were working on?
-                        </TextBlock>
-                        <TextBlock Style="{StaticResource Toggl.CaptionBlackText}"
+                            </TextBlock>
+                            <TextBlock Style="{StaticResource Toggl.CaptionBlackText}"
                                        Margin="0 12 0 0">
                                 Record your computer activity and revisit it later in the day to fill in gaps in your Timeline.
-                        </TextBlock>
-                        <TextBlock Style="{StaticResource Toggl.CaptionBlackText}"
+                            </TextBlock>
+                            <TextBlock Style="{StaticResource Toggl.CaptionBlackText}"
                                        Margin="0 12 0 0">
                                 All data is private. Only you can see it.
-                        </TextBlock>
-                        <Label HorizontalAlignment="Center"
+                            </TextBlock>
+                            <Label HorizontalAlignment="Center"
                                    Margin="0 12 0 0">
-                            <Hyperlink NavigateUri="https://support.toggl.com/en/articles/3836325-toggl-desktop-for-windows"
+                                <Hyperlink NavigateUri="https://support.toggl.com/en/articles/3836325-toggl-desktop-for-windows"
                                            Style="{StaticResource Toggl.NormalHyperlink}"
                                            Command="{Binding OpenTogglHelpUri}">
-                                Learn more
-                            </Hyperlink>
-                        </Label>
-                    </StackPanel>
-                </Border>
-            </Popup>
-        </Grid>
-        <DatePicker Name="datePicker" x:FieldModifier="private"
+                                    Learn more
+                                </Hyperlink>
+                            </Label>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+            </Grid>
+            <DatePicker Name="datePicker" x:FieldModifier="private"
                     Margin="8 14 8 8"
                     Height="32"
                     SelectedDate="{Binding SelectedDate}"
@@ -74,9 +82,87 @@
                     Style="{StaticResource TimelineDatePickerStyle}"
                     togglDesktop:DatePickerHelper.PreviousDayCommand="{Binding SelectPreviousDay}"
                     togglDesktop:DatePickerHelper.NextDayCommand="{Binding SelectNextDay}">
-            <b:Interaction.Behaviors>
-                <behaviors:DatePickerKeyboardHandlingBehavior />
-            </b:Interaction.Behaviors>
-        </DatePicker>
-    </Grid>
+                <b:Interaction.Behaviors>
+                    <behaviors:DatePickerKeyboardHandlingBehavior />
+                </b:Interaction.Behaviors>
+            </DatePicker>
+            <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="{DynamicResource Toggl.CardBackground}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="55"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ItemsControl ItemsSource="{Binding HourViews}" AlternationCount="2" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Height="200" x:Name="TimeRow">
+                                <TextBlock Text="{Binding Hour, StringFormat='hh:mm tt'}"
+                                           Width="29"
+                                           TextWrapping="Wrap"
+                                           FontSize="12"
+                                           Margin="10 0 0 0"
+                                           Foreground="{DynamicResource Toggl.TimelineTimeBrush}"
+                                           HorizontalAlignment="Left"/>
+                            </StackPanel>
+                            <DataTemplate.Triggers>
+                                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                    <Setter Property="Background" TargetName="TimeRow" Value="{DynamicResource Toggl.CardBackground}"/>
+                                </Trigger>
+                                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                    <Setter Property="Background" TargetName="TimeRow" Value="{DynamicResource Toggl.Background}"/>
+                                </Trigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock Grid.Row="0" Grid.Column="2" Style="{StaticResource Toggl.BodyGrayText}" FontSize="12" Text="TIME ENTRIES" Margin="10 8" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="0" Grid.Column="4" Style="{StaticResource Toggl.BodyGrayText}" FontSize="12" Text="ACTIVITY" Margin="10 8" HorizontalAlignment="Center"/>
+                <GridSplitter Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="1"/>
+                <Canvas Grid.Row="1" Grid.Column="2" Background="Transparent"/>
+                <GridSplitter Grid.Column="3" Grid.Row="1" Width="1">
+                    <GridSplitter.Style>
+                        <Style TargetType="{x:Type GridSplitter}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GridSplitter}">
+                                        <Border BorderThickness="1,1,1,1">
+                                            <Border.BorderBrush>
+                                                <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile">
+                                                    <DrawingBrush.Drawing>
+                                                        <DrawingGroup>
+                                                            <GeometryDrawing Brush="{DynamicResource Toggl.LightGrayBrush}">
+                                                                <GeometryDrawing.Geometry>
+                                                                    <GeometryGroup>
+                                                                        <RectangleGeometry Rect="0,0,90,90" />
+                                                                    </GeometryGroup>
+                                                                </GeometryDrawing.Geometry>
+                                                            </GeometryDrawing>
+                                                            <GeometryDrawing Brush="Transparent">
+                                                                <GeometryDrawing.Geometry>
+                                                                    <GeometryGroup>
+                                                                        <RectangleGeometry Rect="90,90,100,100" />
+                                                                    </GeometryGroup>
+                                                                </GeometryDrawing.Geometry>
+                                                            </GeometryDrawing>
+                                                        </DrawingGroup>
+                                                    </DrawingBrush.Drawing>
+                                                </DrawingBrush>
+                                            </Border.BorderBrush>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GridSplitter.Style>
+                </GridSplitter>
+                <Canvas Grid.Row="1" Grid.Column="4"/>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
