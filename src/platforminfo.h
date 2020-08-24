@@ -14,14 +14,14 @@ std::map<std::string, std::string> RetrieveOsDetailsMap();
 inline void RetrieveOsDetails(std::stringstream &ss) {
 
 }
-std::map<std::string, std::string> RetrieveOsDetailsMap() {
+inline std::map<std::string, std::string> RetrieveOsDetailsMap() {
     return {};
 }
 #elif defined(__APPLE__)
 inline void RetrieveOsDetails(std::stringstream &ss) {
 
 }
-std::map<std::string, std::string> RetrieveOsDetailsMap() {
+inline std::map<std::string, std::string> RetrieveOsDetailsMap() {
     return {};
 }
 #endif

@@ -6,7 +6,9 @@
 #include "./toggl.h"
 #include "./settingsview.h"
 
+#ifdef __linux__
 #include <X11/extensions/scrnsaver.h>  // NOLINT
+#endif
 
 IdleNotificationWidget::IdleNotificationWidget(QStackedWidget *parent)
     : QWidget(parent),
@@ -53,6 +55,7 @@ void IdleNotificationWidget::requestIdleHint() {
         connect(watcher, &QDBusPendingCallWatcher::finished, this, &IdleNotificationWidget::idleHintReceived);
     }
     else {
+#ifdef __linux__
         Display *display = XOpenDisplay(NULL);
         if (!display) {
             return;
@@ -64,6 +67,7 @@ void IdleNotificationWidget::requestIdleHint() {
         }
         XFree(info);
         XCloseDisplay(display);
+#endif // __linux__
     }
 }
 

@@ -11,7 +11,10 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <iostream>
+
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 
 #include "singleapplication.h"  // NOLINT
 
@@ -105,7 +108,7 @@ int main(int argc, char *argv[]) try {
     parser.process(a);
 
     if (parser.isSet(forceStagingOption)) {
-        toggl::urls::SetUseStagingAsBackend(true);
+        toggl_set_staging_override(true);
     }
 
     w = new MainWindowController(nullptr,

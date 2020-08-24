@@ -6,7 +6,7 @@
 #include <QObject>
 #include <QVector>
 
-#include "./toggl_api.h"
+#include "toggl.h"
 
 class TimeEntryView : public QObject {
     Q_OBJECT
@@ -53,7 +53,7 @@ class TimeEntryView : public QObject {
     bool GroupOpen;
     QString GroupName;
     QString GroupDuration;
-    u_int64_t GroupItemCount;
+    uint64_t GroupItemCount;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYVIEW_H_

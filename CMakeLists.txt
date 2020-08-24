@@ -19,6 +19,11 @@ option(TOGGL_ALLOW_UPDATE_CHECK "Allow the app to check for updates" OFF)
 option(USE_BUNDLED_LIBRARIES "Prefer bundled libraries to bundled ones" OFF)
 option(INSTALL_HIRES_ICONS "Do not install icons over 512x512" OFF)
 
+set(ENV{OPENSSL_ROOT_DIR} ${OPENSSL_ROOT_DIR})
+if (NOT "${OPENSSL_ROOT_DIR}" STREQUAL "")
+    include_directories("${OPENSSL_ROOT_DIR}/include")
+endif()
+
 if ("${TOGGL_VERSION}" STREQUAL "7.0.0")
     find_package (Git)
     if (GIT_FOUND)
@@ -47,10 +52,12 @@ include(FindPkgConfig)
 find_package(Qt5Widgets CONFIG REQUIRED)
 find_package(Qt5DBus CONFIG REQUIRED)
 find_package(Qt5Network CONFIG REQUIRED)
-find_package(Qt5X11Extras CONFIG REQUIRED)
 find_package(Qt5NetworkAuth CONFIG REQUIRED)
 # We need to include private headers manually
 include_directories( ${Qt5Widgets_PRIVATE_INCLUDE_DIRS} )
+if (UNIX AND NOT APPLE)
+    find_package(Qt5X11Extras CONFIG REQUIRED)
+endif()
 
 if(NOT USE_BUNDLED_LIBRARIES)
     # Look for Poco

@@ -95,7 +95,7 @@ QString QxtWindowSystem::windowTitle(WId window)
     if (err != noErr) return QString();
 
     // this is UTF8 encoded
-    return QCFString::toQString((CFStringRef)windowTitle);
+    return QCFString((CFStringRef)windowTitle);
 }
 
 QRect QxtWindowSystem::windowGeometry(WId window)

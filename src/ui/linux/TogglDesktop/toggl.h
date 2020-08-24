@@ -18,6 +18,33 @@ class SettingsView;
 class TimeEntryView;
 class CountryView;
 
+inline QString toQString(const char_t *cStr) {
+#ifdef _WIN32
+    return QString::fromWCharArray(cStr);
+#else
+    return QString(cStr);
+#endif
+}
+
+inline const char_t *toCStr(const QString &qStr) {
+    // We need to cache a few returned results because sometimes this function gets called a few times for a single API call
+#ifdef _WIN32
+    thread_local static int idx = 0;
+    thread_local static std::vector<std::wstring> cache { 16 };
+    cache[idx] = qStr.toStdWString();
+    auto &ret = cache[idx];
+    idx = (idx + 1) % 16;
+    return ret.c_str();
+#else
+    thread_local static int idx = 0;
+    thread_local static std::vector<std::string> cache { 16 };
+    cache[idx] = qStr.toStdString();
+    auto &ret = cache[idx];
+    idx = (idx + 1) % 16;
+    return ret.c_str();
+#endif
+}
+
 class TogglApi : public QObject {
     Q_OBJECT
 
@@ -56,12 +83,11 @@ class TogglApi : public QObject {
 
     void googleSignup(const QString &accessToken, uint64_t countryID);
 
-    QString start(
-        const QString description,
-        const QString duration,
+    QString start(const QString &description,
+        const QString &duration,
         const uint64_t task_id,
         const uint64_t project_id,
-        const char_t *tags,
+        const QString &tags,
         const bool_t billable);
 
     bool stop();
@@ -98,7 +124,7 @@ class TogglApi : public QObject {
 
     void viewTimeEntryList();
 
-    void setIdleSeconds(u_int64_t idleSeconds);
+    void setIdleSeconds(uint64_t idleSeconds);
 
     bool setTimeEntryProject(
         const QString guid,
@@ -309,7 +335,7 @@ class TogglApi : public QObject {
     void updateContinueStopShortcut();
 
     void setProjectColors(
-        QVector<char *> list);
+        QVector<QString> list);
 
     void setCountries(
         QVector<CountryView *> list);
@@ -327,28 +353,22 @@ class TogglApi : public QObject {
 // callbacks used internally by the app instance
 void on_display_app(const bool_t open);
 void on_display_error(
-    const char *errmsg,
+    const char_t *errmsg,
     const bool_t user_error);
 void on_overlay(const int64_t type);
-void on_display_update(
-    const char *url);
+void on_display_update(const char_t *url);
 void on_display_online_state(
-    const bool is_online,
-    const char *reason);
-void on_display_url(
-    const char *url);
+    const bool is_online);
+void on_display_url(const char_t *url);
 void on_display_login(
     const bool_t open,
     const uint64_t user_id);
-void on_display_pomodoro(
-    const char *title,
-    const char *informative_text);
-void on_display_pomodoro_break(
-    const char *title,
-    const char *informative_text);
-void on_display_reminder(
-    const char *title,
-    const char *informative_text);
+void on_display_pomodoro(const char_t *title,
+    const char_t *informative_text);
+void on_display_pomodoro_break(const char_t *title,
+    const char_t *informative_text);
+void on_display_reminder(const char_t *title,
+    const char_t *informative_text);
 void on_display_time_entry_list(
     const bool_t open,
     TogglTimeEntryView *first);
@@ -364,23 +384,22 @@ void on_display_client_select(
     TogglGenericView *first);
 void on_display_tags(
     TogglGenericView *first);
-void on_display_time_entry_editor(
-    const bool_t open,
+void on_display_time_entry_editor(const bool_t open,
     TogglTimeEntryView *te,
-    const char *focused_field_name);
+    const char_t *focused_field_name);
 void on_display_settings(
     const bool_t open,
     TogglSettingsView *settings);
 void on_display_timer_state(
     TogglTimeEntryView *te);
 void on_display_idle_notification(
-    const char *guid,
-    const char *since,
-    const char *duration,
+    const char_t *guid,
+    const char_t *since,
+    const char_t *duration,
     const int64_t started,
-    const char *project,
-    const char *task,
-    const char *projectColor);
+    const char_t *project,
+    const char_t *task,
+    const char_t *projectColor);
 void on_project_colors(
     const char_t *list[],
     const uint64_t count);
