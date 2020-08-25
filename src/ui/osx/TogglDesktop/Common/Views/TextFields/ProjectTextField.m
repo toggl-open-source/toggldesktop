@@ -11,7 +11,7 @@
 #import "ConvertHexColor.h"
 #import "AutocompleteItem.h"
 #import "IdleEvent.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 
 @implementation ProjectTextField
 

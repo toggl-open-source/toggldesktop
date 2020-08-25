@@ -38,7 +38,7 @@ final class KeyboardTableView: NSTableView {
     }
 
     override func keyDown(with event: NSEvent) {
-        let key = TogglDesktop.Key(rawValue: Int(event.keyCode))
+        let key = Toggl_Track.Key(rawValue: Int(event.keyCode))
         switch key {
         case .upArrow, .downArrow:
             // pass the key to table view

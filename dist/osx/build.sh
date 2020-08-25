@@ -11,7 +11,7 @@ function app_path() {
     echo $(xcodebuild -scheme TogglDesktop -workspace src/ui/osx/TogglDesktop.xcworkspace -configuration Release -showBuildSettings \
                 | grep -w 'BUILT_PRODUCTS_DIR' \
                 | cut -d'=' -f 2 \
-                | sed -e 's/^[ \t]*//')/TogglDesktop.app
+                | sed -e 's/^[ \t]*//')/Toggl\ Track.app
 }
 
 function dependencies() {
@@ -33,37 +33,37 @@ function plist() {
     # Update the plist file (version, enable update check, UI logging to file etc)
     mkdir -p tmp 
     #go run src/branding/osx/plist.go -path="$APP_PATH" -version=$version
-    awk '/CFBundleVersion/{print;getline;$0="\t<string>'"$version"'</string>"}1' $APP_PATH/Contents/Info.plist > tmp/Info.plist
-    mv tmp/Info.plist $APP_PATH/Contents/Info.plist
-    awk '/CFBundleShortVersionString/{print;getline;$0="\t<string>'"$version"'</string>"}1' $APP_PATH/Contents/Info.plist > tmp/Info.plist
+    awk '/CFBundleVersion/{print;getline;$0="\t<string>'"$version"'</string>"}1' "$APP_PATH/Contents/Info.plist" > tmp/Info.plist
+    mv tmp/Info.plist "$APP_PATH/Contents/Info.plist"
+    awk '/CFBundleShortVersionString/{print;getline;$0="\t<string>'"$version"'</string>"}1' "$APP_PATH/Contents/Info.plist" > tmp/Info.plist
     # Overwrite built apps plist file
-    mv tmp/Info.plist $APP_PATH/Contents/Info.plist
+    mv tmp/Info.plist "$APP_PATH/Contents/Info.plist"
     
-    cat $APP_PATH/Contents/Info.plist
+    cat "$APP_PATH/Contents/Info.plist"
     rmdir tmp
 }
 
 function sign() {
     security unlock-keychain -p 'password' ~/Library/Keychains/build.keychain
     APP=$(app_path)
-    EXECUTABLE=$APP/Contents/MacOS/TogglDesktop
+    EXECUTABLE=$APP/Contents/MacOS/Toggl\ Track
     CERTIFICATE="Developer ID Application: TOGGL OU"
 
     echo "== check that gatekeeper is enabled =="
     spctl --status|grep "disabled" && echo "cannot continue"
 
-    codesign --force --options runtime --deep --sign "${CERTIFICATE}" $APP/Contents/Frameworks/Sparkle.framework/Resources/Autoupdate.app
-    codesign --force --options runtime --deep --sign "${CERTIFICATE}" $APP/Contents/Frameworks/Sparkle.framework/Resources/Autoupdate.app/Contents/MacOS/fileop
+    codesign --force --options runtime --deep --sign "${CERTIFICATE}" "$APP/Contents/Frameworks/Sparkle.framework/Resources/Autoupdate.app"
+    codesign --force --options runtime --deep --sign "${CERTIFICATE}" "$APP/Contents/Frameworks/Sparkle.framework/Resources/Autoupdate.app/Contents/MacOS/fileop"
 
-for filename in $APP/Contents/Frameworks/*; do
-        codesign -d --force --options runtime -vvvv --verify --strict -s "${CERTIFICATE}"  -r='designated => anchor apple generic and certificate leaf[subject.OU] = "B227VTMZ94"' $filename
+    for filename in "$APP"/Contents/Frameworks/*; do
+        codesign -d --force --options runtime -vvvv --verify --strict -s "${CERTIFICATE}"  -r='designated => anchor apple generic and certificate leaf[subject.OU] = "B227VTMZ94"' "$filename"
     done
 
-    codesign -d --force --options runtime -vvvv --verify --strict -s "${CERTIFICATE}" -r='designated => anchor apple generic and identifier "com.toggl.toggldesktop.TogglDesktop" and certificate leaf[subject.OU] = "B227VTMZ94"' $EXECUTABLE
+    codesign -d --force --options runtime -vvvv --verify --strict -s "${CERTIFICATE}" -r='designated => anchor apple generic and identifier "com.toggl.toggldesktop.TogglDesktop" and certificate leaf[subject.OU] = "B227VTMZ94"' "$EXECUTABLE"
 
-    codesign -d --force --options runtime -vvvv --verify --strict -s "${CERTIFICATE}" -r='designated => anchor apple generic and identifier "com.toggl.toggldesktop.TogglDesktop" and certificate leaf[subject.OU] = "B227VTMZ94"' $APP
+    codesign -d --force --options runtime -vvvv --verify --strict -s "${CERTIFICATE}" -r='designated => anchor apple generic and identifier "com.toggl.toggldesktop.TogglDesktop" and certificate leaf[subject.OU] = "B227VTMZ94"' "$APP"
 
-    codesign --deep --verify --strict --verbose=4 $APP
+    codesign --deep --verify --strict --verbose=4 "$APP"
 }
 
 function notarize() {
@@ -78,7 +78,7 @@ function notarize() {
     DEVELOPER_PASSWORD=${APPLE_APPID_PASSWORD}
 
     echo "Notarization" "Building a ZIP archive…"
-    /usr/bin/ditto -c -k --keepParent ${APP_PATH} ${BUNDLE_ZIP}
+    /usr/bin/ditto -c -k --keepParent "${APP_PATH}" "${BUNDLE_ZIP}"
     echo "Notarization" "Uploading for notarization…"
     /usr/bin/xcrun altool --notarize-app --primary-bundle-id "com.toggl.toggldesktop.TogglDesktop.zip" -itc_provider "B227VTMZ94" -u ${DEVELOPER_USERNAME} -p ${DEVELOPER_PASSWORD} -f ${BUNDLE_ZIP} --output-format xml > ${UPLOAD_INFO_PLIST} || cat ${UPLOAD_INFO_PLIST}
     echo "Notarization" "Waiting while notarized…"
@@ -96,7 +96,7 @@ function notarize() {
         false; \
     fi
     echo "Notarization", "Stapling…"
-    /usr/bin/xcrun stapler staple ${APP_PATH}
+    /usr/bin/xcrun stapler staple "${APP_PATH}"
     echo "Notarization", "✅ Done!"
 }
 
@@ -104,21 +104,21 @@ function dmg() {
     APP_PATH=$(app_path)
     npm install --global create-dmg
     brew install graphicsmagick imagemagick
-    create-dmg $APP_PATH
+    create-dmg "$APP_PATH"
     mv *.dmg $installer
     pwd
 }
 
 function debuginfo() {
-    # Compress main app debug info
+    # Compress dynamic library debug info
     export dsym_dylib=TogglDesktopLibrary.dylib-$escaped_version-$timestamp-dsym.tar.gz 
     rm -rf $dsym_dylib 
-    tar cvfz $dsym_dylib $APP_PATH/../TogglDesktopLibrary.dylib.dSYM
+    tar cvfz $dsym_dylib "$APP_PATH"/../TogglDesktopLibrary.dylib.dSYM
 
-    # Compress dynamic library debug info
+    # Compress main app debug info
     export dsym=TogglDesktop-$escaped_version-$timestamp-dsym.tar.gz 
     rm -rf $dsym 
-    tar cvfz $dsym $APP_PATH/../TogglDesktop.app.dSYM
+    tar cvfz $dsym "$APP_PATH"/../Toggl Track.app.dSYM
 }
 
 function appcast() {

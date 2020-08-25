@@ -16,14 +16,14 @@
 /* Class = "NSMenu"; title = "AMainMenu"; ObjectID = "29"; */
 "29.title" = "AMainMenu";
 
-/* Class = "NSMenuItem"; title = "Toggl Desktop"; ObjectID = "56"; */
-"56.title" = "Toggl Desktop";
+/* Class = "NSMenuItem"; title = "Toggl Track"; ObjectID = "56"; */
+"56.title" = "Toggl Track";
 
-/* Class = "NSMenu"; title = "Toggl Desktop"; ObjectID = "57"; */
-"57.title" = "Toggl Desktop";
+/* Class = "NSMenu"; title = "Toggl Track"; ObjectID = "57"; */
+"57.title" = "Toggl Track";
 
-/* Class = "NSMenuItem"; title = "About Toggl Desktop"; ObjectID = "58"; */
-"58.title" = "Teave Toggl Desktop kohta";
+/* Class = "NSMenuItem"; title = "About Toggl Track"; ObjectID = "58"; */
+"58.title" = "Teave Toggl Track kohta";
 
 /* Class = "NSMenuItem"; title = "Account"; ObjectID = "92o-Sa-9cW"; */
 "92o-Sa-9cW.title" = "Kasutajakonto";
@@ -31,11 +31,11 @@
 /* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "129"; */
 "129.title" = "Eelistused…";
 
-/* Class = "NSMenuItem"; title = "Hide Toggl Desktop"; ObjectID = "134"; */
-"134.title" = "Peida Toggl Desktop";
+/* Class = "NSMenuItem"; title = "Hide Toggl Track"; ObjectID = "134"; */
+"134.title" = "Peida Toggl Track";
 
-/* Class = "NSMenuItem"; title = "Quit Toggl Desktop"; ObjectID = "136"; */
-"136.title" = "Välju rakendusest Toggl Desktop";
+/* Class = "NSMenuItem"; title = "Quit Toggl Track"; ObjectID = "136"; */
+"136.title" = "Välju rakendusest Toggl Track";
 
 /* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "145"; */
 "145.title" = "Peida teised";
@@ -91,8 +91,8 @@
 /* Class = "NSMenu"; title = "Help"; ObjectID = "491"; */
 "491.title" = "Abi";
 
-/* Class = "NSMenuItem"; title = "Toggl Desktop Help"; ObjectID = "492"; */
-"492.title" = "Toote Toggl Desktop abi";
+/* Class = "NSMenuItem"; title = "Toggl Track Help"; ObjectID = "492"; */
+"492.title" = "Toote Toggl Track abi";
 
 /* Class = "NSSegmentedCell"; 1459.ibShadowedLabels[0] = "Weekly log"; ObjectID = "1459"; */
 "1459.ibShadowedLabels[0]" = "Weekly log";

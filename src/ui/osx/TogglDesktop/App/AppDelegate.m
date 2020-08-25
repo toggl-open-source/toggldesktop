@@ -28,7 +28,7 @@
 #import "idler.h"
 #import "UserNotificationCenter.h"
 #import "SystemService.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 #import "AppIconFactory.h"
 #import <MASShortcut/Shortcut.h>
 #import "TimelineDisplayCommand.h"
@@ -718,7 +718,7 @@ void *ctx;
 	[alert addButtonWithTitle:@"Let's do it!"];
 	[alert addButtonWithTitle:@"No thanks"];
 	[alert setMessageText:@"Join Team Beta?"];
-	[alert setInformativeText:@"Hi there! Would you like to join Toggl Desktop Beta program to get cool gear and check out the hot new features as they come out of the oven?"];
+	[alert setInformativeText:@"Hi there! Would you like to join Toggl Track Beta program to get cool gear and check out the hot new features as they come out of the oven?"];
 	[alert setAlertStyle:NSInformationalAlertStyle];
 	NSInteger result = [alert runModal];
 

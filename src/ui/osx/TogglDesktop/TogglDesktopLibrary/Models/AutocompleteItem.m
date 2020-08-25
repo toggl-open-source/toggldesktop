@@ -7,7 +7,7 @@
 //
 
 #import "AutocompleteItem.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 
 @implementation AutocompleteItem
 
