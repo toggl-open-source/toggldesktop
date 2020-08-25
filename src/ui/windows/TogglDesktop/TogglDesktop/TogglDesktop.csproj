@@ -248,6 +248,7 @@
     <Compile Include="ui\Converters\AndConverter.cs" />
     <Compile Include="ui\Converters\BooleanInvertToVisibilityConverter.cs" />
     <Compile Include="ui\Converters\CapitalizeConverter.cs" />
+    <Compile Include="ui\Converters\EmptyListToCollapsedConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
     <Compile Include="ui\Converters\HasAnyFlagToVisibilityConverter.cs" />
     <Compile Include="ui\Converters\IsSelectableItemConverter.cs" />
