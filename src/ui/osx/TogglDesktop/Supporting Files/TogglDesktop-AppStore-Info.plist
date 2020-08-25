@@ -6,8 +6,10 @@
 	<string>18C54</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Toggl Track</string>
 	<key>CFBundleExecutable</key>
-	<string>TogglDesktop</string>
+	<string>Toggl Track</string>
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>CFBundleIconName</key>
@@ -17,8 +19,6 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Toggl Track</string>
-	<key>CFBundleDisplayName</key>
 	<string>Toggl Track</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>

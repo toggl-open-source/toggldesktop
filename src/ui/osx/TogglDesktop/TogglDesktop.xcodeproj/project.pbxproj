@@ -757,7 +757,7 @@
 		5B60B83A6E228F2A959F5FEA /* Pods_TogglDesktopTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TogglDesktopTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F76040E605C5D6E37B6F73B /* Pods_TogglDesktop_AppStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TogglDesktop_AppStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6386C95D02B8C4FB0ACDCEA1 /* Pods-TogglDesktopTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktopTests.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktopTests/Pods-TogglDesktopTests.release.xcconfig"; sourceTree = "<group>"; };
-		69FC17F117E6534400B96425 /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		69FC17F117E6534400B96425 /* Toggl Track.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Toggl Track.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		69FC17F417E6534400B96425 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		69FC17F717E6534400B96425 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		69FC17F917E6534400B96425 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1072,7 +1072,7 @@
 		BAE280C52490C79900D400DA /* SSOService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSOService.swift; sourceTree = "<group>"; };
 		BAE280C82490CFF300D400DA /* SSOService+Objc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SSOService+Objc.swift"; sourceTree = "<group>"; };
 		BAE6379922B225C70024DD08 /* AddTagButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagButton.swift; sourceTree = "<group>"; };
-		BAE64E4B2368334000244D2B /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BAE64E4B2368334000244D2B /* Toggl Track.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Toggl Track.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAE64E4E23683E3F00244D2B /* TogglDesktop-AppStore.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "TogglDesktop-AppStore.entitlements"; sourceTree = "<group>"; };
 		BAE64E4F23683F2C00244D2B /* TogglDesktop-AppStore-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "TogglDesktop-AppStore-Info.plist"; path = "Supporting Files/TogglDesktop-AppStore-Info.plist"; sourceTree = SOURCE_ROOT; };
 		BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAutoCompleteTextField.swift; sourceTree = "<group>"; };
@@ -1517,8 +1517,8 @@
 		69FC17F217E6534400B96425 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				69FC17F117E6534400B96425 /* TogglDesktop.app */,
-				BAE64E4B2368334000244D2B /* TogglDesktop.app */,
+				69FC17F117E6534400B96425 /* Toggl Track.app */,
+				BAE64E4B2368334000244D2B /* Toggl Track.app */,
 				49D3603824878FA000527DE8 /* TogglDesktopTests.xctest */,
 				49418B40249CE77D00265665 /* TogglDesktopTests-AppStore.xctest */,
 			);
@@ -2172,7 +2172,7 @@
 			);
 			name = TogglDesktop;
 			productName = test2;
-			productReference = 69FC17F117E6534400B96425 /* TogglDesktop.app */;
+			productReference = 69FC17F117E6534400B96425 /* Toggl Track.app */;
 			productType = "com.apple.product-type.application";
 		};
 		BAE64D512368334000244D2B /* TogglDesktop-AppStore */ = {
@@ -2198,7 +2198,7 @@
 			);
 			name = "TogglDesktop-AppStore";
 			productName = test2;
-			productReference = BAE64E4B2368334000244D2B /* TogglDesktop.app */;
+			productReference = BAE64E4B2368334000244D2B /* Toggl Track.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -2513,7 +2513,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "fix() {\n    pocolib=$1\n    lib=$2\n    oldpath=$(otool -L $pocolib|fgrep $lib|awk -F' ' '{print $1}'|grep -v @loader_path|grep -v \":\")\n    if [ -z \"$oldpath\" ]; then\n        return\n    fi\n    install_name_tool -change $oldpath @loader_path/$lib $pocolib\n    \n    # get shared library id name\n    file=$(otool -D $pocolib |grep -v \":\")\n    # get base name of the path we got\n    basename=${file##*/}\n    # change shared library id name\n    install_name_tool -id @loader_path/$basename $pocolib\n}\n    \nfix_poco_paths() {\n    f=$1\n    fix $f libPocoUtil.60.dylib\n    fix $f libPocoData.60.dylib\n    fix $f libPocoNetSSL.60.dylib\n    fix $f libPocoXML.60.dylib\n    fix $f libPocoDataSQLite.60.dylib\n    fix $f libPocoNet.60.dylib\n    fix $f libPocoFoundation.60.dylib\n    fix $f libPocoCrypto.60.dylib\n    fix $f libPocoJSON.60.dylib\n    fix $f libcrypto.1.1.dylib\n    fix $f libssl.1.1.dylib\n}\n    \n# Change dylib references in all dylibs found in Frameworks\nfor f in $BUILT_PRODUCTS_DIR/TogglDesktop.app/Contents/Frameworks/*.dylib \ndo\n    fix_poco_paths $f\ndone\n";
+			shellScript = "fix() {\n    filename=$1\n    lib=$2\n    \n    oldpath=$(otool -L $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/$filename | fgrep $lib|awk -F' ' '{print $1}'|grep -v @loader_path|grep -v \":\")\n    \n    if [ -z \"$oldpath\" ]; then\n        return\n    fi\n    \n    install_name_tool -change \"$oldpath\" @loader_path/$lib $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/$filename\n    \n    # get shared library id name\n    file=$(otool -D $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/$filename |grep -v \":\")\n    # get base name of the path we got\n    basename=${file##*/}\n    # change shared library id name\n    install_name_tool -id @loader_path/$basename $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/$filename\n}\n    \nfix_poco_paths() {\n    f=$1\n    \n    fix \"$f\" libPocoUtil.60.dylib\n    fix \"$f\" libPocoData.60.dylib\n    fix \"$f\" libPocoNetSSL.60.dylib\n    fix \"$f\" libPocoXML.60.dylib\n    fix \"$f\" libPocoDataSQLite.60.dylib\n    fix \"$f\" libPocoNet.60.dylib\n    fix \"$f\" libPocoFoundation.60.dylib\n    fix \"$f\" libPocoCrypto.60.dylib\n    fix \"$f\" libPocoJSON.60.dylib\n    fix \"$f\" libcrypto.1.1.dylib\n    fix \"$f\" libssl.1.1.dylib\n}\n\n# Change dylib references in all dylibs found in Frameworks\nfor path in $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/*.dylib\ndo\n    filename=\"${path##*/}\"\n    fix_poco_paths \"$filename\"\ndone\n";
 		};
 		74E3CDDA17FC37A500C3ADD3 /* Run Script (install bugsnag) */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2636,7 +2636,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "fix() {\n    pocolib=$1\n    lib=$2\n    oldpath=$(otool -L $pocolib|fgrep $lib|awk -F' ' '{print $1}'|grep -v @loader_path|grep -v \":\")\n    if [ -z \"$oldpath\" ]; then\n        return\n    fi\n    install_name_tool -change $oldpath @loader_path/$lib $pocolib\n    \n    # get shared library id name\n    file=$(otool -D $pocolib |grep -v \":\")\n    # get base name of the path we got\n    basename=${file##*/}\n    # change shared library id name\n    install_name_tool -id @loader_path/$basename $pocolib\n}\n    \nfix_poco_paths() {\n    f=$1\n    fix $f libPocoUtil.60.dylib\n    fix $f libPocoData.60.dylib\n    fix $f libPocoNetSSL.60.dylib\n    fix $f libPocoXML.60.dylib\n    fix $f libPocoDataSQLite.60.dylib\n    fix $f libPocoNet.60.dylib\n    fix $f libPocoFoundation.60.dylib\n    fix $f libPocoCrypto.60.dylib\n    fix $f libPocoJSON.60.dylib\n    fix $f libcrypto.1.1.dylib\n    fix $f libssl.1.1.dylib\n}\n    \n# Change dylib references in all dylibs found in Frameworks\nfor f in $BUILT_PRODUCTS_DIR/TogglDesktop.app/Contents/Frameworks/*.dylib \ndo\n    fix_poco_paths $f\ndone\n";
+			shellScript = "fix() {\n    filename=$1\n    lib=$2\n    \n    oldpath=$(otool -L $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/$filename | fgrep $lib|awk -F' ' '{print $1}'|grep -v @loader_path|grep -v \":\")\n    \n    if [ -z \"$oldpath\" ]; then\n        return\n    fi\n    \n    install_name_tool -change \"$oldpath\" @loader_path/$lib $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/$filename\n    \n    # get shared library id name\n    file=$(otool -D $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/$filename |grep -v \":\")\n    # get base name of the path we got\n    basename=${file##*/}\n    # change shared library id name\n    install_name_tool -id @loader_path/$basename $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/$filename\n}\n    \nfix_poco_paths() {\n    f=$1\n    \n    fix \"$f\" libPocoUtil.60.dylib\n    fix \"$f\" libPocoData.60.dylib\n    fix \"$f\" libPocoNetSSL.60.dylib\n    fix \"$f\" libPocoXML.60.dylib\n    fix \"$f\" libPocoDataSQLite.60.dylib\n    fix \"$f\" libPocoNet.60.dylib\n    fix \"$f\" libPocoFoundation.60.dylib\n    fix \"$f\" libPocoCrypto.60.dylib\n    fix \"$f\" libPocoJSON.60.dylib\n    fix \"$f\" libcrypto.1.1.dylib\n    fix \"$f\" libssl.1.1.dylib\n}\n\n# Change dylib references in all dylibs found in Frameworks\nfor path in $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/*.dylib\ndo\n    filename=\"${path##*/}\"\n    fix_poco_paths \"$filename\"\ndone\n";
 		};
 		BAE64E452368334000244D2B /* Run Formatter */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3373,7 +3373,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TogglDesktop.app/Contents/MacOS/TogglDesktop";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Toggl Track.app/Contents/MacOS/Toggl Track";
 			};
 			name = Debug;
 		};
@@ -3408,7 +3408,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TogglDesktop.app/Contents/MacOS/TogglDesktop";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Toggl Track.app/Contents/MacOS/Toggl Track";
 			};
 			name = Release;
 		};
@@ -3444,7 +3444,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TogglDesktop.app/Contents/MacOS/TogglDesktop";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Toggl Track.app/Contents/MacOS/Toggl Track";
 			};
 			name = Debug;
 		};
@@ -3480,7 +3480,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TogglDesktop.app/Contents/MacOS/TogglDesktop";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Toggl Track.app/Contents/MacOS/Toggl Track";
 			};
 			name = Release;
 		};
@@ -3650,7 +3650,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "-DSPARKLE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
-				PRODUCT_NAME = TogglDesktop;
+				PRODUCT_NAME = "Toggl Track";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -3739,7 +3739,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "-DSPARKLE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
-				PRODUCT_NAME = TogglDesktop;
+				PRODUCT_NAME = "Toggl Track";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -3911,8 +3911,8 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_STORE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
-				PRODUCT_MODULE_NAME = TogglDesktop;
-				PRODUCT_NAME = TogglDesktop;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
+				PRODUCT_NAME = "Toggl Track";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -3995,8 +3995,8 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_STORE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
-				PRODUCT_MODULE_NAME = TogglDesktop;
-				PRODUCT_NAME = TogglDesktop;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
+				PRODUCT_NAME = "Toggl Track";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;

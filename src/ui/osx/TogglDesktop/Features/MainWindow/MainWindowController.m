@@ -14,7 +14,7 @@
 #import "UIEvents.h"
 #import "DisplayCommand.h"
 #import "TrackingService.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 #import "TimelineDisplayCommand.h"
 #import "TimerEditViewController.h"
 

@@ -8,7 +8,7 @@
 
 #import "AutoCompleteTableCell.h"
 #import "ProjectTextField.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 #import "AutocompleteItem.h"
 #import "ConvertHexColor.h"
 

@@ -8,7 +8,7 @@
 
 #import "FeedbackWindowController.h"
 #import "NSAlert+Utils.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 #import "ConvertHexColor.h"
 
 static NSInteger const kMaxFileSize = 5000000;

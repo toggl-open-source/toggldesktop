@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "69FC17F017E6534400B96425"
-               BuildableName = "TogglDesktop.app"
+               BuildableName = "Toggl Track.app"
                BlueprintName = "TogglDesktop"
                ReferencedContainer = "container:TogglDesktop.xcodeproj">
             </BuildableReference>
@@ -34,7 +34,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "69FC17F017E6534400B96425"
-            BuildableName = "TogglDesktop.app"
+            BuildableName = "Toggl Track.app"
             BlueprintName = "TogglDesktop"
             ReferencedContainer = "container:TogglDesktop.xcodeproj">
          </BuildableReference>
@@ -74,7 +74,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "69FC17F017E6534400B96425"
-            BuildableName = "TogglDesktop.app"
+            BuildableName = "Toggl Track.app"
             BlueprintName = "TogglDesktop"
             ReferencedContainer = "container:TogglDesktop.xcodeproj">
          </BuildableReference>
@@ -91,7 +91,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "69FC17F017E6534400B96425"
-            BuildableName = "TogglDesktop.app"
+            BuildableName = "Toggl Track.app"
             BlueprintName = "TogglDesktop"
             ReferencedContainer = "container:TogglDesktop.xcodeproj">
          </BuildableReference>

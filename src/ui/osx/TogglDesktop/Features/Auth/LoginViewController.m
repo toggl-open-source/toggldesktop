@@ -7,11 +7,10 @@
 #import "LoginViewController.h"
 #import "Utils.h"
 #import "NSTextField+Ext.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 #import "NSTextFieldClickablePointer.h"
 #import "AutocompleteDataSource.h"
 #import "NSCustomComboBox.h"
-#import "TogglDesktop-Swift.h"
 #import "const.h"
 #import "DesktopLibraryBridge.h"
 

@@ -9,7 +9,7 @@
 #import "TimeEntryCollectionView.h"
 #import "TimeEntryCell.h"
 #import "UIEvents.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 #include <Carbon/Carbon.h>
 #import "Utils.h"
 
