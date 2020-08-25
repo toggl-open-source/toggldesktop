@@ -8,7 +8,7 @@
 
 #import "IdleNotificationWindowController.h"
 #import "DisplayCommand.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 #import "IdleEvent.h"
 #import "UserNotificationCenter.h"
 

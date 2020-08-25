@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="TimelineDashboardViewController" customModule="TogglDesktop" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="TimelineDashboardViewController" customModule="Toggl_Track" customModuleProvider="target">
             <connections>
                 <outlet property="activityContainerView" destination="5e4-xo-IAU" id="M79-Qg-0bL"/>
                 <outlet property="activityLabelRight" destination="Amy-gg-D4X" id="uWG-1B-1dA"/>
@@ -54,11 +54,11 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mVu-t2-GXP" customClass="HoverImageView" customModule="TogglDesktop" customModuleProvider="target">
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mVu-t2-GXP" customClass="HoverImageView" customModule="Toggl_Track" customModuleProvider="target">
                             <rect key="frame" x="10" y="54" width="20" height="20"/>
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="timeline-activity-recorder-info-icon" id="Tcf-ph-vyh"/>
                         </imageView>
-                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="I6m-RA-gUy" customClass="OGSwitch" customModule="TogglDesktop" customModuleProvider="target">
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="I6m-RA-gUy" customClass="OGSwitch" customModule="Toggl_Track" customModuleProvider="target">
                             <rect key="frame" x="333" y="58" width="26" height="13"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="13" id="KZb-zk-hfP"/>
@@ -72,7 +72,7 @@
                             <rect key="frame" x="197" y="57" width="136" height="14"/>
                             <string key="toolTip">Screen Recording permission not granted!
 
-To get the focused application window name properly for the Timeline, TogglDesktop needs to be granted the Screen Recording permission in Security &amp; Privacy in System Preferences .</string>
+To get the focused application window name properly for the Timeline, Toggl Track needs to be granted the Screen Recording permission in Security &amp; Privacy in System Preferences .</string>
                             <constraints>
                                 <constraint firstAttribute="height" constant="14" id="y9x-m5-wa7"/>
                             </constraints>
@@ -225,7 +225,7 @@ To get the focused application window name properly for the Timeline, TogglDeskt
                                 <rect key="frame" x="0.0" y="0.0" width="369" height="410"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <collectionView selectable="YES" id="hht-dC-mpO" customClass="TimelineCollectionView" customModule="TogglDesktop" customModuleProvider="target">
+                                    <collectionView selectable="YES" id="hht-dC-mpO" customClass="TimelineCollectionView" customModule="Toggl_Track" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="369" height="410"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="ZtE-Ms-OYm">

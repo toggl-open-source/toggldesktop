@@ -8,7 +8,7 @@
 
 #import "NSTextFieldClickable.h"
 #import "UIEvents.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 
 @interface NSTextFieldClickable () <NSTextFieldDelegate>
 @end

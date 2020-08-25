@@ -9,7 +9,7 @@
 #import "LiteAutoCompleteDataSource.h"
 #import "AutoCompleteTableCell.h"
 #import "AutoCompleteTable.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 #import "AutoCompleteInput.h"
 #import "AutocompleteItem.h"
 

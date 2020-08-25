@@ -14,7 +14,7 @@
 #import "AutocompleteDataSource.h"
 #import "NSCustomComboBox.h"
 #import <MASShortcut/Shortcut.h>
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 #import "DesktopLibraryBridge.h"
 
 NSString *const kPreferenceGlobalShortcutShowHide = @"TogglDesktopGlobalShortcutShowHide";

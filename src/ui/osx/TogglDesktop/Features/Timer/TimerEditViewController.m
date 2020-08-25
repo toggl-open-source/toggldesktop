@@ -8,7 +8,7 @@
 //
 #import "TimerEditViewController.h"
 #import "DisplayCommand.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 #import "NSBoxClickable.h"
 #import <Carbon/Carbon.h>
 
