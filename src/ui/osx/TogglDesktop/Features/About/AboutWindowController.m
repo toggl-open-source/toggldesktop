@@ -13,7 +13,7 @@
 #import "UnsupportedNotice.h"
 #import "NSTextFieldClickablePointer.h"
 #import "ConvertHexColor.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 
 static NSString *const kTogglDesktopGithubURL = @"https://github.com/toggl-open-source/toggldesktop";
 

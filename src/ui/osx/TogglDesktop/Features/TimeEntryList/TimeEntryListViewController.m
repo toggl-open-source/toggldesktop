@@ -11,7 +11,7 @@
 #import "TimeEntryCell.h"
 #import "DisplayCommand.h"
 #import "ConvertHexColor.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 #import "TimeEntryCollectionView.h"
 
 static void *XXContext = &XXContext;

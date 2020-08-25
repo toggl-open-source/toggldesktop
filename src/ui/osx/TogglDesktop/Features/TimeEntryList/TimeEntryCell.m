@@ -8,7 +8,7 @@
 
 #import "TimeEntryCell.h"
 #import "ConvertHexColor.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 #import "ProjectTextField.h"
 #import "TimeEntryViewItem.h"
 

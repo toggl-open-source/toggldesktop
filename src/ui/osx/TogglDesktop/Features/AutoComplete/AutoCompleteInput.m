@@ -7,7 +7,7 @@
 //
 
 #import "AutoCompleteInput.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 #import "AutoCompleteTable.h"
 #import "AutoCompleteTableCell.h"
 #import "AutoCompleteTableContainer.h"

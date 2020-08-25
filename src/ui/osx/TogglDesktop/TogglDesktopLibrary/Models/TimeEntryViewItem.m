@@ -7,7 +7,7 @@
 //
 
 #import "TimeEntryViewItem.h"
-#import "TogglDesktop-Swift.h"
+#import "Toggl_Track-Swift.h"
 
 @implementation TimeEntryViewItem
 
