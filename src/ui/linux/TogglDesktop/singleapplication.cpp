@@ -5,6 +5,8 @@
 #include <QtNetwork/QLocalSocket>
 #include <QFileInfo>
 
+#include "toggl_api.h"
+
 #define TIMEOUT_MS                (500)
 
 SingleApplication::SingleApplication(int &argc, char **argv)
@@ -14,6 +16,8 @@ SingleApplication::SingleApplication(int &argc, char **argv)
 , local_server_(nullptr) {
     server_name_ = QFileInfo(
         QCoreApplication::applicationFilePath()).fileName();
+    if (toggl_get_server_type() == TogglServerStaging)
+        server_name_.append("-staging");
 
     initLocalConnection();
 }

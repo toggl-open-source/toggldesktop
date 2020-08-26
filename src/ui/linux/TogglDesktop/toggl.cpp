@@ -230,7 +230,10 @@ TogglApi::TogglApi(
 
     QString logPath("");
     if (logPathOverride.isEmpty()) {
-        logPath = appDir.filePath("toggldesktop.log");
+        if (toggl_get_server_type() == TogglServerStaging)
+            logPath = appDir.filePath("toggldesktop-staging.log");
+        else
+            logPath = appDir.filePath("toggldesktop.log");
     } else {
         logPath = logPathOverride;
     }
@@ -243,7 +246,10 @@ TogglApi::TogglApi(
 
     QString dbPath("");
     if (dbPathOverride.isEmpty()) {
-        dbPath = appDir.filePath("toggldesktop.db");
+        if (toggl_get_server_type() == TogglServerStaging)
+            dbPath = appDir.filePath("toggldesktop-staging.db");
+        else
+            dbPath = appDir.filePath("toggldesktop.db");
     } else {
         dbPath = dbPathOverride;
     }
