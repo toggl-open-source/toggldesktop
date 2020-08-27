@@ -1,3 +1,9 @@
+if (UNIX AND NOT APPLE)
+    set (TESTS_ADDITIONAL_LIBS
+        -lX11
+    )
+endif()
+
 include_directories(
     ${TOGGLDESKTOPLIBRARY_INCLUDE_DIR}
     ${OAUTH_INCLUDE_DIR}
@@ -19,7 +25,7 @@ target_link_libraries(TogglApiTest PRIVATE
     ${LUA_LIBRARIES}
     PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation
     gtest_main gtest
-    X11
+    ${TESTS_ADDITIONAL_LIBS}
 )
 
 set(APP_TEST_SOURCE_FILES
@@ -33,7 +39,7 @@ target_link_libraries(TogglAppTest PRIVATE
     ${LUA_LIBRARIES}
     PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation
     gtest_main gtest
-    X11
+    ${TESTS_ADDITIONAL_LIBS}
 )
 
 set(ONLINE_TEST_SOURCE_FILES
@@ -49,5 +55,5 @@ target_link_libraries(TogglOnlineTest PRIVATE
     ${LUA_LIBRARIES}
     PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation
     gtest_main gtest
-    X11
+    ${TESTS_ADDITIONAL_LIBS}
 )

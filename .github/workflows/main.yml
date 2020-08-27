@@ -113,7 +113,73 @@ jobs:
       if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh update_release
-   
+
+  macos-cmake:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+    - name: Prepare ENV
+      run: |
+        TAG_NAME=$(./dist/get-tag-name.sh)
+        version=${TAG_NAME/v/}
+        timestamp=$(date '+%Y-%m-%d-%H-%M-%S')
+        escaped_version=$(echo $version | sed 's/\./_/g')
+        installer=TogglDesktop-$escaped_version-$timestamp.dmg
+        installer_name=TogglDesktop-$escaped_version.dmg
+        echo $version
+        echo $installer
+        echo $installer_name
+        # Export env to all future steps
+        echo "::set-env name=TAG_NAME::$TAG_NAME"
+        echo "::set-env name=version::$version"
+        echo "::set-env name=timestamp::$timestamp"
+        echo "::set-env name=escaped_version::$escaped_version"
+        echo "::set-env name=installer::$installer"
+        echo "::set-env name=installer_name::$installer_name"
+    - name: Setup Golang env
+      if: github.event_name == 'release'
+      uses: actions/setup-go@v1
+      with:
+        version: 1.13
+    - name: Import signing key
+      run: |
+        # Create a new keychian and make it default
+        security create-keychain -p password build.keychain
+        security default-keychain -s ~/Library/Keychains/build.keychain
+
+        # Mac Developer Certificate
+        base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPER }}" > Bundle_cert_macos_developer.p12
+        security import ./Bundle_cert_macos_developer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPER_PASSWORD }} -T /usr/bin/codesign
+        # Mac Development Certificate
+        base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPMENT }}" > Bundle_cert_macos_development.p12
+        security import ./Bundle_cert_macos_development.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPMENT_PASSWORD }} -T /usr/bin/codesign
+        # Application Certificate
+        base64 -D <<< "${{ secrets.CERT_MACOS_APPLICATION }}" > Bundle_cert_macos_distribution.p12
+        security import ./Bundle_cert_macos_distribution.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_APPLICATION_PASSWORD }} -T /usr/bin/codesign
+        # Installer Certificate
+        base64 -D <<< "${{ secrets.CERT_MACOS_INSTALLER }}" > Bundle_cert_macos_installer.p12
+        security import ./Bundle_cert_macos_installer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_INSTALLER_PASSWORD }} -T /usr/bin/codesign
+        # Unlock
+        security unlock-keychain -p password ~/Library/Keychains/build.keychain
+        security set-keychain-settings -lu
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k password ~/Library/Keychains/build.keychain
+
+    - name: Install the dependencies
+      run: |
+        brew install qt
+        brew install openssl
+        brew install cmake
+    - name: Build the application
+      run: |
+        mkdir build
+        cd build
+        export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake
+        export OPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1/
+        cmake -DTOGGL_BUILD_TESTS=OFF -DOPENSSL_ROOT_DIR=$OPENSSL_ROOT_DIR ..
+        make -j2
+
   linux-basic:
     runs-on: ubuntu-20.04
     if: github.event_name != 'release'
@@ -279,6 +345,34 @@ jobs:
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="com.toggl.TogglDesktop.flatpak" renameto="com.toggl.TogglDesktop-${TAG_NAME/v/}.flatpak"
+
+  windows-cmake:
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        arch: win64_mingw73
+        modules: qtnetworkauth
+    - name: Install dependencies
+      shell: bash
+      run: |
+        choco install openssl
+    - name: Build the application
+      shell: bash
+      run: |
+        mkdir build
+        cd build
+        export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake"
+        export PATH="$Qt5_Dir/bin":"$PATH"
+        kit=$(ls "/c/Program Files (x86)/Windows Kits/10/bin/"*"/x64/mc.exe" | head -n1 | sed s/mc.exe//)
+        export PATH="$kit":"$PATH"
+        export OPENSSL_ROOT_DIR="/c/Program Files/OpenSSL-Win64"
+        cmake -DCMAKE_BUILD_TYPE=Release -DTOGGL_BUILD_TESTS=OFF -DOPENSSL_ROOT_DIR="${OPENSSL_ROOT_DIR}" ..  -G "MinGW Makefiles"
+        cmake --build .
 
   windows-32bit:
     runs-on: windows-2019

@@ -6,6 +6,8 @@
 #include <fstream>
 #include <cstring>
 #include <set>
+#include <locale>
+#include <codecvt>
 
 #include "model/client.h"
 #include "const.h"
@@ -992,7 +994,14 @@ bool_t toggl_feedback_send(
 
     if (filename != nullptr) {
         // Check image size (max 5mb)
+#if defined(__MINGW32__) || defined(__MINGW64__)
+        using convert_typeX = std::codecvt_utf8<wchar_t>;
+        std::wstring_convert<convert_typeX, wchar_t> converterX;
+        std::string filenameConverted = converterX.to_bytes(filename);
+        std::ifstream file(filenameConverted, std::ifstream::ate | std::ifstream::binary);
+#else
         std::ifstream file(filename, std::ifstream::ate | std::ifstream::binary);
+#endif // MINGW
 
         if(file.is_open())
         {

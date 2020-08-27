@@ -5,6 +5,8 @@
 #include <Poco/Path.h>
 
 #include <iostream>
+#include <locale>
+#include <codecvt>
 
 namespace test {
 

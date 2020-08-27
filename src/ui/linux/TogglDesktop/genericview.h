@@ -6,7 +6,7 @@
 #include <QObject>
 #include <QVector>
 
-#include "./toggl_api.h"
+#include "toggl.h"
 
 class GenericView : public QObject {
     Q_OBJECT
@@ -21,8 +21,8 @@ class GenericView : public QObject {
             GenericView *view = new GenericView();
             view->ID = it->ID;
             view->WID = it->WID;
-            view->GUID = QString(it->GUID);
-            view->Name = QString(it->Name);
+            view->GUID = toQString(it->GUID);
+            view->Name = toQString(it->Name);
             result.push_back(view);
             it = static_cast<TogglGenericView *>(it->Next);
         }

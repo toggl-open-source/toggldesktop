@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QVector>
 
-#include "./toggl_api.h"
+#include "toggl.h"
 
 class CountryView : public QObject
 {
@@ -20,12 +20,12 @@ public:
             CountryView *view = new CountryView();
             view->ID = it->ID;
             view->VatApplicable = it->VatApplicable;
-            view->Text = QString(it->Name);
-            view->Name = QString(it->Name);
+            view->Text = toQString(it->Name);
+            view->Name = toQString(it->Name);
             result.push_back(view);
-            view->Name = QString(it->VatPercentage);
-            view->Name = QString(it->VatRegex);
-            view->Name = QString(it->Code);
+            view->Name = toQString(it->VatPercentage);
+            view->Name = toQString(it->VatRegex);
+            view->Name = toQString(it->Code);
             it = static_cast<TogglCountryView *>(it->Next);
         }
         return result;

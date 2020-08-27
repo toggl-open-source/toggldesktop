@@ -15,7 +15,7 @@ if(TOGGL_ALLOW_UPDATE_CHECK)
     add_definitions(-DTOGGL_ALLOW_UPDATE_CHECK=1)
 endif()
 
-add_definitions(-DTOGGL_BUILD_TYPE="${TOGGL_BUILD_TYPE}")
+add_definitions(-DTOGGL_BUILD_TYPE="${TOGGL_BUILD_TYPE}" -DTOGGLDESKTOP_DLL_BUILD)
 
 set(TOGGLDESKTOPLIBRARY_INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -61,7 +61,6 @@ set(LIBRARY_SOURCE_FILES
     context.cc
     error.cc
     feedback.cc
-    get_focused_window_linux.cc
     gui.cc
     help_article.cc
     https_client.cc
@@ -79,12 +78,36 @@ set(LIBRARY_SOURCE_FILES
     color_convert.cc
     onboarding_service.cpp
 )
+if (UNIX AND NOT APPLE)
+    set (LIBRARY_SOURCE_FILES ${LIBRARY_SOURCE_FILES}
+        get_focused_window_linux.cc
+    )
+elseif(WIN32)
+    set (LIBRARY_SOURCE_FILES ${LIBRARY_SOURCE_FILES}
+        get_focused_window_windows.cc
+    )
+    set (LIBRARY_ADDITIONAL_LIBS
+        -lWinhttp
+        -lPsapi
+    )
+else()
+    set (LIBRARY_SOURCE_FILES ${LIBRARY_SOURCE_FILES}
+        get_focused_window_mac.cc
+        lib/osx/Kopsik/MacOSVersionChecker.mm
+    )
+    set(LIBRARY_ADDITIONAL_LIBS
+        "-framework Foundation"
+        "-framework CFNetwork"
+        "-framework AppKit"
+    )
+endif()
 
 # Set up compilation targets
 add_library(TogglDesktopLibrary SHARED ${LIBRARY_SOURCE_FILES})
 
 # And list the dependencies between them (and system libraries)
-target_link_libraries(TogglDesktopLibrary PRIVATE
+target_link_libraries(TogglDesktopLibrary
+    ${LIBRARY_ADDITIONAL_LIBS}
     ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
     PocoCrypto PocoDataSQLite PocoNetSSL

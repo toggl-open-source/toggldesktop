@@ -60,8 +60,13 @@ set(BINARY_SOURCE_FILES
     timeentryeditorwidget.ui
     timeentrylistwidget.ui
     timerwidget.ui
-
 )
+
+if (UNIX AND NOT APPLE)
+    set (TOGGLDESKTOP_ADDITIONAL_LIBS
+        -lX11 -lXss
+    )
+endif()
 
 # Set up compilation targets
 add_executable(TogglDesktop ${BINARY_SOURCE_FILES})
@@ -72,7 +77,7 @@ target_link_libraries(TogglDesktop PRIVATE
     Qt5::Widgets Qt5::DBus Qt5::NetworkAuth
     ${QXT_LIBRARIES}
     Bugsnag
-    -lX11 -lXss
+    ${TOGGLDESKTOP_ADDITIONAL_LIBS}
 )
 
 configure_file(${PROJECT_SOURCE_DIR}/src/ssl/cacert.pem cacert.pem COPYONLY)

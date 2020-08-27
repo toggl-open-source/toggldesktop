@@ -221,3 +221,5 @@ void QxtGlobalShortcut::setDisabled(bool disabled)
 {
     qxt_d().enabled = !disabled;
 }
+
+#include "moc_qxtglobalshortcut.cpp"

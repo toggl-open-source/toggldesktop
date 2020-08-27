@@ -319,7 +319,7 @@ void TimerWidget::start() {
                               ui->duration->text(),
                               selectedTaskId,
                               selectedProjectId,
-                              tagsHolder.toStdString().c_str(),
+                              tagsHolder,
                               ui->billable->isVisible());
     tagsHolder = "";
 
