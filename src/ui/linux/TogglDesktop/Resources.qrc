@@ -3,6 +3,8 @@
         <file>images/logo.png</file>
         <file>images/icon-billable.png</file>
         <file>images/icon-tags.png</file>
+        <file>images/icon-billable-color.png</file>
+        <file>images/icon-tags-color.png</file>
         <file>images/continue.svg</file>
         <file>icons/16x16/toggldesktop.png</file>
         <file>icons/24x24/toggldesktop.png</file>
@@ -14,12 +16,11 @@
         <file>icons/256x256/toggldesktop.png</file>
         <file>icons/1024x1024/toggldesktop.png</file>
         <file>icons/1024x1024/toggldesktop_gray.png</file>
-        <file>images/toggl-white-icon.png</file>
         <file>images/continue_regular.svg</file>
         <file>images/continue_light.svg</file>
         <file>images/group_icon_closed.svg</file>
         <file>images/group_icon_open.svg</file>
         <file>images/down_arrow.png</file>
-        <file>../../windows/TogglDesktop/TogglDesktop/Resources/warning-icon.png</file>
+        <file>images/warning-icon.png</file>
     </qresource>
 </RCC>

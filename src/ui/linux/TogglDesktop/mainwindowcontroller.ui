@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Toggl Desktop</string>
+   <string>Toggl Track</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -62,7 +62,7 @@
      <x>0</x>
      <y>0</y>
      <width>350</width>
-     <height>27</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -73,7 +73,7 @@
    </property>
    <widget class="QMenu" name="menuToggl_Desktop">
     <property name="title">
-     <string>To&amp;ggl Desktop</string>
+     <string>To&amp;ggl Track</string>
     </property>
     <addaction name="actionEmail"/>
     <addaction name="separator"/>
