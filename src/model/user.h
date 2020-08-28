@@ -211,7 +211,7 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         std::string *result);
 
     AlphaFeatures* AlphaFeatureSettings;
-    void User::LoadAlphaFeaturesFromJSON(const Json::Value& data);
+    void LoadAlphaFeaturesFromJSON(const Json::Value& data);
 
  private:
     void loadUserTagFromJSON(
