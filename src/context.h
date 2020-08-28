@@ -578,7 +578,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     void TrackTimelineMenuContext(const TimelineMenuContextType type);
 
     AlphaFeatures* GetAlphaFeatures() {
-        return alpha_features_;
+        return user_ ? user_->AlphaFeatureSettings : nullptr;
     }
 
  protected:
@@ -871,7 +871,11 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     bool need_enable_SSO;
     std::string sso_confirmation_code;
 
-    AlphaFeatures *alpha_features_;
+    enum SyncState {
+        STARTUP,
+        LEGACY,
+        BATCHED
+    } sync_state_;
 };
 void on_websocket_message(
     void *context,

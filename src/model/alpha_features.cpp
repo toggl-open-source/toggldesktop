@@ -10,10 +10,10 @@
 
 namespace toggl {
 
-	AlphaFeatures::AlphaFeatures() {
+    AlphaFeatures::AlphaFeatures() {
         isSyncEnabled_ = false;
         isTimelineUiEnabled_ = false;
-	}
+    }
 
     void AlphaFeatures::ReadAlphaFeatures(Json::Value root) {
         if (root.isMember("alpha_features")) {

@@ -89,7 +89,7 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , last_message_id_("")
 , need_enable_SSO(false)
 , sso_confirmation_code("")
-, alpha_features_(new AlphaFeatures()){
+, sync_state_(STARTUP){
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
     }
@@ -172,13 +172,6 @@ Context::~Context() {
     }
 
     Poco::Net::uninitializeSSL();
-
-    {
-        if (alpha_features_) {
-            delete alpha_features_;
-            alpha_features_ = nullptr;
-        }
-    }
 }
 
 void Context::stopActivities() {
@@ -2668,6 +2661,7 @@ error Context::Login(
             if (err != noError) {
                 return displayError(err);
             }
+            sync_state_ = STARTUP;
         }
 
         if ("production" == environment_) {
@@ -5010,6 +5004,7 @@ void Context::syncerActivityWrapper() {
                 logger.log("Syncer bootup, will attempt to determine which protocol to use");
                 //Do it here to know the type of syncing before syncerActivityWrapper() pulls the preferences
                 pullUserPreferences();
+                state = user_->AlphaFeatureSettings->IsSyncEnabled() ? state = BATCHED : LEGACY;
                 logger.log("Syncer - Syncing protocol was selected: ", (state == BATCHED ? "BATCHED" : "LEGACY"));
                 break;
             }
@@ -5020,7 +5015,6 @@ void Context::syncerActivityWrapper() {
                 batchedSyncerActivity();
                 break;
         }
-        state = alpha_features_->IsSyncEnabled() ? state = BATCHED : LEGACY;
     }
 }
 
@@ -6188,7 +6182,7 @@ error Context::pullUserPreferences() {
             UI()->DisplayTosAccept();
         }
 
-        alpha_features_->ReadAlphaFeatures(root);
+        user_->LoadAlphaFeaturesFromJSON(root);
     }
     catch (const Poco::Exception& exc) {
         return exc.displayText();
@@ -6851,7 +6845,7 @@ bool Context::checkIfSkipPomodoro(TimeEntry *te) {
 }
 
 bool Context::isUsingSyncServer() const {
-    return alpha_features_->IsSyncEnabled();
+    return user_->AlphaFeatureSettings->IsSyncEnabled();
 }
 
 void Context::TrackTimelineMenuContext(const TimelineMenuContextType type) {
