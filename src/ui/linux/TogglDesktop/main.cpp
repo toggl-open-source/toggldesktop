@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) try {
     qRegisterMetaType<QVector<AutocompleteView*> >("QVector<AutocompleteView*>");
     qRegisterMetaType<QVector<GenericView*> >("QVector<GenericView*>");
 
-    QApplication::setApplicationName("Toggl Track");
+    QApplication::setApplicationName("Toggl Desktop");
     QApplication::setOrganizationName("Toggl");
 
     TogglApplication a(argc, argv);
