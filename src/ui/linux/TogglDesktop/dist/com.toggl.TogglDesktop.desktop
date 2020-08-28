@@ -2,10 +2,10 @@
 Version=1.0
 Type=Application
 Terminal=false
-Name=Toggl Desktop
+Name=Toggl Track
 Comment=Free Time Tracking Software
 Icon=toggldesktop
 Exec=TogglDesktop.sh
 Categories=Office;
 StartupNotify=false
-StartupWMClass=Toggl Desktop
+StartupWMClass=Toggl Track

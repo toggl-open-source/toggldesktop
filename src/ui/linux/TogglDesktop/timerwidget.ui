@@ -355,7 +355,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="Resources.qrc">:/images/icon-tags.png</pixmap>
+      <pixmap resource="Resources.qrc">:/images/icon-tags-color.png</pixmap>
      </property>
     </widget>
    </item>
@@ -386,7 +386,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="Resources.qrc">:/images/icon-billable.png</pixmap>
+      <pixmap resource="Resources.qrc">:/images/icon-billable-color.png</pixmap>
      </property>
     </widget>
    </item>
@@ -450,7 +450,7 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(69, 185, 0); color: rgb(255, 255, 255);border:none;</string>
+      <string notr="true">background-color: #DF68D0; color: #000000; font-weight:bold; border:none;</string>
      </property>
      <property name="text">
       <string>Start</string>
