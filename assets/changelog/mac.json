@@ -5,8 +5,7 @@
             "rows": [
                 "New Timer experience. Add or edit a project, tags, and billable state before starting your time entry, without opening edit popup."
             ],
-            "date": "August 24th 2020",
-            "beta": "true"
+            "date": "August 31st 2020"
         },
         {
             "version": "7.5.245",
