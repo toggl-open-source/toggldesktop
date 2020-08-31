@@ -29,6 +29,8 @@
 
     <!-- derived colors: -->
     <Color x:Key="Toggl.TimelineTimeColor">#555500</Color>
+    <Color x:Key="Toggl.ActivityBlockColor">#06AAF5</Color>
+    <Color x:Key="Toggl.TimelineSeparatorColor">#E8E8E8</Color>
     <Color x:Key="Toggl.AccentColorFivePercentDarker">#D463C6</Color>
     <Color x:Key="Toggl.AccentColorTenPercentDarker">#C95EBB</Color>
     <Color x:Key="Toggl.AccentColorTwentyFivePercentDarker">#A74E9C</Color>
@@ -104,4 +106,6 @@
     <SolidColorBrush x:Key="Toggl.WorkspaceSeparator" Color="{StaticResource Toggl.BlackColor}" Opacity="0.1" po:Freeze="True"/>
     <DropShadowEffect x:Key="Toggl.DropDownShadow" ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.1" Color="{DynamicResource Toggl.BlackColor}"/>
     <SolidColorBrush x:Key="Toggl.TimelineTimeBrush" Color="{StaticResource Toggl.TimelineTimeColor}" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Toggl.ActivityBlockBrush" Color="{StaticResource Toggl.ActivityBlockColor}" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Toggl.TimelineSeparatorBrush" Color="{StaticResource Toggl.TimelineSeparatorColor}" po:Freeze="True"/>
 </ResourceDictionary>

@@ -48,7 +48,6 @@ namespace TogglDesktop.ViewModels
 
         public ReactiveCommand<Unit, Unit> SelectNextDay { get; }
 
-        [Reactive]
         public List<DateTime> HourViews { get; }
 
         [Reactive]

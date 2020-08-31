@@ -97,12 +97,12 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="70"/>
                     </Grid.ColumnDefinitions>
                     <ItemsControl ItemsSource="{Binding HourViews}" AlternationCount="2" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Height="200" x:Name="TimeRow">
+                                <StackPanel Height="200" x:Name="TimeRow" ZIndex="0">
                                     <TextBlock Text="{Binding Path=., StringFormat='hh:mm tt'}"
                                            Width="29"
                                            TextWrapping="Wrap"
@@ -124,7 +124,7 @@
                     </ItemsControl>
                     <TextBlock Grid.Row="0" Grid.Column="2" Style="{StaticResource Toggl.BodyGrayText}" FontSize="12" Text="TIME ENTRIES" Margin="10 8" HorizontalAlignment="Center"/>
                     <TextBlock Grid.Row="0" Grid.Column="4" Style="{StaticResource Toggl.BodyGrayText}" FontSize="12" Text="ACTIVITY" Margin="10 8" HorizontalAlignment="Center"/>
-                    <GridSplitter Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="1" Background="{DynamicResource Toggl.WorkspaceSeparator}"/>
+                    <GridSplitter Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="1" Background="{DynamicResource Toggl.TimelineSeparatorBrush}"/>
                     <Canvas Grid.Row="1" Grid.Column="2" Background="Transparent"/>
                     <GridSplitter Grid.Column="3" Grid.Row="1" Width="1">
                         <GridSplitter.Style>
@@ -137,7 +137,7 @@
                                                     <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <GeometryDrawing Brush="{DynamicResource Toggl.WorkspaceSeparator}">
+                                                                <GeometryDrawing Brush="{DynamicResource Toggl.TimelineSeparatorBrush}">
                                                                     <GeometryDrawing.Geometry>
                                                                         <GeometryGroup>
                                                                             <RectangleGeometry Rect="0,0,90,90" />
