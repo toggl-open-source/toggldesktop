@@ -6,6 +6,7 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
+             xmlns:converters="clr-namespace:TogglDesktop.Converters"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              mc:Ignorable="d" 
@@ -167,7 +168,24 @@
                             </Style>
                         </GridSplitter.Style>
                     </GridSplitter>
-                    <Canvas Grid.Row="1" Grid.Column="4"/>
+                    <ItemsControl Grid.Row="1" Grid.Column="4" ItemsSource="{Binding Path=ActivityBlockOffsets}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Rectangle Width="20" Height="40" RadiusX="20" RadiusY="10" Panel.ZIndex="1" Fill="{DynamicResource Toggl.ActivityBlockBrush}"></Rectangle>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Canvas.Left" Value="25" />
+                                <Setter Property="Canvas.Top" Value="{Binding Path=.}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
                 </Grid>
             </ScrollViewer>
         </Grid>
@@ -177,7 +195,7 @@
                    MouseWheel="HandleScrollViewerMouseWheel"/>
         <TextBlock Text="No activity was recorded yet..." HorizontalAlignment="Right"
                    VerticalAlignment="Center" TextAlignment="Center" Margin="0 100 10 0"
-                   Visibility="{Binding TimeEntries, Converter={StaticResource EmptyListToVisibleConverter}}"
+                   Visibility="{Binding ActivityBlockOffsets, Converter={StaticResource EmptyListToVisibleConverter}}"
                    MouseWheel="HandleScrollViewerMouseWheel">
             <TextBlock.LayoutTransform>
                 <RotateTransform Angle="90"/>

@@ -15,6 +15,54 @@ namespace TogglDesktop
 {
 public static partial class Toggl
 {
+    #region Data types
+
+    public class TimelineEventView
+    {
+        public string Title;
+        public string Filename;
+        public Int64 Duration;
+        public string DurationString;
+        public bool Header;
+        // references subevents
+        public List<TimelineEventView> SubEvents;
+
+        public TimelineEventView(TogglTimelineEventView eventView)
+        {
+            Title = eventView.Title;
+            Filename = eventView.Filename;
+            Duration = eventView.Duration;
+            DurationString = eventView.DurationString;
+            Header = eventView.Header;
+            SubEvents = marshalList<TimelineEventView, TogglTimelineEventView>(eventView.Event, n => n.Event, t => new TimelineEventView(t));
+        }
+    }
+
+    public class TimelineChunkView
+    {
+        public UInt64 Started;
+        public UInt64 Ended;
+        public string StartTimeString;
+        public string EndTimeString;
+        public List<TimelineEventView> Events;
+
+        public TimelineChunkView(TogglTimelineChunkView chunk)
+        {
+            Started = chunk.Started;
+            Ended = chunk.Ended;
+            StartTimeString = chunk.StartTimeString;
+            EndTimeString = chunk.EndTimeString;
+            Events = marshalList<TimelineEventView, TogglTimelineEventView>(chunk.FirstEvent, n => n.Next, t => new TimelineEventView(t));
+        }
+
+        public override string ToString()
+        {
+            return EndTimeString;
+        }
+    }
+
+    #endregion
+
     #region constants and static fields
 
     public const string Project = "project";
@@ -173,7 +221,7 @@ public static partial class Toggl
 
     public delegate void DisplayTimeline(
         bool open, string date,
-        List<TogglTimelineChunkView> first,
+        List<TimelineChunkView> first,
         List<TogglTimeEntryView> firstTimeEntry,
         ulong startDay,
         ulong endDay);
@@ -1254,9 +1302,10 @@ public static partial class Toggl
         return marshalList<TogglCountryView>(first, n => n.Next);
     }
 
-    private static List<TogglTimelineChunkView> convertToTimelineChunkList(IntPtr first)
+    private static List<TimelineChunkView> convertToTimelineChunkList(IntPtr first)
     {
-        return marshalList<TogglTimelineChunkView>(first, n => n.Next);
+        return marshalList<TimelineChunkView, TogglTimelineChunkView>(first,
+            n => n.Next, t => new TimelineChunkView(t));
     }
 
     #endregion
@@ -1284,13 +1333,26 @@ public static partial class Toggl
         return (T)Marshal.PtrToStructure(pointer, typeof(T));
     }
 
-    #endregion
+    private static List<T> marshalList<T, K>(IntPtr node, Func<K, IntPtr> getNext, Func<K, T> cast)
+    {
+        var list = new List<T>();
 
-    #endregion
+        while (node != IntPtr.Zero)
+        {
+            var t = (K)Marshal.PtrToStructure(node, typeof(K));
+            list.Add(cast(t));
+            node = getNext(t);
+        }
 
-    #region getting/setting global shortcuts
+        return list;
+    }
+        #endregion
 
-    public static void SetKeyStart(string key)
+        #endregion
+
+        #region getting/setting global shortcuts
+
+        public static void SetKeyStart(string key)
     {
         toggl_set_key_start(ctx, key);
     }
