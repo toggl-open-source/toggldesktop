@@ -48,21 +48,9 @@ final class ProjectCreationView: NSView {
 
     // MARK: Variables
 
-    var workspaceID: UInt64? {
-        didSet {
-            resetViews()
-        }
-    }
-    var timeEntryGUID: String? {
-        didSet {
-            resetViews()
-        }
-    }
-    var timeEntryIsBillable: Bool = false {
-        didSet {
-            resetViews()
-        }
-    }
+    private var workspaceID: UInt64?
+    private var timeEntryGUID: String?
+    private var timeEntryIsBillable: Bool = false
 
     private(set) var selectedWorkspace: Workspace? {
         didSet {
@@ -140,6 +128,13 @@ final class ProjectCreationView: NSView {
         setInitialProjectColors()
         updateLayoutState()
         colorPickerView.select(selectedColor)
+    }
+
+    func setTimeEntry(guid: String?, workspaceID: UInt64?, isBillable: Bool) {
+        self.timeEntryGUID = guid
+        self.workspaceID = workspaceID
+        self.timeEntryIsBillable = isBillable
+        resetViews()
     }
 
     @IBAction func cancelBtnOnTap(_ sender: Any) {
@@ -319,9 +314,9 @@ extension ProjectCreationView {
 
     fileprivate func selectDefaultWorkspace() {
         guard let workspaceID = workspaceID else { return }
-        guard let workspaces = workspaceDatasource.items as? [Workspace] else { return }
-        let index = workspaces.firstIndex(where: { $0.WID == workspaceID }) ?? 0
-        selectedWorkspace = workspaces[index]
+        guard let workspaces = workspaceDatasource.items as? [Workspace], workspaces.isEmpty == false else { return }
+        guard let index = workspaces.firstIndex(where: { $0.WID == workspaceID }) else { return }
+        selectedWorkspace = workspaces[safe: index]
         workspaceDatasource.selectRow(at: index)
     }
 

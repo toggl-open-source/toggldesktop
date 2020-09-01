@@ -503,10 +503,9 @@ extension TimerViewController: AutoCompleteViewDelegate {
     }
 
     private func showProjectCreationView() {
-        projectCreationView.workspaceID = viewModel.workspaceID
-        projectCreationView.timeEntryGUID = viewModel.timeEntryGUID
-        projectCreationView.timeEntryIsBillable = viewModel.billableState == .on
-
+        projectCreationView.setTimeEntry(guid: viewModel.timeEntryGUID,
+                                         workspaceID: viewModel.workspaceID,
+                                         isBillable: viewModel.billableState == .on)
         updateProjectAutocompleteWindowContent(with: projectCreationView, height: projectCreationView.suitableHeight)
         projectCreationView.setTitleAndFocus(projectAutoCompleteView.defaultTextField.stringValue)
     }
