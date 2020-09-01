@@ -6,9 +6,9 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
-             xmlns:converters="clr-namespace:TogglDesktop.Converters"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:TimelineViewModel, IsDesignTimeCreatable=False}">
@@ -168,7 +168,7 @@
                             </Style>
                         </GridSplitter.Style>
                     </GridSplitter>
-                    <ItemsControl Grid.Row="1" Grid.Column="4" ItemsSource="{Binding Path=ActivityBlockOffsets}">
+                    <ItemsControl Grid.Row="1" Grid.Column="4" ItemsSource="{Binding Path=ActivityBlocks}" Name="ActivityBlocks">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <Canvas />
@@ -176,16 +176,49 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Rectangle Width="20" Height="40" RadiusX="20" RadiusY="10" Panel.ZIndex="1" Fill="{DynamicResource Toggl.ActivityBlockBrush}"></Rectangle>
+                                <Rectangle Width="20" Height="40" RadiusX="20" RadiusY="10" Panel.ZIndex="1" 
+                                           Fill="{DynamicResource Toggl.ActivityBlockBrush}"
+                                           MouseEnter="OnActivityMouseEnter"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemContainerStyle>
                             <Style TargetType="ContentPresenter">
                                 <Setter Property="Canvas.Left" Value="25" />
-                                <Setter Property="Canvas.Top" Value="{Binding Path=.}" />
+                                <Setter Property="Canvas.Top" Value="{Binding Path=Offset}" />
                             </Style>
                         </ItemsControl.ItemContainerStyle>
                     </ItemsControl>
+                    <Popup DataContext="{Binding SelectedActivityBlock}" Grid.Row="1" Grid.Column="4"
+                           Placement="Left"
+                           StaysOpen="False"
+                           HorizontalOffset="-5"
+                           Name="ActivityBlockPopup"
+                           MaxWidth="170">
+                        <Border BorderBrush="{DynamicResource Toggl.PopupBorderBrush}" BorderThickness="1">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.2" Color="Black" />
+                            </Border.Effect>
+                            <StackPanel Background="{DynamicResource Toggl.CardBackground}">
+                                <TextBlock FontSize="12" Text="{Binding TimeInterval}" Margin="9 8 9 5"/>
+                                <ItemsControl ItemsSource="{Binding ActivityDescriptions}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding ActivityTitle}" Margin="9 0 9 0" TextTrimming="CharacterEllipsis"/>
+                                                <ItemsControl ItemsSource="{Binding SubActivities}" Margin="9 0 9 5">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Style="{StaticResource Toggl.BodyGrayishText}" Text="{Binding Path=.}" TextTrimming="CharacterEllipsis"/>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </Popup>
                 </Grid>
             </ScrollViewer>
         </Grid>
@@ -195,7 +228,7 @@
                    MouseWheel="HandleScrollViewerMouseWheel"/>
         <TextBlock Text="No activity was recorded yet..." HorizontalAlignment="Right"
                    VerticalAlignment="Center" TextAlignment="Center" Margin="0 100 10 0"
-                   Visibility="{Binding ActivityBlockOffsets, Converter={StaticResource EmptyListToVisibleConverter}}"
+                   Visibility="{Binding ActivityBlocks, Converter={StaticResource EmptyListToVisibleConverter}}"
                    MouseWheel="HandleScrollViewerMouseWheel">
             <TextBlock.LayoutTransform>
                 <RotateTransform Angle="90"/>

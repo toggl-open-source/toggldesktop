@@ -34,24 +34,50 @@ namespace TogglDesktop.ViewModels
         {
             SelectedDate = Toggl.DateTimeFromUnix(startDay);
             TimeEntries = firstTimeEntry;
-            ConvertChunksToIntervals(first);
+            ConvertChunksToActivityBlocks(first);
         }
 
-        public void ConvertChunksToIntervals(List<Toggl.TimelineChunkView> chunks)
+        public void ConvertChunksToActivityBlocks(List<Toggl.TimelineChunkView> chunks)
         {
-            var offsets = new List<double>();
+            var blocks = new List<ActivityBlock>();
             foreach (var chunk in chunks)
             {
-                var offset = 0d;
                 if (chunk.Events.Any())
                 {
                     var start = Toggl.DateTimeFromUnix(chunk.Started);
-                    offset = (start - new DateTime(start.Year, start.Month, start.Day)).TotalMinutes;
+                    var timeInterval = (start - new DateTime(start.Year, start.Month, start.Day)).TotalMinutes;
+                    var offset = (timeInterval * 24 * 200) / (24 * 60);
+                    var block = new ActivityBlock()
+                    {
+                        Offset = offset,
+                        TimeInterval = chunk.StartTimeString+" - "+chunk.EndTimeString,
+                        ActivityDescriptions = new List<ActivityDescription>()
+                    };
+                    foreach (var eventDesc in chunk.Events)
+                    {
+                        var activity = new ActivityDescription()
+                        {
+                            SubActivities = new List<string>()
+                        };
+                        var title = eventDesc.Title;
+                        foreach (var subEvent in eventDesc.SubEvents)
+                        {
+                            if (subEvent.Title.IsNullOrEmpty()) continue;
+                            activity.SubActivities.Add(eventDesc.DurationString + " " + subEvent.Title);
+                            if (title.IsNullOrEmpty())
+                                title = subEvent.Title;
+                        }
+                        if (!title.IsNullOrEmpty())
+                        {
+                            activity.ActivityTitle = eventDesc.DurationString + " " + title;
+                            block.ActivityDescriptions.Add(activity);
+                        }
+                    }
+                    if (block.ActivityDescriptions.Any())
+                        blocks.Add(block);
                 }
-                offsets.Add((offset * 24 * 200) / (24 * 60));
-                
             }
-            ActivityBlockOffsets = offsets;
+            ActivityBlocks = blocks;
         }
 
         [Reactive] 
@@ -72,6 +98,23 @@ namespace TogglDesktop.ViewModels
         public List<Toggl.TogglTimeEntryView> TimeEntries { get; private set; }
 
         [Reactive]
-        public List<double> ActivityBlockOffsets { get; private set; }
+        public List<ActivityBlock> ActivityBlocks { get; private set; }
+
+        [Reactive]
+        public ActivityBlock SelectedActivityBlock { get; set; }
+
+        public class ActivityBlock
+        {
+            public double Offset { get; set; }
+            public string TimeInterval { get; set; }
+            public List<ActivityDescription> ActivityDescriptions { get; set; }
+        }
+
+        public class ActivityDescription
+        {
+            public string ActivityTitle { get; set; }
+
+            public List<string> SubActivities { get; set; }
+        }
     }
 }
