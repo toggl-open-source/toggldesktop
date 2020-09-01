@@ -102,6 +102,10 @@ final class EditorViewController: NSViewController {
     }()
     private var shouldRefocusTagTokens = false
 
+    /// Because Editor lives in memory even when closed we need to know if user just opened it
+    /// so we can force-reload description field in `fillData(:)` method.
+    private var isNewEditorSession = false
+
     // MARK: View Cyclex
 
     override func viewDidLoad() {
@@ -109,6 +113,11 @@ final class EditorViewController: NSViewController {
 
         initCommon()
         initDatasource()
+    }
+
+    override func viewWillAppear() {
+        isNewEditorSession = true
+        super.viewWillAppear()
     }
 
     override func viewDidAppear() {
@@ -119,11 +128,6 @@ final class EditorViewController: NSViewController {
     override func viewWillDisappear() {
         super.viewWillDisappear()
         unregisterTimerNotification()
-    }
-
-    override func viewDidDisappear() {
-        timeEntry = nil
-        super.viewDidDisappear()
     }
 
     @IBAction func closeBtnOnTap(_ sender: Any) {
@@ -278,8 +282,12 @@ extension EditorViewController {
         calendarViewControler.prepareLayout(with: timeEntry.started)
 
         // do not update description if user is editing but update if it's first `fillData()` call or it's a new timeEntry
-        if descriptionTextField.currentEditor() == nil || oldValue == nil || timeEntry.guid != oldValue?.guid {
+        if isNewEditorSession || descriptionTextField.currentEditor() == nil || oldValue == nil || timeEntry.guid != oldValue?.guid {
             descriptionTextField.stringValue = timeEntry.descriptionName
+            isNewEditorSession = false
+
+            // those checks mainly are needed because Editor lives in a memory all the time
+            // TODO: consider initializing new Editor on every open action
         }
 
         // Disable if it's running entry
