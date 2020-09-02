@@ -74,7 +74,7 @@ uint SystemTray::requestNotification(uint previous, const QString &title, const 
         }
 
         QStringList actions;
-        actions << "default" << "Open Toggl";
+        actions << "default" << "Open Toggl Track";
 
         // prepare the structure with the image beforehand
         // as far as I know, it cannot be done inline (without defining a custom stream operator)
@@ -90,7 +90,7 @@ uint SystemTray::requestNotification(uint previous, const QString &title, const 
         hints.endStructure();
 
         auto reply = notifications->call("Notify", // function name
-                                         "TogglDesktop", // application name
+                                         "Toggl Track", // application name
                                          previous, // replaces ID
                                          "", // application icon - we need none because we pass it with the data
                                          title,

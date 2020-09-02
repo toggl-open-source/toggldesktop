@@ -4,10 +4,10 @@
     <project_license>BSD-3-Clause</project_license>
     <metadata_license>CC0-1.0</metadata_license>
     <content_rating>none</content_rating>
-    <name>Toggl Desktop</name>
+    <name>Toggl Track</name>
     <summary>Simple and Intuitive Time Tracking Software</summary>
     <description>
-        <p>Toggl Desktop is a desktop app for leading time tracking tool Toggl. The Desktop app is a great companion for time tracking and productivity as it has advanced features like:</p>
+        <p>This is a desktop app for leading time tracking tool Toggl Track. It is a great companion for time tracking and productivity as it has advanced features like:</p>
         <ul>
             <li>Idle detection</li>
             <li>Tracking reminder</li>
@@ -32,7 +32,7 @@
         <keyword>timesheet</keyword>
         <keyword>hours tracker</keyword>
     </keywords>
-    <url type="homepage">https://toggl.com</url>
+    <url type="homepage">https://track.toggl.com</url>
     <developer_name>Toggl OÜ</developer_name>
     <update_contact>support_AT_toggl.com</update_contact>
     <screenshots>

@@ -1,5 +1,5 @@
 
-To start Toggl Desktop, please run the script
+To start Toggl Track, please run the script
 
 	TogglDesktop.sh
 
@@ -8,15 +8,15 @@ and then start the app.
 
 
 Should you experience any problems, please contact the Toggl
-Desktop app developers at:
+Track Desktop app developers at:
 
 	support@toggl.com
 
 Or create a new Github issue directly, by visiting:
 
-	https://github.com/toggl/toggldesktop/issues/new
+	https://github.com/toggl-open-source/toggldesktop/issues/new
 
-If you're able to run the Toggl Desktop app, then you
+If you're able to run the Toggl Track Desktop app, then you
 can also send feedback directly from the app itself.
 In that case, log files are automatically included with
 the feedback to resolve the issue faster.
