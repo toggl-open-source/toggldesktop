@@ -1,6 +1,14 @@
 {
     "versions": [
         {
+            "version": "7.5.258",
+            "rows": [
+                "Fix the crash that could occur when opening a time entry edit screen."
+            ],
+            "date": "September 2nd 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.254",
             "rows": [
                 "New Timer experience. Add or edit a project, tags, and billable state before starting your time entry, without opening edit popup."
