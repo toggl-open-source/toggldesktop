@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "Running@1x.png",
+      "filename" : "AppIcon-256.png",
       "idiom" : "mac",
       "scale" : "1x"
     },
     {
-      "filename" : "Running@2x.png",
+      "filename" : "AppIcon-512.png",
       "idiom" : "mac",
       "scale" : "2x"
     }
