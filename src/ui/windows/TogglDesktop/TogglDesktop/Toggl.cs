@@ -1346,13 +1346,13 @@ public static partial class Toggl
 
         return list;
     }
-        #endregion
+    #endregion
 
-        #endregion
+    #endregion
 
-        #region getting/setting global shortcuts
+    #region getting/setting global shortcuts
 
-        public static void SetKeyStart(string key)
+    public static void SetKeyStart(string key)
     {
         toggl_set_key_start(ctx, key);
     }

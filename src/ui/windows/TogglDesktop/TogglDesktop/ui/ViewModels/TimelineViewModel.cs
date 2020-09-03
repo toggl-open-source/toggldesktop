@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
+using Priority_Queue;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -22,6 +22,7 @@ namespace TogglDesktop.ViewModels
             SelectPreviousDay = ReactiveCommand.Create(Toggl.ViewTimelinePreviousDay);
             SelectNextDay = ReactiveCommand.Create(Toggl.ViewTimelineNextDay);
             Toggl.OnTimeline += HandleDisplayTimeline;
+            Toggl.OnTimeEntryList += HandleTimeEntryListChanged; 
 
             HourViews = new List<DateTime>();
             for (int i = 0; i < 24; i++)
@@ -33,11 +34,26 @@ namespace TogglDesktop.ViewModels
         private void HandleDisplayTimeline(bool open, string date, List<Toggl.TimelineChunkView> first, List<Toggl.TogglTimeEntryView> firstTimeEntry, ulong startDay, ulong endDay)
         {
             SelectedDate = Toggl.DateTimeFromUnix(startDay);
-            TimeEntries = firstTimeEntry;
             ConvertChunksToActivityBlocks(first);
+            ConvertTimeEntriesToBlocks(firstTimeEntry);
         }
 
-        public void ConvertChunksToActivityBlocks(List<Toggl.TimelineChunkView> chunks)
+        private void HandleTimeEntryListChanged(bool open, List<Toggl.TogglTimeEntryView> timeEntries, bool showLoadMore)
+        {
+            List<Toggl.TogglTimeEntryView> selectedDateTEs = new List<Toggl.TogglTimeEntryView>();
+            foreach (var entry in timeEntries)
+            {
+                var startDate = Toggl.DateTimeFromUnix(entry.Started);
+                if (startDate.Date == SelectedDate)
+                    selectedDateTEs.Add(entry);
+            }
+            if (selectedDateTEs.Any())
+            {
+                ConvertTimeEntriesToBlocks(selectedDateTEs);
+            }
+        }
+
+        private void ConvertChunksToActivityBlocks(List<Toggl.TimelineChunkView> chunks)
         {
             var blocks = new List<ActivityBlock>();
             foreach (var chunk in chunks)
@@ -45,11 +61,9 @@ namespace TogglDesktop.ViewModels
                 if (chunk.Events.Any())
                 {
                     var start = Toggl.DateTimeFromUnix(chunk.Started);
-                    var timeInterval = (start - new DateTime(start.Year, start.Month, start.Day)).TotalMinutes;
-                    var offset = (timeInterval * 24 * 200) / (24 * 60);
                     var block = new ActivityBlock()
                     {
-                        Offset = offset,
+                        Offset = ConvertTimeIntervalToHeight(new DateTime(start.Year, start.Month, start.Day), start),
                         TimeInterval = chunk.StartTimeString+" - "+chunk.EndTimeString,
                         ActivityDescriptions = new List<ActivityDescription>()
                     };
@@ -80,6 +94,58 @@ namespace TogglDesktop.ViewModels
             ActivityBlocks = blocks;
         }
 
+        private void ConvertTimeEntriesToBlocks(List<Toggl.TogglTimeEntryView> timeEntries)
+        {
+            var queue = new SimplePriorityQueue<(bool IsEnd, TimeEntryBlock Block), ulong>();
+            var blocks = new List<TimeEntryBlock>();
+            foreach (var entry in timeEntries)
+            {
+                var startTime = Toggl.DateTimeFromUnix(entry.Started);
+                var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(entry.Ended));
+                var block = new TimeEntryBlock()
+                {
+                    Height = height < 2 ? 2 : height,
+                    VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime),
+                    Color = entry.Color
+                };
+                queue.Enqueue((false, block), entry.Started);
+                queue.Enqueue((true, block), entry.Ended);
+                blocks.Add(block);
+            }
+
+            var offsets = new HashSet<double>();
+            var curOffset = 0;
+            while (queue.Count>0)
+            {
+                var item = queue.Dequeue();
+                if (item.IsEnd)
+                {
+                    offsets.Add(item.Block.HorizontalOffset);
+                }
+                else
+                {
+                    if (!offsets.Any())
+                    {
+                        offsets.Add(curOffset);
+                        curOffset += 20;
+                    }
+
+                    item.Block.HorizontalOffset = offsets.Min();
+                    offsets.Remove(offsets.Min());
+                }
+            }
+
+            TimeEntryBlocks = blocks;
+        }
+
+        private double ConvertTimeIntervalToHeight(DateTime start, DateTime end)
+        {
+            var timeInterval = (end - start).TotalMinutes;
+            return timeInterval * _hourHeight / 60;
+        }
+
+        private static int _hourHeight = 200;
+
         [Reactive] 
         public bool RecordActivity { get; set; } = Toggl.IsTimelineRecordingEnabled();
 
@@ -95,13 +161,21 @@ namespace TogglDesktop.ViewModels
         public List<DateTime> HourViews { get; }
 
         [Reactive]
-        public List<Toggl.TogglTimeEntryView> TimeEntries { get; private set; }
-
-        [Reactive]
         public List<ActivityBlock> ActivityBlocks { get; private set; }
 
         [Reactive]
         public ActivityBlock SelectedActivityBlock { get; set; }
+
+        [Reactive]
+        public List<TimeEntryBlock> TimeEntryBlocks { get; private set; }
+
+        public class TimeEntryBlock
+        {
+            public double VerticalOffset { get; set; }
+            public double HorizontalOffset { get; set; }
+            public double Height { get; set; }
+            public string Color { get; set; }
+        }
 
         public class ActivityBlock
         {

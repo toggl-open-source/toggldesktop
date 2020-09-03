@@ -6,12 +6,17 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
+             xmlns:converters="clr-namespace:TogglDesktop.Converters"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:TimelineViewModel, IsDesignTimeCreatable=False}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:RectangleHeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid MinHeight="100">
         <Grid Background="{DynamicResource Toggl.Background}">
             <Grid.RowDefinitions>
@@ -131,7 +136,28 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <GridSplitter Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="1" Background="{DynamicResource Toggl.TimelineSeparatorBrush}"/>
-                    <Canvas Grid.Row="1" Grid.Column="2" Background="Transparent"/>
+                    <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=TimeEntryBlocks}" Margin="10 0 0 0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Rectangle Width="15" Height="{Binding Height}" Panel.ZIndex="1" 
+                                           Fill="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
+                                           RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
+                                           RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}">
+                                </Rectangle>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Canvas.Left" Value="{Binding HorizontalOffset}" />
+                                <Setter Property="Canvas.Top" Value="{Binding VerticalOffset}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
                     <GridSplitter Grid.Column="3" Grid.Row="1" Width="1">
                         <GridSplitter.Style>
                             <Style TargetType="{x:Type GridSplitter}">
@@ -224,7 +250,7 @@
         </Grid>
         <TextBlock Text="No entries here... Go ahead and track some time!" Width="125" HorizontalAlignment="Center"
                    VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Margin="0 100 0 0"
-                   Visibility="{Binding TimeEntries, Converter={StaticResource EmptyListToVisibleConverter}}"
+                   Visibility="{Binding TimeEntryBlocks, Converter={StaticResource EmptyListToVisibleConverter}}"
                    MouseWheel="HandleScrollViewerMouseWheel"/>
         <TextBlock Text="No activity was recorded yet..." HorizontalAlignment="Right"
                    VerticalAlignment="Center" TextAlignment="Center" Margin="0 100 10 0"
