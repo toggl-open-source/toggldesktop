@@ -18,6 +18,12 @@ option(TOGGL_PRODUCTION_BUILD "Use production servers in the app" OFF)
 option(TOGGL_ALLOW_UPDATE_CHECK "Allow the app to check for updates" OFF)
 option(USE_BUNDLED_LIBRARIES "Prefer bundled libraries to bundled ones" OFF)
 option(INSTALL_HIRES_ICONS "Do not install icons over 512x512" OFF)
+option(TOGGL_BUILD_TESTS "Build the Toggl test suite" ON)
+
+set(ENV{OPENSSL_ROOT_DIR} ${OPENSSL_ROOT_DIR})
+if (NOT "${OPENSSL_ROOT_DIR}" STREQUAL "")
+    include_directories("${OPENSSL_ROOT_DIR}/include")
+endif()
 
 set(ENV{OPENSSL_ROOT_DIR} ${OPENSSL_ROOT_DIR})
 if (NOT "${OPENSSL_ROOT_DIR}" STREQUAL "")
@@ -50,9 +56,11 @@ include(FindPkgConfig)
 
 # Look for Qt
 find_package(Qt5Widgets CONFIG REQUIRED)
+find_package(Qt5QuickWidgets CONFIG REQUIRED)
 find_package(Qt5DBus CONFIG REQUIRED)
 find_package(Qt5Network CONFIG REQUIRED)
 find_package(Qt5NetworkAuth CONFIG REQUIRED)
+find_package(Qt5Quick CONFIG REQUIRED)
 # We need to include private headers manually
 include_directories( ${Qt5Widgets_PRIVATE_INCLUDE_DIRS} )
 if (UNIX AND NOT APPLE)

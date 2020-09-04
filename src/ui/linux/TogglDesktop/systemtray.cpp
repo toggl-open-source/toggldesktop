@@ -2,12 +2,12 @@
 
 #include <QTimer>
 #include <QProcessEnvironment>
+#include <QSystemTrayIcon>
 
 #include "./toggl.h"
 #include "./systemtray.h"
-#include "./mainwindowcontroller.h"
 
-SystemTray::SystemTray(MainWindowController *parent, QIcon defaultIcon) :
+SystemTray::SystemTray(QObject *parent, QIcon defaultIcon) :
     QSystemTrayIcon(parent),
     notificationsPresent(true)
 {
@@ -29,10 +29,6 @@ SystemTray::SystemTray(MainWindowController *parent, QIcon defaultIcon) :
     auto pendingCall = notifications->asyncCall("GetCapabilities");
     auto watcher = new QDBusPendingCallWatcher(pendingCall, this);
     connect(watcher, &QDBusPendingCallWatcher::finished, this, &SystemTray::notificationCapabilitiesReceived);
-}
-
-MainWindowController *SystemTray::mainWindow() {
-    return qobject_cast<MainWindowController*>(parent());
 }
 
 bool SystemTray::isVisible() const {
@@ -125,9 +121,11 @@ void SystemTray::notificationClosed(uint id, uint reason) {
 
 void SystemTray::notificationActionInvoked(uint id, const QString &action) {
     Q_UNUSED(id);
+    /* TODO
     if (action == "default") {
         mainWindow()->setWindowState(Qt::WindowActive);
     }
+    */
 }
 
 void SystemTray::displayIdleNotification(

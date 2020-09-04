@@ -7,46 +7,32 @@
 #include <QUrl>
 #include <QVector>
 #include <QRect>
+#include <QtQml/QQmlListProperty>
+#include <QThread>
 
 #include <stdint.h>
 
-#include "./toggl_api.h"
+#include "toggl_api.h"
+#include "common.h"
+#include "qmlobjectlist.h"
 
 class AutocompleteView;
+class AutocompleteListModel;
+class AutocompleteProxyModel;
 class GenericView;
 class SettingsView;
 class TimeEntryView;
 class CountryView;
-
-inline QString toQString(const char_t *cStr) {
-#ifdef _WIN32
-    return QString::fromWCharArray(cStr);
-#else
-    return QString(cStr);
-#endif
-}
-
-inline const char_t *toCStr(const QString &qStr) {
-    // We need to cache a few returned results because sometimes this function gets called a few times for a single API call
-#ifdef _WIN32
-    thread_local static int idx = 0;
-    thread_local static std::vector<std::wstring> cache { 16 };
-    cache[idx] = qStr.toStdWString();
-    auto &ret = cache[idx];
-    idx = (idx + 1) % 16;
-    return ret.c_str();
-#else
-    thread_local static int idx = 0;
-    thread_local static std::vector<std::string> cache { 16 };
-    cache[idx] = qStr.toStdString();
-    auto &ret = cache[idx];
-    idx = (idx + 1) % 16;
-    return ret.c_str();
-#endif
-}
+class TimeEntryViewStorage;
 
 class TogglApi : public QObject {
     Q_OBJECT
+    Q_PROPERTY(QList<QObject*> countries READ countries NOTIFY countriesChanged)
+    Q_PROPERTY(AutocompleteProxyModel* timeEntryAutocomplete READ timeEntryAutocomplete CONSTANT)
+    Q_PROPERTY(AutocompleteProxyModel* minitimerAutocomplete READ minitimerAutocomplete CONSTANT)
+    Q_PROPERTY(AutocompleteProxyModel* projectAutocomplete READ projectAutocomplete CONSTANT)
+    Q_PROPERTY(TimeEntryViewStorage *timeEntries READ timeEntries CONSTANT)
+    Q_PROPERTY(QStringList tags READ tags NOTIFY tagsChanged)
 
  public:
     TogglApi(
@@ -54,6 +40,8 @@ class TogglApi : public QObject {
         QString logPathOverride = "",
         QString dbPathOverride = "");
     ~TogglApi();
+
+    QThread *uiThread_;
 
     static TogglApi *instance;
 
@@ -68,6 +56,40 @@ class TogglApi : public QObject {
 
     bool shutdown;
 
+    QList<QObject*> countries();
+    AutocompleteProxyModel *timeEntryAutocomplete();
+    AutocompleteProxyModel *minitimerAutocomplete();
+    AutocompleteProxyModel *projectAutocomplete();
+    TimeEntryViewStorage *timeEntries();
+    void importTimeEntries(TogglTimeEntryView *first);
+    QStringList tags();
+signals:
+    void countriesChanged();
+    void timeEntryAutocompleteChanged();
+    void minitimerAutocompleteChanged();
+    void projectAutocompleteChanged();
+    void tagsChanged();
+private:
+    QList<QObject*> countries_;
+    AutocompleteListModel *timeEntryModel_;
+    AutocompleteListModel *minitimerModel_;
+    AutocompleteListModel *projectModel_;
+    AutocompleteProxyModel *timeEntryAutocomplete_;
+    AutocompleteProxyModel *minitimerAutocomplete_;
+    AutocompleteProxyModel *projectAutocomplete_;
+    TimeEntryViewStorage *timeEntries_;
+    QStringList tags_;
+
+ public slots:
+    void setCountries(QVector<CountryView *> list);
+
+    void displayTimeEntryAutocomplete(QVector<AutocompleteView *> list);
+    void displayMinitimerAutocomplete(QVector<AutocompleteView *> list);
+    void displayProjectAutocomplete(QVector<AutocompleteView *> list);
+
+    void displayTags(QVector<GenericView *> list);
+
+///////////////////////////////////////////////////////
     bool startEvents();
 
     void clear();
@@ -77,16 +99,16 @@ class TogglApi : public QObject {
     void login(const QString email, const QString password);
 
     void signup(const QString email, const QString password,
-                const uint64_t countryID);
+                const quint64 countryID);
 
     void googleLogin(const QString accessToken);
 
-    void googleSignup(const QString &accessToken, uint64_t countryID);
+    void googleSignup(const QString &accessToken, quint64 countryID);
 
     QString start(const QString &description,
         const QString &duration,
-        const uint64_t task_id,
-        const uint64_t project_id,
+        const quint64 task_id,
+        const quint64 project_id,
         const QString &tags,
         const bool_t billable);
 
@@ -124,12 +146,12 @@ class TogglApi : public QObject {
 
     void viewTimeEntryList();
 
-    void setIdleSeconds(uint64_t idleSeconds);
+    void setIdleSeconds(quint64 idleSeconds);
 
     bool setTimeEntryProject(
         const QString guid,
-        const uint64_t task_id,
-        const uint64_t project_id,
+        const quint64 task_id,
+        const quint64 project_id,
         const QString project_guid);
 
     bool setTimeEntryDescription(
@@ -162,15 +184,15 @@ class TogglApi : public QObject {
 
     QString addProject(
         const QString time_entry_guid,
-        const uint64_t workspace_id,
-        const uint64_t client_id,
+        const quint64 workspace_id,
+        const quint64 client_id,
         const QString client_guid,
         const QString project_name,
         const bool is_private,
         const QString project_color);
 
     QString createClient(
-        const uint64_t wid,
+        const quint64 wid,
         const QString name);
 
     // returns false if error
@@ -182,18 +204,18 @@ class TogglApi : public QObject {
     bool setProxySettings(
         const bool useProxy,
         const QString proxyHost,
-        const uint64_t proxyPort,
+        const quint64 proxyPort,
         const QString proxyUsername,
         const QString proxyPassword);
 
     bool setSettingsUseIdleDetection(const bool useIdleDetection);
     bool setSettingsReminder(const bool reminder);
-    bool setSettingsIdleMinutes(const uint64_t idle_minutes);
-    bool setSettingsReminderMinutes(const uint64_t reminder_minutes);
+    bool setSettingsIdleMinutes(const quint64 idle_minutes);
+    bool setSettingsReminderMinutes(const quint64 reminder_minutes);
     bool setSettingsPomodoro(const bool pomodoro);
-    bool setSettingsPomodoroMinutes(const uint64_t pomodoro_minutes);
+    bool setSettingsPomodoroMinutes(const quint64 pomodoro_minutes);
     bool setSettingsPomodoroBreak(const bool pomodoro_break);
-    bool setSettingsPomodoroBreakMinutes(const uint64_t pomodoro_break_minutes);
+    bool setSettingsPomodoroBreakMinutes(const quint64 pomodoro_break_minutes);
     bool setSettingsRemindDays(
         bool remind_mon,
         bool remind_tue,
@@ -234,15 +256,14 @@ class TogglApi : public QObject {
                       const QString filename);
 
     bool discardTimeAt(const QString guid,
-                       const uint64_t at,
+                       const quint64 at,
                        const bool split_into_new_time_entry);
 
     bool discardTimeAndContinue(const QString guid,
-                                const uint64_t at);
+                                const quint64 at);
 
-    bool runScriptFile(const QString filename);
 
-    static const QString formatDurationInSecondsHHMMSS(
+    Q_INVOKABLE static const QString formatDurationInSecondsHHMMSS(
         const int64_t duration);
 
     QRect const getWindowsFrameSetting();
@@ -270,7 +291,7 @@ class TogglApi : public QObject {
     void aboutToDisplayLogin();
     void displayLogin(
         const bool open,
-        const uint64_t user_id);
+        const quint64 user_id);
 
     void displayPomodoro(
         const QString title,
@@ -287,7 +308,6 @@ class TogglApi : public QObject {
     void aboutToDisplayTimeEntryList();
     void displayTimeEntryList(
         const bool open,
-        QVector<TimeEntryView *> list,
         const bool show_load_more_button);
 
     void aboutToDisplayTimeEntryEditor();
@@ -315,18 +335,6 @@ class TogglApi : public QObject {
     void displayClientSelect(
         QVector<GenericView *> list);
 
-    void displayTags(
-        QVector<GenericView *> list);
-
-    void displayTimeEntryAutocomplete(
-        QVector<AutocompleteView *> list);
-
-    void displayMinitimerAutocomplete(
-        QVector<AutocompleteView *> list);
-
-    void displayProjectAutocomplete(
-        QVector<AutocompleteView *> list);
-
     void displayWorkspaceSelect(
         QVector<GenericView *> list);
 
@@ -336,9 +344,6 @@ class TogglApi : public QObject {
 
     void setProjectColors(
         QVector<QString> list);
-
-    void setCountries(
-        QVector<CountryView *> list);
 
  private:
     void *ctx;
@@ -359,15 +364,19 @@ void on_overlay(const int64_t type);
 void on_display_update(const char_t *url);
 void on_display_online_state(
     const bool is_online);
-void on_display_url(const char_t *url);
+void on_display_url(
+    const char_t *url);
 void on_display_login(
     const bool_t open,
-    const uint64_t user_id);
-void on_display_pomodoro(const char_t *title,
+    const quint64 user_id);
+void on_display_pomodoro(
+    const char_t *title,
     const char_t *informative_text);
-void on_display_pomodoro_break(const char_t *title,
+void on_display_pomodoro_break(
+    const char_t *title,
     const char_t *informative_text);
-void on_display_reminder(const char_t *title,
+void on_display_reminder(
+    const char_t *title,
     const char_t *informative_text);
 void on_display_time_entry_list(
     const bool_t open,
@@ -402,6 +411,6 @@ void on_display_idle_notification(
     const char_t *projectColor);
 void on_project_colors(
     const char_t *list[],
-    const uint64_t count);
+    const quint64 count);
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TOGGL_H_

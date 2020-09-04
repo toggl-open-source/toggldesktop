@@ -22,5 +22,27 @@
         <file>images/group_icon_open.svg</file>
         <file>images/down_arrow.png</file>
         <file>images/warning-icon.png</file>
+        <file>MainWindow.qml</file>
+        <file>LoginView.qml</file>
+        <file>ErrorBubble.qml</file>
+        <file>TimeEntryListView.qml</file>
+        <file>TimerView.qml</file>
+        <file>TimeEntryEditView.qml</file>
+        <file>AutocompleteView.qml</file>
+        <file>TogglButton.qml</file>
+        <file>TogglTextField.qml</file>
+        <file>TogglComboBox.qml</file>
+        <file>TogglCheckBox.qml</file>
+        <file>TogglSwitch.qml</file>
+        <file>TogglButtonBackground.qml</file>
+        <file>StartButton.qml</file>
+        <file>TimeEntryListItem.qml</file>
+        <file>TogglShadowBox.qml</file>
+        <file>TimeEntryListHeader.qml</file>
+        <file>TimeEntryLabel.qml</file>
+        <file>Arrow.qml</file>
+        <file>TogglCalendarEdit.qml</file>
+        <file>TogglCalendarEditMonth.qml</file>
+        <file>Cross.qml</file>
     </qresource>
 </RCC>

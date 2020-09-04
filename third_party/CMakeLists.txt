@@ -129,7 +129,7 @@ if(NOT QXT_CORE_FOUND)
         Qxt
         PARENT_SCOPE
     )
-    install(TARGETS Qxt DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
+    install(TARGETS Qxt DESTINATION lib)
 endif()
 
 if(NOT GTEST_FOUND AND TOGGL_BUILD_TESTS)
@@ -141,8 +141,9 @@ if(NOT GTEST_FOUND AND TOGGL_BUILD_TESTS)
         googletest-read-only
         googletest-read-only/include
     )
-    target_link_libraries(gtest pthread)
+    target_link_libraries(gtest)
     set(GTEST_MAIN_SOURCE_FILES
+        googletest-read-only/src/gtest-all.cc
         googletest-read-only/src/gtest_main.cc
     )
     add_library(gtest_main SHARED ${GTEST_MAIN_SOURCE_FILES})

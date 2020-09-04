@@ -11,6 +11,8 @@
 #include <QStringList>
 #include <QDate>
 
+#include <QQmlEngine>
+
 #include <iostream>   // NOLINT
 
 #include "./../../../toggl_api.h"
@@ -20,8 +22,10 @@
 #include "./genericview.h"
 #include "./countryview.h"
 #include "./autocompleteview.h"
+#include "./autocompletelistmodel.h"
 #include "./settingsview.h"
 #include "./bugsnag.h"
+#include "./common.h"
 
 TogglApi *TogglApi::instance = nullptr;
 
@@ -65,6 +69,7 @@ void on_display_login(
     if (open) {
         TogglApi::instance->aboutToDisplayLogin();
     }
+    TogglApi::instance->getCountries();
     TogglApi::instance->displayLogin(open, user_id);
     Bugsnag::user.id = QString("%1").arg(user_id);
 }
@@ -100,28 +105,35 @@ void on_display_time_entry_list(
     if (open) {
         TogglApi::instance->aboutToDisplayTimeEntryList();
     }
+    TogglApi::instance->importTimeEntries(first);
     TogglApi::instance->displayTimeEntryList(
         open,
-        TimeEntryView::importAll(first),
         show_load_more_button);
+
 }
 
 void on_display_time_entry_autocomplete(
     TogglAutocompleteView *first) {
-    TogglApi::instance->displayTimeEntryAutocomplete(
-        AutocompleteView::importAll(first));
+    auto v = AutocompleteView::importAll(first);
+    for (auto i : v)
+        i->moveToThread(TogglApi::instance->uiThread_);
+    TogglApi::instance->displayTimeEntryAutocomplete(v);
 }
 
 void on_display_mini_timer_autocomplete(
     TogglAutocompleteView *first) {
-    TogglApi::instance->displayMinitimerAutocomplete(
-        AutocompleteView::importAll(first));
+    auto v = AutocompleteView::importAll(first);
+    for (auto i : v)
+        i->moveToThread(TogglApi::instance->uiThread_);
+    TogglApi::instance->displayMinitimerAutocomplete(v);
 }
 
 void on_display_project_autocomplete(
     TogglAutocompleteView *first) {
-    TogglApi::instance->displayProjectAutocomplete(
-        AutocompleteView::importAll(first));
+    auto v = AutocompleteView::importAll(first);
+    for (auto i : v)
+        i->moveToThread(TogglApi::instance->uiThread_);
+    TogglApi::instance->displayProjectAutocomplete(v);
 }
 
 void on_display_workspace_select(
@@ -166,8 +178,9 @@ void on_display_settings(
 void on_display_timer_state(
     TogglTimeEntryView *te) {
     if (te) {
-        TogglApi::instance->displayRunningTimerState(
-            TimeEntryView::importOne(te));
+        auto v = TimeEntryView::importOne(te);
+        v->moveToThread(TogglApi::instance->uiThread_);
+        TogglApi::instance->displayRunningTimerState(v);
         return;
     }
 
@@ -207,18 +220,68 @@ void on_project_colors(
 
 void on_countries(
     TogglCountryView *first) {
-    TogglApi::instance->setCountries(
-        CountryView::importAll(first));
+    auto v = CountryView::importAll(first);
+    for (auto i : v) {
+        i->moveToThread(TogglApi::instance->uiThread_);
+    }
+    TogglApi::instance->setCountries(v);
 }
 
-TogglApi::TogglApi(
-    QObject *parent,
-    QString logPathOverride,
-    QString dbPathOverride)
+template<typename T, typename U>
+void replaceList(const QVector<T*> &from, QList<U*> &to) {
+    for (auto i : to)
+        i->deleteLater();
+    to.clear();
+    for (auto i : from)
+        to.append(i);
+}
+
+void TogglApi::setCountries(QVector<CountryView *> list) {
+    for (auto i : list) {
+        QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
+    }
+    replaceList(list, countries_);
+    emit countriesChanged();
+}
+
+void TogglApi::displayTimeEntryAutocomplete(QVector<AutocompleteView *> list) {
+    timeEntryModel_->setList(list);
+    emit timeEntryAutocompleteChanged();
+}
+
+void TogglApi::displayMinitimerAutocomplete(QVector<AutocompleteView *> list) {
+    minitimerModel_->setList(list);
+    emit minitimerAutocompleteChanged();
+
+}
+
+void TogglApi::displayProjectAutocomplete(QVector<AutocompleteView *> list) {
+    projectModel_->setList(list);
+    emit projectAutocompleteChanged();
+}
+
+void TogglApi::displayTags(QVector<GenericView *> list) {
+    tags_.clear();
+    for (auto i : list) {
+        tags_.append(i->Name);
+    }
+    emit tagsChanged();
+}
+
+TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverride)
     : QObject(parent)
-, shutdown(false)
-, ctx(nullptr) {
+    , shutdown(false)
+    , ctx(nullptr)
+    , timeEntryModel_(new AutocompleteListModel(this))
+    , minitimerModel_(new AutocompleteListModel(this))
+    , projectModel_(new AutocompleteListModel(this, {}, AutocompleteView::AC_PROJECT))
+    , timeEntryAutocomplete_(new AutocompleteProxyModel(this))
+    , minitimerAutocomplete_(new AutocompleteProxyModel(this))
+    , projectAutocomplete_(new AutocompleteProxyModel(this))
+    , uiThread_(QThread::currentThread())
+{
     QString version = QApplication::applicationVersion();
+    ctx = toggl_context_init(toCStr("linux_native_app"), toCStr(version));
 
     QString appDirPath =
         QStandardPaths::writableLocation(
@@ -293,6 +356,12 @@ TogglApi::TogglApi(
     toggl_on_project_colors(ctx, on_project_colors);
     toggl_on_countries(ctx, on_countries);
 
+    timeEntryAutocomplete_->setSourceModel(timeEntryModel_);
+    minitimerAutocomplete_->setSourceModel(minitimerModel_);
+    projectAutocomplete_->setSourceModel(projectModel_);
+
+    timeEntries_ = new TimeEntryViewStorage(this);
+
     char_t *env = toggl_environment(ctx);
     if (env) {
         Bugsnag::releaseStage = toQString(env);
@@ -328,6 +397,37 @@ bool TogglApi::notifyBugsnag(
         metadata["release"]["channel"] = instance->updateChannel();
     }
     return Bugsnag::notify(errorClass, message, context, &metadata);
+}
+
+QList<QObject*> TogglApi::countries() {
+    for (auto i : countries_) {
+        QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
+    }
+    return countries_;
+}
+
+AutocompleteProxyModel *TogglApi::timeEntryAutocomplete() {
+    return timeEntryAutocomplete_;
+}
+
+AutocompleteProxyModel *TogglApi::minitimerAutocomplete() {
+    return minitimerAutocomplete_;
+}
+
+AutocompleteProxyModel *TogglApi::projectAutocomplete() {
+    return projectAutocomplete_;
+}
+
+TimeEntryViewStorage *TogglApi::timeEntries() {
+    return timeEntries_;
+}
+
+void TogglApi::importTimeEntries(TogglTimeEntryView *first) {
+    timeEntries_->importList(first);
+}
+
+QStringList TogglApi::tags() {
+    return tags_;
 }
 
 bool TogglApi::startEvents() {
@@ -539,7 +639,6 @@ QString TogglApi::start(
     const uint64_t project_id,
     const QString &tags,
     const bool_t billable) {
-
     char_t *guid = toggl_start(ctx,
                                toCStr(description),
                                toCStr(duration),

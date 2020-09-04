@@ -144,6 +144,11 @@ qa: lint fmt cppclean test
 
 fmt: fmt_lib fmt_ui
 
+
+app_qt:
+	mkdir -p build && cd build && cmake -DOPENSSL_ROOT_DIR="/usr/local/opt/openssl@1.1" -DTOGGL_BUILD_TESTS=OFF .. && make
+	./build/src/ui/linux/TogglDesktop/TogglDesktop
+
 ifeq ($(uname), Linux)
 app:
 	mkdir -p build && cd build && cmake .. && make

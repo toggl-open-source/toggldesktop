@@ -30,6 +30,7 @@ include_directories(
     ${LUA_INCLUDE_DIRS}
     ${JSONCPP_INCLUDE_DIRS}
     ${POCO_INCLUDE_DIRS}
+    "$ENV{OPENSSL_ROOT_DIR}/include"
 )
 
 # TogglDesktopLibrary sources
@@ -61,6 +62,7 @@ set(LIBRARY_SOURCE_FILES
     context.cc
     error.cc
     feedback.cc
+    error.cc
     gui.cc
     help_article.cc
     https_client.cc
