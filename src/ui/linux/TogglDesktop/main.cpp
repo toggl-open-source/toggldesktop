@@ -130,6 +130,7 @@ int main(int argc, char *argv[]) try {
     */
 
     auto w = new MainWindow();
+    registerTypes();
     w->show();
 
     if (!TogglApi::instance->startEvents()) {

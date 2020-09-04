@@ -99,16 +99,16 @@ private:
     void login(const QString email, const QString password);
 
     void signup(const QString email, const QString password,
-                const uint64_t countryID);
+                const quint64 countryID);
 
     void googleLogin(const QString accessToken);
 
-    void googleSignup(const QString &accessToken, uint64_t countryID);
+    void googleSignup(const QString &accessToken, quint64 countryID);
 
     QString start(const QString &description,
         const QString &duration,
-        const uint64_t task_id,
-        const uint64_t project_id,
+        const quint64 task_id,
+        const quint64 project_id,
         const QString &tags,
         const bool_t billable);
 
@@ -146,12 +146,12 @@ private:
 
     void viewTimeEntryList();
 
-    void setIdleSeconds(uint64_t idleSeconds);
+    void setIdleSeconds(quint64 idleSeconds);
 
     bool setTimeEntryProject(
         const QString guid,
-        const uint64_t task_id,
-        const uint64_t project_id,
+        const quint64 task_id,
+        const quint64 project_id,
         const QString project_guid);
 
     bool setTimeEntryDescription(
@@ -184,15 +184,15 @@ private:
 
     QString addProject(
         const QString time_entry_guid,
-        const uint64_t workspace_id,
-        const uint64_t client_id,
+        const quint64 workspace_id,
+        const quint64 client_id,
         const QString client_guid,
         const QString project_name,
         const bool is_private,
         const QString project_color);
 
     QString createClient(
-        const uint64_t wid,
+        const quint64 wid,
         const QString name);
 
     // returns false if error
@@ -204,18 +204,18 @@ private:
     bool setProxySettings(
         const bool useProxy,
         const QString proxyHost,
-        const uint64_t proxyPort,
+        const quint64 proxyPort,
         const QString proxyUsername,
         const QString proxyPassword);
 
     bool setSettingsUseIdleDetection(const bool useIdleDetection);
     bool setSettingsReminder(const bool reminder);
-    bool setSettingsIdleMinutes(const uint64_t idle_minutes);
-    bool setSettingsReminderMinutes(const uint64_t reminder_minutes);
+    bool setSettingsIdleMinutes(const quint64 idle_minutes);
+    bool setSettingsReminderMinutes(const quint64 reminder_minutes);
     bool setSettingsPomodoro(const bool pomodoro);
-    bool setSettingsPomodoroMinutes(const uint64_t pomodoro_minutes);
+    bool setSettingsPomodoroMinutes(const quint64 pomodoro_minutes);
     bool setSettingsPomodoroBreak(const bool pomodoro_break);
-    bool setSettingsPomodoroBreakMinutes(const uint64_t pomodoro_break_minutes);
+    bool setSettingsPomodoroBreakMinutes(const quint64 pomodoro_break_minutes);
     bool setSettingsRemindDays(
         bool remind_mon,
         bool remind_tue,
@@ -256,11 +256,11 @@ private:
                       const QString filename);
 
     bool discardTimeAt(const QString guid,
-                       const uint64_t at,
+                       const quint64 at,
                        const bool split_into_new_time_entry);
 
     bool discardTimeAndContinue(const QString guid,
-                                const uint64_t at);
+                                const quint64 at);
 
 
     Q_INVOKABLE static const QString formatDurationInSecondsHHMMSS(
@@ -291,7 +291,7 @@ private:
     void aboutToDisplayLogin();
     void displayLogin(
         const bool open,
-        const uint64_t user_id);
+        const quint64 user_id);
 
     void displayPomodoro(
         const QString title,
@@ -368,7 +368,7 @@ void on_display_url(
     const char_t *url);
 void on_display_login(
     const bool_t open,
-    const uint64_t user_id);
+    const quint64 user_id);
 void on_display_pomodoro(
     const char_t *title,
     const char_t *informative_text);
@@ -411,6 +411,6 @@ void on_display_idle_notification(
     const char_t *projectColor);
 void on_project_colors(
     const char_t *list[],
-    const uint64_t count);
+    const quint64 count);
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TOGGL_H_
