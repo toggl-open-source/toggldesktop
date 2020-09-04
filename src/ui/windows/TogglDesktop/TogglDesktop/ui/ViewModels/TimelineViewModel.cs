@@ -106,7 +106,11 @@ namespace TogglDesktop.ViewModels
                 {
                     Height = height < 2 ? 2 : height,
                     VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime),
-                    Color = entry.Color
+                    Color = entry.Color,
+                    Description = entry.Description,
+                    ProjectName = entry.ProjectLabel,
+                    ClientName = entry.ClientLabel,
+                    ShowDescription = true
                 };
                 queue.Enqueue((false, block), entry.Started);
                 queue.Enqueue((true, block), entry.Ended);
@@ -115,12 +119,16 @@ namespace TogglDesktop.ViewModels
 
             var offsets = new HashSet<double>();
             var curOffset = 0;
+            var usedNumOfOffsets = 0;
             while (queue.Count>0)
             {
                 var item = queue.Dequeue();
                 if (item.IsEnd)
                 {
                     offsets.Add(item.Block.HorizontalOffset);
+                    if (usedNumOfOffsets > 1 || item.Block.Height<20)
+                        item.Block.ShowDescription = false;
+                    usedNumOfOffsets--;
                 }
                 else
                 {
@@ -129,9 +137,11 @@ namespace TogglDesktop.ViewModels
                         offsets.Add(curOffset);
                         curOffset += 20;
                     }
-
+                    if (usedNumOfOffsets > 0 || item.Block.Height < 20)
+                        item.Block.ShowDescription = false;
                     item.Block.HorizontalOffset = offsets.Min();
                     offsets.Remove(offsets.Min());
+                    usedNumOfOffsets++;
                 }
             }
 
@@ -169,14 +179,6 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public List<TimeEntryBlock> TimeEntryBlocks { get; private set; }
 
-        public class TimeEntryBlock
-        {
-            public double VerticalOffset { get; set; }
-            public double HorizontalOffset { get; set; }
-            public double Height { get; set; }
-            public string Color { get; set; }
-        }
-
         public class ActivityBlock
         {
             public double Offset { get; set; }
@@ -190,5 +192,17 @@ namespace TogglDesktop.ViewModels
 
             public List<string> SubActivities { get; set; }
         }
+    }
+
+    public class TimeEntryBlock
+    {
+        public double VerticalOffset { get; set; }
+        public double HorizontalOffset { get; set; }
+        public double Height { get; set; }
+        public string Color { get; set; }
+        public bool ShowDescription { get; set; }
+        public string Description { get; set; }
+        public string ProjectName { get; set; }
+        public string ClientName { get; set; }
     }
 }

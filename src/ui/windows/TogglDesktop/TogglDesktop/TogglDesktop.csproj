@@ -241,12 +241,16 @@
     <Compile Include="ui\controls\TimeEntryLabel.xaml.cs">
       <DependentUpon>TimeEntryLabel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\controls\TimelineTimeEntryBlock.xaml.cs">
+      <DependentUpon>TimelineTimeEntryBlock.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\TrayToolTipControl.xaml.cs">
       <DependentUpon>TrayToolTipControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Converters\AdaptProjectColorConverter.cs" />
     <Compile Include="ui\Converters\AndConverter.cs" />
     <Compile Include="ui\Converters\BooleanInvertToVisibilityConverter.cs" />
+    <Compile Include="ui\Converters\BrushOpacityConverter.cs" />
     <Compile Include="ui\Converters\CapitalizeConverter.cs" />
     <Compile Include="ui\Converters\EmptyListToCollapsedConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
@@ -482,6 +486,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\controls\AutotrackerSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\TimelineTimeEntryBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

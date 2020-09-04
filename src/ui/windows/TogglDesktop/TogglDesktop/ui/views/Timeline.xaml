@@ -9,14 +9,10 @@
              xmlns:converters="clr-namespace:TogglDesktop.Converters"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:TimelineViewModel, IsDesignTimeCreatable=False}">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <converters:RectangleHeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
-        </ResourceDictionary>
-    </UserControl.Resources>
     <Grid MinHeight="100">
         <Grid Background="{DynamicResource Toggl.Background}">
             <Grid.RowDefinitions>
@@ -144,11 +140,8 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Rectangle Width="15" Height="{Binding Height}" Panel.ZIndex="1" 
-                                           Fill="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
-                                           RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
-                                           RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}">
-                                </Rectangle>
+                                <togglDesktop:TimelineTimeEntryBlock Panel.ZIndex="1" DataContext="{Binding Path=.}"
+                                                                     Width="{Binding ElementName=MainViewGrid, Path=ColumnDefinitions[2].ActualWidth}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemContainerStyle>
