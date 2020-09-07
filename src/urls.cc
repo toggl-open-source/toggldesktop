@@ -32,7 +32,7 @@ std::string Main() {
     if (use_staging_as_backend) {
         return "https://track.toggl.space";
     }
-    return "https://toggl.com";
+    return "https://track.toggl.com";
 }
 
 std::string API() {
