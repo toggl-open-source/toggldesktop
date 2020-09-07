@@ -1590,7 +1590,7 @@ error Context::fetchMessage(const bool periodic) {
             if ("production" != environment_) {
                 // testing location
                 req.host = "https://raw.githubusercontent.com";
-                req.relative_url = "/toggl-open-source/toggldesktop/rebranding/upcoming-rebranding-notification/releases/message.json";
+                req.relative_url = "/toggl-open-source/toggldesktop/rebranding/post-rebranding-notification/releases/message.json";
             } else {
                 req.host = "https://raw.githubusercontent.com";
                 req.relative_url = "/toggl-open-source/toggldesktop/master/releases/message.json";
