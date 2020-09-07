@@ -5,8 +5,7 @@
             "rows": [
                 "Toggl is now Toggl Track! We'll still be the Toggl you know and love on desktop, mobile, and web - but we're welcoming Toggl Plan and Toggl Hire into the family. We’ve also switched from tomato red to a cool new color scheme, so prepare for some new looks!"
             ],
-            "date": "September 7th 2020",
-            "beta": "true"
+            "date": "September 7th 2020"
         },
         {
             "version": "7.5.247",
