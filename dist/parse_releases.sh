@@ -28,7 +28,7 @@ if (platform == "linux") {
     },
     {
         "type": "linux_deb64",
-        "name": "toggldesktop_" + version + "ubuntu1604_amd64.deb"
+        "name": "toggldesktop_" + version + "_ubuntu1604_amd64.deb"
     }];
   if (parseInt(flatpak) == 1) {
     filename.push({
