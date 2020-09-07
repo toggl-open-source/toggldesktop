@@ -22,8 +22,10 @@ prepare() {
   cp dist/update_release_links.sh tmp/update_release_links.sh
   cp dist/parse_releases.sh tmp/parse_releases.sh
 
-  git config user.name "runner"
-  git config user.email "action@github.com"
+  if [[ "$GITHUB_WORKFLOW" != "" ]]; then
+    git config user.name "runner"
+    git config user.email "action@github.com"
+  fi
 }
 
 fetch_releases () {
