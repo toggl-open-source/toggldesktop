@@ -1,6 +1,15 @@
 {
     "versions": [
         {
+            "version": "7.5.260",
+            "rows": [
+                "Rebranding - Update Windows app colors and icons"
+            ],
+            "date": "September 7th 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.249",
             "rows": [
                 "Fixed issue with application update on Windows 7"
