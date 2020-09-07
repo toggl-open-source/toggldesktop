@@ -24,11 +24,11 @@ if (platform == "linux") {
   filename = [
     {
       "type": "linux_tar.gz",
-      "name": "toggldesktop_linux_x86_64-" + version.replace(/\./g, "_") + ".tar.gz"
+      "name": "toggldesktop_linux_" + version + "_x86_64.tar.gz"
     },
     {
         "type": "linux_deb64",
-        "name": "toggldesktop_" + version + "_amd64.deb"
+        "name": "toggldesktop_" + version + "ubuntu1604_amd64.deb"
     }];
   if (parseInt(flatpak) == 1) {
     filename.push({
