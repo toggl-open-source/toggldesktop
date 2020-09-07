@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
-        <title>TogglDesktop Changelog</title>
+        <title>Toggl Track Changelog</title>
         <link>darwin_stable_appcast.xml</link>
         <description>Most recent changes.</description>
         <language>en</language>
         <item>
-            <title>Version 7.5.254</title>
-            <pubDate>2020-08-21-16-54-20</pubDate>
-            <enclosure url="https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.254/TogglDesktop-7_5_254.dmg" sparkle:version="7.5.254" length="13120458" type="application/octet-stream" sparkle:dsaSignature="MC0CFFQBHZ/5Us50NTSE0s76uRs6DUyhAhUAoOw7MQnTpvx6+8zpIsk0z46R8xU=" />
+            <title>Version 7.5.260</title>
+            <pubDate>2020-09-03-09-22-19</pubDate>
+            <enclosure url="https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.260/TogglDesktop-7_5_260.dmg" sparkle:version="7.5.260" length="12251600" type="application/octet-stream" sparkle:dsaSignature="MC4CFQDJ17h4kSf7ncOJ5+kZo4PLSF1kMwIVAMEs9tqVA5M/ImJmXhTCcmBtHaHh" />
             <description>
                 <![CDATA[
                     <ul>
