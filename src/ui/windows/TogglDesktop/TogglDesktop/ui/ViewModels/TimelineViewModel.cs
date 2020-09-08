@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using Priority_Queue;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -94,10 +93,19 @@ namespace TogglDesktop.ViewModels
             ActivityBlocks = blocks;
         }
 
+        private enum TimeStampType
+        {
+            Start,
+            End,
+            Empty
+        }
         private void ConvertTimeEntriesToBlocks(List<Toggl.TogglTimeEntryView> timeEntries)
         {
-            var queue = new SimplePriorityQueue<(bool IsEnd, TimeEntryBlock Block), ulong>();
+            var timeStampsList = new List<(TimeStampType Type, TimeEntryBlock Block)>();
             var blocks = new List<TimeEntryBlock>();
+            //The idea is to place all the starts and ends in sorted order and then assign an offset to each time entry block from the list:
+            // - if it's a start time stamp, then pick up the minimum available offset, if none is available assign a new one.
+            // - if it's an end time stamp, then release the offset which it occupied.
             foreach (var entry in timeEntries)
             {
                 var startTime = Toggl.DateTimeFromUnix(entry.Started);
@@ -110,27 +118,45 @@ namespace TogglDesktop.ViewModels
                     Description = entry.Description,
                     ProjectName = entry.ProjectLabel,
                     ClientName = entry.ClientLabel,
-                    ShowDescription = true
+                    ShowDescription = true,
+                    Started = entry.Started,
+                    Ended = entry.Ended
                 };
-                queue.Enqueue((false, block), entry.Started);
-                queue.Enqueue((true, block), entry.Ended);
+                if (entry.Started != entry.Ended)
+                {
+                    timeStampsList.Add((TimeStampType.Start, block));
+                    timeStampsList.Add((TimeStampType.End, block));
+                }
+                else
+                {
+                    timeStampsList.Add((TimeStampType.Empty, block));
+                }
                 blocks.Add(block);
             }
-
+            //There can be a situation that next time entry starts exactly at the same moment, the previous one ended.
+            //This situation must not be considered as overlap. So the comparison logic if time stamps are the same:
+            // - always place the end time stamps first
+            // - prefer empty time stamps to start time stamps
+            // (otherwise if we discover a start then an empty, this will be considered as overlap, which we want to avoid)
+            timeStampsList.Sort((te1, te2) =>
+            {
+                var time1 = te1.Type == TimeStampType.End ? te1.Block.Ended : te1.Block.Started;
+                var time2 = te2.Type == TimeStampType.End ? te2.Block.Ended : te2.Block.Started;
+                var res = time1.CompareTo(time2);
+                if (res == 0)
+                {
+                    var getPriority = new Func<TimeStampType, int>(t =>
+                        t == TimeStampType.End ? 0 : t == TimeStampType.Empty ? 1 : 2);
+                    return getPriority(te1.Type) - getPriority(te2.Type);
+                }
+                return res;
+            });
             var offsets = new HashSet<double>();
             var curOffset = 0;
             var usedNumOfOffsets = 0;
-            while (queue.Count>0)
+            foreach (var item in timeStampsList)
             {
-                var item = queue.Dequeue();
-                if (item.IsEnd)
-                {
-                    offsets.Add(item.Block.HorizontalOffset);
-                    if (usedNumOfOffsets > 1 || item.Block.Height<20)
-                        item.Block.ShowDescription = false;
-                    usedNumOfOffsets--;
-                }
-                else
+                if (item.Type == TimeStampType.Start || item.Type == TimeStampType.Empty)
                 {
                     if (!offsets.Any())
                     {
@@ -143,8 +169,15 @@ namespace TogglDesktop.ViewModels
                     offsets.Remove(offsets.Min());
                     usedNumOfOffsets++;
                 }
+                if (item.Type == TimeStampType.End || item.Type == TimeStampType.Empty)
+                {
+                    offsets.Add(item.Block.HorizontalOffset);
+                    if (usedNumOfOffsets > 1 || item.Block.Height < 20)
+                        item.Block.ShowDescription = false;
+                    usedNumOfOffsets--;
+                }
             }
-
+            TimeEntryBlocks = null;
             TimeEntryBlocks = blocks;
         }
 
@@ -204,5 +237,18 @@ namespace TogglDesktop.ViewModels
         public string Description { get; set; }
         public string ProjectName { get; set; }
         public string ClientName { get; set; }
+        public ulong Started { get; set; }
+        public ulong Ended { get; set; }
+        public ReactiveCommand<Unit, Unit> CreateTimeEntryFromBlock { get; }
+
+        public TimeEntryBlock()
+        {
+            CreateTimeEntryFromBlock = ReactiveCommand.Create(() => AddNewTimeEntry());
+        }
+
+        private void AddNewTimeEntry()
+        {
+            Toggl.CreateEmptyTimeEntry(Started, Ended);
+        }
     }
 }
