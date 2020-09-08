@@ -336,18 +336,22 @@ final class TimerViewModel: NSObject {
         }
 
         let isNewWorkspace = entry.workspaceID != timeEntry.workspaceID
-        let isRunningChanged = entry.isRunning() != timeEntry.isRunning()
+        let isNewEntry = entry.guid != timeEntry.guid
 
         timeEntry = entry
 
-        if entry.isRunning() {
+        if isNewEntry {
+            entryDescription = entry.entryDescription ?? ""
+            durationString = entry.duration ?? ""
+
+        } else if entry.isRunning() {
             let isDescriptionEditing = isEditingDescription?() ?? true
-            if entryDescription.isEmpty || isRunningChanged || !isDescriptionEditing {
+            if entryDescription.isEmpty || !isDescriptionEditing {
                 entryDescription = entry.entryDescription ?? ""
             }
 
             let isDurationEditing = isEditingDuration?() ?? true
-            if durationString.isEmpty || isRunningChanged || !isDurationEditing {
+            if durationString.isEmpty || !isDurationEditing {
                 durationString = entry.duration ?? ""
             }
 
@@ -395,6 +399,13 @@ final class TimerViewModel: NSObject {
         actionsUsedBeforeStart = Set()
 
         onProjectUpdated?(nil)
+    }
+
+    private func timeEntryContinue() {
+        // saving description in case it wasn't yet updated
+        if !entryDescription.isEmpty {
+            saveCurrentDescription(trackAnalytics: false)
+        }
     }
 
     private func fillEntry(fromDescriptionAutocomplete autocompleteItem: AutocompleteItem) {
@@ -475,13 +486,19 @@ final class TimerViewModel: NSObject {
             self?.timeEntryOnStop()
         }
 
+        let commandContinueObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kCommandContinue),
+                                                                         object: nil,
+                                                                         queue: .main) { [weak self] _ in
+            self?.timeEntryContinue()
+        }
+
         let startTimerObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(kStartTimer),
                                                                         object: nil,
                                                                         queue: .main) { [weak self] _ in
             self?.startStopAction()
         }
 
-        notificationObservers = [displayTimerStateObserver, focusTimerObserver, commandStopObserver, startTimerObserver]
+        notificationObservers = [displayTimerStateObserver, focusTimerObserver, commandStopObserver, commandContinueObserver, startTimerObserver]
     }
 
     private func cancelNotificationObservers() {
