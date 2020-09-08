@@ -992,7 +992,7 @@ void *ctx;
 	[menu addItemWithTitle:@"Send Feedback"
 					action:@selector(onSendFeedbackMenuItem)
 			 keyEquivalent:@""].tag = kMenuItemTagSendFeedBack;
-	[menu addItemWithTitle:@"Logout"
+	[menu addItemWithTitle:@"Log out"
 					action:@selector(onLogoutMenuItem:)
 			 keyEquivalent:@""].tag = kMenuItemTagLogout;
 	[menu addItemWithTitle:@"Quit"

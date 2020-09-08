@@ -98,7 +98,7 @@
                         <MenuItem Header="About"
                                   Command="{x:Static toggl:KeyboardShortcuts.About}"
                                   Icon="{StaticResource Toggl.AboutIcon}"/>
-                        <MenuItem x:Name="logoutMenuItem" Header="Logout"
+                        <MenuItem x:Name="logoutMenuItem" Header="Log out"
                                   Command="{x:Static toggl:KeyboardShortcuts.Logout}"
                                   Icon="{StaticResource Toggl.LogoutIcon}"/>
                         <MenuItem Header="Quit" InputGestureText="Ctrl + Q"

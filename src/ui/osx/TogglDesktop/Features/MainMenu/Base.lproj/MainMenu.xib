@@ -173,7 +173,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="ocd-ur-e1h"/>
-                            <menuItem title="Logout" tag="2" id="R7N-z5-83z">
+                            <menuItem title="Log out" tag="2" id="R7N-z5-83z">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="onLogoutMenuItem:" target="494" id="EQe-ox-ZRs"/>
