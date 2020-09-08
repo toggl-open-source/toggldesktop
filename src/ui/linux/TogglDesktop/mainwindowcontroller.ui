@@ -150,7 +150,7 @@
   </action>
   <action name="actionLogout">
    <property name="text">
-    <string>&amp;Logout</string>
+    <string>&amp;Log out</string>
    </property>
   </action>
   <action name="actionQuit">
