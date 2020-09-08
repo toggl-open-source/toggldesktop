@@ -14,6 +14,7 @@
 #include "related_data.h"
 #include "types.h"
 #include "model/workspace.h"
+#include "model/alpha_features.h"
 
 #include <Poco/LocalDateTime.h>
 #include <Poco/Types.h>
@@ -22,7 +23,8 @@ namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT User : public BaseModel {
  public:
-    User() : BaseModel() {}
+    User() : BaseModel(),
+        AlphaFeatureSettings(nullptr) {}
     // Before undeleting, see how the copy constructor in BaseModel works
     User(const User &o) = delete;
     User &operator=(const User &o) = delete;
@@ -207,6 +209,9 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         const std::string &email,
         const std::string &password,
         std::string *result);
+
+    AlphaFeatures* AlphaFeatureSettings;
+    void LoadAlphaFeaturesFromJSON(const Json::Value& data);
 
  private:
     void loadUserTagFromJSON(

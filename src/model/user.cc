@@ -17,6 +17,7 @@
 #include "model/timeline_event.h"
 #include "urls.h"
 #include "onboarding_service.h"
+#include "model/alpha_features.h";
 
 #include <Poco/Base64Decoder.h>
 #include <Poco/Base64Encoder.h>
@@ -89,6 +90,10 @@ void removeProjectFromRelatedModels(Poco::UInt64 pid,
 
 
 User::~User() {
+    if (AlphaFeatureSettings) {
+        delete AlphaFeatureSettings;
+        AlphaFeatureSettings = nullptr;
+    }
     related.Clear();
 }
 
@@ -1172,6 +1177,12 @@ bool User::LoadUserPreferencesFromJSON(
     return false;
 }
 
+void User::LoadAlphaFeaturesFromJSON(const Json::Value& data) {
+    if (AlphaFeatureSettings == nullptr) {
+        AlphaFeatureSettings = new AlphaFeatures();
+    }
+    AlphaFeatureSettings->ReadAlphaFeatures(data);
+}
 
 error User::UserID(
     const std::string &json_data_string,

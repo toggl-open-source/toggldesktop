@@ -339,6 +339,9 @@ build/test/gtest-all.o: $(GTEST_ROOT)/src/gtest-all.cc
 
 build/onboarding_service.o: src/onboarding_service.cpp
 	$(cxx) $(cflags) -c src/onboarding_service.cpp -o build/onboarding_service.o
+	
+build/alpha_features.o: src/alpha_features.cpp
+	$(cxx) $(cflags) -c src/alpha_features.cpp -o build/alpha_features.o
 
 objects: build/jsoncpp.o \
 	build/related_data.o \
@@ -378,7 +381,8 @@ objects: build/jsoncpp.o \
 	build/timeline_uploader.o \
 	build/color_convert.o \
 	build/window_change_recorder.o \
-	build/onboarding_service.o
+	build/onboarding_service.o \
+	build/alpha_features.o
 
 test_objects: build/test/gtest-all.o \
 	build/test/test_data.o \
