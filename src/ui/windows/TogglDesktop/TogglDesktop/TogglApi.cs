@@ -591,6 +591,11 @@ private delegate void     TogglDisplayCountries(
 private delegate void     TogglDisplayOnboarding(
         Int64 onboarding_type);
 
+[UnmanagedFunctionPointer(convention)]
+private delegate void     TogglDisplayTimelineUI(
+[MarshalAs(UnmanagedType.I1)]
+        bool isEnabled);
+
     // Initialize/destroy an instance of the app
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -774,6 +779,11 @@ private static extern void toggl_toggle_entries_group(
 private static extern void toggl_on_timeline(
         IntPtr context,
         TogglDisplayTimeline cb);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+private static extern void toggl_on_timeline_ui_enabled(
+        IntPtr context,
+        TogglDisplayTimelineUI cb);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
 private static extern void toggl_on_mini_timer_autocomplete(

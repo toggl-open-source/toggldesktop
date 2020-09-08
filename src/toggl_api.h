@@ -383,6 +383,9 @@ typedef enum {
     typedef void (*TogglDisplayOnboarding)(
         const int64_t onboarding_type);
 
+    typedef void (*TogglDisplayTimelineUI)(
+        const bool_t isEnabled);
+
     // Initialize/destroy an instance of the app
 
     TOGGL_EXPORT void *toggl_context_init(
@@ -1319,8 +1322,9 @@ typedef enum {
         const char_t *hexColor,
         TogglAdaptiveColor type);
 
-    TOGGL_EXPORT bool_t toggl_is_timeline_ui_enabled(
-        void* context);
+    TOGGL_EXPORT void toggl_on_timeline_ui_enabled(
+        void* context,
+        TogglDisplayTimelineUI cb);
 
 #undef TOGGL_EXPORT
 

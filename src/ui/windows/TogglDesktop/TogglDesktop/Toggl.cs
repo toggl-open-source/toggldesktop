@@ -178,6 +178,9 @@ public static partial class Toggl
         ulong startDay,
         ulong endDay);
 
+    public delegate void DisplayTimelineUI(
+        bool isEnabled);
+
     #endregion
 
     #region api calls
@@ -834,6 +837,7 @@ public static partial class Toggl
     public static readonly BehaviorSubject<UpdateStatus> OnUpdateDownloadStatus
         = new BehaviorSubject<UpdateStatus>(new UpdateStatus());
     public static event DisplayTimeline OnTimeline = delegate { };
+    public static event DisplayTimelineUI OnDisplayTimelineUI = delegate { };
     private static void listenToLibEvents()
     {
         toggl_on_show_app(ctx, open =>
@@ -1086,6 +1090,13 @@ public static partial class Toggl
             {
                 OnTimeline(open, date, convertToTimelineChunkList(first), convertToTimeEntryList(firstTimeEntry),
                     startDay, endDay);
+            }
+        });
+        toggl_on_timeline_ui_enabled(ctx, isEnabled =>
+        {
+            using (Performance.Measure("Calling OnDisplayTimelineUI"))
+            {
+                OnDisplayTimelineUI(isEnabled);
             }
         });
     }

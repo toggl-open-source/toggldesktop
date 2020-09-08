@@ -1705,10 +1705,6 @@ TogglRgbColor toggl_get_adaptive_rgb_color_from_hex(
     return toggl::ColorConverter::GetRgbAdaptiveColor(to_string(hexColor), type);
 }
 
-bool_t toggl_is_timeline_ui_enabled(void *context) {
-    return app(context)->IsTimelineUiEnabled();
-}
-
 TogglServerType toggl_get_server_type() {
     if (toggl::urls::IsUsingStagingAsBackend())
         return TogglServerStaging;
@@ -1716,7 +1712,6 @@ TogglServerType toggl_get_server_type() {
         return TogglServerProduction;
 }
 
-bool IsTimelineUiEnabled(void *context) {
-    auto alphaFeatures = app(context)->GetAlphaFeatures();
-    return alphaFeatures && alphaFeatures->IsTimelineUiEnabled();
+void toggl_on_timeline_ui_enabled(void *context, TogglDisplayTimelineUI cb) {
+    app(context)->UI()->OnDisplayTimelineUI(cb);
 }

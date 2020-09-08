@@ -6183,6 +6183,7 @@ error Context::pullUserPreferences() {
         }
 
         user_->LoadAlphaFeaturesFromJSON(root);
+        UI()->DisplayTimelineUI(user_->AlphaFeatureSettings->IsTimelineUiEnabled());
     }
     catch (const Poco::Exception& exc) {
         return exc.displayText();
@@ -6842,10 +6843,6 @@ bool Context::checkIfSkipPomodoro(TimeEntry *te) {
         }
     }
     return false;
-}
-
-bool Context::IsTimelineUiEnabled() {
-    return user_->timeline_ui_flag;
 }
 
 bool Context::isUsingSyncServer() const {
