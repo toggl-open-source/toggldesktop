@@ -179,12 +179,40 @@ namespace TogglDesktop.ViewModels
             }
             TimeEntryBlocks = null;
             TimeEntryBlocks = blocks;
+
+            GenerateGapTimeEntryBlocks(timeEntries);
         }
 
         private double ConvertTimeIntervalToHeight(DateTime start, DateTime end)
         {
             var timeInterval = (end - start).TotalMinutes;
             return timeInterval * _hourHeight / 60;
+        }
+
+        private void GenerateGapTimeEntryBlocks(List<Toggl.TogglTimeEntryView> timeEntries)
+        {
+            var gaps = new List<TimeEntryBlock>();
+            timeEntries.Sort((te1,te2) => te1.Started.CompareTo(te2.Started));
+            ulong? prevEnd = null;
+            foreach (var entry in timeEntries)
+            {
+                if (prevEnd != null && entry.Started > prevEnd.Value + 5 *60)
+                {
+                    var start = Toggl.DateTimeFromUnix(prevEnd.Value+1);
+                    gaps.Add(new TimeEntryBlock()
+                    {
+                        Height = ConvertTimeIntervalToHeight(start, Toggl.DateTimeFromUnix(entry.Started-1)),
+                        VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(start.Year, start.Month, start.Day), start),
+                        HorizontalOffset = 0,
+                        Started = prevEnd.Value+1,
+                        Ended = entry.Started-1
+                    });
+                }
+                prevEnd = entry.Ended;
+            }
+
+            GapTimeEntryBlocks = null;
+            GapTimeEntryBlocks = gaps;
         }
 
         private static int _hourHeight = 200;
@@ -211,6 +239,9 @@ namespace TogglDesktop.ViewModels
 
         [Reactive]
         public List<TimeEntryBlock> TimeEntryBlocks { get; private set; }
+
+        [Reactive]
+        public List<TimeEntryBlock> GapTimeEntryBlocks { get; private set; }
 
         public class ActivityBlock
         {

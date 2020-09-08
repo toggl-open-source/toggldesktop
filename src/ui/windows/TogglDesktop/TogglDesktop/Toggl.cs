@@ -1555,6 +1555,11 @@ public static partial class Toggl
     {
         toggl_view_timeline_data(ctx);
     }
+
+    public static string CreateEmptyTimeEntry(ulong started, ulong ended)
+    {
+        return toggl_create_empty_time_entry(ctx, started, ended);
+    }
     #endregion
 
 

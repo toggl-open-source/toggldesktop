@@ -6,10 +6,8 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
-             xmlns:converters="clr-namespace:TogglDesktop.Converters"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:TimelineViewModel, IsDesignTimeCreatable=False}">
@@ -142,6 +140,25 @@
                             <DataTemplate>
                                 <togglDesktop:TimelineTimeEntryBlock Panel.ZIndex="1" DataContext="{Binding Path=.}"
                                                                      Width="{Binding ElementName=MainViewGrid, Path=ColumnDefinitions[2].ActualWidth}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Canvas.Left" Value="{Binding HorizontalOffset}" />
+                                <Setter Property="Canvas.Top" Value="{Binding VerticalOffset}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
+                    <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=GapTimeEntryBlocks}" Margin="10 0 0 0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource Toggl.Timeline.GapButton}" Height="{Binding Height}" Width="15"
+                                        Command="{Binding CreateTimeEntryFromBlock}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemContainerStyle>
