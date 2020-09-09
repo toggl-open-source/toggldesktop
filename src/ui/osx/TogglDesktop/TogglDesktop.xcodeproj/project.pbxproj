@@ -2156,7 +2156,6 @@
 				1276406FB7B983D0C81B35AE /* [CP] Check Pods Manifest.lock */,
 				69FC17ED17E6534400B96425 /* Sources */,
 				69FC17EE17E6534400B96425 /* Frameworks */,
-				74E3CDDA17FC37A500C3ADD3 /* Run Script (install bugsnag) */,
 				74A50AA818434D90006F37BB /* CopyFiles */,
 				69FC17EF17E6534400B96425 /* Resources */,
 				7407F1F41AA80466000380C4 /* Run Script (Fix dynamic library paths in Frameworks) */,
@@ -2183,7 +2182,6 @@
 				BAE64D552368334000244D2B /* Sources */,
 				BAE64DF22368334000244D2B /* Frameworks */,
 				BAE64DFD2368334000244D2B /* Resources */,
-				BAE64E2A2368334000244D2B /* Run Script (install bugsnag) */,
 				BAE64E2B2368334000244D2B /* CopyFiles */,
 				BAE64E442368334000244D2B /* Run Script (Fix dynamic library paths in Frameworks) */,
 				BAE64E452368334000244D2B /* Run Formatter */,
@@ -2515,20 +2513,6 @@
 			shellPath = /bin/sh;
 			shellScript = "fix() {\n    filename=$1\n    lib=$2\n    \n    oldpath=$(otool -L $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/$filename | fgrep $lib|awk -F' ' '{print $1}'|grep -v @loader_path|grep -v \":\")\n    \n    if [ -z \"$oldpath\" ]; then\n        return\n    fi\n    \n    install_name_tool -change \"$oldpath\" @loader_path/$lib $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/$filename\n    \n    # get shared library id name\n    file=$(otool -D $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/$filename |grep -v \":\")\n    # get base name of the path we got\n    basename=${file##*/}\n    # change shared library id name\n    install_name_tool -id @loader_path/$basename $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/$filename\n}\n    \nfix_poco_paths() {\n    f=$1\n    \n    fix \"$f\" libPocoUtil.60.dylib\n    fix \"$f\" libPocoData.60.dylib\n    fix \"$f\" libPocoNetSSL.60.dylib\n    fix \"$f\" libPocoXML.60.dylib\n    fix \"$f\" libPocoDataSQLite.60.dylib\n    fix \"$f\" libPocoNet.60.dylib\n    fix \"$f\" libPocoFoundation.60.dylib\n    fix \"$f\" libPocoCrypto.60.dylib\n    fix \"$f\" libPocoJSON.60.dylib\n    fix \"$f\" libcrypto.1.1.dylib\n    fix \"$f\" libssl.1.1.dylib\n}\n\n# Change dylib references in all dylibs found in Frameworks\nfor path in $BUILT_PRODUCTS_DIR/Toggl\\ Track.app/Contents/Frameworks/*.dylib\ndo\n    filename=\"${path##*/}\"\n    fix_poco_paths \"$filename\"\ndone\n";
 		};
-		74E3CDDA17FC37A500C3ADD3 /* Run Script (install bugsnag) */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script (install bugsnag)";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /usr/bin/ruby;
-			shellScript = "if ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\nexit\nend\n\nfork do\nProcess.setsid\nSTDIN.reopen(\"/dev/null\")\nSTDOUT.reopen(\"/dev/null\", \"a\")\nSTDERR.reopen(\"/dev/null\", \"a\")\n\nrequire 'shellwords'\n\nDir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/#{ENV[\"DWARF_DSYM_FILE_NAME\"]}/Contents/Resources/DWARF/*\"].each do |dsym|\nsystem(\"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\nend\nend\n";
-		};
 		81A110554E6933FC84621A85 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2567,7 +2551,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/usr/bin/env ruby";
-			shellScript = "# Bugsnag key\napi_key = \"aa13053a88d5133b688db0f25ec103b7\"\n\nfork do\n  Process.setsid\n  STDIN.reopen(\"/dev/null\")\n  STDOUT.reopen(\"/dev/null\", \"a\")\n  STDERR.reopen(\"/dev/null\", \"a\")\n\n  require 'shellwords'\n\n  Dir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/*/Contents/Resources/DWARF/*\"].each do |dsym|\n    curl_command = \"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} \"\n    curl_command += \"-F apiKey=#{Shellwords.escape(api_key)} \" if api_key\n    curl_command += \"https://upload.bugsnag.com/\"\n    system(curl_command)\n  end\nend\n";
+			shellScript = "# perform script only if dSYM is available, meaning only in Release configuration\nif ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\n  exit\nend\n\n# Bugsnag key\napi_key = \"aa13053a88d5133b688db0f25ec103b7\"\n\nfork do\n  Process.setsid\n  STDIN.reopen(\"/dev/null\")\n  STDOUT.reopen(\"/dev/null\", \"a\")\n  STDERR.reopen(\"/dev/null\", \"a\")\n\n  require 'shellwords'\n\n  Dir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/*/Contents/Resources/DWARF/*\"].each do |dsym|\n    curl_command = \"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} \"\n    curl_command += \"-F apiKey=#{Shellwords.escape(api_key)} \" if api_key\n    curl_command += \"https://upload.bugsnag.com/\"\n    system(curl_command)\n  end\nend\n";
 			showEnvVarsInLog = 0;
 		};
 		BA6406F121C8FC690074BC96 /* Run Formatter */ = {
@@ -2609,20 +2593,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
-		};
-		BAE64E2A2368334000244D2B /* Run Script (install bugsnag) */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script (install bugsnag)";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /usr/bin/ruby;
-			shellScript = "if ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\nexit\nend\n\nfork do\nProcess.setsid\nSTDIN.reopen(\"/dev/null\")\nSTDOUT.reopen(\"/dev/null\", \"a\")\nSTDERR.reopen(\"/dev/null\", \"a\")\n\nrequire 'shellwords'\n\nDir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/#{ENV[\"DWARF_DSYM_FILE_NAME\"]}/Contents/Resources/DWARF/*\"].each do |dsym|\nsystem(\"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\nend\nend";
 		};
 		BAE64E442368334000244D2B /* Run Script (Fix dynamic library paths in Frameworks) */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2698,7 +2668,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/usr/bin/env ruby";
-			shellScript = "# Bugsnag key\napi_key = \"aa13053a88d5133b688db0f25ec103b7\"\n\nfork do\n  Process.setsid\n  STDIN.reopen(\"/dev/null\")\n  STDOUT.reopen(\"/dev/null\", \"a\")\n  STDERR.reopen(\"/dev/null\", \"a\")\n\n  require 'shellwords'\n\n  Dir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/*/Contents/Resources/DWARF/*\"].each do |dsym|\n    curl_command = \"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} \"\n    curl_command += \"-F apiKey=#{Shellwords.escape(api_key)} \" if api_key\n    curl_command += \"https://upload.bugsnag.com/\"\n    system(curl_command)\n  end\nend\n";
+			shellScript = "# perform script only if dSYM is available, meaning only in Release configuration\nif ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\n  exit\nend\n\n# Bugsnag key\napi_key = \"aa13053a88d5133b688db0f25ec103b7\"\n\nfork do\n  Process.setsid\n  STDIN.reopen(\"/dev/null\")\n  STDOUT.reopen(\"/dev/null\", \"a\")\n  STDERR.reopen(\"/dev/null\", \"a\")\n\n  require 'shellwords'\n\n  Dir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/*/Contents/Resources/DWARF/*\"].each do |dsym|\n    curl_command = \"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} \"\n    curl_command += \"-F apiKey=#{Shellwords.escape(api_key)} \" if api_key\n    curl_command += \"https://upload.bugsnag.com/\"\n    system(curl_command)\n  end\nend\n";
 			showEnvVarsInLog = 0;
 		};
 		C279BE2CEE6A519519B901CA /* [CP] Embed Pods Frameworks */ = {
