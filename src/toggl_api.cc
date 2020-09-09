@@ -1712,7 +1712,6 @@ TogglServerType toggl_get_server_type() {
         return TogglServerProduction;
 }
 
-bool IsTimelineUiEnabled(void *context) {
-    auto alphaFeatures = app(context)->GetAlphaFeatures();
-    return alphaFeatures && alphaFeatures->IsTimelineUiEnabled();
+void toggl_on_timeline_ui_enabled(void *context, TogglDisplayTimelineUI cb) {
+    app(context)->UI()->OnDisplayTimelineUI(cb);
 }

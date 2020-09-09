@@ -487,8 +487,8 @@ private delegate void     TogglDisplayTimeline(
         string date,
         IntPtr first,
         IntPtr first_entry,
-        long start_day,
-        long end_day);
+        UInt64 start_day,
+        UInt64 end_day);
 
 [UnmanagedFunctionPointer(convention)]
 private delegate void     TogglDisplayAutocomplete(
@@ -525,7 +525,7 @@ private delegate void     TogglContinueSignIn(
     );
 
 [UnmanagedFunctionPointer(convention)]
-private delegate void TogglDisplayLoginSSO(
+private delegate void     TogglDisplayLoginSSO(
 [MarshalAs(UnmanagedType.LPWStr)]
         string sso_url);
 
@@ -590,6 +590,11 @@ private delegate void     TogglDisplayCountries(
 [UnmanagedFunctionPointer(convention)]
 private delegate void     TogglDisplayOnboarding(
         Int64 onboarding_type);
+
+[UnmanagedFunctionPointer(convention)]
+private delegate void     TogglDisplayTimelineUI(
+[MarshalAs(UnmanagedType.I1)]
+        bool isEnabled);
 
     // Initialize/destroy an instance of the app
 
@@ -774,6 +779,11 @@ private static extern void toggl_toggle_entries_group(
 private static extern void toggl_on_timeline(
         IntPtr context,
         TogglDisplayTimeline cb);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+private static extern void toggl_on_timeline_ui_enabled(
+        IntPtr context,
+        TogglDisplayTimelineUI cb);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
 private static extern void toggl_on_mini_timer_autocomplete(
@@ -1909,6 +1919,11 @@ private static extern TogglRgbColor toggl_get_adaptive_rgb_color_from_hex(
 [MarshalAs(UnmanagedType.LPWStr)]
         string hexColor,
         TogglAdaptiveColor type);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+[return:MarshalAs(UnmanagedType.I1)]
+private static extern bool toggl_is_timeline_ui_enabled(
+        IntPtr context);
 
 
 

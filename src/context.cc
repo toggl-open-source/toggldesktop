@@ -6183,6 +6183,7 @@ error Context::pullUserPreferences() {
         }
 
         user_->LoadAlphaFeaturesFromJSON(root);
+        UI()->DisplayTimelineUI(user_->AlphaFeatureSettings->IsTimelineUiEnabled());
     }
     catch (const Poco::Exception& exc) {
         return exc.displayText();

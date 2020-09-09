@@ -313,8 +313,8 @@ typedef enum {
         const char_t *date,
         TogglTimelineChunkView *first,
         TogglTimeEntryView *first_entry,
-        long start_day,
-        long end_day);
+        const uint64_t start_day,
+        const uint64_t end_day);
 
     typedef void (*TogglDisplayAutocomplete)(
         TogglAutocompleteView *first);
@@ -340,7 +340,8 @@ typedef enum {
     typedef void (*TogglContinueSignIn)(
     );
 
-    typedef void (*TogglDisplayLoginSSO)(const char_t *sso_url);
+    typedef void (*TogglDisplayLoginSSO)(
+        const char_t *sso_url);
 
     typedef void (*TogglDisplayIdleNotification)(
         const char_t *guid,
@@ -381,6 +382,9 @@ typedef enum {
 
     typedef void (*TogglDisplayOnboarding)(
         const int64_t onboarding_type);
+
+    typedef void (*TogglDisplayTimelineUI)(
+        const bool_t isEnabled);
 
     // Initialize/destroy an instance of the app
 
@@ -1317,6 +1321,10 @@ typedef enum {
     TOGGL_EXPORT TogglRgbColor toggl_get_adaptive_rgb_color_from_hex(
         const char_t *hexColor,
         TogglAdaptiveColor type);
+
+    TOGGL_EXPORT void toggl_on_timeline_ui_enabled(
+        void* context,
+        TogglDisplayTimelineUI cb);
 
 #undef TOGGL_EXPORT
 

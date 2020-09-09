@@ -210,6 +210,7 @@
     <Compile Include="ui\Behaviors\NumericInputTextBoxBehavior.cs" />
     <Compile Include="ui\Behaviors\RepositionPopupWithParentWindowBehavior.cs" />
     <Compile Include="ui\Behaviors\TextBoxHelper.cs" />
+    <Compile Include="ui\controls\DatePickerHelper.cs" />
     <Compile Include="ui\controls\InAppNotification.xaml.cs">
       <DependentUpon>InAppNotification.xaml</DependentUpon>
     </Compile>
@@ -315,6 +316,8 @@
     <Compile Include="ui\ViewModels\TimeEntryCellViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryLabelViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryListViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimelineViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimerEntryListViewViewModel.cs" />
     <Compile Include="ui\ViewModels\TimerViewModel.cs" />
     <Compile Include="ui\ViewModels\ViewModelExtensions.cs" />
     <Compile Include="ui\views\IMainView.cs" />
@@ -323,6 +326,9 @@
     </Compile>
     <Compile Include="ui\views\SSOLoginView.xaml.cs">
       <DependentUpon>SSOLoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\views\Timeline.xaml.cs">
+      <DependentUpon>Timeline.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\views\ValidationErrorControl.xaml.cs">
       <DependentUpon>ValidationErrorControl.xaml</DependentUpon>
@@ -477,6 +483,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\Resources\DesignUpdate\DatePickerTimelineStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ui\controls\ErrorBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -607,6 +617,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\views\SSOLoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\views\Timeline.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

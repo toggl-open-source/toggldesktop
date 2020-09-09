@@ -839,4 +839,10 @@ void GUI::DisplayOnLoginSSO(std::string ssoURL) {
     }
 }
 
+void GUI::DisplayTimelineUI(const bool isEnabled) {
+    if (on_display_timeline_ui) {
+        on_display_timeline_ui(isEnabled);
+    }
+}
+
 }  // namespace toggl

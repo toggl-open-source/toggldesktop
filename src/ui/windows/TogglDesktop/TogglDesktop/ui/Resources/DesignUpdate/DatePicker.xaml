@@ -42,7 +42,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="{x:Type DatePicker}">
+    <Style TargetType="{x:Type DatePicker}" x:Key="EditViewDatePickerStyle">
         <Setter Property="FontFamily" Value="{DynamicResource BaseFont}" />
         <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}" />
         <Setter Property="Background" Value="{DynamicResource Toggl.SelectionElements.Background}" />
