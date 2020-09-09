@@ -126,6 +126,20 @@
                         "name": "TogglDesktopInstaller-x64-7.5.268.exe"
                     }
                 ]
+            },
+            {
+                "version": "7.5.269",
+                "timestamp": "09-09-2020",
+                "filename": [
+                    {
+                        "type": "windows",
+                        "name": "TogglDesktopInstaller-7.5.269.exe"
+                    },
+                    {
+                        "type": "windows64",
+                        "name": "TogglDesktopInstaller-x64-7.5.269.exe"
+                    }
+                ]
             }
         ],
         "beta": [
