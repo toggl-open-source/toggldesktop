@@ -27,5 +27,11 @@ namespace TogglDesktop
         {
             RecordActivityInfoPopup.IsOpen = true;
         }
+
+        private void HandleScrollViewerMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            MainViewScroll.ScrollToVerticalOffset(MainViewScroll.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
     }
 }

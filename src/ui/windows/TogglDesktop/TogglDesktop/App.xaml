@@ -31,6 +31,7 @@
             <converters:AdaptProjectTextColorConverter x:Key="AdaptProjectTextColorConverter" />
             <converters:BooleanInvertToVisibilityConverter x:Key="BooleanInvertToVisibilityConverter"/>
             <converters:HasAnyFlagToVisibilityConverter x:Key="HasAnyFlagToVisibilityConverter"/>
+            <converters:EmptyListToCollapsedConverter x:Key="EmptyListToVisibleConverter" Inverse="True"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
