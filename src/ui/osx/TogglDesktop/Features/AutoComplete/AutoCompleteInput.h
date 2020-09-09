@@ -35,7 +35,6 @@ typedef NS_ENUM (NSUInteger, AutoCompleteDisplayMode)
 
 - (void)toggleTableViewWithNumberOfItem:(NSInteger)numberOfItem;
 - (void)updateDropdownWithHeight:(CGFloat)height;
-- (void)setPos:(int)posy;
 - (void)hide;
 - (void)resetTable;
 - (void)showAutoComplete:(BOOL)show;

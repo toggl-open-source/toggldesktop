@@ -15,14 +15,17 @@
 
 static NSString *const downArrow = @"\u25BC";
 static NSString *const upArrow = @"\u25B2";
+static CGFloat maxDropdownWidth = 500;
+static CGFloat dropdownBottomPadding = 50;
+static CGFloat dropdownHorizontalPadding = 11;
 
 @interface AutoCompleteInput () <NoInteractionViewDelegate, NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
 @property (strong, nonatomic) AutoCompleteTable *autocompleteTableView;
 @property (strong, nonatomic) AutoCompleteTableContainer *autocompleteTableContainer;
 @property (assign, nonatomic) BOOL constraintsActive;
 @property (strong, nonatomic) NoInteractionView *backgroundView;
-@property (strong, nonatomic) NSLayoutConstraint *heightConstraint;
-@property (assign, nonatomic) NSInteger posY;
+@property (strong, nonatomic) NSLayoutConstraint *dropdownHeightConstraint;
+@property (strong, nonatomic) NSLayoutConstraint *dropdownWidthConstraint;
 @property (strong, nonatomic) NSButton *actionButton;
 @property (assign, nonatomic) CGFloat totalHeight;
 @property (assign, nonatomic) CGFloat itemHeight;
@@ -36,7 +39,6 @@ static NSString *const upArrow = @"\u25B2";
 	self = [super initWithCoder:coder];
 	if (self)
 	{
-		self.posY = 0;
 		self.constraintsActive = NO;
 		self.itemHeight = 30.0;
 		self.worksapceItemHeight = 40.0;
@@ -66,6 +68,13 @@ static NSString *const upArrow = @"\u25B2";
     } else {
         self.autocompleteTableContainer.backgroundColor = [NSColor whiteColor];
     }
+}
+
+- (void)layout
+{
+	[super layout];
+	self.dropdownWidthConstraint.constant = [self dropdownWidth];
+	[self updateDropdownWithHeight:self.totalHeight];
 }
 
 - (void)createAutocomplete
@@ -131,22 +140,32 @@ static NSString *const upArrow = @"\u25B2";
 	// Set constraints to input field so autocomplete size is always connected to input
 	NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
 
-	NSLayoutConstraint *right =  [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeRight multiplier:1 constant:0];
-
 	NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:[self topPaddingForContainer]];
 
-	self.heightConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0];
-	self.heightConstraint.priority = NSLayoutPriorityDefaultHigh;
+	self.dropdownHeightConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0];
+	self.dropdownHeightConstraint.priority = NSLayoutPriorityDefaultHigh;
 
 	NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:view attribute:NSLayoutAttributeBottom multiplier:1 constant:0];
 	bottom.priority = NSLayoutPriorityDefaultLow;
 
-	[self.window.contentView addConstraints:@[left, right, top, self.heightConstraint, bottom]];
+	self.dropdownWidthConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeWidth multiplier:1 constant:[self dropdownWidth]];
+	self.dropdownWidthConstraint.priority = NSLayoutPriorityRequired;
+
+	[self.window.contentView addConstraints:@[left, top, self.dropdownHeightConstraint, bottom, self.dropdownWidthConstraint]];
 }
 
-- (void)setPos:(int)posy
+- (CGFloat)dropdownWidth
 {
-	self.posY = posy;
+	CGFloat windowWidth = self.window.contentView.frame.size.width;
+	CGFloat dropdownWidth = windowWidth - dropdownHorizontalPadding * 2;
+	if (dropdownWidth > maxDropdownWidth)
+	{
+		return maxDropdownWidth;
+	}
+	else
+	{
+		return dropdownWidth;
+	}
 }
 
 - (void)toggleTableViewWithNumberOfItem:(NSInteger)numberOfItem
@@ -170,21 +189,8 @@ static NSString *const upArrow = @"\u25B2";
 - (void)updateDropdownWithHeight:(CGFloat)height
 {
 	self.totalHeight = height;
-	CGFloat suitableHeight;
-
-	switch (self.displayMode)
-	{
-		case AutoCompleteDisplayModeCompact :
-			suitableHeight = MIN(height, self.posY - 50);
-			break;
-		case AutoCompleteDisplayModeFullscreen :
-			suitableHeight = MIN(height, self.posY - 25);
-			break;
-		default :
-			break;
-	}
-
-	self.heightConstraint.constant = suitableHeight;
+	CGFloat maxAllowedHeight = [self convertPoint:CGPointZero toView:self.window.contentView].y - dropdownBottomPadding;
+	self.dropdownHeightConstraint.constant = MIN(height, maxAllowedHeight);
 }
 
 - (void)keyUp:(NSEvent *)event

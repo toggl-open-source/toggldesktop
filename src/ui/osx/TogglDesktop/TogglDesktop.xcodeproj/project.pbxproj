@@ -714,7 +714,7 @@
 		3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableCell.m; sourceTree = "<group>"; };
 		3C6B2481203E01D80063FC08 /* AutoCompleteInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteInput.h; sourceTree = "<group>"; };
 		3C6B2482203E01D80063FC08 /* AutoCompleteTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteTable.h; sourceTree = "<group>"; };
-		3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteInput.m; sourceTree = "<group>"; };
+		3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteInput.m; sourceTree = "<group>"; usesTabs = 1; };
 		3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTable.m; sourceTree = "<group>"; };
 		3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutoCompleteTableCell.xib; sourceTree = "<group>"; };
 		3C6B24A2203FC8200063FC08 /* LiteAutoCompleteDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiteAutoCompleteDataSource.h; sourceTree = "<group>"; };

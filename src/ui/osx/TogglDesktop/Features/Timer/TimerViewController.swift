@@ -81,9 +81,6 @@ class TimerViewController: NSViewController {
     override func viewDidAppear() {
         super.viewDidAppear()
 
-        let viewFrameInWindowCoords = view.convert(view.bounds, to: nil)
-        descriptionTextField.setPos(Int32(viewFrameInWindowCoords.origin.y))
-
         // !!!: we're passing views into view model - refactor this someday
         // this is needed because current Autocomplete functionality
         // is tightly coupled with text input views
