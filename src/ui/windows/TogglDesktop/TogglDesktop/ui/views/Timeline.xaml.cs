@@ -30,11 +30,8 @@ namespace TogglDesktop
 
         private void HandleScrollViewerMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (sender is ScrollViewer scv)
-            {
-                scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
-                e.Handled = true;
-            }
+            MainViewScroll.ScrollToVerticalOffset(MainViewScroll.VerticalOffset - e.Delta);
+            e.Handled = true;
         }
     }
 }

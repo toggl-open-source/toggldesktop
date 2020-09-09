@@ -92,7 +92,8 @@
                           IsTabStop="False"
                           UseLayoutRounding="True"
                           SnapsToDevicePixels="True"
-                          PreviewMouseWheel="HandleScrollViewerMouseWheel">
+                          PreviewMouseWheel="HandleScrollViewerMouseWheel"
+                          Name="MainViewScroll">
                 <Grid  Background="{DynamicResource Toggl.CardBackground}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -172,10 +173,12 @@
         </Grid>
         <TextBlock Text="No entries here... Go ahead and track some time!" Width="125" HorizontalAlignment="Center"
                    VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Margin="0 100 0 0"
-                   Visibility="{Binding TimeEntries, Converter={StaticResource EmptyListToVisibleConverter}}"/>
+                   Visibility="{Binding TimeEntries, Converter={StaticResource EmptyListToVisibleConverter}}"
+                   MouseWheel="HandleScrollViewerMouseWheel"/>
         <TextBlock Text="No activity was recorded yet..." HorizontalAlignment="Right"
                    VerticalAlignment="Center" TextAlignment="Center" Margin="0 100 10 0"
-                   Visibility="{Binding TimeEntries, Converter={StaticResource EmptyListToVisibleConverter}}">
+                   Visibility="{Binding TimeEntries, Converter={StaticResource EmptyListToVisibleConverter}}"
+                   MouseWheel="HandleScrollViewerMouseWheel">
             <TextBlock.LayoutTransform>
                 <RotateTransform Angle="90"/>
             </TextBlock.LayoutTransform>
