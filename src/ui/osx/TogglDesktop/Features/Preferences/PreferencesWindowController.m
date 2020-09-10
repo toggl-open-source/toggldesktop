@@ -73,7 +73,6 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSSegmentedControl *tabSegment;
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSButton *showTouchBarButton;
-@property (weak) IBOutlet NSLayoutConstraint *bottomContainerHeight;
 @property (weak) IBOutlet NSButton *permissionBtn;
 
 @property (nonatomic, assign) NSInteger selectedProxyIndex;
@@ -139,11 +138,7 @@ extern void *ctx;
 {
 	[super windowDidLoad];
 
-	// Clean window titlebar
 	self.window.delegate = self;
-	self.window.titleVisibility = NSWindowTitleHidden;
-	self.window.titlebarAppearsTransparent = YES;
-	self.window.styleMask |= NSFullSizeContentViewWindowMask;
 
 	self.currentTab = TabIndexGeneral;
 	self.autotrackerProjectAutocompleteDataSource.combobox = self.autotrackerProject;
@@ -495,13 +490,11 @@ const int kUseProxyToConnectToToggl = 2;
 	if (@available(macOS 10.12.2, *))
 	{
 		self.showTouchBarButton.hidden = NO;
-		self.bottomContainerHeight.constant = 58;
 		[self.showTouchBarButton setState:[Utils boolToState:toggl_get_show_touch_bar(ctx)]];
 	}
 	else
 	{
 		self.showTouchBarButton.hidden = YES;
-		self.bottomContainerHeight.constant = 38;
 	}
 
     // Permission for Auto Tracker
