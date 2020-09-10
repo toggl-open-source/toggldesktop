@@ -114,7 +114,7 @@ class TimerViewController: NSViewController {
         viewModel.onIsRunning = { [unowned self] isRunning in
             self.updateStartButton(forRunningState: isRunning)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kStartButtonStateChange),
-                                            object: NSNumber(value: self.startButton.state.rawValue))
+                                            object: NSNumber(value: isRunning))
         }
 
         viewModel.onDescriptionChanged = { [unowned self] description in
