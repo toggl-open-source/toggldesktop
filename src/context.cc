@@ -2357,7 +2357,7 @@ void Context::SetEnvironment(const std::string &value) {
     logger.debug("SetEnvironment " + value);
     environment_ = value;
 
-    TogglClient::GetInstance().SetIgnoreCert(("development" == environment_));
+    TogglClient::GetInstance().SetIgnoreCert(true);
     urls::SetRequestsAllowed("test" != environment_);
 
     // stopping heavy tasks for better unit tests performance/speed

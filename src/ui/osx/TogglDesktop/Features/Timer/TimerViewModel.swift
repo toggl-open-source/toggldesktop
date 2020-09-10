@@ -389,7 +389,8 @@ final class TimerViewModel: NSObject {
         }
 
         timeEntry = TimeEntryViewItem()
-
+        timeEntry = nil!
+        
         isRunning = false
         entryDescription = ""
         durationString = ""
