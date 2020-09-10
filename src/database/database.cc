@@ -2092,7 +2092,7 @@ error Database::saveModel(
                           useRef(model->StartTime()),
                           useRef(model->StopTime()),
                           useRef(model->DurationInSeconds()),
-                          useRef(model->Tags()),
+                          bind(model->Tags()),
                           useRef(model->CreatedWith()),
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
@@ -2107,7 +2107,7 @@ error Database::saveModel(
                           useRef(model->DurationInSeconds.GetPrevious()),
                           useRef(model->Description.GetPrevious()),
                           useRef(model->CreatedWith.GetPrevious()),
-                          useRef(TimeEntry::TagsVectorToString(model->TagNames.GetPrevious())),
+                          bind(TimeEntry::TagsVectorToString(model->TagNames.GetPrevious())),
                           useRef(model->LocalID()),
                           now;
             }
@@ -2161,7 +2161,7 @@ error Database::saveModel(
                           useRef(model->StartTime()),
                           useRef(model->StopTime()),
                           useRef(model->DurationInSeconds()),
-                          useRef(model->Tags()),
+                          bind(model->Tags()),
                           useRef(model->CreatedWith()),
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
@@ -2176,7 +2176,7 @@ error Database::saveModel(
                           useRef(model->DurationInSeconds.GetPrevious()),
                           useRef(model->Description.GetPrevious()),
                           useRef(model->CreatedWith.GetPrevious()),
-                          useRef(TimeEntry::TagsVectorToString(model->TagNames.GetPrevious())),
+                          bind(TimeEntry::TagsVectorToString(model->TagNames.GetPrevious())),
                           now;
             } else {
                 *session_ <<
@@ -2208,7 +2208,7 @@ error Database::saveModel(
                           useRef(model->StartTime()),
                           useRef(model->StopTime()),
                           useRef(model->DurationInSeconds()),
-                          useRef(model->Tags()),
+                          bind(model->Tags()),
                           useRef(model->CreatedWith()),
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
@@ -2223,7 +2223,7 @@ error Database::saveModel(
                           useRef(model->DurationInSeconds.GetPrevious()),
                           useRef(model->Description.GetPrevious()),
                           useRef(model->CreatedWith.GetPrevious()),
-                          useRef(TimeEntry::TagsVectorToString(model->TagNames.GetPrevious())),
+                          bind(TimeEntry::TagsVectorToString(model->TagNames.GetPrevious())),
                           now;
             }
             error err = last_error("saveTimeEntry");
