@@ -40,6 +40,7 @@ using Poco::Data::Keywords::useRef;
 using Poco::Data::Keywords::limit;
 using Poco::Data::Keywords::into;
 using Poco::Data::Keywords::now;
+using Poco::Data::Keywords::bind;
 
 Database::Database(const std::string &db_path)
     : session_(nullptr)
@@ -2033,7 +2034,7 @@ error Database::saveModel(
                           useRef(model->StartTime()),
                           useRef(model->StopTime()),
                           useRef(model->DurationInSeconds()),
-                          useRef(model->Tags()),
+                          bind(model->Tags()),
                           useRef(model->CreatedWith()),
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
@@ -2048,7 +2049,7 @@ error Database::saveModel(
                           useRef(model->DurationInSeconds.GetPrevious()),
                           useRef(model->Description.GetPrevious()),
                           useRef(model->CreatedWith.GetPrevious()),
-                          useRef(TimeEntry::TagsVectorToString(model->TagNames.GetPrevious())),
+                          bind(TimeEntry::TagsVectorToString(model->TagNames.GetPrevious())),
                           useRef(model->LocalID()),
                           now;
             } else {
