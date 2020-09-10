@@ -8,9 +8,15 @@
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
+             xmlns:converters="clr-namespace:TogglDesktop.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:TimelineViewModel, IsDesignTimeCreatable=False}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:RectangleHeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid MinHeight="100">
         <Grid Background="{DynamicResource Toggl.Background}">
             <Grid.RowDefinitions>
@@ -94,7 +100,7 @@
                           SnapsToDevicePixels="True"
                           PreviewMouseWheel="HandleScrollViewerMouseWheel"
                           Name="MainViewScroll">
-                <Grid  Background="{DynamicResource Toggl.CardBackground}">
+                <Grid  Background="{DynamicResource Toggl.CardBackground}" Name ="MainViewGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -157,7 +163,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Style="{StaticResource Toggl.Timeline.GapButton}" Height="{Binding Height}" Width="15"
+                                <Button Style="{StaticResource Toggl.Timeline.GapButton}" Height="{Binding Height}" Width="20"
                                         Command="{Binding CreateTimeEntryFromBlock}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -212,8 +218,11 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Rectangle Width="20" Height="40" RadiusX="20" RadiusY="10" Panel.ZIndex="1" 
-                                           Fill="{DynamicResource Toggl.ActivityBlockBrush}"
+                                <Rectangle Width="20" Height="{Binding Height}"
+                                           RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
+                                           RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}"
+                                           Panel.ZIndex="1" 
+                                           Fill="{DynamicResource Toggl.AccentBrush}"
                                            MouseEnter="OnActivityMouseEnter"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

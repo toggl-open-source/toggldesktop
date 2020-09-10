@@ -22,7 +22,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Rectangle Grid.Column="0" Name ="TimeEntrySpan"
-                   Width="15" Height="{Binding Height}"
+                   Width="20" Height="{Binding Height}"
                    Fill="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
                    RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
                    RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}">

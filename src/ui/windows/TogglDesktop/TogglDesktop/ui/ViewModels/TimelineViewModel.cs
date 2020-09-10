@@ -66,6 +66,7 @@ namespace TogglDesktop.ViewModels
                         TimeInterval = chunk.StartTimeString+" - "+chunk.EndTimeString,
                         ActivityDescriptions = new List<ActivityDescription>()
                     };
+                    long duration = 0;
                     foreach (var eventDesc in chunk.Events)
                     {
                         var activity = new ActivityDescription()
@@ -85,7 +86,12 @@ namespace TogglDesktop.ViewModels
                             activity.ActivityTitle = eventDesc.DurationString + " " + title;
                             block.ActivityDescriptions.Add(activity);
                         }
+                        duration += eventDesc.Duration;
                     }
+                    var height = (1.0 * duration * _hourHeight) / (60 * 60);
+                    if (height < 10) height = 10;
+                    if (height > 50) height = 50;
+                    block.Height = height;
                     if (block.ActivityDescriptions.Any())
                         blocks.Add(block);
                 }
@@ -161,7 +167,7 @@ namespace TogglDesktop.ViewModels
                     if (!offsets.Any())
                     {
                         offsets.Add(curOffset);
-                        curOffset += 20;
+                        curOffset += 25;
                     }
                     if (usedNumOfOffsets > 0 || item.Block.Height < 20)
                         item.Block.ShowDescription = false;
@@ -208,7 +214,7 @@ namespace TogglDesktop.ViewModels
                         Ended = entry.Started-1
                     });
                 }
-                prevEnd = entry.Ended;
+                prevEnd = !prevEnd.HasValue || entry.Ended > prevEnd ? entry.Ended : prevEnd;
             }
 
             GapTimeEntryBlocks = null;
@@ -247,6 +253,7 @@ namespace TogglDesktop.ViewModels
         {
             public double Offset { get; set; }
             public string TimeInterval { get; set; }
+            public double Height { get; set; }
             public List<ActivityDescription> ActivityDescriptions { get; set; }
         }
 

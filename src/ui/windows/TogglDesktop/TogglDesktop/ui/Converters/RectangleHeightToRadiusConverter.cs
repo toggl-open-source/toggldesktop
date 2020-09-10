@@ -11,7 +11,7 @@ namespace TogglDesktop.Converters
             if (parameter == null || !(value is double)) return 0;
             var height = (double)value;
             if (height >= 15) return parameter.ToString() == "RadiusX" ? 15 : 7;
-            if (height >= 5) return parameter.ToString() == "RadiusX" ? 15 : 2;
+            if (height >= 6) return parameter.ToString() == "RadiusX" ? 4 : 15;
             return 0;
         }
 
