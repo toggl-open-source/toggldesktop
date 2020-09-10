@@ -147,8 +147,8 @@ final class TimerViewModel: NSObject {
     }
 
     func setDescriptionAutoCompleteInput(_ input: AutoCompleteInput) {
-        descriptionDataSource.setFilter("")
         descriptionDataSource.input = input
+        descriptionDataSource.setFilter("")
         input.autocompleteTableView.delegate = self
     }
 
