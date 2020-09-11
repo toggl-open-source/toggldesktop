@@ -1,6 +1,17 @@
 {
     "versions": [
         {
+            "version": "7.5.275",
+            "rows": [
+                "Fixed bug when description autocomplete was empty after app startup",
+                "Fixed the color of time entry description on the Touch Bar",
+                "Fixed bug when start button on the Touch Bar was not updating",
+                "Autocomplete dropdown size is changing with the app window size updates"
+            ],
+            "date": "September 11st 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.268",
             "rows": [
                 "Fixed bug when description and duration fields sometimes were not updated when continuing previous time entry, using Pomodoro or idle notification."
