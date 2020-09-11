@@ -5,8 +5,7 @@
             "rows": [
                 "Fixed bug when description and duration fields sometimes were not updated when continuing previous time entry, using Pomodoro or idle notification."
             ],
-            "date": "September 8th 2020",
-            "beta": "true"
+            "date": "September 11st 2020"
         },
         {
             "version": "7.5.260",
