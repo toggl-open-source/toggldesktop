@@ -16,7 +16,7 @@
             <sys:Double x:Key="PointOneDouble">0.1</sys:Double>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Margin="0 0 14 0">
+    <Grid Margin="0 0 4 0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>

@@ -10,14 +10,14 @@ namespace TogglDesktop.ViewModels
 {
     public class TimelineViewModel : ReactiveObject
     {
+        private DateTime _lastDateLoaded;
         public TimelineViewModel()
         {
             this.WhenAnyValue(x => x.RecordActivity).ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(value => Toggl.SetTimelineRecordingEnabled(value));
             OpenTogglHelpUri = ReactiveCommand.Create(() =>
                 Toggl.OpenInBrowser("https://support.toggl.com/en/articles/3836325-toggl-desktop-for-windows"));
-            this.WhenAnyValue(x => x.SelectedDate).Subscribe(value => 
-                Toggl.SetViewTimelineDay(Toggl.UnixFromDateTime(SelectedDate)));
+            this.WhenAnyValue(x => x.SelectedDate).Subscribe(HandleSelectedDateChanged);
             SelectPreviousDay = ReactiveCommand.Create(Toggl.ViewTimelinePreviousDay);
             SelectNextDay = ReactiveCommand.Create(Toggl.ViewTimelineNextDay);
             Toggl.OnTimeline += HandleDisplayTimeline;
@@ -30,6 +30,15 @@ namespace TogglDesktop.ViewModels
             }
         }
 
+        private void HandleSelectedDateChanged(DateTime date)
+        {
+            if (date < _lastDateLoaded)
+            {
+                Toggl.LoadMore();
+            }
+            Toggl.SetViewTimelineDay(Toggl.UnixFromDateTime(SelectedDate));
+        }
+
         private void HandleDisplayTimeline(bool open, string date, List<Toggl.TimelineChunkView> first, List<Toggl.TogglTimeEntryView> firstTimeEntry, ulong startDay, ulong endDay)
         {
             SelectedDate = Toggl.DateTimeFromUnix(startDay);
@@ -39,17 +48,12 @@ namespace TogglDesktop.ViewModels
 
         private void HandleTimeEntryListChanged(bool open, List<Toggl.TogglTimeEntryView> timeEntries, bool showLoadMore)
         {
-            List<Toggl.TogglTimeEntryView> selectedDateTEs = new List<Toggl.TogglTimeEntryView>();
-            foreach (var entry in timeEntries)
+            Toggl.SetViewTimelineDay(Toggl.UnixFromDateTime(SelectedDate)); //called in case if user changed some of the selected date TEs
+            if (_lastDateLoaded == default)
             {
-                var startDate = Toggl.DateTimeFromUnix(entry.Started);
-                if (startDate.Date == SelectedDate)
-                    selectedDateTEs.Add(entry);
+                _lastDateLoaded = Toggl.DateTimeFromUnix(timeEntries.Select(te => te.Started).Min());
             }
-            if (selectedDateTEs.Any())
-            {
-                ConvertTimeEntriesToBlocks(selectedDateTEs);
-            }
+            
         }
 
         private void ConvertChunksToActivityBlocks(List<Toggl.TimelineChunkView> chunks)
