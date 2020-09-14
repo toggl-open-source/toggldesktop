@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Navigation;
+using ReactiveUI;
 using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
@@ -13,6 +13,7 @@ namespace TogglDesktop
     /// </summary>
     public partial class Timeline : UserControl
     {
+        private CompositeDisposable _disposable;
         public TimelineViewModel ViewModel
         {
             get => DataContext as TimelineViewModel;
@@ -22,6 +23,21 @@ namespace TogglDesktop
         public Timeline()
         {
             InitializeComponent();
+        }
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            if (e.Property.Name == nameof(DataContext))
+            {
+                _disposable?.Dispose();
+                _disposable = new CompositeDisposable();
+
+                ViewModel?.WhenAnyValue(x => x.SelectedScaleMode).Subscribe(_ =>
+                {
+                    MainViewScroll.ScrollToVerticalOffset(MainViewScroll.VerticalOffset*ViewModel.ScaleRatio);
+                }).DisposeWith(_disposable);
+            }
         }
 
         private void RecordActivityInfoBoxOnMouseEnter(object sender, MouseEventArgs e)
