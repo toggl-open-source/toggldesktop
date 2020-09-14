@@ -39,6 +39,8 @@
 #endif
 #include <X11/Xlib.h>
 
+#include "xcbkeyboard.h"
+
 namespace {
 
 const QVector<quint32> maskModifiers = QVector<quint32>()
@@ -225,6 +227,11 @@ quint32 QxtGlobalShortcutPrivate::nativeKeycode(Qt::Key key)
     KeySym keysym = XStringToKeysym(QKeySequence(key).toString().toLatin1().data());
     if (keysym == NoSymbol)
         keysym = static_cast<ushort>(key);
+
+    for (int i = 0; KeyTbl[i] != 0; i += 2) {
+        if (KeyTbl[i + 1] == key)
+            keysym = KeyTbl[i];
+    }
 
     return XKeysymToKeycode(x11.display(), keysym);
 }
