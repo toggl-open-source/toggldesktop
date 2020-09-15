@@ -8,8 +8,7 @@
                 "Fixed bug when start button on the Touch Bar was not updating",
                 "Autocomplete dropdown size is changing with the app window size updates"
             ],
-            "date": "September 11st 2020",
-            "beta": "true"
+            "date": "September 15th 2020"
         },
         {
             "version": "7.5.268",
