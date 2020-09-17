@@ -131,6 +131,11 @@
                             ToolTip="{Binding Text}"/>
                     <TextBlock Name="project" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding ProjectLabel}" Foreground="{Binding ProjectColor, Converter={StaticResource AdaptProjectTextColorConverter}}"/>
                     <TextBlock Name="task" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding TaskLabel, Converter={StaticResource StringFormatIfNotEmptyConverter}, ConverterParameter='- {0}'}" Foreground="{Binding ProjectColor, Converter={StaticResource AdaptProjectTextColorConverter}}"/>
+                    <TextBlock Style="{DynamicResource Toggl.CaptionText}"
+                               Padding="4 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="{Binding ClientLabel, Converter={StaticResource StringFormatIfNotEmptyConverter}, ConverterParameter='- {0}'}"
+                               Visibility="{Binding ClientLabel, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="category-item-template">
