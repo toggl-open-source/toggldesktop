@@ -5003,7 +5003,9 @@ void Context::syncerActivityWrapper() {
             case STARTUP: {
                 logger.log("Syncer bootup, will attempt to determine which protocol to use");
                 //Do it here to know the type of syncing before syncerActivityWrapper() pulls the preferences
-                pullUserPreferences();
+                auto error = pullUserPreferences();
+                if (error != noError)
+                    break;
                 state = user_->AlphaFeatureSettings->IsSyncEnabled() ? state = BATCHED : LEGACY;
                 logger.log("Syncer - Syncing protocol was selected: ", (state == BATCHED ? "BATCHED" : "LEGACY"));
                 break;
