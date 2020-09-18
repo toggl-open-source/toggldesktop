@@ -1,6 +1,15 @@
 {
     "versions": [
         {
+            "version": "7.5.278",
+            "rows": [
+                "Fixed bug when tags sometimes were not persisted between app launches"
+            ],
+            "date": "September 18th 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.260",
             "rows": [
                 "Rebranding - Update Windows app colors and icons"
