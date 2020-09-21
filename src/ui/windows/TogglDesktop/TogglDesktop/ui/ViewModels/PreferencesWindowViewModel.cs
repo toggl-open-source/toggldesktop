@@ -71,6 +71,7 @@ namespace TogglDesktop.ViewModels
                 x => x.ProxyHost,
                 proxyHost => Uri.CheckHostName(proxyHost) != UriHostNameType.Unknown,
                 "Please, enter a valid host");
+            Toggl.OnDisplayTimelineUI += isEnabled => IsTimelineViewEnabled = isEnabled;
         }
 
         public ICommand ClearCacheCommand { get; }
@@ -87,6 +88,9 @@ namespace TogglDesktop.ViewModels
 
         [Reactive]
         public string ProxyHost { get; set; }
+
+        [Reactive]
+        public bool IsTimelineViewEnabled { get; private set; }
 
         public void ResetRecordedShortcuts()
         {
