@@ -34,7 +34,7 @@ public static partial class Toggl
             Duration = eventView.Duration;
             DurationString = eventView.DurationString;
             Header = eventView.Header;
-            SubEvents = marshalList<TimelineEventView, TogglTimelineEventView>(eventView.Event, n => n.Event, t => new TimelineEventView(t));
+            SubEvents = marshalList<TimelineEventView, TogglTimelineEventView>(eventView.Event, n => n.Next, t => new TimelineEventView(t));
         }
     }
 
