@@ -4240,6 +4240,20 @@
                         "name": "toggldesktop_7.5.260_ubuntu1604_amd64.deb"
                     }
                 ]
+            },
+            {
+                "version": "7.5.279",
+                "timestamp": "21-09-2020",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_7.5.279_x86_64.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.5.279_ubuntu1604_amd64.deb"
+                    }
+                ]
             }
         ],
         "stable": [
