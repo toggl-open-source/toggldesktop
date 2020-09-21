@@ -211,12 +211,14 @@
                                            Text="minutes" />
                             </StackPanel>
                         </Grid>
-                        <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 24 0 0"
-                                   Text="Record activity" />
-                        <TextBlock Style="{DynamicResource Toggl.CaptionText}" Margin="0 4 0 0"
-                                   Text="You'll have a timeline of all activity on your computer with a breakdown of time spent on applications and websites. Only you can access this data." />
-                        <mah:ToggleSwitch Margin="0 14 0 0"
-                                          Name="recordTimelineCheckBox" x:FieldModifier="private" />
+                        <StackPanel Visibility="{Binding IsTimelineViewEnabled, Converter={StaticResource BooleanInvertToVisibilityConverter}}">
+                            <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 24 0 0"
+                                       Text="Record activity" />
+                            <TextBlock Style="{DynamicResource Toggl.CaptionText}" Margin="0 4 0 0"
+                                       Text="You'll have a timeline of all activity on your computer with a breakdown of time spent on applications and websites. Only you can access this data." />
+                            <mah:ToggleSwitch Margin="0 14 0 0"
+                                              Name="recordTimelineCheckBox" x:FieldModifier="private" />
+                        </StackPanel>
                         <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 24 0 0"
                                    Text="Stop timer automatically" />
                         <TextBlock Style="{DynamicResource Toggl.CaptionText}" Margin="0 4 0 0"
