@@ -1,6 +1,14 @@
 {
     "versions": [
         {
+            "version": "7.5.279",
+            "rows": [
+                "Fixed an issue with tags sometimes not being saved"
+            ],
+            "date": "September 21st 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.260",
             "rows": [
                 "Toggl is now Toggl Track! We'll still be the Toggl you know and love on desktop, mobile, and web - but we're welcoming Toggl Plan and Toggl Hire into the family. We’ve also switched from tomato red to a cool new color scheme, so prepare for some new looks!"
