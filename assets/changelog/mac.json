@@ -1,6 +1,14 @@
 {
     "versions": [
         {
+            "version": "7.5.279",
+            "rows": [
+                "Fixed crash that could occur on application start"
+            ],
+            "date": "September 21st 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.277",
             "rows": [
                 "Fixed bug when tags sometimes were not persisted between app launches"
