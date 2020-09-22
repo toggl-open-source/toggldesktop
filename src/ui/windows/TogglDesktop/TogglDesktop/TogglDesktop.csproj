@@ -241,18 +241,23 @@
     <Compile Include="ui\controls\TimeEntryLabel.xaml.cs">
       <DependentUpon>TimeEntryLabel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\controls\TimelineTimeEntryBlock.xaml.cs">
+      <DependentUpon>TimelineTimeEntryBlock.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\TrayToolTipControl.xaml.cs">
       <DependentUpon>TrayToolTipControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Converters\AdaptProjectColorConverter.cs" />
     <Compile Include="ui\Converters\AndConverter.cs" />
     <Compile Include="ui\Converters\BooleanInvertToVisibilityConverter.cs" />
+    <Compile Include="ui\Converters\BrushOpacityConverter.cs" />
     <Compile Include="ui\Converters\CapitalizeConverter.cs" />
     <Compile Include="ui\Converters\EmptyListToCollapsedConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
     <Compile Include="ui\Converters\HasAnyFlagToVisibilityConverter.cs" />
     <Compile Include="ui\Converters\IsSelectableItemConverter.cs" />
     <Compile Include="ui\Converters\PopupAlignmentAwareConverter.cs" />
+    <Compile Include="ui\Converters\RectangleHeightToRadiusConverter.cs" />
     <Compile Include="ui\Converters\StringFormatIfNotEmptyConverter.cs" />
     <Compile Include="ui\Converters\BytesToStringConverter.cs" />
     <Compile Include="ui\Converters\EnumEqualToVisibilityConverter.cs" />
@@ -481,6 +486,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\controls\AutotrackerSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\TimelineTimeEntryBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

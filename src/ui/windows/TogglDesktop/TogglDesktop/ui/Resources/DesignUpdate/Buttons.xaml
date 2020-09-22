@@ -345,4 +345,25 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style TargetType="Button" x:Key="Toggl.Timeline.GapButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Rectangle Stroke="{DynamicResource Toggl.LightGrayBrush}"
+                                   StrokeDashArray="1 1"
+                                   StrokeThickness="2"
+                                   Fill="Transparent"
+                                   RadiusX="15"
+                                   RadiusY="7">
+                        </Rectangle>
+                        <Viewbox Stretch="None">
+                            <Path Opacity="0.348" Fill="{DynamicResource Toggl.DarkGrayBrush}" Data="M9.437 4.844v1.312h-3.28v3.281H4.843V6.156H1.562V4.844h3.282V1.561h1.312v3.281h3.281z"/>
+                        </Viewbox>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

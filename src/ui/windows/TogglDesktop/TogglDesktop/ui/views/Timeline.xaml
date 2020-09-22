@@ -8,9 +8,15 @@
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
+             xmlns:converters="clr-namespace:TogglDesktop.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:TimelineViewModel, IsDesignTimeCreatable=False}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:RectangleHeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid MinHeight="100">
         <Grid Background="{DynamicResource Toggl.Background}">
             <Grid.RowDefinitions>
@@ -94,7 +100,7 @@
                           SnapsToDevicePixels="True"
                           PreviewMouseWheel="HandleScrollViewerMouseWheel"
                           Name="MainViewScroll">
-                <Grid  Background="{DynamicResource Toggl.CardBackground}">
+                <Grid  Background="{DynamicResource Toggl.CardBackground}" Name ="MainViewGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -130,7 +136,44 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <GridSplitter Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="1" Background="{DynamicResource Toggl.TimelineSeparatorBrush}"/>
-                    <Canvas Grid.Row="1" Grid.Column="2" Background="Transparent"/>
+                    <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=TimeEntryBlocks}" Margin="10 0 0 0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas Name="TimeEntryCanvas" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <togglDesktop:TimelineTimeEntryBlock Panel.ZIndex="1" DataContext="{Binding Path=.}"
+                                                                     Width="{Binding ElementName=TimeEntryCanvas, Path=ActualWidth}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Canvas.Left" Value="{Binding HorizontalOffset}" />
+                                <Setter Property="Canvas.Top" Value="{Binding VerticalOffset}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
+                    <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=GapTimeEntryBlocks}" Margin="10 0 0 0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource Toggl.Timeline.GapButton}" Height="{Binding Height}" Width="20"
+                                        Command="{Binding CreateTimeEntryFromBlock}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Canvas.Left" Value="{Binding HorizontalOffset}" />
+                                <Setter Property="Canvas.Top" Value="{Binding VerticalOffset}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
                     <GridSplitter Grid.Column="3" Grid.Row="1" Width="1">
                         <GridSplitter.Style>
                             <Style TargetType="{x:Type GridSplitter}">
@@ -167,17 +210,74 @@
                             </Style>
                         </GridSplitter.Style>
                     </GridSplitter>
-                    <Canvas Grid.Row="1" Grid.Column="4"/>
+                    <ItemsControl Grid.Row="1" Grid.Column="4" ItemsSource="{Binding Path=ActivityBlocks}" x:Name="ActivityBlocks">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Rectangle Width="20" Height="{Binding Height}"
+                                           MinHeight="6"
+                                           MaxHeight="50"
+                                           RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
+                                           RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}"
+                                           Panel.ZIndex="1" 
+                                           Fill="{DynamicResource Toggl.AccentBrush}"
+                                           MouseEnter="OnActivityMouseEnter"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Canvas.Left" Value="25" />
+                                <Setter Property="Canvas.Top" Value="{Binding Path=Offset}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
+                    <Popup DataContext="{Binding SelectedActivityBlock}"
+                           Grid.Row="1" Grid.Column="4"
+                           Placement="Left"
+                           StaysOpen="True"
+                           HorizontalOffset="-5"
+                           MaxWidth="270"
+                           Name="ActivityBlockPopup"
+                           IsOpen="{Binding ElementName=ActivityBlocks, Path=IsMouseOver, Mode=OneWay}">
+                        <Border BorderBrush="{DynamicResource Toggl.PopupBorderBrush}" BorderThickness="1" Focusable="False">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.2" Color="Black" />
+                            </Border.Effect>
+                            <StackPanel Background="{DynamicResource Toggl.CardBackground}">
+                                <TextBlock FontSize="12" Text="{Binding TimeInterval}" Margin="9 8 9 5"/>
+                                <ItemsControl ItemsSource="{Binding ActivityDescriptions}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding ActivityTitle}" Margin="9 0 9 0" TextTrimming="CharacterEllipsis"/>
+                                                <ItemsControl ItemsSource="{Binding SubActivities}" Margin="9 0 9 5">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Style="{StaticResource Toggl.BodyGrayishText}" Text="{Binding Path=.}" TextTrimming="CharacterEllipsis"/>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </Popup>
                 </Grid>
             </ScrollViewer>
         </Grid>
         <TextBlock Text="No entries here... Go ahead and track some time!" Width="125" HorizontalAlignment="Center"
                    VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Margin="0 100 0 0"
-                   Visibility="{Binding TimeEntries, Converter={StaticResource EmptyListToVisibleConverter}}"
+                   Visibility="{Binding TimeEntryBlocks, Converter={StaticResource EmptyListToVisibleConverter}}"
                    MouseWheel="HandleScrollViewerMouseWheel"/>
         <TextBlock Text="No activity was recorded yet..." HorizontalAlignment="Right"
                    VerticalAlignment="Center" TextAlignment="Center" Margin="0 100 10 0"
-                   Visibility="{Binding TimeEntries, Converter={StaticResource EmptyListToVisibleConverter}}"
+                   Visibility="{Binding ActivityBlocks, Converter={StaticResource EmptyListToVisibleConverter}}"
                    MouseWheel="HandleScrollViewerMouseWheel">
             <TextBlock.LayoutTransform>
                 <RotateTransform Angle="90"/>

@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="TogglDesktop.TimelineTimeEntryBlock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:converters="clr-namespace:TogglDesktop.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance viewModels:TimeEntryBlock, IsDesignTimeCreatable=False}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:RectangleHeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
+            <converters:BrushOpacityConverter x:Key="BrushOpacityConverter"/>
+            <sys:Double x:Key="PointOneDouble">0.1</sys:Double>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Margin="0 0 4 0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Grid.Column="0" Name ="TimeEntrySpan"
+                   Width="20" Height="{Binding Height}"
+                   Fill="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
+                   RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
+                   RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}">
+        </Rectangle>
+        <Border CornerRadius="8,8,8,8" BorderThickness="0" Grid.Column="1" Margin="-10 0 0 0"
+                Visibility="{Binding ShowDescription, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Background="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource PointOneDouble}}">
+            <StackPanel Height="{Binding Height}" Margin="20,0,0,0">
+                <TextBlock Text="{Binding Description}" Style="{StaticResource Toggl.CaptionBlackText}"/>
+                <DockPanel>
+                    <Ellipse Width="8" Height="8"
+                             DockPanel.Dock="Left"
+                             Margin="0 0 5 0"
+                             VerticalAlignment="Center"
+                             Fill="{Binding ElementName=TimeEntrySpan, Path=Fill}"
+                             Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                    <TextBlock Foreground="{Binding Color, Converter={StaticResource AdaptProjectTextColorConverter}}"
+                               Text="{Binding ProjectName}" FontSize="12"
+                               VerticalAlignment="Center"/>
+                </DockPanel>
+                <TextBlock Text="{Binding ClientName}" Style="{StaticResource Toggl.CaptionText}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
