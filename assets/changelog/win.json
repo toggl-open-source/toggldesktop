@@ -1,6 +1,16 @@
 {
     "versions": [
         {
+            "version": "7.5.282",
+            "rows": [
+                "Add client name to recent time entries autocomplete",
+                "Fixed crash that could occur on application start"
+            ],
+            "date": "September 22nd 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.278",
             "rows": [
                 "Fixed bug when tags sometimes were not persisted between app launches"
