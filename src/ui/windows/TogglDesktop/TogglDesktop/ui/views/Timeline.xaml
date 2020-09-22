@@ -219,6 +219,8 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Rectangle Width="20" Height="{Binding Height}"
+                                           MinHeight="6"
+                                           MaxHeight="50"
                                            RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
                                            RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}"
                                            Panel.ZIndex="1" 
@@ -233,13 +235,14 @@
                             </Style>
                         </ItemsControl.ItemContainerStyle>
                     </ItemsControl>
-                    <Popup DataContext="{Binding SelectedActivityBlock}" Grid.Row="1" Grid.Column="4"
+                    <Popup DataContext="{Binding SelectedActivityBlock}"
+                           Grid.Row="1" Grid.Column="4"
                            Placement="Left"
                            StaysOpen="False"
                            HorizontalOffset="-5"
-                           Name="ActivityBlockPopup"
-                           MaxWidth="170">
-                        <Border BorderBrush="{DynamicResource Toggl.PopupBorderBrush}" BorderThickness="1">
+                           MaxWidth="270"
+                           Name="ActivityBlockPopup">
+                        <Border BorderBrush="{DynamicResource Toggl.PopupBorderBrush}" BorderThickness="1" Focusable="False">
                             <Border.Effect>
                                 <DropShadowEffect ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.2" Color="Black" />
                             </Border.Effect>

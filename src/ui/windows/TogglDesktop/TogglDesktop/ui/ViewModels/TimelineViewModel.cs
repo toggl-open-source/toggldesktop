@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -75,27 +76,15 @@ namespace TogglDesktop.ViewModels
                     {
                         var activity = new ActivityDescription()
                         {
-                            SubActivities = new List<string>()
+                            ActivityTitle = eventDesc.Header ? Path.GetFileName(eventDesc.Filename) : eventDesc.Title
                         };
-                        var title = eventDesc.Title;
-                        foreach (var subEvent in eventDesc.SubEvents)
-                        {
-                            if (subEvent.Title.IsNullOrEmpty()) continue;
-                            activity.SubActivities.Add(eventDesc.DurationString + " " + subEvent.Title);
-                            if (title.IsNullOrEmpty())
-                                title = subEvent.Title;
-                        }
-                        if (!title.IsNullOrEmpty())
-                        {
-                            activity.ActivityTitle = eventDesc.DurationString + " " + title;
-                            block.ActivityDescriptions.Add(activity);
-                        }
+                        activity.SubActivities = eventDesc.Header
+                            ? eventDesc.SubEvents.Select(e => e.DurationString + " " + e.Title).ToList()
+                            : new List<string>() {eventDesc.DurationString + " " + eventDesc.Title}; 
+                        block.ActivityDescriptions.Add(activity);
                         duration += eventDesc.Duration;
                     }
-                    var height = (1.0 * duration * _hourHeight) / (60 * 60);
-                    if (height < 10) height = 10;
-                    if (height > 50) height = 50;
-                    block.Height = height;
+                    block.Height = (1.0 * duration * _hourHeight) / (60 * 60); ;
                     if (block.ActivityDescriptions.Any())
                         blocks.Add(block);
                 }
