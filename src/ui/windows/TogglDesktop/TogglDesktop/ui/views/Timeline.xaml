@@ -210,7 +210,7 @@
                             </Style>
                         </GridSplitter.Style>
                     </GridSplitter>
-                    <ItemsControl Grid.Row="1" Grid.Column="4" ItemsSource="{Binding Path=ActivityBlocks}" Name="ActivityBlocks">
+                    <ItemsControl Grid.Row="1" Grid.Column="4" ItemsSource="{Binding Path=ActivityBlocks}" x:Name="ActivityBlocks">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <Canvas />
@@ -238,10 +238,11 @@
                     <Popup DataContext="{Binding SelectedActivityBlock}"
                            Grid.Row="1" Grid.Column="4"
                            Placement="Left"
-                           StaysOpen="False"
+                           StaysOpen="True"
                            HorizontalOffset="-5"
                            MaxWidth="270"
-                           Name="ActivityBlockPopup">
+                           Name="ActivityBlockPopup"
+                           IsOpen="{Binding ElementName=ActivityBlocks, Path=IsMouseOver, Mode=OneWay}">
                         <Border BorderBrush="{DynamicResource Toggl.PopupBorderBrush}" BorderThickness="1" Focusable="False">
                             <Border.Effect>
                                 <DropShadowEffect ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.2" Color="Black" />

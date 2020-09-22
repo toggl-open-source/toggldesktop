@@ -32,7 +32,6 @@ namespace TogglDesktop
         private void HandleScrollViewerMouseWheel(object sender, MouseWheelEventArgs e)
         {
             MainViewScroll.ScrollToVerticalOffset(MainViewScroll.VerticalOffset - e.Delta);
-            ActivityBlockPopup.IsOpen = false;
             e.Handled = true;
         }
 
@@ -43,7 +42,6 @@ namespace TogglDesktop
                 ViewModel.SelectedActivityBlock = curBlock;
                 ActivityBlockPopup.PlacementTarget = uiElement;
                 ActivityBlockPopup.VerticalOffset = uiElement.Height/2;
-                ActivityBlockPopup.IsOpen = true;
             }
         }
     }
