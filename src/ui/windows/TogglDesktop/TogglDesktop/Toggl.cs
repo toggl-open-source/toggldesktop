@@ -1521,11 +1521,6 @@ public static partial class Toggl
         return toggl_get_active_tab(ctx);
     }
 
-    public static bool IsTimelineUiEnabled()
-    {
-        return toggl_is_timeline_ui_enabled(ctx);
-    }
-
     public static bool SetTimelineRecordingEnabled(bool recordTimeline)
     {
         return toggl_timeline_toggle_recording(ctx, recordTimeline);

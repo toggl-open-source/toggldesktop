@@ -398,6 +398,21 @@ public enum    TimelineMenuContextType
         TimelineMenuContextTypeChangeLastEntryStartTime
 }
 
+public enum    TimerEditActionType
+{
+        TimerEditActionTypeDescription = 1 << 0,
+        TimerEditActionTypeDuration = 1 << 1,
+        TimerEditActionTypeProject = 1 << 2,
+        TimerEditActionTypeTags = 1 << 3,
+        TimerEditActionTypeBillable = 1 << 4
+}
+
+public enum    TogglServerType
+{
+        TogglServerStaging = 0,
+        TogglServerProduction
+}
+
     // Callbacks that need to be implemented in UI
 
 [UnmanagedFunctionPointer(convention)]
@@ -681,6 +696,21 @@ private static extern void toggl_set_staging_override(
 [MarshalAs(UnmanagedType.I1)]
         bool value);
 
+    // To request what server is set up in the library
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+private static extern TogglServerType toggl_get_server_type();
+
+    // Ignoring SSL verification can be turned on in the UI
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+private static extern void toggl_set_ignore_cert(
+[MarshalAs(UnmanagedType.I1)]
+        bool ignore);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+[return:MarshalAs(UnmanagedType.I1)]
+private static extern bool toggl_ignore_cert();
+
     // Various parts of UI can tell the app to show itself.
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -779,11 +809,6 @@ private static extern void toggl_toggle_entries_group(
 private static extern void toggl_on_timeline(
         IntPtr context,
         TogglDisplayTimeline cb);
-
-[DllImport(dll, CharSet = charset, CallingConvention = convention)]
-private static extern void toggl_on_timeline_ui_enabled(
-        IntPtr context,
-        TogglDisplayTimelineUI cb);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
 private static extern void toggl_on_mini_timer_autocomplete(
@@ -1201,6 +1226,17 @@ private static extern bool toggl_discard_time_and_continue(
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
 [return:MarshalAs(UnmanagedType.I1)]
+private static extern bool toggl_can_see_billable(
+        IntPtr context,
+        Int64 workspaceID);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+private static extern void toggl_fetch_tags(
+        IntPtr context,
+        Int64 workspaceID);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+[return:MarshalAs(UnmanagedType.I1)]
 private static extern bool toggl_set_settings_remind_days(
         IntPtr context,
 [MarshalAs(UnmanagedType.I1)]
@@ -1599,6 +1635,10 @@ private static extern UInt64 toggl_get_default_task_id(
         IntPtr context);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+private static extern UInt64 toggl_get_default_or_first_workspace_id(
+        IntPtr context);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
 [return:MarshalAs(UnmanagedType.I1)]
 private static extern bool toggl_set_update_channel(
         IntPtr context,
@@ -1839,6 +1879,16 @@ private static extern void track_expand_all_days(
         IntPtr context);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+private static extern void track_timer_edit(
+        IntPtr context,
+        TimerEditActionType action);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+private static extern void track_timer_start(
+        IntPtr context,
+        TimerEditActionType actions);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
 [return:MarshalAs(UnmanagedType.I1)]
 private static extern bool toggl_update_time_entry(
         IntPtr context,
@@ -1921,9 +1971,9 @@ private static extern TogglRgbColor toggl_get_adaptive_rgb_color_from_hex(
         TogglAdaptiveColor type);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-[return:MarshalAs(UnmanagedType.I1)]
-private static extern bool toggl_is_timeline_ui_enabled(
-        IntPtr context);
+private static extern void toggl_on_timeline_ui_enabled(
+        IntPtr context,
+        TogglDisplayTimelineUI cb);
 
 
 
