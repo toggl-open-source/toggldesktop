@@ -47,7 +47,8 @@ class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
     , stop_entry_on_shutdown_sleep(false)
     , show_touch_bar(true)
     , active_tab(0)
-    , color_theme(0) {}
+    , color_theme(0)
+    , force_ignore_cert(false) {}
 
     virtual ~Settings() {}
 
@@ -82,6 +83,7 @@ class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
     bool show_touch_bar;
     Poco::UInt8 active_tab;
     Poco::UInt8 color_theme;
+    bool force_ignore_cert;
 
     bool IsSame(const Settings &other) const;
 

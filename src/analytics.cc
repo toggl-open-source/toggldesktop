@@ -286,6 +286,9 @@ void GoogleAnalyticsSettingsEvent::runTask() {
 
     setActionInt("color_theme-", settings.color_theme);
     makeReq();
+
+    setActionBool("force_ignore_cert-", settings.force_ignore_cert);
+    makeReq();
 }
 
 void GoogleAnalyticsSettingsEvent::setActionBool(const std::string &type, bool value) {
