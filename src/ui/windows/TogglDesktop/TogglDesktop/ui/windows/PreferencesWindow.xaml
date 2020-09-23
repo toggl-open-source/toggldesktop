@@ -414,7 +414,8 @@
                                    Text="Ignore SSL verification" />
                     <TextBlock Style="{DynamicResource Toggl.CaptionText}"  Margin="0 4 0 0"
                                    Text="NOT RECOMMENDED, this can make the app vulnerable to man-in-the-middle attacks." />
-                    <mah:ToggleSwitch Margin="0 8 0 0" IsChecked="{Binding IsIgnoreCertEnabled}"/>
+                    <mah:ToggleSwitch x:Name="ignoreCertificateToggleSwitch" x:FieldModifier="private"
+                                      Margin="0 8 0 0" />
                     
                 </StackPanel>
             </TabItem>
