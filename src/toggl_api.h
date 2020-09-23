@@ -194,6 +194,7 @@ extern "C" {
         bool_t ShowTouchBar;
         uint8_t ActiveTab;
         uint8_t ColorTheme;
+        bool_t ForceIgnoreCert;
     } TogglSettingsView;
 
     typedef struct {

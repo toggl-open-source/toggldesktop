@@ -483,6 +483,7 @@ TogglSettingsView *settings_view_item_init(
     view->ShowTouchBar = settings.show_touch_bar;
     view->ActiveTab = settings.active_tab;
     view->ColorTheme = settings.color_theme;
+    view->ForceIgnoreCert = settings.force_ignore_cert;
     return view;
 }
 

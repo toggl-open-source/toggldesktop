@@ -39,6 +39,7 @@ Json::Value Settings::SaveToJSON(int) const {
     json["show_touch_bar"] = show_touch_bar;
     json["active_tab"] = active_tab;
     json["color_theme"] = color_theme;
+    json["force_ignore_cert"] = force_ignore_cert;
     return json;
 }
 
@@ -75,7 +76,8 @@ std::string Settings::String() const {
        << " stop_entry_on_shutdown_sleep=" << stop_entry_on_shutdown_sleep
        << " show_touch_bar=" << show_touch_bar
        << " active_tab=" << active_tab
-       << " color_theme=" << color_theme;
+       << " color_theme=" << color_theme
+       << " force_ignore_cert=" << force_ignore_cert;
 
     return ss.str();
 }
@@ -111,7 +113,8 @@ bool Settings::IsSame(const Settings &other) const {
             && (stop_entry_on_shutdown_sleep == other.stop_entry_on_shutdown_sleep)
             && (show_touch_bar == other.show_touch_bar)
             && (active_tab == other.active_tab)
-            && (color_theme == other.color_theme));
+            && (color_theme == other.color_theme)
+            && (force_ignore_cert == other.force_ignore_cert));
 }
 
 std::string Settings::ModelName() const {
