@@ -408,6 +408,15 @@
                                          Name="proxyPasswordBox" x:FieldModifier="private"/>
                         </Grid>
                     </StackPanel>
+
+                    <TextBlock Style="{DynamicResource Toggl.BodyText}"
+                               Margin="0 30 0 0"
+                                   Text="Ignore SSL verification" />
+                    <TextBlock Style="{DynamicResource Toggl.CaptionText}"  Margin="0 4 0 0"
+                                   Text="NOT RECOMMENDED, this can make the app vulnerable to man-in-the-middle attacks." />
+                    <mah:ToggleSwitch Name="ignoreSSLVerificationToggleSwitch" x:FieldModifier="private"
+                                      Margin="0 8 0 0" />
+                    
                 </StackPanel>
             </TabItem>
         </TabControl>
