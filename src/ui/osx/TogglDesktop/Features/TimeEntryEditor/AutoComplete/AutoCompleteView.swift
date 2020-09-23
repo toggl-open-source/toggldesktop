@@ -86,7 +86,7 @@ final class AutoCompleteView: NSView {
     @IBOutlet weak var createNewItemContainerView: NSBox!
     @IBOutlet weak var horizontalLine: NSBox!
     @IBOutlet weak var stackView: NSStackView!
-    @IBOutlet weak var placeholderBox: NSView!
+    @IBOutlet private weak var placeholderBox: NSView!
     @IBOutlet weak var placeholderBoxContainerView: NSView!
     @IBOutlet weak var defaultTextField: ResponderTextField!
 
@@ -94,6 +94,12 @@ final class AutoCompleteView: NSView {
 
     weak var delegate: AutoCompleteViewDelegate?
     private weak var dataSource: AutoCompleteViewDataSource?
+
+    var isSearchFieldHidden: Bool = false {
+        didSet {
+            placeholderBox.isHidden = isSearchFieldHidden
+        }
+    }
 
     // MARK: Public
 
@@ -207,7 +213,7 @@ extension AutoCompleteView {
         stackView.wantsLayer = true
         stackView.layer?.masksToBounds = true
         stackView.layer?.cornerRadius = 8
-        placeholderBox.isHidden = true
+        placeholderBox.isHidden = isSearchFieldHidden
         createNewItemBtn.cursor = .pointingHand
         tableView.keyDidDownOnPress = {[weak self] key -> Bool in
             guard let strongSelf = self else { return false }
@@ -226,7 +232,7 @@ extension AutoCompleteView {
 
                 // Only focus to create button if the view is expaned
                 let isAutoCompleteTextFieldExpanded = strongSelf.dataSource?.autoCompleteTextField?.state == .expand
-                let isDefaultTextFieldVisible = strongSelf.placeholderBox.isHidden == false
+                let isDefaultTextFieldVisible = !strongSelf.isSearchFieldHidden
                 if isAutoCompleteTextFieldExpanded || isDefaultTextFieldVisible {
                     strongSelf.window?.makeKeyAndOrderFront(nil)
                     strongSelf.window?.makeFirstResponder(strongSelf.createNewItemBtn)

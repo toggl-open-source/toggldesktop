@@ -102,10 +102,10 @@ final class TimerViewModel: NSObject {
     var descriptionDataSource = LiteAutoCompleteDataSource(notificationName: kDisplayMinitimerAutocomplete)
 
     var projectDataSource = ProjectDataSource(items: ProjectStorage.shared.items,
-                                                      updateNotificationName: .ProjectStorageChangedNotification)
+                                              updateNotificationName: .ProjectStorageChangedNotification)
 
     var tagsDataSource = TagDataSource(items: TagStorage.shared.tags,
-                                              updateNotificationName: .TagStorageChangedNotification)
+                                       updateNotificationName: .TagStorageChangedNotification)
 
     private var timer: Timer!
 

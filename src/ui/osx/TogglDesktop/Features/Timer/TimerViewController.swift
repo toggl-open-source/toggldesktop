@@ -32,12 +32,18 @@ class TimerViewController: NSViewController {
     private var tagsAutocompleteDidResignObserver: Any?
     private var tagsAutocompleteResignTime: TimeInterval = 0
 
-    private static let emptyProjectButtonTooltip = NSLocalizedString("Select project", comment: "Tooltip for timer project button")
-    private static let emptyTagsButtonTooltip = NSLocalizedString("Select tags", comment: "Tooltip for timer tags button")
-    private static let billableOnTooltip = NSLocalizedString("Billable", comment: "Tooltip for timer billable button when On")
-    private static let billableOffTooltip = NSLocalizedString("Non-billable", comment: "Tooltip for timer billable button when Off")
-    private static let billableUnavailableTooltip = NSLocalizedString("Billable rates is not on your plan",
-                                                                      comment: "Tooltip for timer billable button when disabled")
+    enum Constants {
+        static let emptyProjectButtonTooltip = NSLocalizedString("Select project", comment: "Tooltip for timer project button")
+        static let emptyTagsButtonTooltip = NSLocalizedString("Select tags", comment: "Tooltip for timer tags button")
+        static let billableOnTooltip = NSLocalizedString("Billable", comment: "Tooltip for timer billable button when On")
+        static let billableOffTooltip = NSLocalizedString("Non-billable", comment: "Tooltip for timer billable button when Off")
+        static let billableUnavailableTooltip = NSLocalizedString("Billable rates is not on your plan",
+                                                                  comment: "Tooltip for timer billable button when disabled")
+
+        static let projectShortcutSymbol = "@"
+        static let tagShortcutSymbol = "#"
+        static let autocompleteLengthTriggerCount = 2
+    }
 
     // MARK: - Outlets
 
@@ -131,7 +137,7 @@ class TimerViewController: NSViewController {
 
         viewModel.onTagSelected = { [unowned self] isSelected in
             self.tagsButton.isSelected = isSelected
-            self.tagsButton.toolTip = isSelected ? nil : Self.emptyTagsButtonTooltip
+            self.tagsButton.toolTip = isSelected ? nil : Constants.emptyTagsButtonTooltip
         }
 
         viewModel.onProjectUpdated = { [unowned self] project in
@@ -145,7 +151,7 @@ class TimerViewController: NSViewController {
                 self.projectButton.title = ""
                 self.projectButton.image = NSImage(named: "project-button")
                 self.projectButton.isSelected = false
-                self.projectButton.toolTip = Self.emptyProjectButtonTooltip
+                self.projectButton.toolTip = Constants.emptyProjectButtonTooltip
             }
             self.setupProjectButtonContextMenu()
         }
@@ -160,11 +166,11 @@ class TimerViewController: NSViewController {
 
             switch billable {
             case .on:
-                self.billableButton.toolTip = Self.billableOnTooltip
+                self.billableButton.toolTip = Constants.billableOnTooltip
             case .off:
-                self.billableButton.toolTip = Self.billableOffTooltip
+                self.billableButton.toolTip = Constants.billableOffTooltip
             case .unavailable:
-                self.billableButton.toolTip = Self.billableUnavailableTooltip
+                self.billableButton.toolTip = Constants.billableUnavailableTooltip
             }
 
             // billable button is excluded from key view loop when disabled
@@ -213,6 +219,8 @@ class TimerViewController: NSViewController {
         let wasNotClosedJustNow = (Date().timeIntervalSince1970 - projectAutocompleteResignTime) > 0.5
 
         if wasNotClosedJustNow {
+            projectAutoCompleteView.isSearchFieldHidden = false
+            projectAutoCompleteView.filter(with: "")
             presentProjectAutoComplete()
         } else {
             // returning state back to normal if click is not handled
@@ -243,6 +251,46 @@ class TimerViewController: NSViewController {
     func controlTextDidChange(_ obj: Notification) {
         if let textField = obj.object as? AutoCompleteInput, textField == descriptionTextField {
             viewModel.setDescription(textField.stringValue)
+
+            let editor = textField.currentEditor()!
+            print("<<< \(editor.selectedRange)")
+
+            let text = editor.string
+            let cursorLocation = editor.selectedRange.location
+
+            if cursorLocation > 0 {
+                let lastTypedIndex = text.index(text.startIndex, offsetBy: cursorLocation - 1)
+                let typedSymbol = text[lastTypedIndex]
+                print("<<< prevSymbol = \(typedSymbol)")
+
+                var presentedDropdown = false
+
+                if cursorLocation == 1 {
+                    if typedSymbol == "@" {
+                        print(">>>>>> showing project dropdown >>>>>>")
+                        presentedDropdown = true
+                    }
+                } else {
+                    let lastTwoSymbols = text[text.index(before: lastTypedIndex)...lastTypedIndex]
+                    if String(lastTwoSymbols) == " @" {
+                        print(">>>>>> showing project dropdown >>>>>>")
+                        presentedDropdown = true
+                    }
+                }
+
+                if presentedDropdown {
+                    projectAutoCompleteView.isSearchFieldHidden = true
+                    projectAutoCompleteView.filter(with: "")
+                    presentProjectAutoComplete(makeKey: false)
+                } else if projectAutoCompleteWindow.isVisible {
+                    let beforeCursor = text[text.startIndex...lastTypedIndex]
+                    if let shortcutIndex = beforeCursor.lastIndex(of: "@") {
+                        let searchText = text[text.index(after: shortcutIndex)...lastTypedIndex]
+                        print(">>>>>>>>> filtering with: \(searchText)")
+                        projectAutoCompleteView.filter(with: String(searchText))
+                    }
+                }
+            }
         }
     }
 
@@ -332,9 +380,9 @@ class TimerViewController: NSViewController {
 
         startButton.hoverImage = NSImage(named: "start-timer-button-hover")
 
-        projectButton.toolTip = Self.emptyProjectButtonTooltip
-        tagsButton.toolTip = Self.emptyTagsButtonTooltip
-        billableButton.toolTip = Self.billableOffTooltip
+        projectButton.toolTip = Constants.emptyProjectButtonTooltip
+        tagsButton.toolTip = Constants.emptyTagsButtonTooltip
+        billableButton.toolTip = Constants.billableOffTooltip
     }
 
     private func setupProjectButtonContextMenu() {
@@ -379,19 +427,27 @@ class TimerViewController: NSViewController {
 
     // MARK: - Autocomplete/Dropdown
 
-    private func presentProjectAutoComplete() {
+    private func presentProjectAutoComplete(makeKey: Bool = true) {
         let fromPoint = NSPoint(x: projectButton.frame.minX, y: projectButton.frame.maxY)
-        presentAutoComplete(window: projectAutoCompleteWindow, withContentView: projectAutoCompleteView, fromPoint: fromPoint)
+        presentAutoComplete(window: projectAutoCompleteWindow,
+                            withContentView: projectAutoCompleteView,
+                            fromPoint: fromPoint,
+                            makeKey: makeKey)
         viewModel.projectDataSource.sizeToFit()
     }
 
     private func presentTagsAutoComplete() {
         let fromPoint = NSPoint(x: tagsButton.frame.minX, y: tagsButton.frame.maxY)
-        presentAutoComplete(window: tagsAutoCompleteWindow, withContentView: tagsAutoCompleteView, fromPoint: fromPoint)
+        presentAutoComplete(window: tagsAutoCompleteWindow,
+                            withContentView: tagsAutoCompleteView,
+                            fromPoint: fromPoint)
         viewModel.tagsDataSource.sizeToFit()
     }
 
-    private func presentAutoComplete(window: AutoCompleteViewWindow, withContentView contentView: AutoCompleteView, fromPoint: NSPoint) {
+    private func presentAutoComplete(window: AutoCompleteViewWindow,
+                                     withContentView contentView: AutoCompleteView,
+                                     fromPoint: NSPoint,
+                                     makeKey: Bool = true) {
         window.contentView = contentView
         window.setContentSize(contentView.frame.size)
 
@@ -403,8 +459,11 @@ class TimerViewController: NSViewController {
             if view.window != window {
                 view.window?.addChildWindow(window, ordered: .above)
             }
-            window.makeKeyAndOrderFront(nil)
-            window.makeFirstResponder(contentView)
+
+            if makeKey {
+                window.makeKeyAndOrderFront(nil)
+                window.makeFirstResponder(contentView)
+            }
         }
 
         _ = contentView.defaultTextField.becomeFirstResponder()
