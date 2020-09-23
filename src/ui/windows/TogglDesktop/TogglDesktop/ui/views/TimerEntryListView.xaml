@@ -77,6 +77,10 @@
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding TimelineViewModel.DecreaseScale}" Key="OemMinus" Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding TimelineViewModel.IncreaseScale}" Key="OemPlus" Modifiers="Ctrl"/>
+    </UserControl.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
