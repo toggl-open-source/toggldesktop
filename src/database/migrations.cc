@@ -1381,6 +1381,14 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.force_ignore_cert",
+        "ALTER TABLE settings "
+        "ADD COLUMN force_ignore_cert INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
