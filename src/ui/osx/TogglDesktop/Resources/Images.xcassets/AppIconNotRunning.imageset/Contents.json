@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "AppIcon-256.png",
+      "filename" : "track-macOS-stopped-256px.png",
       "idiom" : "mac",
       "scale" : "1x"
     },
     {
-      "filename" : "AppIcon-512.png",
+      "filename" : "track-macOS-stopped-512px 2.png",
       "idiom" : "mac",
       "scale" : "2x"
     }

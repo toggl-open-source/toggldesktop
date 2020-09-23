@@ -1,61 +1,61 @@
 {
   "images" : [
     {
-      "filename" : "Running16.png",
+      "filename" : "track-macOS-running-16px.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "16x16"
     },
     {
-      "filename" : "Running32-1.png",
+      "filename" : "track-macOS-running-32px-1.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "16x16"
     },
     {
-      "filename" : "Running32.png",
+      "filename" : "track-macOS-running-32px.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "32x32"
     },
     {
-      "filename" : "Running64.png",
+      "filename" : "track-macOS-running-64px.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "32x32"
     },
     {
-      "filename" : "Running128.png",
+      "filename" : "track-macOS-running-128px.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "128x128"
     },
     {
-      "filename" : "Running256-1.png",
+      "filename" : "track-macOS-running-256px.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "128x128"
     },
     {
-      "filename" : "Running256.png",
+      "filename" : "track-macOS-running-256px-1.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "256x256"
     },
     {
-      "filename" : "Running512-1.png",
+      "filename" : "track-macOS-running-512px 2.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "256x256"
     },
     {
-      "filename" : "Running512.png",
+      "filename" : "track-macOS-running-512px 2-1.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "512x512"
     },
     {
-      "filename" : "Running1024.png",
+      "filename" : "track-macOS-running-1024px.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "512x512"
