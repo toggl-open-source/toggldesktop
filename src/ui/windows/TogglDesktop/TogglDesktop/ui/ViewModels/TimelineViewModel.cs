@@ -233,17 +233,20 @@ namespace TogglDesktop.ViewModels
             ulong? prevEnd = null;
             foreach (var entry in timeEntries)
             {
-                if (prevEnd != null && entry.Started > prevEnd.Value + 5 *60)
+                if (prevEnd != null && entry.Started > prevEnd.Value)
                 {
                     var start = Toggl.DateTimeFromUnix(prevEnd.Value+1);
-                    gaps.Add(new TimeEntryBlock()
+                    var block = new TimeEntryBlock()
                     {
-                        Height = ConvertTimeIntervalToHeight(start, Toggl.DateTimeFromUnix(entry.Started-1)),
-                        VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(start.Year, start.Month, start.Day), start),
+                        Height = ConvertTimeIntervalToHeight(start, Toggl.DateTimeFromUnix(entry.Started - 1)),
+                        VerticalOffset =
+                            ConvertTimeIntervalToHeight(new DateTime(start.Year, start.Month, start.Day), start),
                         HorizontalOffset = 0,
-                        Started = prevEnd.Value+1,
-                        Ended = entry.Started-1
-                    });
+                        Started = prevEnd.Value + 1,
+                        Ended = entry.Started - 1
+                    };
+                    if (block.Height > 10) // Don't display to small gaps not to obstruct the view
+                        gaps.Add(block);
                 }
                 prevEnd = !prevEnd.HasValue || entry.Ended > prevEnd ? entry.Ended : prevEnd;
             }
