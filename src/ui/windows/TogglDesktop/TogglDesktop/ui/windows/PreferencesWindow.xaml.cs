@@ -126,6 +126,7 @@ namespace TogglDesktop
             this.proxyPortTextBox.Text = settings.ProxyPort.ToString();
             this.proxyUsernameTextBox.Text = settings.ProxyUsername;
             this.proxyPasswordBox.Password = settings.ProxyPassword;
+            this.ignoreCertificateToggleSwitch.IsChecked = settings.ForceIgnoreCert;
 
             #endregion
 
@@ -153,7 +154,6 @@ namespace TogglDesktop
             #endregion
 
             ViewModel.LoadShortcutsFromSettings();
-            ViewModel.LoadIgnoreCert();
             ViewModel.SetSavedProxyHost(settings.ProxyHost);
         }
 
@@ -282,6 +282,7 @@ namespace TogglDesktop
                 ProxyPort = toULong(this.proxyPortTextBox.Text),
                 ProxyUsername = this.proxyUsernameTextBox.Text,
                 ProxyPassword = this.proxyPasswordBox.Password,
+                ForceIgnoreCert = isChecked(this.ignoreCertificateToggleSwitch),
 
                 #endregion
 
