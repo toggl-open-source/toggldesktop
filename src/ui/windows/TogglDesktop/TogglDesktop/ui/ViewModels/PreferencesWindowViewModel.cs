@@ -10,6 +10,7 @@ using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
 using ValidationHelper = ReactiveUI.Validation.Helpers.ValidationHelper;
 using static TogglDesktop.MessageBox;
+using DynamicData.Binding;
 
 namespace TogglDesktop.ViewModels
 {
@@ -72,6 +73,9 @@ namespace TogglDesktop.ViewModels
                 proxyHost => Uri.CheckHostName(proxyHost) != UriHostNameType.Unknown,
                 "Please, enter a valid host");
             Toggl.OnDisplayTimelineUI += isEnabled => IsTimelineViewEnabled = isEnabled;
+            this.WhenValueChanged(x => x.IsIgnoreCertEnabled)
+                .ObserveOn(RxApp.TaskpoolScheduler)
+                .Subscribe(ignore => Toggl.SetIgnoreCert(ignore));
         }
 
         public ICommand ClearCacheCommand { get; }
@@ -92,6 +96,9 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public bool IsTimelineViewEnabled { get; private set; }
 
+        [Reactive]
+        public bool IsIgnoreCertEnabled { get; set; }
+
         public void ResetRecordedShortcuts()
         {
             ShowHideToggl = _showHideTogglSaved;
@@ -105,6 +112,11 @@ namespace TogglDesktop.ViewModels
             ShowHideToggl = _showHideTogglSaved;
             _continueStopTimerSaved = LoadHotKey(Toggl.GetKeyStart, Toggl.GetKeyModifierStart);
             ContinueStopTimer = _continueStopTimerSaved;
+        }
+
+        public void LoadIgnoreCert()
+        {
+            IsIgnoreCertEnabled = Toggl.GetIgnoreCert();
         }
 
         public void SetSavedProxyHost(String savedProxyHost)
