@@ -1712,6 +1712,15 @@ TogglServerType toggl_get_server_type() {
         return TogglServerProduction;
 }
 
+void toggl_set_ignore_cert(
+    const bool_t ignore) {
+    toggl::TogglClient::GetInstance().SetIgnoreCert(ignore);
+}
+
+bool_t toggl_ignore_cert() {
+    return toggl::TogglClient::GetInstance().Config.IgnoreCert();
+}
+
 void toggl_on_timeline_ui_enabled(void *context, TogglDisplayTimelineUI cb) {
     app(context)->UI()->OnDisplayTimelineUI(cb);
 }
