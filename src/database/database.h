@@ -131,6 +131,8 @@ class TOGGL_INTERNAL_EXPORT Database {
 
     error SetSettingsColorTheme(const uint8_t &color_theme);
 
+    error SetSettingsForceIgnoreCert(const bool& force_ignore_cert);
+
     error SetSettingsRemindTimes(
         const std::string &remind_starts,
         const std::string &remind_ends);

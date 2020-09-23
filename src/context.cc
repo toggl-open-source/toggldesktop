@@ -823,7 +823,7 @@ void Context::updateUI(const UIElements &what) {
             HTTPClient::Config.UseProxy = use_proxy;
             HTTPClient::Config.ProxySettings = proxy;
             HTTPClient::Config.AutodetectProxy = settings_.autodetect_proxy;
-            HTTPClient::Config.SetIgnoreCert(("development" == environment_) || settings_.force_ignore_cert);
+            TogglClient::GetInstance().SetIgnoreCert(("development" == environment_) || settings_.force_ignore_cert);
         }
 
         if (what.display_unsynced_items && user_) {
@@ -2054,6 +2054,15 @@ error Context::SetSettingsActiveTab(const uint8_t active_tab) {
 error Context::SetSettingsColorTheme(const uint8_t color_theme) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsColorTheme(color_theme));
+}
+
+error Context::SetSettingsForceIgnoreCert(const bool_t force_ignore_cert) {
+    error err = applySettingsSaveResultToUI(
+        db()->SetSettingsForceIgnoreCert(force_ignore_cert));
+    if (err == noError) {
+        TogglClient::GetInstance().SetIgnoreCert(("development" == environment_) || force_ignore_cert);
+    }
+    return err;
 }
 
 error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {

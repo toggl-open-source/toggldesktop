@@ -455,10 +455,9 @@ typedef enum {
     TOGGL_EXPORT TogglServerType toggl_get_server_type();
 
     // Ignoring SSL verification can be turned on in the UI
-    TOGGL_EXPORT void toggl_set_ignore_cert(
+    TOGGL_EXPORT bool_t toggl_set_settings_ignore_cert(
+        void *context,
         const bool_t ignore);
-
-    TOGGL_EXPORT bool_t toggl_ignore_cert();
 
     // Various parts of UI can tell the app to show itself.
 

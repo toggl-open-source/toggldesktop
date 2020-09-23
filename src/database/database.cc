@@ -862,6 +862,10 @@ error Database::SetSettingsColorTheme(const uint8_t &color_theme) {
     return setSettingsValue("color_theme", color_theme);
 }
 
+error Database::SetSettingsForceIgnoreCert(const bool &force_ignore_cert) {
+    return setSettingsValue("force_ignore_cert", force_ignore_cert);
+}
+
 template<typename T>
 error Database::setSettingsValue(
     const std::string &field_name,

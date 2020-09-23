@@ -365,6 +365,12 @@ bool_t toggl_set_proxy_settings(void *context,
     return toggl::noError == app(context)->SetProxySettings(use_proxy, proxy);
 }
 
+bool_t toggl_set_settings_ignore_cert(
+    void *context,
+    const bool_t ignore) {
+    return toggl::noError == app(context)->SetSettingsForceIgnoreCert(ignore);
+}
+
 void toggl_set_cacert_path(
     void *,
     const char_t *path) {
@@ -1710,15 +1716,6 @@ TogglServerType toggl_get_server_type() {
         return TogglServerStaging;
     else
         return TogglServerProduction;
-}
-
-void toggl_set_ignore_cert(
-    const bool_t ignore) {
-    toggl::TogglClient::GetInstance().SetIgnoreCert(ignore);
-}
-
-bool_t toggl_ignore_cert() {
-    return toggl::TogglClient::GetInstance().Config.IgnoreCert();
 }
 
 void toggl_on_timeline_ui_enabled(void *context, TogglDisplayTimelineUI cb) {
