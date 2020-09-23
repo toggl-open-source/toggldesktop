@@ -153,6 +153,7 @@ namespace TogglDesktop
             #endregion
 
             ViewModel.LoadShortcutsFromSettings();
+            ViewModel.LoadIgnoreCert();
             ViewModel.SetSavedProxyHost(settings.ProxyHost);
         }
 
