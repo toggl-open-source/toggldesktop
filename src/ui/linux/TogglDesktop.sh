@@ -16,7 +16,8 @@ fi
 # Xubuntu, i3 and Cinnamon tray icon fix
 XDG=$XDG_CURRENT_DESKTOP
 
-if [[ "$XDG" = "X-Cinnamon" || "$XDG" = "XFCE" || "$XDG" = "Pantheon" || "$XDG" = "i3" || "$XDG" = "LXDE" || "$XDG" = "MATE" || "$XDG" = "Budgie:GNOME" ]]; then
+if command -v dbus-launch &> /dev/null && \
+    [[ "$XDG" = "X-Cinnamon" || "$XDG" = "XFCE" || "$XDG" = "Pantheon" || "$XDG" = "i3" || "$XDG" = "LXDE" || "$XDG" = "MATE" || "$XDG" = "Budgie:GNOME" ]]; then
   DBUS_SESSION_BUS_ADDRESS=""
   dbus-launch $dirname/$appname "$@" &
 else
