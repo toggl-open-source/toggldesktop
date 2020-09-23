@@ -243,11 +243,11 @@ extern "C" {
     } TimelineMenuContextType;
 
     typedef enum {
-        TimerEditActionTypeDescription = 1u << 0,
-        TimerEditActionTypeDuration = 1u << 1,
-        TimerEditActionTypeProject = 1u << 2,
-        TimerEditActionTypeTags = 1u << 3,
-        TimerEditActionTypeBillable = 1u << 4
+        TimerEditActionTypeDescription = 1 << 0,
+        TimerEditActionTypeDuration = 1 << 1,
+        TimerEditActionTypeProject = 1 << 2,
+        TimerEditActionTypeTags = 1 << 3,
+        TimerEditActionTypeBillable = 1 << 4
     } TimerEditActionType;
 
 typedef enum {
@@ -1325,7 +1325,7 @@ typedef enum {
         TogglAdaptiveColor type);
 
     TOGGL_EXPORT void toggl_on_timeline_ui_enabled(
-        void* context,
+        void *context,
         TogglDisplayTimelineUI cb);
 
 #undef TOGGL_EXPORT
