@@ -1300,10 +1300,6 @@ typedef enum {
     TOGGL_EXPORT TogglHsvColor toggl_get_adaptive_hsv_color(
        TogglRgbColor rgbColor,
        TogglAdaptiveColor type);
-    
-    TOGGL_EXPORT TogglHsvColor toggl_get_adaptive_hsv_color(
-        TogglRgbColor rgbColor,
-        TogglAdaptiveColor type);
 
     TOGGL_EXPORT bool_t toggl_get_identity_provider_sso(
         void *context,
