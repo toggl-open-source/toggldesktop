@@ -458,6 +458,7 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->show_touch_bar),
                   into(settings->active_tab),
                   into(settings->color_theme),
+                  into(settings->force_ignore_cert),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {

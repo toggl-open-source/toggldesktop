@@ -315,6 +315,8 @@ public         bool StopEntryOnShutdownSleep;
 public         bool ShowTouchBar;
 public         byte ActiveTab;
 public         byte ColorTheme;
+[MarshalAs(UnmanagedType.I1)]
+public         bool ForceIgnoreCert;
 
 public override string ToString()
 {

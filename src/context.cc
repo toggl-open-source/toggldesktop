@@ -823,6 +823,7 @@ void Context::updateUI(const UIElements &what) {
             HTTPClient::Config.UseProxy = use_proxy;
             HTTPClient::Config.ProxySettings = proxy;
             HTTPClient::Config.AutodetectProxy = settings_.autodetect_proxy;
+            HTTPClient::Config.SetIgnoreCert(("development" == environment_) || settings_.force_ignore_cert);
         }
 
         if (what.display_unsynced_items && user_) {
@@ -2360,7 +2361,7 @@ void Context::SetEnvironment(const std::string &value) {
     logger.debug("SetEnvironment " + value);
     environment_ = value;
 
-    TogglClient::GetInstance().SetIgnoreCert(("development" == environment_));
+    TogglClient::GetInstance().SetIgnoreCert(("development" == environment_) || settings_.force_ignore_cert);
     urls::SetRequestsAllowed("test" != environment_);
 
     // stopping heavy tasks for better unit tests performance/speed
