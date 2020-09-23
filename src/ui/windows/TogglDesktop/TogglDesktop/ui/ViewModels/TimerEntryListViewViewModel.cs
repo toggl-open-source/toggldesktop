@@ -12,9 +12,14 @@ namespace TogglDesktop.ViewModels
         {
             this.WhenValueChanged(x => SelectedTab)
                 .Subscribe(value => Toggl.SetActiveTab(value));
-            Toggl.OnDisplayTimelineUI += isEnabled => IsTimelineViewEnabled = isEnabled;
-            this.WhenAnyValue(x => x.IsTimelineViewEnabled)
-                .Where(enabled => !enabled).Subscribe(_ => SelectedTab = 0);
+            Toggl.OnDisplayTimelineUI += HandleOnDisplayTimelineUI;
+        }
+
+        private void HandleOnDisplayTimelineUI(bool isEnabled)
+        {
+            IsTimelineViewEnabled = isEnabled;
+            if (!IsTimelineViewEnabled)
+                SelectedTab = 0;
         }
 
         [Reactive] 
