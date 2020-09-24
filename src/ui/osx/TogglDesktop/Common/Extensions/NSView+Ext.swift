@@ -25,4 +25,9 @@ extension NSView {
             }
         }, context: &theView)
     }
+
+    @objc
+    func addSubviewToBack(_ view: NSView) {
+        addSubview(view, positioned: .below, relativeTo: nil)
+    }
 }
