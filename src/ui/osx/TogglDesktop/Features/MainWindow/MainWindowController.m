@@ -191,7 +191,7 @@ extern void *ctx;
             [self closeError];
 
             // Add Main View
-            [self.contentView addSubview:self.mainDashboardViewController.view];
+            [self.contentView addSubviewToBack:self.mainDashboardViewController.view];
             [self.mainDashboardViewController.view setFrame:self.contentView.bounds];
 
             // Dismiss Login
