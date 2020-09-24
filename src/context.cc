@@ -1620,8 +1620,8 @@ error Context::fetchMessage(const bool periodic) {
                 return noError;
             }
             
-            if (!root.isMember("url-" + shortOSName()) {
-                logger.debug("URL not defined for the platform " + shortOSName() + ", will not show the message");
+            if (!root.isMember("url-" + shortOSName())) {
+                logger.debug("URL not defined for the platform ", shortOSName(), ", will not show the message");
                 return noError;
             }
 
