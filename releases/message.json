@@ -1,13 +1,13 @@
 {
-	"id": 4,
-	"from": 1599462000,
-	"to": 1600671600,
-	"type": 2,
-	"appversion": "7.5.259",
-	"title": "Toggl is now Toggl Track!",
-	"text": "We're still the Toggl you know and love on mobile, desktop, and web - but we've welcomed Toggl Plan and Toggl Hire into the family.",
-	"button": "Check us out!",
-	"url-mac": "https://toggl.com/blog/toggl-rebrand-toggltrack",
-	"url-win": "https://toggl.com/blog/toggl-rebrand-toggltrack",
-	"url-linux": "https://toggl.com/blog/toggl-rebrand-toggltrack"
+    "id": 5,
+    "from": 1600925481,
+    "to": 1602288000,
+    "type": 0,
+    "appversion": "7.5.286",
+    "title": "How is your experience using the updated Timer?",
+    "text": "Let us know in a 2-minute survey!",
+    "button": "Give feedback",
+    "url-mac": "https://forms.gle/QKX7datPDVV7axvu8",
+    "url-win": "https://forms.gle/QKX7datPDVV7axvu8",
+    "url-linux": "https://forms.gle/QKX7datPDVV7axvu8"
 }
