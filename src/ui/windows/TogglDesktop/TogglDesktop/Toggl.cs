@@ -300,17 +300,7 @@ public static partial class Toggl
     {
         toggl_reset_enable_SSO(ctx);
     }
-
-    public static bool GetIgnoreCert()
-    {
-        return toggl_ignore_cert();
-    }
-
-    public static void SetIgnoreCert(bool ignore)
-    {
-        toggl_set_ignore_cert(ignore);
-    }
-
+    
     public static bool GoogleSignup(string access_token, long country_id)
     {
         return toggl_google_signup(ctx, access_token, Convert.ToUInt64(country_id));
@@ -579,6 +569,11 @@ public static partial class Toggl
         }
 
         if (!toggl_set_settings_color_theme(ctx, settings.ColorTheme))
+        {
+            return false;
+        }
+
+        if (!toggl_set_settings_ignore_cert(ctx, settings.ForceIgnoreCert))
         {
             return false;
         }
