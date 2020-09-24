@@ -1615,10 +1615,13 @@ error Context::fetchMessage(const bool periodic) {
                     !root.isMember("title") ||
                     !root.isMember("text") ||
                     !root.isMember("button") ||
-                    !root.isMember("url-mac") ||
-                    !root.isMember("url-win") ||
-                    !root.isMember("url-linux")) {
+                    (!root.isMember("url-mac") && !root.isMember("url-win") && !root.isMember("url-linux"))) {
                 logger.debug("Required fields are missing in in-app message JSON");
+                return noError;
+            }
+            
+            if (!root.isMember("url-" + shortOSName()) {
+                logger.debug("URL not defined for the platform " + shortOSName() + ", will not show the message");
                 return noError;
             }
 
