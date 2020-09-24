@@ -141,7 +141,7 @@ namespace TogglDesktop.ViewModels
             {
                 var startTime = Toggl.DateTimeFromUnix(entry.Started);
                 var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(entry.Ended));
-                var block = new TimeEntryBlock()
+                var block = new TimeEntryBlock(entry.GUID)
                 {
                     Height = height < 2 ? 2 : height,
                     VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime),
@@ -319,15 +319,23 @@ namespace TogglDesktop.ViewModels
         public ulong Started { get; set; }
         public ulong Ended { get; set; }
         public ReactiveCommand<Unit, Unit> CreateTimeEntryFromBlock { get; }
+        public ReactiveCommand<Unit,Unit> OpenEditView { get; }
+        private string _timeEntryId;
 
-        public TimeEntryBlock()
+        public TimeEntryBlock(string timeEntryId)
         {
+            _timeEntryId = timeEntryId;
+            CreateTimeEntryFromBlock = ReactiveCommand.Create(() => AddNewTimeEntry());
+            OpenEditView = ReactiveCommand.Create(() => Toggl.Edit(_timeEntryId, false, Toggl.Description));
             CreateTimeEntryFromBlock = ReactiveCommand.Create(AddNewTimeEntry);
         }
 
+        public TimeEntryBlock() : this(null) { }
+
         private void AddNewTimeEntry()
         {
-            Toggl.CreateEmptyTimeEntry(Started, Ended);
+            _timeEntryId = Toggl.CreateEmptyTimeEntry(Started, Ended);
+            Toggl.Edit(_timeEntryId, false, Toggl.Description);
         }
     }
 }
