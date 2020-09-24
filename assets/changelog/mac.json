@@ -1,6 +1,15 @@
 {
     "versions": [
         {
+            "version": "7.5.286",
+            "rows": [
+                "Fixed Preferences screen layout for macOS Big Sur",
+                "Small improvements and bug fixes"
+            ],
+            "date": "September 24th 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.279",
             "rows": [
                 "Fixed crash that could occur on application start",
