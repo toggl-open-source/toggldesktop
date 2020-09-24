@@ -294,9 +294,9 @@ final class TimerViewModel: NSObject {
             workspaceID = DesktopLibraryBridge.shared().defaultWorkspaceID()
             timeEntry.workspaceID = workspaceID
         }
-        let canSeeBillable = DesktopLibraryBridge.shared().canSeeBillable(forWorkspaceID: workspaceID)
+        timeEntry.canSeeBillable = DesktopLibraryBridge.shared().canSeeBillable(forWorkspaceID: workspaceID)
 
-        if canSeeBillable {
+        if timeEntry.canSeeBillable {
             billableState = timeEntry.billable ? .on : .off
         } else {
             billableState = .unavailable
