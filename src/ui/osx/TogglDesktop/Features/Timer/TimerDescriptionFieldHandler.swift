@@ -15,20 +15,20 @@ class TimerDescriptionFieldHandler {
         static let tagToken: Character = "#"
     }
 
-    enum State {
+    enum State: Equatable {
         case descriptionUpdate(String)
-        case projectDropdownShow
         case projectFilter(String)
         case autocompleteFilter(String)
     }
 
     var state: State = .descriptionUpdate("") {
         didSet {
-            onStateChanged?(state)
+            onStateChanged?(state, oldValue)
         }
     }
 
-    var onStateChanged: ((State) -> Void)?
+    /// Called on every `state` change with `newState, oldState` parameters
+    var onStateChanged: ((State, State) -> Void)?
 
     func textFieldTextDidChange(_ textField: NSTextField) {
         let editor = textField.currentEditor()!
@@ -41,14 +41,28 @@ class TimerDescriptionFieldHandler {
         print(">>> token = \(String(describing: token)); query = \(query)")
 
         switch (token, query) {
-        case (Constants.projectToken, ""):
-            state = .projectDropdownShow
         case (Constants.projectToken, _):
             state = .projectFilter(query)
         case (nil, query) where query.count > 2:
             state = .autocompleteFilter(query)
         default:
             state = .descriptionUpdate(text)
+        }
+    }
+}
+
+extension TimerDescriptionFieldHandler.State {
+
+    func equalCase(to state: Self) -> Bool {
+        switch (self, state) {
+        case (.descriptionUpdate, .descriptionUpdate):
+            return true
+        case (.projectFilter, .projectFilter):
+            return true
+        case (.autocompleteFilter, .autocompleteFilter):
+            return true
+        default:
+            return false
         }
     }
 }

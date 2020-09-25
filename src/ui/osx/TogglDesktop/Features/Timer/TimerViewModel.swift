@@ -174,7 +174,7 @@ final class TimerViewModel: NSObject {
     }
 
     func filterAutocomplete(with filter: String) {
-        descriptionDataSource.setFilter(entryDescription)
+        descriptionDataSource.setFilter(filter)
         descriptionDataSource.input?.autocompleteTableView.resetSelected()
     }
 

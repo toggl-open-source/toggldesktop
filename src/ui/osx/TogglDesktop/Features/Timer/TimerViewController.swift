@@ -85,23 +85,8 @@ class TimerViewController: NSViewController {
             return self?.durationTextField.currentEditor() != nil
         }
 
-        descriptionFieldHandler.onStateChanged = { [weak self] state in
-            guard let self = self else { return }
-            switch state {
-            case .descriptionUpdate(_):
-                break
-
-            case .projectDropdownShow:
-                self.projectAutoCompleteView.isSearchFieldHidden = true
-                self.projectAutoCompleteView.filter(with: "")
-                self.presentProjectAutoComplete(makeKey: false)
-
-            case .projectFilter(let filterText):
-                self.projectAutoCompleteView.filter(with: String(filterText))
-
-            case .autocompleteFilter(let filterText):
-                self.viewModel.filterAutocomplete(with: filterText)
-            }
+        descriptionFieldHandler.onStateChanged = { [weak self] newState, oldState in
+            self?.handleDescriptionFieldStateChange(from: oldState, to: newState)
         }
     }
 
@@ -272,7 +257,6 @@ class TimerViewController: NSViewController {
     func controlTextDidChange(_ obj: Notification) {
         if let textField = obj.object as? AutoCompleteInput, textField == descriptionTextField {
             print("<><><> controlTextDidChange")
-            viewModel.setDescription(textField.stringValue)
             descriptionFieldHandler.textFieldTextDidChange(textField)
         }
     }
@@ -350,6 +334,45 @@ class TimerViewController: NSViewController {
         view.window?.makeFirstResponder(nil)
         closeProjectAutoComplete()
         closeTagsAutoComplete()
+    }
+
+    // MARK: - Description field
+
+    private func handleDescriptionFieldStateChange(from oldState: TimerDescriptionFieldHandler.State,
+                                                   to newState: TimerDescriptionFieldHandler.State) {
+
+        if newState.equalCase(to: oldState) == false {
+            resetFromDescriptionFieldState(oldState)
+        }
+
+        // view model needs to save description in any case
+        viewModel.setDescription(descriptionTextField.stringValue)
+
+        switch newState {
+        case .descriptionUpdate:
+            break
+
+        case .projectFilter(let filterText):
+            if projectAutoCompleteWindow.isVisible == false {
+                projectAutoCompleteView.isSearchFieldHidden = true
+                presentProjectAutoComplete(makeKey: false)
+            }
+            projectAutoCompleteView.filter(with: String(filterText))
+
+        case .autocompleteFilter(let filterText):
+            viewModel.filterAutocomplete(with: filterText)
+        }
+    }
+
+    private func resetFromDescriptionFieldState(_ state: TimerDescriptionFieldHandler.State) {
+        switch state {
+        case .autocompleteFilter:
+            descriptionTextField.resetTable()
+        case .projectFilter:
+            closeProjectAutoComplete()
+        case .descriptionUpdate:
+            break
+        }
     }
 
     // MARK: - UI
