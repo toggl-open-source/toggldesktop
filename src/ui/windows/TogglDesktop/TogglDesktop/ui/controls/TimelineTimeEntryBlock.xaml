@@ -16,7 +16,7 @@
             <sys:Double x:Key="PointOneDouble">0.1</sys:Double>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Button FontWeight="Normal" Command="{Binding OpenEditView}">
+    <Button FontWeight="Normal" Command="{Binding OpenEditView}" MinHeight="2">
         <Button.Template>
             <ControlTemplate>
                 <Grid Margin="0 0 4 0">
@@ -30,8 +30,9 @@
                            RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
                            RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}">
                     </Rectangle>
-                    <Border CornerRadius="8,8,8,8" BorderThickness="0" Grid.Column="1" Margin="-10 0 0 0"
+                    <Border CornerRadius="8,8,8,8" Grid.Column="1" Margin="-10 0 0 0"
                         Visibility="{Binding ShowDescription, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        BorderBrush="{Binding ElementName=TimeEntrySpan, Path=Fill}"
                         Background="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource PointOneDouble}}">
                         <StackPanel Height="{Binding Height}" Margin="20,0,0,0">
                             <TextBlock Text="{Binding Description}" Style="{StaticResource Toggl.CaptionBlackText}"/>
@@ -48,6 +49,18 @@
                             </DockPanel>
                             <TextBlock Text="{Binding ClientName}" Style="{StaticResource Toggl.CaptionText}"/>
                         </StackPanel>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger  Binding="{Binding IsEditViewOpened}" Value="True">
+                                        <Setter Property="BorderThickness" Value="1"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger  Binding="{Binding IsEditViewOpened}" Value="False">
+                                        <Setter Property="BorderThickness" Value="0"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
                     </Border>
                 </Grid>
             </ControlTemplate>
