@@ -52,9 +52,10 @@ namespace TogglDesktop.ViewModels
             Toggl.SetViewTimelineDay(Toggl.UnixFromDateTime(SelectedDate)); //called in case if user changed some of the selected date TEs
             if (_lastDateLoaded == default)
             {
-                _lastDateLoaded = Toggl.DateTimeFromUnix(timeEntries.Select(te => te.Started).Min());
+                _lastDateLoaded = timeEntries.Any() 
+                    ? Toggl.DateTimeFromUnix(timeEntries.Select(te => te.Started).Min())
+                    : DateTime.Today;
             }
-            
         }
 
         private void ConvertChunksToActivityBlocks(List<Toggl.TimelineChunkView> chunks)
