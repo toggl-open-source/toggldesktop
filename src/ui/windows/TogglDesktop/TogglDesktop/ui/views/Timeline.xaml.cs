@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -33,10 +34,10 @@ namespace TogglDesktop
                 _disposable?.Dispose();
                 _disposable = new CompositeDisposable();
 
-                ViewModel?.WhenAnyValue(x => x.SelectedScaleMode).Subscribe(_ =>
-                {
-                    MainViewScroll.ScrollToVerticalOffset(MainViewScroll.VerticalOffset*ViewModel.ScaleRatio);
-                }).DisposeWith(_disposable);
+                ViewModel?.WhenAnyValue(x => x.SelectedScaleMode).Buffer(2, 1)
+                    .Select(b => (double)ViewModel.ScaleModes[b[1]] / ViewModel.ScaleModes[b[0]])
+                    .Subscribe(ratio => MainViewScroll.ScrollToVerticalOffset(MainViewScroll.VerticalOffset * ratio))
+                    .DisposeWith(_disposable);
             }
         }
 

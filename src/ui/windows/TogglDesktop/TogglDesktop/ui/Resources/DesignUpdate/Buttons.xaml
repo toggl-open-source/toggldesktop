@@ -371,7 +371,7 @@
             <Setter.Value>
                 <ControlTemplate>
                     <Grid Width="20" Height="20" Background="Transparent">
-                        <Rectangle Width="12" Height="2" Fill="{Binding Path=Foreground,  RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}}"/>
+                        <Rectangle Width="12" Height="2" Fill="{TemplateBinding Foreground}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

@@ -12,13 +12,6 @@ namespace TogglDesktop.ViewModels
     public class TimelineViewModel : ReactiveObject
     {
         private DateTime _lastDateLoaded;
-        private readonly Dictionary<int, int> _scaleModes = new Dictionary<int, int>()
-        {
-            {0, 200},
-            {1, 100},
-            {2, 50},
-            {3, 25}
-        };
 
         private List<Toggl.TimelineChunkView> _timelineChunks;
         private List<Toggl.TogglTimeEntryView> _timeEntries;
@@ -32,36 +25,36 @@ namespace TogglDesktop.ViewModels
             this.WhenAnyValue(x => x.SelectedDate).Subscribe(HandleSelectedDateChanged);
             SelectPreviousDay = ReactiveCommand.Create(Toggl.ViewTimelinePreviousDay);
             SelectNextDay = ReactiveCommand.Create(Toggl.ViewTimelineNextDay);
-            IncreaseScale = ReactiveCommand.Create(() => ChangeScale(-1));
-            DecreaseScale = ReactiveCommand.Create(() => ChangeScale(1));
-            this.WhenAnyValue(x => x.SelectedScaleMode).Subscribe(_ =>
-                HourHeightView = _scaleModes[SelectedScaleMode] * GetHoursInLine(SelectedScaleMode));
+            IncreaseScale = ReactiveCommand.Create(() => SelectedScaleMode = ChangeScaleMode(-1));
+            DecreaseScale = ReactiveCommand.Create(() => SelectedScaleMode = ChangeScaleMode(1));
+            var scaleModeObservable = this.WhenAnyValue(x => x.SelectedScaleMode);
+            scaleModeObservable.Subscribe(_ =>
+                HourHeightView = ScaleModes[SelectedScaleMode] * GetHoursInLine(SelectedScaleMode));
+            scaleModeObservable.Where(_ => _timelineChunks != null)
+                .Subscribe(_ => ConvertChunksToActivityBlocks(_timelineChunks));
+            scaleModeObservable.Where(_ => _timeEntries != null)
+                .Subscribe(_ => ConvertTimeEntriesToBlocks(_timeEntries));
+            scaleModeObservable.Select(GetHoursListFromScale).ToPropertyEx(this, x => x.HourViews);
             Toggl.OnTimeline += HandleDisplayTimeline;
             Toggl.OnTimeEntryList += HandleTimeEntryListChanged;
-            UpdateHourViews();
+            HourViews = GetHoursListFromScale(SelectedScaleMode);
         }
 
-        private void ChangeScale(int value)
-        {
-            var newSelectedScaleMode = SelectedScaleMode + value < 0 || SelectedScaleMode + value > _scaleModes.Count - 1
+        private int ChangeScaleMode(int value) => 
+            SelectedScaleMode + value < 0 || SelectedScaleMode + value > ScaleModes.Count - 1
                 ? SelectedScaleMode
                 : SelectedScaleMode + value;
-            ScaleRatio = 1.0*_scaleModes[newSelectedScaleMode] / _scaleModes[SelectedScaleMode];
-            SelectedScaleMode = newSelectedScaleMode;
-            HandleScaleChanged(SelectedScaleMode);
-        }
 
-        private void UpdateHourViews()
+        private List<DateTime> GetHoursListFromScale(int scale)
         {
-            int inc = GetHoursInLine(SelectedScaleMode);
+            int inc = GetHoursInLine(scale);
             var hourViews = new List<DateTime>();
             for (int i = 0; i < 24; i+=inc)
             {
                 hourViews.Add(new DateTime(1, 1, 1, i, 0, 0));
             }
 
-            HourViews = null;
-            HourViews = hourViews;
+            return hourViews;
         }
 
         private int GetHoursInLine(int scaleMode) => scaleMode != 3 ? 1 : 2;
@@ -122,7 +115,7 @@ namespace TogglDesktop.ViewModels
                         block.ActivityDescriptions.Add(activity);
                         duration += eventDesc.Duration;
                     }
-                    block.Height = (1.0 * duration * _scaleModes[SelectedScaleMode]) / (60 * 60); ;
+                    block.Height = (1.0 * duration * ScaleModes[SelectedScaleMode]) / (60 * 60); ;
                     if (block.ActivityDescriptions.Any())
                         blocks.Add(block);
                 }
@@ -223,7 +216,7 @@ namespace TogglDesktop.ViewModels
         private double ConvertTimeIntervalToHeight(DateTime start, DateTime end)
         {
             var timeInterval = (end - start).TotalMinutes;
-            return timeInterval * _scaleModes[SelectedScaleMode] / 60;
+            return timeInterval * ScaleModes[SelectedScaleMode] / 60;
         }
 
         private void GenerateGapTimeEntryBlocks(List<Toggl.TogglTimeEntryView> timeEntries)
@@ -255,17 +248,13 @@ namespace TogglDesktop.ViewModels
             GapTimeEntryBlocks = gaps;
         }
 
-        private void HandleScaleChanged(int newScaleMode)
+        public IReadOnlyDictionary<int, int> ScaleModes { get; } = new Dictionary<int, int>()
         {
-            if (_timelineChunks != null)
-                ConvertChunksToActivityBlocks(_timelineChunks);
-            if (_timeEntries != null)
-                ConvertTimeEntriesToBlocks(_timeEntries);
-            UpdateHourViews();
-        }
-
-        [Reactive]
-        public double ScaleRatio { get; set; }
+            {0, 200},
+            {1, 100},
+            {2, 50},
+            {3, 25}
+        };
 
         [Reactive] 
         public int SelectedScaleMode { get; private set; } = 0;
@@ -283,8 +272,7 @@ namespace TogglDesktop.ViewModels
 
         public ReactiveCommand<Unit, Unit> SelectNextDay { get; }
 
-        [Reactive]
-        public List<DateTime> HourViews { get; private set; }
+        public List<DateTime> HourViews { [ObservableAsProperty] get;  }
 
         [Reactive]
         public List<ActivityBlock> ActivityBlocks { get; private set; }
@@ -298,8 +286,8 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public List<TimeEntryBlock> GapTimeEntryBlocks { get; private set; }
 
-        public ReactiveCommand<Unit, Unit> IncreaseScale { get; }
-        public ReactiveCommand<Unit, Unit> DecreaseScale { get; }
+        public ReactiveCommand<Unit, int> IncreaseScale { get; }
+        public ReactiveCommand<Unit, int> DecreaseScale { get; }
 
         public class ActivityBlock
         {
