@@ -446,6 +446,7 @@ void TimeEntryEditorWidget::on_project_activated(int index) {
                                                 view->TaskID,
                                                 view->ProjectID,
                                                 "");
+        ui->project->setCurrentText(view->Text);
     }
 }
 
