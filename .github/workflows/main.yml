@@ -345,6 +345,20 @@ jobs:
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="com.toggl.TogglDesktop.flatpak" renameto="com.toggl.TogglDesktop-${TAG_NAME/v/}.flatpak"
+  
+  linux-dev-release: 
+    needs: [linux-tarball, linux-ubuntu1604] 
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' 
+    steps: 
+    - uses: actions/checkout@v2 
+      with: 
+        fetch-depth: 1 
+    - name: Add new dev channel release 
+      shell: bash 
+      run: | 
+        TAG_NAME=$(./dist/get-tag-name.sh) 
+        ./dist/update_releases.sh linux dev ${TAG_NAME/v/} 
 
   windows-cmake:
     runs-on: windows-2019
