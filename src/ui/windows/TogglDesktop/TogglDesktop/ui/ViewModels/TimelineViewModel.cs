@@ -88,6 +88,7 @@ namespace TogglDesktop.ViewModels
             }
         }
 
+        private const int MaxActivityBlockDurationInSec = 900;
         private void ConvertChunksToActivityBlocks(List<Toggl.TimelineChunkView> chunks)
         {
             var blocks = new List<ActivityBlock>();
@@ -115,7 +116,7 @@ namespace TogglDesktop.ViewModels
                         block.ActivityDescriptions.Add(activity);
                         duration += eventDesc.Duration;
                     }
-                    block.Height = (1.0 * duration * ScaleModes[SelectedScaleMode]) / (60 * 60); ;
+                    block.Height = (1.0 * Math.Min(duration, MaxActivityBlockDurationInSec) * ScaleModes[SelectedScaleMode]) / (60 * 60);
                     if (block.ActivityDescriptions.Any())
                         blocks.Add(block);
                 }
