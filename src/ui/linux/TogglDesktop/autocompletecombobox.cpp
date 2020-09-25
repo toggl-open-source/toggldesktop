@@ -46,6 +46,9 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
         auto ke = reinterpret_cast<QKeyEvent*>(e);
         switch (ke->key()) {
         case Qt::Key_Tab:
+            cancelSelection();
+            focusNextChild();
+            break;
         case Qt::Key_Escape:
             cancelSelection();
             return true;
