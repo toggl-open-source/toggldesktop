@@ -88,8 +88,8 @@ class TimerViewController: NSViewController {
         descriptionFieldHandler.onStateChanged = { [weak self] state in
             guard let self = self else { return }
             switch state {
-            case .descriptionUpdate(let text):
-                self.viewModel.setDescription(text)
+            case .descriptionUpdate(_):
+                break
 
             case .projectDropdownShow:
                 self.projectAutoCompleteView.isSearchFieldHidden = true
@@ -99,8 +99,8 @@ class TimerViewController: NSViewController {
             case .projectFilter(let filterText):
                 self.projectAutoCompleteView.filter(with: String(filterText))
 
-            case .autocompleteShow:
-                break
+            case .autocompleteFilter(let filterText):
+                self.viewModel.filterAutocomplete(with: filterText)
             }
         }
     }
@@ -269,60 +269,11 @@ class TimerViewController: NSViewController {
         viewModel.setBillable(!billableButton.isSelected)
     }
 
-    func controlTextDidBeginEditing(_ obj: Notification) {
-        print("<><> controlTextDidBeginEditing")
-//        if let textField = obj.object as? AutoCompleteInput, textField == descriptionTextField {
-//            let editor = textField.currentEditor() as? NSTextView
-//            editor?.delegate = self
-//        }
-    }
-
     func controlTextDidChange(_ obj: Notification) {
         if let textField = obj.object as? AutoCompleteInput, textField == descriptionTextField {
             print("<><><> controlTextDidChange")
+            viewModel.setDescription(textField.stringValue)
             descriptionFieldHandler.textFieldTextDidChange(textField)
-
-//            viewModel.setDescription(textField.stringValue)
-//
-//            let editor = textField.currentEditor()!
-//            print("<<< \(editor.selectedRange)")
-//
-//            let text = editor.string
-//            let cursorLocation = editor.selectedRange.location
-//
-//            if cursorLocation > 0 {
-//                let lastTypedIndex = text.index(text.startIndex, offsetBy: cursorLocation - 1)
-//                let typedSymbol = text[lastTypedIndex]
-//                print("<<< prevSymbol = \(typedSymbol)")
-//
-//                var presentedDropdown = false
-//
-//                if cursorLocation == 1 {
-//                    if typedSymbol == "@" {
-//                        print(">>>>>> showing project dropdown >>>>>>")
-//                        presentedDropdown = true
-//                    }
-//                } else {
-//                    let lastTwoSymbols = text[text.index(before: lastTypedIndex)...lastTypedIndex]
-//                    if String(lastTwoSymbols) == " @" {
-//                        print(">>>>>> showing project dropdown >>>>>>")
-//                        presentedDropdown = true
-//                    }
-//                }
-//
-//                if presentedDropdown {
-//                    projectAutoCompleteView.isSearchFieldHidden = true
-//                    projectAutoCompleteView.filter(with: "")
-//                    presentProjectAutoComplete(makeKey: false)
-//                } else if projectAutoCompleteWindow.isVisible {
-//                    let beforeCursor = text[text.startIndex...lastTypedIndex]
-//                    if let shortcutIndex = beforeCursor.lastIndex(of: "@") {
-//                        let searchText = text[text.index(after: shortcutIndex)...lastTypedIndex]
-//                        print(">>>>>>>>> filtering with: \(searchText)")
-//                        projectAutoCompleteView.filter(with: String(searchText))
-//                    }
-//                }
-//            }
         }
     }
 
@@ -397,6 +348,8 @@ class TimerViewController: NSViewController {
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
         view.window?.makeFirstResponder(nil)
+        closeProjectAutoComplete()
+        closeTagsAutoComplete()
     }
 
     // MARK: - UI
@@ -631,12 +584,5 @@ extension TimerViewController: ProjectCreationViewDelegate {
 
     func projectCreationDidUpdateSize() {
         updateProjectAutocompleteWindowContent(with: projectCreationView, height: projectCreationView.suitableHeight)
-    }
-}
-
-extension TimerViewController: NSTextViewDelegate {
-    func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
-        print("<><><><> replacement: \(replacementString)")
-        return true
     }
 }

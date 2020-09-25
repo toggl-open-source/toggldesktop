@@ -10,7 +10,7 @@ import Foundation
 
 class TimerDescriptionFieldHandler {
 
-    enum Constants {
+    private enum Constants {
         static let projectToken: Character = "@"
         static let tagToken: Character = "#"
     }
@@ -19,7 +19,7 @@ class TimerDescriptionFieldHandler {
         case descriptionUpdate(String)
         case projectDropdownShow
         case projectFilter(String)
-        case autocompleteShow
+        case autocompleteFilter(String)
     }
 
     var state: State = .descriptionUpdate("") {
@@ -38,67 +38,18 @@ class TimerDescriptionFieldHandler {
 
         let (token, query) = text.findTokenAndQueryMatchesForAutocomplete([Constants.projectToken], cursorLocation)
 
-        print(">>> token = \(token); query = \(query)")
+        print(">>> token = \(String(describing: token)); query = \(query)")
 
-        return
-
-        let lastTypedIndex = text.index(text.startIndex, offsetBy: cursorLocation - 1)
-        let typedSymbol = text[lastTypedIndex]
-
-        print("<<< typedSymbol = \(typedSymbol)")
-
-        if typedSymbol == "@" {
-            var canPresentedDropdown = false
-            if cursorLocation == 1 {
-                canPresentedDropdown = true
-            } else {
-                let lastTwoSymbols = text[text.index(before: lastTypedIndex)...lastTypedIndex]
-                if String(lastTwoSymbols) == " @" {
-                    print(">>>>>> showing project dropdown >>>>>>")
-                    canPresentedDropdown = true
-                }
-            }
-            if canPresentedDropdown {
-                state = .projectDropdownShow
-            }
-        } else if case .projectDropdownShow = state {
-            let beforeCursor = text[text.startIndex...lastTypedIndex]
-            if let shortcutIndex = beforeCursor.lastIndex(of: "@") {
-                let searchText = text[text.index(after: shortcutIndex)...lastTypedIndex]
-                print(">>>>>>>>> filtering with: \(searchText)")
-                state = .projectFilter(String(searchText))
-            }
-        } else {
+        switch (token, query) {
+        case (Constants.projectToken, ""):
+            state = .projectDropdownShow
+        case (Constants.projectToken, _):
+            state = .projectFilter(query)
+        case (nil, query) where query.count > 2:
+            state = .autocompleteFilter(query)
+        default:
             state = .descriptionUpdate(text)
         }
-
-//        if cursorLocation > 0 {
-//            var canPresentedDropdown = false
-//
-//            if cursorLocation == 1 {
-//                if typedSymbol == "@" {
-//                    print(">>>>>> showing project dropdown >>>>>>")
-//                    canPresentedDropdown = true
-//                }
-//            } else {
-//                let lastTwoSymbols = text[text.index(before: lastTypedIndex)...lastTypedIndex]
-//                if String(lastTwoSymbols) == " @" {
-//                    print(">>>>>> showing project dropdown >>>>>>")
-//                    canPresentedDropdown = true
-//                }
-//            }
-//
-//            if canPresentedDropdown {
-//                state = .projectDropdownShow
-//            } else if case .projectDropdownShow = state {
-//                let beforeCursor = text[text.startIndex...lastTypedIndex]
-//                if let shortcutIndex = beforeCursor.lastIndex(of: "@") {
-//                    let searchText = text[text.index(after: shortcutIndex)...lastTypedIndex]
-//                    print(">>>>>>>>> filtering with: \(searchText)")
-//                    state = .projectFilter(String(searchText))
-//                }
-//            }
-//        }
     }
 }
 
