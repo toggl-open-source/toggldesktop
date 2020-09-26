@@ -34,7 +34,7 @@ class TimerViewController: NSViewController {
 
     private var descriptionFieldHandler = TimerDescriptionFieldHandler()
 
-    enum Constants {
+    private enum Constants {
         static let emptyProjectButtonTooltip = NSLocalizedString("Select project", comment: "Tooltip for timer project button")
         static let emptyTagsButtonTooltip = NSLocalizedString("Select tags", comment: "Tooltip for timer tags button")
         static let billableOnTooltip = NSLocalizedString("Billable", comment: "Tooltip for timer billable button when On")
@@ -63,8 +63,7 @@ class TimerViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        descriptionTextField.displayMode = .fullscreen
-        descriptionTextField.responderDelegate = descriptionContainerBox
+        setupDescriptionField()
 
         durationTextField.responderDelegate = durationContainerBox
 
@@ -83,10 +82,6 @@ class TimerViewController: NSViewController {
 
         viewModel.isEditingDuration = { [weak self] in
             return self?.durationTextField.currentEditor() != nil
-        }
-
-        descriptionFieldHandler.onStateChanged = { [weak self] newState, oldState in
-            self?.handleDescriptionFieldStateChange(from: oldState, to: newState)
         }
     }
 
@@ -254,81 +249,6 @@ class TimerViewController: NSViewController {
         viewModel.setBillable(!billableButton.isSelected)
     }
 
-    func controlTextDidChange(_ obj: Notification) {
-        if let textField = obj.object as? AutoCompleteInput, textField == descriptionTextField {
-            print("<><><> controlTextDidChange")
-            descriptionFieldHandler.textFieldTextDidChange(textField)
-        }
-    }
-
-    func controlTextDidEndEditing(_ obj: Notification) {
-        if let textField = obj.object as? AutoCompleteInput, textField == descriptionTextField {
-            viewModel.descriptionDidEndEditing()
-        } else if let textField = obj.object as? NSTextField, textField == durationTextField {
-            viewModel.setDuration(textField.stringValue)
-        }
-    }
-
-    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        if textView == descriptionTextField.currentEditor() {
-            return descriptionControl(doCommandBy: commandSelector)
-        } else if textView == durationTextField.currentEditor() {
-            return durationControl(doCommandBy: commandSelector)
-        } else {
-            return false
-        }
-    }
-
-    private func descriptionControl(doCommandBy commandSelector: Selector) -> Bool {
-        var isHandled = false
-
-        if commandSelector == #selector(moveDown(_:)) {
-            descriptionTextField.autocompleteTableView.nextItem()
-        } else if commandSelector == #selector(moveUp(_:)) {
-            descriptionTextField.autocompleteTableView.previousItem()
-        } else if commandSelector == #selector(insertTab(_:)) {
-            // set data according to selected item
-            let lastSelectedIndex = descriptionTextField.autocompleteTableView.lastSelected
-            if lastSelectedIndex >= 0 {
-                let success = viewModel.selectDescriptionAutoCompleteItem(at: lastSelectedIndex)
-                if success {
-                    return true
-                }
-            } else {
-                descriptionTextField.resetTable()
-                return false
-            }
-        } else if commandSelector == #selector(insertNewline(_:)) {
-            // avoid firing default Enter actions
-            isHandled = true
-            let lastSelectedIndex = descriptionTextField.autocompleteTableView.lastSelected
-            if lastSelectedIndex >= 0 {
-                let success = viewModel.selectDescriptionAutoCompleteItem(at: lastSelectedIndex)
-                if !success {
-                    return isHandled
-                }
-            }
-            if !viewModel.isRunning {
-                viewModel.startStopAction()
-            }
-            view.window?.makeFirstResponder(nil)
-            descriptionTextField.resetTable()
-        }
-
-        return isHandled
-    }
-
-    private func durationControl(doCommandBy commandSelector: Selector) -> Bool {
-        if commandSelector == #selector(insertNewline(_:)) {
-            view.window?.makeFirstResponder(nil)
-            if !viewModel.isRunning {
-                viewModel.startStopAction()
-            }
-        }
-
-        return false
-    }
-
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
         view.window?.makeFirstResponder(nil)
@@ -336,7 +256,21 @@ class TimerViewController: NSViewController {
         closeTagsAutoComplete()
     }
 
-    // MARK: - Description field
+    // MARK: - Description field handling
+
+    private func setupDescriptionField() {
+        descriptionTextField.displayMode = .fullscreen
+        descriptionTextField.responderDelegate = descriptionContainerBox
+        descriptionTextField.delegate = descriptionFieldHandler
+
+        descriptionFieldHandler.onStateChanged = { [weak self] newState, oldState in
+            self?.handleDescriptionFieldStateChange(from: oldState, to: newState)
+        }
+
+        descriptionFieldHandler.onPerformAction = { [weak self] action in
+            return self?.handleDescriptionFieldAction(action) ?? false
+        }
+    }
 
     private func handleDescriptionFieldStateChange(from oldState: TimerDescriptionFieldHandler.State,
                                                    to newState: TimerDescriptionFieldHandler.State) {
@@ -373,6 +307,38 @@ class TimerViewController: NSViewController {
         case .descriptionUpdate:
             break
         }
+    }
+
+    private func handleDescriptionFieldAction(_ action: TimerDescriptionFieldHandler.Action) -> Bool {
+        switch action {
+        case .startTimeEntry:
+            if !viewModel.isRunning {
+                viewModel.startStopAction()
+            }
+
+        case .endEditing:
+            viewModel.descriptionDidEndEditing()
+
+        case .unfocus:
+            view.window?.makeFirstResponder(nil)
+
+        case .projectAutoCompleteTableHandleEvent(let event):
+            _ = projectAutoCompleteView.tableView?.handleKeyboardEvent(event)
+
+        case .autoCompleteTableSelectNext:
+            descriptionTextField.autocompleteTableView.nextItem()
+
+        case .autoCompleteTableSelectPrevious:
+            descriptionTextField.autocompleteTableView.previousItem()
+
+        case .autoCompleteSelectCurrent:
+            let lastSelectedIndex = descriptionTextField.autocompleteTableView.lastSelected
+            if lastSelectedIndex >= 0 {
+                _ = viewModel.selectDescriptionAutoCompleteItem(at: lastSelectedIndex)
+            }
+        }
+
+        return true
     }
 
     // MARK: - UI
@@ -543,7 +509,31 @@ class TimerViewController: NSViewController {
 // MARK: - NSTextFieldDelegate
 
 extension TimerViewController: NSTextFieldDelegate {
-    //
+
+    func controlTextDidEndEditing(_ obj: Notification) {
+        if let textField = obj.object as? NSTextField, textField == durationTextField {
+            viewModel.setDuration(textField.stringValue)
+        }
+    }
+
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        if textView == durationTextField.currentEditor() {
+            return durationControl(doCommandBy: commandSelector)
+        } else {
+            return false
+        }
+    }
+
+    private func durationControl(doCommandBy commandSelector: Selector) -> Bool {
+        if commandSelector == #selector(insertNewline(_:)) {
+            view.window?.makeFirstResponder(nil)
+            if !viewModel.isRunning {
+                viewModel.startStopAction()
+            }
+        }
+
+        return false
+    }
 }
 
 // MARK: - AutoCompleteViewDelegate

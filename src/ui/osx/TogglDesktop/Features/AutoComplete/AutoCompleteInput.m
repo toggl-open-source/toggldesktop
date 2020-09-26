@@ -168,9 +168,9 @@ static CGFloat dropdownHorizontalPadding = 11;
 	}
 }
 
-- (void)toggleTableViewWithNumberOfItem:(NSInteger)numberOfItem
+- (void)toggleList:(BOOL)isOn
 {
-	if (numberOfItem > 0)
+	if (isOn)
 	{
 		if (self.autocompleteTableContainer.hidden)
 		{
@@ -191,42 +191,6 @@ static CGFloat dropdownHorizontalPadding = 11;
 	self.totalHeight = height;
 	CGFloat maxAllowedHeight = [self convertPoint:CGPointZero toView:self.window.contentView].y - dropdownBottomPadding;
 	self.dropdownHeightConstraint.constant = MIN(height, maxAllowedHeight);
-}
-
-- (void)keyUp:(NSEvent *)event
-{
-	// NSLog(@"EventCode: %hu", [event keyCode]);
-	if ([event keyCode] == kVK_DownArrow)
-	{
-		if ([event modifierFlags] & NSShiftKeyMask)
-		{
-			[super keyUp:event];
-			return;
-		}
-		if (self.autocompleteTableContainer.isHidden)
-		{
-			[self toggleTableViewWithNumberOfItem:self.autocompleteTableView.numberOfRows];
-			return;
-		}
-	}
-	else if (event.keyCode == kVK_Escape)
-	{
-		// Hide autocomplete list
-		if (self.autocompleteTableContainer != nil)
-		{
-			[self resetTable];
-			return;
-		}
-	}
-	else if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
-	{
-		if (!self.autocompleteTableView.isHidden)
-		{
-			[self showAutoComplete:NO];
-			return;
-		}
-	}
-	[super keyUp:event];
 }
 
 - (void)hide
@@ -330,7 +294,7 @@ static CGFloat dropdownHorizontalPadding = 11;
 	CGFloat totalHeight = [self calculateTotalHeightFromArray:array];
 
 	[self.autocompleteTableView reloadData];
-	[self toggleTableViewWithNumberOfItem:array.count];
+	[self toggleList:array.count > 0];
 	[self updateDropdownWithHeight:totalHeight];
 }
 

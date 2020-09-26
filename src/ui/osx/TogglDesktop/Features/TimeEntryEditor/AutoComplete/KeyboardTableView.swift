@@ -17,7 +17,8 @@ final class KeyboardTableView: NSTableView {
         case returnKey                  = 0x24
         case enter                      = 0x4C
         case tab                        = 0x30
-        case downArrow                  = 125
+        case downArrow                  = 0x7D
+        case upArrow                    = 0x7E
     }
 
     // MARK: Variables

@@ -223,8 +223,8 @@ extension AutoCompleteView {
                 strongSelf.dataSource?.selectSelectedRow()
                 strongSelf.dataSource?.keyboardDidEnter()
                 return true
-            case .tab:
 
+            case .tab:
                 // Don't focus to create button if it's hidden
                 if strongSelf.createNewItemContainerView.isHidden {
                     return false
@@ -238,9 +238,12 @@ extension AutoCompleteView {
                     strongSelf.window?.makeFirstResponder(strongSelf.createNewItemBtn)
                     return true
                 }
-            default:
-                return false
+
+            case .downArrow, .upArrow:
+                // handled by table view automatically
+                return true
             }
+
             return false
         }
         tableView.clickedOnRow = {[weak self] clickedRow in

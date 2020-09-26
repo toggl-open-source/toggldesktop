@@ -8,20 +8,22 @@
 
 import Foundation
 
-class TimerDescriptionFieldHandler {
+class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
 
     private enum Constants {
         static let projectToken: Character = "@"
         static let tagToken: Character = "#"
+
+        static let autoCompleteMinFilterLength = 2
     }
 
     enum State: Equatable {
-        case descriptionUpdate(String)
+        case descriptionUpdate
         case projectFilter(String)
         case autocompleteFilter(String)
     }
 
-    var state: State = .descriptionUpdate("") {
+    var state: State = .descriptionUpdate {
         didSet {
             onStateChanged?(state, oldValue)
         }
@@ -30,7 +32,25 @@ class TimerDescriptionFieldHandler {
     /// Called on every `state` change with `newState, oldState` parameters
     var onStateChanged: ((State, State) -> Void)?
 
-    func textFieldTextDidChange(_ textField: NSTextField) {
+    enum Action {
+        case endEditing
+        case startTimeEntry
+        case unfocus
+
+        case projectAutoCompleteTableHandleEvent(NSEvent)
+
+        case autoCompleteTableSelectNext
+        case autoCompleteTableSelectPrevious
+        case autoCompleteSelectCurrent
+    }
+
+    /// Called when description field requests an action to be performed.
+    /// Closure must return `true` if action was handled.
+    var onPerformAction: (Action) -> Bool = { _ in return false }
+
+    func controlTextDidChange(_ obj: Notification) {
+        guard let textField = obj.object as? NSTextField else { return }
+
         let editor = textField.currentEditor()!
 
         let text = editor.string
@@ -43,11 +63,84 @@ class TimerDescriptionFieldHandler {
         switch (token, query) {
         case (Constants.projectToken, _):
             state = .projectFilter(query)
-        case (nil, query) where query.count > 2:
+        case (nil, query) where query.count >= Constants.autoCompleteMinFilterLength:
             state = .autocompleteFilter(query)
         default:
-            state = .descriptionUpdate(text)
+            state = .descriptionUpdate
         }
+    }
+
+    func controlTextDidEndEditing(_ obj: Notification) {
+        _ = onPerformAction(.endEditing)
+    }
+
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        switch state {
+        case .autocompleteFilter:
+            return autocompleteControl(doCommandBy: commandSelector)
+        case .projectFilter:
+            return projectDropdownControl(doCommandBy: commandSelector)
+        case .descriptionUpdate:
+            return descriptionSimpleControl(doCommandBy: commandSelector)
+        }
+    }
+
+    private func descriptionSimpleControl(doCommandBy commandSelector: Selector) -> Bool {
+        // TODO: discuss if we need this
+        // if yes, then `autoCompleteMinFilterLength` seems to conflict with it
+//        if commandSelector == #selector(moveDown(_:)) {
+//            viewModel.filterAutocomplete(with: descriptionTextField.stringValue)
+//            descriptionTextField.toggleList(true)
+//            return true
+//        }
+        return false
+    }
+
+    private func autocompleteControl(doCommandBy commandSelector: Selector) -> Bool {
+        if commandSelector == #selector(moveDown(_:)) {
+            return onPerformAction(.autoCompleteTableSelectNext)
+
+        } else if commandSelector == #selector(moveUp(_:)) {
+            return onPerformAction(.autoCompleteTableSelectPrevious)
+
+        } else if commandSelector == #selector(insertTab(_:)) {
+            defer {
+                state = .descriptionUpdate
+            }
+            return onPerformAction(.autoCompleteSelectCurrent)
+
+        } else if commandSelector == #selector(insertNewline(_:)) {
+            var isHandled = false
+            isHandled = onPerformAction(.autoCompleteSelectCurrent)
+            _ = onPerformAction(.unfocus)
+            _ = onPerformAction(.startTimeEntry)
+            state = .descriptionUpdate
+            return isHandled
+
+        } else if commandSelector == #selector(cancelOperation(_:)) {
+            state = .descriptionUpdate
+            return true
+        }
+
+        return false
+    }
+
+    private func projectDropdownControl(doCommandBy commandSelector: Selector) -> Bool {
+        guard let currentEvent = NSApp.currentEvent else { return false }
+
+        if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
+            state = .descriptionUpdate
+            return true
+        }
+
+        if commandSelector == #selector(NSResponder.moveDown(_:))
+            || commandSelector == #selector(NSResponder.moveUp(_:))
+            || commandSelector == #selector(NSResponder.insertTab(_:))
+            || commandSelector == #selector(NSResponder.insertNewline(_:)) {
+            return onPerformAction(.projectAutoCompleteTableHandleEvent(currentEvent))
+        }
+
+        return false
     }
 }
 
