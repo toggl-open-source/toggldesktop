@@ -45,6 +45,8 @@ class TimerViewController: NSViewController {
         static let projectShortcutSymbol = "@"
         static let tagShortcutSymbol = "#"
         static let autocompleteLengthTriggerCount = 2
+
+        static let descriptionDropdownOffset = NSPoint(x: 8, y: 6)
     }
 
     // MARK: - Outlets
@@ -222,7 +224,7 @@ class TimerViewController: NSViewController {
         if wasNotClosedJustNow {
             projectAutoCompleteView.isSearchFieldHidden = false
             projectAutoCompleteView.filter(with: "")
-            presentProjectAutoComplete()
+            presentProjectAutoComplete(from: projectButton)
         } else {
             // returning state back to normal if click is not handled
             projectButton.controlState = .normal
@@ -289,7 +291,9 @@ class TimerViewController: NSViewController {
         case .projectFilter(let filterText):
             if projectAutoCompleteWindow.isVisible == false {
                 projectAutoCompleteView.isSearchFieldHidden = true
-                presentProjectAutoComplete(makeKey: false)
+                presentProjectAutoComplete(from: descriptionTextField,
+                                           makeKey: false,
+                                           offset: Constants.descriptionDropdownOffset)
             }
             projectAutoCompleteView.filter(with: String(filterText))
 
@@ -401,32 +405,32 @@ class TimerViewController: NSViewController {
 
     // MARK: - Autocomplete/Dropdown
 
-    private func presentProjectAutoComplete(makeKey: Bool = true) {
-        let fromPoint = NSPoint(x: projectButton.frame.minX, y: projectButton.frame.maxY)
+    private func presentProjectAutoComplete(from: NSView, makeKey: Bool = true, offset: NSPoint = .zero) {
         presentAutoComplete(window: projectAutoCompleteWindow,
                             withContentView: projectAutoCompleteView,
-                            fromPoint: fromPoint,
-                            makeKey: makeKey)
+                            fromView: from,
+                            makeKey: makeKey,
+                            offset: offset)
         viewModel.projectDataSource.sizeToFit()
     }
 
     private func presentTagsAutoComplete() {
-        let fromPoint = NSPoint(x: tagsButton.frame.minX, y: tagsButton.frame.maxY)
         presentAutoComplete(window: tagsAutoCompleteWindow,
                             withContentView: tagsAutoCompleteView,
-                            fromPoint: fromPoint)
+                            fromView: tagsButton)
         viewModel.tagsDataSource.sizeToFit()
     }
 
     private func presentAutoComplete(window: AutoCompleteViewWindow,
                                      withContentView contentView: AutoCompleteView,
-                                     fromPoint: NSPoint,
-                                     makeKey: Bool = true) {
+                                     fromView: NSView,
+                                     makeKey: Bool = true,
+                                     offset: NSPoint = .zero) {
         window.contentView = contentView
         window.setContentSize(contentView.frame.size)
 
         if !window.isVisible {
-            let windowRect = autoCompleteWindowRect(fromPoint: fromPoint)
+            let windowRect = autoCompleteWindowRect(fromView: fromView, offset: offset)
             window.setFrame(windowRect, display: false)
             window.setFrameTopLeftPoint(windowRect.origin)
 
@@ -443,14 +447,16 @@ class TimerViewController: NSViewController {
         _ = contentView.defaultTextField.becomeFirstResponder()
     }
 
-    private func autoCompleteWindowRect(fromPoint: NSPoint) -> NSRect {
+    private func autoCompleteWindowRect(fromView: NSView, offset: NSPoint = .zero) -> NSRect {
         let padding: CGFloat = 6
         // passing random height value as it should be updated with to its content size later
         let initialHeight: CGFloat = 100
         let windowSize = NSSize(width: view.frame.width - padding * 2, height: initialHeight)
         var rect = NSRect(origin: .zero, size: windowSize)
 
-        let windowPoint = projectButton.convert(fromPoint, to: nil)
+        let fromPoint = NSPoint(x: fromView.bounds.minX + offset.x,
+                                y: fromView.bounds.maxY + offset.y)
+        let windowPoint = fromView.convert(fromPoint, to: nil)
         var screenPoint = CGPoint.zero
         if #available(OSX 10.12, *) {
             screenPoint = view.window?.convertPoint(toScreen: windowPoint) ?? .zero
@@ -567,8 +573,7 @@ extension TimerViewController: AutoCompleteViewDelegate {
     private func updateProjectAutocompleteWindowContent(with view: NSView, height: CGFloat) {
         projectAutoCompleteWindow.contentView = view
 
-        let fromPoint = NSPoint(x: projectButton.frame.minX, y: projectButton.frame.maxY)
-        let windowRect = autoCompleteWindowRect(fromPoint: fromPoint)
+        let windowRect = autoCompleteWindowRect(fromView: projectButton)
         projectAutoCompleteWindow.setFrame(windowRect, display: false)
         projectAutoCompleteWindow.setFrameTopLeftPoint(windowRect.origin)
 
