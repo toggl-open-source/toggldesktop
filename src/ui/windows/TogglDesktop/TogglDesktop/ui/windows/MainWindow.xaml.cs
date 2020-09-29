@@ -751,15 +751,11 @@ namespace TogglDesktop
 
             if (this.IsTracking)
             {
-                icon = isOnline
-                    ? Properties.Resources.toggltray
-                    : Properties.Resources.toggltray_offline_active;
+                icon = Properties.Resources.toggltray;
             }
             else
             {
-                icon = isOnline
-                    ? Properties.Resources.toggltray_inactive
-                    : Properties.Resources.toggltray_offline_inactive;
+                icon = Properties.Resources.toggltray_inactive;
             }
 
             this.taskbarIcon.Icon = new Icon(icon, SystemInformation.SmallIconSize);
