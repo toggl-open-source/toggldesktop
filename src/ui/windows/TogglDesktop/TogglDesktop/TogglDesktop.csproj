@@ -42,7 +42,8 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\toggl.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -456,18 +457,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\toggl.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\toggl_inactive.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\toggltray.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\toggltray_inactive.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\toggltray_offline_active.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -782,6 +771,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
+    <Resource Include="Resources\toggltray_inactive.ico" />
+    <Resource Include="Resources\toggl_inactive.ico" />
+    <Resource Include="Resources\toggltray.ico" />
+    <Resource Include="Resources\toggl.ico" />
     <Resource Include="Resources\restricted-area.png" />
     <Resource Include="Resources\spider.png" />
     <Resource Include="Resources\stopwatch.png" />
