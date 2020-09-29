@@ -95,7 +95,7 @@ final class AutoCompleteView: NSView {
     weak var delegate: AutoCompleteViewDelegate?
     private weak var dataSource: AutoCompleteViewDataSource?
 
-    var isSearchFieldHidden: Bool = false {
+    var isSearchFieldHidden: Bool = true {
         didSet {
             placeholderBox.isHidden = isSearchFieldHidden
         }
