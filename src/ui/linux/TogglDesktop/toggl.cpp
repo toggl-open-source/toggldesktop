@@ -567,12 +567,17 @@ bool TogglApi::stop() {
     return toggl_stop(ctx, false);
 }
 
-const QString TogglApi::formatDurationInSecondsHHMMSS(
-    const int64_t duration) {
+QString TogglApi::formatDurationInSecondsHHMMSS(
+    int64_t duration) {
     char_t *buf = toggl_format_tracking_time_duration(duration);
     QString res = toQString(buf);
     free(buf);
     return res;
+}
+
+QString TogglApi::formatDurationForPopup(
+    int64_t time) {
+    return QDateTime::fromTime_t(time).time().toString("hh:mm::ss AP");
 }
 
 bool TogglApi::continueTimeEntry(const QString guid) {

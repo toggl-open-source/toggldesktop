@@ -242,8 +242,11 @@ class TogglApi : public QObject {
 
     bool runScriptFile(const QString filename);
 
-    static const QString formatDurationInSecondsHHMMSS(
-        const int64_t duration);
+    static QString formatDurationInSecondsHHMMSS(
+        int64_t duration);
+
+    static QString formatDurationForPopup(
+        int64_t time);
 
     QRect const getWindowsFrameSetting();
     void setWindowsFrameSetting(const QRect frame);
