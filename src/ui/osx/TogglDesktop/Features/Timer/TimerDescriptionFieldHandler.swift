@@ -23,6 +23,8 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
         case autocompleteFilter(String)
     }
 
+    private let textField: NSTextField
+
     private(set) var state: State = .descriptionUpdate {
         didSet {
             onStateChanged?(state, oldValue)
@@ -48,23 +50,57 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
     /// Closure must return `true` if action was handled.
     var onPerformAction: (Action) -> Bool = { _ in return false }
 
+    init(textField: NSTextField) {
+        self.textField = textField
+        super.init()
+        self.textField.delegate = self
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     func didCloseProjectDropdown() {
-        state = .descriptionUpdate
+        if case .projectFilter = state {
+            state = .descriptionUpdate
+        }
+    }
+
+    func didSelectProject() {
+        if case .projectFilter = state {
+            removeShortcutQuery(for: Constants.projectToken)
+        }
+    }
+
+    private func removeShortcutQuery(for shortcut: Character) {
+        let editor = textField.currentEditor()!
+        var text = editor.string
+        let lastTypedIndex = text.index(text.startIndex, offsetBy: editor.selectedRange.location - 1)
+        let rangeBeforeCursor = text[text.startIndex...lastTypedIndex]
+        if let shortcutIndex = rangeBeforeCursor.lastIndex(of: shortcut) {
+            let shortcutLocation = text.distance(from: text.startIndex, to: shortcutIndex)
+
+            text.removeSubrange(shortcutIndex...lastTypedIndex)
+            editor.string = text
+
+            // moving cursor to the previous shortcut position
+            editor.selectedRange = NSRange(location: shortcutLocation, length: 0)
+
+            // force calling delegate method because the text was changed by us
+            // and text field doesn't handle this
+            controlTextDidChange(Notification(name: NSControl.textDidChangeNotification, object: textField, userInfo: nil))
+        }
     }
 
     // MARK: NSTextFieldDelegate
 
     func controlTextDidChange(_ obj: Notification) {
-        guard let textField = obj.object as? NSTextField else { return }
-
         let editor = textField.currentEditor()!
 
         let text = editor.string
         let cursorLocation = editor.selectedRange.location
 
         let (token, query) = text.findTokenAndQueryMatchesForAutocomplete([Constants.projectToken], cursorLocation)
-
-        print(">>> token = \(String(describing: token)); query = \(query)")
 
         switch (token, query) {
         case (Constants.projectToken, _):

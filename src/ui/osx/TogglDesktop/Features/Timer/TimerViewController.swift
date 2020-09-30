@@ -32,7 +32,11 @@ class TimerViewController: NSViewController {
     private var tagsAutocompleteDidResignObserver: Any?
     private var tagsAutocompleteResignTime: TimeInterval = 0
 
-    private var descriptionFieldHandler = TimerDescriptionFieldHandler()
+    private var descriptionFieldHandler: TimerDescriptionFieldHandler!
+
+    private var isEditingDescription: Bool {
+        descriptionTextField.currentEditor() != nil
+    }
 
     private enum Constants {
         static let emptyProjectButtonTooltip = NSLocalizedString("Select project", comment: "Tooltip for timer project button")
@@ -47,12 +51,18 @@ class TimerViewController: NSViewController {
         static let autocompleteLengthTriggerCount = 2
 
         static let descriptionDropdownOffset = NSPoint(x: 8, y: 6)
+        static let buttonsDropdownOffset = NSPoint(x: 0, y: 2)
     }
 
     // MARK: - Outlets
 
+    @IBOutlet weak var descriptionTextField: ResponderAutoCompleteInput! {
+        didSet {
+            descriptionFieldHandler = TimerDescriptionFieldHandler(textField: descriptionTextField)
+        }
+    }
+
     @IBOutlet weak var startButton: NSHoverButton!
-    @IBOutlet weak var descriptionTextField: ResponderAutoCompleteInput!
     @IBOutlet weak var descriptionContainerBox: TimerContainerBox!
     @IBOutlet weak var durationContainerBox: TimerContainerBox!
     @IBOutlet weak var durationTextField: ResponderTextField!
@@ -79,7 +89,7 @@ class TimerViewController: NSViewController {
         setupBindings()
 
         viewModel.isEditingDescription = { [weak self] in
-            self?.descriptionTextField.currentEditor() != nil
+            return self?.isEditingDescription == true
         }
 
         viewModel.isEditingDuration = { [weak self] in
@@ -160,7 +170,11 @@ class TimerViewController: NSViewController {
         }
 
         viewModel.onProjectSelected = { [unowned self] project in
-            self.closeProjectAutoComplete()
+            if self.isEditingDescription {
+                self.descriptionFieldHandler.didSelectProject()
+            } else {
+                self.closeProjectAutoComplete()
+            }
         }
 
         viewModel.onBillableChanged = { [unowned self] billable in
@@ -224,7 +238,7 @@ class TimerViewController: NSViewController {
         if wasNotClosedJustNow {
             projectAutoCompleteView.isSearchFieldHidden = false
             projectAutoCompleteView.filter(with: "")
-            presentProjectAutoComplete(from: projectButton)
+            presentProjectAutoComplete(from: projectButton, offset: Constants.buttonsDropdownOffset)
         } else {
             // returning state back to normal if click is not handled
             projectButton.controlState = .normal
@@ -417,7 +431,8 @@ class TimerViewController: NSViewController {
     private func presentTagsAutoComplete() {
         presentAutoComplete(window: tagsAutoCompleteWindow,
                             withContentView: tagsAutoCompleteView,
-                            fromView: tagsButton)
+                            fromView: tagsButton,
+                            offset: Constants.buttonsDropdownOffset)
         viewModel.tagsDataSource.sizeToFit()
     }
 

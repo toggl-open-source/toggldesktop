@@ -41,13 +41,14 @@ extension String {
         do {
             let joinedTokens = tokens.map { String($0) }.joined(separator: "|")
             let regex = try NSRegularExpression(pattern: "(^| )(\(joinedTokens))")
-            let searchRange = startIndex..<index(startIndex, offsetBy: cursorPosition.clamp(min: 0, max: self.count))
+            let cursorIndex = index(startIndex, offsetBy: cursorPosition.clamp(min: 0, max: self.count))
+            let searchRange = startIndex..<cursorIndex
             let matches = regex.matches(in: self, range: NSRange(searchRange, in: self))
 
             guard let match = matches.last else { return (nil, self) }
 
             let queryStart = index(startIndex, offsetBy: match.range.lowerBound)
-            let matchSubstring = self[queryStart..<endIndex]
+            let matchSubstring = self[queryStart..<cursorIndex]
             let matchedTheFirstWord = tokens.contains { matchSubstring.starts(with: String($0)) }
             let queryWithToken = String(matchedTheFirstWord ? matchSubstring : matchSubstring.dropFirst())
 
