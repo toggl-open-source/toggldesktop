@@ -167,10 +167,10 @@ class TimerViewController: NSViewController {
         }
 
         viewModel.onProjectSelected = { [unowned self] project in
-            let isDescriptionShortcutSelection = self.isEditingDescription && self.view.window?.isKeyWindow == true
-            if isDescriptionShortcutSelection {
+            switch self.descriptionFieldHandler.state {
+            case .projectFilter:
                 self.descriptionFieldHandler.didSelectProject()
-            } else {
+            default:
                 self.closeProjectAutoComplete()
             }
         }
@@ -574,13 +574,20 @@ extension TimerViewController: AutoCompleteViewDelegate {
                                          workspaceID: viewModel.workspaceID,
                                          isBillable: viewModel.billableState == .on)
         updateProjectAutocompleteWindowContent(with: projectCreationView)
-        projectCreationView.setTitleAndFocus(projectAutoCompleteView.defaultTextField.stringValue)
+
+        switch descriptionFieldHandler.state {
+        case .projectFilter(let filter):
+            projectCreationView.setTitleAndFocus(filter)
+        default:
+            projectCreationView.setTitleAndFocus(projectAutoCompleteView.defaultTextField.stringValue)
+        }
     }
 
     private func updateProjectAutocompleteWindowContent(with view: NSView) {
+        let prevFrame = projectAutoCompleteWindow.frame
+
         projectAutoCompleteWindow.contentView = view
 
-        let prevFrame = projectAutoCompleteWindow.frame
         let windowRect = autoCompleteWindowRect(fromView: projectButton)
         projectAutoCompleteWindow.setFrame(windowRect, display: false)
         projectAutoCompleteWindow.setFrameTopLeftPoint(NSPoint(x: prevFrame.minX, y: prevFrame.maxY))
@@ -602,7 +609,12 @@ extension TimerViewController: ProjectCreationViewDelegate {
     }
 
     func projectCreationDidAdd(with name: String, color: String, projectGUID: String) {
-        closeProjectAutoComplete()
+        switch descriptionFieldHandler.state {
+        case .projectFilter:
+            descriptionFieldHandler.didSelectProject()
+        default:
+            closeProjectAutoComplete()
+        }
 
         // TODO: set project on UI
         // problem is we don't have library method to get project by GUID and pass it to view model
