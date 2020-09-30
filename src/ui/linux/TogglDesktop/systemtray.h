@@ -35,6 +35,10 @@ protected slots:
 
     void displayReminder(QString title, QString description);
 
+    void displayRunningTimerState(TimeEntryView *view);
+    void displayStoppedState();
+
+
 private:
     QTimer *idleHintTimer;
     QDBusInterface *notifications;

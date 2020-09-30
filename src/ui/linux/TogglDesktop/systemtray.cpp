@@ -20,6 +20,9 @@ SystemTray::SystemTray(MainWindowController *parent, QIcon defaultIcon) :
     connect(TogglApi::instance, SIGNAL(displayReminder(QString,QString)),  // NOLINT
             this, SLOT(displayReminder(QString,QString)));  // NOLINT
 
+    connect(TogglApi::instance, SIGNAL(displayRunningTimerState(TimeEntryView *)), this, SLOT(displayRunningTimerState(TimeEntryView *)));
+    connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()), this, SLOT(displayStoppedState()));
+
     notifications = new QDBusInterface("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", QDBusConnection::sessionBus(), this);
     notificationsPresent = notifications->isValid();
 
@@ -144,4 +147,16 @@ void SystemTray::displayIdleNotification(
 
 void SystemTray::displayReminder(QString title, QString description) {
     lastReminder = requestNotification(lastReminder, title, description);
+}
+
+void SystemTray::displayRunningTimerState(TimeEntryView *view) {
+    auto ptcLabel =
+        (view->TaskLabel.isEmpty() ? "" : view->TaskLabel + " ") +
+        (view->ProjectLabel.isEmpty() ? "" : view->ProjectLabel + " ") +
+        (view->ClientLabel.isEmpty() ? "" : view->ClientLabel + " ");
+    setToolTip(view->Description + " - " + ptcLabel + "(" + view->Duration + ")");
+}
+
+void SystemTray::displayStoppedState() {
+    setToolTip("Toggl Track");
 }
