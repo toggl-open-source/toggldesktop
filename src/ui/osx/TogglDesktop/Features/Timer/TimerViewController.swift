@@ -496,6 +496,7 @@ class TimerViewController: NSViewController {
         projectAutoCompleteWindow.cancel()
         projectButton.controlState = .normal
         projectAutoCompleteView.clean()
+        descriptionFieldHandler.didCloseProjectDropdown()
     }
 
     private func closeTagsAutoComplete() {

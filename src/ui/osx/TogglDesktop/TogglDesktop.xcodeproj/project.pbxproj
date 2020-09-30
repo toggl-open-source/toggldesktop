@@ -612,6 +612,8 @@
 		BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */ = {isa = PBXBuildFile; fileRef = BAFBFCC721CD1D3C004B443F /* SystemService.m */; };
 		C238D7DF251B7215004EC739 /* TimerDescriptionFieldHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */; };
 		C238D7E0251B7215004EC739 /* TimerDescriptionFieldHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */; };
+		C2A84AE92524668900DAA468 /* Comparable+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A84AE82524668900DAA468 /* Comparable+Utils.swift */; };
+		C2A84AEA2524668900DAA468 /* Comparable+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A84AE82524668900DAA468 /* Comparable+Utils.swift */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
 		C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */; };
@@ -1090,6 +1092,7 @@
 		BAFBFCC621CD1D3C004B443F /* SystemService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SystemService.h; sourceTree = "<group>"; };
 		BAFBFCC721CD1D3C004B443F /* SystemService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SystemService.m; sourceTree = "<group>"; };
 		C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDescriptionFieldHandler.swift; sourceTree = "<group>"; };
+		C2A84AE82524668900DAA468 /* Comparable+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Utils.swift"; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
 		C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCell.m; sourceTree = "<group>"; usesTabs = 1; };
 		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../lib/osx/build/Kopsik.dylib; sourceTree = "<group>"; };
@@ -1351,6 +1354,7 @@
 				BA4791EA22F0478900E24F79 /* String+Search.swift */,
 				BA7B4C7B21C293E700B75B14 /* String+Optional.swift */,
 				BA4791F022F0478A00E24F79 /* Collection+Safe.swift */,
+				C2A84AE82524668900DAA468 /* Comparable+Utils.swift */,
 				BA787D4E231E58C9003AD3AA /* Array+View.swift */,
 				BAA0104B22CB59ED007C1541 /* Date+Extension.swift */,
 				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
@@ -2845,6 +2849,7 @@
 				BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */,
 				BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */,
 				BA4791F722F0478A00E24F79 /* NotificationCenter+MainThread.swift in Sources */,
+				C2A84AE92524668900DAA468 /* Comparable+Utils.swift in Sources */,
 				BA683F6F24372B3400C3A3F1 /* OnboardingBackgroundView.swift in Sources */,
 				BA75FF3922BCC6F800D3F08C /* TimelineData.swift in Sources */,
 				BA01405222571199000E5B91 /* TagTokenView.swift in Sources */,
@@ -3071,6 +3076,7 @@
 				BA37ACF823D890250013EE26 /* NSView+Ext.swift in Sources */,
 				BA37AD0423D8902A0013EE26 /* TimerContainerBox.swift in Sources */,
 				BAE64D742368334000244D2B /* ClientCellView.swift in Sources */,
+				C2A84AEA2524668900DAA468 /* Comparable+Utils.swift in Sources */,
 				BAE64D752368334000244D2B /* AutocompleteDataSource.m in Sources */,
 				BAE64D762368334000244D2B /* BezierPath+Corner.swift in Sources */,
 				BA43B24F23F438AA0007DD99 /* TimelineLineView.swift in Sources */,

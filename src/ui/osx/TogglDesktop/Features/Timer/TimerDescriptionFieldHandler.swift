@@ -23,7 +23,7 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
         case autocompleteFilter(String)
     }
 
-    var state: State = .descriptionUpdate {
+    private(set) var state: State = .descriptionUpdate {
         didSet {
             onStateChanged?(state, oldValue)
         }
@@ -47,6 +47,12 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
     /// Called when description field requests an action to be performed.
     /// Closure must return `true` if action was handled.
     var onPerformAction: (Action) -> Bool = { _ in return false }
+
+    func didCloseProjectDropdown() {
+        state = .descriptionUpdate
+    }
+
+    // MARK: NSTextFieldDelegate
 
     func controlTextDidChange(_ obj: Notification) {
         guard let textField = obj.object as? NSTextField else { return }
@@ -72,7 +78,10 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
 
     func controlTextDidEndEditing(_ obj: Notification) {
         _ = onPerformAction(.endEditing)
+        state = .descriptionUpdate
     }
+
+    // MARK: Handling Key Commands
 
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
         switch state {
@@ -83,17 +92,6 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
         case .descriptionUpdate:
             return descriptionSimpleControl(doCommandBy: commandSelector)
         }
-    }
-
-    private func descriptionSimpleControl(doCommandBy commandSelector: Selector) -> Bool {
-        // TODO: discuss if we need this
-        // if yes, then `autoCompleteMinFilterLength` seems to conflict with it
-//        if commandSelector == #selector(moveDown(_:)) {
-//            viewModel.filterAutocomplete(with: descriptionTextField.stringValue)
-//            descriptionTextField.toggleList(true)
-//            return true
-//        }
-        return false
     }
 
     private func autocompleteControl(doCommandBy commandSelector: Selector) -> Bool {
@@ -142,6 +140,23 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
 
         return false
     }
+
+    private func descriptionSimpleControl(doCommandBy commandSelector: Selector) -> Bool {
+        // TODO: discuss if we need this
+        // if yes, then `autoCompleteMinFilterLength` seems to conflict with it
+//        if commandSelector == #selector(moveDown(_:)) {
+//            viewModel.filterAutocomplete(with: descriptionTextField.stringValue)
+//            descriptionTextField.toggleList(true)
+//            return true
+//        }
+        if commandSelector == #selector(insertNewline(_:)) {
+            _ = onPerformAction(.unfocus)
+            _ = onPerformAction(.startTimeEntry)
+            state = .descriptionUpdate
+            return true
+        }
+        return false
+    }
 }
 
 extension TimerDescriptionFieldHandler.State {
@@ -157,70 +172,5 @@ extension TimerDescriptionFieldHandler.State {
         default:
             return false
         }
-    }
-}
-
-private extension String {
-
-    func findTokenAndQueryMatchesForAutocomplete(
-        _ token: Character,
-        _ cursorPosition: Int
-    ) -> (Character?, String) {
-        return findTokenAndQueryMatchesForAutocomplete([token], cursorPosition)
-    }
-
-    func findTokenAndQueryMatchesForAutocomplete(
-        _ tokens: [Character],
-        _ cursorPosition: Int
-    ) -> (Character?, String) {
-
-        do {
-            let joinedTokens = tokens.map { String($0) }.joined(separator: "|")
-            let regex = try NSRegularExpression(pattern: "(^| )(\(joinedTokens))")
-            let searchRange = startIndex..<index(startIndex, offsetBy: cursorPosition.clamp(min: 0, max: self.count))
-            let matches = regex.matches(in: self, range: NSRange(searchRange, in: self))
-
-            guard let match = matches.last else { return (nil, self) }
-
-            let queryStart = index(startIndex, offsetBy: match.range.lowerBound)
-            let matchSubstring = self[queryStart..<endIndex]
-            let matchedTheFirstWord = tokens.contains { matchSubstring.starts(with: String($0)) }
-            let queryWithToken = String(matchedTheFirstWord ? matchSubstring : matchSubstring.dropFirst())
-
-            let token = queryWithToken.first
-            let query = String(queryWithToken.dropFirst())
-
-            return (token, query)
-
-        } catch {
-            return (nil, "")
-        }
-    }
-
-    static func matches(for regex: String, in text: String) -> [String] {
-
-        do {
-            let regex = try NSRegularExpression(pattern: regex)
-            let results = regex.matches(in: text,
-                                        range: NSRange(text.startIndex..., in: text))
-            return results.map {
-                String(text[Range($0.range, in: text)!])
-            }
-        } catch let error {
-            print("invalid regex: \(error.localizedDescription)")
-            return []
-        }
-    }
-}
-
-private extension Comparable {
-    func clamp(min: Self, max: Self) -> Self {
-        if self > max {
-            return max
-        } else if self < min {
-            return min
-        }
-
-        return self
     }
 }

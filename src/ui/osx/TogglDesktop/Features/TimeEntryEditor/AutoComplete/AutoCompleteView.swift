@@ -231,9 +231,7 @@ extension AutoCompleteView {
                 }
 
                 // Only focus to create button if the view is expaned
-                let isAutoCompleteTextFieldExpanded = strongSelf.dataSource?.autoCompleteTextField?.state == .expand
-                let isDefaultTextFieldVisible = !strongSelf.isSearchFieldHidden
-                if isAutoCompleteTextFieldExpanded || isDefaultTextFieldVisible {
+                if strongSelf.window?.isVisible == true {
                     strongSelf.window?.makeKeyAndOrderFront(nil)
                     strongSelf.window?.makeFirstResponder(strongSelf.createNewItemBtn)
                     return true
