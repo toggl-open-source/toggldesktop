@@ -49,9 +49,6 @@ class TimerViewController: NSViewController {
         static let projectShortcutSymbol = "@"
         static let tagShortcutSymbol = "#"
         static let autocompleteLengthTriggerCount = 2
-
-        static let descriptionDropdownOffset = NSPoint(x: 8, y: 6)
-        static let buttonsDropdownOffset = NSPoint(x: 0, y: 2)
     }
 
     // MARK: - Outlets
@@ -170,7 +167,8 @@ class TimerViewController: NSViewController {
         }
 
         viewModel.onProjectSelected = { [unowned self] project in
-            if self.isEditingDescription {
+            let isDescriptionShortcutSelection = self.isEditingDescription && self.view.window?.isKeyWindow == true
+            if isDescriptionShortcutSelection {
                 self.descriptionFieldHandler.didSelectProject()
             } else {
                 self.closeProjectAutoComplete()
@@ -238,7 +236,7 @@ class TimerViewController: NSViewController {
         if wasNotClosedJustNow {
             projectAutoCompleteView.isSearchFieldHidden = false
             projectAutoCompleteView.filter(with: "")
-            presentProjectAutoComplete(from: projectButton, offset: Constants.buttonsDropdownOffset)
+            presentProjectAutoComplete(from: .button(projectButton))
         } else {
             // returning state back to normal if click is not handled
             projectButton.controlState = .normal
@@ -254,7 +252,7 @@ class TimerViewController: NSViewController {
         let wasNotClosedJustNow = (Date().timeIntervalSince1970 - tagsAutocompleteResignTime) > 0.5
 
         if wasNotClosedJustNow {
-            presentTagsAutoComplete()
+            presentTagsAutoComplete(from: .button(tagsButton))
         } else {
             // returning state back to normal if click is not handled
             tagsButton.controlState = .normal
@@ -305,9 +303,7 @@ class TimerViewController: NSViewController {
         case .projectFilter(let filterText):
             if projectAutoCompleteWindow.isVisible == false {
                 projectAutoCompleteView.isSearchFieldHidden = true
-                presentProjectAutoComplete(from: descriptionTextField,
-                                           makeKey: false,
-                                           offset: Constants.descriptionDropdownOffset)
+                presentProjectAutoComplete(from: .textField(descriptionTextField))
             }
             projectAutoCompleteView.filter(with: String(filterText))
 
@@ -419,33 +415,28 @@ class TimerViewController: NSViewController {
 
     // MARK: - Autocomplete/Dropdown
 
-    private func presentProjectAutoComplete(from: NSView, makeKey: Bool = true, offset: NSPoint = .zero) {
+    private func presentProjectAutoComplete(from: AutocompleteSourceViewType) {
         presentAutoComplete(window: projectAutoCompleteWindow,
                             withContentView: projectAutoCompleteView,
-                            fromView: from,
-                            makeKey: makeKey,
-                            offset: offset)
+                            from: from)
         viewModel.projectDataSource.sizeToFit()
     }
 
-    private func presentTagsAutoComplete() {
+    private func presentTagsAutoComplete(from: AutocompleteSourceViewType) {
         presentAutoComplete(window: tagsAutoCompleteWindow,
                             withContentView: tagsAutoCompleteView,
-                            fromView: tagsButton,
-                            offset: Constants.buttonsDropdownOffset)
+                            from: from)
         viewModel.tagsDataSource.sizeToFit()
     }
 
     private func presentAutoComplete(window: AutoCompleteViewWindow,
                                      withContentView contentView: AutoCompleteView,
-                                     fromView: NSView,
-                                     makeKey: Bool = true,
-                                     offset: NSPoint = .zero) {
+                                     from: AutocompleteSourceViewType) {
         window.contentView = contentView
         window.setContentSize(contentView.frame.size)
 
         if !window.isVisible {
-            let windowRect = autoCompleteWindowRect(fromView: fromView, offset: offset)
+            let windowRect = autoCompleteWindowRect(fromView: from.sourceView, offset: from.offset)
             window.setFrame(windowRect, display: false)
             window.setFrameTopLeftPoint(windowRect.origin)
 
@@ -453,7 +444,7 @@ class TimerViewController: NSViewController {
                 view.window?.addChildWindow(window, ordered: .above)
             }
 
-            if makeKey {
+            if from.makeWindowKey {
                 window.makeKeyAndOrderFront(nil)
                 window.makeFirstResponder(contentView)
             }
@@ -582,16 +573,17 @@ extension TimerViewController: AutoCompleteViewDelegate {
         projectCreationView.setTimeEntry(guid: viewModel.timeEntryGUID,
                                          workspaceID: viewModel.workspaceID,
                                          isBillable: viewModel.billableState == .on)
-        updateProjectAutocompleteWindowContent(with: projectCreationView, height: projectCreationView.suitableHeight)
+        updateProjectAutocompleteWindowContent(with: projectCreationView)
         projectCreationView.setTitleAndFocus(projectAutoCompleteView.defaultTextField.stringValue)
     }
 
-    private func updateProjectAutocompleteWindowContent(with view: NSView, height: CGFloat) {
+    private func updateProjectAutocompleteWindowContent(with view: NSView) {
         projectAutoCompleteWindow.contentView = view
 
+        let prevFrame = projectAutoCompleteWindow.frame
         let windowRect = autoCompleteWindowRect(fromView: projectButton)
         projectAutoCompleteWindow.setFrame(windowRect, display: false)
-        projectAutoCompleteWindow.setFrameTopLeftPoint(windowRect.origin)
+        projectAutoCompleteWindow.setFrameTopLeftPoint(NSPoint(x: prevFrame.minX, y: prevFrame.maxY))
 
         projectAutoCompleteWindow.makeKey()
     }
@@ -617,6 +609,6 @@ extension TimerViewController: ProjectCreationViewDelegate {
     }
 
     func projectCreationDidUpdateSize() {
-        updateProjectAutocompleteWindowContent(with: projectCreationView, height: projectCreationView.suitableHeight)
+        updateProjectAutocompleteWindowContent(with: projectCreationView)
     }
 }
