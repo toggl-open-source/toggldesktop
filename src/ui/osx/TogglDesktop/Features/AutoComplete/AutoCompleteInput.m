@@ -212,8 +212,6 @@ static CGFloat dropdownHorizontalPadding = 11;
 	{
 		self.autocompleteTableContainer.hidden = NO;
 		self.backgroundView.hidden = NO;
-		[[self currentEditor] setSelectedRange:NSMakeRange(0, 0)];
-		[[self currentEditor] moveToEndOfLine:nil];
 		if (self.actionButton != nil)
 		{
 			[self.actionButton setTitle:upArrow];
