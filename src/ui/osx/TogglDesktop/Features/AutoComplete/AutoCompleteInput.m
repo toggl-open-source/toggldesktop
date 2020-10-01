@@ -30,6 +30,7 @@ static CGFloat dropdownHorizontalPadding = 11;
 @property (assign, nonatomic) CGFloat totalHeight;
 @property (assign, nonatomic) CGFloat itemHeight;
 @property (assign, nonatomic) CGFloat worksapceItemHeight;
+@property (nonatomic, readwrite) BOOL isListHidden;
 @end
 
 @implementation AutoCompleteInput
@@ -90,6 +91,7 @@ static CGFloat dropdownHorizontalPadding = 11;
 	[self.autocompleteTableContainer setAutohidesScrollers:YES];
 	[self.autocompleteTableContainer setHasVerticalScroller:YES];
 	[self.autocompleteTableContainer setHidden:YES];
+	self.isListHidden = YES;
 
 	self.autocompleteTableContainer.translatesAutoresizingMaskIntoConstraints = NO;
 }
@@ -172,7 +174,7 @@ static CGFloat dropdownHorizontalPadding = 11;
 {
 	if (isOn)
 	{
-		if (self.autocompleteTableContainer.hidden)
+		if (self.autocompleteTableContainer.hidden && self.totalHeight > 0)
 		{
 			[self addAutocompleteContainerIfNeed];
 			[self addBackgroundViewIfNeed];
@@ -228,6 +230,7 @@ static CGFloat dropdownHorizontalPadding = 11;
 	}
 	[self.autocompleteTableContainer setHidden:!show];
 	[self.autocompleteTableView setHidden:!show];
+	self.isListHidden = !show;
 }
 
 - (BOOL)becomeFirstResponder
@@ -292,8 +295,8 @@ static CGFloat dropdownHorizontalPadding = 11;
 	CGFloat totalHeight = [self calculateTotalHeightFromArray:array];
 
 	[self.autocompleteTableView reloadData];
-	[self toggleList:array.count > 0];
 	[self updateDropdownWithHeight:totalHeight];
+	[self toggleList:array.count > 0];
 }
 
 @end

@@ -23,8 +23,6 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
         case autocompleteFilter(String)
     }
 
-    private let textField: NSTextField
-
     private(set) var state: State = .descriptionUpdate {
         didSet {
             onStateChanged?(state, oldValue)
@@ -50,10 +48,14 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
     /// Closure must return `true` if action was handled.
     var onPerformAction: (Action) -> Bool = { _ in return false }
 
-    init(textField: NSTextField) {
+    private let textField: AutoCompleteInput
+    private var kvoToken: NSKeyValueObservation?
+
+    init(textField: AutoCompleteInput) {
         self.textField = textField
         super.init()
         self.textField.delegate = self
+        observeTextField()
     }
 
     required init?(coder: NSCoder) {
@@ -92,6 +94,17 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
         }
     }
 
+    private func observeTextField() {
+        kvoToken = textField.observe(\.isListHidden) { [weak self] textField, _ in
+            guard let self = self else { return }
+            // changin state to default if it was .autocompleteFilter before
+            // and list was closed, e.g. by clicking on dimming background
+            if case .autocompleteFilter = self.state, textField.isListHidden {
+                self.state = .descriptionUpdate
+            }
+        }
+    }
+
     // MARK: NSTextFieldDelegate
 
     func controlTextDidChange(_ obj: Notification) {
@@ -105,7 +118,7 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
         switch (token, query) {
         case (Constants.projectToken, _):
             state = .projectFilter(query)
-        case (nil, query) where query.count >= Constants.autoCompleteMinFilterLength:
+        case (nil, query):
             state = .autocompleteFilter(query)
         default:
             state = .descriptionUpdate
@@ -178,14 +191,12 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
     }
 
     private func descriptionSimpleControl(doCommandBy commandSelector: Selector) -> Bool {
-        // TODO: discuss if we need this
-        // if yes, then `autoCompleteMinFilterLength` seems to conflict with it
-//        if commandSelector == #selector(moveDown(_:)) {
-//            viewModel.filterAutocomplete(with: descriptionTextField.stringValue)
-//            descriptionTextField.toggleList(true)
-//            return true
-//        }
-        if commandSelector == #selector(insertNewline(_:)) {
+        if commandSelector == #selector(moveDown(_:)) {
+            state = .autocompleteFilter(textField.stringValue)
+            textField.toggleList(true)
+            return true
+
+        } else if commandSelector == #selector(insertNewline(_:)) {
             _ = onPerformAction(.unfocus)
             _ = onPerformAction(.startTimeEntry)
             state = .descriptionUpdate
