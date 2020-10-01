@@ -91,9 +91,7 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
             // moving cursor to the previous shortcut position
             editor.selectedRange = NSRange(location: shortcutLocation, length: 0)
 
-            // force calling delegate method because the text was changed by us
-            // and text field doesn't handle this
-            controlTextDidChange(Notification(name: NSControl.textDidChangeNotification, object: textField, userInfo: nil))
+            state = .descriptionUpdate
         }
     }
 
