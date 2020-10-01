@@ -24,7 +24,7 @@ jobs:
       matrix:
         # Override automatic language detection by changing the below list
         # Supported options are ['csharp', 'cpp', 'go', 'java', 'javascript', 'python']
-        language: ['cpp', 'csharp', 'go']
+        language: ['cpp']
         # Learn more...
         # https://docs.github.com/en/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#overriding-automatic-language-detection
 
@@ -51,10 +51,20 @@ jobs:
         # Prefix the list here with "+" to use these queries and those in the config file.
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 qt5-default libqt5gui5 libqt5printsupport5 libqt5quickwidgets5 libqt5x11extras5 libqt5networkauth5 libxss1
+        sudo apt install patchelf binutils cmake pkg-config qtbase5-dev libqt5x11extras5-dev qtbase5-private-dev libqt5networkauth5-dev libssl-dev libxss-dev libxmu-dev
+
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+    - name: Build
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        make -j2
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl
