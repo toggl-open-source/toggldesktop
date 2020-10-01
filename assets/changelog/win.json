@@ -1,6 +1,16 @@
 {
     "versions": [
         {
+            "version": "7.5.295",
+            "rows": [
+                "Change application icon",
+                "Add possibility to ignore certificate verification"
+            ],
+            "date": "October 1st 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.282",
             "rows": [
                 "Add client name to recent time entries autocomplete",
