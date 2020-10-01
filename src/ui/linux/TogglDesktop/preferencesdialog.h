@@ -5,6 +5,7 @@
 
 #include <QDialog>
 #include <QKeyEvent>
+#include <QCheckBox>
 #include "./settingsview.h"
 
 namespace Ui {
@@ -22,6 +23,10 @@ class PreferencesDialog : public QDialog {
     Ui::PreferencesDialog *ui;
     int keyId;
     QString keySequence;
+    uint8_t beginningOfWeek { 0 };
+
+    QCheckBox *checkBoxForDay(uint8_t day);
+    void setBeginningOfWeek(uint8_t day);
 
     bool setSettings();
     bool setProxySettings();
@@ -65,6 +70,7 @@ class PreferencesDialog : public QDialog {
 
     void updateShowHideShortcut();
     void updateContinueStopShortcut();
+    void updateCheckboxLabels();
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_PREFERENCESDIALOG_H_

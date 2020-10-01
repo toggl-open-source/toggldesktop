@@ -812,3 +812,7 @@ void TogglApi::setWindowsFrameSetting(const QRect frame) {
                               frame.height(),
                               frame.width());
 }
+
+uint8_t TogglApi::getUserBeginningOfWeek() {
+    return toggl_get_user_beginning_of_week(ctx);
+}
