@@ -51,6 +51,9 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
     private let textField: AutoCompleteInput
     private var kvoToken: NSKeyValueObservation?
 
+    #warning("Set `isProjectDropdownAvailable` to `true` to enable Project @ Shortcut feature")
+    private let isProjectDropdownAvailable = false
+
     init(textField: AutoCompleteInput) {
         self.textField = textField
         super.init()
@@ -113,7 +116,13 @@ class TimerDescriptionFieldHandler: NSResponder, NSTextFieldDelegate {
         let text = editor.string
         let cursorLocation = editor.selectedRange.location
 
-        let (token, query) = text.findTokenAndQueryMatchesForAutocomplete([Constants.projectToken], cursorLocation)
+        let (token, query): (Character?, String)
+
+        if isProjectDropdownAvailable {
+            (token, query) = text.findTokenAndQueryMatchesForAutocomplete([Constants.projectToken], cursorLocation)
+        } else {
+            (token, query) = (nil, text)
+        }
 
         switch (token, query) {
         case (Constants.projectToken, _):
