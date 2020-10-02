@@ -32,17 +32,30 @@ class TimerViewController: NSViewController {
     private var tagsAutocompleteDidResignObserver: Any?
     private var tagsAutocompleteResignTime: TimeInterval = 0
 
-    private static let emptyProjectButtonTooltip = NSLocalizedString("Select project", comment: "Tooltip for timer project button")
-    private static let emptyTagsButtonTooltip = NSLocalizedString("Select tags", comment: "Tooltip for timer tags button")
-    private static let billableOnTooltip = NSLocalizedString("Billable", comment: "Tooltip for timer billable button when On")
-    private static let billableOffTooltip = NSLocalizedString("Non-billable", comment: "Tooltip for timer billable button when Off")
-    private static let billableUnavailableTooltip = NSLocalizedString("Billable rates is not on your plan",
-                                                                      comment: "Tooltip for timer billable button when disabled")
+    private var descriptionFieldHandler: TimerDescriptionFieldHandler!
+
+    private var isEditingDescription: Bool {
+        descriptionTextField.currentEditor() != nil
+    }
+
+    private enum Constants {
+        static let emptyProjectButtonTooltip = NSLocalizedString("Select project", comment: "Tooltip for timer project button")
+        static let emptyTagsButtonTooltip = NSLocalizedString("Select tags", comment: "Tooltip for timer tags button")
+        static let billableOnTooltip = NSLocalizedString("Billable", comment: "Tooltip for timer billable button when On")
+        static let billableOffTooltip = NSLocalizedString("Non-billable", comment: "Tooltip for timer billable button when Off")
+        static let billableUnavailableTooltip = NSLocalizedString("Billable rates is not on your plan",
+                                                                  comment: "Tooltip for timer billable button when disabled")
+    }
 
     // MARK: - Outlets
 
+    @IBOutlet weak var descriptionTextField: ResponderAutoCompleteInput! {
+        didSet {
+            descriptionFieldHandler = TimerDescriptionFieldHandler(textField: descriptionTextField)
+        }
+    }
+
     @IBOutlet weak var startButton: NSHoverButton!
-    @IBOutlet weak var descriptionTextField: ResponderAutoCompleteInput!
     @IBOutlet weak var descriptionContainerBox: TimerContainerBox!
     @IBOutlet weak var durationContainerBox: TimerContainerBox!
     @IBOutlet weak var durationTextField: ResponderTextField!
@@ -55,8 +68,7 @@ class TimerViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        descriptionTextField.displayMode = .fullscreen
-        descriptionTextField.responderDelegate = descriptionContainerBox
+        setupDescriptionField()
 
         durationTextField.responderDelegate = durationContainerBox
 
@@ -70,7 +82,7 @@ class TimerViewController: NSViewController {
         setupBindings()
 
         viewModel.isEditingDescription = { [weak self] in
-            self?.descriptionTextField.currentEditor() != nil
+            return self?.isEditingDescription == true
         }
 
         viewModel.isEditingDuration = { [weak self] in
@@ -131,7 +143,7 @@ class TimerViewController: NSViewController {
 
         viewModel.onTagSelected = { [unowned self] isSelected in
             self.tagsButton.isSelected = isSelected
-            self.tagsButton.toolTip = isSelected ? nil : Self.emptyTagsButtonTooltip
+            self.tagsButton.toolTip = isSelected ? nil : Constants.emptyTagsButtonTooltip
         }
 
         viewModel.onProjectUpdated = { [unowned self] project in
@@ -145,13 +157,18 @@ class TimerViewController: NSViewController {
                 self.projectButton.title = ""
                 self.projectButton.image = NSImage(named: "project-button")
                 self.projectButton.isSelected = false
-                self.projectButton.toolTip = Self.emptyProjectButtonTooltip
+                self.projectButton.toolTip = Constants.emptyProjectButtonTooltip
             }
             self.setupProjectButtonContextMenu()
         }
 
         viewModel.onProjectSelected = { [unowned self] project in
-            self.closeProjectAutoComplete()
+            switch self.descriptionFieldHandler.state {
+            case .projectFilter:
+                self.descriptionFieldHandler.didSelectProject()
+            default:
+                self.closeProjectAutoComplete()
+            }
         }
 
         viewModel.onBillableChanged = { [unowned self] billable in
@@ -160,11 +177,11 @@ class TimerViewController: NSViewController {
 
             switch billable {
             case .on:
-                self.billableButton.toolTip = Self.billableOnTooltip
+                self.billableButton.toolTip = Constants.billableOnTooltip
             case .off:
-                self.billableButton.toolTip = Self.billableOffTooltip
+                self.billableButton.toolTip = Constants.billableOffTooltip
             case .unavailable:
-                self.billableButton.toolTip = Self.billableUnavailableTooltip
+                self.billableButton.toolTip = Constants.billableUnavailableTooltip
             }
 
             // billable button is excluded from key view loop when disabled
@@ -213,7 +230,9 @@ class TimerViewController: NSViewController {
         let wasNotClosedJustNow = (Date().timeIntervalSince1970 - projectAutocompleteResignTime) > 0.5
 
         if wasNotClosedJustNow {
-            presentProjectAutoComplete()
+            projectAutoCompleteView.isSearchFieldHidden = false
+            projectAutoCompleteView.filter(with: "")
+            presentProjectAutoComplete(from: .button(projectButton))
         } else {
             // returning state back to normal if click is not handled
             projectButton.controlState = .normal
@@ -229,7 +248,7 @@ class TimerViewController: NSViewController {
         let wasNotClosedJustNow = (Date().timeIntervalSince1970 - tagsAutocompleteResignTime) > 0.5
 
         if wasNotClosedJustNow {
-            presentTagsAutoComplete()
+            presentTagsAutoComplete(from: .button(tagsButton))
         } else {
             // returning state back to normal if click is not handled
             tagsButton.controlState = .normal
@@ -240,83 +259,94 @@ class TimerViewController: NSViewController {
         viewModel.setBillable(!billableButton.isSelected)
     }
 
-    func controlTextDidChange(_ obj: Notification) {
-        if let textField = obj.object as? AutoCompleteInput, textField == descriptionTextField {
-            viewModel.setDescription(textField.stringValue)
-        }
-    }
-
-    func controlTextDidEndEditing(_ obj: Notification) {
-        if let textField = obj.object as? AutoCompleteInput, textField == descriptionTextField {
-            viewModel.descriptionDidEndEditing()
-        } else if let textField = obj.object as? NSTextField, textField == durationTextField {
-            viewModel.setDuration(textField.stringValue)
-        }
-    }
-
-    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        if textView == descriptionTextField.currentEditor() {
-            return descriptionControl(doCommandBy: commandSelector)
-        } else if textView == durationTextField.currentEditor() {
-            return durationControl(doCommandBy: commandSelector)
-        } else {
-            return false
-        }
-    }
-
-    private func descriptionControl(doCommandBy commandSelector: Selector) -> Bool {
-        var isHandled = false
-
-        if commandSelector == #selector(moveDown(_:)) {
-            descriptionTextField.autocompleteTableView.nextItem()
-        } else if commandSelector == #selector(moveUp(_:)) {
-            descriptionTextField.autocompleteTableView.previousItem()
-        } else if commandSelector == #selector(insertTab(_:)) {
-            // set data according to selected item
-            let lastSelectedIndex = descriptionTextField.autocompleteTableView.lastSelected
-            if lastSelectedIndex >= 0 {
-                let success = viewModel.selectDescriptionAutoCompleteItem(at: lastSelectedIndex)
-                if success {
-                    return true
-                }
-            } else {
-                descriptionTextField.resetTable()
-                return false
-            }
-        } else if commandSelector == #selector(insertNewline(_:)) {
-            // avoid firing default Enter actions
-            isHandled = true
-            let lastSelectedIndex = descriptionTextField.autocompleteTableView.lastSelected
-            if lastSelectedIndex >= 0 {
-                let success = viewModel.selectDescriptionAutoCompleteItem(at: lastSelectedIndex)
-                if !success {
-                    return isHandled
-                }
-            }
-            if !viewModel.isRunning {
-                viewModel.startStopAction()
-            }
-            view.window?.makeFirstResponder(nil)
-            descriptionTextField.resetTable()
-        }
-
-        return isHandled
-    }
-
-    private func durationControl(doCommandBy commandSelector: Selector) -> Bool {
-        if commandSelector == #selector(insertNewline(_:)) {
-            view.window?.makeFirstResponder(nil)
-            if !viewModel.isRunning {
-                viewModel.startStopAction()
-            }
-        }
-
-        return false
-    }
-
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
         view.window?.makeFirstResponder(nil)
+    }
+
+    // MARK: - Description field handling
+
+    private func setupDescriptionField() {
+        descriptionTextField.displayMode = .fullscreen
+        descriptionTextField.responderDelegate = descriptionContainerBox
+        descriptionTextField.delegate = descriptionFieldHandler
+
+        descriptionFieldHandler.onStateChanged = { [weak self] newState, oldState in
+            self?.handleDescriptionFieldStateChange(from: oldState, to: newState)
+        }
+
+        descriptionFieldHandler.onPerformAction = { [weak self] action in
+            return self?.handleDescriptionFieldAction(action) ?? false
+        }
+    }
+
+    private func handleDescriptionFieldStateChange(from oldState: TimerDescriptionFieldHandler.State,
+                                                   to newState: TimerDescriptionFieldHandler.State) {
+
+        if newState.equalCase(to: oldState) == false {
+            resetFromDescriptionFieldState(oldState)
+        }
+
+        // view model needs to save description in any case
+        viewModel.setDescription(descriptionTextField.stringValue)
+
+        switch newState {
+        case .descriptionUpdate:
+            break
+
+        case .projectFilter(let filterText):
+            if projectAutoCompleteWindow.isVisible == false {
+                projectAutoCompleteView.isSearchFieldHidden = true
+                presentProjectAutoComplete(from: .textField(descriptionTextField))
+            }
+            projectAutoCompleteView.filter(with: String(filterText))
+
+        case .autocompleteFilter(let filterText):
+            viewModel.filterAutocomplete(with: filterText)
+        }
+    }
+
+    private func resetFromDescriptionFieldState(_ state: TimerDescriptionFieldHandler.State) {
+        switch state {
+        case .autocompleteFilter:
+            descriptionTextField.resetTable()
+        case .projectFilter:
+            closeProjectAutoComplete()
+        case .descriptionUpdate:
+            break
+        }
+    }
+
+    private func handleDescriptionFieldAction(_ action: TimerDescriptionFieldHandler.Action) -> Bool {
+        switch action {
+        case .startTimeEntry:
+            if !viewModel.isRunning {
+                viewModel.startStopAction()
+            }
+
+        case .endEditing:
+            viewModel.descriptionDidEndEditing()
+
+        case .unfocus:
+            view.window?.makeFirstResponder(nil)
+
+        case .projectAutoCompleteTableHandleEvent(let event):
+            _ = projectAutoCompleteView.tableView?.handleKeyboardEvent(event)
+
+        case .autoCompleteTableSelectNext:
+            descriptionTextField.autocompleteTableView.nextItem()
+
+        case .autoCompleteTableSelectPrevious:
+            descriptionTextField.autocompleteTableView.previousItem()
+
+        case .autoCompleteSelectCurrent:
+            let lastSelectedIndex = descriptionTextField.autocompleteTableView.lastSelected
+            if lastSelectedIndex >= 0 {
+                _ = viewModel.selectDescriptionAutoCompleteItem(at: lastSelectedIndex)
+            }
+        }
+
+        return true
     }
 
     // MARK: - UI
@@ -332,9 +362,9 @@ class TimerViewController: NSViewController {
 
         startButton.hoverImage = NSImage(named: "start-timer-button-hover")
 
-        projectButton.toolTip = Self.emptyProjectButtonTooltip
-        tagsButton.toolTip = Self.emptyTagsButtonTooltip
-        billableButton.toolTip = Self.billableOffTooltip
+        projectButton.toolTip = Constants.emptyProjectButtonTooltip
+        tagsButton.toolTip = Constants.emptyTagsButtonTooltip
+        billableButton.toolTip = Constants.billableOffTooltip
     }
 
     private func setupProjectButtonContextMenu() {
@@ -379,45 +409,54 @@ class TimerViewController: NSViewController {
 
     // MARK: - Autocomplete/Dropdown
 
-    private func presentProjectAutoComplete() {
-        let fromPoint = NSPoint(x: projectButton.frame.minX, y: projectButton.frame.maxY)
-        presentAutoComplete(window: projectAutoCompleteWindow, withContentView: projectAutoCompleteView, fromPoint: fromPoint)
+    private func presentProjectAutoComplete(from: AutocompleteSourceViewType) {
+        presentAutoComplete(window: projectAutoCompleteWindow,
+                            withContentView: projectAutoCompleteView,
+                            from: from)
         viewModel.projectDataSource.sizeToFit()
     }
 
-    private func presentTagsAutoComplete() {
-        let fromPoint = NSPoint(x: tagsButton.frame.minX, y: tagsButton.frame.maxY)
-        presentAutoComplete(window: tagsAutoCompleteWindow, withContentView: tagsAutoCompleteView, fromPoint: fromPoint)
+    private func presentTagsAutoComplete(from: AutocompleteSourceViewType) {
+        presentAutoComplete(window: tagsAutoCompleteWindow,
+                            withContentView: tagsAutoCompleteView,
+                            from: from)
         viewModel.tagsDataSource.sizeToFit()
     }
 
-    private func presentAutoComplete(window: AutoCompleteViewWindow, withContentView contentView: AutoCompleteView, fromPoint: NSPoint) {
+    private func presentAutoComplete(window: AutoCompleteViewWindow,
+                                     withContentView contentView: AutoCompleteView,
+                                     from: AutocompleteSourceViewType) {
         window.contentView = contentView
         window.setContentSize(contentView.frame.size)
 
         if !window.isVisible {
-            let windowRect = autoCompleteWindowRect(fromPoint: fromPoint)
+            let windowRect = autoCompleteWindowRect(fromView: from.sourceView, offset: from.offset)
             window.setFrame(windowRect, display: false)
             window.setFrameTopLeftPoint(windowRect.origin)
 
             if view.window != window {
                 view.window?.addChildWindow(window, ordered: .above)
             }
-            window.makeKeyAndOrderFront(nil)
-            window.makeFirstResponder(contentView)
+
+            if from.makeWindowKey {
+                window.makeKeyAndOrderFront(nil)
+                window.makeFirstResponder(contentView)
+            }
         }
 
         _ = contentView.defaultTextField.becomeFirstResponder()
     }
 
-    private func autoCompleteWindowRect(fromPoint: NSPoint) -> NSRect {
+    private func autoCompleteWindowRect(fromView: NSView, offset: NSPoint = .zero) -> NSRect {
         let padding: CGFloat = 6
         // passing random height value as it should be updated with to its content size later
         let initialHeight: CGFloat = 100
         let windowSize = NSSize(width: view.frame.width - padding * 2, height: initialHeight)
         var rect = NSRect(origin: .zero, size: windowSize)
 
-        let windowPoint = projectButton.convert(fromPoint, to: nil)
+        let fromPoint = NSPoint(x: fromView.bounds.minX + offset.x,
+                                y: fromView.bounds.maxY + offset.y)
+        let windowPoint = fromView.convert(fromPoint, to: nil)
         var screenPoint = CGPoint.zero
         if #available(OSX 10.12, *) {
             screenPoint = view.window?.convertPoint(toScreen: windowPoint) ?? .zero
@@ -457,6 +496,7 @@ class TimerViewController: NSViewController {
         projectAutoCompleteWindow.cancel()
         projectButton.controlState = .normal
         projectAutoCompleteView.clean()
+        descriptionFieldHandler.didCloseProjectDropdown()
     }
 
     private func closeTagsAutoComplete() {
@@ -476,7 +516,31 @@ class TimerViewController: NSViewController {
 // MARK: - NSTextFieldDelegate
 
 extension TimerViewController: NSTextFieldDelegate {
-    //
+
+    func controlTextDidEndEditing(_ obj: Notification) {
+        if let textField = obj.object as? NSTextField, textField == durationTextField {
+            viewModel.setDuration(textField.stringValue)
+        }
+    }
+
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        if textView == durationTextField.currentEditor() {
+            return durationControl(doCommandBy: commandSelector)
+        } else {
+            return false
+        }
+    }
+
+    private func durationControl(doCommandBy commandSelector: Selector) -> Bool {
+        if commandSelector == #selector(insertNewline(_:)) {
+            view.window?.makeFirstResponder(nil)
+            if !viewModel.isRunning {
+                viewModel.startStopAction()
+            }
+        }
+
+        return false
+    }
 }
 
 // MARK: - AutoCompleteViewDelegate
@@ -503,17 +567,24 @@ extension TimerViewController: AutoCompleteViewDelegate {
         projectCreationView.setTimeEntry(guid: viewModel.timeEntryGUID,
                                          workspaceID: viewModel.workspaceID,
                                          isBillable: viewModel.billableState == .on)
-        updateProjectAutocompleteWindowContent(with: projectCreationView, height: projectCreationView.suitableHeight)
-        projectCreationView.setTitleAndFocus(projectAutoCompleteView.defaultTextField.stringValue)
+        updateProjectAutocompleteWindowContent(with: projectCreationView)
+
+        switch descriptionFieldHandler.state {
+        case .projectFilter(let filter):
+            projectCreationView.setTitleAndFocus(filter)
+        default:
+            projectCreationView.setTitleAndFocus(projectAutoCompleteView.defaultTextField.stringValue)
+        }
     }
 
-    private func updateProjectAutocompleteWindowContent(with view: NSView, height: CGFloat) {
+    private func updateProjectAutocompleteWindowContent(with view: NSView) {
+        let prevFrame = projectAutoCompleteWindow.frame
+
         projectAutoCompleteWindow.contentView = view
 
-        let fromPoint = NSPoint(x: projectButton.frame.minX, y: projectButton.frame.maxY)
-        let windowRect = autoCompleteWindowRect(fromPoint: fromPoint)
+        let windowRect = autoCompleteWindowRect(fromView: projectButton)
         projectAutoCompleteWindow.setFrame(windowRect, display: false)
-        projectAutoCompleteWindow.setFrameTopLeftPoint(windowRect.origin)
+        projectAutoCompleteWindow.setFrameTopLeftPoint(NSPoint(x: prevFrame.minX, y: prevFrame.maxY))
 
         projectAutoCompleteWindow.makeKey()
     }
@@ -532,13 +603,18 @@ extension TimerViewController: ProjectCreationViewDelegate {
     }
 
     func projectCreationDidAdd(with name: String, color: String, projectGUID: String) {
-        closeProjectAutoComplete()
+        switch descriptionFieldHandler.state {
+        case .projectFilter:
+            descriptionFieldHandler.didSelectProject()
+        default:
+            closeProjectAutoComplete()
+        }
 
         // TODO: set project on UI
         // problem is we don't have library method to get project by GUID and pass it to view model
     }
 
     func projectCreationDidUpdateSize() {
-        updateProjectAutocompleteWindowContent(with: projectCreationView, height: projectCreationView.suitableHeight)
+        updateProjectAutocompleteWindowContent(with: projectCreationView)
     }
 }

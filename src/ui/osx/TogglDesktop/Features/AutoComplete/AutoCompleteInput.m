@@ -195,42 +195,6 @@ static CGFloat dropdownHorizontalPadding = 11;
 	self.dropdownHeightConstraint.constant = MIN(height, maxAllowedHeight);
 }
 
-- (void)keyUp:(NSEvent *)event
-{
-	// NSLog(@"EventCode: %hu", [event keyCode]);
-	if ([event keyCode] == kVK_DownArrow)
-	{
-		if ([event modifierFlags] & NSShiftKeyMask)
-		{
-			[super keyUp:event];
-			return;
-		}
-		if (self.autocompleteTableContainer.isHidden)
-		{
-			[self toggleTableViewWithNumberOfItem:self.autocompleteTableView.numberOfRows];
-			return;
-		}
-	}
-	else if (event.keyCode == kVK_Escape)
-	{
-		// Hide autocomplete list
-		if (self.autocompleteTableContainer != nil)
-		{
-			[self resetTable];
-			return;
-		}
-	}
-	else if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
-	{
-		if (!self.autocompleteTableView.isHidden)
-		{
-			[self showAutoComplete:NO];
-			return;
-		}
-	}
-	[super keyUp:event];
-}
-
 - (void)hide
 {
 	[self showAutoComplete:NO];
