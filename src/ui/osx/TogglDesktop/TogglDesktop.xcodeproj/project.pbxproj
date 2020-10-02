@@ -610,6 +610,8 @@
 		BAF9364F23E8116900EE1076 /* TimelineResizeHoverController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAF9364E23E8116900EE1076 /* TimelineResizeHoverController.xib */; };
 		BAF9365023E8116900EE1076 /* TimelineResizeHoverController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAF9364E23E8116900EE1076 /* TimelineResizeHoverController.xib */; };
 		BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */ = {isa = PBXBuildFile; fileRef = BAFBFCC721CD1D3C004B443F /* SystemService.m */; };
+		C2060EB8252766FB00959A98 /* TimerDescriptionFieldHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2060EB7252766FB00959A98 /* TimerDescriptionFieldHandlerTests.swift */; };
+		C2060EB9252766FB00959A98 /* TimerDescriptionFieldHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2060EB7252766FB00959A98 /* TimerDescriptionFieldHandlerTests.swift */; };
 		C238D7DF251B7215004EC739 /* TimerDescriptionFieldHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */; };
 		C238D7E0251B7215004EC739 /* TimerDescriptionFieldHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */; };
 		C2A84AE92524668900DAA468 /* Comparable+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A84AE82524668900DAA468 /* Comparable+Utils.swift */; };
@@ -1093,6 +1095,7 @@
 		BAF9364E23E8116900EE1076 /* TimelineResizeHoverController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineResizeHoverController.xib; sourceTree = "<group>"; };
 		BAFBFCC621CD1D3C004B443F /* SystemService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SystemService.h; sourceTree = "<group>"; };
 		BAFBFCC721CD1D3C004B443F /* SystemService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SystemService.m; sourceTree = "<group>"; };
+		C2060EB7252766FB00959A98 /* TimerDescriptionFieldHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDescriptionFieldHandlerTests.swift; sourceTree = "<group>"; };
 		C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDescriptionFieldHandler.swift; sourceTree = "<group>"; };
 		C2A84AE82524668900DAA468 /* Comparable+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Utils.swift"; sourceTree = "<group>"; };
 		C2A84B012524D0ED00DAA468 /* AutocompleteSourceViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteSourceViewType.swift; sourceTree = "<group>"; };
@@ -1501,6 +1504,7 @@
 			isa = PBXGroup;
 			children = (
 				49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */,
+				C2060EB7252766FB00959A98 /* TimerDescriptionFieldHandlerTests.swift */,
 				49D3603C24878FA000527DE8 /* Info.plist */,
 			);
 			path = TogglDesktopTests;
@@ -2822,6 +2826,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2060EB9252766FB00959A98 /* TimerDescriptionFieldHandlerTests.swift in Sources */,
 				49418B4B249CEBA300265665 /* TogglDesktopTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2830,6 +2835,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2060EB8252766FB00959A98 /* TimerDescriptionFieldHandlerTests.swift in Sources */,
 				49D3603B24878FA000527DE8 /* TogglDesktopTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
