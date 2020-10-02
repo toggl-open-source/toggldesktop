@@ -55,8 +55,9 @@ void on_display_online_state(
 }
 
 void on_display_url(
-    const char_t *url) {
-    QDesktopServices::openUrl(QUrl(toQString(url)));
+    const char_t *_url) {
+    QUrl url(toQString(_url));
+    QMetaObject::invokeMethod(DesktopServices::instance(), "openUrl", Q_ARG(QUrl, url));
 }
 
 void on_display_login(

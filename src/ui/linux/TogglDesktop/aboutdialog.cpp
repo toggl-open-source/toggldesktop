@@ -47,7 +47,7 @@ void AboutDialog::displayUpdate(const QString update_url) {
 
 void AboutDialog::on_updateButton_clicked() {
     qDebug() << "on_updateButton_clicked url=" << url;
-    QDesktopServices::openUrl(QUrl(url));
+    QMetaObject::invokeMethod(DesktopServices::instance(), "openUrl", Q_ARG(QUrl, url));
     TogglApi::instance->shutdown = true;
     qApp->exit(0);
 }

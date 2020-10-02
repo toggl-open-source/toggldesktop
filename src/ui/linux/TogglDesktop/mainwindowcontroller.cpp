@@ -26,6 +26,7 @@
 #include "./timerwidget.h"
 #include "./errorviewcontroller.h"
 #include "./timeentrycellwidget.h"
+#include "desktopservices.h"
 
 MainWindowController::MainWindowController(
     QWidget *parent,
@@ -54,6 +55,8 @@ MainWindowController::MainWindowController(
   shortcutGroupClose(QKeySequence(Qt::Key_Left), this),
   ui_started(false) {
     ui->setupUi(this);
+
+    DesktopServices::init(this);
 
     ui->menuBar->setVisible(true);
 
@@ -564,7 +567,7 @@ void MainWindowController::displayUpdate(const QString url) {
         "Download new version?",
         "A new version of Toggl Track is available. Continue with download?",
         QMessageBox::No|QMessageBox::Yes).exec()) {
-        QDesktopServices::openUrl(QUrl(url));
+        QMetaObject::invokeMethod(DesktopServices::instance(), "openUrl", Q_ARG(QUrl, url));
         quitApp();
     }
 }

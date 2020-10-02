@@ -56,7 +56,7 @@ ui(new Ui::LoginWidget) {
     connect(&oauth2, &QAbstractOAuth::authorizeWithBrowser, [=](QUrl url) {
         QUrlQuery query(url);
         url.setQuery(query);
-        QDesktopServices::openUrl(url);
+        QMetaObject::invokeMethod(DesktopServices::instance(), "openUrl", Q_ARG(QUrl, url));
     });
 
     signupVisible = true;
