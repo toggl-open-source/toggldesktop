@@ -1,6 +1,15 @@
 {
     "versions": [
         {
+            "version": "7.5.296",
+            "rows": [
+                "New app icon",
+                "Bug fixes"
+            ],
+            "date": "October 2nd 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.286",
             "rows": [
                 "Fixed Preferences screen layout for macOS Big Sur",
