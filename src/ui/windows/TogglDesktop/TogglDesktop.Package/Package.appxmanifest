@@ -56,6 +56,11 @@
               Enabled="false"
               DisplayName="Toggl Track" />
         </desktop:Extension>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="togglauth" DesiredView="default">
+            <uap:DisplayName>Toggl URI Scheme</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
       </Extensions>
     </Application>
   </Applications>
