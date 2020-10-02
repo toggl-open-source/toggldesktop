@@ -26,6 +26,8 @@ static CGFloat dropdownHorizontalPadding = 11;
 @property (strong, nonatomic) NoInteractionView *backgroundView;
 @property (strong, nonatomic) NSLayoutConstraint *dropdownHeightConstraint;
 @property (strong, nonatomic) NSLayoutConstraint *dropdownWidthConstraint;
+@property (strong, nonatomic) NSLayoutConstraint *dropdownTopConstraint;
+@property (strong, nonatomic) NSLayoutConstraint *backgroundTopConstraint;
 @property (strong, nonatomic) NSButton *actionButton;
 @property (assign, nonatomic) CGFloat totalHeight;
 @property (assign, nonatomic) CGFloat itemHeight;
@@ -99,6 +101,20 @@ static CGFloat dropdownHorizontalPadding = 11;
 	self.autocompleteTableContainer.translatesAutoresizingMaskIntoConstraints = NO;
 }
 
+- (void)updateConstraints
+{
+	// re-activating constraints that may have been deactivated when
+	// autocomplete view was removed from superview (e.g. during logout)
+	if (!self.dropdownTopConstraint.isActive) {
+		self.dropdownTopConstraint.active = YES;
+	}
+	if (!self.backgroundTopConstraint.isActive) {
+		self.backgroundTopConstraint.active = YES;
+	}
+
+	[super updateConstraints];
+}
+
 - (void)addBackgroundViewIfNeed
 {
 	if (self.backgroundView.superview != nil)
@@ -112,10 +128,10 @@ static CGFloat dropdownHorizontalPadding = 11;
 
 		NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:self.backgroundView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.window.contentView attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
 		NSLayoutConstraint *right = [NSLayoutConstraint constraintWithItem:self.backgroundView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.window.contentView attribute:NSLayoutAttributeRight multiplier:1 constant:0];
-		NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.backgroundView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:[self topPaddingForContainer]];
+		self.backgroundTopConstraint = [NSLayoutConstraint constraintWithItem:self.backgroundView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:[self topPaddingForContainer]];
 		NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:self.backgroundView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.window.contentView attribute:NSLayoutAttributeBottom multiplier:1 constant:0];
 
-		[self.window.contentView addConstraints:@[left, right, top, bottom]];
+		[self.window.contentView addConstraints:@[left, right, self.backgroundTopConstraint, bottom]];
 	}
 }
 
@@ -145,7 +161,7 @@ static CGFloat dropdownHorizontalPadding = 11;
 	// Set constraints to input field so autocomplete size is always connected to input
 	NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
 
-	NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:[self topPaddingForContainer]];
+	self.dropdownTopConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:[self topPaddingForContainer]];
 
 	self.dropdownHeightConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0];
 	self.dropdownHeightConstraint.priority = NSLayoutPriorityDefaultHigh;
@@ -156,7 +172,7 @@ static CGFloat dropdownHorizontalPadding = 11;
 	self.dropdownWidthConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeWidth multiplier:1 constant:[self dropdownWidth]];
 	self.dropdownWidthConstraint.priority = NSLayoutPriorityRequired;
 
-	[self.window.contentView addConstraints:@[left, top, self.dropdownHeightConstraint, bottom, self.dropdownWidthConstraint]];
+	[self.window.contentView addConstraints:@[left, self.dropdownTopConstraint, self.dropdownHeightConstraint, bottom, self.dropdownWidthConstraint]];
 }
 
 - (CGFloat)dropdownWidth
