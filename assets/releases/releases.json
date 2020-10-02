@@ -3718,20 +3718,6 @@
     "linux": {
         "dev": [
             {
-                "version": "7.5.247",
-                "timestamp": "13-08-2020",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_5_247.tar.gz"
-                    },
-                    {
-                        "type": "linux_deb64",
-                        "name": "toggldesktop_7.5.247_amd64.deb"
-                    }
-                ]
-            },
-            {
                 "version": "7.5.260",
                 "timestamp": "07-09-2020",
                 "filename": [
@@ -3845,7 +3831,7 @@
             },
             {
                 "version": "7.5.296",
-                "timestamp": "01-10-2020",
+                "timestamp": "02-10-2020",
                 "filename": [
                     {
                         "type": "linux_tar.gz",
