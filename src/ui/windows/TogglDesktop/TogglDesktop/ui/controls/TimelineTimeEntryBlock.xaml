@@ -48,6 +48,21 @@
                                        VerticalAlignment="Center"/>
                             </DockPanel>
                             <TextBlock Text="{Binding ClientName}" Style="{StaticResource Toggl.CaptionText}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                    <Viewbox Visibility="{Binding HasTag, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path Style="{StaticResource Toggl.TagIcon}"/>
+                                    </Viewbox>
+                                    <Viewbox DockPanel.Dock="Left" Visibility="{Binding IsBillable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path Style="{StaticResource Toggl.DollarIcon}"/>
+                                    </Viewbox>
+                                </StackPanel>
+                                <TextBlock Margin="0 0 5 0" Grid.Column="1" DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding Duration}" Style="{StaticResource Toggl.CaptionBlackText}"/>
+                           </Grid>
                         </StackPanel>
                         <Border.Style>
                             <Style TargetType="Border">
