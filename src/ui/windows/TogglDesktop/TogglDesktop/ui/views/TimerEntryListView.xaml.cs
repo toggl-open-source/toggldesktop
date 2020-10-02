@@ -200,7 +200,7 @@ namespace TogglDesktop
         public void DeselectTimeEntries()
         {
             Entries.DeselectCells();
-            Timeline.ViewModel.SelectedTEId = null;
+            Timeline.ViewModel.SelectedForEditTEId = null;
         }
     }
 }

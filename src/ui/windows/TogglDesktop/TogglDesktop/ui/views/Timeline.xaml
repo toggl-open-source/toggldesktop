@@ -145,7 +145,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <GridSplitter Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="1" Background="{DynamicResource Toggl.TimelineSeparatorBrush}"/>
-                    <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=TimeEntryBlocks}" Margin="10 0 0 0">
+                    <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=TimeEntryBlocks}" Margin="10 0 0 0" Name="TimeEntryBlocks">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <Canvas Name="TimeEntryCanvas" />
@@ -154,7 +154,18 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <togglDesktop:TimelineTimeEntryBlock Panel.ZIndex="1" DataContext="{Binding Path=.}"
-                                                                     Width="{Binding ElementName=TimeEntryCanvas, Path=ActualWidth}"/>
+                                                                     MouseEnter="OnTimeEntryBlockMouseEnter"
+                                                                     MouseLeave="OnTimeEntyrBlockMouseLeave">
+                                    <togglDesktop:TimelineTimeEntryBlock.Style>
+                                        <Style TargetType="FrameworkElement">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ShowDescription}" Value="True">
+                                                    <Setter Property="Width" Value="{Binding ElementName=TimeEntryCanvas, Path=ActualWidth}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </togglDesktop:TimelineTimeEntryBlock.Style>
+                                </togglDesktop:TimelineTimeEntryBlock>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemContainerStyle>
@@ -275,6 +286,55 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                             </StackPanel>
+                        </Border>
+                    </Popup>
+                    <Popup Placement="Right"
+                           DataContext="{Binding SelectedTimeEntryBlock}"
+                           Name="TimeEntryPopup"
+                           HorizontalOffset="5"
+                           StaysOpen="True"
+                           Grid.Row="1" Grid.Column="2">
+                        <Border BorderBrush="{DynamicResource Toggl.PopupBorderBrush}" BorderThickness="1" Focusable="False"
+                                Background="{DynamicResource Toggl.CardBackground}">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.2" Color="Black" />
+                            </Border.Effect>
+                            <Grid Margin="8 8 8 8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Margin="0 0 5 0" Grid.Row="0" Grid.Column="0" Text="{Binding StartEndCaption}" Style="{StaticResource Toggl.CaptionBlackText}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Duration}" Style="{StaticResource Toggl.CaptionBlackText}"/>
+                                <TextBlock Margin="0 10 0 0" Grid.Row="1" Grid.Column="0" Text="{Binding Description}" Style="{StaticResource Toggl.CaptionBlackText}"/>
+                                <DockPanel Grid.Row="2" Grid.Column="0" Margin="0 4 0 0">
+                                    <Ellipse Width="8" Height="8"
+                                           DockPanel.Dock="Left"
+                                           Margin="0 0 5 0"
+                                           VerticalAlignment="Center"
+                                           Fill="{Binding ElementName=TimeEntrySpan, Path=Fill}"
+                                           Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                                    <TextBlock Foreground="{Binding Color, Converter={StaticResource AdaptProjectTextColorConverter}}"
+                                             Text="{Binding ProjectName}" FontSize="12"
+                                             VerticalAlignment="Center"/>
+                                </DockPanel>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding ClientName}" Style="{StaticResource Toggl.CaptionText}"/>
+                                <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0">
+                                    <Viewbox Visibility="{Binding HasTag, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path Style="{StaticResource Toggl.TagIcon}"/>
+                                    </Viewbox>
+                                    <Viewbox DockPanel.Dock="Left" Visibility="{Binding IsBillable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path Style="{StaticResource Toggl.DollarIcon}"/>
+                                    </Viewbox>
+                                </StackPanel>
+                            </Grid>
                         </Border>
                     </Popup>
                 </Grid>

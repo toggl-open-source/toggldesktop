@@ -39,10 +39,10 @@ namespace TogglDesktop.ViewModels
             Toggl.OnTimeline += HandleDisplayTimeline;
             Toggl.OnTimeEntryList += HandleTimeEntryListChanged;
             Toggl.OnTimeEntryEditor += (open, te, field) =>
-                SelectedTEId = open ? te.GUID : SelectedTEId;
-            this.WhenAnyValue(x => x.SelectedTEId, x => x.TimeEntryBlocks)
+                SelectedForEditTEId = open ? te.GUID : SelectedForEditTEId;
+            this.WhenAnyValue(x => x.SelectedForEditTEId, x => x.TimeEntryBlocks)
                 .ObserveOn(RxApp.TaskpoolScheduler).Subscribe(_ =>
-                TimeEntryBlocks?.ForEach(te => te.IsEditViewOpened = SelectedTEId == te.TimeEntryId));
+                TimeEntryBlocks?.ForEach(te => te.IsEditViewOpened = SelectedForEditTEId == te.TimeEntryId));
             HourViews = GetHoursListFromScale(SelectedScaleMode);
         }
 
@@ -72,8 +72,8 @@ namespace TogglDesktop.ViewModels
                 Toggl.LoadMore();
             }
             Toggl.SetViewTimelineDay(Toggl.UnixFromDateTime(SelectedDate));
-            if (SelectedTEId != null)
-                Toggl.Edit(SelectedTEId, false, "");
+            if (SelectedForEditTEId != null)
+                Toggl.Edit(SelectedForEditTEId, false, "");
         }
 
         private void HandleDisplayTimeline(bool open, string date, List<Toggl.TimelineChunkView> first, List<Toggl.TogglTimeEntryView> firstTimeEntry, ulong startDay, ulong endDay)
@@ -154,7 +154,7 @@ namespace TogglDesktop.ViewModels
                     Height = height < 2 ? 2 : height,
                     VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime),
                     Color = entry.Color,
-                    Description = entry.Description,
+                    Description = entry.Description.IsNullOrEmpty() ? "No Description" : entry.Description,
                     ProjectName = entry.ProjectLabel,
                     ClientName = entry.ClientLabel,
                     ShowDescription = true,
@@ -162,7 +162,8 @@ namespace TogglDesktop.ViewModels
                     Ended = entry.Ended,
                     HasTag = !entry.Tags.IsNullOrEmpty(),
                     IsBillable = entry.Billable,
-                    Duration = entry.DateDuration
+                    Duration = entry.DateDuration,
+                    StartEndCaption = entry.StartTimeString + " - " + entry.EndTimeString
                 };
                 if (entry.Started != entry.Ended)
                 {
@@ -299,13 +300,16 @@ namespace TogglDesktop.ViewModels
         public ActivityBlock SelectedActivityBlock { get; set; }
 
         [Reactive]
+        public TimeEntryBlock SelectedTimeEntryBlock { get; set; }
+
+        [Reactive]
         public List<TimeEntryBlock> TimeEntryBlocks { get; private set; }
 
         [Reactive]
         public List<TimeEntryBlock> GapTimeEntryBlocks { get; private set; }
 
         [Reactive]
-        public string SelectedTEId { get; set; }
+        public string SelectedForEditTEId { get; set; }
         public ReactiveCommand<Unit, int> IncreaseScale { get; }
         public ReactiveCommand<Unit, int> DecreaseScale { get; }
 
@@ -340,6 +344,7 @@ namespace TogglDesktop.ViewModels
         public bool HasTag { get; set; }
         public bool IsBillable { get; set; }
         public string Duration { get; set; }
+        public string StartEndCaption { get; set; }
         public ReactiveCommand<Unit, Unit> CreateTimeEntryFromBlock { get; }
         public ReactiveCommand<Unit,Unit> OpenEditView { get; }
         public string TimeEntryId { get; private set; }

@@ -61,5 +61,24 @@ namespace TogglDesktop
                 ActivityBlockPopup.VerticalOffset = uiElement.Height/2;
             }
         }
+
+        private void OnTimeEntryBlockMouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is FrameworkElement uiElement && uiElement.DataContext is TimeEntryBlock curBlock)
+            {
+                ViewModel.SelectedTimeEntryBlock = curBlock;
+                TimeEntryPopup.PlacementTarget = uiElement;
+                TimeEntryPopup.VerticalOffset = uiElement.ActualHeight / 2;
+                TimeEntryPopup.IsOpen = true;
+            }
+        }
+
+        private void OnTimeEntyrBlockMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender is FrameworkElement uiElement && uiElement.DataContext is TimeEntryBlock curBlock)
+            {
+                TimeEntryPopup.IsOpen = false;
+            }
+        }
     }
 }
