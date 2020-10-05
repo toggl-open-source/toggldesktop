@@ -35,6 +35,17 @@ final class TagDataSource: AutoCompleteViewDataSource {
         }
     }
 
+    enum Mode {
+        case multiSelection
+        case singleSelection
+    }
+
+    var mode: Mode = .multiSelection {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+
     // MARK: Override
 
     override func render(with items: [Any]) {
@@ -113,7 +124,8 @@ final class TagDataSource: AutoCompleteViewDataSource {
         let view = tableView.makeView(withIdentifier: Constants.CellID, owner: self) as! TagCellView
         let isSelected = selectedTags.contains(where: { $0.name == item.name })
         view.delegate = self
-        view.render(item, isSelected: isSelected)
+        let cellStyle: TagCellView.Style = mode == .multiSelection ? .checkbox : .label
+        view.render(item, isSelected: isSelected, style: cellStyle)
         return view
     }
 

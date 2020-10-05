@@ -101,6 +101,11 @@ class TimerViewController: NSViewController {
         viewModel.projectDataSource.setup(with: projectAutoCompleteView)
         viewModel.tagsDataSource.setup(with: tagsAutoCompleteView)
 
+        viewModel.tagsDataSource.mode = .multiSelection
+
+        // !!!: uncomment to test simplified single-selection mode for tags dropdown
+        // viewModel.tagsDataSource.mode = .singleSelection
+
         viewModel.prepareData()
 
         configureHideAutoCompleteWhenLostFocus()
@@ -142,6 +147,10 @@ class TimerViewController: NSViewController {
         }
 
         viewModel.onTagSelected = { [unowned self] isSelected in
+            if case .singleSelection = self.viewModel.tagsDataSource.mode {
+                self.closeTagsAutoComplete()
+            }
+
             self.tagsButton.isSelected = isSelected
             self.tagsButton.toolTip = isSelected ? nil : Constants.emptyTagsButtonTooltip
         }
@@ -248,6 +257,16 @@ class TimerViewController: NSViewController {
         let wasNotClosedJustNow = (Date().timeIntervalSince1970 - tagsAutocompleteResignTime) > 0.5
 
         if wasNotClosedJustNow {
+
+            // !!!: this is here only for testing. We'll remove this once tags shortcut are implemented
+            switch viewModel.tagsDataSource.mode {
+            case .singleSelection:
+                tagsAutoCompleteView.isSearchFieldHidden = true
+            case .multiSelection:
+                tagsAutoCompleteView.isSearchFieldHidden = false
+            }
+
+            tagsAutoCompleteView.filter(with: "")
             presentTagsAutoComplete(from: .button(tagsButton))
         } else {
             // returning state back to normal if click is not handled
