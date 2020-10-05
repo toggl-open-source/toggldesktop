@@ -34,6 +34,9 @@ class TimeEntryListWidget : public QWidget {
  public slots:
     void focusTimeEntryList();
 
+ protected:
+    virtual void keyPressEvent(QKeyEvent *event) override;
+
  private slots:  // NOLINT
 
     void displayLogin(

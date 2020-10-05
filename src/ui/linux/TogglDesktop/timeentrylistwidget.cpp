@@ -7,6 +7,8 @@
 #include "./timerwidget.h"
 #include "./timeentrycellwidget.h"
 
+#include <QKeyEvent>
+
 TimeEntryListWidget::TimeEntryListWidget(QStackedWidget *parent) : QWidget(parent),
 ui(new Ui::TimeEntryListWidget) {
     ui->setupUi(this);
@@ -47,6 +49,15 @@ void TimeEntryListWidget::focusTimeEntryList() {
     if (!highlightedCell()) {
         ui->list->setFocus();
         focusNextChild();
+    }
+}
+
+void TimeEntryListWidget::keyPressEvent(QKeyEvent *event) {
+    if (event->type() == QEvent::KeyPress) {
+        auto ke = reinterpret_cast<QKeyEvent*>(event);
+        if (ke->key() == Qt::Key_Space) {
+            event->accept();
+        }
     }
 }
 
