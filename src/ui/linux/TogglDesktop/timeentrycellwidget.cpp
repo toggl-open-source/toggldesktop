@@ -130,7 +130,7 @@ void TimeEntryCellWidget::focusInEvent(QFocusEvent *event) {
 void TimeEntryCellWidget::setupGroupedMode(TimeEntryView *view) {
     // Grouped Mode Setup
     group = view->Group;
-    QString style = "#dataFrame{border-right:2px solid palette(alternate-base);border-bottom:2px solid palette(alternate-base);background-color: palette(base);}";
+    QString style = "#dataFrame{border-right:2px solid palette(alternate-base);border-bottom:2px solid palette(alternate-base);background-color: palette(base);}\n #dataFrame:focus{background-color: palette(highlight);}";
     QString count = "";
     QString continueIcon = ":/images/continue_light.svg";
     QString descriptionStyle = "border:none;";
