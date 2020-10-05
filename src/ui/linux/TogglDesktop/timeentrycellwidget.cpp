@@ -20,6 +20,7 @@ groupOpen(false),
 groupName(""),
 timeEntry(nullptr) {
     ui->setupUi(this);
+    setFocusProxy(ui->dataFrame);
     ui->dataFrame->installEventFilter(this);
     setStyleSheet(
         "* { font-size: 13px }"
@@ -120,6 +121,28 @@ bool TimeEntryCellWidget::eventFilter(QObject *watched, QEvent *event) {
         if (fe->reason() == Qt::TabFocusReason || fe->reason() == Qt::BacktabFocusReason)
             focusInEvent(fe);
     }
+    if (event->type() == QEvent::KeyPress) {
+        auto ke = reinterpret_cast<QKeyEvent*>(event);
+        if (watched == ui->dataFrame) {
+            if (ke->key() == Qt::Key_Space) {
+                TogglApi::instance->continueTimeEntry(guid);
+                event->accept();
+                return true;
+            }
+            else if (ke->key() == Qt::Key_Delete || ke->key() == Qt::Key_Backspace) {
+                if (timeEntry->confirmlessDelete() || QMessageBox::Ok == QMessageBox(
+                    QMessageBox::Question,
+                    "Delete this time entry?",
+                    "Deleted time entries cannot be restored.",
+                    QMessageBox::Ok|QMessageBox::Cancel).exec()) {
+                    TogglApi::instance->deleteTimeEntry(guid);
+                }
+            }
+            else if (ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter) {
+                TogglApi::instance->editTimeEntry(guid, "description");
+            }
+        }
+    }
     return QWidget::eventFilter(watched, event);
 }
 
@@ -130,7 +153,7 @@ void TimeEntryCellWidget::focusInEvent(QFocusEvent *event) {
 void TimeEntryCellWidget::setupGroupedMode(TimeEntryView *view) {
     // Grouped Mode Setup
     group = view->Group;
-    QString style = "#dataFrame{border-right:2px solid palette(alternate-base);border-bottom:2px solid palette(alternate-base);background-color: palette(base);}";
+    QString style = "#dataFrame{border-right:2px solid palette(alternate-base);border-bottom:2px solid palette(alternate-base);background-color: palette(base);}\n #dataFrame:focus{background-color: palette(highlight);}";
     QString count = "";
     QString continueIcon = ":/images/continue_light.svg";
     QString descriptionStyle = "border:none;";

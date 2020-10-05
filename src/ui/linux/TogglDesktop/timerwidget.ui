@@ -450,7 +450,7 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: #DF68D0; color: #000000; font-weight:bold; border:none;</string>
+      <string notr="true"/>
      </property>
      <property name="text">
       <string>Start</string>
