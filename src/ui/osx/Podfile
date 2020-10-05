@@ -7,7 +7,7 @@ def essential_pods
   pod 'AppAuth', '~> 1.3.0'
   pod 'MASShortcut', '~> 2.4.0'
   pod 'Bugsnag', '~> 5.23.0'
-  pod 'SwiftLint', '~> 0.39.0'
+  pod 'SwiftLint', '~> 0.40.0'
 end
 
 # TogglDesktop

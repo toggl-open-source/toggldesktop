@@ -60,10 +60,6 @@ final class OnboardingViewController: NSViewController {
         initCommon()
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     // MARK: Public
 
     /// Present the onboarding with given Payload

@@ -42,10 +42,6 @@ class AutoCompleteViewDataSource: NSObject {
                                                object: nil)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     // MARK: Public
 
     func setup(with textField: AutoCompleteTextField) {

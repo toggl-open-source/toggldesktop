@@ -15,7 +15,7 @@ PODS:
     - GTMSessionFetcher/Core (= 1.4.0)
   - MASShortcut (2.4.0)
   - Sparkle (1.23.0)
-  - SwiftLint (0.39.2)
+  - SwiftLint (0.40.3)
 
 DEPENDENCIES:
   - AppAuth (~> 1.3.0)
@@ -23,7 +23,7 @@ DEPENDENCIES:
   - GTMAppAuth (~> 1.0.0)
   - MASShortcut (~> 2.4.0)
   - Sparkle (~> 1.23.0)
-  - SwiftLint (~> 0.39.0)
+  - SwiftLint (~> 0.40.0)
 
 SPEC REPOS:
   trunk:
@@ -42,8 +42,8 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   MASShortcut: d9e4909e878661cc42877cc9d6efbe638273ab57
   Sparkle: 55b1a87ba69d56913375a281546b7c82dec95bb0
-  SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
+  SwiftLint: dfd554ff0dff17288ee574814ccdd5cea85d76f7
 
-PODFILE CHECKSUM: c55b4b35e6fc0cd4f83aeaeb3c1e1c76f60c32d3
+PODFILE CHECKSUM: 079b6b1d716844904f00e7333e0ec4930809b209
 
 COCOAPODS: 1.9.3
