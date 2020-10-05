@@ -17,11 +17,18 @@ final class TagCellView: NSTableCellView {
 
     static let cellHeight: CGFloat = 34.0
 
+    enum Style {
+        case checkbox
+        case label
+    }
+
     // MARK: Variables
 
     weak var delegate: TagCellViewDelegate?
     private var tagItem: Tag?
     private var isSelected = false
+    private var style: Style = .checkbox
+
     private lazy var backgroundColor: NSColor = {
         if #available(OSX 10.13, *) {
             return NSColor(named: NSColor.Name("tag-selection-background-color"))!
@@ -29,16 +36,11 @@ final class TagCellView: NSTableCellView {
             return ConvertHexColor.hexCode(toNSColor: "#e5f9e8")
         }
     }()
-    private lazy var attributeDict: [NSAttributedString.Key: Any] = {
-        let font = checkButton.font ?? NSFont.systemFont(ofSize: 14.0)
-        let color = NSColor.togglGreen
-        return [NSAttributedString.Key.foregroundColor: color,
-                NSAttributedString.Key.font: font]
-    }()
 
     // MARK: OUTLET
 
     @IBOutlet weak var checkButton: NSButton!
+    @IBOutlet weak var nameLabel: NSTextField!
     @IBOutlet weak var backgroundView: NSBox!
     @IBOutlet weak var hoverView: NSBox!
 
@@ -58,17 +60,30 @@ final class TagCellView: NSTableCellView {
         hoverView.alphaValue = 0.0
     }
 
-    func render(_ tag: Tag, isSelected: Bool) {
+    func render(_ tag: Tag, isSelected: Bool, style: Style = .checkbox) {
         self.tagItem = tag
         self.isSelected = isSelected
-        checkButton.state = isSelected ? .on : .off
-        backgroundView.fillColor = isSelected ? backgroundColor : .clear
-        if isSelected {
-            checkButton.attributedTitle = NSAttributedString(string: tag.name, attributes: attributeDict)
-        } else {
-            checkButton.title = tag.name
+
+        switch style {
+        case .checkbox:
+            nameLabel.isHidden = true
+            checkButton.isHidden = false
+        case .label:
+            checkButton.isHidden = true
+            nameLabel.isHidden = false
         }
+
+        backgroundView.fillColor = isSelected ? backgroundColor : .clear
+        checkButton.state = isSelected ? .on : .off
+
+        checkButton.title = tag.name
+        nameLabel.stringValue = tag.name
+
         checkButton.toolTip = tag.name
+        nameLabel.toolTip = tag.name
+
+        checkButton.setTextColor(isSelected ? NSColor.togglGreen : NSColor.textColor)
+        nameLabel.textColor = isSelected ? NSColor.togglGreen : NSColor.textColor
     }
 
     func selectCheckBox() {
