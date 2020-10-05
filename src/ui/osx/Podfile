@@ -3,18 +3,18 @@ use_frameworks!
 inhibit_all_warnings!
 
 def essential_pods
-  pod 'GTMAppAuth'
-  pod 'AppAuth'
-  pod 'MASShortcut'
-  pod 'Bugsnag'
-  pod 'SwiftLint'
+  pod 'GTMAppAuth', '~> 1.0.0'
+  pod 'AppAuth', '~> 1.3.0'
+  pod 'MASShortcut', '~> 2.4.0'
+  pod 'Bugsnag', '~> 5.23.0'
+  pod 'SwiftLint', '~> 0.39.0'
 end
 
 # TogglDesktop
 target 'TogglDesktop' do
   project 'TogglDesktop/TogglDesktop.xcodeproj'
   essential_pods
-  pod 'Sparkle'
+  pod 'Sparkle', '~> 1.23.0'
 end
 
 # TogglDesktop-AppStore
@@ -26,7 +26,7 @@ end
 target 'TogglDesktopTests' do
   project 'TogglDesktop/TogglDesktop.xcodeproj'
   essential_pods
-  pod 'Sparkle'
+  pod 'Sparkle', '~> 1.23.0'
 end
 
 target 'TogglDesktopTests-AppStore' do
