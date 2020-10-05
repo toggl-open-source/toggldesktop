@@ -5,8 +5,7 @@
             "rows": [
                 "Fixed an issue with tags sometimes not being saved"
             ],
-            "date": "September 21st 2020",
-            "beta": "true"
+            "date": "October 5th 2020"
         },
         {
             "version": "7.5.260",
