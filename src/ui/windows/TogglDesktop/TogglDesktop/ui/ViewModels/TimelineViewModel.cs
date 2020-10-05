@@ -154,6 +154,7 @@ namespace TogglDesktop.ViewModels
             var offsets = new HashSet<double>();
             var curOffset = 0;
             var usedNumOfOffsets = 0;
+            TimeEntryBlock prevLayerBlock = null;
             foreach (var item in timeStampsList)
             {
                 if (item.Type == TimeStampType.Start || item.Type == TimeStampType.Empty)
@@ -164,17 +165,21 @@ namespace TogglDesktop.ViewModels
                         curOffset += 25;
                     }
                     if (usedNumOfOffsets > 0 || item.Block.Height < 20)
+                    {
                         item.Block.ShowDescription = false;
+                        if (prevLayerBlock != null)
+                            prevLayerBlock.ShowDescription = false;
+                    }
                     item.Block.HorizontalOffset = offsets.Min();
                     offsets.Remove(offsets.Min());
                     usedNumOfOffsets++;
+                    prevLayerBlock = item.Block;
                 }
                 if (item.Type == TimeStampType.End || item.Type == TimeStampType.Empty)
                 {
                     offsets.Add(item.Block.HorizontalOffset);
-                    if (usedNumOfOffsets > 1 || item.Block.Height < 20)
-                        item.Block.ShowDescription = false;
                     usedNumOfOffsets--;
+                    prevLayerBlock = null;
                 }
             }
             TimeEntryBlocks = null;
