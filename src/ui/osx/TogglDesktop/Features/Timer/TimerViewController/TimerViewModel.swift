@@ -56,6 +56,7 @@ final class TimerViewModel: NSObject {
 
     private var selectedTags: [String] = [] {
         didSet {
+            guard selectedTags != oldValue else { return }
             if tagsDataSource.autoCompleteView != nil {
                 tagsDataSource.updateSelectedTags(selectedTags.map { Tag(name: $0) })
             }
