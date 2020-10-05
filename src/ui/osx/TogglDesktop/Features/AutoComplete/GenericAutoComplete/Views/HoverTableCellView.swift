@@ -10,6 +10,8 @@ import Cocoa
 
 class HoverTableCellView: NSTableCellView {
 
+    private var trackingArea: NSTrackingArea?
+
     // MARK: OUTLET
 
     @IBOutlet weak var contentContainerView: NSBox!
@@ -18,15 +20,15 @@ class HoverTableCellView: NSTableCellView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
-        initCommon()
-        initTracking()
+        contentContainerView.alphaValue = 0
+        enableTracking()
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
         NSCursor.arrow.set()
-        contentContainerView.animator().alphaValue = 0.0
+        contentContainerView.alphaValue = 0.0
+        enableTracking()
     }
 
     override func mouseExited(with event: NSEvent) {
@@ -41,15 +43,15 @@ class HoverTableCellView: NSTableCellView {
         contentContainerView.animator().alphaValue = 1.0
     }
 
-    fileprivate func initCommon() {
-        contentContainerView.alphaValue = 0
-    }
-
-    fileprivate func initTracking() {
-        let trackingArea = NSTrackingArea(rect: bounds,
-                                          options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited],
-                                          owner: self,
-                                          userInfo: nil)
-        addTrackingArea(trackingArea)
+    fileprivate func enableTracking() {
+        if let trackingArea = trackingArea {
+            removeTrackingArea(trackingArea)
+        }
+        let tracking = NSTrackingArea(rect: bounds,
+                                      options: [.activeInActiveApp, .inVisibleRect, .mouseEnteredAndExited],
+                                      owner: self,
+                                      userInfo: nil)
+        addTrackingArea(tracking)
+        trackingArea = tracking
     }
 }

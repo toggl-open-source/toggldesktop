@@ -82,7 +82,7 @@
             <connections>
                 <outlet property="backgroundView" destination="Ws3-BI-x3S" id="hSq-eI-9Q4"/>
                 <outlet property="checkButton" destination="ZvV-w8-dCM" id="Rqp-WW-NUb"/>
-                <outlet property="hoverView" destination="P4q-6R-6o7" id="FqS-op-lgT"/>
+                <outlet property="contentContainerView" destination="P4q-6R-6o7" id="btw-hM-tTz"/>
                 <outlet property="nameLabel" destination="sPh-Yd-c5J" id="Hfq-ji-viJ"/>
             </connections>
             <point key="canvasLocation" x="244.5" y="-9"/>
