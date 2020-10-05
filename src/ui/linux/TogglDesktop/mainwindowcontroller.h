@@ -100,6 +100,8 @@ class MainWindowController : public QMainWindow {
     void onShortcutConfirm();
     void onShortcutGroupOpen();
     void onShortcutGroupClose();
+    void onShortcutOpenEditor();
+    void onShortcutJumpToList();
 
  private:
     Ui::MainWindowController *ui;
@@ -133,6 +135,8 @@ class MainWindowController : public QMainWindow {
     QShortcut shortcutConfirm;
     QShortcut shortcutGroupOpen;
     QShortcut shortcutGroupClose;
+    QShortcut shortcutOpenEditor;
+    QShortcut shortcutJumpToList;
 
     void readSettings();
     void writeSettings();

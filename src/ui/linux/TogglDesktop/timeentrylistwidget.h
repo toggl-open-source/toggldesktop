@@ -31,6 +31,9 @@ class TimeEntryListWidget : public QWidget {
     TimeEntryCellWidget *highlightedCell();
     TimerWidget *timer();
 
+ public slots:
+    void focusTimeEntryList();
+
  private slots:  // NOLINT
 
     void displayLogin(

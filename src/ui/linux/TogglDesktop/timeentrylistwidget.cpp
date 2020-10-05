@@ -10,11 +10,6 @@
 TimeEntryListWidget::TimeEntryListWidget(QStackedWidget *parent) : QWidget(parent),
 ui(new Ui::TimeEntryListWidget) {
     ui->setupUi(this);
-
-    connect(ui->list, &QListWidget::currentRowChanged, [=](int row) {
-        qCritical() << row;
-    });
-
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
 
@@ -22,6 +17,7 @@ ui(new Ui::TimeEntryListWidget) {
             this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)));  // NOLINT
 
     ui->blankView->setVisible(false);
+    ui->list->setFocusPolicy(Qt::NoFocus);
 }
 
 TimeEntryListWidget::~TimeEntryListWidget() {
@@ -45,6 +41,13 @@ TimeEntryCellWidget *TimeEntryListWidget::highlightedCell() {
 
 TimerWidget *TimeEntryListWidget::timer() {
     return ui->timer;
+}
+
+void TimeEntryListWidget::focusTimeEntryList() {
+    if (!highlightedCell()) {
+        ui->list->setFocus();
+        focusNextChild();
+    }
 }
 
 void TimeEntryListWidget::displayLogin(

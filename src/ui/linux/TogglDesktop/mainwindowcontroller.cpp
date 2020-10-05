@@ -52,6 +52,8 @@ MainWindowController::MainWindowController(
   shortcutConfirm(QKeySequence(Qt::CTRL + Qt::Key_Return), this),
   shortcutGroupOpen(QKeySequence(Qt::Key_Right), this),
   shortcutGroupClose(QKeySequence(Qt::Key_Left), this),
+  shortcutOpenEditor(QKeySequence(Qt::CTRL + Qt::Key_E), this),
+  shortcutJumpToList(QKeySequence(Qt::SHIFT + Qt::Key_Down), this),
   ui_started(false) {
     ui->setupUi(this);
 
@@ -363,6 +365,19 @@ void MainWindowController::onShortcutGroupClose() {
     }
 }
 
+void MainWindowController::onShortcutOpenEditor() {
+    if (ui->stackedWidget->currentWidget() == ui->timeEntryListWidget) {
+        // Won't do anything if there's no running TE
+        TogglApi::instance->editRunningTimeEntry("");
+    }
+}
+
+void MainWindowController::onShortcutJumpToList() {
+    if (ui->stackedWidget->currentWidget() == ui->timeEntryListWidget) {
+        ui->timeEntryListWidget->focusTimeEntryList();
+    }
+}
+
 void MainWindowController::setShortcuts() {
     showHide = new QxtGlobalShortcut(this);
     connect(showHide, SIGNAL(activated()),
@@ -386,6 +401,10 @@ void MainWindowController::setShortcuts() {
             this, &MainWindowController::onShortcutGroupOpen);
     connect(&shortcutGroupClose, &QShortcut::activated,
             this, &MainWindowController::onShortcutGroupClose);
+    connect(&shortcutOpenEditor, &QShortcut::activated,
+            this, &MainWindowController::onShortcutOpenEditor);
+    connect(&shortcutJumpToList, &QShortcut::activated,
+            this, &MainWindowController::onShortcutJumpToList);
 }
 
 void MainWindowController::connectMenuActions() {

@@ -20,6 +20,7 @@ groupOpen(false),
 groupName(""),
 timeEntry(nullptr) {
     ui->setupUi(this);
+    setFocusProxy(ui->dataFrame);
     ui->dataFrame->installEventFilter(this);
     setStyleSheet(
         "* { font-size: 13px }"
