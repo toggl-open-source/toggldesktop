@@ -31,7 +31,7 @@ class TimerDescriptionFieldHandlerTests: XCTestCase {
         window.makeKey()
         window.makeFirstResponder(textField)
 
-        handler = TimerDescriptionFieldHandler(textField: textField, enableProjectShortcut: true)
+        handler = TimerDescriptionFieldHandler(textField: textField, enableShortcuts: true)
         textField.delegate = handler
 
         controlTextDidChangeNotification = Notification(name: NSControl.textDidChangeNotification, object: textField, userInfo: nil)
@@ -68,91 +68,105 @@ class TimerDescriptionFieldHandlerTests: XCTestCase {
         handler.controlTextDidChange(controlTextDidChangeNotification)
     }
 
-    // MARK: - controlTextDidChange - Project shortcut
-
-    func testControlTextDidChangeDetectProjectShortcutAtStart() {
-        textField.stringValue = "@"
-        moveCursorToEnd()
-        handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.projectFilter(""))
-
-        textField.stringValue = "@proj"
-        moveCursorToEnd()
-        handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.projectFilter("proj"))
-
-        textField.stringValue = "@project with space"
-        moveCursorToEnd()
-        handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.projectFilter("project with space"))
+    func testControlTextDidChangeProjectShortcut() {
+        assertControlTextDidChangeDetectShortcutAtStart(shortcut: "@", state: State.projectFilter)
+        assertControlTextDidChangeDetectShortcutAtEnd(shortcut: "@", state: State.projectFilter)
+        assertControlTextDidChangeNeedSpaceBeforeShortcut(shortcut: "@")
+        assertControlTextDidChangeDetectShortcutInMiddle(shortcut: "@", state: State.projectFilter)
+        assertControlTextDidChangeHandleTwoSameShortcuts(shortcut: "@", state: State.projectFilter)
     }
 
-    func testControlTextDidChangeDetectProjectShortcutAtEnd() {
-        textField.stringValue = "some @"
-        moveCursorToEnd()
-        handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.projectFilter(""))
-
-        textField.stringValue = "some @proj"
-        moveCursorToEnd()
-        handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.projectFilter("proj"))
-
-        textField.stringValue = "some @pr with space and long"
-        moveCursorToEnd()
-        handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.projectFilter("pr with space and long"))
+    func testControlTextDidChangeDetectTagShortcut() {
+        assertControlTextDidChangeDetectShortcutAtStart(shortcut: "#", state: State.tagsFilter)
+        assertControlTextDidChangeDetectShortcutAtEnd(shortcut: "#", state: State.tagsFilter)
+        assertControlTextDidChangeNeedSpaceBeforeShortcut(shortcut: "#")
+        assertControlTextDidChangeDetectShortcutInMiddle(shortcut: "#", state: State.tagsFilter)
+        assertControlTextDidChangeHandleTwoSameShortcuts(shortcut: "#", state: State.tagsFilter)
     }
 
-    func testControlTextDidChangeNeedSpaceBeforeShortcut() {
-        textField.stringValue = "some@withoutspace"
+    func assertControlTextDidChangeDetectShortcutAtStart(shortcut: String, state: (String) -> State) {
+        textField.stringValue = "\(shortcut)"
         moveCursorToEnd()
         handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.autocompleteFilter("some@withoutspace"))
+        XCTAssertEqual(handler.state, state(""))
+
+        textField.stringValue = "\(shortcut)proj"
+        moveCursorToEnd()
+        handler.controlTextDidChange(controlTextDidChangeNotification)
+        XCTAssertEqual(handler.state, state("proj"))
+
+        textField.stringValue = "\(shortcut)project with space"
+        moveCursorToEnd()
+        handler.controlTextDidChange(controlTextDidChangeNotification)
+        XCTAssertEqual(handler.state, state("project with space"))
     }
 
-    func testControlTextDidChangeDetectProjectShortcutInMiddle() {
-        textField.stringValue = "some @|text"
+    func assertControlTextDidChangeDetectShortcutAtEnd(shortcut: String, state: (String) -> State) {
+        textField.stringValue = "some \(shortcut)"
+        moveCursorToEnd()
+        handler.controlTextDidChange(controlTextDidChangeNotification)
+        XCTAssertEqual(handler.state, state(""))
+
+        textField.stringValue = "some \(shortcut)proj"
+        moveCursorToEnd()
+        handler.controlTextDidChange(controlTextDidChangeNotification)
+        XCTAssertEqual(handler.state, state("proj"))
+
+        textField.stringValue = "some \(shortcut)pr with space and long"
+        moveCursorToEnd()
+        handler.controlTextDidChange(controlTextDidChangeNotification)
+        XCTAssertEqual(handler.state, state("pr with space and long"))
+    }
+
+    func assertControlTextDidChangeNeedSpaceBeforeShortcut(shortcut: String) {
+        textField.stringValue = "some\(shortcut)withoutspace"
+        moveCursorToEnd()
+        handler.controlTextDidChange(controlTextDidChangeNotification)
+        XCTAssertEqual(handler.state, State.autocompleteFilter("some\(shortcut)withoutspace"))
+    }
+
+    func assertControlTextDidChangeDetectShortcutInMiddle(shortcut: String, state: (String) -> State) {
+        textField.stringValue = "some \(shortcut)|text"
         moveCursor(to: 6)
         handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.projectFilter(""))
+        XCTAssertEqual(handler.state, state(""))
 
-        textField.stringValue = "some @proj| text"
+        textField.stringValue = "some \(shortcut)proj| text"
         moveCursor(to: 10)
         handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.projectFilter("proj"))
+        XCTAssertEqual(handler.state, state("proj"))
 
-        textField.stringValue = "some @|text"
+        textField.stringValue = "some \(shortcut)|text"
         moveCursor(to: 6)
         handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.projectFilter(""))
+        XCTAssertEqual(handler.state, state(""))
 
-        textField.stringValue = "some @proj|text"
+        textField.stringValue = "some \(shortcut)proj|text"
         moveCursor(to: 10)
         handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.projectFilter("proj"))
+        XCTAssertEqual(handler.state, state("proj"))
     }
 
-    func testControlTextDidChangeHandleTwoSameShortcuts() {
-        textField.stringValue = "@@"
+    func assertControlTextDidChangeHandleTwoSameShortcuts(shortcut: String, state: (String) -> State) {
+        textField.stringValue = "\(shortcut)\(shortcut)"
         moveCursorToEnd()
         handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.projectFilter("@"))
+        XCTAssertEqual(handler.state, state("\(shortcut)"))
 
-        textField.stringValue = "@@proj"
+        textField.stringValue = "\(shortcut)\(shortcut)proj"
         moveCursorToEnd()
         handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.projectFilter("@proj"))
+        XCTAssertEqual(handler.state, state("\(shortcut)proj"))
 
-        textField.stringValue = "@ @"
+        textField.stringValue = "\(shortcut) \(shortcut)"
         moveCursorToEnd()
         handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.projectFilter(""))
+        XCTAssertEqual(handler.state, state(""))
 
-        textField.stringValue = "@ @second_proj"
+        textField.stringValue = "\(shortcut) \(shortcut)second_proj"
         moveCursorToEnd()
         handler.controlTextDidChange(controlTextDidChangeNotification)
-        XCTAssertEqual(handler.state, State.projectFilter("second_proj"))
+        XCTAssertEqual(handler.state, state("second_proj"))
     }
 
     // MARK: - controlTextDidChange - Autocomplete
@@ -181,7 +195,7 @@ class TimerDescriptionFieldHandlerTests: XCTestCase {
     }
 
     func testControlTextDidChangeWithDisabledProjectShortcutFlag() {
-        handler.isProjectShortcutEnabled = false
+        handler.isShortcutEnabled = false
 
         textField.stringValue = "@"
         moveCursorToEnd()
@@ -194,7 +208,7 @@ class TimerDescriptionFieldHandlerTests: XCTestCase {
         XCTAssertEqual(handler.state, State.autocompleteFilter("some @proj"))
     }
 
-    // MARK: - Other
+    // MARK: - didCloseProjectDropdown
 
     func testDidCloseProjectDropdownSetStateToDefaultFromProjectFilter() {
         setStateProjectFilter(filterText: "some")
@@ -212,6 +226,26 @@ class TimerDescriptionFieldHandlerTests: XCTestCase {
         XCTAssertEqual(handler.state, .autocompleteFilter("some"))
     }
 
+    // MARK: - didCloseTagsDropdown
+
+    func testDidCloseTagsDropdownSetStateToDefaultFromTagsFilter() {
+        setStateTagsFilter(filterText: "some")
+
+        handler.didCloseTagsDropdown()
+
+        XCTAssertEqual(handler.state, .descriptionUpdate)
+    }
+
+    func testDidCloseTagsDropdownDoesNothingWhenWrongState() {
+        setStateAutocompleteFilter(filterText: "some")
+
+        handler.didCloseTagsDropdown()
+
+        XCTAssertEqual(handler.state, .autocompleteFilter("some"))
+    }
+
+    // MARK: - didSelectProject
+
     func testDidSelectProjectSetStateToDefaultFromProjectFilter() {
         setStateProjectFilter(filterText: "some")
 
@@ -228,34 +262,66 @@ class TimerDescriptionFieldHandlerTests: XCTestCase {
         XCTAssertEqual(handler.state, .autocompleteFilter("some"))
     }
 
-    func testDidSelectProjectRemovesShortcutQueryFromEnd() {
-        textField.stringValue = "some @project query"
+    func testDidSelectProject() {
+        assertDidSelectRemovesShortcutQueryFromEnd(shortcut: "@", selectFunction: handler.didSelectProject)
+        assertDidSelectRemovesShortcutQueryFromStart(shortcut: "@", selectFunction: handler.didSelectProject)
+        assertDidSelectRemovesShortcutQueryFromMiddle(shortcut: "@", selectFunction: handler.didSelectProject)
+    }
+
+    // MARK: - didSelectTag
+
+    func testDidSelectTagSetStateToDefaultFromTagsFilter() {
+        setStateTagsFilter(filterText: "some")
+
+        handler.didSelectTag()
+
+        XCTAssertEqual(handler.state, .descriptionUpdate)
+    }
+
+    func testDidSelectTagDoesNothingWhenWrongState() {
+        setStateAutocompleteFilter(filterText: "some")
+
+        handler.didSelectTag()
+
+        XCTAssertEqual(handler.state, .autocompleteFilter("some"))
+    }
+
+    func testDidSelectTag() {
+        assertDidSelectRemovesShortcutQueryFromEnd(shortcut: "#", selectFunction: handler.didSelectTag)
+        assertDidSelectRemovesShortcutQueryFromStart(shortcut: "#", selectFunction: handler.didSelectTag)
+        assertDidSelectRemovesShortcutQueryFromMiddle(shortcut: "#", selectFunction: handler.didSelectTag)
+    }
+
+    // MARK: - didSelect<Shortcut> Helpers
+
+    func assertDidSelectRemovesShortcutQueryFromEnd(shortcut: String, selectFunction: () -> Void) {
+        textField.stringValue = "some \(shortcut)project query"
         moveCursorToEnd()
         handler.controlTextDidChange(controlTextDidChangeNotification)
 
-        handler.didSelectProject()
+        selectFunction()
 
         XCTAssertEqual(textField.stringValue, "some ")
         XCTAssertEqual(handler.state, State.descriptionUpdate)
     }
 
-    func testDidSelectProjectRemovesShortcutQueryFromStart() {
-        textField.stringValue = "@project query"
+    func assertDidSelectRemovesShortcutQueryFromStart(shortcut: String, selectFunction: () -> Void) {
+        textField.stringValue = "\(shortcut)project query"
         moveCursorToEnd()
         handler.controlTextDidChange(controlTextDidChangeNotification)
 
-        handler.didSelectProject()
+        selectFunction()
 
         XCTAssertEqual(textField.stringValue, "")
         XCTAssertEqual(handler.state, State.descriptionUpdate)
     }
 
-    func testDidSelectProjectRemovesShortcutQueryFromMiddle() {
-        textField.stringValue = "some @project| other text"
+    func assertDidSelectRemovesShortcutQueryFromMiddle(shortcut: String, selectFunction: () -> Void) {
+        textField.stringValue = "some \(shortcut)project| other text"
         moveCursor(to: 13)
         handler.controlTextDidChange(controlTextDidChangeNotification)
 
-        handler.didSelectProject()
+        selectFunction()
 
         XCTAssertEqual(textField.stringValue, "some | other text")
         XCTAssertEqual(handler.state, State.descriptionUpdate)
@@ -270,6 +336,12 @@ class TimerDescriptionFieldHandlerTests: XCTestCase {
 
     private func setStateProjectFilter(filterText: String) {
         textField.stringValue = "@\(filterText)"
+        moveCursorToEnd()
+        handler.controlTextDidChange(controlTextDidChangeNotification)
+    }
+
+    private func setStateTagsFilter(filterText: String) {
+        textField.stringValue = "#\(filterText)"
         moveCursorToEnd()
         handler.controlTextDidChange(controlTextDidChangeNotification)
     }

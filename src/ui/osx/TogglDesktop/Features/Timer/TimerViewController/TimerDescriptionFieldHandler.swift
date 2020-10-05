@@ -20,6 +20,7 @@ class TimerDescriptionFieldHandler: NSResponder {
     enum State: Equatable {
         case descriptionUpdate
         case projectFilter(String)
+        case tagsFilter(String)
         case autocompleteFilter(String)
     }
 
@@ -38,6 +39,7 @@ class TimerDescriptionFieldHandler: NSResponder {
         case unfocus
 
         case projectAutoCompleteTableHandleEvent(NSEvent)
+        case tagsAutoCompleteTableHandleEvent(NSEvent)
 
         case autoCompleteTableSelectNext
         case autoCompleteTableSelectPrevious
@@ -52,15 +54,15 @@ class TimerDescriptionFieldHandler: NSResponder {
     private var kvoToken: NSKeyValueObservation?
 
     /// Set to `true` to enable Project (@) shortcut feature
-    var isProjectShortcutEnabled: Bool
+    var isShortcutEnabled: Bool
 
     /// Initializes text field handler.
     /// - Parameters:
     ///   - textField: Text field that will be sending event to this handler
-    ///   - enableProjectShortcut: Pass `true` to enable project (@) shortcut feature
-    init(textField: AutoCompleteInput, enableProjectShortcut: Bool = false) {
+    ///   - enableShortcuts: Pass `true` to enable project (@) and tags (#) shortcuts feature
+    init(textField: AutoCompleteInput, enableShortcuts: Bool = false) {
         self.textField = textField
-        self.isProjectShortcutEnabled = enableProjectShortcut
+        self.isShortcutEnabled = enableShortcuts
         super.init()
         self.textField.delegate = self
         observeTextField()
@@ -76,9 +78,21 @@ class TimerDescriptionFieldHandler: NSResponder {
         }
     }
 
+    func didCloseTagsDropdown() {
+        if case .tagsFilter = state {
+            state = .descriptionUpdate
+        }
+    }
+
     func didSelectProject() {
         if case .projectFilter = state {
             removeShortcutQuery(for: Constants.projectToken)
+        }
+    }
+
+    func didSelectTag() {
+        if case .tagsFilter = state {
+            removeShortcutQuery(for: Constants.tagToken)
         }
     }
 
@@ -128,8 +142,8 @@ extension TimerDescriptionFieldHandler: NSTextFieldDelegate {
 
         let (token, query): (Character?, String)
 
-        if isProjectShortcutEnabled {
-            (token, query) = text.findTokenAndQueryMatchesForAutocomplete([Constants.projectToken], cursorLocation)
+        if isShortcutEnabled {
+            (token, query) = text.findTokenAndQueryMatchesForAutocomplete([Constants.projectToken, Constants.tagToken], cursorLocation)
         } else {
             (token, query) = (nil, text)
         }
@@ -137,6 +151,8 @@ extension TimerDescriptionFieldHandler: NSTextFieldDelegate {
         switch (token, query) {
         case (Constants.projectToken, _):
             state = .projectFilter(query)
+        case (Constants.tagToken, _):
+            state = .tagsFilter(query)
         case (nil, query):
             state = .autocompleteFilter(query)
         default:
@@ -155,8 +171,8 @@ extension TimerDescriptionFieldHandler: NSTextFieldDelegate {
         switch state {
         case .autocompleteFilter:
             return autocompleteControl(doCommandBy: commandSelector)
-        case .projectFilter:
-            return projectDropdownControl(doCommandBy: commandSelector)
+        case .projectFilter, .tagsFilter:
+            return projectTagsDropdownControl(doCommandBy: commandSelector)
         case .descriptionUpdate:
             return descriptionSimpleControl(doCommandBy: commandSelector)
         }
@@ -191,7 +207,7 @@ extension TimerDescriptionFieldHandler: NSTextFieldDelegate {
         return false
     }
 
-    private func projectDropdownControl(doCommandBy commandSelector: Selector) -> Bool {
+    private func projectTagsDropdownControl(doCommandBy commandSelector: Selector) -> Bool {
         guard let currentEvent = NSApp.currentEvent else { return false }
 
         if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
@@ -203,7 +219,15 @@ extension TimerDescriptionFieldHandler: NSTextFieldDelegate {
             || commandSelector == #selector(NSResponder.moveUp(_:))
             || commandSelector == #selector(NSResponder.insertTab(_:))
             || commandSelector == #selector(NSResponder.insertNewline(_:)) {
-            return onPerformAction(.projectAutoCompleteTableHandleEvent(currentEvent))
+            switch state {
+            case .projectFilter:
+                return onPerformAction(.projectAutoCompleteTableHandleEvent(currentEvent))
+            case .tagsFilter:
+                return onPerformAction(.tagsAutoCompleteTableHandleEvent(currentEvent))
+            default:
+                break
+            }
+
         }
 
         return false
@@ -234,6 +258,8 @@ extension TimerDescriptionFieldHandler.State {
         case (.descriptionUpdate, .descriptionUpdate):
             return true
         case (.projectFilter, .projectFilter):
+            return true
+        case (.tagsFilter, .tagsFilter):
             return true
         case (.autocompleteFilter, .autocompleteFilter):
             return true

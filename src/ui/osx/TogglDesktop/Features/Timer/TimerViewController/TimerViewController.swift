@@ -101,11 +101,6 @@ class TimerViewController: NSViewController {
         viewModel.projectDataSource.setup(with: projectAutoCompleteView)
         viewModel.tagsDataSource.setup(with: tagsAutoCompleteView)
 
-        viewModel.tagsDataSource.mode = .multiSelection
-
-        // !!!: uncomment to test simplified single-selection mode for tags dropdown
-        // viewModel.tagsDataSource.mode = .singleSelection
-
         viewModel.prepareData()
 
         configureHideAutoCompleteWhenLostFocus()
@@ -147,8 +142,8 @@ class TimerViewController: NSViewController {
         }
 
         viewModel.onTagSelected = { [unowned self] isSelected in
-            if case .singleSelection = self.viewModel.tagsDataSource.mode {
-                self.closeTagsAutoComplete()
+            if case .tagsFilter = self.descriptionFieldHandler.state {
+                self.descriptionFieldHandler.didSelectTag()
             }
 
             self.tagsButton.isSelected = isSelected
@@ -257,15 +252,8 @@ class TimerViewController: NSViewController {
         let wasNotClosedJustNow = (Date().timeIntervalSince1970 - tagsAutocompleteResignTime) > 0.5
 
         if wasNotClosedJustNow {
-
-            // !!!: this is here only for testing. We'll remove this once tags shortcut are implemented
-            switch viewModel.tagsDataSource.mode {
-            case .singleSelection:
-                tagsAutoCompleteView.isSearchFieldHidden = true
-            case .multiSelection:
-                tagsAutoCompleteView.isSearchFieldHidden = false
-            }
-
+            tagsAutoCompleteView.isSearchFieldHidden = false
+            viewModel.tagsDataSource.mode = .multiSelection
             tagsAutoCompleteView.filter(with: "")
             presentTagsAutoComplete(from: .button(tagsButton))
         } else {
@@ -318,7 +306,15 @@ class TimerViewController: NSViewController {
                 projectAutoCompleteView.isSearchFieldHidden = true
                 presentProjectAutoComplete(from: .textField(descriptionTextField))
             }
-            projectAutoCompleteView.filter(with: String(filterText))
+            projectAutoCompleteView.filter(with: filterText)
+
+        case .tagsFilter(let filterText):
+            if tagsAutoCompleteWindow.isVisible == false {
+                tagsAutoCompleteView.isSearchFieldHidden = true
+                viewModel.tagsDataSource.mode = .singleSelection
+                presentTagsAutoComplete(from: .textField(descriptionTextField))
+            }
+            tagsAutoCompleteView.filter(with: filterText)
 
         case .autocompleteFilter(let filterText):
             viewModel.filterAutocomplete(with: filterText)
@@ -331,6 +327,8 @@ class TimerViewController: NSViewController {
             descriptionTextField.resetTable()
         case .projectFilter:
             closeProjectAutoComplete()
+        case .tagsFilter:
+            closeTagsAutoComplete()
         case .descriptionUpdate:
             break
         }
@@ -351,6 +349,9 @@ class TimerViewController: NSViewController {
 
         case .projectAutoCompleteTableHandleEvent(let event):
             _ = projectAutoCompleteView.tableView?.handleKeyboardEvent(event)
+
+        case .tagsAutoCompleteTableHandleEvent(let event):
+            _ = tagsAutoCompleteView.tableView?.handleKeyboardEvent(event)
 
         case .autoCompleteTableSelectNext:
             descriptionTextField.autocompleteTableView.nextItem()
@@ -522,6 +523,7 @@ class TimerViewController: NSViewController {
         tagsAutoCompleteWindow.cancel()
         tagsButton.controlState = .normal
         tagsAutoCompleteView.clean()
+        descriptionFieldHandler.didCloseTagsDropdown()
     }
 
     // MARK: - Other
@@ -609,7 +611,15 @@ extension TimerViewController: AutoCompleteViewDelegate {
     }
 
     private func tagsAutocompleteDidTapOnCreateButton() {
-        viewModel.createNewTag(withName: tagsAutoCompleteView.defaultTextField.stringValue)
+        let tagName: String
+        switch descriptionFieldHandler.state {
+        case .tagsFilter(let filter):
+            tagName = filter
+        default:
+            tagName = tagsAutoCompleteView.defaultTextField.stringValue
+        }
+
+        viewModel.createNewTag(withName: tagName)
         _ = tagsAutoCompleteView.defaultTextField.becomeFirstResponder()
     }
 }
