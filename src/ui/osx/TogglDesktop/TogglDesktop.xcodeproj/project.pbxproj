@@ -1214,6 +1214,7 @@
 			isa = PBXGroup;
 			children = (
 				49850A9F24BF5B7100D7E22F /* App */,
+				C23E03D5252B0D900003E29B /* Models */,
 				BA712EAF21BF904E00A2D8DD /* Features */,
 				49850A9524BF4B8300D7E22F /* Common */,
 				4917324B24C043CC003EE7CC /* TogglDesktopLibrary */,
@@ -1246,6 +1247,7 @@
 				745126B419A28AA500390F47 /* Reachability.h */,
 				745126B519A28AA600390F47 /* Reachability.m */,
 				490CCCE624D30382007D392B /* ProjectTitleFactory.swift */,
+				BA35B22022E6E9E200FA560E /* Key.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1398,6 +1400,8 @@
 				74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */,
 				BA01E89F232F77B3006B93EC /* ClickableImageView.h */,
 				BA01E8A0232F77B3006B93EC /* ClickableImageView.m */,
+				BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */,
+				BA13D2162269DE3400EB3833 /* NoVibrantPopoverView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1571,37 +1575,20 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		BA014026225707F1000E5B91 /* Tag */ = {
+		BA014026225707F1000E5B91 /* TagTokenView */ = {
 			isa = PBXGroup;
 			children = (
-				BA01404922570893000E5B91 /* Tag.swift */,
-				BA01404522570805000E5B91 /* TagCellView.swift */,
-				BA0140472257080F000E5B91 /* TagCellView.xib */,
 				BA01405122571199000E5B91 /* TagTokenView.swift */,
 				BA014053225711A3000E5B91 /* TagTokenView.xib */,
 			);
-			path = Tag;
+			path = TagTokenView;
 			sourceTree = "<group>";
 		};
 		BA0C3A45223219330081C6DE /* AutoComplete */ = {
 			isa = PBXGroup;
 			children = (
-				BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */,
-				3C6B2481203E01D80063FC08 /* AutoCompleteInput.h */,
-				3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */,
-				49A1204C24E9629A00167A71 /* ResponderAutoCompleteInput.swift */,
-				3C6B2482203E01D80063FC08 /* AutoCompleteTable.h */,
-				3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */,
-				3C6B247F203E01D60063FC08 /* AutoCompleteTableCell.h */,
-				3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */,
-				BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */,
-				3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */,
-				3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */,
-				3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */,
-				74C15799183BA5DA00550613 /* AutocompleteDataSource.h */,
-				74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */,
-				3C6B24A2203FC8200063FC08 /* LiteAutoCompleteDataSource.h */,
-				3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */,
+				BA7D332B2248940800B953A8 /* GenericAutoComplete */,
+				C23E03A6252AF84B0003E29B /* LegacyAutoComplete */,
 			);
 			path = AutoComplete;
 			sourceTree = "<group>";
@@ -1650,23 +1637,11 @@
 		BA34F0DB22439BF300C27A15 /* TimeEntryEditor */ = {
 			isa = PBXGroup;
 			children = (
-				BA65A24E22B7A64400F895FD /* DateSelectionView */,
-				BAB818E7228D5A66008C2367 /* Description */,
-				BA014026225707F1000E5B91 /* Tag */,
-				BA8B4C522251FA6900592BC7 /* Workspace */,
-				BA412C1B224E0D3E003CA17A /* Client */,
-				BA9C2DD8224C7E2E002AD2A1 /* Project */,
-				BA7D332B2248940800B953A8 /* AutoComplete */,
-				BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */,
-				BA13D2162269DE3400EB3833 /* NoVibrantPopoverView.swift */,
+				C23E03D6252B0DBC0003E29B /* Views */,
+				BA9C2DD8224C7E2E002AD2A1 /* ProjectCreation */,
 				BA2E5FB0223787C300EB866E /* EditorPopover.swift */,
 				BA34F0FE22439C3000C27A15 /* EditorViewController.swift */,
 				BA34F0FF22439C3000C27A15 /* EditorViewController.xib */,
-				BA0F67B6224A32F700ED0F91 /* CursorButton.swift */,
-				BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */,
-				BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */,
-				BAE6379922B225C70024DD08 /* AddTagButton.swift */,
-				BA35B22022E6E9E200FA560E /* Key.swift */,
 			);
 			path = TimeEntryEditor;
 			sourceTree = "<group>";
@@ -1721,7 +1696,7 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		BA412C1B224E0D3E003CA17A /* Client */ = {
+		BA412C1B224E0D3E003CA17A /* ClientCells */ = {
 			isa = PBXGroup;
 			children = (
 				BA412C20224E1189003CA17A /* ClientCellView.swift */,
@@ -1729,10 +1704,10 @@
 				BA412C26224E195C003CA17A /* NoClientCellView.swift */,
 				BA412C28224E196D003CA17A /* NoClientCellView.xib */,
 			);
-			path = Client;
+			path = ClientCells;
 			sourceTree = "<group>";
 		};
-		BA412C1E224E1158003CA17A /* Cells */ = {
+		BA412C1E224E1158003CA17A /* ProjectCells */ = {
 			isa = PBXGroup;
 			children = (
 				BA7D334E224897FC00B953A8 /* ProjectHeaderCellView.swift */,
@@ -1742,7 +1717,7 @@
 				BA05367E225E238D00C26E1F /* ProjectWorksapceCellView.swift */,
 				BA05369E225E239600C26E1F /* ProjectWorksapceCellView.xib */,
 			);
-			path = Cells;
+			path = ProjectCells;
 			sourceTree = "<group>";
 		};
 		BA43B25C23F6706B0007DD99 /* Dependencies */ = {
@@ -1961,19 +1936,18 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		BA7D332B2248940800B953A8 /* AutoComplete */ = {
+		BA7D332B2248940800B953A8 /* GenericAutoComplete */ = {
 			isa = PBXGroup;
 			children = (
+				C23E03AB252B0C1B0003E29B /* Views */,
 				BA6EB8202248CBD3003BB8EF /* Storage */,
 				BA7D335C2248B46A00B953A8 /* Input */,
 				BA7D335822489C6E00B953A8 /* DataSource */,
 				BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */,
 				BA7D334C2248945300B953A8 /* AutoCompleteView.xib */,
 				BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */,
-				BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */,
-				BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */,
 			);
-			path = AutoComplete;
+			path = GenericAutoComplete;
 			sourceTree = "<group>";
 		};
 		BA7D335822489C6E00B953A8 /* DataSource */ = {
@@ -2002,19 +1976,18 @@
 			path = Input;
 			sourceTree = "<group>";
 		};
-		BA8B4C522251FA6900592BC7 /* Workspace */ = {
+		BA8B4C522251FA6900592BC7 /* WorkspaceCells */ = {
 			isa = PBXGroup;
 			children = (
 				BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */,
 				BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */,
 			);
-			path = Workspace;
+			path = WorkspaceCells;
 			sourceTree = "<group>";
 		};
-		BA9C2DD8224C7E2E002AD2A1 /* Project */ = {
+		BA9C2DD8224C7E2E002AD2A1 /* ProjectCreation */ = {
 			isa = PBXGroup;
 			children = (
-				BA412C1E224E1158003CA17A /* Cells */,
 				BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */,
 				BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */,
 				BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */,
@@ -2022,7 +1995,7 @@
 				BA9C2E03224C84E7002AD2A1 /* ColorViewItem.swift */,
 				BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */,
 			);
-			path = Project;
+			path = ProjectCreation;
 			sourceTree = "<group>";
 		};
 		BAB508E0237E8FAB00D3D468 /* Permission */ = {
@@ -2034,13 +2007,13 @@
 			path = Permission;
 			sourceTree = "<group>";
 		};
-		BAB818E7228D5A66008C2367 /* Description */ = {
+		BAB818E7228D5A66008C2367 /* DescriptionCell */ = {
 			isa = PBXGroup;
 			children = (
 				BAB818E8228D5A97008C2367 /* DescriptionContentCellView.swift */,
 				BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */,
 			);
-			path = Description;
+			path = DescriptionCell;
 			sourceTree = "<group>";
 		};
 		BAB8CA8C240E3EA2002FF62B /* AppleSignIn */ = {
@@ -2111,6 +2084,73 @@
 			isa = PBXGroup;
 			children = (
 				BA4791FD22F0479200E24F79 /* TimerContainerBox.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C23E03A6252AF84B0003E29B /* LegacyAutoComplete */ = {
+			isa = PBXGroup;
+			children = (
+				BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */,
+				3C6B2481203E01D80063FC08 /* AutoCompleteInput.h */,
+				3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */,
+				49A1204C24E9629A00167A71 /* ResponderAutoCompleteInput.swift */,
+				3C6B2482203E01D80063FC08 /* AutoCompleteTable.h */,
+				3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */,
+				3C6B247F203E01D60063FC08 /* AutoCompleteTableCell.h */,
+				3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */,
+				BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */,
+				3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */,
+				3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */,
+				3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */,
+				74C15799183BA5DA00550613 /* AutocompleteDataSource.h */,
+				74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */,
+				3C6B24A2203FC8200063FC08 /* LiteAutoCompleteDataSource.h */,
+				3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */,
+			);
+			path = LegacyAutoComplete;
+			sourceTree = "<group>";
+		};
+		C23E03AB252B0C1B0003E29B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BA412C1E224E1158003CA17A /* ProjectCells */,
+				BA412C1B224E0D3E003CA17A /* ClientCells */,
+				BA8B4C522251FA6900592BC7 /* WorkspaceCells */,
+				C23E03C0252B0CC20003E29B /* TagCell */,
+				BAB818E7228D5A66008C2367 /* DescriptionCell */,
+				BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */,
+				BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C23E03C0252B0CC20003E29B /* TagCell */ = {
+			isa = PBXGroup;
+			children = (
+				BA01404522570805000E5B91 /* TagCellView.swift */,
+				BA0140472257080F000E5B91 /* TagCellView.xib */,
+			);
+			path = TagCell;
+			sourceTree = "<group>";
+		};
+		C23E03D5252B0D900003E29B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BA01404922570893000E5B91 /* Tag.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C23E03D6252B0DBC0003E29B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BA65A24E22B7A64400F895FD /* DateSelectionView */,
+				BA014026225707F1000E5B91 /* TagTokenView */,
+				BA0F67B6224A32F700ED0F91 /* CursorButton.swift */,
+				BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */,
+				BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */,
+				BAE6379922B225C70024DD08 /* AddTagButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
