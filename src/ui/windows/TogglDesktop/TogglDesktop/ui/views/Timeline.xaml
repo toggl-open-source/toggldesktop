@@ -88,6 +88,14 @@
                 </b:Interaction.Behaviors>
             </DatePicker>
             <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Fill="{DynamicResource Toggl.CardBackground}"/>
+            <Grid Grid.Row="2" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Style="{StaticResource Toggl.Timeline.MinusSign}" Command="{Binding DecreaseScale}"/>
+                <Button Grid.Column="1" Style="{StaticResource Toggl.Timeline.PlusSign}" Command="{Binding IncreaseScale}"/>
+            </Grid>
             <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource Toggl.BodyGrayText}" FontSize="12" Text="TIME ENTRIES" Margin="0 8" HorizontalAlignment="Center"/>
             <TextBlock Grid.Row="2" Grid.Column="2" Style="{StaticResource Toggl.BodyGrayText}" FontSize="12" Text="ACTIVITY" Margin="-4 8 0 8" HorizontalAlignment="Center"/>
             <ScrollViewer Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
@@ -112,10 +120,11 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="{Binding ElementName=ActivityColumn, Path=Width}"/>
                     </Grid.ColumnDefinitions>
-                    <ItemsControl ItemsSource="{Binding HourViews}" AlternationCount="2" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5">
+                    <ItemsControl ItemsSource="{Binding HourViews}" AlternationCount="2" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"
+                                  x:Name="HoursItemsControl">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Height="200" x:Name="TimeRow" ZIndex="0">
+                                <StackPanel Height="{Binding ElementName=HoursItemsControl, Path=DataContext.HourHeightView}" x:Name="TimeRow" ZIndex="0">
                                     <TextBlock Text="{Binding Path=., StringFormat='hh:mm tt'}"
                                            Width="29"
                                            TextWrapping="Wrap"

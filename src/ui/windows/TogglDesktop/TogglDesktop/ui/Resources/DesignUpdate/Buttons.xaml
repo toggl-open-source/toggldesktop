@@ -366,4 +366,35 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style TargetType="Button" x:Key="Toggl.Timeline.MinusSign">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid Width="20" Height="20" Background="Transparent">
+                        <Rectangle Width="12" Height="2" Fill="{TemplateBinding Foreground}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.HoverElementBrush}"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.TimelineSeparatorBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="Button" x:Key="Toggl.Timeline.PlusSign" BasedOn="{StaticResource Toggl.Timeline.MinusSign}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid Width="20" Height="20" Background="Transparent">
+                        <Path Fill="{Binding Path=Foreground,  RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}}"
+                              Data="M10 4c.552 0 1 .456 1 1.002V9h3.998c.514 0 .937.383.995.883L16 10c0 .552-.456 1-1.002 1H11v3.998a.999.999 0 0 1-.883.995L10 16c-.552 0-1-.456-1-1.002V11H5.002a.999.999 0 1 1 0-2H9V5.002c0-.514.383-.937.883-.995L10 4z"></Path>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
