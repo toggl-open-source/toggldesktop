@@ -13,7 +13,7 @@ protocol TagCellViewDelegate: class {
     func tagSelectionStateOnChange(with tag: Tag, isSelected: Bool)
 }
 
-final class TagCellView: NSTableCellView {
+final class TagCellView: HoverTableCellView {
 
     static let cellHeight: CGFloat = 34.0
 
@@ -42,14 +42,11 @@ final class TagCellView: NSTableCellView {
     @IBOutlet weak var checkButton: NSButton!
     @IBOutlet weak var nameLabel: NSTextField!
     @IBOutlet weak var backgroundView: NSBox!
-    @IBOutlet weak var hoverView: NSBox!
 
     // MARK: Public
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        initCommon()
-        initTracking()
     }
 
     override func prepareForReuse() {
@@ -57,7 +54,6 @@ final class TagCellView: NSTableCellView {
         NSCursor.arrow.set()
         isSelected = false
         checkButton.state = .off
-        hoverView.alphaValue = 0.0
     }
 
     func render(_ tag: Tag, isSelected: Bool, style: Style = .checkbox) {
@@ -100,29 +96,5 @@ final class TagCellView: NSTableCellView {
         let newState: NSControl.StateValue = checkButton.state == .on ? .off : .on
         checkButton.state = newState
         checkButtonOnChanged(self)
-    }
-
-    override func mouseExited(with event: NSEvent) {
-        super.mouseExited(with: event)
-        NSCursor.arrow.set()
-        hoverView.animator().alphaValue = 0.0
-    }
-
-    override func mouseEntered(with event: NSEvent) {
-        super.mouseEntered(with: event)
-        NSCursor.pointingHand.set()
-        hoverView.animator().alphaValue = 1.0
-    }
-
-    private func initCommon() {
-        hoverView.alphaValue = 0.0
-    }
-
-    private func initTracking() {
-        let trackingArea = NSTrackingArea(rect: bounds,
-                                          options: [.activeInKeyWindow, .inVisibleRect, .mouseEnteredAndExited],
-                                          owner: self,
-                                          userInfo: nil)
-        addTrackingArea(trackingArea)
     }
 }
