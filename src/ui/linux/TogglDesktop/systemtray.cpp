@@ -7,13 +7,18 @@
 #include "./systemtray.h"
 #include "./mainwindowcontroller.h"
 
-SystemTray::SystemTray(MainWindowController *parent, QIcon defaultIcon) :
-    QSystemTrayIcon(parent),
-    notificationsPresent(true)
+SystemTray::SystemTray(MainWindowController *parent, QIcon defaultIcon)
+    : QSystemTrayIcon(parent)
+    , notificationsPresent(true)
 {
     setIcon(defaultIcon);
 
     show();
+
+    updateTooltip();
+    updateTooltipTimer.setSingleShot(false);
+    updateTooltipTimer.start(500);
+    connect(&updateTooltipTimer, &QTimer::timeout, this, &SystemTray::updateTooltip);
 
     connect(TogglApi::instance, &TogglApi::displayIdleNotification, this, &SystemTray::displayIdleNotification);
 
@@ -150,13 +155,25 @@ void SystemTray::displayReminder(QString title, QString description) {
 }
 
 void SystemTray::displayRunningTimerState(TimeEntryView *view) {
-    auto ptcLabel =
-        (view->TaskLabel.isEmpty() ? "" : view->TaskLabel + " ") +
-        (view->ProjectLabel.isEmpty() ? "" : view->ProjectLabel + " ") +
-        (view->ClientLabel.isEmpty() ? "" : view->ClientLabel + " ");
-    setToolTip(view->Description + " - " + ptcLabel + "(" + view->Duration + ")");
+    runningTimeEntry = view;
+    updateTooltip();
 }
 
 void SystemTray::displayStoppedState() {
-    setToolTip("Toggl Track");
+    runningTimeEntry = nullptr;
+    updateTooltip();
+}
+
+void SystemTray::updateTooltip() {
+    if (runningTimeEntry) {
+        auto ptcLabel =
+            (runningTimeEntry->TaskLabel.isEmpty() ? "" : runningTimeEntry->TaskLabel + " ") +
+            (runningTimeEntry->ProjectLabel.isEmpty() ? "" : runningTimeEntry->ProjectLabel + " ") +
+            (runningTimeEntry->ClientLabel.isEmpty() ? "" : runningTimeEntry->ClientLabel + " ");
+        auto duration = TogglApi::formatDurationInSecondsHHMMSS(time(nullptr) - runningTimeEntry->Started);
+        setToolTip(runningTimeEntry->Description + " - " + ptcLabel + "(" + duration + ")");
+    }
+    else {
+        setToolTip("Toggl Track");
+    }
 }
