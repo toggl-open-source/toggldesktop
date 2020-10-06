@@ -1,6 +1,14 @@
 {
     "versions": [
         {
+            "version": "7.5.298",
+            "rows": [
+                "Stability improvements"
+            ],
+            "date": "October 6th 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.296",
             "rows": [
                 "New app icon",
