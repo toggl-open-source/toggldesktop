@@ -547,9 +547,7 @@ namespace TogglDesktop
             this.updateEntriesListWidth();
             if (editPopup.IsVisible == false && ReferenceEquals(this.activeView, this.timerEntryListView))
             {
-                this.timerEntryListView.Entries.DeselectCells();
-                //TODO: Find a better way to undo the TE highlighting on Edit view closing
-                timerEntryListView.Timeline.ViewModel.SelectedTEId = null;
+                this.timerEntryListView.DeselectTimeEntries();
             }
         }
 
