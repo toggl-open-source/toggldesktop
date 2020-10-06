@@ -20,8 +20,10 @@ set(BINARY_SOURCE_FILES
     autocompletelistmodel.cpp
     autocompleteview.cpp
     clickablelabel.cpp
+    clipboarddialog.cpp
     colorpicker.cpp
     countryview.cpp
+    desktopservices.cpp
     errorviewcontroller.cpp
     feedbackdialog.cpp
     genericview.cpp
@@ -48,6 +50,7 @@ set(BINARY_SOURCE_FILES
 
     # it's better to list UI files
     aboutdialog.ui
+    clipboarddialog.ui
     colorpicker.ui
     errorviewcontroller.ui
     feedbackdialog.ui

@@ -11,6 +11,7 @@
 #include <stdint.h>
 
 #include "./toggl_api.h"
+#include "desktopservices.h"
 
 class AutocompleteView;
 class GenericView;
