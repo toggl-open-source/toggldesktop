@@ -29,7 +29,7 @@ class IdleNotificationWidget : public QWidget {
     bool isScreenLocked() const;
 
 private:
-    void storeIdlePeriod(uint64_t period);
+    void storeIdlePeriod(int64_t period);
 
  private slots:  // NOLINT
     void requestIdleHint();
@@ -61,18 +61,18 @@ private:
     void on_addIdleTimeAsNewEntryButton_clicked();
 
  private:
-    Ui::IdleNotificationWidget *ui;
-    QWidget *previousView;
+    Ui::IdleNotificationWidget *ui { nullptr };
+    QWidget *previousView { nullptr };
 
-    uint64_t idleStarted;
-    QDBusInterface *screensaver;
-    bool dbusApiAvailable;
-    bool screenLocked;
-    uint64_t lastActiveTime;
+    uint64_t idleStarted { 0 };
+    QDBusInterface *screensaver { nullptr };
+    bool dbusApiAvailable { true };
+    bool screenLocked { false };
+    int64_t lastActiveTime { ::time(nullptr) };
 
-    QString timeEntryGUID;
+    QString timeEntryGUID { "" };
 
-    QTimer *idleHintTimer;
+    QTimer *idleHintTimer { new QTimer(this) };
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_IDLENOTIFICATIONWIDGET_H_
