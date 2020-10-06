@@ -1,5 +1,5 @@
 <h1 align="center">
-  <a href="https://toggl.com"><img src="https://toggl.com/site/images/media-toolkit/logo_02-644bd26148b73c19d9c91e5baecd8e31.jpg" alt="Toggl" width="200"></a>
+  <a href="https://toggl.com"><img src="https://raw.githubusercontent.com/toggl-open-source/toggldesktop/gh-pages/assets/toggl-track-wide.png" alt="Toggl Track"></a>
 </h1>
 
 <h4 align="center">Native desktop applications for the leading time tracking tool <a href="https://toggl.com" target="_blank">Toggl</a>.</h4>
@@ -70,7 +70,7 @@ _By default the app builds for testing server. To use the compiled app with live
 
 ## macOS
 ### Requirements
-- macOS 10.14+, Xcode 10.2+ and Swift 4+
+- macOS 10.15+, Xcode 12.0+ and Swift 5+
 - Install Bundler
 ```bash
 $ sudo gem install bundler
@@ -79,8 +79,10 @@ $ sudo gem install bundler
 ### Build
 ```bash
 # Prepare cocoapod
-$ make init_cocoapod
+$ make init_cocoapods
 ```
+Run `bundle exec pod repo update` in case there is an error about out-of-date source repos (some pod version is missing).
+
 - Open workspace at `src/ui/osx/TogglDesktop.xcworkspace`
 - Select TogglDesktop scheme and build.
 

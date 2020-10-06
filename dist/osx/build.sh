@@ -19,7 +19,7 @@ function dependencies() {
 }
 
 function cocoapods() {
-    make init_cocoapod
+    make init_cocoapods
 }
 
 function app() {
