@@ -13,6 +13,7 @@ protocol TimelineCollectionViewDelegate: class {
     func timelineDidStartDragging(withStartTime startTime: TimeInterval, endTime: TimeInterval)
     func timelineDidUpdateDragging(withStartTime startTime: TimeInterval, endTime: TimeInterval)
     func timelineDidEndDragging(withStartTime startTime: TimeInterval, endTime: TimeInterval)
+    func timelineDidClick(with startTime: TimeInterval)
 }
 
 /// Main View of the Timline
@@ -25,8 +26,14 @@ final class TimelineCollectionView: NSCollectionView {
     weak var timelineDelegate: TimelineCollectionViewDelegate?
 
     private var isDragCreatingEntry = false
+    private var isClickCreatingEntry = false
     private var mouseDragStartTime: TimeInterval = 0
     private var mouseDragEndTime: TimeInterval = 0
+    private var clickLocation = NSPoint.zero
+
+    private struct Constants {
+        static let minDeltaY = CGFloat(3.0)
+    }
 
     private var dragEntryStartTime: TimeInterval {
         min(mouseDragStartTime, mouseDragEndTime)
@@ -41,30 +48,38 @@ final class TimelineCollectionView: NSCollectionView {
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
 
-        guard isDragToCreateEvent(event) else { return }
+        guard isClickOrDragToCreateEvent(event) else { return }
         guard let dragStart = timestamp(from: event) else { return }
         mouseDragStartTime = dragStart
-        mouseDragEndTime = dragStart + 1
-        isDragCreatingEntry = true
-
-        timelineDelegate?.timelineDidStartDragging(withStartTime: dragEntryStartTime,
-                                                   endTime: dragEntryEndTime)
+        clickLocation = event.locationInWindow
+        isClickCreatingEntry = true
     }
 
     override func mouseDragged(with event: NSEvent) {
         super.mouseDragged(with: event)
 
-        guard isDragCreatingEntry else { return }
+        guard isDragCreatingEntry || isClickCreatingEntry else { return }
         guard let timestamp = timestamp(from: event) else { return }
         mouseDragEndTime = timestamp
-
-        timelineDelegate?.timelineDidUpdateDragging(withStartTime: dragEntryStartTime,
-                                                    endTime: dragEntryEndTime)
+        if isClickCreatingEntry && isDrag(event) {
+            // dragging detected
+            isClickCreatingEntry = false
+            isDragCreatingEntry = true
+            timelineDelegate?.timelineDidStartDragging(withStartTime: dragEntryStartTime, endTime: dragEntryEndTime)
+        } else if isDragCreatingEntry {
+            timelineDelegate?.timelineDidUpdateDragging(withStartTime: dragEntryStartTime,
+                                                        endTime: dragEntryEndTime)
+        }
     }
 
     override func mouseUp(with event: NSEvent) {
         super.mouseUp(with: event)
 
+        if isClickCreatingEntry {
+            timelineDelegate?.timelineDidClick(with: mouseDragStartTime)
+            isClickCreatingEntry = false
+            return
+        }
         guard isDragCreatingEntry else { return }
         guard let timestamp = timestamp(from: event) else { return }
         mouseDragEndTime = timestamp
@@ -76,7 +91,7 @@ final class TimelineCollectionView: NSCollectionView {
 
     // MARK: - Private
 
-    private func isDragToCreateEvent(_ event: NSEvent) -> Bool {
+    private func isClickOrDragToCreateEvent(_ event: NSEvent) -> Bool {
         let clickedPoint = convert(event.locationInWindow, from: nil)
         guard event.clickCount == 1 && indexPathForItem(at: clickedPoint) == nil else {
             return false
@@ -90,5 +105,9 @@ final class TimelineCollectionView: NSCollectionView {
         guard let layout = collectionViewLayout as? TimelineFlowLayout else { return nil }
         let location = convert(event.locationInWindow, from: nil)
         return layout.convertTimestamp(from: location)
+    }
+
+    private func isDrag(_ event: NSEvent) -> Bool {
+        return abs(clickLocation.y - event.locationInWindow.y) > Constants.minDeltaY
     }
 }
