@@ -1,29 +1,29 @@
 PODS:
-  - AppAuth (1.3.0):
-    - AppAuth/Core (= 1.3.0)
-    - AppAuth/ExternalUserAgent (= 1.3.0)
-  - AppAuth/Core (1.3.0)
-  - AppAuth/ExternalUserAgent (1.3.0)
-  - Bugsnag (5.23.0)
+  - AppAuth (1.3.1):
+    - AppAuth/Core (= 1.3.1)
+    - AppAuth/ExternalUserAgent (= 1.3.1)
+  - AppAuth/Core (1.3.1)
+  - AppAuth/ExternalUserAgent (1.3.1)
+  - Bugsnag (5.23.5)
   - GTMAppAuth (1.0.0):
     - AppAuth/Core (~> 1.0)
     - GTMSessionFetcher (~> 1.1)
-  - GTMSessionFetcher (1.3.0):
-    - GTMSessionFetcher/Full (= 1.3.0)
-  - GTMSessionFetcher/Core (1.3.0)
-  - GTMSessionFetcher/Full (1.3.0):
-    - GTMSessionFetcher/Core (= 1.3.0)
+  - GTMSessionFetcher (1.4.0):
+    - GTMSessionFetcher/Full (= 1.4.0)
+  - GTMSessionFetcher/Core (1.4.0)
+  - GTMSessionFetcher/Full (1.4.0):
+    - GTMSessionFetcher/Core (= 1.4.0)
   - MASShortcut (2.4.0)
-  - Sparkle (1.22.0)
-  - SwiftLint (0.39.2)
+  - Sparkle (1.23.0)
+  - SwiftLint (0.40.3)
 
 DEPENDENCIES:
-  - AppAuth
-  - Bugsnag
-  - GTMAppAuth
-  - MASShortcut
-  - Sparkle
-  - SwiftLint
+  - AppAuth (~> 1.3.0)
+  - Bugsnag (~> 5.23.0)
+  - GTMAppAuth (~> 1.0.0)
+  - MASShortcut (~> 2.4.0)
+  - Sparkle (~> 1.23.0)
+  - SwiftLint (~> 0.40.0)
 
 SPEC REPOS:
   trunk:
@@ -36,14 +36,14 @@ SPEC REPOS:
     - SwiftLint
 
 SPEC CHECKSUMS:
-  AppAuth: 73574f3013a1e65b9601a3ddc8b3158cce68c09d
-  Bugsnag: 1f33ee5b55bc4b131a30e0fe6db714da9c6609f6
+  AppAuth: 8803ba1aec6d00d9afd30093f82e600307eaa6ea
+  Bugsnag: 5c3f9d33e88c824a0038e1b14629045929182cbb
   GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
-  GTMSessionFetcher: 43b8b64263023d4f32caa0b40f4c8bfa3c5f36d8
+  GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   MASShortcut: d9e4909e878661cc42877cc9d6efbe638273ab57
-  Sparkle: 593ac2e677c07bcb6c3b22d621240e7cbedaab57
-  SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
+  Sparkle: 55b1a87ba69d56913375a281546b7c82dec95bb0
+  SwiftLint: dfd554ff0dff17288ee574814ccdd5cea85d76f7
 
-PODFILE CHECKSUM: 9df7bcd03888ae548e916c2e2fd737446d736b4a
+PODFILE CHECKSUM: 079b6b1d716844904f00e7333e0ec4930809b209
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3

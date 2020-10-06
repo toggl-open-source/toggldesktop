@@ -59,10 +59,6 @@ final class MainDashboardViewController: NSViewController {
         initTabs()
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     @IBAction func listBtnOnTap(_ sender: Any) {
         currentTab = .timeEntryList
     }

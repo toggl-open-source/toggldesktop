@@ -141,10 +141,6 @@ final class TimelineDashboardViewController: NSViewController {
         initCollectionView()
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     override func viewWillAppear() {
         super.viewWillAppear()
 
