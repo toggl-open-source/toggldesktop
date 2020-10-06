@@ -585,7 +585,7 @@ extension TimelineDashboardViewController: TimelineCollectionViewDelegate {
         }
 
         // Create
-        let defaultDuration: TimeInterval = 1
+        let defaultDuration: TimeInterval = 60 * 60 // 1 hour
         startNewTimeEntry(at: startTime, ended: startTime + defaultDuration)
 
         // Onboarding
@@ -605,6 +605,11 @@ extension TimelineDashboardViewController: TimelineCollectionViewDelegate {
         closeAllPopovers()
         datasource.createdDraggingTimeEntry(withStartTime: startTime, endTime: endTime)
         startNewTimeEntry(at: startTime, ended: endTime)
+    }
+
+    func timelineDidClick(with startTime: TimeInterval) {
+        closeAllPopovers()
+        timelineShouldCreateEmptyEntry(with: startTime)
     }
 }
 
