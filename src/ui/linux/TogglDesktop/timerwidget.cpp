@@ -50,6 +50,8 @@ selectedProjectId(0) {
             this, SLOT(descriptionProjectSelected(QString,uint64_t,QString,QString,uint64_t)));
     connect(ui->description, SIGNAL(billableChanged(bool)),
             this, SLOT(descriptionBillableChanged(bool)));
+    connect(ui->description, SIGNAL(timeEntrySelected(QString)),
+            this, SLOT(descriptionTimeEntrySelected(QString)));
     connect(ui->description, SIGNAL(tagsChanged(QString)),
             this, SLOT(descriptionTagsChanged(QString)));
     connect(ui->description, &QComboBox::editTextChanged,
@@ -99,6 +101,7 @@ void TimerWidget::descriptionReturnPressed() {
 void TimerWidget::descriptionProjectSelected(const QString &projectName, uint64_t projectId, const QString &color, const QString &taskName, uint64_t taskId) {
     selectedProjectId = projectId;
     selectedTaskId = taskId;
+    ui->description->setCurrentText(QString());
     if (projectId && !projectName.isEmpty()) {
         ui->projectFrame->setVisible(true);
         ui->project->setText(QString("<font color=\"%1\">%2</font>").arg(color).arg(projectName));
@@ -108,6 +111,13 @@ void TimerWidget::descriptionProjectSelected(const QString &projectName, uint64_
             ui->taskFrame->setVisible(true);
             ui->task->setText(QString("<font color=\"gray\">%1</font>").arg(taskName));
         }
+        else {
+            ui->taskFrame->setVisible(false);
+        }
+    }
+    else {
+        ui->projectFrame->setVisible(false);
+        ui->taskFrame->setVisible(false);
     }
 }
 
@@ -119,6 +129,10 @@ void TimerWidget::descriptionTagsChanged(const QString &tags) {
     ui->tags->setVisible(!tags.isEmpty());
     ui->tags->setToolTip("<p style='color:white;background-color:black;'>" + tags + "</p>");
     tagsHolder = tags;
+}
+
+void TimerWidget::descriptionTimeEntrySelected(const QString &name) {
+    ui->description->setCurrentText(name);
 }
 
 void TimerWidget::clearProject() {

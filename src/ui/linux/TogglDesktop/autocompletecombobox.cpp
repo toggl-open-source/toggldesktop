@@ -46,6 +46,9 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
         auto ke = reinterpret_cast<QKeyEvent*>(e);
         switch (ke->key()) {
         case Qt::Key_Tab:
+            cancelSelection();
+            focusNextChild();
+            break;
         case Qt::Key_Escape:
             cancelSelection();
             return true;
@@ -126,17 +129,15 @@ void AutocompleteComboBox::onDropdownSelected(AutocompleteView *item) {
             emit projectSelected(item->ProjectLabel, item->ProjectID, item->ProjectColor, item->TaskLabel, item->TaskID);
             emit billableChanged(item->Billable);
             emit tagsChanged(item->Tags);
-            emit timeEntrySelected(item->Text);
-            setCurrentText(item->Description);
+            emit timeEntrySelected(item->Description);
             break;
         case 1:
             emit projectSelected(item->ProjectLabel, item->ProjectID, item->ProjectColor, item->TaskLabel, item->TaskID);
             emit billableChanged(item->Billable);
-            setCurrentText(item->ProjectLabel + (item->ClientLabel.isEmpty() ? "" : ". " + item->ClientLabel));
             break;
         case 2:
             emit projectSelected(item->Text, item->ProjectID, item->ProjectColor, QString(), 0);
-            setCurrentText(item->ProjectLabel + (item->ClientLabel.isEmpty() ? "" : ". " + item->ClientLabel));
+            emit billableChanged(item->Billable);
             break;
         default:
             break;
