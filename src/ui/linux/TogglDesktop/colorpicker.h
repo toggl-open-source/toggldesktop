@@ -22,7 +22,7 @@ private:
     Ui::ColorPicker *ui;
 
 public:
-    void setColors(QVector<char *> list);
+    void setColors(QVector<QString> list);
 
 private slots:
     void color_clicked();

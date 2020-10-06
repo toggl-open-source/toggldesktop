@@ -99,7 +99,7 @@ class TimeEntryEditorWidget : public QWidget {
     void displayProjectAutocomplete(
         QVector<AutocompleteView *> list);
 
-    void setProjectColors(QVector<char *> list);
+    void setProjectColors(QVector<QString> list);
 
     void timeout();
 

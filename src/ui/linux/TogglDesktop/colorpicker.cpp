@@ -28,7 +28,7 @@ ColorPicker::~ColorPicker()
     delete ui;
 }
 
-void ColorPicker::setColors(QVector<char *> list) {
+void ColorPicker::setColors(QVector<QString> list) {
     int row = 0;
     int cell = 0;
 
@@ -38,7 +38,7 @@ void ColorPicker::setColors(QVector<char *> list) {
         colorButton->setMinimumSize(QSize(20, 20));
         colorButton->setMaximumSize(QSize(20, 20));
         colorButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        QString style = "color:" + QString::fromUtf8(list.at(i)) + ";";
+        QString style = "color:" + list.at(i) + ";";
         colorButton->setStyleSheet(style);
         connect(colorButton,SIGNAL(clicked()),this,SLOT(color_clicked()));
 
