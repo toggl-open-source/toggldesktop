@@ -32,7 +32,7 @@
                     </Rectangle>
                     <Border CornerRadius="8,8,8,8" Grid.Column="1" Margin="-10 0 0 0"
                         Visibility="{Binding ShowDescription, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        BorderBrush="{Binding ElementName=TimeEntrySpan, Path=Fill}"
+                        BorderThickness="1"
                         Background="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource PointOneDouble}}">
                         <StackPanel Height="{Binding Height}" Margin="20,0,0,0">
                             <TextBlock Text="{Binding Description}" Style="{StaticResource Toggl.CaptionBlackText}"/>
@@ -52,11 +52,11 @@
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Style.Triggers>
-                                    <DataTrigger  Binding="{Binding IsEditViewOpened}" Value="True">
-                                        <Setter Property="BorderThickness" Value="1"></Setter>
-                                    </DataTrigger>
                                     <DataTrigger  Binding="{Binding IsEditViewOpened}" Value="False">
-                                        <Setter Property="BorderThickness" Value="0"></Setter>
+                                        <Setter Property="BorderBrush" Value="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource PointOneDouble}}"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger  Binding="{Binding IsEditViewOpened}" Value="True">
+                                        <Setter Property="BorderBrush" Value="{Binding ElementName=TimeEntrySpan, Path=Fill}"></Setter>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
