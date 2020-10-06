@@ -7,18 +7,26 @@
 #include "./systemtray.h"
 #include "./mainwindowcontroller.h"
 
-SystemTray::SystemTray(MainWindowController *parent, QIcon defaultIcon) :
-    QSystemTrayIcon(parent),
-    notificationsPresent(true)
+SystemTray::SystemTray(MainWindowController *parent, QIcon defaultIcon)
+    : QSystemTrayIcon(parent)
+    , notificationsPresent(true)
 {
     setIcon(defaultIcon);
 
     show();
 
+    updateTooltip();
+    updateTooltipTimer.setSingleShot(false);
+    updateTooltipTimer.start(500);
+    connect(&updateTooltipTimer, &QTimer::timeout, this, &SystemTray::updateTooltip);
+
     connect(TogglApi::instance, &TogglApi::displayIdleNotification, this, &SystemTray::displayIdleNotification);
 
     connect(TogglApi::instance, SIGNAL(displayReminder(QString,QString)),  // NOLINT
             this, SLOT(displayReminder(QString,QString)));  // NOLINT
+
+    connect(TogglApi::instance, SIGNAL(displayRunningTimerState(TimeEntryView *)), this, SLOT(displayRunningTimerState(TimeEntryView *)));
+    connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()), this, SLOT(displayStoppedState()));
 
     notifications = new QDBusInterface("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", QDBusConnection::sessionBus(), this);
     notificationsPresent = notifications->isValid();
@@ -144,4 +152,28 @@ void SystemTray::displayIdleNotification(
 
 void SystemTray::displayReminder(QString title, QString description) {
     lastReminder = requestNotification(lastReminder, title, description);
+}
+
+void SystemTray::displayRunningTimerState(TimeEntryView *view) {
+    runningTimeEntry = view;
+    updateTooltip();
+}
+
+void SystemTray::displayStoppedState() {
+    runningTimeEntry = nullptr;
+    updateTooltip();
+}
+
+void SystemTray::updateTooltip() {
+    if (runningTimeEntry) {
+        auto ptcLabel =
+            (runningTimeEntry->TaskLabel.isEmpty() ? "" : runningTimeEntry->TaskLabel + " ") +
+            (runningTimeEntry->ProjectLabel.isEmpty() ? "" : runningTimeEntry->ProjectLabel + " ") +
+            (runningTimeEntry->ClientLabel.isEmpty() ? "" : runningTimeEntry->ClientLabel + " ");
+        auto duration = TogglApi::formatDurationInSecondsHHMMSS(time(nullptr) - runningTimeEntry->Started);
+        setToolTip(runningTimeEntry->Description + " - " + ptcLabel + "(" + duration + ")");
+    }
+    else {
+        setToolTip("Toggl Track");
+    }
 }

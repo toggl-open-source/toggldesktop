@@ -6,6 +6,8 @@
 #include <QSystemTrayIcon>
 #include <QtDBus/QtDBus>
 
+#include "timeentryview.h"
+
 class MainWindowController;
 class SettingsView;
 
@@ -35,6 +37,12 @@ protected slots:
 
     void displayReminder(QString title, QString description);
 
+    void displayRunningTimerState(TimeEntryView *view);
+    void displayStoppedState();
+
+    void updateTooltip();
+
+
 private:
     QTimer *idleHintTimer;
     QDBusInterface *notifications;
@@ -46,6 +54,9 @@ private:
     uint64_t lastStarted;
 
     bool notificationsPresent;
+
+    TimeEntryView *runningTimeEntry { nullptr };
+    QTimer updateTooltipTimer;
 };
 
 #endif // SYSTEMTRAY_H
