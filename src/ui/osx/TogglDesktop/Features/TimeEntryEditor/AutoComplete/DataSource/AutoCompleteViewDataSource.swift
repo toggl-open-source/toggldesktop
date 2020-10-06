@@ -60,7 +60,7 @@ class AutoCompleteViewDataSource: NSObject {
 
         textField = autoCompleteView.defaultTextField
         textField.isHidden = false
-        autoCompleteView.placeholderBox.isHidden = false
+        autoCompleteView.isSearchFieldHidden = false
 
         commonSetup()
     }

@@ -46,7 +46,7 @@ final class TagAutoCompleteTextField: AutoCompleteTextField, NSWindowDelegate {
         removeFromSuperview()
 
         // Add
-        autoCompleteView.placeholderBox.isHidden = false
+        autoCompleteView.isSearchFieldHidden = false
         translatesAutoresizingMaskIntoConstraints = false
         autoCompleteView.placeholderBoxContainerView.addSubview(self)
         edgesToSuperView()

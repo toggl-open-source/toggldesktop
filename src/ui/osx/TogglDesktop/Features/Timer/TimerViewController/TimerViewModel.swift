@@ -102,10 +102,10 @@ final class TimerViewModel: NSObject {
     var descriptionDataSource = LiteAutoCompleteDataSource(notificationName: kDisplayMinitimerAutocomplete)
 
     var projectDataSource = ProjectDataSource(items: ProjectStorage.shared.items,
-                                                      updateNotificationName: .ProjectStorageChangedNotification)
+                                              updateNotificationName: .ProjectStorageChangedNotification)
 
     var tagsDataSource = TagDataSource(items: TagStorage.shared.tags,
-                                              updateNotificationName: .TagStorageChangedNotification)
+                                       updateNotificationName: .TagStorageChangedNotification)
 
     private var timer: Timer!
 
@@ -171,7 +171,10 @@ final class TimerViewModel: NSObject {
 
     func setDescription(_ description: String) {
         entryDescription = description
-        descriptionDataSource.setFilter(entryDescription)
+    }
+
+    func filterAutocomplete(with filter: String) {
+        descriptionDataSource.setFilter(filter)
         descriptionDataSource.input?.autocompleteTableView.resetSelected()
     }
 

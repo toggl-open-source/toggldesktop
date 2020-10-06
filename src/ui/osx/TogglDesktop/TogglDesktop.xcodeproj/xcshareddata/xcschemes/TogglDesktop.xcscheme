@@ -29,7 +29,8 @@
       shouldUseLaunchSchemeArgsEnv = "NO"
       disableMainThreadChecker = "YES"
       systemAttachmentLifetime = "keepNever"
-      userAttachmentLifetime = "keepAlways">
+      userAttachmentLifetime = "keepAlways"
+      codeCoverageEnabled = "YES">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"

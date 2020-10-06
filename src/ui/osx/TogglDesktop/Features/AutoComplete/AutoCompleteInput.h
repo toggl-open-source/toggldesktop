@@ -32,8 +32,9 @@ typedef NS_ENUM (NSUInteger, AutoCompleteDisplayMode)
 @property (assign, nonatomic, readonly) CGFloat itemHeight;
 @property (assign, nonatomic, readonly) CGFloat worksapceItemHeight;
 @property (assign, nonatomic) AutoCompleteDisplayMode displayMode;
+@property (assign, nonatomic, readonly) BOOL isListHidden;
 
-- (void)toggleTableViewWithNumberOfItem:(NSInteger)numberOfItem;
+- (void)toggleList:(BOOL)isOn;
 - (void)updateDropdownWithHeight:(CGFloat)height;
 - (void)hide;
 - (void)resetTable;
