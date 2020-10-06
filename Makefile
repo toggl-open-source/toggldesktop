@@ -148,7 +148,7 @@ ifeq ($(uname), Linux)
 app:
 	mkdir -p build && cd build && cmake .. && make
 else
-app: init_cocoapod lib ui
+app: init_cocoapods lib ui
 endif
 
 app_release: lib_release ui_release
@@ -183,7 +183,7 @@ clean_deps:
 
 deps: clean_deps openssl poco lua
 
-init_cocoapod:
+init_cocoapods:
 	cd $(macosdir) && bundle install && bundle exec pod install && cd $(rootdir)
 
 lua:
