@@ -260,9 +260,11 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 
     if (!ui->start->hasFocus()) {
         ui->start->setText(view->StartTimeString);
+        ui->start->setToolTip(TogglApi::formatDurationForPopup(view->Started));
     }
     if (!ui->stop->hasFocus()) {
         ui->stop->setText(view->EndTimeString);
+        ui->stop->setToolTip(TogglApi::formatDurationForPopup(view->Ended));
     }
     ui->stop->setVisible(duration >= 0);
     ui->timeSeparator->setVisible(duration >= 0);
