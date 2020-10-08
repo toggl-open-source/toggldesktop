@@ -1609,6 +1609,16 @@ void track_timer_start(
     app(context)->TrackTimerStart(actions);
 }
 
+void track_timer_shortcut(
+    void *context,
+    TimerShortcutActionType action) {
+
+    if (!context) {
+        return;
+    }
+    app(context)->TrackTimerShortcut(action);
+}
+
 bool_t toggl_update_time_entry(
     void *context,
     const char_t *guid,

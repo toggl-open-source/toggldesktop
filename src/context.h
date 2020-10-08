@@ -571,6 +571,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     void TrackTimerEdit(TimerEditActionType action);
     void TrackTimerStart(TimerEditActionType actions);
+    void TrackTimerShortcut(TimerShortcutActionType action);
 
     // Onboarding action
     void UserDidClickOnTimelineTab();

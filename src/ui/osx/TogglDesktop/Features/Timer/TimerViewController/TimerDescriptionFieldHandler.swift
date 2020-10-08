@@ -10,11 +10,9 @@ import Foundation
 
 class TimerDescriptionFieldHandler: NSResponder {
 
-    private enum Constants {
-        static let projectToken: Character = "@"
-        static let tagToken: Character = "#"
-
-        static let autoCompleteMinFilterLength = 2
+    enum Shortcut: Character {
+        case project = "@"
+        case tag = "#"
     }
 
     enum State: Equatable {
@@ -87,26 +85,26 @@ class TimerDescriptionFieldHandler: NSResponder {
 
     func didSelectProject() {
         if case .projectFilter = state {
-            removeShortcutQuery(for: Constants.projectToken)
+            removeShortcutQuery(for: .project)
         }
     }
 
     func didSelectTag() {
         if case .tagsFilter = state {
-            removeShortcutQuery(for: Constants.tagToken)
+            removeShortcutQuery(for: .tag)
         }
     }
 
     // MARK: - Private
 
     /// Removes from text field the text related to `shortcut`
-    private func removeShortcutQuery(for shortcut: Character) {
+    private func removeShortcutQuery(for shortcut: Shortcut) {
         guard let editor = textField.currentEditor() else { return }
 
         var text = editor.string
         let lastTypedIndex = text.index(text.startIndex, offsetBy: editor.selectedRange.location - 1)
         let rangeBeforeCursor = text[text.startIndex...lastTypedIndex]
-        if let shortcutIndex = rangeBeforeCursor.lastIndex(of: shortcut) {
+        if let shortcutIndex = rangeBeforeCursor.lastIndex(of: shortcut.rawValue) {
             let shortcutLocation = text.distance(from: text.startIndex, to: shortcutIndex)
 
             text.removeSubrange(shortcutIndex...lastTypedIndex)
@@ -153,15 +151,18 @@ class TimerDescriptionFieldHandler: NSResponder {
         let (token, query): (Character?, String)
 
         if isShortcutEnabled {
-            (token, query) = text.findTokenAndQueryMatchesForAutocomplete([Constants.projectToken, Constants.tagToken], cursorLocation)
+            (token, query) = text.findTokenAndQueryMatchesForAutocomplete(
+                [Shortcut.project, Shortcut.tag].map { $0.rawValue },
+                cursorLocation
+            )
         } else {
             (token, query) = (nil, text)
         }
 
         switch (token, query) {
-        case (Constants.projectToken, _):
+        case (Shortcut.project.rawValue, _):
             state = .projectFilter(query)
-        case (Constants.tagToken, _):
+        case (Shortcut.tag.rawValue, _):
             state = .tagsFilter(query)
         case (nil, query):
             state = .autocompleteFilter(query)

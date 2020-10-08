@@ -96,6 +96,8 @@ class Analytics : public Poco::TaskManager {
     ///                 @c TimerEditActionTypeDescription is ignored for this analytics event.
     void TrackTimerStart(const std::string &client_id, const TimerEditActionType actions);
 
+    void TrackTimerShortcut(const std::string &client_id, const TimerShortcutActionType action);
+
  private:
     Poco::LocalDateTime settings_sync_date;
 
