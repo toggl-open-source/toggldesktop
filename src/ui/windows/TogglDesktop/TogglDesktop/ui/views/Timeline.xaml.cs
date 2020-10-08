@@ -38,6 +38,9 @@ namespace TogglDesktop
                     .Select(b => (double)ViewModel.ScaleModes[b[1]] / ViewModel.ScaleModes[b[0]])
                     .Subscribe(ratio => MainViewScroll.ScrollToVerticalOffset(MainViewScroll.VerticalOffset * ratio))
                     .DisposeWith(_disposable);
+                ViewModel?.WhenAnyValue(x => x.SelectedDate).Where(date => date.Date == DateTime.Today)
+                    .Subscribe(_ => SetScrollToCurrentTime())
+                    .DisposeWith(_disposable);
             }
         }
 
@@ -62,6 +65,17 @@ namespace TogglDesktop
             }
         }
 
+        private void OnMainViewScrollLoaded(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel?.SelectedDate.Date == DateTime.Today)
+                SetScrollToCurrentTime();
+        }
+
+        private void SetScrollToCurrentTime()
+        {
+            var height = ViewModel.ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now);
+            MainViewScroll.ScrollToVerticalOffset(height - MainViewScroll.ActualHeight / 2);
+        }
         private void OnTimeEntryBlockMouseEnter(object sender, MouseEventArgs e)
         {
             if (sender is FrameworkElement uiElement && uiElement.DataContext is TimeEntryBlock curBlock)

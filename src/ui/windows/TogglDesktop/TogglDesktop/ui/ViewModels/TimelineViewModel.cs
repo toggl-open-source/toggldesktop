@@ -44,6 +44,12 @@ namespace TogglDesktop.ViewModels
                 .ObserveOn(RxApp.TaskpoolScheduler).Subscribe(_ =>
                 TimeEntryBlocks?.ForEach(te => te.IsEditViewOpened = SelectedForEditTEId == te.TimeEntryId));
             HourViews = GetHoursListFromScale(SelectedScaleMode);
+            Observable.Timer(TimeSpan.Zero,TimeSpan.FromMinutes(1))
+                .Select(_ => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now))
+                .ToPropertyEx(this, x => x.CurrentTimeOffset);
+            this.WhenAnyValue(x => x.SelectedDate)
+                .Select(dateTime => dateTime.Date == DateTime.Today.Date)
+                .ToPropertyEx(this, x => x.IsTodaySelected);
         }
 
         private int ChangeScaleMode(int value) => 
@@ -232,7 +238,7 @@ namespace TogglDesktop.ViewModels
             GenerateGapTimeEntryBlocks(timeEntries);
         }
 
-        private double ConvertTimeIntervalToHeight(DateTime start, DateTime end)
+        public double ConvertTimeIntervalToHeight(DateTime start, DateTime end)
         {
             var timeInterval = (end - start).TotalMinutes;
             return timeInterval * ScaleModes[SelectedScaleMode] / 60;
@@ -312,6 +318,10 @@ namespace TogglDesktop.ViewModels
         public string SelectedForEditTEId { get; set; }
         public ReactiveCommand<Unit, int> IncreaseScale { get; }
         public ReactiveCommand<Unit, int> DecreaseScale { get; }
+
+        public double CurrentTimeOffset { [ObservableAsProperty] get; }
+
+        public bool IsTodaySelected { [ObservableAsProperty] get; }
 
         public class ActivityBlock
         {
