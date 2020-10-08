@@ -19,7 +19,7 @@ static CGFloat maxDropdownWidth = 500;
 static CGFloat dropdownBottomPadding = 50;
 static CGFloat dropdownHorizontalPadding = 11;
 
-@interface AutoCompleteInput () <NoInteractionViewDelegate, NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
+@interface AutoCompleteInput () <NoInteractionViewDelegate, NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate, NSTextViewDelegate>
 @property (strong, nonatomic) AutoCompleteTable *autocompleteTableView;
 @property (strong, nonatomic) AutoCompleteTableContainer *autocompleteTableContainer;
 @property (assign, nonatomic) BOOL constraintsActive;
@@ -31,6 +31,7 @@ static CGFloat dropdownHorizontalPadding = 11;
 @property (assign, nonatomic) CGFloat itemHeight;
 @property (assign, nonatomic) CGFloat worksapceItemHeight;
 @property (nonatomic, readwrite) BOOL isListHidden;
+@property (nonatomic, readwrite) NSRange selectedRange;
 @end
 
 @implementation AutoCompleteInput
@@ -47,6 +48,7 @@ static CGFloat dropdownHorizontalPadding = 11;
 		self.wantsLayer = YES;
 		self.layer.masksToBounds = NO;
 		self.displayMode = AutoCompleteDisplayModeCompact;
+		self.selectedRange = NSMakeRange(0, 0);
 		[self initBackgroundView];
         if (@available(macOS 10.12.2, *))
         {
@@ -297,6 +299,15 @@ static CGFloat dropdownHorizontalPadding = 11;
 	[self.autocompleteTableView reloadData];
 	[self updateDropdownWithHeight:totalHeight];
 	[self toggleList:array.count > 0];
+}
+
+- (void)textViewDidChangeSelection:(NSNotification *)notification
+{
+	NSTextView *editor = (NSTextView *)self.currentEditor;
+	if (!editor) {
+		return;
+	}
+	self.selectedRange = [editor selectedRange];
 }
 
 @end

@@ -51,7 +51,8 @@ class TimerDescriptionFieldHandler: NSResponder {
     var onPerformAction: (Action) -> Bool = { _ in return false }
 
     private let textField: AutoCompleteInput
-    private var kvoToken: NSKeyValueObservation?
+    private var kvoListHiddenToken: NSKeyValueObservation?
+    private var kvoSelectedRangeToken: NSKeyValueObservation?
 
     /// Set to `true` to enable Project (@) shortcut feature
     var isShortcutEnabled: Bool
@@ -119,22 +120,31 @@ class TimerDescriptionFieldHandler: NSResponder {
     }
 
     private func observeTextField() {
-        kvoToken = textField.observe(\.isListHidden) { [weak self] textField, _ in
-            guard let self = self else { return }
-            // changin state to default if it was .autocompleteFilter before
-            // and list was closed, e.g. by clicking on dimming background
-            if case .autocompleteFilter = self.state, textField.isListHidden {
-                self.state = .descriptionUpdate
-            }
+        kvoListHiddenToken = textField.observe(\.isListHidden) { [weak self] _, _ in
+            self?.controlListVisibilityDidChange()
+        }
+
+        kvoSelectedRangeToken = textField.observe(\.selectedRange) { [weak self] _, _ in
+            self?.controlTextCursorDidChange()
         }
     }
-}
 
-// MARK: - NSTextFieldDelegate
+    private func controlListVisibilityDidChange() {
+        // changin state to default if it was .autocompleteFilter before
+        // and list was closed, e.g. by clicking on dimming background
+        if case .autocompleteFilter = state, textField.isListHidden {
+            state = .descriptionUpdate
+        }
+    }
 
-extension TimerDescriptionFieldHandler: NSTextFieldDelegate {
+    private func controlTextCursorDidChange() {
+        // here we recalculate the current component state
+        // cursor changes even on every text change, so we
+        // cover all cases in this method
+        calculateState()
+    }
 
-    func controlTextDidChange(_ obj: Notification) {
+    private func calculateState() {
         guard let editor = textField.currentEditor() else { return }
 
         let text = editor.string
@@ -159,6 +169,11 @@ extension TimerDescriptionFieldHandler: NSTextFieldDelegate {
             state = .descriptionUpdate
         }
     }
+}
+
+// MARK: - NSTextFieldDelegate
+
+extension TimerDescriptionFieldHandler: NSTextFieldDelegate {
 
     func controlTextDidEndEditing(_ obj: Notification) {
         _ = onPerformAction(.endEditing)
@@ -227,7 +242,6 @@ extension TimerDescriptionFieldHandler: NSTextFieldDelegate {
             default:
                 break
             }
-
         }
 
         return false
