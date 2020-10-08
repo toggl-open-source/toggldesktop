@@ -357,7 +357,7 @@ class BUGSNAGQTSHARED_EXPORT Bugsnag : public QObject {
                         << ", status code " << statusCode
                            << ", content " << QString(b);
         }
-        delete reply;
+        reply->deleteLater();
     }
 };
 
