@@ -40,106 +40,151 @@ class User;
 class Workspace;
 class OnboardingState;
 
+class DatabaseError final : public ErrorBase {
+public:
+    enum Type {
+        UNKNOWN_ERROR,
+        DATABASE_BROKEN,
+        SESSION_ERROR,
+        INCONSISTENT_DATA,
+        PROGRAMMING_ERROR
+    };
+    inline static const std::map<int, std::string> UserMessages {
+        { UNKNOWN_ERROR, "Unexpected database error" },
+        { DATABASE_BROKEN, "" },
+        { SESSION_ERROR, "" },
+        { INCONSISTENT_DATA, "" },
+        { PROGRAMMING_ERROR, "" }
+    };
+    DatabaseError(enum Type type, const std::string &logMessage)
+        : ErrorBase()
+        , log_message_(logMessage)
+        , type_(type)
+    {}
+    DatabaseError(DatabaseError &&o) = default;
+    DatabaseError(const DatabaseError &o) = default;
+
+    std::string Class() const override {
+        return "DatabaseError";
+    }
+    int Type() const override {
+        return type_;
+    }
+    std::string LogMessage() const override {
+        return log_message_;
+    }
+    std::string UserMessage() const override {
+        auto it = UserMessages.find(Type());
+        if (it != UserMessages.end()) {
+            return it->second;
+        }
+        return UserMessages.at(UNKNOWN_ERROR);
+    }
+private:
+    std::string log_message_;
+    enum Type type_;
+};
+
 class TOGGL_INTERNAL_EXPORT Database {
  public:
     explicit Database(const std::string &db_path);
     ~Database();
 
-    error DeleteFromTable(
+    Error DeleteFromTable(
         const std::string &table_name,
         const Poco::Int64 &local_id);
 
-    error DeleteUser(
+    Error DeleteUser(
         User *model,
         const bool with_related_data);
 
-    error LoadUserByID(
+    Error LoadUserByID(
         const Poco::UInt64 &UID,
         User *user);
 
-    error LoadUserByEmail(
+    Error LoadUserByEmail(
         const std::string &email,
         User *model);
 
-    error LoadCurrentUser(User *user);
+    Error LoadCurrentUser(User *user);
 
-    error LoadSettings(Settings *settings);
+    Error LoadSettings(Settings *settings);
 
-    error LoadWindowSettings(
+    Error LoadWindowSettings(
         Poco::Int64 *window_x,
         Poco::Int64 *window_y,
         Poco::Int64 *window_height,
         Poco::Int64 *window_width);
 
-    error SaveWindowSettings(
+    Error SaveWindowSettings(
         const Poco::Int64 window_x,
         const Poco::Int64 window_y,
         const Poco::Int64 window_height,
         const Poco::Int64 window_width);
 
-    error SetMiniTimerX(const Poco::Int64 x);
-    error GetMiniTimerX(Poco::Int64 *x);
-    error SetMiniTimerY(const Poco::Int64 y);
-    error GetMiniTimerY(Poco::Int64 *y);
-    error SetMiniTimerW(const Poco::Int64 w);
-    error GetMiniTimerW(Poco::Int64 *w);
+    Error SetMiniTimerX(const Poco::Int64 x);
+    Error GetMiniTimerX(Poco::Int64 *x);
+    Error SetMiniTimerY(const Poco::Int64 y);
+    Error GetMiniTimerY(Poco::Int64 *y);
+    Error SetMiniTimerW(const Poco::Int64 w);
+    Error GetMiniTimerW(Poco::Int64 *w);
 
-    error SetSettingsHasSeenBetaOffering(const bool &value);
+    Error SetSettingsHasSeenBetaOffering(const bool &value);
 
-    error SetSettingsMessageSeen(const Poco::UInt64 message_id);
+    Error SetSettingsMessageSeen(const Poco::UInt64 message_id);
 
-    error SetSettingsUseIdleDetection(const bool &use_idle_detection);
+    Error SetSettingsUseIdleDetection(const bool &use_idle_detection);
 
-    error SetSettingsAutotrack(const bool &value);
+    Error SetSettingsAutotrack(const bool &value);
 
-    error SetSettingsOpenEditorOnShortcut(const bool &value);
+    Error SetSettingsOpenEditorOnShortcut(const bool &value);
 
-    error SetSettingsMenubarTimer(const bool &menubar_timer);
+    Error SetSettingsMenubarTimer(const bool &menubar_timer);
 
-    error SetSettingsMenubarProject(const bool &menubar_project);
+    Error SetSettingsMenubarProject(const bool &menubar_project);
 
-    error SetSettingsDockIcon(const bool &dock_icon);
+    Error SetSettingsDockIcon(const bool &dock_icon);
 
-    error SetSettingsOnTop(const bool &on_top);
+    Error SetSettingsOnTop(const bool &on_top);
 
-    error SetSettingsReminder(const bool &reminder);
+    Error SetSettingsReminder(const bool &reminder);
 
-    error SetSettingsPomodoro(const bool &pomodoro);
+    Error SetSettingsPomodoro(const bool &pomodoro);
 
-    error SetSettingsPomodoroBreak(const bool &pomodoro_break);
+    Error SetSettingsPomodoroBreak(const bool &pomodoro_break);
 
-    error SetSettingsStopEntryOnShutdownSleep(const bool &stop_entry);
+    Error SetSettingsStopEntryOnShutdownSleep(const bool &stop_entry);
 
-    error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
+    Error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
-    error SetSettingsFocusOnShortcut(const bool &focus_on_shortcut);
+    Error SetSettingsFocusOnShortcut(const bool &focus_on_shortcut);
 
-    error SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
+    Error SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
 
-    error SetSettingsPomodoroMinutes(const Poco::UInt64 pomodoro_minutes);
+    Error SetSettingsPomodoroMinutes(const Poco::UInt64 pomodoro_minutes);
 
-    error SetSettingsPomodoroBreakMinutes(
+    Error SetSettingsPomodoroBreakMinutes(
         const Poco::UInt64 pomodoro_break_minutes);
 
-    error SetSettingsManualMode(const bool &manual_mode);
+    Error SetSettingsManualMode(const bool &manual_mode);
 
-    error SetSettingsAutodetectProxy(const bool &autodetect_proxy);
+    Error SetSettingsAutodetectProxy(const bool &autodetect_proxy);
 
-    error SetSettingsShowTouchBar(const bool &show_touch_bar);
+    Error SetSettingsShowTouchBar(const bool &show_touch_bar);
 
-    error SetSettingsStartAutotrackerWithoutSuggestions(const bool &start_autotracker_without_suggestions);
+    Error SetSettingsStartAutotrackerWithoutSuggestions(const bool &start_autotracker_without_suggestions);
 
-    error SetSettingsActiveTab(const uint8_t &active_tab);
+    Error SetSettingsActiveTab(const uint8_t &active_tab);
 
-    error SetSettingsColorTheme(const uint8_t &color_theme);
+    Error SetSettingsColorTheme(const uint8_t &color_theme);
 
-    error SetSettingsForceIgnoreCert(const bool& force_ignore_cert);
+    Error SetSettingsForceIgnoreCert(const bool& force_ignore_cert);
 
-    error SetSettingsRemindTimes(
+    Error SetSettingsRemindTimes(
         const std::string &remind_starts,
         const std::string &remind_ends);
 
-    error SetSettingsRemindDays(
+    Error SetSettingsRemindDays(
         const bool &remind_mon,
         const bool &remind_tue,
         const bool &remind_wed,
@@ -148,250 +193,250 @@ class TOGGL_INTERNAL_EXPORT Database {
         const bool &remind_sat,
         const bool &remind_sun);
 
-    error LoadMigrations(
+    Error LoadMigrations(
         std::vector<std::string> *);
 
-    error SetMiniTimerVisible(
+    Error SetMiniTimerVisible(
         const bool);
 
-    error GetMiniTimerVisible(
+    Error GetMiniTimerVisible(
         bool *);
 
-    error SetKeepEndTimeFixed(
+    Error SetKeepEndTimeFixed(
         const bool);
 
-    error GetKeepEndTimeFixed(
+    Error GetKeepEndTimeFixed(
         bool *);
 
-    error GetShowTouchBar(bool *result);
+    Error GetShowTouchBar(bool *result);
 
-    error GetActiveTab(uint8_t *result);
+    Error GetActiveTab(uint8_t *result);
 
-    error SetWindowMaximized(
+    Error SetWindowMaximized(
         const bool value);
 
-    error GetWindowMaximized(bool *result);
+    Error GetWindowMaximized(bool *result);
 
-    error SetWindowMinimized(
+    Error SetWindowMinimized(
         const bool value);
 
-    error GetWindowMinimized(bool *result);
+    Error GetWindowMinimized(bool *result);
 
-    error SetWindowEditSizeHeight(
+    Error SetWindowEditSizeHeight(
         const Poco::Int64 value);
 
-    error GetWindowEditSizeHeight(Poco::Int64 *result);
+    Error GetWindowEditSizeHeight(Poco::Int64 *result);
 
-    error SetWindowEditSizeWidth(
+    Error SetWindowEditSizeWidth(
         const Poco::Int64 value);
 
-    error GetWindowEditSizeWidth(Poco::Int64 *result);
+    Error GetWindowEditSizeWidth(Poco::Int64 *result);
 
-    error SetKeyStart(
+    Error SetKeyStart(
         const std::string &value);
 
-    error GetKeyStart(std::string *result);
+    Error GetKeyStart(std::string *result);
 
-    error SetKeyShow(
+    Error SetKeyShow(
         const std::string &value);
 
-    error GetKeyShow(std::string *result);
+    Error GetKeyShow(std::string *result);
 
-    error SetKeyModifierShow(
+    Error SetKeyModifierShow(
         const std::string &value);
 
-    error GetKeyModifierShow(std::string *result);
+    Error GetKeyModifierShow(std::string *result);
 
-    error SetKeyModifierStart(
+    Error SetKeyModifierStart(
         const std::string &value);
 
-    error GetKeyModifierStart(std::string *result);
+    Error GetKeyModifierStart(std::string *result);
 
-    error GetMessageSeen(Poco::Int64 *result);
+    Error GetMessageSeen(Poco::Int64 *result);
 
-    error LoadProxySettings(
+    Error LoadProxySettings(
         bool *use_proxy,
         Proxy *proxy);
 
-    error SaveProxySettings(
+    Error SaveProxySettings(
         const bool &use_proxy,
         const Proxy &proxy);
 
-    error LoadUpdateChannel(
+    Error LoadUpdateChannel(
         std::string *update_channel);
 
-    error SaveUpdateChannel(
+    Error SaveUpdateChannel(
         const std::string &update_channel);
 
-    error UInt(
+    Error UInt(
         const std::string &sql,
         Poco::UInt64 *result);
 
-    error String(
+    Error String(
         const std::string &sql,
         std::string *result);
 
-    error SaveUser(User *user, bool with_related_data,
+    Error SaveUser(User *user, bool with_related_data,
                    std::vector<ModelChange> *changes);
 
-    error LoadTimeEntriesForUpload(User *user);
+    Error LoadTimeEntriesForUpload(User *user);
 
-    error CurrentAPIToken(
+    Error CurrentAPIToken(
         std::string *token,
         Poco::UInt64 *uid);
-    error SetCurrentAPIToken(
+    Error SetCurrentAPIToken(
         const std::string &token,
         const Poco::UInt64 &uid);
-    error ClearCurrentAPIToken();
+    Error ClearCurrentAPIToken();
 
     static std::string GenerateGUID();
 
     std::string DesktopID() const {
         return desktop_id_;
     }
-    error EnsureDesktopID();
+    Error EnsureDesktopID();
 
     std::string AnalyticsClientID() const {
         return analytics_client_id_;
     }
-    error EnsureAnalyticsClientID();
+    Error EnsureAnalyticsClientID();
 
-    error Migrate(
+    Error Migrate(
         const std::string &name,
         const std::string &sql);
 
-    error EnsureTimelineGUIDS();
+    Error EnsureTimelineGUIDS();
 
-    error Trim(const std::string &text, std::string *result);
+    Error Trim(const std::string &text, std::string *result);
 
-    error ResetWindow();
-    error LoadOnboardingState(const Poco::UInt64 &UID, OnboardingState *state);
-    error SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *state);
+    Error ResetWindow();
+    Error LoadOnboardingState(const Poco::UInt64 &UID, OnboardingState *state);
+    Error SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *state);
     
  private:
-    error vacuum();
+    Error vacuum();
 
-    error initialize_tables();
+    Error initialize_tables();
 
-    error ensureMigrationTable();
+    Error ensureMigrationTable();
 
     template<typename T>
-    error setSettingsValue(
+    Error setSettingsValue(
         const std::string &field_name,
         const T &value);
 
     template<typename T>
-    error getSettingsValue(
+    Error getSettingsValue(
         const std::string &field_name,
         T *value);
 
-    error execute(
+    Error execute(
         const std::string &sql);
 
-    error last_error(
+    Error last_error(
         const std::string &was_doing);
 
-    error journalMode(std::string *);
-    error setJournalMode(const std::string &);
+    Error journalMode(std::string *);
+    Error setJournalMode(const std::string &);
 
-    error loadUsersRelatedData(User *user);
+    Error loadUsersRelatedData(User *user);
 
-    error loadWorkspaces(
+    Error loadWorkspaces(
         const Poco::UInt64 &UID,
         std::vector<Workspace *> *list);
 
-    error loadClients(
+    Error loadClients(
         const Poco::UInt64 &UID,
         std::vector<Client *> *list);
 
-    error loadProjects(
+    Error loadProjects(
         const Poco::UInt64 &UID,
         std::vector<Project *> *list);
 
-    error loadTasks(
+    Error loadTasks(
         const Poco::UInt64 &UID,
         std::vector<Task *> *list);
 
-    error loadTags(
+    Error loadTags(
         const Poco::UInt64 &UID,
         std::vector<Tag *> *list);
 
-    error loadAutotrackerRules(
+    Error loadAutotrackerRules(
         const Poco::UInt64 &UID,
         std::vector<AutotrackerRule *> *list);
 
-    error loadTimeEntries(
+    Error loadTimeEntries(
         const Poco::UInt64 &UID,
         std::vector<TimeEntry *> *list);
 
-    error loadTimelineEvents(
+    Error loadTimelineEvents(
         const Poco::UInt64 &UID,
         std::vector<TimelineEvent *> *list);
 
-    error loadTimeEntriesFromSQLStatement(
+    Error loadTimeEntriesFromSQLStatement(
         Poco::Data::Statement *select,
         std::vector<TimeEntry *> *list);
 
     template <typename T>
-    error saveRelatedModels(
+    Error saveRelatedModels(
         const Poco::UInt64 UID,
         const std::string &table_name,
         std::vector<T *> *list,
         std::vector<ModelChange> *changes);
 
-    error deleteAllFromTableByDate(
+    Error deleteAllFromTableByDate(
         const std::string &table_name,
         const Poco::Timestamp &time);
 
-    error deleteAllSyncedTimelineEventsByDate(
+    Error deleteAllSyncedTimelineEventsByDate(
         const Poco::Timestamp &time);
 
-    error deleteAllFromTableByUID(
+    Error deleteAllFromTableByUID(
         const std::string &table_name,
         const Poco::UInt64 &UID);
 
-    error saveModel(
+    Error saveModel(
         AutotrackerRule *model,
         std::vector<ModelChange> *changes);
 
-    error saveModel(
+    Error saveModel(
         Workspace *model,
         std::vector<ModelChange> *changes);
 
-    error saveModel(
+    Error saveModel(
         Client *model,
         std::vector<ModelChange> *changes);
 
-    error saveModel(
+    Error saveModel(
         Project *model,
         std::vector<ModelChange> *changes);
 
-    error saveModel(
+    Error saveModel(
         Task *model,
         std::vector<ModelChange> *changes);
 
-    error saveModel(
+    Error saveModel(
         Tag *model,
         std::vector<ModelChange> *changes);
 
-    error saveModel(
+    Error saveModel(
         TimeEntry *model,
         std::vector<ModelChange> *changes);
 
-    error saveModel(
+    Error saveModel(
         TimelineEvent *model,
         std::vector<ModelChange> *changes);
 
-    error saveDesktopID();
-    error saveAnalyticsClientID();
+    Error saveDesktopID();
+    Error saveAnalyticsClientID();
 
-    error deleteTooOldTimeline(
+    Error deleteTooOldTimeline(
         const Poco::UInt64 &UID);
 
-    error deleteUserTimeline(
+    Error deleteUserTimeline(
         const Poco::UInt64 &UID);
 
-    error selectCompressedTimelineBatchForUpload(
+    Error selectCompressedTimelineBatchForUpload(
         const Poco::UInt64 &user_id,
         std::vector<TimelineEvent> *timeline_events);
 

@@ -15,26 +15,26 @@ class TOGGL_INTERNAL_EXPORT Migrations {
         : db_(db) {}
     virtual ~Migrations() {}
 
-    error Run();
+    Error Run();
 
  private:
     Database *db_;
 
-    error migrateAutotracker();
-    error migrateClients();
-    error migrateTasks();
-    error migrateTags();
-    error migrateSessions();
-    error migrateWorkspaces();
-    error migrateProjects();
-    error migrateAnalytics();
-    error migrateTimeline();
-    error migrateUsers();
-    error migrateTimeEntries();
-    error migrateSettings();
-    error migrateObmActions();
-    error migrateObmExperiments();
-    error migrateOnboardingStates();
+    Error migrateAutotracker();
+    Error migrateClients();
+    Error migrateTasks();
+    Error migrateTags();
+    Error migrateSessions();
+    Error migrateWorkspaces();
+    Error migrateProjects();
+    Error migrateAnalytics();
+    Error migrateUsers();
+    Error migrateTimeline();
+    Error migrateTimeEntries();
+    Error migrateSettings();
+    Error migrateObmActions();
+    Error migrateObmExperiments();
+    Error migrateOnboardingStates();
 };
 
 }  // namespace toggl

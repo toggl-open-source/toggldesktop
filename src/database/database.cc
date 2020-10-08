@@ -61,15 +61,15 @@ Database::Database(const std::string &db_path)
         }
     }
 
-    error err = setJournalMode("wal");
-    if (err != noError) {
+    Error err = setJournalMode("wal");
+    if (err->IsError()) {
         logger.error("Failed to set journal mode to wal!");
         return;
     }
 
     std::string mode("");
     err = journalMode(&mode);
-    if (err != noError) {
+    if (err->IsError()) {
         logger.error("Could not detect journal mode!");
         return;
     }
@@ -90,8 +90,8 @@ Database::Database(const std::string &db_path)
     err = deleteAllFromTableByDate(
         "time_entries", start.timestamp());
 
-    if (err != noError) {
-        logger.error("failed to clean Up Time Entries Data: " + err);
+    if (err->IsError()) {
+        logger.error("failed to clean Up Time Entries Data: ", err);
         // but will continue, its not vital
     }
 
@@ -102,14 +102,14 @@ Database::Database(const std::string &db_path)
     err = deleteAllSyncedTimelineEventsByDate(
         timeline_start.timestamp());
 
-    if (err != noError) {
-        logger.error("failed to clean Up Timeline Events Data: " + err);
+    if (err->IsError()) {
+        logger.error("failed to clean Up Timeline Events Data: ", err);
         // but will continue, its not vital
     }
 
     err = vacuum();
-    if (err != noError) {
-        logger.error("failed to vacuum: " + err);
+    if (err->IsError()) {
+        logger.error("failed to vacuum: ", err);
         // but will continue, its not vital
     }
 
@@ -117,10 +117,10 @@ Database::Database(const std::string &db_path)
     stopwatch.start();
 
     err = initialize_tables();
-    if (err != noError) {
+    if (err->IsError()) {
         logger.error(err);
         // We're doomed now; cannot continue without a DB
-        throw(err);
+        throw(err->LogMessage());
     }
 
     stopwatch.stop();
@@ -136,68 +136,68 @@ Database::~Database() {
     Poco::Data::SQLite::Connector::unregisterConnector();
 }
 
-error Database::DeleteUser(
+Error Database::DeleteUser(
     User *model,
     const bool with_related_data) {
 
     poco_check_ptr(model);
 
-    error err = DeleteFromTable("sessions", model->LocalID());
-    if (err != noError) {
+    Error err = DeleteFromTable("sessions", model->LocalID());
+    if (err->IsError()) {
         return err;
     }
 
     err = DeleteFromTable("users", model->LocalID());
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
     if (with_related_data) {
         err = deleteAllFromTableByUID("workspaces", model->ID());
-        if (err != noError) {
+        if (err->IsError()) {
             return err;
         }
         err = deleteAllFromTableByUID("clients", model->ID());
-        if (err != noError) {
+        if (err->IsError()) {
             return err;
         }
         err = deleteAllFromTableByUID("projects", model->ID());
-        if (err != noError) {
+        if (err->IsError()) {
             return err;
         }
         err = deleteAllFromTableByUID("tasks", model->ID());
-        if (err != noError) {
+        if (err->IsError()) {
             return err;
         }
         err = deleteAllFromTableByUID("tags", model->ID());
-        if (err != noError) {
+        if (err->IsError()) {
             return err;
         }
         err = deleteAllFromTableByUID("time_entries", model->ID());
-        if (err != noError) {
+        if (err->IsError()) {
             return err;
         }
         err = deleteAllFromTableByUID("autotracker_settings", model->ID());
-        if (err != noError) {
+        if (err->IsError()) {
             return err;
         }
         err = deleteAllFromTableByUID("timeline_events", model->ID());
-        if (err != noError) {
+        if (err->IsError()) {
             return err;
         }
     }
-    return noError;
+    return NoError {};
 }
 
-error Database::deleteAllFromTableByUID(
+Error Database::deleteAllFromTableByUID(
     const std::string &table_name,
     const Poco::UInt64 &UID) {
 
 
     if (!UID) {
-        return error("Cannot delete user data without user ID");
+        return DatabaseError { DatabaseError::INCONSISTENT_DATA, "Cannot delete user data without user ID" };
     }
     if (table_name.empty()) {
-        return error("Cannot delete from table without table name");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot delete from table without table name" };
     }
 
     try {
@@ -210,21 +210,21 @@ error Database::deleteAllFromTableByUID(
                   useRef(UID),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("deleteAllFromTableByUID");
 }
 
-error Database::deleteAllFromTableByDate(
+Error Database::deleteAllFromTableByDate(
     const std::string &table_name,
     const Poco::Timestamp &time) {
 
     if (table_name.empty()) {
-        return error("Cannot delete from table without table name");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot delete from table without table name" };
     }
 
     const Poco::Int64 stopTime = time.epochTime();
@@ -240,16 +240,16 @@ error Database::deleteAllFromTableByDate(
                   useRef(stopTime),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("deleteAllFromTableByDate");
 }
 
-error Database::deleteAllSyncedTimelineEventsByDate(
+Error Database::deleteAllSyncedTimelineEventsByDate(
     const Poco::Timestamp &time) {
     const Poco::Int64 endTime = time.epochTime();
 
@@ -264,17 +264,17 @@ error Database::deleteAllSyncedTimelineEventsByDate(
                   useRef(endTime),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("deleteAllSyncedTimelineEventsByDate");
 }
 
 
-error Database::journalMode(std::string *mode) {
+Error Database::journalMode(std::string *mode) {
     try {
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -286,20 +286,19 @@ error Database::journalMode(std::string *mode) {
                   into(*mode),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("journalMode");
 }
 
-error Database::setJournalMode(const std::string &mode) {
+Error Database::setJournalMode(const std::string &mode) {
     if (mode.empty()) {
-        return error("Cannot set journal mode without a mode");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot set journal mode without a mode" };
     }
-
 
     try {
         Poco::Mutex::ScopedLock lock(session_m_);
@@ -309,16 +308,16 @@ error Database::setJournalMode(const std::string &mode) {
                   "PRAGMA journal_mode=" << mode,
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("setJournalMode");
 }
 
-error Database::vacuum() {
+Error Database::vacuum() {
     try {
         Poco::Mutex::ScopedLock lock(session_m_);
         poco_check_ptr(session_);
@@ -326,25 +325,25 @@ error Database::vacuum() {
         *session_ <<
                   "VACUUM;" << now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("vacuum");
 }
 
-error Database::DeleteFromTable(
+Error Database::DeleteFromTable(
     const std::string &table_name,
     const Poco::Int64 &local_id) {
 
     if (table_name.empty()) {
-        return error("Cannot delete from table without table name");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot delete from table without table name" };
     }
 
     if (!local_id) {
-        return noError;
+        return NoError {};
     }
 
     logger.debug( "Deleting from table ", table_name, ", local ID: ", local_id);
@@ -359,25 +358,25 @@ error Database::DeleteFromTable(
                   useRef(local_id),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("DeleteFromTable");
 }
 
-error Database::last_error(const std::string &was_doing) {
+Error Database::last_error(const std::string &was_doing) {
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(session_);
 
     std::string last = Poco::Data::SQLite::Utility::lastError(*session_);
     if (last != "not an error" && last != "unknown error") {
-        return error(was_doing + ": " + last);
+        return DatabaseError { DatabaseError::SESSION_ERROR, was_doing + ": " + last };
     }
-    return noError;
+    return NoError {};
 }
 
 std::string Database::GenerateGUID() {
@@ -386,28 +385,28 @@ std::string Database::GenerateGUID() {
     return uuid.toString();
 }
 
-error Database::LoadCurrentUser(User *user) {
+Error Database::LoadCurrentUser(User *user) {
     poco_check_ptr(user);
 
     logger.debug("LoadCurrentUser");
 
     std::string api_token("");
     Poco::UInt64 uid(0);
-    error err = CurrentAPIToken(&api_token, &uid);
-    if (err != noError) {
+    Error err = CurrentAPIToken(&api_token, &uid);
+    if (err->IsError()) {
         return err;
     }
     if (api_token.empty()) {
-        return noError;
+        return NoError {};
     }
     if (!uid) {
-        return noError;
+        return NoError {};
     }
     user->SetAPIToken(api_token);
     return LoadUserByID(uid, user);
 }
 
-error Database::LoadSettings(Settings *settings) {
+Error Database::LoadSettings(Settings *settings) {
     try {
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -463,16 +462,16 @@ error Database::LoadSettings(Settings *settings) {
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("LoadSettings");
 }
 
-error Database::SaveWindowSettings(
+Error Database::SaveWindowSettings(
     const Poco::Int64 window_x,
     const Poco::Int64 window_y,
     const Poco::Int64 window_height,
@@ -495,41 +494,41 @@ error Database::SaveWindowSettings(
                   useRef(window_width),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
 
     return last_error("SaveWindowSettings");
 }
 
-error Database::SetMiniTimerX(const Poco::Int64 x) {
+Error Database::SetMiniTimerX(const Poco::Int64 x) {
     return setSettingsValue("mini_timer_x", x);
 }
 
-error Database::GetMiniTimerX(Poco::Int64* x) {
+Error Database::GetMiniTimerX(Poco::Int64* x) {
     return getSettingsValue("mini_timer_x", x);
 }
 
-error Database::SetMiniTimerY(const Poco::Int64 y) {
+Error Database::SetMiniTimerY(const Poco::Int64 y) {
     return setSettingsValue("mini_timer_y", y);
 }
 
-error Database::GetMiniTimerY(Poco::Int64* y) {
+Error Database::GetMiniTimerY(Poco::Int64* y) {
     return getSettingsValue("mini_timer_y", y);
 }
 
-error Database::SetMiniTimerW(const Poco::Int64 w) {
+Error Database::SetMiniTimerW(const Poco::Int64 w) {
     return setSettingsValue("mini_timer_w", w);
 }
 
-error Database::GetMiniTimerW(Poco::Int64* w) {
+Error Database::GetMiniTimerW(Poco::Int64* w) {
     return getSettingsValue("mini_timer_w", w);
 }
 
-error Database::LoadWindowSettings(
+Error Database::LoadWindowSettings(
     Poco::Int64 *window_x,
     Poco::Int64 *window_y,
     Poco::Int64 *window_height,
@@ -557,16 +556,16 @@ error Database::LoadWindowSettings(
         *window_height = height;
         *window_width = width;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("LoadWindowSettings");
 }
 
-error Database::LoadProxySettings(
+Error Database::LoadProxySettings(
     bool *use_proxy,
     Proxy *proxy) {
 
@@ -595,118 +594,118 @@ error Database::LoadProxySettings(
         proxy->SetUsername(username);
         proxy->SetPassword(password);
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("LoadProxySettings");
 }
 
-error Database::SetMiniTimerVisible(
+Error Database::SetMiniTimerVisible(
     const bool value) {
     return setSettingsValue("mini_timer_visible", value);
 }
 
-error Database::GetMiniTimerVisible(bool* result) {
+Error Database::GetMiniTimerVisible(bool* result) {
     return getSettingsValue("mini_timer_visible", result);
 }
 
-error Database::SetKeepEndTimeFixed(
+Error Database::SetKeepEndTimeFixed(
     const bool value) {
     return setSettingsValue("keep_end_time_fixed", value);
 }
 
-error Database::GetKeepEndTimeFixed(bool *result) {
+Error Database::GetKeepEndTimeFixed(bool *result) {
     return getSettingsValue("keep_end_time_fixed", result);
 }
 
-error Database::GetShowTouchBar(bool *result) {
+Error Database::GetShowTouchBar(bool *result) {
     return getSettingsValue("show_touch_bar", result);
 }
 
-error Database::GetActiveTab(uint8_t *result) {
+Error Database::GetActiveTab(uint8_t *result) {
     return getSettingsValue("active_tab", result);
 }
 
-error Database::SetWindowMaximized(
+Error Database::SetWindowMaximized(
     const bool value) {
     return setSettingsValue("window_maximized", value);
 }
 
-error Database::GetWindowMaximized(bool *result) {
+Error Database::GetWindowMaximized(bool *result) {
     return getSettingsValue("window_maximized", result);
 }
 
-error Database::SetWindowMinimized(
+Error Database::SetWindowMinimized(
     const bool value) {
     return setSettingsValue("window_minimized", value);
 }
 
-error Database::GetWindowMinimized(bool *result) {
+Error Database::GetWindowMinimized(bool *result) {
     return getSettingsValue("window_minimized", result);
 }
 
-error Database::SetWindowEditSizeHeight(
+Error Database::SetWindowEditSizeHeight(
     const Poco::Int64 value) {
     return setSettingsValue("window_edit_size_height", value);
 }
 
-error Database::GetWindowEditSizeHeight(Poco::Int64 *result) {
+Error Database::GetWindowEditSizeHeight(Poco::Int64 *result) {
     return getSettingsValue("window_edit_size_height", result);
 }
 
-error Database::SetWindowEditSizeWidth(
+Error Database::SetWindowEditSizeWidth(
     const Poco::Int64 value) {
     return setSettingsValue("window_edit_size_width", value);
 }
 
-error Database::GetWindowEditSizeWidth(Poco::Int64 *result) {
+Error Database::GetWindowEditSizeWidth(Poco::Int64 *result) {
     return getSettingsValue("window_edit_size_width", result);
 }
 
-error Database::SetKeyStart(
+Error Database::SetKeyStart(
     const std::string &value) {
     return setSettingsValue("key_start", value);
 }
 
-error Database::GetKeyStart(std::string *result) {
+Error Database::GetKeyStart(std::string *result) {
     return getSettingsValue("key_start", result);
 }
 
-error Database::SetKeyShow(
+Error Database::SetKeyShow(
     const std::string &value) {
     return setSettingsValue("key_show", value);
 }
 
-error Database::GetKeyShow(std::string *result) {
+Error Database::GetKeyShow(std::string *result) {
     return getSettingsValue("key_show", result);
 }
 
-error Database::SetKeyModifierShow(
+Error Database::SetKeyModifierShow(
     const std::string &value) {
     return setSettingsValue("key_modifier_show", value);
 }
 
-error Database::GetKeyModifierShow(std::string *result) {
+Error Database::GetKeyModifierShow(std::string *result) {
     return getSettingsValue("key_modifier_show", result);
 }
 
-error Database::SetKeyModifierStart(
+Error Database::SetKeyModifierStart(
     const std::string &value) {
     return setSettingsValue("key_modifier_start", value);
 }
 
-error Database::GetKeyModifierStart(std::string *result) {
+Error Database::GetKeyModifierStart(std::string *result) {
     return getSettingsValue("key_modifier_start", result);
 }
 
-error Database::GetMessageSeen(Poco::Int64 *result) {
+Error Database::GetMessageSeen(Poco::Int64 *result) {
     return getSettingsValue("message_seen", result);
 }
 
-error Database::SetSettingsRemindTimes(
+Error Database::SetSettingsRemindTimes(
     const std::string &remind_starts,
     const std::string &remind_ends) {
 
@@ -723,17 +722,17 @@ error Database::SetSettingsRemindTimes(
                   useRef(remind_ends),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
 
     return last_error("SetSettingsRemindTimes");
 }
 
-error Database::SetSettingsRemindDays(
+Error Database::SetSettingsRemindDays(
     const bool &remind_mon,
     const bool &remind_tue,
     const bool &remind_wed,
@@ -765,73 +764,73 @@ error Database::SetSettingsRemindDays(
                   useRef(remind_sun),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
 
     return last_error("SetSettingsRemindDays");
 }
 
-error Database::SetSettingsHasSeenBetaOffering(const bool &value) {
+Error Database::SetSettingsHasSeenBetaOffering(const bool &value) {
     return setSettingsValue("has_seen_beta_offering", value);
 }
 
-error Database::SetSettingsMessageSeen(
+Error Database::SetSettingsMessageSeen(
     const Poco::UInt64 message_id) {
     return setSettingsValue("message_seen",message_id);
 }
 
-error Database::SetSettingsUseIdleDetection(
+Error Database::SetSettingsUseIdleDetection(
     const bool &use_idle_detection) {
     return setSettingsValue("use_idle_detection", use_idle_detection);
 }
 
-error Database::SetSettingsAutotrack(const bool &value) {
+Error Database::SetSettingsAutotrack(const bool &value) {
     return setSettingsValue("autotrack", value);
 }
 
-error Database::SetSettingsOpenEditorOnShortcut(const bool &value) {
+Error Database::SetSettingsOpenEditorOnShortcut(const bool &value) {
     return setSettingsValue("open_editor_on_shortcut", value);
 }
 
-error Database::SetSettingsMenubarTimer(
+Error Database::SetSettingsMenubarTimer(
     const bool &menubar_timer) {
     return setSettingsValue("menubar_timer", menubar_timer);
 }
 
-error Database::SetSettingsMenubarProject(
+Error Database::SetSettingsMenubarProject(
     const bool &menubar_project) {
     return setSettingsValue("menubar_project", menubar_project);
 }
 
-error Database::SetSettingsDockIcon(const bool &dock_icon) {
+Error Database::SetSettingsDockIcon(const bool &dock_icon) {
     return setSettingsValue("dock_icon", dock_icon);
 }
 
-error Database::SetSettingsOnTop(const bool &on_top) {
+Error Database::SetSettingsOnTop(const bool &on_top) {
     return setSettingsValue("on_top", on_top);
 }
 
-error Database::SetSettingsReminder(const bool &reminder) {
+Error Database::SetSettingsReminder(const bool &reminder) {
     return setSettingsValue("reminder", reminder);
 }
 
-error Database::SetSettingsPomodoro(const bool &pomodoro) {
+Error Database::SetSettingsPomodoro(const bool &pomodoro) {
     return setSettingsValue("pomodoro", pomodoro);
 }
 
-error Database::SetSettingsPomodoroBreak(const bool &pomodoro_break) {
+Error Database::SetSettingsPomodoroBreak(const bool &pomodoro_break) {
     return setSettingsValue("pomodoro_break", pomodoro_break);
 }
 
-error Database::SetSettingsStopEntryOnShutdownSleep(const bool &stop_entry) {
+Error Database::SetSettingsStopEntryOnShutdownSleep(const bool &stop_entry) {
     return setSettingsValue("stop_entry_on_shutdown_sleep", stop_entry);
 }
 
-error Database::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
+Error Database::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     Poco::UInt64 new_value = idle_minutes;
     if (new_value < 1) {
         new_value = 1;
@@ -839,40 +838,40 @@ error Database::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     return setSettingsValue("idle_minutes", new_value);
 }
 
-error Database::SetSettingsFocusOnShortcut(const bool &focus_on_shortcut) {
+Error Database::SetSettingsFocusOnShortcut(const bool &focus_on_shortcut) {
     return setSettingsValue("focus_on_shortcut", focus_on_shortcut);
 }
 
-error Database::SetSettingsManualMode(const bool &manual_mode) {
+Error Database::SetSettingsManualMode(const bool &manual_mode) {
     return setSettingsValue("manual_mode", manual_mode);
 }
 
-error Database::SetSettingsAutodetectProxy(const bool &autodetect_proxy) {
+Error Database::SetSettingsAutodetectProxy(const bool &autodetect_proxy) {
     return setSettingsValue("autodetect_proxy", autodetect_proxy);
 }
 
-error Database::SetSettingsShowTouchBar(const bool &show_touch_bar) {
+Error Database::SetSettingsShowTouchBar(const bool &show_touch_bar) {
     return setSettingsValue("show_touch_bar", show_touch_bar);
 }
 
-error Database::SetSettingsStartAutotrackerWithoutSuggestions(const bool &start_autotracker_without_suggestions) {
+Error Database::SetSettingsStartAutotrackerWithoutSuggestions(const bool &start_autotracker_without_suggestions) {
     return setSettingsValue("start_autotracker_without_suggestions", start_autotracker_without_suggestions);
 }
 
-error Database::SetSettingsActiveTab(const uint8_t &active_tab) {
+Error Database::SetSettingsActiveTab(const uint8_t &active_tab) {
     return setSettingsValue("active_tab", active_tab);
 }
 
-error Database::SetSettingsColorTheme(const uint8_t &color_theme) {
+Error Database::SetSettingsColorTheme(const uint8_t &color_theme) {
     return setSettingsValue("color_theme", color_theme);
 }
 
-error Database::SetSettingsForceIgnoreCert(const bool &force_ignore_cert) {
+Error Database::SetSettingsForceIgnoreCert(const bool &force_ignore_cert) {
     return setSettingsValue("force_ignore_cert", force_ignore_cert);
 }
 
 template<typename T>
-error Database::setSettingsValue(
+Error Database::setSettingsValue(
     const std::string &field_name,
     const T &value) {
 
@@ -886,17 +885,17 @@ error Database::setSettingsValue(
                   useRef(value),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("setSettingsValue");
 }
 
 template<typename T>
-error Database::getSettingsValue(
+Error Database::getSettingsValue(
     const std::string &field_name,
     T *value) {
 
@@ -912,16 +911,16 @@ error Database::getSettingsValue(
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("getSettingsValue");
 }
 
-error Database::SetSettingsReminderMinutes(
+Error Database::SetSettingsReminderMinutes(
     const Poco::UInt64 reminder_minutes) {
     Poco::UInt64 new_value = reminder_minutes;
     if (new_value < 1) {
@@ -930,7 +929,7 @@ error Database::SetSettingsReminderMinutes(
     return setSettingsValue("reminder_minutes", new_value);
 }
 
-error Database::SetSettingsPomodoroMinutes(
+Error Database::SetSettingsPomodoroMinutes(
     const Poco::UInt64 pomodoro_minutes) {
     Poco::UInt64 new_value = pomodoro_minutes;
     if (new_value < 1) {
@@ -939,7 +938,7 @@ error Database::SetSettingsPomodoroMinutes(
     return setSettingsValue("pomodoro_minutes", new_value);
 }
 
-error Database::SetSettingsPomodoroBreakMinutes(
+Error Database::SetSettingsPomodoroBreakMinutes(
     const Poco::UInt64 pomodoro_break_minutes) {
     Poco::UInt64 new_value = pomodoro_break_minutes;
     if (new_value < 1) {
@@ -948,7 +947,7 @@ error Database::SetSettingsPomodoroBreakMinutes(
     return setSettingsValue("pomodoro_break_minutes", new_value);
 }
 
-error Database::SaveProxySettings(
+Error Database::SaveProxySettings(
     const bool &use_proxy,
     const Proxy &proxy) {
 
@@ -971,16 +970,16 @@ error Database::SaveProxySettings(
                   useRef(proxy.Password()),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("SaveProxySettings");
 }
 
-error Database::Trim(const std::string &text, std::string *result) {
+Error Database::Trim(const std::string &text, std::string *result) {
     try {
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -996,16 +995,16 @@ error Database::Trim(const std::string &text, std::string *result) {
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("Trim");
 }
 
-error Database::ResetWindow() {
+Error Database::ResetWindow() {
     try {
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1026,16 +1025,16 @@ error Database::ResetWindow() {
                   "mini_timer_w = 0",
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("ResetWindow");
 }
 
-error Database::LoadUpdateChannel(
+Error Database::LoadUpdateChannel(
     std::string *update_channel) {
 
     try {
@@ -1050,33 +1049,33 @@ error Database::LoadUpdateChannel(
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("LoadUpdateChannel");
 }
 
-error Database::SaveUpdateChannel(
+Error Database::SaveUpdateChannel(
     const std::string &update_channel) {
 
     if (update_channel != "stable" &&
             update_channel != "beta" &&
             update_channel != "dev") {
-        return error("Invalid update channel");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Invalid update channel" };
     }
 
     return setSettingsValue("update_channel", update_channel);
 }
 
-error Database::LoadUserByEmail(
+Error Database::LoadUserByEmail(
     const std::string &email,
     User *model) {
 
     if (email.empty()) {
-        return error("Cannot load user by email token without an email");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot load user by email token without an email" };
     }
 
     Poco::UInt64 uid(0);
@@ -1098,73 +1097,73 @@ error Database::LoadUserByEmail(
                   useRef(email),
                   limit(1),
                   now;
-        error err = last_error("LoadUserByEmail");
-        if (err != noError) {
+        Error err = last_error("LoadUserByEmail");
+        if (err->IsError()) {
             return err;
         }
         if (uid <= 0) {
-            return noError;
+            return NoError {};
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return LoadUserByID(uid, model);
 }
 
-error Database::loadUsersRelatedData(User *user) {
-    error err = loadWorkspaces(user->ID(), &user->related.Workspaces);
-    if (err != noError) {
+Error Database::loadUsersRelatedData(User *user) {
+    Error err = loadWorkspaces(user->ID(), &user->related.Workspaces);
+    if (err->IsError()) {
         return err;
     }
 
     err = loadClients(user->ID(), &user->related.Clients);
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
 
     err = loadProjects(user->ID(), &user->related.Projects);
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
 
     err = loadTasks(user->ID(), &user->related.Tasks);
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
 
     err = loadTags(user->ID(), &user->related.Tags);
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
 
     err = loadTimeEntries(user->ID(), &user->related.TimeEntries);
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
 
     err = loadAutotrackerRules(user->ID(), &user->related.AutotrackerRules);
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
 
     err = loadTimelineEvents(user->ID(), &user->related.TimelineEvents);
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
 
-    return noError;
+    return NoError {};
 }
 
-error Database::LoadUserByID(
+Error Database::LoadUserByID(
     const Poco::UInt64 &UID,
     User *user) {
 
     if (!UID) {
-        return error("Cannot load user by ID without an ID");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot load user by ID without an ID" };
     }
 
     Poco::Stopwatch stopwatch;
@@ -1216,14 +1215,14 @@ error Database::LoadUserByID(
                   limit(1),
                   now;
 
-        error err = last_error("LoadUserByID");
-        if (err != noError) {
+        Error err = last_error("LoadUserByID");
+        if (err->IsError()) {
             return err;
         }
 
         if (!id) {
             // No user data found
-            return noError;
+            return NoError {};
         }
 
         user->SetLocalID(local_id);
@@ -1241,29 +1240,29 @@ error Database::LoadUserByID(
         user->SetCollapseEntries(collapse_entries);
         user->SetBeginningOfWeek(beginning_of_week);
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
-    error err = loadUsersRelatedData(user);
-    if (err != noError) {
+    Error err = loadUsersRelatedData(user);
+    if (err->IsError()) {
         return err;
     }
 
     stopwatch.stop();
     logger.debug("User loaded in ", stopwatch.elapsed() / 1000, " ms");
 
-    return noError;
+    return NoError {};
 }
 
-error Database::loadWorkspaces(
+Error Database::loadWorkspaces(
     const Poco::UInt64 &UID,
     std::vector<Workspace *> *list) {
 
     if (!UID) {
-        return error("Cannot load user workspaces without an user ID");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot load user workspaces without an user ID" };
     }
 
     try {
@@ -1283,8 +1282,8 @@ error Database::loadWorkspaces(
                "WHERE uid = :uid "
                "ORDER BY name",
                useRef(UID);
-        error err = last_error("loadWorkspaces");
-        if (err != noError) {
+        Error err = last_error("loadWorkspaces");
+        if (err->IsError()) {
             return err;
         }
         Poco::Data::RecordSet rs(select);
@@ -1309,21 +1308,21 @@ error Database::loadWorkspaces(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("loadWorkspaces");
 }
 
-error Database::loadClients(
+Error Database::loadClients(
     const Poco::UInt64 &UID,
     std::vector<Client *> *list) {
 
     if (!UID) {
-        return error("Cannot load user clients without an user ID");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot load user clients without an user ID" };
     }
 
     try {
@@ -1341,8 +1340,8 @@ error Database::loadClients(
                "ORDER BY name",
                useRef(UID);
 
-        error err = last_error("loadClients");
-        if (err != noError) {
+        Error err = last_error("loadClients");
+        if (err->IsError()) {
             return err;
         }
         Poco::Data::RecordSet rs(select);
@@ -1371,21 +1370,21 @@ error Database::loadClients(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("loadClients");
 }
 
-error Database::loadProjects(
+Error Database::loadProjects(
     const Poco::UInt64 &UID,
     std::vector<Project *> *list) {
 
     if (!UID) {
-        return error("Cannot load user projects without an user ID");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot load user projects without an user ID" };
     }
 
     try {
@@ -1409,8 +1408,8 @@ error Database::loadProjects(
                "client_name COLLATE NOCASE ASC,"
                "projects.name COLLATE NOCASE ASC;",
                useRef(UID);
-        error err = last_error("loadProjects");
-        if (err != noError) {
+        Error err = last_error("loadProjects");
+        if (err->IsError()) {
             return err;
         }
         Poco::Data::RecordSet rs(select);
@@ -1461,21 +1460,21 @@ error Database::loadProjects(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("loadProjects");
 }
 
-error Database::loadTasks(
+Error Database::loadTasks(
     const Poco::UInt64 &UID,
     std::vector<Task *> *list) {
 
     if (!UID) {
-        return error("Cannot load user tasks without an user ID");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot load user tasks without an user ID" };
     }
 
     try {
@@ -1492,8 +1491,8 @@ error Database::loadTasks(
                "WHERE uid = :uid "
                "ORDER BY name",
                useRef(UID);
-        error err = last_error("loadTasks");
-        if (err != noError) {
+        Error err = last_error("loadTasks");
+        if (err->IsError()) {
             return err;
         }
         Poco::Data::RecordSet rs(select);
@@ -1523,21 +1522,21 @@ error Database::loadTasks(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("loadTasks");
 }
 
-error Database::loadTags(
+Error Database::loadTags(
     const Poco::UInt64 &UID,
     std::vector<Tag *> *list) {
 
     if (!UID) {
-        return error("Cannot load user tags without an user ID");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot load user tags without an user ID" };
     }
 
     try {
@@ -1554,8 +1553,8 @@ error Database::loadTags(
                "WHERE uid = :uid "
                "ORDER BY name",
                useRef(UID);
-        error err = last_error("loadTags");
-        if (err != noError) {
+        Error err = last_error("loadTags");
+        if (err->IsError()) {
             return err;
         }
         Poco::Data::RecordSet rs(select);
@@ -1584,21 +1583,21 @@ error Database::loadTags(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("loadTags");
 }
 
-error Database::loadAutotrackerRules(
+Error Database::loadAutotrackerRules(
     const Poco::UInt64 &UID,
     std::vector<AutotrackerRule *> *list) {
 
     if (!UID) {
-        return error("Cannot load autotracker rules without an user ID");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot load autotracker rules without an user ID" };
     }
 
     try {
@@ -1615,8 +1614,8 @@ error Database::loadAutotrackerRules(
                "WHERE uid = :uid "
                "ORDER BY term DESC",
                useRef(UID);
-        error err = last_error("loadAutotrackerRules");
-        if (err != noError) {
+        Error err = last_error("loadAutotrackerRules");
+        if (err->IsError()) {
             return err;
         }
         Poco::Data::RecordSet rs(select);
@@ -1645,21 +1644,21 @@ error Database::loadAutotrackerRules(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("loadAutotrackerRules");
 }
 
-error Database::loadTimelineEvents(
+Error Database::loadTimelineEvents(
     const Poco::UInt64 &UID,
     std::vector<TimelineEvent *> *list) {
 
     if (!UID) {
-        return error("Cannot load user timeline without an user ID");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot load user timeline without an user ID" };
     }
 
     try {
@@ -1677,8 +1676,8 @@ error Database::loadTimelineEvents(
                "FROM timeline_events "
                "WHERE uid = :uid",
                useRef(UID);
-        error err = last_error("loadTimelineEvents");
-        if (err != noError) {
+        Error err = last_error("loadTimelineEvents");
+        if (err->IsError()) {
             return err;
         }
         Poco::Data::RecordSet rs(select);
@@ -1721,21 +1720,21 @@ error Database::loadTimelineEvents(
             model->EnsureGUID();
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
-    return noError;
+    return NoError {};
 }
 
-error Database::loadTimeEntries(
+Error Database::loadTimeEntries(
     const Poco::UInt64 &UID,
     std::vector<TimeEntry *> *list) {
 
     if (!UID) {
-        return error("Cannot load user time entries without an user ID");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot load user time entries without an user ID" };
     }
 
     try {
@@ -1756,12 +1755,12 @@ error Database::loadTimeEntries(
                "WHERE uid = :uid "
                "ORDER BY start DESC",
                useRef(UID);
-        error err = last_error("loadTimeEntries");
-        if (err != noError) {
+        Error err = last_error("loadTimeEntries");
+        if (err->IsError()) {
             return err;
         }
         err = loadTimeEntriesFromSQLStatement(&select, list);
-        if (err != noError) {
+        if (err->IsError()) {
             return err;
         }
 
@@ -1776,16 +1775,16 @@ error Database::loadTimeEntries(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
-    return noError;
+    return NoError {};
 }
 
-error Database::loadTimeEntriesFromSQLStatement(
+Error Database::loadTimeEntriesFromSQLStatement(
     Poco::Data::Statement *select,
     std::vector<TimeEntry *> *list) {
 
@@ -1929,24 +1928,24 @@ error Database::loadTimeEntriesFromSQLStatement(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
-    return noError;
+    return NoError {};
 }
 
 template <typename T>
-error Database::saveRelatedModels(
+Error Database::saveRelatedModels(
     const Poco::UInt64 UID,
     const std::string &table_name,
     std::vector<T *> *list,
     std::vector<ModelChange> *changes) {
 
     if (!UID) {
-        return error("Cannot save user related data without an user ID");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot save user related data without an user ID" };
     }
 
     poco_check_ptr(list);
@@ -1957,8 +1956,8 @@ error Database::saveRelatedModels(
     for (size_t i = 0; i < list->size(); i++) {
         T *model = list->at(i);
         if (model->IsMarkedAsDeletedOnServer()) {
-            error err = DeleteFromTable(table_name, model->LocalID());
-            if (err != noError) {
+            Error err = DeleteFromTable(table_name, model->LocalID());
+            if (err->IsError()) {
                 return err;
             }
             changes->push_back(ModelChange(
@@ -1969,8 +1968,8 @@ error Database::saveRelatedModels(
             continue;
         }
         model->SetUID(UID);
-        error err = saveModel(model, changes);
-        if (err != noError) {
+        Error err = saveModel(model, changes);
+        if (err->IsError()) {
             return err;
         }
     }
@@ -1986,13 +1985,13 @@ error Database::saveRelatedModels(
         }
     }
 
-    return noError;
+    return NoError {};
 }
 
-typedef toggl::error (Database::*saveModel)(
+typedef toggl::Error (Database::*saveModel)(
     BaseModel *model, std::vector<ModelChange> *changes);
 
-error Database::saveModel(
+Error Database::saveModel(
     TimeEntry *model,
     std::vector<ModelChange> *changes) {
 
@@ -2004,11 +2003,11 @@ error Database::saveModel(
         // we expect it everywhere in the UI
         model->EnsureGUID();
         if (model->GUID().empty()) {
-            return error("Cannot save time entry without a GUID");
+            return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot save time entry without a GUID" };
         }
 
         if (!model->NeedsToBeSaved()) {
-            return noError;
+            return NoError {};
         }
 
         Poco::Mutex::ScopedLock lock(session_m_);
@@ -2132,8 +2131,8 @@ error Database::saveModel(
                           useRef(model->LocalID()),
                           now;
             }
-            error err = last_error("saveTimeEntry");
-            if (err != noError) {
+            Error err = last_error("saveTimeEntry");
+            if (err->IsError()) {
                 return err;
             }
             if (model->DeletedAt()) {
@@ -2247,8 +2246,8 @@ error Database::saveModel(
                           bind(TimeEntry::TagsVectorToString(model->TagNames.GetPrevious())),
                           now;
             }
-            error err = last_error("saveTimeEntry");
-            if (err != noError) {
+            Error err = last_error("saveTimeEntry");
+            if (err->IsError()) {
                 return err;
             }
             Poco::Int64 local_id(0);
@@ -2257,7 +2256,7 @@ error Database::saveModel(
                       into(local_id),
                       now;
             err = last_error("saveTimeEntry");
-            if (err != noError) {
+            if (err->IsError()) {
                 return err;
             }
             model->SetLocalID(local_id);
@@ -2269,16 +2268,16 @@ error Database::saveModel(
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
-    return noError;
+    return NoError {};
 }
 
-error Database::saveModel(
+Error Database::saveModel(
     TimelineEvent *model,
     std::vector<ModelChange> *changes) {
 
@@ -2291,7 +2290,7 @@ error Database::saveModel(
         poco_assert(!model->GUID().empty());
 
         if (!model->NeedsToBeSaved()) {
-            return noError;
+            return NoError {};
         }
 
         Poco::Mutex::ScopedLock lock(session_m_);
@@ -2308,13 +2307,13 @@ error Database::saveModel(
         }
 
         if (!model->UID()) {
-            return error("Cannot save timeline event without an user ID");
+            return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot save timeline event without an user ID" };
         }
         if (!model->Start()) {
-            return error("Cannot save timeline event without start time");
+            return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot save timeline event without start time" };
         }
         if (!model->EndTime()) {
-            return error("Cannot save timeline event without end time");
+            return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot save timeline event without end time" };
         }
 
         Poco::Int64 start_time(model->Start());
@@ -2347,8 +2346,8 @@ error Database::saveModel(
                       useRef(model->LocalID()),
                       now;
 
-            error err = last_error("update timeline event");
-            if (err != noError) {
+            Error err = last_error("update timeline event");
+            if (err->IsError()) {
                 return err;
             }
             if (model->DeletedAt()) {
@@ -2399,8 +2398,8 @@ error Database::saveModel(
                       useRef(model->Uploaded()),
                       useRef(model->Chunked()),
                       now;
-            error err = last_error("insert timeline event");
-            if (err != noError) {
+            Error err = last_error("insert timeline event");
+            if (err->IsError()) {
                 return err;
             }
             Poco::Int64 local_id(0);
@@ -2409,7 +2408,7 @@ error Database::saveModel(
                       into(local_id),
                       now;
             err = last_error("select last inserted timeline event ID");
-            if (err != noError) {
+            if (err->IsError()) {
                 return err;
             }
             model->SetLocalID(local_id);
@@ -2422,16 +2421,16 @@ error Database::saveModel(
 
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
-    return noError;
+    return NoError {};
 }
 
-error Database::saveModel(
+Error Database::saveModel(
     AutotrackerRule *model,
     std::vector<ModelChange> *changes) {
 
@@ -2439,7 +2438,7 @@ error Database::saveModel(
         poco_check_ptr(model);
 
         if (model->LocalID() && !model->Dirty()) {
-            return noError;
+            return NoError {};
         }
 
         Poco::Mutex::ScopedLock lock(session_m_);
@@ -2463,8 +2462,8 @@ error Database::saveModel(
                       bind(model->DaysOfWeek()),
                       useRef(model->LocalID()),
                       now;
-            error err = last_error("saveAutotrackerRule");
-            if (err != noError) {
+            Error err = last_error("saveAutotrackerRule");
+            if (err->IsError()) {
                 return err;
             }
             if (model->DeletedAt()) {
@@ -2494,8 +2493,8 @@ error Database::saveModel(
                       useRef(model->EndTime()),
                       bind(model->DaysOfWeek()),
                       now;
-            error err = last_error("saveAutotrackerRule");
-            if (err != noError) {
+            Error err = last_error("saveAutotrackerRule");
+            if (err->IsError()) {
                 return err;
             }
             Poco::Int64 local_id(0);
@@ -2504,7 +2503,7 @@ error Database::saveModel(
                       into(local_id),
                       now;
             err = last_error("saveAutotrackerRule");
-            if (err != noError) {
+            if (err->IsError()) {
                 return err;
             }
             model->SetLocalID(local_id);
@@ -2517,16 +2516,16 @@ error Database::saveModel(
 
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
-    return noError;
+    return NoError {};
 }
 
-error Database::saveModel(
+Error Database::saveModel(
     Workspace *model,
     std::vector<ModelChange> *changes) {
 
@@ -2535,7 +2534,7 @@ error Database::saveModel(
         poco_check_ptr(model);
 
         if (model->LocalID() && !model->Dirty()) {
-            return noError;
+            return NoError {};
         }
 
         Poco::Mutex::ScopedLock lock(session_m_);
@@ -2565,8 +2564,8 @@ error Database::saveModel(
                       useRef(model->LockedTime()),
                       useRef(model->LocalID()),
                       now;
-            error err = last_error("saveWorkspace");
-            if (err != noError) {
+            Error err = last_error("saveWorkspace");
+            if (err->IsError()) {
                 return err;
             }
             changes->push_back(ModelChange(
@@ -2593,8 +2592,8 @@ error Database::saveModel(
                       useRef(model->Business()),
                       useRef(model->LockedTime()),
                       now;
-            error err = last_error("saveWorkspace");
-            if (err != noError) {
+            Error err = last_error("saveWorkspace");
+            if (err->IsError()) {
                 return err;
             }
             Poco::Int64 local_id(0);
@@ -2603,7 +2602,7 @@ error Database::saveModel(
                       into(local_id),
                       now;
             err = last_error("saveWorkspace");
-            if (err != noError) {
+            if (err->IsError()) {
                 return err;
             }
             model->SetLocalID(local_id);
@@ -2612,16 +2611,16 @@ error Database::saveModel(
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
-    return noError;
+    return NoError {};
 }
 
-error Database::saveModel(
+Error Database::saveModel(
     Client *model,
     std::vector<ModelChange> *changes) {
 
@@ -2634,12 +2633,12 @@ error Database::saveModel(
         if (!model->ID()) {
             model->EnsureGUID();
             if (model->GUID().empty()) {
-                return error("Cannot save new cient without a GUID");
+                return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot save new cient without a GUID" };
             }
         }
 
         if (!model->NeedsToBeSaved()) {
-            return noError;
+            return NoError {};
         }
 
         Poco::Mutex::ScopedLock lock(session_m_);
@@ -2673,8 +2672,8 @@ error Database::saveModel(
                           useRef(model->LocalID()),
                           now;
             }
-            error err = last_error("saveClient");
-            if (err != noError) {
+            Error err = last_error("saveClient");
+            if (err->IsError()) {
                 return err;
             }
             changes->push_back(ModelChange(
@@ -2705,8 +2704,8 @@ error Database::saveModel(
                           useRef(model->WID()),
                           now;
             }
-            error err = last_error("saveClient");
-            if (err != noError) {
+            Error err = last_error("saveClient");
+            if (err->IsError()) {
                 return err;
             }
             Poco::Int64 local_id(0);
@@ -2715,7 +2714,7 @@ error Database::saveModel(
                       into(local_id),
                       now;
             err = last_error("saveClient");
-            if (err != noError) {
+            if (err->IsError()) {
                 return err;
             }
             model->SetLocalID(local_id);
@@ -2727,16 +2726,16 @@ error Database::saveModel(
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
-    return noError;
+    return NoError {};
 }
 
-error Database::saveModel(
+Error Database::saveModel(
     Project *model,
     std::vector<ModelChange> *changes) {
 
@@ -2749,12 +2748,12 @@ error Database::saveModel(
         if (!model->ID()) {
             model->EnsureGUID();
             if (model->GUID().empty()) {
-                return error("Cannot save project without a GUID");
+                return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot save project without a GUID" };
             }
         }
 
         if (!model->NeedsToBeSaved()) {
-            return noError;
+            return NoError {};
         }
 
         Poco::Mutex::ScopedLock lock(session_m_);
@@ -2845,8 +2844,8 @@ error Database::saveModel(
                               now;
                 }
             }
-            error err = last_error("saveProject");
-            if (err != noError) {
+            Error err = last_error("saveProject");
+            if (err->IsError()) {
                 return err;
             }
             changes->push_back(ModelChange(
@@ -2946,8 +2945,8 @@ error Database::saveModel(
                               now;
                 }
             }
-            error err = last_error("saveProject");
-            if (err != noError) {
+            Error err = last_error("saveProject");
+            if (err->IsError()) {
                 return err;
             }
             Poco::Int64 local_id(0);
@@ -2956,7 +2955,7 @@ error Database::saveModel(
                       into(local_id),
                       now;
             err = last_error("saveProject");
-            if (err != noError) {
+            if (err->IsError()) {
                 return err;
             }
             model->SetLocalID(local_id);
@@ -2968,16 +2967,16 @@ error Database::saveModel(
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
-    return noError;
+    return NoError {};
 }
 
-error Database::saveModel(
+Error Database::saveModel(
     Task *model,
     std::vector<ModelChange> *changes) {
 
@@ -2985,7 +2984,7 @@ error Database::saveModel(
         poco_check_ptr(model);
 
         if (model->LocalID() && !model->Dirty()) {
-            return noError;
+            return NoError {};
         }
 
         Poco::Mutex::ScopedLock lock(session_m_);
@@ -3007,8 +3006,8 @@ error Database::saveModel(
                       useRef(model->Active()),
                       useRef(model->LocalID()),
                       now;
-            error err = last_error("saveTask");
-            if (err != noError) {
+            Error err = last_error("saveTask");
+            if (err->IsError()) {
                 return err;
             }
             changes->push_back(ModelChange(
@@ -3026,8 +3025,8 @@ error Database::saveModel(
                       useRef(model->PID()),
                       useRef(model->Active()),
                       now;
-            error err = last_error("saveTask");
-            if (err != noError) {
+            Error err = last_error("saveTask");
+            if (err->IsError()) {
                 return err;
             }
             Poco::Int64 local_id(0);
@@ -3036,7 +3035,7 @@ error Database::saveModel(
                       into(local_id),
                       now;
             err = last_error("saveTask");
-            if (err != noError) {
+            if (err->IsError()) {
                 return err;
             }
             model->SetLocalID(local_id);
@@ -3045,16 +3044,16 @@ error Database::saveModel(
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
-    return noError;
+    return NoError {};
 }
 
-error Database::saveModel(
+Error Database::saveModel(
     Tag *model,
     std::vector<ModelChange> *changes    ) {
 
@@ -3062,7 +3061,7 @@ error Database::saveModel(
         poco_check_ptr(model);
 
         if (model->LocalID() && !model->Dirty()) {
-            return noError;
+            return NoError {};
         }
 
         Poco::Mutex::ScopedLock lock(session_m_);
@@ -3096,8 +3095,8 @@ error Database::saveModel(
                           useRef(model->LocalID()),
                           now;
             }
-            error err = last_error("saveTag");
-            if (err != noError) {
+            Error err = last_error("saveTag");
+            if (err->IsError()) {
                 return err;
             }
             changes->push_back(ModelChange(
@@ -3128,8 +3127,8 @@ error Database::saveModel(
                           useRef(model->GUID()),
                           now;
             }
-            error err = last_error("saveTag");
-            if (err != noError) {
+            Error err = last_error("saveTag");
+            if (err->IsError()) {
                 return err;
             }
             Poco::Int64 local_id(0);
@@ -3138,7 +3137,7 @@ error Database::saveModel(
                       into(local_id),
                       now;
             err = last_error("saveTag");
-            if (err != noError) {
+            if (err->IsError()) {
                 return err;
             }
             model->SetLocalID(local_id);
@@ -3150,16 +3149,16 @@ error Database::saveModel(
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
-    return noError;
+    return NoError {};
 }
 
-error Database::SaveUser(
+Error Database::SaveUser(
     User *user,
     const bool with_related_data,
     std::vector<ModelChange> *changes) {
@@ -3169,7 +3168,7 @@ error Database::SaveUser(
     // Do nothing, if user has already logged out
     if (!user) {
         logger.warning("Cannot save user, user is logged out");
-        return noError;
+        return NoError {};
     }
 
     poco_check_ptr(session_);
@@ -3179,13 +3178,13 @@ error Database::SaveUser(
     stopwatch.start();
 
     if (user->Email().empty()) {
-        return error("Missing user e-mail, cannot save user");
+        return DatabaseError { DatabaseError::INCONSISTENT_DATA, "Missing user e-mail, cannot save user" };
     }
     if (user->APIToken().empty()) {
-        return error("Missing user API token, cannot save user");
+        return DatabaseError { DatabaseError::INCONSISTENT_DATA, "Missing user API token, cannot save user" };
     }
     if (!user->ID()) {
-        return error("Missing user ID, cannot save user");
+        return DatabaseError { DatabaseError::INCONSISTENT_DATA, "Missing user ID, cannot save user" };
     }
 
     session_->begin();
@@ -3226,8 +3225,8 @@ error Database::SaveUser(
                           useRef(user->BeginningOfWeek()),
                           useRef(user->LocalID()),
                           now;
-                error err = last_error("SaveUser");
-                if (err != noError) {
+                Error err = last_error("SaveUser");
+                if (err->IsError()) {
                     session_->rollback();
                     return err;
                 }
@@ -3261,8 +3260,8 @@ error Database::SaveUser(
                           useRef(user->DefaultTID()),
                           useRef(user->BeginningOfWeek()),
                           now;
-                error err = last_error("SaveUser");
-                if (err != noError) {
+                Error err = last_error("SaveUser");
+                if (err->IsError()) {
                     session_->rollback();
                     return err;
                 }
@@ -3272,7 +3271,7 @@ error Database::SaveUser(
                           into(local_id),
                           now;
                 err = last_error("SaveUser");
-                if (err != noError) {
+                if (err->IsError()) {
                     session_->rollback();
                     return err;
                 }
@@ -3286,24 +3285,24 @@ error Database::SaveUser(
             user->ClearDirty();
         } catch(const Poco::Exception& exc) {
             session_->rollback();
-            return exc.displayText();
+            return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
         } catch(const std::exception& ex) {
             session_->rollback();
-            return ex.what();
+            return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
         } catch(const std::string & ex) {
             session_->rollback();
-            return ex;
+            return DatabaseError { DatabaseError::SESSION_ERROR, ex };
         }
     }
 
     if (with_related_data) {
         // Workspaces
         std::vector<ModelChange> workspace_changes;
-        error err = saveRelatedModels(user->ID(),
+        Error err = saveRelatedModels(user->ID(),
                                       "workspaces",
                                       &user->related.Workspaces,
                                       &workspace_changes);
-        if (err != noError) {
+        if (err->IsError()) {
             session_->rollback();
             return err;
         }
@@ -3324,7 +3323,7 @@ error Database::SaveUser(
                                 "clients",
                                 &user->related.Clients,
                                 &client_changes);
-        if (err != noError) {
+        if (err->IsError()) {
             session_->rollback();
             return err;
         }
@@ -3345,7 +3344,7 @@ error Database::SaveUser(
                                 "projects",
                                 &user->related.Projects,
                                 &project_changes);
-        if (err != noError) {
+        if (err->IsError()) {
             session_->rollback();
             return err;
         }
@@ -3366,7 +3365,7 @@ error Database::SaveUser(
                                 "tasks",
                                 &user->related.Tasks,
                                 &task_changes);
-        if (err != noError) {
+        if (err->IsError()) {
             session_->rollback();
             return err;
         }
@@ -3386,7 +3385,7 @@ error Database::SaveUser(
                                 "tags",
                                 &user->related.Tags,
                                 changes);
-        if (err != noError) {
+        if (err->IsError()) {
             session_->rollback();
             return err;
         }
@@ -3396,7 +3395,7 @@ error Database::SaveUser(
                                 "time_entries",
                                 &user->related.TimeEntries,
                                 changes);
-        if (err != noError) {
+        if (err->IsError()) {
             session_->rollback();
             return err;
         }
@@ -3406,7 +3405,7 @@ error Database::SaveUser(
                                 "autotracker_settings",
                                 &user->related.AutotrackerRules,
                                 changes);
-        if (err != noError) {
+        if (err->IsError()) {
             session_->rollback();
             return err;
         }
@@ -3416,7 +3415,7 @@ error Database::SaveUser(
                                 "timeline_events",
                                 &user->related.TimelineEvents,
                                 changes);
-        if (err != noError) {
+        if (err->IsError()) {
             session_->rollback();
             return err;
         }
@@ -3428,10 +3427,10 @@ error Database::SaveUser(
 
     logger.debug("User with_related_data=", with_related_data, " saved in ", stopwatch.elapsed() / 1000, " ms in thread ", Poco::Thread::currentTid());
 
-    return noError;
+    return NoError {};
 }
 
-error Database::ensureMigrationTable() {
+Error Database::ensureMigrationTable() {
     std::string table_name;
     // Check if we have migrations table
     *session_ <<
@@ -3440,8 +3439,8 @@ error Database::ensureMigrationTable() {
               into(table_name),
               limit(1),
               now;
-    error err = last_error("initialize_tables");
-    if (err != noError) {
+    Error err = last_error("initialize_tables");
+    if (err->IsError()) {
         return err;
     }
 
@@ -3450,8 +3449,8 @@ error Database::ensureMigrationTable() {
                   "create table kopsik_migrations(id integer primary key, "
                   "name varchar not null)",
                   now;
-        error err = last_error("initialize_tables");
-        if (err != noError) {
+        Error err = last_error("initialize_tables");
+        if (err->IsError()) {
             return err;
         }
         *session_ <<
@@ -3459,33 +3458,33 @@ error Database::ensureMigrationTable() {
                   "ON kopsik_migrations (name);",
                   now;
         err = last_error("initialize_tables");
-        if (err != noError) {
+        if (err->IsError()) {
             return err;
         }
     }
 
-    return noError;
+    return NoError {};
 }
 
-error Database::initialize_tables() {
+Error Database::initialize_tables() {
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(session_);
 
-    error err = ensureMigrationTable();
-    if (err != noError) {
+    Error err = ensureMigrationTable();
+    if (err->IsError()) {
         return err;
     }
 
     err = Migrations(this).Run();
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
 
-    return noError;
+    return NoError {};
 }
 
-error Database::CurrentAPIToken(
+Error Database::CurrentAPIToken(
     std::string *token,
     Poco::UInt64 *uid) {
 
@@ -3507,16 +3506,16 @@ error Database::CurrentAPIToken(
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("CurrentAPIToken");
 }
 
-error Database::ClearCurrentAPIToken() {
+Error Database::ClearCurrentAPIToken() {
     try {
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -3525,32 +3524,32 @@ error Database::ClearCurrentAPIToken() {
         *session_ <<
                   "delete from sessions", now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("ClearCurrentAPIToken");
 }
 
-error Database::SetCurrentAPIToken(
+Error Database::SetCurrentAPIToken(
     const std::string &token,
     const Poco::UInt64 &uid) {
     try {
         Poco::Mutex::ScopedLock lock(session_m_);
 
         if (token.empty()) {
-            return error("cannot start session without API token");
+            return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot start session without API token" };
         }
         if (!uid) {
-            return error("cannot start session without user ID");
+            return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot start session without user ID" };
         }
 
         poco_check_ptr(session_);
 
-        error err = ClearCurrentAPIToken();
-        if (err != noError) {
+        Error err = ClearCurrentAPIToken();
+        if (err->IsError()) {
             return err;
         }
 
@@ -3561,29 +3560,29 @@ error Database::SetCurrentAPIToken(
                   useRef(uid),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("SetCurrentAPIToken");
 }
 
-error Database::EnsureTimelineGUIDS() {
+Error Database::EnsureTimelineGUIDS() {
     try {
         while (true) {
             Poco::UInt64 local_id_without_guid(0);
-            error err = UInt(
+            Error err = UInt(
                 "select local_id "
                 "from timeline_events "
                 "where guid is null or guid = '' "
                 "limit 1", &local_id_without_guid);
-            if (err != noError) {
+            if (err->IsError()) {
                 return err;
             }
             if (!local_id_without_guid) {
-                return noError;
+                return NoError {};
             }
             std::string guid = GenerateGUID();
 
@@ -3599,59 +3598,59 @@ error Database::EnsureTimelineGUIDS() {
                       useRef(local_id_without_guid),
                       now;
             err = last_error("EnsureTimelineGUIDS");
-            if (err != noError) {
+            if (err->IsError()) {
                 return err;
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
 }
 
-error Database::EnsureAnalyticsClientID() {
-    error err = String(
+Error Database::EnsureAnalyticsClientID() {
+    Error err = String(
         "SELECT analytics_client_id "
         "FROM analytics_settings "
         "LIMIT 1",
         &analytics_client_id_);
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
     if (analytics_client_id_.empty()) {
         analytics_client_id_ = GenerateGUID();
         err = saveAnalyticsClientID();
-        if (err != noError) {
+        if (err->IsError()) {
             return err;
         }
     }
 
-    return noError;
+    return NoError {};
 }
 
-error Database::EnsureDesktopID() {
-    error err = String(
+Error Database::EnsureDesktopID() {
+    Error err = String(
         "SELECT desktop_id "
         "FROM timeline_installation "
         "LIMIT 1",
         &desktop_id_);
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
     if (desktop_id_.empty()) {
         desktop_id_ = GenerateGUID();
         err = saveDesktopID();
-        if (err != noError) {
+        if (err->IsError()) {
             return err;
         }
     }
-    return noError;
+    return NoError {};
 }
 
-error Database::saveAnalyticsClientID() {
+Error Database::saveAnalyticsClientID() {
     try {
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -3663,16 +3662,16 @@ error Database::saveAnalyticsClientID() {
                   useRef(analytics_client_id_),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("saveAnalyticsClientID");
 }
 
-error Database::LoadMigrations(
+Error Database::LoadMigrations(
     std::vector<std::string> *list) {
 
     try {
@@ -3685,8 +3684,8 @@ error Database::LoadMigrations(
         Poco::Data::Statement select(*session_);
         select <<
                "SELECT name FROM kopsik_migrations";
-        error err = last_error("LoadMigrations");
-        if (err != noError) {
+        Error err = last_error("LoadMigrations");
+        if (err->IsError()) {
             return err;
         }
         Poco::Data::RecordSet rs(select);
@@ -3700,24 +3699,24 @@ error Database::LoadMigrations(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("LoadMigrations");
 }
 
-error Database::Migrate(
+Error Database::Migrate(
     const std::string &name,
     const std::string &sql) {
 
     if (name.empty()) {
-        return error("Cannot run a migration without name");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot run a migration without name" };
     }
     if (sql.empty()) {
-        return error("Cannot run a migration without SQL");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot run a migration without SQL" };
     }
 
     try {
@@ -3731,19 +3730,19 @@ error Database::Migrate(
                   into(count),
                   useRef(name),
                   now;
-        error err = last_error("migrate");
-        if (err != noError) {
+        Error err = last_error("migrate");
+        if (err->IsError()) {
             return err;
         }
 
         if (count) {
-            return noError;
+            return NoError {};
         }
 
         logger.debug("Migrating", "\n", name, "\n", sql, "\n");
 
         err = execute(sql);
-        if (err != noError) {
+        if (err->IsError()) {
             return err;
         }
 
@@ -3752,25 +3751,25 @@ error Database::Migrate(
                   useRef(name),
                   now;
         err = last_error("migrate");
-        if (err != noError) {
+        if (err->IsError()) {
             return err;
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
-    return noError;
+    return NoError {};
 }
 
-error Database::execute(
+Error Database::execute(
     const std::string &sql) {
 
 
     if (sql.empty()) {
-        return error("Cannot execute empty SQL");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot execute empty SQL" };
     }
 
     try {
@@ -3779,26 +3778,26 @@ error Database::execute(
         poco_check_ptr(session_);
 
         *session_ << sql, now;
-        error err = last_error("execute");
-        if (err != noError) {
+        Error err = last_error("execute");
+        if (err->IsError()) {
             return err;
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
-    return noError;
+    return NoError {};
 }
 
-error Database::String(
+Error Database::String(
     const std::string &sql,
     std::string *result) {
 
     if (sql.empty()) {
-        return error("Cannot select from database with empty SQL");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot select from database with empty SQL" };
     }
 
     try {
@@ -3813,21 +3812,21 @@ error Database::String(
         now;
         *result = value;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("String");
 }
 
-error Database::UInt(
+Error Database::UInt(
     const std::string &sql,
     Poco::UInt64 *result) {
 
     if (sql.empty()) {
-        return error("Cannot select a numeric from database with empty SQL");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot select a numeric from database with empty SQL" };
     }
 
     try {
@@ -3842,16 +3841,16 @@ error Database::UInt(
         now;
         *result = value;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("UInt");
 }
 
-error Database::saveDesktopID() {
+Error Database::saveDesktopID() {
     try {
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -3863,19 +3862,19 @@ error Database::saveDesktopID() {
                   useRef(desktop_id_),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("saveDesktopID");
 }
 
-error Database::LoadOnboardingState(const Poco::UInt64 &UID, OnboardingState *state) {
+Error Database::LoadOnboardingState(const Poco::UInt64 &UID, OnboardingState *state) {
 
     if (!UID) {
-        return error("Cannot load on boarding without an user ID");
+        return DatabaseError { DatabaseError::PROGRAMMING_ERROR, "Cannot load on boarding without an user ID" };
     }
 
     try {
@@ -3912,16 +3911,16 @@ error Database::LoadOnboardingState(const Poco::UInt64 &UID, OnboardingState *st
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
     return last_error("LoadOnboardingState");
 }
 
-error Database::SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *state) {
+Error Database::SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *state) {
     try {
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -3990,8 +3989,8 @@ error Database::SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *sta
             useRef(state->isPresentTextShortcuts),
             now;
 
-            error err = last_error("SetOnboardingState");
-            if (err != noError) {
+            Error err = last_error("SetOnboardingState");
+            if (err->IsError()) {
                 return err;
             }
             Poco::Int64 local_id(0);
@@ -4003,11 +4002,11 @@ error Database::SetOnboardingState(const Poco::UInt64 &UID, OnboardingState *sta
         }
 
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return DatabaseError { DatabaseError::SESSION_ERROR, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return DatabaseError { DatabaseError::SESSION_ERROR, ex };
     }
 
     return last_error("SetOnboardingState");
