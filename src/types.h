@@ -5,11 +5,12 @@
 
 #include <string>
 
+#include "util/error.h"
+
 namespace toggl {
 
 typedef std::string error;
-
-const error noError = "";
+const error noError { "" };
 
 typedef std::string guid;
 
