@@ -455,7 +455,7 @@ void User::SetCollapseEntries(bool value) {
 }
 
 void User::SetBeginningOfWeek(Poco::UInt8 value) {
-    if (BeginingOfWeek.Set(value))
+    if (BeginningOfWeek.Set(value))
         SetDirty();
 }
 
@@ -1172,7 +1172,7 @@ bool User::LoadUserPreferencesFromJSON(
     if (data.isMember("duration_format"))
         SetDurationFormat(data["duration_format"].asString());
     if (data.isMember("beginning_of_week"))
-        SetBeginningOfWeek(data["beginning_of_week"].asString());
+        SetBeginningOfWeek(data["beginning_of_week"].asUInt());
 
     if (!excludeCollapseTimeEntries
             && data.isMember("CollapseTimeEntries")
