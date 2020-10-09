@@ -1061,6 +1061,41 @@ error Context::displayError(const error &err) {
     return UI()->DisplayError(err);
 }
 
+error Context::reportError(const Error &err) {
+    /* TODO
+    if ((err.find(kUnauthorizedError) != std::string::npos)) {
+        if (user_) {
+            setUser(nullptr);
+        }
+    }
+    */
+    /* TODO
+    if (err.find(kUnsupportedAppError) != std::string::npos) {
+        urls::SetImATeapot(true);
+    } else {
+        urls::SetImATeapot(false);
+    }
+    */
+    /* TODO
+    if (user_ && (err.find(kRequestIsNotPossible) != std::string::npos
+                  || (err.find(kForbiddenError) != std::string::npos))) {
+        error err = pullWorkspaces();
+        if (err != noError) {
+            // Check for missing WS error and
+            if (err.find(kMissingWS) != std::string::npos) {
+                overlay_visible_ = true;
+                UI()->DisplayWSError();
+                return noError;
+            }
+        }
+    }
+    */
+
+
+
+    return UI()->DisplayError(err);
+}
+
 int Context::nextSyncIntervalSeconds() const {
     int n = static_cast<int>(Random::next(kSyncIntervalRangeSeconds)) + kSyncIntervalRangeSeconds;
     logger.trace("Next autosync in ", n, " seconds");

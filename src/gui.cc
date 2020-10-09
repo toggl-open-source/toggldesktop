@@ -179,6 +179,39 @@ error GUI::DisplayError(const error &err) {
     return err;
 }
 
+Error GUI::DisplayError(const Error &err) {
+    if (!err->IsError() || err->UserMessage().empty()) {
+        return NoError {};
+    }
+
+    logger.error(err);
+
+    if (err->Class() == "NetworkingError") {
+        logger.debug("You are offline (", err, ")");
+        /* TODO
+        auto nErr = err.promote<NetworkingError>();
+        if (nErr->Type() == NetworkingError::BACKEND_OFFLINE) {
+            DisplayOnlineState(kOnlineStateBackendDown);
+        }
+        else {
+            DisplayOnlineState(kOnlineStateNoNetwork);
+        }
+        */
+        return err;
+    }
+
+    // making error actionable is not necessary with Error
+    // determining if error is user error is not necessary as well
+
+    char_t *err_s = copy_string(err->UserMessage());
+    on_display_error_(err_s, true);
+    free(err_s);
+
+    lastErr = err->UserMessage();
+
+    return err;
+}
+
 error GUI::DisplayWSError() {
     on_display_overlay_(0);
     return noError;
