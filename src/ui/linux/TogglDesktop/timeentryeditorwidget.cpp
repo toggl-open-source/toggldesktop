@@ -79,8 +79,8 @@ projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>(), AC_PR
     connect(TogglApi::instance, SIGNAL(displayClientSelect(QVector<GenericView*>)),  // NOLINT
             this, SLOT(displayClientSelect(QVector<GenericView*>)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(setProjectColors(QVector<char*>)),  // NOLINT
-            this, SLOT(setProjectColors(QVector<char*>)));  // NOLINT
+    connect(TogglApi::instance, SIGNAL(setProjectColors(QVector<QString>)),  // NOLINT
+            this, SLOT(setProjectColors(QVector<QString>)));  // NOLINT
 
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
 
@@ -661,7 +661,7 @@ void TimeEntryEditorWidget::on_addNewTagButton_clicked() {
     toggleNewTagMode(true);
 }
 
-void TimeEntryEditorWidget::setProjectColors(QVector<char *> list) {
+void TimeEntryEditorWidget::setProjectColors(QVector<QString> list) {
     colorPicker->setColors(list);
 }
 

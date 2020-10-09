@@ -11,13 +11,8 @@
 #endif
 
 IdleNotificationWidget::IdleNotificationWidget(QStackedWidget *parent)
-    : QWidget(parent),
-  ui(new Ui::IdleNotificationWidget),
-  idleStarted(0),
-  dbusApiAvailable(true),
-  screenLocked(false),
-  timeEntryGUID(""),
-  idleHintTimer(new QTimer(this)) {
+    : QWidget(parent)
+    , ui(new Ui::IdleNotificationWidget) {
     ui->setupUi(this);
 
     screensaver = new QDBusInterface("org.freedesktop.ScreenSaver", "/org/freedesktop/ScreenSaver", "org.freedesktop.ScreenSaver", QDBusConnection::sessionBus(), this);
@@ -62,7 +57,7 @@ void IdleNotificationWidget::requestIdleHint() {
         }
         XScreenSaverInfo *info = XScreenSaverAllocInfo();
         if (XScreenSaverQueryInfo(display, DefaultRootWindow(display), info)) {
-            uint64_t idleSeconds = info->idle / 1000;
+            int64_t idleSeconds = info->idle / 1000;
             storeIdlePeriod(idleSeconds);
         }
         XFree(info);
@@ -75,11 +70,10 @@ void IdleNotificationWidget::idleHintReceived(QDBusPendingCallWatcher *watcher) 
     QDBusPendingReply<uint> reply = *watcher;
     if (reply.isError()) {
         dbusApiAvailable = false;
-        qWarning() << reply.error();
     }
     else {
-        qulonglong value = reply.argumentAt<0>();
-        uint64_t idleSeconds = value / 1000;
+        qlonglong value = reply.argumentAt<0>();
+        int64_t idleSeconds = value / 1000;
         storeIdlePeriod(idleSeconds);
     }
     watcher->deleteLater();
@@ -111,12 +105,12 @@ bool IdleNotificationWidget::isScreenLocked() const {
     return screenLocked;
 }
 
-void IdleNotificationWidget::storeIdlePeriod(uint64_t period) {
+void IdleNotificationWidget::storeIdlePeriod(int64_t period) {
     if (isScreenLocked()) {
-        TogglApi::instance->setIdleSeconds(static_cast<uint64_t>(time(nullptr)) - lastActiveTime);
+        TogglApi::instance->setIdleSeconds(static_cast<int64_t>(time(nullptr)) - lastActiveTime);
     }
     else {
-        lastActiveTime = static_cast<uint64_t>(time(nullptr)) - period;
+        lastActiveTime = static_cast<int64_t>(time(nullptr)) - period;
         TogglApi::instance->setIdleSeconds(period);
     }
 }

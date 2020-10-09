@@ -55,8 +55,9 @@ void PowerManagement::onPrepareForSleep(bool suspending) {
 
 void PowerManagement::getInhibitor() {
     auto reply = login1->call("Inhibit", "shutdown:sleep", "Toggl Track", "To stop the timer on shutdown or suspend", "delay");
-    qCritical() << reply << reply.errorMessage();
-    inhibit = qvariant_cast<QDBusUnixFileDescriptor>(reply.arguments().at(0));
+    if (reply.type() != QDBusMessage::ErrorMessage) {
+        inhibit = qvariant_cast<QDBusUnixFileDescriptor>(reply.arguments().at(0));
+    }
 }
 
 void PowerManagement::clearInhibitor() {
