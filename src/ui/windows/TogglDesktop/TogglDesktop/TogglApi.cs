@@ -1849,18 +1849,13 @@ private static extern bool toggl_get_keep_end_time_fixed(
 private static extern bool toggl_get_show_touch_bar(
         IntPtr context);
 
-<<<<<<< HEAD
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-private static extern byte toggl_get_active_tab(
-=======
-    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    [return:MarshalAs(UnmanagedType.I1)]
-    private static extern bool toggl_get_start_autotracker_without_suggestions(
+[return:MarshalAs(UnmanagedType.I1)]
+private static extern bool toggl_get_start_autotracker_without_suggestions(
         IntPtr context);
 
-    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    private static extern byte toggl_get_active_tab(
->>>>>>> 4fb0092de... make csapi
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+private static extern byte toggl_get_active_tab(
         IntPtr context);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]

@@ -52,16 +52,17 @@ bool AutotrackerRule::Matches(const TimelineEvent &event) const {
 
 void AutotrackerRule::SetTerms(const std::string &value) {
     if (TermsString() != value) {
-        Terms().clear();
+        Terms->clear();
         if (!value.empty()) {
             std::stringstream ss(value);
             while (ss.good()) {
                 std::string tag;
                 getline(ss, tag, kTermSeparator);
-                Terms().push_back(tag);
+                Terms->push_back(tag);
             }
         }
         SetDirty();
+    }
 }
 
 void AutotrackerRule::SetPID(Poco::UInt64 value) {
