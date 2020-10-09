@@ -70,7 +70,6 @@ void IdleNotificationWidget::idleHintReceived(QDBusPendingCallWatcher *watcher) 
     QDBusPendingReply<uint> reply = *watcher;
     if (reply.isError()) {
         dbusApiAvailable = false;
-        qWarning() << reply.error();
     }
     else {
         qlonglong value = reply.argumentAt<0>();
