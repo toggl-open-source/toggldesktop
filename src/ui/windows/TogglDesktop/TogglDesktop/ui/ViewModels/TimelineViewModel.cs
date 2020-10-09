@@ -248,7 +248,6 @@ namespace TogglDesktop.ViewModels
                         Started = prevEnd.Value + 1,
                         Ended = entry.Started - 1
                     };
-                    gaps.Add(block);
                     if (block.Height > 10) // Don't display to small gaps not to obstruct the view
                         gaps.Add(block);
                 }
