@@ -547,7 +547,7 @@ namespace TogglDesktop
             this.updateEntriesListWidth();
             if (editPopup.IsVisible == false && ReferenceEquals(this.activeView, this.timerEntryListView))
             {
-                this.timerEntryListView.Entries.DeselectCells();
+                this.timerEntryListView.DeselectTimeEntries();
             }
         }
 

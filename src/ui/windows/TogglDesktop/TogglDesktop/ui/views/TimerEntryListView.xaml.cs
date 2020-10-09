@@ -196,5 +196,11 @@ namespace TogglDesktop
         {
             return false;
         }
+
+        public void DeselectTimeEntries()
+        {
+            Entries.DeselectCells();
+            Timeline.ViewModel.SelectedTEId = null;
+        }
     }
 }

@@ -94,7 +94,7 @@
                                      FocusTimer="onFocusTimer"/>
             </TabItem>
 	        <TabItem Header="Timeline" Visibility="{Binding Path=IsTimelineViewEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <toggl:Timeline DataContext="{Binding TimelineViewModel}"/>
+                <toggl:Timeline DataContext="{Binding TimelineViewModel}" x:Name="Timeline"/>
             </TabItem>
         </TabControl>
 

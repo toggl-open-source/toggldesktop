@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -37,6 +38,11 @@ namespace TogglDesktop.ViewModels
             scaleModeObservable.Select(GetHoursListFromScale).ToPropertyEx(this, x => x.HourViews);
             Toggl.OnTimeline += HandleDisplayTimeline;
             Toggl.OnTimeEntryList += HandleTimeEntryListChanged;
+            Toggl.OnTimeEntryEditor += (open, te, field) =>
+                SelectedTEId = open ? te.GUID : SelectedTEId;
+            this.WhenAnyValue(x => x.SelectedTEId, x => x.TimeEntryBlocks)
+                .ObserveOn(RxApp.TaskpoolScheduler).Subscribe(_ =>
+                TimeEntryBlocks?.ForEach(te => te.IsEditViewOpened = SelectedTEId == te.TimeEntryId));
             HourViews = GetHoursListFromScale(SelectedScaleMode);
         }
 
@@ -66,15 +72,17 @@ namespace TogglDesktop.ViewModels
                 Toggl.LoadMore();
             }
             Toggl.SetViewTimelineDay(Toggl.UnixFromDateTime(SelectedDate));
+            if (SelectedTEId != null)
+                Toggl.Edit(SelectedTEId, false, "");
         }
 
         private void HandleDisplayTimeline(bool open, string date, List<Toggl.TimelineChunkView> first, List<Toggl.TogglTimeEntryView> firstTimeEntry, ulong startDay, ulong endDay)
         {
             SelectedDate = Toggl.DateTimeFromUnix(startDay);
-            _timeEntries = firstTimeEntry;
             _timelineChunks = first;
-            ConvertChunksToActivityBlocks(first);
-            ConvertTimeEntriesToBlocks(firstTimeEntry);
+            _timeEntries = firstTimeEntry;
+            Task.Run(() => ConvertChunksToActivityBlocks(first));
+            Task.Run(() => ConvertTimeEntriesToBlocks(firstTimeEntry));
         }
 
         private void HandleTimeEntryListChanged(bool open, List<Toggl.TogglTimeEntryView> timeEntries, bool showLoadMore)
@@ -141,7 +149,7 @@ namespace TogglDesktop.ViewModels
             {
                 var startTime = Toggl.DateTimeFromUnix(entry.Started);
                 var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(entry.Ended));
-                var block = new TimeEntryBlock()
+                var block = new TimeEntryBlock(entry.GUID)
                 {
                     Height = height < 2 ? 2 : height,
                     VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime),
@@ -213,6 +221,7 @@ namespace TogglDesktop.ViewModels
                     prevLayerBlock = null;
                 }
             }
+
             TimeEntryBlocks = null;
             TimeEntryBlocks = blocks;
 
@@ -292,6 +301,8 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public List<TimeEntryBlock> GapTimeEntryBlocks { get; private set; }
 
+        [Reactive]
+        public string SelectedTEId { get; set; }
         public ReactiveCommand<Unit, int> IncreaseScale { get; }
         public ReactiveCommand<Unit, int> DecreaseScale { get; }
 
@@ -311,7 +322,7 @@ namespace TogglDesktop.ViewModels
         }
     }
 
-    public class TimeEntryBlock
+    public class TimeEntryBlock : ReactiveObject
     {
         public double VerticalOffset { get; set; }
         public double HorizontalOffset { get; set; }
@@ -324,15 +335,26 @@ namespace TogglDesktop.ViewModels
         public ulong Started { get; set; }
         public ulong Ended { get; set; }
         public ReactiveCommand<Unit, Unit> CreateTimeEntryFromBlock { get; }
+        public ReactiveCommand<Unit,Unit> OpenEditView { get; }
+        public string TimeEntryId { get; private set; }
 
-        public TimeEntryBlock()
+        [Reactive]
+        public bool IsEditViewOpened { get; set; }
+
+        public TimeEntryBlock(string timeEntryId)
         {
+            TimeEntryId = timeEntryId;
+            CreateTimeEntryFromBlock = ReactiveCommand.Create(() => AddNewTimeEntry());
+            OpenEditView = ReactiveCommand.Create(() => Toggl.Edit(TimeEntryId, false, Toggl.Description));
             CreateTimeEntryFromBlock = ReactiveCommand.Create(AddNewTimeEntry);
         }
 
+        public TimeEntryBlock() : this(null) { }
+
         private void AddNewTimeEntry()
         {
-            Toggl.CreateEmptyTimeEntry(Started, Ended);
+            TimeEntryId = Toggl.CreateEmptyTimeEntry(Started, Ended);
+            OpenEditView.Execute().Subscribe();
         }
     }
 }
