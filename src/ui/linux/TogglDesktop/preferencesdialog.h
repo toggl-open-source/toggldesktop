@@ -57,6 +57,7 @@ class PreferencesDialog : public QDialog {
     void on_showHideButton_clicked();
     void on_reminderStartTimeEdit_editingFinished();
     void on_reminderEndTimeEdit_editingFinished();
+    void on_sslCheckbox_clicked();
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
     void saveCurrentShortcut();
