@@ -439,18 +439,18 @@ jobs:
     - name: Create x86 installer
       run: |
         cd dist/windows
-        makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglDesktopInstaller-x86.nsi
-    - name: Upload artifacts to GitHub
-      if: github.event_name != 'release'
-      uses: actions/upload-artifact@v2
-      with:
-        name: TogglDesktopInstaller-x86.exe
-        path: dist\windows\TogglDesktopInstaller.exe    
+        makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglDesktopInstaller-x86.nsi  
     - name: Sign the installer
       if: github.event_name == 'release'
       shell: cmd
       run: |
         "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx -p "${{ secrets.CERT_WINDOWS_PASSWORD }}" dist\windows\TogglDesktopInstaller.exe
+    - name: Upload artifacts to GitHub
+      if: github.event_name != 'release'
+      uses: actions/upload-artifact@v2
+      with:
+        name: TogglDesktopInstaller-x86.exe
+        path: dist\windows\TogglDesktopInstaller.exe
     - name: Upload to GitHub
       if: github.event_name == 'release'
       run: |
@@ -507,17 +507,17 @@ jobs:
       run: |
         cd dist/windows
         makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglDesktopInstaller-x64.nsi
+    - name: Sign the installer
+      if: github.event_name == 'release'
+      shell: cmd
+      run: |
+        "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx -p "${{ secrets.CERT_WINDOWS_PASSWORD }}" dist\windows\TogglDesktopInstaller-x64.exe
     - name: Upload artifacts to GitHub
       if: github.event_name != 'release'
       uses: actions/upload-artifact@v2
       with:
         name: TogglDesktopInstaller-x64.exe
         path: dist\windows\TogglDesktopInstaller-x64.exe
-    - name: Sign the installer
-      if: github.event_name == 'release'
-      shell: cmd
-      run: |
-        "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx -p "${{ secrets.CERT_WINDOWS_PASSWORD }}" dist\windows\TogglDesktopInstaller-x64.exe
     - name: Upload to GitHub
       if: github.event_name == 'release'
       run: |
