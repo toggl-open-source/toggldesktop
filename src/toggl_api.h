@@ -251,6 +251,13 @@ extern "C" {
         TimerEditActionTypeBillable = 1 << 4
     } TimerEditActionType;
 
+    typedef enum {
+        TimerShortcutActionTypeProjectSelected,
+        TimerShortcutActionTypeTagSelected,
+        TimerShortcutActionTypeProjectCreated,
+        TimerShortcutActionTypeTagCreated
+    } TimerShortcutActionType;
+
 typedef enum {
         TogglServerStaging = 0,
         TogglServerProduction
@@ -1265,6 +1272,10 @@ typedef enum {
     TOGGL_EXPORT void track_timer_start(
         void *context,
         TimerEditActionType actions);
+
+    TOGGL_EXPORT void track_timer_shortcut(
+        void *context,
+        TimerShortcutActionType action);
 
     TOGGL_EXPORT bool_t toggl_update_time_entry(
         void *context,

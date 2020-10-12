@@ -430,4 +430,26 @@ void Analytics::TrackTimerStart(const std::string &client_id, const TimerEditAct
     Track(client_id, category, action_str);
 }
 
+void Analytics::TrackTimerShortcut(const std::string &client_id, const TimerShortcutActionType action) {
+    std::string category = "timer-shortcut";
+    std::string action_str = "";
+
+    switch (action) {
+        case TimerShortcutActionTypeProjectSelected:
+            action_str = "project-select";
+            break;
+        case TimerShortcutActionTypeTagSelected:
+            action_str = "tag-select";
+            break;
+        case TimerShortcutActionTypeProjectCreated:
+            action_str = "project-create";
+            break;
+        case TimerShortcutActionTypeTagCreated:
+            action_str = "tag-create";
+            break;
+    }
+
+    Track(client_id, category, action_str);
+}
+
 }  // namespace toggl

@@ -479,25 +479,35 @@ void *ctx;
     toggl_track_timeline_menu_context(ctx, type);
 }
 
-- (void)trackTimerEditUsingAction:(TimerEditActionType)action {
+- (void)trackTimerEditUsingAction:(TimerEditActionType)action
+{
     track_timer_edit(ctx, action);
 }
 
-- (void)trackTimerStartUsingActions:(TimerEditActionType)actions {
+- (void)trackTimerStartUsingActions:(TimerEditActionType)actions
+{
     track_timer_start(ctx, actions);
+}
+
+- (void)trackTimerShortcut:(TimerShortcutActionType)action
+{
+    track_timer_shortcut(ctx, action);
 }
 
 #pragma mark - General
 
-- (uint64_t)defaultWorkspaceID {
+- (uint64_t)defaultWorkspaceID
+{
     return toggl_get_default_or_first_workspace_id(ctx);
 }
 
-- (void)fetchTagsForWorkspaceID:(uint64_t)workspaceID {
+- (void)fetchTagsForWorkspaceID:(uint64_t)workspaceID
+{
     toggl_fetch_tags(ctx, workspaceID);
 }
 
-- (BOOL)canSeeBillableForWorkspaceID:(uint64_t)workspaceID {
+- (BOOL)canSeeBillableForWorkspaceID:(uint64_t)workspaceID
+{
     return toggl_can_see_billable(ctx, workspaceID);
 }
 

@@ -144,6 +144,7 @@ class TimerViewController: NSViewController {
         viewModel.onTagSelected = { [unowned self] isSelected in
             if case .tagsFilter = self.descriptionFieldHandler.state {
                 self.descriptionFieldHandler.didSelectTag()
+                self.analyticsTrackShortcutSelected(.tag)
             }
 
             self.tagsButton.isSelected = isSelected
@@ -170,6 +171,7 @@ class TimerViewController: NSViewController {
             switch self.descriptionFieldHandler.state {
             case .projectFilter:
                 self.descriptionFieldHandler.didSelectProject()
+                self.analyticsTrackShortcutSelected(.project)
             default:
                 self.closeProjectAutoComplete()
             }
@@ -615,6 +617,9 @@ extension TimerViewController: AutoCompleteViewDelegate {
         switch descriptionFieldHandler.state {
         case .tagsFilter(let filter):
             tagName = filter
+            descriptionFieldHandler.didSelectTag()
+            analyticsTrackShortcutCreated(.tag)
+
         default:
             tagName = tagsAutoCompleteView.defaultTextField.stringValue
         }
@@ -635,6 +640,8 @@ extension TimerViewController: ProjectCreationViewDelegate {
         switch descriptionFieldHandler.state {
         case .projectFilter:
             descriptionFieldHandler.didSelectProject()
+            analyticsTrackShortcutCreated(.project)
+
         default:
             closeProjectAutoComplete()
         }
@@ -645,5 +652,30 @@ extension TimerViewController: ProjectCreationViewDelegate {
 
     func projectCreationDidUpdateSize() {
         updateProjectAutocompleteWindowContent(with: projectCreationView)
+    }
+}
+
+// MARK: - Analytics
+
+extension TimerViewController {
+
+    private typealias Shortcut = TimerDescriptionFieldHandler.Shortcut
+
+    private func analyticsTrackShortcutSelected(_ shortcut: Shortcut) {
+        switch shortcut {
+        case .project:
+            DesktopLibraryBridge.shared().trackTimerShortcut(TimerShortcutActionTypeProjectSelected)
+        case .tag:
+            DesktopLibraryBridge.shared().trackTimerShortcut(TimerShortcutActionTypeTagSelected)
+        }
+    }
+
+    private func analyticsTrackShortcutCreated(_ shortcut: Shortcut) {
+        switch shortcut {
+        case .project:
+            DesktopLibraryBridge.shared().trackTimerShortcut(TimerShortcutActionTypeProjectCreated)
+        case .tag:
+            DesktopLibraryBridge.shared().trackTimerShortcut(TimerShortcutActionTypeTagCreated)
+        }
     }
 }

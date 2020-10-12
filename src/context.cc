@@ -6784,6 +6784,12 @@ void Context::TrackTimerStart(TimerEditActionType actions) {
     }
 }
 
+void Context::TrackTimerShortcut(TimerShortcutActionType action) {
+    if ("production" == environment_) {
+        analytics_.TrackTimerShortcut(db_->AnalyticsClientID(), action);
+    }
+}
+
 error Context::UpdateTimeEntry(
     const std::string &GUID,
     const std::string &description,

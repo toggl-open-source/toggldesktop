@@ -139,6 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)trackTimelineMenuContextType:(TimelineMenuContextType)type;
 - (void)trackTimerEditUsingAction:(TimerEditActionType)action;
 - (void)trackTimerStartUsingActions:(TimerEditActionType)actions;
+- (void)trackTimerShortcut:(TimerShortcutActionType)action;
 
 #pragma mark - General
 
