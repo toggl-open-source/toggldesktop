@@ -319,7 +319,7 @@
                                            DockPanel.Dock="Left"
                                            Margin="0 0 5 0"
                                            VerticalAlignment="Center"
-                                           Fill="{Binding ElementName=TimeEntrySpan, Path=Fill}"
+                                           Fill="{Binding Color, Converter={StaticResource AdaptProjectTextColorConverter}}"
                                            Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
                                     <TextBlock Foreground="{Binding Color, Converter={StaticResource AdaptProjectTextColorConverter}}"
                                              Text="{Binding ProjectName}" FontSize="12"
