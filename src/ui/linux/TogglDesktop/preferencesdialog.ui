@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_general">
       <attribute name="title">
@@ -276,7 +276,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="hostLabel">
             <property name="text">
-             <string>&amp;Host</string>
+             <string>Host</string>
             </property>
            </widget>
           </item>
