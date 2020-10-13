@@ -4748,7 +4748,6 @@ void Context::displayReminder() {
         (Poco::DateTime::FRIDAY == wday && !settings_.remind_fri) ||
         (Poco::DateTime::SATURDAY == wday && !settings_.remind_sat) ||
         (Poco::DateTime::SUNDAY == wday && !settings_.remind_sun)) {
-        logger.debug("reminder is not enabled on this weekday");
         return;
     }
 
@@ -4759,7 +4758,6 @@ void Context::displayReminder() {
             Poco::LocalDateTime start(
                 now.year(), now.month(), now.day(), h, m, now.second());
             if (now < start) {
-                logger.debug("Reminder - its too early for reminders", " [", now.hour(), ":", now.minute(), "]", " (allowed from ", h, ":", m, ")");
                 return;
             }
         }
@@ -4769,7 +4767,6 @@ void Context::displayReminder() {
         if (toggl::Formatter::ParseTimeInput(settings_.remind_ends, &h, &m)) {
             Poco::LocalDateTime end(now.year(), now.month(), now.day(), h, m, now.second());
             if (now > end) {
-                logger.debug("Reminder - its too late for reminders", " [", now.hour(), ":", now.minute(), "]", " (allowed until ", h, ":", m, ")");
                 return;
             }
         }
