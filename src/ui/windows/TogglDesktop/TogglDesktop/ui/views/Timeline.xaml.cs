@@ -73,7 +73,7 @@ namespace TogglDesktop
 
         private void SetScrollToCurrentTime()
         {
-            var height = ViewModel.ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now);
+            var height = ViewModel.ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, ViewModel.SelectedScaleMode);
             MainViewScroll.ScrollToVerticalOffset(height - MainViewScroll.ActualHeight / 2);
         }
         private void OnTimeEntryBlockMouseEnter(object sender, MouseEventArgs e)

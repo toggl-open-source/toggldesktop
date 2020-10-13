@@ -13,7 +13,7 @@
         <ResourceDictionary>
             <converters:RectangleHeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
             <converters:BrushOpacityConverter x:Key="BrushOpacityConverter"/>
-            <sys:Double x:Key="PointOneDouble">0.1</sys:Double>
+            <sys:Double x:Key="DescriptionOpacity">0.2</sys:Double>
         </ResourceDictionary>
     </UserControl.Resources>
     <Button FontWeight="Normal" Command="{Binding OpenEditView}" MinHeight="2">
@@ -24,6 +24,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <Border Grid.Column="1" CornerRadius="8,8,8,8" Background="{DynamicResource Toggl.Background}" Margin="-10 0 0 0"/>
                     <Rectangle Grid.Column="0" Name ="TimeEntrySpan"
                                Width="20" Height="{Binding Height}"
                                Fill="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
@@ -32,8 +33,8 @@
                     </Rectangle>
                     <Border CornerRadius="0,8,8,0" Margin="-10 0 4 0" Grid.Column="1"
                             BorderThickness="1"
+                            Background="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource DescriptionOpacity}}"
                             MinHeight="2"
-                            Background="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource PointOneDouble}}"
                             Visibility="{Binding ShowDescription, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <StackPanel Height="{Binding Height}" Margin="20,0,0,0">
                             <TextBlock Text="{Binding Description}" Style="{StaticResource Toggl.CaptionBlackText}"/>

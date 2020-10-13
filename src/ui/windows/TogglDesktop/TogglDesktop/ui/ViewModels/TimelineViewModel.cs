@@ -36,6 +36,8 @@ namespace TogglDesktop.ViewModels
             scaleModeObservable.Where(_ => _timeEntries != null)
                 .Subscribe(_ => ConvertTimeEntriesToBlocks(_timeEntries));
             scaleModeObservable.Select(GetHoursListFromScale).ToPropertyEx(this, x => x.HourViews);
+            scaleModeObservable.Select(mode => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, mode))
+                .Subscribe(h => CurrentTimeOffset = h);
             Toggl.OnTimeline += HandleDisplayTimeline;
             Toggl.OnTimeEntryList += HandleTimeEntryListChanged;
             Toggl.OnTimeEntryEditor += (open, te, field) =>
@@ -45,8 +47,8 @@ namespace TogglDesktop.ViewModels
                 TimeEntryBlocks?.ForEach(te => te.IsEditViewOpened = SelectedForEditTEId == te.TimeEntryId));
             HourViews = GetHoursListFromScale(SelectedScaleMode);
             Observable.Timer(TimeSpan.Zero,TimeSpan.FromMinutes(1))
-                .Select(_ => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now))
-                .ToPropertyEx(this, x => x.CurrentTimeOffset);
+                .Select(_ => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, SelectedScaleMode))
+                .Subscribe(h => CurrentTimeOffset = h);
             this.WhenAnyValue(x => x.SelectedDate)
                 .Select(dateTime => dateTime.Date == DateTime.Today.Date)
                 .ToPropertyEx(this, x => x.IsTodaySelected);
@@ -113,7 +115,7 @@ namespace TogglDesktop.ViewModels
                     var start = Toggl.DateTimeFromUnix(chunk.Started);
                     var block = new ActivityBlock()
                     {
-                        Offset = ConvertTimeIntervalToHeight(new DateTime(start.Year, start.Month, start.Day), start),
+                        Offset = ConvertTimeIntervalToHeight(new DateTime(start.Year, start.Month, start.Day), start, SelectedScaleMode),
                         TimeInterval = chunk.StartTimeString+" - "+chunk.EndTimeString,
                         ActivityDescriptions = new List<ActivityDescription>()
                     };
@@ -154,11 +156,11 @@ namespace TogglDesktop.ViewModels
             foreach (var entry in timeEntries)
             {
                 var startTime = Toggl.DateTimeFromUnix(entry.Started);
-                var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(entry.Ended));
+                var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(entry.Ended), SelectedScaleMode);
                 var block = new TimeEntryBlock(entry.GUID)
                 {
                     Height = height < 2 ? 2 : height,
-                    VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime),
+                    VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime, SelectedScaleMode),
                     Color = entry.Color,
                     Description = entry.Description.IsNullOrEmpty() ? "No Description" : entry.Description,
                     ProjectName = entry.ProjectLabel,
@@ -238,10 +240,10 @@ namespace TogglDesktop.ViewModels
             GenerateGapTimeEntryBlocks(timeEntries);
         }
 
-        public double ConvertTimeIntervalToHeight(DateTime start, DateTime end)
+        public double ConvertTimeIntervalToHeight(DateTime start, DateTime end, int scaleMode)
         {
             var timeInterval = (end - start).TotalMinutes;
-            return timeInterval * ScaleModes[SelectedScaleMode] / 60;
+            return timeInterval * ScaleModes[scaleMode] / 60;
         }
 
         private void GenerateGapTimeEntryBlocks(List<Toggl.TogglTimeEntryView> timeEntries)
@@ -256,9 +258,9 @@ namespace TogglDesktop.ViewModels
                     var start = Toggl.DateTimeFromUnix(prevEnd.Value+1);
                     var block = new TimeEntryBlock()
                     {
-                        Height = ConvertTimeIntervalToHeight(start, Toggl.DateTimeFromUnix(entry.Started - 1)),
+                        Height = ConvertTimeIntervalToHeight(start, Toggl.DateTimeFromUnix(entry.Started - 1), SelectedScaleMode),
                         VerticalOffset =
-                            ConvertTimeIntervalToHeight(new DateTime(start.Year, start.Month, start.Day), start),
+                            ConvertTimeIntervalToHeight(new DateTime(start.Year, start.Month, start.Day), start, SelectedScaleMode),
                         HorizontalOffset = 0,
                         Started = prevEnd.Value + 1,
                         Ended = entry.Started - 1
@@ -319,7 +321,8 @@ namespace TogglDesktop.ViewModels
         public ReactiveCommand<Unit, int> IncreaseScale { get; }
         public ReactiveCommand<Unit, int> DecreaseScale { get; }
 
-        public double CurrentTimeOffset { [ObservableAsProperty] get; }
+        [Reactive]
+        public double CurrentTimeOffset { get; private set; }
 
         public bool IsTodaySelected { [ObservableAsProperty] get; }
 
