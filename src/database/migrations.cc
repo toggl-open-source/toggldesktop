@@ -120,22 +120,13 @@ error Migrations::migrateAutotracker() {
 
     err = db_->Migrate(
         "autotracker_settings.start_time",
-        "alter table autotracker_settings"
-        " add column start_time varchar not null default '';");
-    if (err != noError) {
-        return err;
-    }
 
-    err = db_->Migrate(
-        "autotracker_settings.end_time",
         "alter table autotracker_settings"
-        " add column end_time varchar not null default '';");
-    if (err != noError) {
-        return err;
-    }
+        " add column start_time varchar not null default '';"
 
-    err = db_->Migrate(
-        "autotracker_settings.days_of_week",
+        "alter table autotracker_settings"
+        " add column end_time varchar not null default '';"
+
         "alter table autotracker_settings"
         " add column days_of_week integer not null default 0;");
     if (err != noError) {
