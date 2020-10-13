@@ -626,10 +626,6 @@ error Database::GetShowTouchBar(bool *result) {
     return getSettingsValue("show_touch_bar", result);
 }
 
-error Database::GetStartAutotrackerWithoutSuggestions(bool *result) {
-    return getSettingsValue("start_autotracker_without_suggestions", result);
-}
-
 error Database::GetActiveTab(uint8_t *result) {
     return getSettingsValue("active_tab", result);
 }

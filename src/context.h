@@ -217,8 +217,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     bool GetShowTouchBar();
 
-    bool GetStartAutotrackerWithoutSuggestions();
-
     uint8_t GetActiveTab();
 
     void SetWindowMaximized(

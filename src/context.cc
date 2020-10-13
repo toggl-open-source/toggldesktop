@@ -2206,12 +2206,6 @@ bool Context::GetShowTouchBar() {
     return value;
 }
 
-bool Context::GetStartAutotrackerWithoutSuggestions() {
-    bool value(false);
-    displayError(db()->GetStartAutotrackerWithoutSuggestions(&value));
-    return value;
-}
-
 uint8_t Context::GetActiveTab() {
     uint8_t value(0);
     displayError(db()->GetActiveTab(&value));

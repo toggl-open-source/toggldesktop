@@ -165,8 +165,6 @@ class TOGGL_INTERNAL_EXPORT Database {
 
     error GetShowTouchBar(bool *result);
 
-    error GetStartAutotrackerWithoutSuggestions(bool *start_autotracker_without_suggestions);
-
     error GetActiveTab(uint8_t *result);
 
     error SetWindowMaximized(
