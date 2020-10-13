@@ -25,7 +25,6 @@ final class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var emptyActivityLblPadding: NSLayoutConstraint!
     @IBOutlet weak var zoomContainerView: NSView!
     @IBOutlet weak var collectionViewContainerView: NSView!
-    @IBOutlet weak var activityRecorderInfoImageView: HoverImageView!
     @IBOutlet weak var activityLabelRight: NSLayoutConstraint!
     @IBOutlet weak var permissionBtn: NSButton!
 
@@ -80,7 +79,7 @@ final class TimelineDashboardViewController: NSViewController {
     }()
     private lazy var editorPopover: EditorPopover = {
         let popover = EditorPopover()
-        popover.animates = false
+        popover.animates = true
         popover.prepareViewController()
         popover.delegate = self
         return popover
@@ -92,8 +91,8 @@ final class TimelineDashboardViewController: NSViewController {
     }()
     private lazy var activityRecorderPopover: NoVibrantPopoverView = {
         let popover = NoVibrantPopoverView()
-        popover.animates = false
-        popover.behavior = .semitransient
+        popover.animates = true
+        popover.behavior = .transient
         popover.contentViewController = activityRecorderController
         return popover
     }()
@@ -222,6 +221,11 @@ final class TimelineDashboardViewController: NSViewController {
         datePickerView.previousDateBtnOnTap(self)
     }
 
+    @IBAction func recordActivityInfoClicked(_ sender: Any) {
+        guard let button = sender as? NSButton else { return }
+        activityRecorderPopover.show(relativeTo: .zero, of: button, preferredEdge: .maxY)
+    }
+
     // MARK: Zoom
 
     @IBAction func zoomLevelDecreaseOnChange(_ sender: Any) {
@@ -266,7 +270,6 @@ extension TimelineDashboardViewController {
         datePickerView.delegate = self
         datePickerView.setBackgroundForTimeline()
         emptyActivityLbl.frameCenterRotation = -90
-        activityRecorderInfoImageView.delegate = self
 
         // Forect Render the view
         _ = activityHoverController.view
@@ -379,8 +382,13 @@ extension TimelineDashboardViewController {
         allPopovers.forEach { $0.performClose(self) }
     }
 
-    private func closeAllPopoverExceptEditor() {
-        allPopovers.filter { $0 != editorPopover }.forEach { $0.performClose(self) }
+    private func closeAllTransientPopovers() {
+        allPopovers.filter {
+            $0.behavior == .transient || $0.behavior == .semitransient
+        }
+        .forEach {
+            $0.performClose(nil)
+        }
     }
 
     private func getSelectedCell() -> TimelineTimeEntryCell? {
@@ -451,6 +459,10 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         closeAllPopovers()
     }
 
+    func shouldHideAllTransientPopovers() {
+        closeAllTransientPopovers()
+    }
+
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry) {
         guard !canShowHoverPopover else { return }
         timeEntryHoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
@@ -472,7 +484,7 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem, cell: TimelineTimeEntryCell) {
         // Make sure all are closed
-        closeAllPopoverExceptEditor()
+        closeAllTransientPopovers()
         resetHighlightCells()
 
         // Close the Editor if we select the same
@@ -631,20 +643,5 @@ extension TimelineDashboardViewController: TimelineActivityRecorderViewControlle
 
     func timelineActivityRecorderShouldDidClickOnCloseBtn(_ sender: Any) {
         activityRecorderPopover.performClose(self)
-    }
-}
-
-// MARK: HoverImageViewDelegate
-
-extension TimelineDashboardViewController: HoverImageViewDelegate {
-
-    func hoverImageViewDidMouseExit(_ sender: HoverImageView) {
-        guard activityHoverPopover.isShown else { return }
-        activityRecorderPopover.performClose(self)
-    }
-
-    func hoverImageViewDidMouseEnter(_ sender: HoverImageView) {
-        guard !activityHoverPopover.isShown else { return }
-        activityRecorderPopover.show(relativeTo: sender.bounds, of: sender, preferredEdge: .minY)
     }
 }

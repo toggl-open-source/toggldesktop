@@ -77,6 +77,15 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         isHighlight = false
     }
 
+    override func mouseEntered(with event: NSEvent) {
+        let eventLocation = view.convert(event.locationInWindow, from: nil)
+        let isInForegroundBox = eventLocation.x <= foregroundBox.frame.width
+        if backgroundBox?.isHidden == true && !isInForegroundBox {
+            return
+        }
+        super.mouseEntered(with: event)
+    }
+
     // MARK: Public
 
     /// Main func to populate all information Time Entry
