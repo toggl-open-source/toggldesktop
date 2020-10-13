@@ -69,6 +69,11 @@ namespace TogglDesktop
                 ViewModel.SelectedTimeEntryBlock = curBlock;
                 TimeEntryPopup.PlacementTarget = uiElement;
                 TimeEntryPopup.IsOpen = true;
+                var visibleTopOffset = MainViewScroll.VerticalOffset+10;
+                var visibleBottomOffset = MainViewScroll.VerticalOffset + MainViewScroll.ActualHeight-10;
+                var offset = curBlock.VerticalOffset + uiElement.ActualHeight / 2;
+                TimeEntryPopup.VerticalOffset = Math.Min(Math.Max(visibleTopOffset, offset), visibleBottomOffset) -
+                                                curBlock.VerticalOffset;
             }
         }
 

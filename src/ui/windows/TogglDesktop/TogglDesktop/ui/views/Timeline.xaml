@@ -288,7 +288,7 @@
                             </StackPanel>
                         </Border>
                     </Popup>
-                    <Popup Placement="Mouse"
+                    <Popup Placement="Right"
                            DataContext="{Binding SelectedTimeEntryBlock}"
                            Name="TimeEntryPopup"
                            HorizontalOffset="5"
