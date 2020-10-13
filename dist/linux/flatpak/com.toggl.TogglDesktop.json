@@ -1,7 +1,7 @@
 {
     "id": "com.toggl.TogglDesktop",
     "runtime": "org.kde.Platform",
-    "runtime-version": "5.12",
+    "runtime-version": "5.15",
     "sdk": "org.kde.Sdk",
     "rename-icon": "toggldesktop",
     "command": "TogglDesktop.sh",
@@ -13,7 +13,22 @@
         "--share=network",
         "--share=ipc",
         "--talk-name=org.kde.StatusNotifierWatcher",
-        "--talk-name=org.freedesktop.Notifications"
+        "--talk-name=org.freedesktop.Notifications",
+        "--talk-name=com.canonical.indicator.application",
+        "--talk-name=org.ayatana.indicator.application",
+        "--talk-name=org.freedesktop.portal.Fcitx",
+        "--talk-name=org.freedesktop.ScreenSaver",
+        "--talk-name=org.gnome.Mutter.IdleMonitor",
+        "--own-name=org.kde.StatusNotifierItem-1-1",
+        "--own-name=org.kde.StatusNotifierItem-2-1",
+        "--own-name=org.kde.StatusNotifierItem-3-1",
+        "--own-name=org.kde.StatusNotifierItem-4-1",
+        "--own-name=org.kde.StatusNotifierItem-5-1",
+        "--own-name=org.kde.StatusNotifierItem-6-1",
+        "--own-name=org.kde.StatusNotifierItem-7-1",
+        "--own-name=org.kde.StatusNotifierItem-8-1",
+        "--own-name=org.kde.StatusNotifierItem-9-1",
+        "--system-talk-name=org.freedesktop.login1"
     ],
     "modules": [
         {
@@ -31,16 +46,15 @@
             "buildsystem": "cmake-ninja",
             "config-opts": [
                 "-DCMAKE_BUILD_TYPE=Release",
-                "-DTOGGL_VERSION=7.4.528",
-                "-DTOGGL_VERSION_RELEASE_DATE=2019-08-22",
+                "-DTOGGL_VERSION=VERSION_PLACEHOLDER",
                 "-DTOGGL_PRODUCTION_BUILD=ON",
                 "-DTOGGL_ALLOW_UPDATE_CHECK=ON"
             ],
             "sources": [
                 {
                     "type": "git",
-                    "url": "http://github.com/toggl/toggldesktop",
-                    "tag": "v7.4.528"
+                    "url": "http://github.com/toggl-open-source/toggldesktop",
+                    "tag": "vVERSION_PLACEHOLDER"
                 }
             ]
         }

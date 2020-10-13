@@ -332,11 +332,13 @@ jobs:
     - name: Install Flatpak KDE SDK
       run: |
         sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-        sudo flatpak install --system -y flathub org.kde.Platform//5.12
-        sudo flatpak install --system -y flathub org.kde.Sdk//5.12
+        sudo flatpak install --system -y flathub org.kde.Platform//5.15
+        sudo flatpak install --system -y flathub org.kde.Sdk//5.15
     - name: Build Linux Flatpak package - KDE based
       run: |
+        TAG_NAME=$(./dist/get-tag-name.sh)
         pushd dist/linux/flatpak
+        sed -i "s/VERSION_PLACEHOLDER/${TAG_NAME/v/}/" com.toggl.TogglDesktop.json
         sudo flatpak-builder --repo=flatpak-repo --force-clean flatpak-build com.toggl.TogglDesktop.json
         flatpak build-bundle flatpak-repo com.toggl.TogglDesktop.flatpak com.toggl.TogglDesktop
         mv com.toggl.TogglDesktop.flatpak ../../..
