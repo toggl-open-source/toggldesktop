@@ -1525,11 +1525,6 @@ bool_t toggl_get_show_touch_bar(
     return app(context)->GetShowTouchBar();
 }
 
-bool_t toggl_get_start_autotracker_without_suggestions(
-    void *context) {
-    return app(context)->GetStartAutotrackerWithoutSuggestions();
-}
-
 uint8_t toggl_get_active_tab(
     void *context) {
     return app(context)->GetActiveTab();

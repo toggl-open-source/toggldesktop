@@ -1850,11 +1850,6 @@ private static extern bool toggl_get_show_touch_bar(
         IntPtr context);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-[return:MarshalAs(UnmanagedType.I1)]
-private static extern bool toggl_get_start_autotracker_without_suggestions(
-        IntPtr context);
-
-[DllImport(dll, CharSet = charset, CallingConvention = convention)]
 private static extern byte toggl_get_active_tab(
         IntPtr context);
 
