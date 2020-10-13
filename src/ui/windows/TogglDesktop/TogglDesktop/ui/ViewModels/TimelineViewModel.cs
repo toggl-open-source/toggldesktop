@@ -353,8 +353,10 @@ namespace TogglDesktop.ViewModels
 
     public class TimeEntryBlock : ReactiveObject
     {
+        [Reactive]
         public double VerticalOffset { get; set; }
         public double HorizontalOffset { get; set; }
+        [Reactive]
         public double Height { get; set; }
         public string Color { get; set; }
         public bool ShowDescription { get; set; }

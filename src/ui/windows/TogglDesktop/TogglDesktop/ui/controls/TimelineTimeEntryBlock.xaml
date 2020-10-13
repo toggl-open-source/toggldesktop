@@ -77,6 +77,30 @@
                             </Style>
                         </Border.Style>
                     </Border>
+                    <Thumb VerticalAlignment="Top"
+                           HorizontalAlignment="Stretch"
+                           Grid.Column="0" Grid.ColumnSpan="2"
+                           Cursor="SizeNS"
+                           Name="ThumbTop"
+                           DragDelta="OnThumbTopDragDelta">
+                        <Thumb.Template>
+                            <ControlTemplate>
+                                <Rectangle Fill="Transparent" Height="5"/>
+                            </ControlTemplate>
+                        </Thumb.Template>
+                    </Thumb>
+                    <Thumb VerticalAlignment="Bottom"
+                           HorizontalAlignment="Stretch"
+                           Grid.Column="0" Grid.ColumnSpan="2"
+                           Cursor="SizeNS"
+                           Name="ThumbBottom"
+                           DragDelta="OnThumbBottomDragDelta">
+                        <Thumb.Template>
+                            <ControlTemplate>
+                                <Rectangle Fill="Transparent" Height="5"/>
+                            </ControlTemplate>
+                        </Thumb.Template>
+                    </Thumb>
                 </Grid>
             </ControlTemplate>
         </Button.Template>
