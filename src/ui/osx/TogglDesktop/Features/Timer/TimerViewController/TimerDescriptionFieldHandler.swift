@@ -59,7 +59,7 @@ class TimerDescriptionFieldHandler: NSResponder {
     /// - Parameters:
     ///   - textField: Text field that will be sending event to this handler
     ///   - enableShortcuts: Pass `true` to enable project (@) and tags (#) shortcuts feature
-    init(textField: AutoCompleteInput, enableShortcuts: Bool = false) {
+    init(textField: AutoCompleteInput, enableShortcuts: Bool = true) {
         self.textField = textField
         self.isShortcutEnabled = enableShortcuts
         super.init()
