@@ -39,8 +39,8 @@ class TimerViewController: NSViewController {
     }
 
     private enum Constants {
-        static let emptyProjectButtonTooltip = NSLocalizedString("Select project", comment: "Tooltip for timer project button")
-        static let emptyTagsButtonTooltip = NSLocalizedString("Select tags", comment: "Tooltip for timer tags button")
+        static let emptyProjectButtonTooltip = NSLocalizedString("Select project (@)", comment: "Tooltip for timer project button")
+        static let emptyTagsButtonTooltip = NSLocalizedString("Select tags (#)", comment: "Tooltip for timer tags button")
         static let billableOnTooltip = NSLocalizedString("Billable", comment: "Tooltip for timer billable button when On")
         static let billableOffTooltip = NSLocalizedString("Non-billable", comment: "Tooltip for timer billable button when Off")
         static let billableUnavailableTooltip = NSLocalizedString("Billable rates is not on your plan",
