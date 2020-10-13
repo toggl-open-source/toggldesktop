@@ -109,6 +109,8 @@ void PreferencesDialog::displaySettings(const bool open,
         cs = "Record shortcut";
     }
     ui->continueStopButton->setText(cs);
+
+    ui->sslCheckbox->setChecked(settings->ForceIgnoreCert);
 }
 
 void PreferencesDialog::displayLogin(const bool open,
@@ -209,7 +211,11 @@ void PreferencesDialog::on_reminderEndTimeEdit_editingFinished() {
     TogglApi::instance->setSettingsRemindTimes(
         ui->reminderStartTimeEdit->time(),
         ui->reminderEndTimeEdit->time()
-    );
+                );
+}
+
+void PreferencesDialog::on_sslCheckbox_clicked() {
+    TogglApi::instance->setSettingsIgnoreCert(ui->sslCheckbox->isChecked());
 }
 
 void PreferencesDialog::on_continueStopButton_clicked() {
