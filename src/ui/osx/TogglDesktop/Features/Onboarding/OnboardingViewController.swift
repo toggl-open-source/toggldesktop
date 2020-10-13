@@ -31,7 +31,7 @@ final class OnboardingViewController: NSViewController {
     private lazy var popover: NSPopover = {
         let popover = NSPopover()
         popover.animates = true
-        popover.behavior = .applicationDefined // Manual trigger the close action
+        popover.behavior = .semitransient
         popover.contentViewController = contentController
         contentController.popover = popover
         popover.delegate = self
@@ -76,12 +76,18 @@ final class OnboardingViewController: NSViewController {
         view.displayIfNeeded()
 
         // Render
-        updateMaskLayer(with: presentView)
+        if payload.fadesBackground {
+            updateMaskLayer(with: presentView)
+        }
+        backgroundView.isHidden = !payload.fadesBackground
+
         contentController.config(with: payload)
 
         // Prepare and show
         preparePopoverContentView(with: payload)
-        popover.show(relativeTo: payload.view.bounds, of: presentView, preferredEdge: payload.preferEdges)
+
+        popover.show(relativeTo: presentView.bounds, of: presentView, preferredEdge: payload.preferEdges)
+        popover.positioningRect = payload.positioningRect(payload.hint, popover.positioningRect)
     }
 
     /// Dismiss all onboard view
@@ -145,7 +151,11 @@ extension OnboardingViewController {
 extension OnboardingViewController: NSPopoverDelegate {
 
     func popoverShouldClose(_ popover: NSPopover) -> Bool {
-        return shouldClosePopover
+        if payload?.fadesBackground == true {
+            // if dimming background is visible we don't close popup till user clicks on background
+            return shouldClosePopover
+        }
+        return true
     }
 
     func popoverWillClose(_ notification: Notification) {

@@ -62,6 +62,7 @@ class TimerViewController: NSViewController {
     @IBOutlet weak var projectButton: SelectableButton!
     @IBOutlet weak var tagsButton: SelectableButton!
     @IBOutlet weak var billableButton: SelectableButton!
+    @IBOutlet weak var buttonsStackView: NSStackView!
 
     // MARK: - Lifecycle
 
@@ -218,6 +219,21 @@ class TimerViewController: NSViewController {
     @objc
     func triggerStartStopAction() {
         viewModel.startStopAction()
+    }
+
+    @objc
+    func shortcutsOnboardingView() -> NSView {
+        return buttonsStackView
+    }
+
+    @objc
+    func shortcutsOnboardingPositioningRect() -> NSRect {
+        // onboarding for shortcuts is presented between projectButton and tagsButton
+        // that's why resulting rect should contain only those two buttons
+        // !!!: we assume that buttons order won't change: project | tags | billable
+        var rect = buttonsStackView.bounds
+        rect.size.width = tagsButton.frame.maxX
+        return rect
     }
 
     // MARK: - Actions

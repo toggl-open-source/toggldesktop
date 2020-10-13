@@ -111,6 +111,14 @@ extern void *ctx;
     }
 }
 
+- (NSView *)shortcutsOnboardingView {
+    return [self.timerViewController shortcutsOnboardingView];
+}
+
+- (NSRect)shortcutsOnboardingPositioningRect {
+    return [self.timerViewController shortcutsOnboardingPositioningRect];
+}
+
 - (IBAction)addEntryBtnOnTap:(id)sender
 {
     [self addButtonClicked];

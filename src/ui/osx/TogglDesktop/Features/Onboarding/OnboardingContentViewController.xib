@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="OnboardingContentViewController" customModule="TogglDesktop" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="OnboardingContentViewController" customModule="Toggl_Track" customModuleProvider="target">
             <connections>
                 <outlet property="titleTextField" destination="jYZ-L3-Wrw" id="2fG-7V-rBd"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
@@ -20,8 +20,8 @@
             <subviews>
                 <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="jYZ-L3-Wrw">
                     <rect key="frame" x="13" y="15" width="86" height="15"/>
-                    <textFieldCell key="cell" selectable="YES" title="Multiline Label" id="5Mi-HB-13h">
-                        <font key="font" metaFont="label" size="12"/>
+                    <textFieldCell key="cell" selectable="YES" enabled="NO" title="Multiline Label" id="5Mi-HB-13h">
+                        <font key="font" metaFont="cellTitle"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
