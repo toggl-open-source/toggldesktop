@@ -14,7 +14,6 @@ static const char kTermSeparator = '\t';
 bool AutotrackerRule::Matches(const TimelineEvent &event) const {
     const Poco::LocalDateTime event_time(Poco::Timestamp::fromEpochTime(event.EndTime()));
     if (DaysOfWeek() != 0 && !std::bitset<7>(DaysOfWeek())[event_time.dayOfWeek()]) {
-        logger().debug("Autotracker rule is not enabled on this weekday");
         return false;
     }
     if (!StartTime().empty()) {
@@ -23,7 +22,6 @@ bool AutotrackerRule::Matches(const TimelineEvent &event) const {
             Poco::LocalDateTime start(
                 event_time.year(), event_time.month(), event_time.day(), h, m, event_time.second());
             if (event_time < start) {
-                logger().debug("It's too early for this autotracker rule", " [", event_time.hour(), ":", event_time.minute(), "]", " (allowed from ", h, ":", m, ")");
                 return false;
             }
         }
@@ -35,7 +33,6 @@ bool AutotrackerRule::Matches(const TimelineEvent &event) const {
             Poco::LocalDateTime end(
                 event_time.year(), event_time.month(), event_time.day(), h, m, event_time.second());
             if (event_time > end) {
-                logger().debug("It's too late for this autotracker rule", " [", event_time.hour(), ":", event_time.minute(), "]", " (allowed until ", h, ":", m, ")");
                 return false;
             }
         }
