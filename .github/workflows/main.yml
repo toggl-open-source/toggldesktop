@@ -100,15 +100,15 @@ jobs:
       with:
         name: TogglDesktop.dmg
         path: "${{ env.installer }}"
+    - name: Upload
+      if: github.event_name == 'release'
+      run: |
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="$installer" renameto="$installer_name"
     - name: Update Appcast
       if: github.event_name == 'release'
       run: |
         base64 -D <<< "${{ secrets.APPCAST_PRIVATE_PEM }}" > dsa_priv.pem
         bash ./dist/osx/build.sh appcast
-    - name: Upload
-      if: github.event_name == 'release'
-      run: |
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="$installer" renameto="$installer_name"
     - name: Update Release
       if: github.event_name == 'release'
       run: |
