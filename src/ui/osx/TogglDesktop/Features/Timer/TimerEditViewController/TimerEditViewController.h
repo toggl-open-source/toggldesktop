@@ -16,5 +16,7 @@
 
 - (void)startButtonClicked;
 - (void)focusTimer;
+- (NSView *)shortcutsOnboardingView;
+- (NSRect)shortcutsOnboardingPositioningRect;
 
 @end

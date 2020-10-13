@@ -9,7 +9,7 @@
 import Foundation
 
 /// Represent type of each onboarding
-@objc enum OnboardingHint: Int {
+@objc enum OnboardingHint: Int, CustomDebugStringConvertible {
     case newUser = 0
     case oldUser
     case manualMode
@@ -19,8 +19,9 @@ import Foundation
     case timelineView
     case timelineActivity
     case recordActivity // Use TimelineActivityRecorderViewController instead
+    case textShortcuts
 
-    var debuggingName: String {
+    var debugDescription: String {
         switch self {
         case .editTimeEntry: return "editTimeEntry"
         case .manualMode: return "manualMode"
@@ -31,6 +32,7 @@ import Foundation
         case .timelineTab: return "timelineTab"
         case .timelineTimeEntry: return "timelineTimeEntry"
         case .timelineView: return "timelineView"
+        case .textShortcuts: return "shortcuts"
         }
     }
 }
@@ -46,9 +48,9 @@ struct OnboardingPayload {
 
     // MARK: Variable
 
-    let title: String
     let hint: OnboardingHint
     let view: NSView
+    var positioningRect: (OnboardingHint, NSRect) -> NSRect = { _, rect in rect}
 
     /// Determine the position of the Popover arrow
     var preferEdges: NSRectEdge {
@@ -56,7 +58,8 @@ struct OnboardingPayload {
         case .newUser,
              .oldUser,
              .editTimeEntry,
-             .recordActivity:
+             .recordActivity,
+             .textShortcuts:
             return .minY
         case .timelineTimeEntry,
               .timelineTab,
@@ -69,21 +72,94 @@ struct OnboardingPayload {
         }
     }
 
+    var fadesBackground: Bool {
+        switch hint {
+        case .textShortcuts:
+            return false
+        default:
+            return true
+        }
+    }
+
+    var title: NSAttributedString {
+        switch hint {
+        case .editTimeEntry:
+            return NSAttributedString(string: "Click on Time Entry to edit it!")
+        case .manualMode:
+            return NSAttributedString(string: "It’s also possible to add Time Entries manually!\n\nChange to manual mode there...")
+        case .newUser:
+            return NSAttributedString(string: "Describe your task and start tracking!")
+        case .oldUser:
+            return NSAttributedString(string: "Start typing to access your tasks")
+        case .recordActivity:
+            return NSAttributedString(string: "Having trouble recalling what you were working on?")
+        case .timelineActivity:
+            return NSAttributedString(string: "Your recorded activity will be shown right here")
+        case .timelineTab:
+            return NSAttributedString(string: "See your Time Entries on Timeline!")
+        case .timelineTimeEntry:
+            return NSAttributedString(string: "Add and edit Time Entries in this area")
+        case .timelineView:
+            return NSAttributedString(string: "See all your Time Entries visualised in chronological order! ")
+        case .textShortcuts:
+            return shortcutsAttributedTitle
+        }
+    }
+
     // MARK: Init
 
     init(hint: OnboardingHint, view: NSView) {
         self.hint = hint
         self.view = view
-        switch hint {
-        case .editTimeEntry: self.title = "Click on Time Entry to edit it!"
-        case .manualMode: self.title = "It’s also possible to add Time Entries manually!\n\nChange to manual mode there..."
-        case .newUser: self.title = "Describe your task and start tracking!"
-        case .oldUser: self.title = "Start typing to access your tasks"
-        case .recordActivity: self.title = "Having trouble recalling what you were working on?"
-        case .timelineActivity: self.title = "Your recorded activity will be shown right here"
-        case .timelineTab: self.title = "See your Time Entries on Timeline!"
-        case .timelineTimeEntry: self.title = "Add and edit Time Entries in this area"
-        case .timelineView: self.title = "See all your Time Entries visualised in chronological order! "
-        }
+    }
+
+    // MARK: Private
+
+    private var shortcutsAttributedTitle: NSAttributedString {
+        let titleAttributes: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 12, weight: .semibold)
+        ]
+        let bodyAttributes: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 12)
+        ]
+        let shortcutAttributes: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 16, weight: .semibold)
+        ]
+
+        let string = NSMutableAttributedString(
+            string: "You can now add projects or tags even easier!\n",
+            attributes: titleAttributes
+        )
+        string.append(
+            NSAttributedString(
+                string: "Click on the icon or type ",
+                attributes: bodyAttributes
+            )
+        )
+        string.append(
+            NSAttributedString(
+                string: "@",
+                attributes: shortcutAttributes
+            )
+        )
+        string.append(
+            NSAttributedString(
+                string: " to add projects or\n",
+                attributes: bodyAttributes
+            )
+        )
+        string.append(
+            NSAttributedString(
+                string: "#",
+                attributes: shortcutAttributes
+            )
+        )
+        string.append(
+            NSAttributedString(
+                string: " to add tags.",
+                attributes: bodyAttributes
+            )
+        )
+        return string
     }
 }

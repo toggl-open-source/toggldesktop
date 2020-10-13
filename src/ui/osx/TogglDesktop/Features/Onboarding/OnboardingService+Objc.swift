@@ -26,6 +26,7 @@ import Foundation
     ///   - switchTo: A block to ask the view controller switch to the certain tab
     @objc class func handleOnboardingNotification(_ noti: Notification,
                                                   atView: (OnboardingHint) -> NSView?,
+                                                  positioningRect: @escaping (OnboardingHint, NSRect) -> NSRect,
                                                   switchTo: (OnboardingPresentViewTab) -> Void) {
         guard let number = noti.object as? NSNumber else { return }
         guard let hint = OnboardingHint(rawValue: number.intValue) else {
@@ -41,8 +42,9 @@ import Foundation
         switchTo(presentView)
 
         // Present
-        print("✅ Present onboarding hint = \(hint.debuggingName)")
-        let payload = OnboardingPayload(hint: hint, view: view)
+        print("✅ Present onboarding hint = \(hint.debugDescription)")
+        var payload = OnboardingPayload(hint: hint, view: view)
+        payload.positioningRect = positioningRect
         OnboardingService.shared.present(payload)
     }
 
@@ -55,7 +57,8 @@ import Foundation
         case .editTimeEntry,
              .manualMode,
              .newUser,
-             .oldUser:
+             .oldUser,
+             .textShortcuts:
             return .timeEntry
         case .recordActivity,
              .timelineActivity,

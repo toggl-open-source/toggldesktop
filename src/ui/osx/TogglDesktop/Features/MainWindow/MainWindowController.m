@@ -444,19 +444,22 @@ extern void *ctx;
 
 #pragma mark - Onboarding
 
-- (void)startOnboardingNotification:(NSNotification *) noti
+- (void)startOnboardingNotification:(NSNotification *)notification
 {
     [OnboardingServiceObjc
-     handleOnboardingNotification:noti
+     handleOnboardingNotification:notification
      atView:^NSView * _Nullable(enum OnboardingHint hint) {
         return [self getOnboardingViewWithHint:hint];
-     }
+    }
+     positioningRect:^NSRect(enum OnboardingHint hint, NSRect originalRect) {
+        return [self positioningRectForHint:hint originalRect:originalRect];
+    }
      switchTo:^(enum OnboardingPresentViewTab tab) {
         [self.mainDashboardViewController switchToTab:tab];
     }];
 }
 
-- (NSView * __nullable) getOnboardingViewWithHint:(OnboardingHint) hint
+- (NSView * __nullable)getOnboardingViewWithHint:(OnboardingHint) hint
 {
     switch (hint) {
         case OnboardingHintNewUser:
@@ -477,12 +480,24 @@ extern void *ctx;
             return self.mainDashboardViewController.timelineController.activityContainerView;
         case OnboardingHintRecordActivity:
             return self.mainDashboardViewController.timelineController.recordActivityContainerView;
+        case OnboardingHintTextShortcuts:
+            return self.mainDashboardViewController.timerController.shortcutsOnboardingView;
         default:
             return nil;
 	}
 }
 
--(void) handleContinueSignInNotification:(NSNotification *) noti
+- (NSRect)positioningRectForHint:(OnboardingHint)hint originalRect:(NSRect)originalRect
+{
+    switch (hint) {
+        case OnboardingHintTextShortcuts:
+            return [self.mainDashboardViewController.timerController shortcutsOnboardingPositioningRect];
+        default:
+            return originalRect;
+    }
+}
+
+- (void)handleContinueSignInNotification:(NSNotification *) noti
 {
     if (self.loginViewController.view.superview != nil)
     {

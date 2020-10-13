@@ -33,7 +33,8 @@ enum OnboardingType {
     OnboardingTypeTimelineTimeEntry,
     OnboardingTypeTimelineView,
     OnboardingTypeTimelineActivity,
-    OnboardingTypeRecordActivity
+    OnboardingTypeRecordActivity,
+    OnboardingTypeTextShortcuts
 };
 
 class TOGGL_INTERNAL_EXPORT OnboardingState {
@@ -58,7 +59,8 @@ class TOGGL_INTERNAL_EXPORT OnboardingState {
     , isPresentTimelineTimeEntry(false)
     , isPresentTimelineView(false)
     , isPresentTimelineActivity(false)
-    , isPresentRecordActivity(false) {}
+    , isPresentRecordActivity(false)
+    , isPresentTextShortcuts(false) {}
 
     Poco::Int64 local_id;
     Poco::Int64 user_id;
@@ -82,6 +84,7 @@ class TOGGL_INTERNAL_EXPORT OnboardingState {
     bool isPresentTimelineView;
     bool isPresentTimelineActivity;
     bool isPresentRecordActivity;
+    bool isPresentTextShortcuts;
 };
 
 class TOGGL_INTERNAL_EXPORT OnboardingService {
@@ -131,6 +134,7 @@ class TOGGL_INTERNAL_EXPORT OnboardingService {
     bool handleTimelineTabOnboarding();
     bool handleNewUserOnboarding();
     bool handleOldUserOnboarding();
+    bool handleTextShortcutsOnboarding();
     void getFirstTimeEntryCreatedAtFromUser(User *user);
 };
 }
