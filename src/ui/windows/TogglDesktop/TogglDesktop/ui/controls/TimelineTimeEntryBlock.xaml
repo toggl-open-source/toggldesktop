@@ -16,7 +16,7 @@
             <sys:Double x:Key="DescriptionOpacity">0.2</sys:Double>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Button FontWeight="Normal" Command="{Binding OpenEditView}" MinHeight="2">
+    <Button FontWeight="Normal" Command="{Binding OpenEditView}" MinHeight="2" Margin="0 0 4 0">
         <Button.Template>
             <ControlTemplate>
                 <Grid>
@@ -31,7 +31,7 @@
                                RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
                                RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}">
                     </Rectangle>
-                    <Border CornerRadius="0,8,8,0" Margin="-10 0 4 0" Grid.Column="1"
+                    <Border CornerRadius="0,8,8,0" Margin="-10 0 0 0" Grid.Column="1"
                             BorderThickness="1"
                             Background="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource DescriptionOpacity}}"
                             MinHeight="2"
@@ -68,7 +68,7 @@
                         </StackPanel>
                         <Border.Style>
                             <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource PointOneDouble}}"></Setter>
+                                <Setter Property="BorderBrush" Value="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource DescriptionOpacity}}"/>
                                 <Style.Triggers>
                                     <DataTrigger  Binding="{Binding IsEditViewOpened}" Value="True">
                                         <Setter Property="BorderBrush" Value="{Binding ElementName=TimeEntrySpan, Path=Fill}"></Setter>

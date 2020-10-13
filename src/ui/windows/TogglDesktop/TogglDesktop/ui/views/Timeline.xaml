@@ -166,7 +166,7 @@
                             </Path.Data>
                         </Path>
                     </Canvas>
-                    <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=TimeEntryBlocks}" Margin="10 0 0 0" Name="TimeEntryBlocks>
+                    <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=TimeEntryBlocks}" Margin="10 0 0 0" Name="TimeEntryBlocks">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <Canvas Name="TimeEntryCanvas" />
