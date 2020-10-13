@@ -1418,6 +1418,15 @@ error Migrations::migrateOnboardingStates() {
     if (err != noError) {
         return err;
     }
+
+    err = db_->Migrate(
+        "onboarding_states.is_present_text_shortcuts_onboarding",
+        "ALTER TABLE onboarding_states "
+        "ADD COLUMN is_present_text_shortcuts_onboarding integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 

@@ -118,6 +118,10 @@ void OnboardingService::OpenApp() {
     if (handleTimelineTabOnboarding()) {
         return;
     }
+
+    if (handleTextShortcutsOnboarding()) {
+        return;
+    }
 }
 
 void OnboardingService::StopTimeEntry() {
@@ -410,6 +414,21 @@ bool OnboardingService::handleOldUserOnboarding() {
             sync();
             return true;
         }
+    }
+    return false;
+}
+
+bool OnboardingService::handleTextShortcutsOnboarding() {
+    /*
+     Present Onboarding for # and @ shortcuts on Timer
+
+     > For all users who tracked at least 3 TEs and haven't yet saw shortcuts onboarding
+     */
+    if (!state->isPresentTextShortcuts && state->timeEntryTotal >= 3) {
+        state->isPresentTextShortcuts = true;
+        _callback(OnboardingTypeTextShortcuts);
+        sync();
+        return true;
     }
     return false;
 }
