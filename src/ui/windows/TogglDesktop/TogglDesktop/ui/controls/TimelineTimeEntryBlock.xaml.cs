@@ -31,5 +31,15 @@ namespace TogglDesktop
             ViewModel.VerticalOffset += e.VerticalChange;
             ViewModel.Height -= e.VerticalChange;
         }
+
+        private void OnThumbTopDragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            ViewModel.ChangeStartTime();
+        }
+
+        private void OnThumbBottomDragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            ViewModel.ChangeEndTime();
+        }
     }
 }

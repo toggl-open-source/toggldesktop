@@ -82,7 +82,8 @@
                            Grid.Column="0" Grid.ColumnSpan="2"
                            Cursor="SizeNS"
                            Name="ThumbTop"
-                           DragDelta="OnThumbTopDragDelta">
+                           DragDelta="OnThumbTopDragDelta"
+                           DragCompleted="OnThumbTopDragCompleted">
                         <Thumb.Template>
                             <ControlTemplate>
                                 <Rectangle Fill="Transparent" Height="5"/>
@@ -94,7 +95,8 @@
                            Grid.Column="0" Grid.ColumnSpan="2"
                            Cursor="SizeNS"
                            Name="ThumbBottom"
-                           DragDelta="OnThumbBottomDragDelta">
+                           DragDelta="OnThumbBottomDragDelta"
+                           DragCompleted="OnThumbBottomDragCompleted">
                         <Thumb.Template>
                             <ControlTemplate>
                                 <Rectangle Fill="Transparent" Height="5"/>

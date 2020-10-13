@@ -171,7 +171,7 @@ namespace TogglDesktop.ViewModels
             {
                 var startTime = Toggl.DateTimeFromUnix(entry.Started);
                 var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(entry.Ended), selectedScaleMode);
-                var block = new TimeEntryBlock(entry.GUID)
+                var block = new TimeEntryBlock(entry.GUID, ScaleModes[SelectedScaleMode])
                 {
                     Height = height < 2 ? 2 : height,
                     VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime, selectedScaleMode),
@@ -267,7 +267,7 @@ namespace TogglDesktop.ViewModels
                 if (prevEnd != null && entry.Started > prevEnd.Value)
                 {
                     var start = Toggl.DateTimeFromUnix(prevEnd.Value+1);
-                    var block = new TimeEntryBlock()
+                    var block = new TimeEntryBlock(ScaleModes[SelectedScaleMode])
                     {
                         Height = ConvertTimeIntervalToHeight(start, Toggl.DateTimeFromUnix(entry.Started - 1), selectedScaleMode),
                         VerticalOffset =
@@ -376,20 +376,42 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public bool IsEditViewOpened { get; set; }
 
-        public TimeEntryBlock(string timeEntryId)
+        private double _hourHeight;
+
+        public TimeEntryBlock(string timeEntryId, int hourHeight)
         {
+            _hourHeight = hourHeight;
             TimeEntryId = timeEntryId;
             CreateTimeEntryFromBlock = ReactiveCommand.Create(() => AddNewTimeEntry());
             OpenEditView = ReactiveCommand.Create(() => Toggl.Edit(TimeEntryId, false, Toggl.Description));
             CreateTimeEntryFromBlock = ReactiveCommand.Create(AddNewTimeEntry);
         }
 
-        public TimeEntryBlock() : this(null) { }
+        public TimeEntryBlock(int hourHeight) : this(null, hourHeight) { }
 
         private void AddNewTimeEntry()
         {
             TimeEntryId = Toggl.CreateEmptyTimeEntry(Started, Ended);
             OpenEditView.Execute().Subscribe();
+        }
+
+        private long ConvertOffsetToTime(double height, DateTime date)
+        {
+            var hours = 1.0 * height / _hourHeight;
+            var dateTime = date.AddHours(hours);
+            return Toggl.UnixFromDateTime(dateTime);
+        }
+
+        public void ChangeStartTime()
+        {
+            Toggl.SetTimeEntryStartTimeStamp(TimeEntryId,
+                ConvertOffsetToTime(VerticalOffset, Toggl.DateTimeFromUnix(Started).Date));
+        }
+
+        public void ChangeEndTime()
+        {
+            Toggl.SetTimeEntryEndTimeStamp(TimeEntryId,
+                ConvertOffsetToTime(VerticalOffset+Height, Toggl.DateTimeFromUnix(Ended).Date));
         }
     }
 }
