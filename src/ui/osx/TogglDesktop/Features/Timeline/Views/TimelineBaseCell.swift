@@ -9,8 +9,8 @@
 import Cocoa
 
 protocol TimelineBaseCellDelegate: class {
-
     func timelineCellMouseDidEntered(_ sender: TimelineBaseCell)
+    func timelineCellMouseDidExit(_ sender: TimelineBaseCell)
     func timelineCellRedrawEndTime(with event: NSEvent, sender: TimelineBaseCell)
     func timelineCellUpdateEndTime(with event: NSEvent, sender: TimelineBaseCell)
     func timelineCellRedrawStartTime(with event: NSEvent, sender: TimelineBaseCell)
@@ -227,6 +227,7 @@ extension TimelineBaseCell {
         }
 
         mousePosition = .none
+        delegate?.timelineCellMouseDidExit(self)
         super.mouseExited(with: event)
     }
 

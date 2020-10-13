@@ -9,8 +9,8 @@
 import Cocoa
 
 protocol TimelineActivityCellDelegate: class {
-
-    func timelineActivityPresentPopover(_ sender: TimelineActivityCell)
+    func timelineActivityCellMouseDidEnter(_ cell: TimelineActivityCell)
+    func timelineActivityCellMouseDidExit(_ cell: TimelineActivityCell)
 }
 
 /// A CollectionView cell that presents the Timeline Activity
@@ -42,7 +42,12 @@ final class TimelineActivityCell: NSCollectionViewItem {
 
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
-        delegate?.timelineActivityPresentPopover(self)
+        delegate?.timelineActivityCellMouseDidEnter(self)
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        super.mouseExited(with: event)
+        delegate?.timelineActivityCellMouseDidExit(self)
     }
 }
 

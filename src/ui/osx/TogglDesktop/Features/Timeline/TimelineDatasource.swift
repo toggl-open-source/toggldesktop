@@ -19,6 +19,7 @@ protocol TimelineDatasourceDelegate: class {
     func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry, keepEndTimeFixed: Bool)
     func shouldPresentResizePopover(at cell: TimelineBaseCell, onTopCorner: Bool)
     func shouldHideAllPopover()
+    func shouldHideAllTransientPopovers()
     func shouldHandleEmptyState(_ timelineData: TimelineData)
 }
 
@@ -432,6 +433,10 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
         }
     }
 
+    func timelineCellMouseDidExit(_ sender: TimelineBaseCell) {
+        delegate?.shouldHideAllTransientPopovers()
+    }
+
     func timelineCellUpdateEndTime(with event: NSEvent, sender: TimelineBaseCell) {
         isUserResizing = false
         switch sender {
@@ -521,9 +526,13 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
 
 extension TimelineDatasource: TimelineActivityCellDelegate {
 
-    func timelineActivityPresentPopover(_ sender: TimelineActivityCell) {
-        guard let activity = sender.activity else { return }
-        delegate?.shouldPresentActivityHover(in: sender.view, activity: activity)
+    func timelineActivityCellMouseDidEnter(_ cell: TimelineActivityCell) {
+        guard let activity = cell.activity else { return }
+        delegate?.shouldPresentActivityHover(in: cell.view, activity: activity)
+    }
+
+    func timelineActivityCellMouseDidExit(_ cell: TimelineActivityCell) {
+        delegate?.shouldHideAllTransientPopovers()
     }
 }
 

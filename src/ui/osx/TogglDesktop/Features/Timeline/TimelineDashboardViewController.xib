@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,7 +11,6 @@
             <connections>
                 <outlet property="activityContainerView" destination="5e4-xo-IAU" id="M79-Qg-0bL"/>
                 <outlet property="activityLabelRight" destination="Amy-gg-D4X" id="uWG-1B-1dA"/>
-                <outlet property="activityRecorderInfoImageView" destination="mVu-t2-GXP" id="xO6-01-A5k"/>
                 <outlet property="collectionView" destination="hht-dC-mpO" id="9tS-ho-Ut6"/>
                 <outlet property="collectionViewContainerView" destination="Xu6-6s-ozI" id="hFH-uf-Vlp"/>
                 <outlet property="datePickerContainerView" destination="wlf-0e-ttW" id="86r-YF-M9C"/>
@@ -46,6 +45,16 @@
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="Jx8-ra-dst">
                             <rect key="frame" x="0.0" y="44" width="369" height="42"/>
                         </customView>
+                        <button translatesAutoresizingMaskIntoConstraints="NO" id="qTS-eY-gNy">
+                            <rect key="frame" x="10" y="54" width="20" height="20"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="timeline-activity-recorder-info-icon" imagePosition="only" alignment="center" alternateImage="timeline-activity-recorder-info-icon-hover" imageScaling="proportionallyUpOrDown" inset="2" id="hFf-ER-HZn">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="recordActivityInfoClicked:" target="-2" id="zNb-2M-Y3b"/>
+                            </connections>
+                        </button>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oEw-Jd-lIP">
                             <rect key="frame" x="34" y="56" width="101" height="17"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="Record activity" id="x0y-gM-oPn">
@@ -54,10 +63,6 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mVu-t2-GXP" customClass="HoverImageView" customModule="Toggl_Track" customModuleProvider="target">
-                            <rect key="frame" x="10" y="54" width="20" height="20"/>
-                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="timeline-activity-recorder-info-icon" id="Tcf-ph-vyh"/>
-                        </imageView>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="I6m-RA-gUy" customClass="OGSwitch" customModule="Toggl_Track" customModuleProvider="target">
                             <rect key="frame" x="333" y="58" width="26" height="13"/>
                             <constraints>
@@ -92,7 +97,6 @@ To get the focused application window name properly for the Timeline, Toggl Trac
                         </customView>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="oEw-Jd-lIP" firstAttribute="leading" secondItem="mVu-t2-GXP" secondAttribute="trailing" constant="6" id="0gk-pQ-hvy"/>
                         <constraint firstItem="wlf-0e-ttW" firstAttribute="top" secondItem="oEw-Jd-lIP" secondAttribute="bottom" constant="12" id="0rH-e0-NUk"/>
                         <constraint firstItem="Jx8-ra-dst" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" id="8VX-fA-5jn"/>
                         <constraint firstAttribute="trailing" secondItem="sGN-8K-7IZ" secondAttribute="trailing" id="8d7-zq-V41"/>
@@ -100,9 +104,9 @@ To get the focused application window name properly for the Timeline, Toggl Trac
                         <constraint firstAttribute="trailing" secondItem="Jx8-ra-dst" secondAttribute="trailing" id="CcI-e9-5hJ"/>
                         <constraint firstItem="6pQ-LK-6Bo" firstAttribute="top" secondItem="I6m-RA-gUy" secondAttribute="bottom" constant="-13" id="Fkx-PB-KIY"/>
                         <constraint firstItem="sGN-8K-7IZ" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" id="GTe-dy-kVB"/>
-                        <constraint firstItem="mVu-t2-GXP" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" constant="12" id="OCz-Wk-a2y"/>
-                        <constraint firstItem="mVu-t2-GXP" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="Qv6-J5-pRj"/>
+                        <constraint firstItem="oEw-Jd-lIP" firstAttribute="leading" secondItem="qTS-eY-gNy" secondAttribute="trailing" constant="6" id="KU6-ie-f53"/>
                         <constraint firstItem="I6m-RA-gUy" firstAttribute="leading" secondItem="6pQ-LK-6Bo" secondAttribute="trailing" id="TBB-Yb-XIk"/>
+                        <constraint firstItem="qTS-eY-gNy" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="TQd-ud-DFg"/>
                         <constraint firstItem="I6m-RA-gUy" firstAttribute="centerY" secondItem="oEw-Jd-lIP" secondAttribute="centerY" id="aWn-ju-3Sc"/>
                         <constraint firstItem="sGN-8K-7IZ" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" id="eaq-AF-dtf"/>
                         <constraint firstItem="oEw-Jd-lIP" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" constant="13" id="igE-d4-QVd"/>
@@ -110,6 +114,7 @@ To get the focused application window name properly for the Timeline, Toggl Trac
                         <constraint firstAttribute="trailing" secondItem="wlf-0e-ttW" secondAttribute="trailing" constant="10" id="mPL-xl-8j9"/>
                         <constraint firstAttribute="trailing" secondItem="I6m-RA-gUy" secondAttribute="trailing" constant="10" id="maq-iT-Fcc"/>
                         <constraint firstItem="wlf-0e-ttW" firstAttribute="top" secondItem="Jx8-ra-dst" secondAttribute="bottom" id="rwn-Sr-kvD"/>
+                        <constraint firstItem="qTS-eY-gNy" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" constant="12" id="rxl-98-acx"/>
                         <constraint firstAttribute="height" constant="86" id="wv3-y8-Rz9"/>
                         <constraint firstAttribute="bottom" secondItem="sGN-8K-7IZ" secondAttribute="bottom" id="zqM-he-CUS"/>
                         <constraint firstItem="wlf-0e-ttW" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="zxE-BA-Fdk"/>
@@ -307,6 +312,7 @@ To get the focused application window name properly for the Timeline, Toggl Trac
         <image name="NSCaution" width="32" height="32"/>
         <image name="NSRemoveTemplate" width="11" height="11"/>
         <image name="timeline-activity-recorder-info-icon" width="20" height="20"/>
+        <image name="timeline-activity-recorder-info-icon-hover" width="20" height="20"/>
         <namedColor name="grey-text-color">
             <color red="0.33725490196078434" green="0.2627450980392157" blue="0.37647058823529411" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
