@@ -107,7 +107,8 @@
                           UseLayoutRounding="True"
                           SnapsToDevicePixels="True"
                           PreviewMouseWheel="HandleScrollViewerMouseWheel"
-                          Name="MainViewScroll">
+                          Name="MainViewScroll"
+                          Loaded="OnMainViewScrollLoaded">
                 <Grid  Background="{DynamicResource Toggl.CardBackground}" Name ="MainViewGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -145,6 +146,26 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <GridSplitter Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="1" Background="{DynamicResource Toggl.TimelineSeparatorBrush}"/>
+                    <Canvas Grid.Row="1" Grid.ColumnSpan="5" Grid.Column="0"
+                            Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            x:Name="CurrentTimeCanvas">
+                        <Path Fill="{DynamicResource Toggl.SelectionElements.Border}"
+                              Stroke="{DynamicResource Toggl.SelectionElements.Border}"
+                              StrokeThickness="1"
+                              Canvas.Left="45" Canvas.Top="{Binding CurrentTimeOffset}"
+                              Panel.ZIndex="1">
+                            <Path.Data>
+                                <GeometryGroup FillRule="Nonzero">
+                                    <EllipseGeometry Center="0 0" RadiusY="5" RadiusX="5" />
+                                    <LineGeometry StartPoint="0,0" EndPoint="1,0">
+                                        <LineGeometry.Transform>
+                                            <ScaleTransform ScaleX="{Binding ElementName=CurrentTimeCanvas, Path=ActualWidth}"/>
+                                        </LineGeometry.Transform>
+                                    </LineGeometry>
+                                </GeometryGroup>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
                     <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=TimeEntryBlocks}" Margin="10 0 0 0" Name="TimeEntryBlocks">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
