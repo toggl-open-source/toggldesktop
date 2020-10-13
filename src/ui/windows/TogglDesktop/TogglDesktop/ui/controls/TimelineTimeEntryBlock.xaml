@@ -19,42 +19,56 @@
     <Button FontWeight="Normal" Command="{Binding OpenEditView}" MinHeight="2">
         <Button.Template>
             <ControlTemplate>
-                <Grid Margin="0 0 4 0">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Rectangle Grid.Column="0" Name ="TimeEntrySpan"
-                           Width="20" Height="{Binding Height}"
-                           Fill="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
-                           RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
-                           RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}">
+                               Width="20" Height="{Binding Height}"
+                               Fill="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
+                               RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
+                               RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}">
                     </Rectangle>
-                    <Border CornerRadius="8,8,8,8" Grid.Column="1" Margin="-10 0 0 0"
-                        Visibility="{Binding ShowDescription, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        BorderThickness="1"
-                        Background="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource PointOneDouble}}">
+                    <Border CornerRadius="0,8,8,0" Margin="-10 0 4 0" Grid.Column="1"
+                            BorderThickness="1"
+                            MinHeight="2"
+                            Background="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource PointOneDouble}}"
+                            Visibility="{Binding ShowDescription, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <StackPanel Height="{Binding Height}" Margin="20,0,0,0">
                             <TextBlock Text="{Binding Description}" Style="{StaticResource Toggl.CaptionBlackText}"/>
                             <DockPanel>
                                 <Ellipse Width="8" Height="8"
-                                     DockPanel.Dock="Left"
-                                     Margin="0 0 5 0"
-                                     VerticalAlignment="Center"
-                                     Fill="{Binding ElementName=TimeEntrySpan, Path=Fill}"
-                                     Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                                         DockPanel.Dock="Left"
+                                         Margin="0 0 5 0"
+                                         VerticalAlignment="Center"
+                                         Fill="{Binding ElementName=TimeEntrySpan, Path=Fill}"
+                                         Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
                                 <TextBlock Foreground="{Binding Color, Converter={StaticResource AdaptProjectTextColorConverter}}"
-                                       Text="{Binding ProjectName}" FontSize="12"
-                                       VerticalAlignment="Center"/>
+                                           Text="{Binding ProjectName}" FontSize="12"
+                                           VerticalAlignment="Center"/>
                             </DockPanel>
                             <TextBlock Text="{Binding ClientName}" Style="{StaticResource Toggl.CaptionText}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                    <Viewbox Visibility="{Binding HasTag, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path Style="{StaticResource Toggl.TagIcon}"/>
+                                    </Viewbox>
+                                    <Viewbox DockPanel.Dock="Left" Visibility="{Binding IsBillable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path Style="{StaticResource Toggl.DollarIcon}"/>
+                                    </Viewbox>
+                                </StackPanel>
+                                <TextBlock Margin="0 0 5 0" Grid.Column="1" DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding Duration}" Style="{StaticResource Toggl.CaptionBlackText}"/>
+                            </Grid>
                         </StackPanel>
                         <Border.Style>
                             <Style TargetType="Border">
+                                <Setter Property="BorderBrush" Value="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource PointOneDouble}}"></Setter>
                                 <Style.Triggers>
-                                    <DataTrigger  Binding="{Binding IsEditViewOpened}" Value="False">
-                                        <Setter Property="BorderBrush" Value="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource PointOneDouble}}"></Setter>
-                                    </DataTrigger>
                                     <DataTrigger  Binding="{Binding IsEditViewOpened}" Value="True">
                                         <Setter Property="BorderBrush" Value="{Binding ElementName=TimeEntrySpan, Path=Fill}"></Setter>
                                     </DataTrigger>
