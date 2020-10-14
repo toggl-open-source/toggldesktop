@@ -23,7 +23,8 @@ namespace TogglDesktop.ViewModels
                 .Subscribe(value => Toggl.SetTimelineRecordingEnabled(value));
             OpenTogglHelpUri = ReactiveCommand.Create(() =>
                 Toggl.OpenInBrowser("https://support.toggl.com/en/articles/3836325-toggl-desktop-for-windows"));
-            this.WhenAnyValue(x => x.SelectedDate).Subscribe(HandleSelectedDateChanged);
+            this.WhenAnyValue(x => x.SelectedDate).ObserveOn(RxApp.TaskpoolScheduler)
+                .Subscribe(HandleSelectedDateChanged);
             SelectPreviousDay = ReactiveCommand.Create(Toggl.ViewTimelinePreviousDay);
             SelectNextDay = ReactiveCommand.Create(Toggl.ViewTimelineNextDay);
             IncreaseScale = ReactiveCommand.Create(() => SelectedScaleMode = ChangeScaleMode(-1));
@@ -73,29 +74,32 @@ namespace TogglDesktop.ViewModels
 
         private int GetHoursInLine(int scaleMode) => scaleMode != 3 ? 1 : 2;
 
-        private void HandleSelectedDateChanged(DateTime date)
+        private async void HandleSelectedDateChanged(DateTime date)
         {
             if (date < _lastDateLoaded)
             {
                 Toggl.LoadMore();
             }
-            Toggl.SetViewTimelineDay(Toggl.UnixFromDateTime(SelectedDate));
             if (SelectedForEditTEId != null)
                 Toggl.Edit(SelectedForEditTEId, false, "");
+            await Task.Run(() => Toggl.SetViewTimelineDay(Toggl.UnixFromDateTime(SelectedDate)));
+            if (TimeEntryBlocks != null && TimeEntryBlocks.Any())
+            {
+                FirstTimeEntryOffset = TimeEntryBlocks.Min(te => te.VerticalOffset);
+            }
         }
 
         private void HandleDisplayTimeline(bool open, string date, List<Toggl.TimelineChunkView> first, List<Toggl.TogglTimeEntryView> firstTimeEntry, ulong startDay, ulong endDay)
         {
-            SelectedDate = Toggl.DateTimeFromUnix(startDay);
             _timelineChunks = first;
             _timeEntries = firstTimeEntry;
-            Task.Run(() => ConvertChunksToActivityBlocks(first));
-            Task.Run(() => ConvertTimeEntriesToBlocks(firstTimeEntry));
+            ConvertChunksToActivityBlocks(first);
+            ConvertTimeEntriesToBlocks(firstTimeEntry);
         }
 
         private void HandleTimeEntryListChanged(bool open, List<Toggl.TogglTimeEntryView> timeEntries, bool showLoadMore)
         {
-            Toggl.SetViewTimelineDay(Toggl.UnixFromDateTime(SelectedDate)); //called in case if user changed some of the selected date TEs
+            Task.Run(() => Toggl.SetViewTimelineDay(Toggl.UnixFromDateTime(SelectedDate))); //called in case if user changed some of the selected date TEs
             if (_lastDateLoaded == default)
             {
                 _lastDateLoaded = timeEntries.Any() 
@@ -322,7 +326,10 @@ namespace TogglDesktop.ViewModels
         public ReactiveCommand<Unit, int> DecreaseScale { get; }
 
         [Reactive]
-        public double CurrentTimeOffset { get; private set; }
+        public double FirstTimeEntryOffset { get; private set; }
+
+        [Reactive]
+        public double CurrentTimeOffset { get; set; }
 
         public bool IsTodaySelected { [ObservableAsProperty] get; }
 
