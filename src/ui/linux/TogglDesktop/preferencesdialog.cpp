@@ -41,7 +41,10 @@ PreferencesDialog::~PreferencesDialog() {
 void PreferencesDialog::displaySettings(const bool open,
                                         SettingsView *settings) {
     if (open) {
+        bool wasVisible = isVisible();
         show();
+        if (!wasVisible)
+            ui->tabWidget->setCurrentIndex(0);
     }
 
     ui->useSystemProxySettings->setChecked(settings->AutodetectProxy);
