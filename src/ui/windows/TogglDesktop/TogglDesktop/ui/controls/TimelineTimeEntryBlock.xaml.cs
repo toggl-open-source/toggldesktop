@@ -23,13 +23,17 @@ namespace TogglDesktop
 
         private void OnThumbBottomDragDelta(object sender, DragDeltaEventArgs e)
         {
-            ViewModel.Height += e.VerticalChange;
+            if (ViewModel.Height + e.VerticalChange > 0)
+                ViewModel.Height += e.VerticalChange;
         }
 
         private void OnThumbTopDragDelta(object sender, DragDeltaEventArgs e)
         {
-            ViewModel.VerticalOffset += e.VerticalChange;
-            ViewModel.Height -= e.VerticalChange;
+            if (ViewModel.Height + e.VerticalChange > 0)
+            {
+                ViewModel.VerticalOffset += e.VerticalChange;
+                ViewModel.Height -= e.VerticalChange;
+            }
         }
 
         private void OnThumbTopDragCompleted(object sender, DragCompletedEventArgs e)

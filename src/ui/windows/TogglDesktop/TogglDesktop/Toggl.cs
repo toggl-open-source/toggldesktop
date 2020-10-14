@@ -461,7 +461,7 @@ public static partial class Toggl
 
     public static bool SetTimeEntryEndTimeStamp(string guid, long timeStamp)
     {
-        using (Performance.Measure("changing time entry start time stamp"))
+        using (Performance.Measure("changing time entry end time stamp"))
         {
             return toggl_set_time_entry_end_timestamp(ctx, guid, timeStamp);
         }
