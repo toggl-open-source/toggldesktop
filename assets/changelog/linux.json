@@ -1,6 +1,24 @@
 {
     "versions": [
         {
+            "version": "7.5.324",
+            "rows": [
+                "Fixed a crash when running without dbus-launch",
+                "Autocomplete behavior is now more consistent",
+                "Hovering over the time entry start and end in the editor will show more precise start and end times",
+                "System tray popup now displays running time entry information",
+                "Added a backup dialog with URL display for environments without a browser",
+                "Keyboard shortcuts are now more consistent with the Windows version",
+                "There should be no more clutter in the terminal output (stderr)",
+                "Fixed a crash happening on connections with DNS issues",
+                "The Flatpak package on GitHub now actually matches Flathub",
+                "It's possible to turn off SSL verification in case of connection issues",
+                "The preferences dialog now always displays the first tab (General)"
+            ],
+            "date": "October 14th 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.279",
             "rows": [
                 "Fixed an issue with tags sometimes not being saved"
