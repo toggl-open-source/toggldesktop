@@ -17,8 +17,12 @@ namespace toggl {
         virtual std::string UserMessage() const { return {}; }
 
         bool operator==(const ErrorBase &o) const {
+            if (!IsError() && !o.IsError())
+                return true;
             return IsError() == o.IsError() &&
-                    UserMessage() == o.UserMessage();
+                    UserMessage() == o.UserMessage() &&
+                    Class() == o.Class() &&
+                    Type() == o.Type();
         }
     };
 
