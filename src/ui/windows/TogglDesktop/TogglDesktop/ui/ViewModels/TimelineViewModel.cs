@@ -138,7 +138,7 @@ namespace TogglDesktop.ViewModels
                     {
                         var activity = new ActivityDescription()
                         {
-                            ActivityTitle = eventDesc.Header ? Path.GetFileName(eventDesc.Filename) : eventDesc.Title
+                            ActivityTitle = eventDesc.DurationString + " " + (eventDesc.Header ? Path.GetFileName(eventDesc.Filename) : eventDesc.Title)
                         };
                         activity.SubActivities = eventDesc.Header
                             ? eventDesc.SubEvents.Select(e => e.DurationString + " " + e.Title).ToList()
