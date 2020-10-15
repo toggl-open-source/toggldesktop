@@ -4696,7 +4696,7 @@ void Context::osShutdown() {
     handleStopRunningEntry();
 }
 
-const bool Context::handleStopRunningEntry() {
+bool Context::handleStopRunningEntry() {
 
     // Skip if this feature is not enable
     if (!settings_.stop_entry_on_shutdown_sleep) {
