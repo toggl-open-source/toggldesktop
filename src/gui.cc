@@ -497,7 +497,7 @@ void GUI::DisplayTimeline(const bool open,
         TogglTimelineEventView *first_event = nullptr;
         TogglTimelineEventView *ev = nullptr;
         for (std::vector<const TimelineEvent*>::const_iterator it = list.begin();
-                it != list.end(); it++) {
+                it != list.end(); ++it) {
             const TimelineEvent *event = *it;
 
             // Calculate the start time of the chunk
