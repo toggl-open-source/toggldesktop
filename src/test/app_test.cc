@@ -70,7 +70,7 @@ TEST(TimeEntry, WillNotPushUnlessValidationErrorIsCleared) {
     ASSERT_TRUE(te.NeedsPush());
 
     // Simulate getting an error from backend
-    te.SetValidationError("All you do is wrong");
+    te.SetValidationError({"All you do is wrong"});
     ASSERT_EQ("All you do is wrong", te.ValidationError());
     ASSERT_FALSE(te.NeedsPush());
 

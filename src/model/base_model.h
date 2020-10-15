@@ -7,6 +7,7 @@
 #include <vector>
 #include <cstring>
 #include <ctime>
+#include <map>
 
 #include <json/json.h>  // NOLINT
 
@@ -19,6 +20,83 @@
 #include <Poco/Types.h>
 
 namespace toggl {
+
+class ModelError : public ErrorBase {
+public:
+    ~ModelError() {}
+    std::string Class() const override { return "ModelError"; }
+    int Type() const override { return 0; }
+    std::string LogMessage() const override { return "hu"; }
+    std::string UserMessage() const override { return "ha"; }
+};
+
+class ValidationError : public ErrorBase {
+public:
+    enum Type {
+        _NO_TYPE,
+        _SERVER_PROVIDED_MESSAGE,
+        FOREIGN_ENTITY_LOST
+    };
+    inline static const std::map<int, std::string> UserMessages {
+        { FOREIGN_ENTITY_LOST, "Assigned foreign entity could not be found" }
+    };
+
+    ValidationError(const std::string &server_message = {})
+        : ErrorBase()
+    {
+        bool found = false;
+        for (auto &i : UserMessages) {
+            if (i.second == server_message) {
+                found = true;
+                type_ = (enum Type) i.first;
+            }
+        }
+        if (!found && !server_message.empty()) {
+            type_ = _SERVER_PROVIDED_MESSAGE;
+            server_message_ = server_message;
+        }
+    }
+    ValidationError(Type type)
+        : ErrorBase()
+        , type_(type)
+    {
+
+    }
+    explicit ValidationError(const ValidationError &o) = default;
+    explicit ValidationError(ValidationError &&o) = default;
+    ValidationError &operator=(const ValidationError &o) = default;
+
+    int Type() const override { return type_; }
+    std::string Class() const override { return "ValidationError"; }
+    bool IsError() const override { return type_ != _NO_TYPE; }
+    std::string LogMessage() const override { return UserMessage(); }
+    std::string UserMessage() const override {
+        if (Type() == _SERVER_PROVIDED_MESSAGE)
+            return server_message_;
+        if (Type() != _NO_TYPE) {
+            if (UserMessages.find(type_) != UserMessages.end()) {
+                return UserMessages.at(type_);
+            }
+            else
+                return "Unexpected error";
+        }
+        return {};
+    }
+
+    bool Clear() {
+        if (server_message_.empty()) {
+            if (type_ == _NO_TYPE)
+                return false;
+        }
+        type_ = _NO_TYPE;
+        server_message_.clear();
+        return true;
+    }
+private:
+    enum Type type_ { _NO_TYPE };
+    std::string server_message_ {};
+public:
+};
 
 class TOGGL_INTERNAL_EXPORT BaseModel {
  public:
@@ -39,7 +117,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
 
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.
-    Property<std::string> ValidationError { "" };
+    Property<ValidationError> ValidationError { };
 
     // Flag is set only when sync fails.
     // Its for viewing purposes only. It should not
@@ -90,7 +168,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     void EnsureGUID();
 
     void ClearValidationError();
-    void SetValidationError(const std::string &value);
+    void SetValidationError(const class ValidationError &value);
 
     virtual std::string String() const = 0;
     virtual std::string ModelName() const = 0;

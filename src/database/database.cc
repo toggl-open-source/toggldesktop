@@ -1864,7 +1864,7 @@ Error Database::loadTimeEntriesFromSQLStatement(
                     model->ProjectGUID.SetCurrent(rs[18].convert<std::string>());
                 }
                 if (rs[19].isEmpty()) {
-                    model->SetValidationError("");
+                    model->ClearValidationError();
                 } else {
                     model->SetValidationError(rs[19].convert<std::string>());
                 }
@@ -2059,7 +2059,7 @@ Error Database::saveModel(
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
-                          useRef(model->ValidationError()),
+                          bind(model->ValidationError().UserMessage()),
                           useRef(model->PID.GetPrevious()),
                           useRef(model->ProjectGUID.GetPrevious()),
                           useRef(model->TID.GetPrevious()),
@@ -2117,7 +2117,7 @@ Error Database::saveModel(
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
-                          useRef(model->ValidationError()),
+                          bind(model->ValidationError().UserMessage()),
                           useRef(model->PID.GetPrevious()),
                           useRef(model->ProjectGUID.GetPrevious()),
                           useRef(model->TID.GetPrevious()),
@@ -2186,7 +2186,7 @@ Error Database::saveModel(
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
-                          useRef(model->ValidationError()),
+                          bind(model->ValidationError().UserMessage()),
                           useRef(model->PID.GetPrevious()),
                           useRef(model->ProjectGUID.GetPrevious()),
                           useRef(model->TID.GetPrevious()),
@@ -2233,7 +2233,7 @@ Error Database::saveModel(
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
-                          useRef(model->ValidationError()),
+                          bind(model->ValidationError().UserMessage()),
                           useRef(model->PID.GetPrevious()),
                           useRef(model->ProjectGUID.GetPrevious()),
                           useRef(model->TID.GetPrevious()),

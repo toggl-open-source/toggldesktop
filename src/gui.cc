@@ -49,7 +49,7 @@ void TimeEntry::Fill(toggl::TimeEntry * const model) {
     DateHeader =
         toggl::Formatter::FormatDateHeader(model->StartTime());
     DurOnly = model->DurOnly();
-    Error = model->ValidationError();
+    Error = model->ValidationError().UserMessage();
     Unsynced = model->Unsynced();
     GroupName = model->GroupHash();
 }
