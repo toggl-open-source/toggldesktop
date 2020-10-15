@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DynamicData.Binding;
 using ReactiveUI;
 using TogglDesktop.ViewModels;
 
@@ -44,8 +45,8 @@ namespace TogglDesktop
                     .Select(b => (double)TimelineViewModel.ScaleModes[b[1]] / TimelineViewModel.ScaleModes[b[0]])
                     .Subscribe(ratio => SetMainViewScrollOffset(MainViewScroll.VerticalOffset * ratio))
                     .DisposeWith(_disposable);
-                ViewModel?.WhenAnyValue(x => x.SelectedDate)
-                    .Where(_ => ViewModel.IsTodaySelected)
+                ViewModel?.WhenValueChanged(x => x.IsTodaySelected)
+                    .Where(x => x)
                     .Subscribe(_ => MainViewScroll.ScrollToVerticalOffset(ViewModel.CurrentTimeOffset - MainViewScroll.ActualHeight / 2))
                     .DisposeWith(_disposable);
                 ViewModel?.WhenAnyValue(x => x.FirstTimeEntryOffset)

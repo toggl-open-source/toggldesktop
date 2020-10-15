@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -21,8 +20,22 @@ namespace TogglDesktop.ViewModels
                 .Subscribe(value => Toggl.SetTimelineRecordingEnabled(value));
             OpenTogglHelpUri = ReactiveCommand.Create(() =>
                 Toggl.OpenInBrowser("https://support.toggl.com/en/articles/3836325-toggl-desktop-for-windows"));
-            this.WhenAnyValue(x => x.SelectedDate).ObserveOn(RxApp.TaskpoolScheduler)
+
+            Toggl.TimelineSelectedDate.Subscribe(date => SelectedDate = date);
+
+            this.WhenAnyValue(x => x.SelectedDate)
+                .Where(date => date != Toggl.TimelineSelectedDate.Value)
+                .ObserveOn(RxApp.TaskpoolScheduler)
+                .Subscribe(date => Toggl.SetViewTimelineDay(Toggl.UnixFromDateTime(date)));
+
+            this.WhenAnyValue(x => x.SelectedDate)
+                .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(HandleSelectedDateChanged);
+
+            Toggl.TimelineSelectedDate
+                .Select(dateTime => dateTime.Date == DateTime.Today.Date)
+                .ToPropertyEx(this, x => x.IsTodaySelected);
+
             SelectPreviousDay = ReactiveCommand.Create(Toggl.ViewTimelinePreviousDay);
             SelectNextDay = ReactiveCommand.Create(Toggl.ViewTimelineNextDay);
             IncreaseScale = ReactiveCommand.Create(() => SelectedScaleMode = ChangeScaleMode(-1));
@@ -33,12 +46,19 @@ namespace TogglDesktop.ViewModels
             scaleModeObservable.Select(GetHoursListFromScale).ToPropertyEx(this, x => x.HourViews);
             scaleModeObservable.Select(mode => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, mode))
                 .Subscribe(h => CurrentTimeOffset = h);
+
             Toggl.TimelineChunks.CombineLatest(scaleModeObservable, ConvertChunksToActivityBlocks)
                 .ToPropertyEx(this, x => x.ActivityBlocks);
             Toggl.TimelineTimeEntries.CombineLatest(scaleModeObservable, ConvertTimeEntriesToBlocks)
                 .ToPropertyEx(this, x => x.TimeEntryBlocks);
             Toggl.TimelineTimeEntries.CombineLatest(scaleModeObservable, GenerateGapTimeEntryBlocks)
                 .ToPropertyEx(this, x => x.GapTimeEntryBlocks);
+
+            this.WhenAnyValue(x => x.TimeEntryBlocks)
+                .Where(blocks => blocks != null && blocks.Any())
+                .Select(blocks => blocks.Min(te => te.VerticalOffset))
+                .ToPropertyEx(this, x => x.FirstTimeEntryOffset);
+
             Toggl.OnTimeEntryList += HandleTimeEntryListChanged;
             Toggl.OnTimeEntryEditor += (open, te, field) =>
                 SelectedForEditTEId = open ? te.GUID : SelectedForEditTEId;
@@ -49,12 +69,9 @@ namespace TogglDesktop.ViewModels
             Observable.Timer(TimeSpan.Zero,TimeSpan.FromMinutes(1))
                 .Select(_ => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, SelectedScaleMode))
                 .Subscribe(h => CurrentTimeOffset = h);
-            this.WhenAnyValue(x => x.SelectedDate)
-                .Select(dateTime => dateTime.Date == DateTime.Today.Date)
-                .ToPropertyEx(this, x => x.IsTodaySelected);
         }
 
-        private int ChangeScaleMode(int value) => 
+        private int ChangeScaleMode(int value) =>
             SelectedScaleMode + value < 0 || SelectedScaleMode + value > ScaleModes.Count - 1
                 ? SelectedScaleMode
                 : SelectedScaleMode + value;
@@ -73,7 +90,7 @@ namespace TogglDesktop.ViewModels
 
         private static int GetHoursInLine(int scaleMode) => scaleMode != 3 ? 1 : 2;
 
-        private async void HandleSelectedDateChanged(DateTime date)
+        private void HandleSelectedDateChanged(DateTime date)
         {
             if (date < _lastDateLoaded)
             {
@@ -81,11 +98,6 @@ namespace TogglDesktop.ViewModels
             }
             if (SelectedForEditTEId != null)
                 Toggl.Edit(SelectedForEditTEId, false, "");
-            await Task.Run(() => Toggl.SetViewTimelineDay(Toggl.UnixFromDateTime(SelectedDate)));
-            if (TimeEntryBlocks != null && TimeEntryBlocks.Any())
-            {
-                FirstTimeEntryOffset = TimeEntryBlocks.Min(te => te.VerticalOffset);
-            }
         }
 
         private void HandleTimeEntryListChanged(bool open, List<Toggl.TogglTimeEntryView> timeEntries, bool showLoadMore)
@@ -284,7 +296,7 @@ namespace TogglDesktop.ViewModels
         public ReactiveCommand<Unit, Unit> OpenTogglHelpUri { get; }
 
         [Reactive]
-        public DateTime SelectedDate { get; set; } = DateTime.Today;
+        public DateTime SelectedDate { get; set; }
 
         public ReactiveCommand<Unit,Unit> SelectPreviousDay { get; }
 
@@ -309,8 +321,7 @@ namespace TogglDesktop.ViewModels
         public ReactiveCommand<Unit, int> IncreaseScale { get; }
         public ReactiveCommand<Unit, int> DecreaseScale { get; }
 
-        [Reactive]
-        public double FirstTimeEntryOffset { get; private set; }
+        public double FirstTimeEntryOffset { [ObservableAsProperty] get; }
 
         [Reactive]
         public double CurrentTimeOffset { get; set; }

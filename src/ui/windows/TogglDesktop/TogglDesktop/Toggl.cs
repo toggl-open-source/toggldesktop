@@ -910,6 +910,8 @@ public static partial class Toggl
 
     public static readonly BehaviorSubject<List<TogglTimeEntryView>> TimelineTimeEntries =
         new BehaviorSubject<List<TogglTimeEntryView>>(new List<TogglTimeEntryView>());
+    
+    public static readonly BehaviorSubject<DateTime> TimelineSelectedDate = new BehaviorSubject<DateTime>(DateTime.Today);
     public static event DisplayTimelineUI OnDisplayTimelineUI = delegate { };
     private static void listenToLibEvents()
     {
@@ -1161,6 +1163,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnTimeline"))
             {
+                TimelineSelectedDate.OnNext(DateTimeFromUnix(startDay));
                 var chunks = convertToTimelineChunkList(first);
                 var timeEntries = convertToTimeEntryList(firstTimeEntry);
                 TimelineChunks.OnNext(chunks);
