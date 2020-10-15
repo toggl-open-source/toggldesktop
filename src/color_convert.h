@@ -21,9 +21,9 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT ColorConverter {
  public:
 
-    static TogglHsvColor GetAdaptiveColor(std::string hexColor, TogglAdaptiveColor type);
-    static TogglHsvColor GetAdaptiveColor(TogglRgbColor rgbColor, TogglAdaptiveColor type);
-    static TogglRgbColor GetRgbAdaptiveColor(std::string hexColor, TogglAdaptiveColor type);
+    static TogglHsvColor GetAdaptiveColor(const std::string &hexColor, TogglAdaptiveColor type);
+    static TogglHsvColor GetAdaptiveColor(const TogglRgbColor &rgbColor, TogglAdaptiveColor type);
+    static TogglRgbColor GetRgbAdaptiveColor(const std::string &hexColor, TogglAdaptiveColor type);
 
  private:
     static TogglHsvColor adjustColor(TogglHsvColor hsvColor, TogglAdaptiveColor type);

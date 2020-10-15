@@ -18,17 +18,17 @@ namespace toggl {
 #define max_f(a, b, c)  (fmaxf(a, fmaxf(b, c)))
 #define safe_range_f(value, min, max) (fmin(max, fmax(value, min)))
 
-TogglHsvColor ColorConverter::GetAdaptiveColor(std::string hexColor, TogglAdaptiveColor type) {
+TogglHsvColor ColorConverter::GetAdaptiveColor(const std::string &hexColor, TogglAdaptiveColor type) {
     TogglRgbColor rbg = hexToRgb(hexColor);
     return GetAdaptiveColor(rbg, type);
 }
 
-TogglHsvColor ColorConverter::GetAdaptiveColor(TogglRgbColor rgbColor, TogglAdaptiveColor type) {
+TogglHsvColor ColorConverter::GetAdaptiveColor(const TogglRgbColor &rgbColor, TogglAdaptiveColor type) {
     TogglHsvColor hsvColor = rgbToHsv(rgbColor);
     return adjustColor(hsvColor, type);
 }
 
-TogglRgbColor ColorConverter::GetRgbAdaptiveColor(std::string hexColor, TogglAdaptiveColor type) {
+TogglRgbColor ColorConverter::GetRgbAdaptiveColor(const std::string &hexColor, TogglAdaptiveColor type) {
     TogglHsvColor hsv = GetAdaptiveColor(hexColor, type);
     return hsvToRgb(hsv);
 }

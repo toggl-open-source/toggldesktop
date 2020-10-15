@@ -325,12 +325,12 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error AppleSignup(
         const std::string &access_token,
         const uint64_t country_id,
-        const std::string full_name);
+        const std::string &full_name);
 
     error AsyncAppleSignup(
         const std::string &access_token,
         const uint64_t country_id,
-        const std::string full_name);
+        const std::string &full_name);
 
     error GoogleLogin(const std::string &access_token);
     error AsyncGoogleLogin(const std::string &access_token);
@@ -340,8 +340,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error GetSSOIdentityProvider(const std::string &email);
     error EnableSSO(const std::string &code, const std::string &api_token);
-    void LoginSSO(const std::string api_token);
-    void SetNeedEnableSSO(const std::string code);
+    void LoginSSO(const std::string &api_token);
+    void SetNeedEnableSSO(const std::string &code);
     void ResetEnableSSO();
 
     error Logout();
@@ -357,8 +357,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string &duration,
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
-        const std::string project_guid,
-        const std::string tags,
+        const std::string &project_guid,
+        const std::string &tags,
         const bool prevent_on_app,
         const time_t started,
         const time_t ended,
@@ -417,10 +417,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string &GUID,
         const std::string &value);
 
-    error SetTimeEntryStart(const std::string GUID,
+    error SetTimeEntryStart(const std::string &GUID,
                             const Poco::Int64 startAt);
 
-    error SetTimeEntryStartWithOption(const std::string GUID,
+    error SetTimeEntryStartWithOption(const std::string &GUID,
                                       const Poco::Int64 startAt,
                                       const bool keepEndTimeFixed);
 
@@ -428,7 +428,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string &GUID,
         const std::string &value);
 
-    error SetTimeEntryStop(const std::string GUID,
+    error SetTimeEntryStop(const std::string &GUID,
                            const Poco::Int64 endAt);
 
     error SetTimeEntryTags(
@@ -753,7 +753,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         std::string *user_data_json,
         const uint64_t country_id,
         const std::string &full_name,
-        const std::string provider);
+        const std::string &provider);
 
     static error me(const std::string &email,
                     const std::string &password,
