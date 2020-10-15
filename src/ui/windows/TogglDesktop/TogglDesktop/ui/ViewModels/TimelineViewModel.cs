@@ -65,7 +65,6 @@ namespace TogglDesktop.ViewModels
             this.WhenAnyValue(x => x.SelectedForEditTEId, x => x.TimeEntryBlocks)
                 .ObserveOn(RxApp.TaskpoolScheduler).Subscribe(_ =>
                 TimeEntryBlocks?.ForEach(te => te.IsEditViewOpened = SelectedForEditTEId == te.TimeEntryId));
-            HourViews = GetHoursListFromScale(SelectedScaleMode);
             Observable.Timer(TimeSpan.Zero,TimeSpan.FromMinutes(1))
                 .Select(_ => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, SelectedScaleMode))
                 .Subscribe(h => CurrentTimeOffset = h);
