@@ -100,11 +100,11 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
 
 extension ProjectAutoCompleteTextField: ProjectCreationViewDelegate {
 
-    func projectCreationDidAdd(with name: String, color: String, projectGUID: String) {
-        lastProjectGUID = projectGUID
-        stringValue = name
-        layoutProject(with: name)
-        applyColor(with: color)
+    func projectCreationDidAdd(newProject: Project) {
+        lastProjectGUID = newProject.guid
+        stringValue = newProject.name
+        layoutProject(with: newProject.name)
+        applyColor(with: newProject.colorHex)
         closeSuggestion()
     }
 
