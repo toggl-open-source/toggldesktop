@@ -30,7 +30,11 @@ namespace TogglDesktop.ViewModels
 
             this.WhenAnyValue(x => x.SelectedDate)
                 .ObserveOn(RxApp.TaskpoolScheduler)
-                .Subscribe(HandleSelectedDateChanged);
+                .Subscribe(LoadMoreIfNeeded);
+
+            this.WhenAnyValue(x => x.SelectedDate)
+                .ObserveOn(RxApp.TaskpoolScheduler)
+                .Subscribe(_ => HideEditViewIfNeeded());
 
             Toggl.TimelineSelectedDate
                 .Select(dateTime => dateTime.Date == DateTime.Today.Date)
@@ -89,12 +93,16 @@ namespace TogglDesktop.ViewModels
 
         private static int GetHoursInLine(int scaleMode) => scaleMode != 3 ? 1 : 2;
 
-        private void HandleSelectedDateChanged(DateTime date)
+        private void LoadMoreIfNeeded(DateTime date)
         {
             if (date < _lastDateLoaded)
             {
                 Toggl.LoadMore();
             }
+        }
+
+        private void HideEditViewIfNeeded()
+        {
             if (SelectedForEditTEId != null)
                 Toggl.Edit(SelectedForEditTEId, false, "");
         }
