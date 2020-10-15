@@ -16,7 +16,7 @@
             <sys:Double x:Key="DescriptionOpacity">0.2</sys:Double>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Button FontWeight="Normal" Command="{Binding OpenEditView}" MinHeight="2" Margin="0 0 4 0">
+    <Button FontWeight="Normal" Command="{Binding OpenEditView}" MinHeight="2" Margin="0 0 4 0" Height="{Binding Height}">
         <Button.Template>
             <ControlTemplate>
                 <Grid>
@@ -26,7 +26,7 @@
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="1" CornerRadius="8,8,8,8" Background="{DynamicResource Toggl.Background}" Margin="-10 0 0 0"/>
                     <Rectangle Grid.Column="0" Name ="TimeEntrySpan"
-                               Width="20" Height="{Binding Height}"
+                               Width="20"
                                Fill="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
                                RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
                                RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}">
