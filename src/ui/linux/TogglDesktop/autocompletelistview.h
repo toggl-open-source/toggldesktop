@@ -29,7 +29,7 @@ signals:
     void selected(AutocompleteView *item);
 
 protected:
-    void keyPressEvent(QKeyEvent *e);
+    void keyPressEvent(QKeyEvent *e) override;
 
 };
 

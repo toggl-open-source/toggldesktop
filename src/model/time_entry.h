@@ -98,10 +98,10 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     Json::Value SyncPayload() const override;
 
     // Implement TimedEvent
-    virtual const Poco::Int64 &Start() const {
+    virtual const Poco::Int64 &Start() const override {
         return StartTime();
     }
-    virtual const Poco::Int64 &Duration() const {
+    virtual const Poco::Int64 &Duration() const override {
         return DurationInSeconds();
     }
 

@@ -47,7 +47,7 @@ class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent 
     const Poco::Int64 &Start() const  override {
         return StartTime();
     }
-    const Poco::Int64 &Duration() const {
+    const Poco::Int64 &Duration() const override {
         return DurationInSeconds();
     }
 
