@@ -41,7 +41,7 @@ namespace TogglDesktop
                 _disposable = new CompositeDisposable();
 
                 ViewModel?.WhenAnyValue(x => x.SelectedScaleMode).Buffer(2, 1)
-                    .Select(b => (double)ViewModel.ScaleModes[b[1]] / ViewModel.ScaleModes[b[0]])
+                    .Select(b => (double)TimelineViewModel.ScaleModes[b[1]] / TimelineViewModel.ScaleModes[b[0]])
                     .Subscribe(ratio => SetMainViewScrollOffset(MainViewScroll.VerticalOffset * ratio))
                     .DisposeWith(_disposable);
                 ViewModel?.WhenAnyValue(x => x.SelectedDate)

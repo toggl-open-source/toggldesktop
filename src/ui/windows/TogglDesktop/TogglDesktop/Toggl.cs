@@ -904,7 +904,12 @@ public static partial class Toggl
     public static event DisplayInAppNotification OnDisplayInAppNotification = delegate { };
     public static readonly BehaviorSubject<UpdateStatus> OnUpdateDownloadStatus
         = new BehaviorSubject<UpdateStatus>(new UpdateStatus());
-    public static event DisplayTimeline OnTimeline = delegate { };
+
+    public static readonly BehaviorSubject<List<TimelineChunkView>> TimelineChunks =
+        new BehaviorSubject<List<TimelineChunkView>>(new List<TimelineChunkView>());
+
+    public static readonly BehaviorSubject<List<TogglTimeEntryView>> TimelineTimeEntries =
+        new BehaviorSubject<List<TogglTimeEntryView>>(new List<TogglTimeEntryView>());
     public static event DisplayTimelineUI OnDisplayTimelineUI = delegate { };
     private static void listenToLibEvents()
     {
@@ -1156,8 +1161,10 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnTimeline"))
             {
-                OnTimeline(open, date, convertToTimelineChunkList(first), convertToTimeEntryList(firstTimeEntry),
-                    startDay, endDay);
+                var chunks = convertToTimelineChunkList(first);
+                var timeEntries = convertToTimeEntryList(firstTimeEntry);
+                TimelineChunks.OnNext(chunks);
+                TimelineTimeEntries.OnNext(timeEntries);
             }
         });
         toggl_on_timeline_ui_enabled(ctx, isEnabled =>
