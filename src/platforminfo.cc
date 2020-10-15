@@ -136,7 +136,6 @@ std::string getDEName() {
 }
 
 std::string getDistroName() {
-    std::string name, version;
     std::ifstream osinfo("/etc/os-release", std::ifstream::in);
     while (osinfo.good() && !osinfo.eof()) {
         std::string line;
@@ -148,7 +147,6 @@ std::string getDistroName() {
 }
 
 std::string getDistroVersion() {
-    std::string name, version;
     std::ifstream osinfo("/etc/os-release", std::ifstream::in);
     while (osinfo.good() && !osinfo.eof()) {
         std::string line;

@@ -769,8 +769,6 @@ error User::LoadWorkspacesFromJSONString(const std::string & json) {
         return error(kMissingWS); // NOLINT
     }
 
-    std::set<Poco::UInt64> alive;
-
     for (unsigned int i = 0; i < root.size(); i++) {
         loadUserWorkspaceFromJSON(root[i]);
     }

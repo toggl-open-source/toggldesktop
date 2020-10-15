@@ -4307,7 +4307,7 @@ error Context::UpdateAutotrackerRule(
             return noError;
         }
 
-        error err = user_->related.UpdateAutotrackerRule(rule_id, terms, tid, pid, start_time, end_time, days_of_week);
+        error err = user_->related.UpdateAutotrackerRule(rule_id, lowercase, tid, pid, start_time, end_time, days_of_week);
         if (noError != err) {
             return displayError(err);
         }
@@ -4929,7 +4929,7 @@ error Context::StartAutotrackerEvent(const TimelineEvent &event) {
         }
 
         if (settings_.start_autotracker_without_suggestions) {
-            auto te = user_->Start("", "", rule->TID(), rule->PID(), "", "", 0, 0, true);
+            user_->Start("", "", rule->TID(), rule->PID(), "", "", 0, 0, true);
         }
         else {
             UI()->DisplayAutotrackerNotification(p, t);
