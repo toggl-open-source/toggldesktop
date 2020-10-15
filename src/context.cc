@@ -5132,7 +5132,12 @@ void Context::syncerActivityWrapper() {
                     displayError(error);
                     break;
                 }
-                state = user_->AlphaFeatureSettings->IsSyncEnabled() ? state = BATCHED : LEGACY;
+                if (user_->AlphaFeatureSettings->IsSyncEnabled()) {
+                    state = BATCHED;
+                }
+                else {
+                    state = LEGACY;
+                }
                 logger.log("Syncer - Syncing protocol was selected: ", (state == BATCHED ? "BATCHED" : "LEGACY"));
                 break;
             }
