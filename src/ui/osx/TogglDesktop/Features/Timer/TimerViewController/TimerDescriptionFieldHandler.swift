@@ -122,8 +122,10 @@ class TimerDescriptionFieldHandler: NSResponder {
             self?.controlListVisibilityDidChange()
         }
 
-        kvoSelectedRangeToken = textField.observe(\.selectedRange) { [weak self] _, _ in
-            self?.controlTextCursorDidChange()
+        kvoSelectedRangeToken = textField.observe(\.selectedRange, options: [.new, .old]) { [weak self] _, change in
+            if change.newValue != change.oldValue {
+                self?.controlTextCursorDidChange()
+            }
         }
     }
 
@@ -196,7 +198,12 @@ extension TimerDescriptionFieldHandler: NSTextFieldDelegate {
 
     private func autocompleteControl(doCommandBy commandSelector: Selector) -> Bool {
         if commandSelector == #selector(moveDown(_:)) {
-            return onPerformAction(.autoCompleteTableSelectNext)
+            if textField.isListHidden {
+                textField.toggleList(true)
+                return true
+            } else {
+                return onPerformAction(.autoCompleteTableSelectNext)
+            }
 
         } else if commandSelector == #selector(moveUp(_:)) {
             return onPerformAction(.autoCompleteTableSelectPrevious)

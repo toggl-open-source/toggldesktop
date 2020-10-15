@@ -347,17 +347,13 @@ extern void *ctx;
 
 - (void)setFilter:(NSString *)filter
 {
-    if ([filter isEqualToString:self.currentFilter]) {
-        return;
-    }
-
-    self.textLength = 0;
-    bool lastFilterWasNonEmpty = ((filter == nil || filter.length == 0) && (self.currentFilter != nil && self.currentFilter.length > 0));
-
+    NSString *oldFilter = self.currentFilter;
     self.currentFilter = filter;
+
     if (filter == nil || filter.length == 0)
     {
         self.filteredOrderedKeys = [NSMutableArray arrayWithArray:self.orderedKeys];
+        bool lastFilterWasNonEmpty = self.currentFilter != nil && self.currentFilter.length > 0;
         if (lastFilterWasNonEmpty)
         {
             [self reload];
@@ -368,8 +364,15 @@ extern void *ctx;
             CGFloat totalHeight = [self.input calculateTotalHeightFromArray:self.filteredOrderedKeys];
             [self.input updateDropdownWithHeight:totalHeight];
         }
+
         return;
     }
+
+    if ([self.currentFilter isEqualToString:oldFilter]) {
+        return;
+    }
+
+    self.textLength = 0;
     NSString *trimmedFilter = [filter stringByTrimmingCharactersInSet:
                                [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     [self findFilter:trimmedFilter];

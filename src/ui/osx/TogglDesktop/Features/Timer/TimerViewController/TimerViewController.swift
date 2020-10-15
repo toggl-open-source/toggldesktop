@@ -342,7 +342,7 @@ class TimerViewController: NSViewController {
     private func resetFromDescriptionFieldState(_ state: TimerDescriptionFieldHandler.State) {
         switch state {
         case .autocompleteFilter:
-            descriptionTextField.resetTable()
+            descriptionTextField.toggleList(false)
         case .projectFilter:
             closeProjectAutoComplete()
         case .tagsFilter:
