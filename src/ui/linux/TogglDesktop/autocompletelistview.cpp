@@ -176,7 +176,7 @@ void AutoCompleteItemDelegate::layoutProject(QPainter *painter, const QStyleOpti
     QString elidedProject = metrics.elidedText(view->ProjectLabel, option.textElideMode, projectWidth);
     projectLayout.setText(" • " + elidedProject);
     projectLayout.setFont(font);
-    projectWidth = metrics.width(" • " + elidedProject) + 1;
+    projectWidth = metrics.horizontalAdvance(" • " + elidedProject) + 1;
 
     projectLayout.beginLayout();
     auto projectLine = projectLayout.createLine();
@@ -213,7 +213,7 @@ void AutoCompleteItemDelegate::layoutTask(QPainter *painter, const QStyleOptionV
     QString elidedTask = metrics.elidedText(view->TaskLabel, option.textElideMode, taskWidth);
     taskLayout.setText(elidedTask);
     taskLayout.setFont(font);
-    taskWidth = metrics.width(elidedTask) + 1;
+    taskWidth = metrics.horizontalAdvance(elidedTask) + 1;
 
     // here we do the actual layout of the line
     taskLayout.beginLayout();
@@ -257,7 +257,7 @@ void AutoCompleteItemDelegate::layoutTimeEntry(QPainter *painter, const QStyleOp
         QString elidedClient = metrics.elidedText(view->ClientLabel, option.textElideMode, lineWidth / 3);
         clientLayout.setText(elidedClient);
         clientLayout.setFont(font);
-        clientWidth = metrics.width(elidedClient) + 1;
+        clientWidth = metrics.horizontalAdvance(elidedClient) + 1;
     }
 
     // then lay out the project
@@ -267,7 +267,7 @@ void AutoCompleteItemDelegate::layoutTimeEntry(QPainter *painter, const QStyleOp
         QString elidedProject = metrics.elidedText(view->ProjectLabel, option.textElideMode, lineWidth / 2);
         projectLayout.setText(" • " + elidedProject);
         projectLayout.setFont(font);
-        projectWidth = metrics.width(" • " + elidedProject) + 1;
+        projectWidth = metrics.horizontalAdvance(" • " + elidedProject) + 1;
     }
 
     // and finally the description, since it can be cropped by the project and client
@@ -277,7 +277,7 @@ void AutoCompleteItemDelegate::layoutTimeEntry(QPainter *painter, const QStyleOp
     // metrics will do the ellipsis for us
     QString elidedDescription = metrics.elidedText(view->Description, option.textElideMode, descriptionWidth);
     // and now we measure the actual length of the ellided string so everything aligns nicely
-    descriptionWidth = metrics.width(elidedDescription);
+    descriptionWidth = metrics.horizontalAdvance(elidedDescription);
     descriptionLayout.setText(elidedDescription);
     descriptionLayout.setFont(font);
 
