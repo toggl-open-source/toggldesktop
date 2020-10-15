@@ -51,14 +51,14 @@ TogglHsvColor ColorConverter::adjustColor(TogglHsvColor hsvColor, TogglAdaptiveC
 
 TogglHsvColor ColorConverter::rgbToHsv(TogglRgbColor rgbColor)
 {
-    float r = rgbColor.r;
-    float g = rgbColor.g;
-    float b = rgbColor.b;
+    double r = rgbColor.r;
+    double g = rgbColor.g;
+    double b = rgbColor.b;
 
-    float h, s, v; // h:0-360.0, s:0.0-1.0, v:0.0-1.0
+    double h, s, v; // h:0-360.0, s:0.0-1.0, v:0.0-1.0
 
-    float max = max_f(r, g, b);
-    float min = min_f(r, g, b);
+    double max = max_f(r, g, b);
+    double min = min_f(r, g, b);
 
     v = max;
 
@@ -97,9 +97,9 @@ TogglRgbColor ColorConverter::hexToRgb(std::string hex)
     converter >> std::hex >> hexValue;
 
     // Convert to rgb
-    float r = ((hexValue >> 16) & 0xFF) / 255.0;
-    float g = ((hexValue >> 8) & 0xFF) / 255.0;
-    float b = ((hexValue) & 0xFF) / 255.0;
+    double r = ((hexValue >> 16) & 0xFF) / 255.0;
+    double g = ((hexValue >> 8) & 0xFF) / 255.0;
+    double b = ((hexValue) & 0xFF) / 255.0;
 
     return { r, g, b };
 }
