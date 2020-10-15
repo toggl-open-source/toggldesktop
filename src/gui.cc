@@ -577,7 +577,7 @@ void GUI::DisplayTimeline(const bool open,
     }
 
     std::string formatted_date = Formatter::FormatDateHeader(TimelineDateAt());
-    char_t *date = copy_string(formatted_date.c_str());
+    char_t *date = copy_string(formatted_date);
     on_display_timeline_(open, date, first_chunk, first_entry, start_day, end_day);
     free(date);
     time_entry_view_list_clear(first_entry);
