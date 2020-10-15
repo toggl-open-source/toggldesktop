@@ -3,19 +3,11 @@
         {
             "version": "7.5.298",
             "rows": [
-                "Stability improvements"
-            ],
-            "date": "October 6th 2020",
-            "beta": "true"
-        },
-        {
-            "version": "7.5.296",
-            "rows": [
+                "Stability improvements",
                 "New app icon",
                 "Bug fixes"
             ],
-            "date": "October 2nd 2020",
-            "beta": "true"
+            "date": "October 15th 2020"
         },
         {
             "version": "7.5.286",
