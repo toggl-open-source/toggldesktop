@@ -17,7 +17,7 @@
 #include "model/timeline_event.h"
 #include "urls.h"
 #include "onboarding_service.h"
-#include "model/alpha_features.h";
+#include "model/alpha_features.h"
 
 #include <Poco/Base64Decoder.h>
 #include <Poco/Base64Encoder.h>
