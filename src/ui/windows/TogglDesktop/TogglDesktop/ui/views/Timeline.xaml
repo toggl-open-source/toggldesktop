@@ -360,18 +360,18 @@
                     </Popup>
                 </Grid>
             </ScrollViewer>
+            <TextBlock Grid.Row="3" Grid.Column="1" Text="No entries here... Go ahead and track some time!" Width="125" HorizontalAlignment="Center"
+                       VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"
+                       Visibility="{Binding TimeEntryBlocks, Converter={StaticResource EmptyListToVisibleConverter}}"
+                       MouseWheel="HandleScrollViewerMouseWheel"/>
+            <TextBlock Grid.Row="3" Grid.Column="2" Text="No activity was recorded yet..." HorizontalAlignment="Center"
+                       VerticalAlignment="Center" TextAlignment="Center" 
+                       Visibility="{Binding ActivityBlocks, Converter={StaticResource EmptyListToVisibleConverter}}"
+                       MouseWheel="HandleScrollViewerMouseWheel">
+                <TextBlock.LayoutTransform>
+                    <RotateTransform Angle="90"/>
+                </TextBlock.LayoutTransform>
+            </TextBlock>
         </Grid>
-        <TextBlock Text="No entries here... Go ahead and track some time!" Width="125" HorizontalAlignment="Center"
-                   VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Margin="0 100 0 0"
-                   Visibility="{Binding TimeEntryBlocks, Converter={StaticResource EmptyListToVisibleConverter}}"
-                   MouseWheel="HandleScrollViewerMouseWheel"/>
-        <TextBlock Text="No activity was recorded yet..." HorizontalAlignment="Right"
-                   VerticalAlignment="Center" TextAlignment="Center" Margin="0 100 10 0"
-                   Visibility="{Binding ActivityBlocks, Converter={StaticResource EmptyListToVisibleConverter}}"
-                   MouseWheel="HandleScrollViewerMouseWheel">
-            <TextBlock.LayoutTransform>
-                <RotateTransform Angle="90"/>
-            </TextBlock.LayoutTransform>
-        </TextBlock>
     </Grid>
 </UserControl>
