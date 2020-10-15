@@ -61,7 +61,6 @@ class TOGGL_INTERNAL_EXPORT WindowChangeRecorder {
     void recordLoop();
 
  private:
-    bool is_catalina_OSX;
     void inspectFocusedWindow();
 
     bool hasWindowChanged(
@@ -102,6 +101,8 @@ class TOGGL_INTERNAL_EXPORT WindowChangeRecorder {
 
     Poco::Mutex isSleeping_m_;
     bool isSleeping_;
+
+    bool is_catalina_OSX;
 
     std::map<const int, int> timeline_errors_;
 };
