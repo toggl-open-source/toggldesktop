@@ -397,4 +397,29 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style TargetType="ButtonBase" x:Key="Toggl.Timeline.InfoButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid x:Name="InfoIcon" Background="Transparent" VerticalAlignment="Center">
+                        <Path Data="{StaticResource Toggl.InfoIconGeometry}">
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Fill" Value="#B1B1B5"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=InfoButton, Path=IsMouseOver}" Value="True">
+                                            <Setter Property="Fill" Value="{DynamicResource Toggl.DarkGrayBrush}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=InfoButton, Path=IsChecked}" Value="True">
+                                            <Setter Property="Fill" Value="{DynamicResource Toggl.DarkGrayBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

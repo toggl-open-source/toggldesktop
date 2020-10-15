@@ -61,11 +61,6 @@ namespace TogglDesktop
             MainViewScroll.ScrollToVerticalOffset(offset);
         }
 
-        private void RecordActivityInfoBoxOnMouseEnter(object sender, MouseEventArgs e)
-        {
-            RecordActivityInfoPopup.IsOpen = true;
-        }
-
         private void HandleScrollViewerMouseWheel(object sender, MouseWheelEventArgs e)
         {
             MainViewScroll.ScrollToVerticalOffset(MainViewScroll.VerticalOffset - e.Delta);

@@ -37,15 +37,13 @@
                       IsChecked="{Binding RecordActivity}">
                     Record activity
                 </mah:ToggleSwitch>
-                <Grid Width="16" Height="16"
-                      VerticalAlignment="Center"
+                <Grid VerticalAlignment="Bottom"
                       HorizontalAlignment="Left"
-                      Margin="5 12 0 0">
-                    <Canvas MouseEnter="RecordActivityInfoBoxOnMouseEnter" x:Name="InfoIcon">
-                        <Path Fill="#B1B1B5" Data="{StaticResource Toggl.InfoIconGeometry}"/>
-                    </Canvas>
-                    <Popup IsOpen="False" Name="RecordActivityInfoPopup" StaysOpen="False" UseLayoutRounding="True"
-                           PlacementTarget="{Binding ElementName=InfoIcon}" AllowsTransparency="True">
+                      Margin="5 0 0 2">
+                    <ToggleButton Name="InfoButton"
+                                  Style="{StaticResource Toggl.Timeline.InfoButton}"/>
+                    <Popup IsOpen="{Binding ElementName=InfoButton, Path=IsChecked}" Name="RecordActivityInfoPopup" StaysOpen="True" UseLayoutRounding="True"
+                           PlacementTarget="{Binding ElementName=InfoButton}" AllowsTransparency="True">
                         <Border BorderThickness="1" Background="{DynamicResource Toggl.CardBackground}"
                                 BorderBrush="{DynamicResource Toggl.Background}">
                             <StackPanel MaxWidth="250" Margin="10 10 10 10">
