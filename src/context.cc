@@ -394,9 +394,6 @@ std::string UIElements::String() const {
     if (display_client_select) {
         ss << "display_client_select ";
     }
-    if (display_client_select) {
-        ss << "display_client_select ";
-    }
     if (display_workspace_select) {
         ss << "display_workspace_select ";
     }
