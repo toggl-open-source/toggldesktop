@@ -103,16 +103,6 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     virtual Json::Value SyncMetadata() const { return {}; }
     virtual Json::Value SyncPayload() const { return {}; }
 
-    virtual bool DuplicateResource(const toggl::error &err) const {
-        return false;
-    }
-    virtual bool ResourceCannotBeCreated(const toggl::error &err) const {
-        return false;
-    }
-    virtual bool ResolveError(const toggl::error &err) {
-        return false;
-    }
-
     void Delete();
 
  protected:

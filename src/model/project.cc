@@ -193,16 +193,6 @@ Json::Value Project::SyncPayload() const {
     return result;
 }
 
-bool Project::DuplicateResource(const toggl::error &err) const {
-    return (std::string::npos !=
-            std::string(err).find("Name has already been taken"));
-}
-
-bool Project::ResourceCannotBeCreated(const toggl::error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "User cannot add or edit projects in workspace"));
-}
-
 bool Project::clientIsInAnotherWorkspace(const toggl::error &err) const {
     return (std::string::npos != std::string(err).find(
         "client is in another workspace")
