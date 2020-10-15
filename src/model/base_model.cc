@@ -88,45 +88,6 @@ bool BaseModel::userCannotAccessWorkspace(const error &err) const {
         kCannotAccessWorkspaceError));
 }
 
-std::string BaseModel::batchUpdateRelativeURL() const {
-    if (NeedsPOST()) {
-        return ModelURL();
-    }
-
-    std::stringstream url;
-    url << ModelURL() << "/" << ID();
-    return url.str();
-}
-
-std::string BaseModel::batchUpdateMethod() const {
-    if (NeedsDELETE()) {
-        return "DELETE";
-    }
-
-    if (NeedsPOST()) {
-        return "POST";
-    }
-
-    return "PUT";
-}
-
-// Convert model JSON into batch update format.
-error BaseModel::BatchUpdateJSON(Json::Value *result) const {
-    if (GUID().empty()) {
-        return error("Cannot export model to batch update without a GUID");
-    }
-
-    Json::Value body;
-    body[ModelName()] = SaveToJSON();
-
-    (*result)["method"] = batchUpdateMethod();
-    (*result)["relative_url"] = batchUpdateRelativeURL();
-    (*result)["guid"] = GUID();
-    (*result)["body"] = body;
-
-    return noError;
-}
-
 Logger BaseModel::logger() const {
     return { ModelName() };
 }

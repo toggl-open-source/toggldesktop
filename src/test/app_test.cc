@@ -1684,41 +1684,6 @@ TEST(User, DurationFormat) {
     ASSERT_EQ("decimal", Formatter::DurationFormat);
 }
 
-TEST(BaseModel, BatchUpdateJSONWithoutGUID) {
-    TimeEntry t;
-    Json::Value v;
-    error err = t.BatchUpdateJSON(&v);
-    ASSERT_NE(noError, err);
-}
-
-TEST(BaseModel, BatchUpdateJSON) {
-    TimeEntry t;
-    t.EnsureGUID();
-    Json::Value v;
-    error err = t.BatchUpdateJSON(&v);
-    ASSERT_EQ(noError, err);
-}
-
-TEST(BaseModel, BatchUpdateJSONForDelete) {
-    TimeEntry t;
-    t.EnsureGUID();
-    t.SetID(123);
-    t.SetDeletedAt(time(0));
-    Json::Value v;
-    error err = t.BatchUpdateJSON(&v);
-    ASSERT_EQ(noError, err);
-}
-
-TEST(BaseModel, BatchUpdateJSONForPut) {
-    TimeEntry t;
-    t.EnsureGUID();
-    t.SetID(123);
-    t.SetDescription("test", false);
-    Json::Value v;
-    error err = t.BatchUpdateJSON(&v);
-    ASSERT_EQ(noError, err);
-}
-
 TEST(Proxy, IsConfigured) {
     Proxy p;
     ASSERT_FALSE(p.IsConfigured());

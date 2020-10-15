@@ -1219,32 +1219,6 @@ error User::LoginToken(
     return noError;
 }
 
-error User::UpdateJSON(
-    std::vector<TimeEntry *> * const time_entries,
-    std::string *result) const {
-
-    poco_check_ptr(time_entries);
-
-    Json::Value c;
-
-    // Time entries go last
-    for (std::vector<TimeEntry *>::const_iterator it =
-        time_entries->begin();
-            it != time_entries->end(); ++it) {
-        Json::Value update;
-        error err = (*it)->BatchUpdateJSON(&update);
-        if (err != noError) {
-            return err;
-        }
-        c.append(update);
-    }
-
-    Json::StyledWriter writer;
-    *result = writer.write(c);
-
-    return noError;
-}
-
 std::string User::generateKey(const std::string &password) {
     Poco::SHA1Engine sha1;
     Poco::DigestOutputStream outstr(sha1);

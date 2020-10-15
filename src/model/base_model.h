@@ -115,17 +115,11 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
 
     void Delete();
 
-    // Convert model JSON into batch update format.
-    error BatchUpdateJSON(Json::Value *result) const;
-
  protected:
     Logger logger() const;
 
     bool userCannotAccessWorkspace(const toggl::error &err) const;
 
- private:
-    std::string batchUpdateRelativeURL() const;
-    std::string batchUpdateMethod() const;
 };
 
 }  // namespace toggl
