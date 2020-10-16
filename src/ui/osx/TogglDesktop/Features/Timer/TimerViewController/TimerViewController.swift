@@ -89,10 +89,6 @@ class TimerViewController: NSViewController {
         viewModel.isEditingDuration = { [weak self] in
             return self?.durationTextField.currentEditor() != nil
         }
-    }
-
-    override func viewDidAppear() {
-        super.viewDidAppear()
 
         // !!!: we're passing views into view model - refactor this someday
         // this is needed because current Autocomplete functionality
@@ -103,6 +99,10 @@ class TimerViewController: NSViewController {
         viewModel.tagsDataSource.setup(with: tagsAutoCompleteView)
 
         viewModel.prepareData()
+    }
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
 
         configureHideAutoCompleteWhenLostFocus()
     }
