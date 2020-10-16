@@ -47,6 +47,7 @@ namespace TogglDesktop
                     .DisposeWith(_disposable);
                 ViewModel?.WhenValueChanged(x => x.IsTodaySelected)
                     .Where(x => x)
+                    .ObserveOn(RxApp.MainThreadScheduler)
                     .Subscribe(_ => MainViewScroll.ScrollToVerticalOffset(ViewModel.CurrentTimeOffset - MainViewScroll.ActualHeight / 2))
                     .DisposeWith(_disposable);
                 ViewModel?.WhenAnyValue(x => x.FirstTimeEntryOffset)
