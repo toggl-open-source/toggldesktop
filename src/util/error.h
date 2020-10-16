@@ -3,6 +3,7 @@
 
 #include "types.h"
 
+#include <map>
 #include <memory>
 #include <ostream>
 
@@ -10,6 +11,11 @@ namespace toggl {
 
     class ErrorBase {
     public:
+        enum ReservedEnumValues {
+            _NO_TYPE = 0,
+            _CUSTOM_MESSAGE,
+            FIRST_AVAILABLE_ENUM,
+        };
         virtual std::string Class() const = 0;
         virtual int Type() const { return 0; }
         virtual bool IsError() const { return true; };
@@ -24,6 +30,64 @@ namespace toggl {
                     Class() == o.Class() &&
                     Type() == o.Type();
         }
+    };
+
+    template <class Enum, const std::map<int, std::string> &Messages>
+    class EnumBasedError : public ErrorBase {
+    public:
+        EnumBasedError(const std::string &custom_message = {})
+            : ErrorBase()
+        {
+            bool found = false;
+            for (auto &i : Messages) {
+                if (i.second == custom_message) {
+                    found = true;
+                    type_ = i.first;
+                }
+            }
+            if (!found && !custom_message.empty()) {
+                type_ = _CUSTOM_MESSAGE;
+                custom_message_ = custom_message;
+            }
+        }
+        explicit EnumBasedError(Enum type)
+            : ErrorBase()
+            , type_(type)
+        {
+
+        }
+        explicit EnumBasedError(const EnumBasedError &o) = default;
+        explicit EnumBasedError(EnumBasedError &&o) = default;
+        EnumBasedError &operator=(const EnumBasedError &o) = default;
+
+        int Type() const override { return type_; }
+        bool IsError() const override { return type_ != _NO_TYPE; }
+        std::string LogMessage() const override { return UserMessage(); }
+        std::string UserMessage() const override {
+            if (Type() == _CUSTOM_MESSAGE)
+                return custom_message_;
+            if (Type() != _NO_TYPE) {
+                if (Messages.find(type_) != Messages.end()) {
+                    return Messages.at(type_);
+                }
+                else
+                    return "Unexpected error";
+            }
+            return {};
+        }
+
+        bool Clear() {
+            if (custom_message_.empty()) {
+                if (type_ == _NO_TYPE)
+                    return false;
+            }
+            type_ = _NO_TYPE;
+            custom_message_.clear();
+            return true;
+        }
+    protected:
+        int type_ { _NO_TYPE };
+        std::string custom_message_ {};
     };
 
     class NoError final : public ErrorBase {

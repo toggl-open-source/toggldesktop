@@ -30,72 +30,20 @@ public:
     std::string UserMessage() const override { return "ha"; }
 };
 
-class ValidationError : public ErrorBase {
+enum ValidationErrors {
+    ERROR_FOREIGN_ENTITY_LOST = ErrorBase::FIRST_AVAILABLE_ENUM,
+};
+inline static const std::map<int, std::string> ValidationErrorMessages {
+    { ERROR_FOREIGN_ENTITY_LOST, "Assigned foreign entity could not be found" }
+};
+
+class ValidationError : public EnumBasedError<ValidationErrors, ValidationErrorMessages> {
 public:
-    enum Type {
-        _NO_TYPE,
-        _SERVER_PROVIDED_MESSAGE,
-        FOREIGN_ENTITY_LOST
-    };
-    inline static const std::map<int, std::string> UserMessages {
-        { FOREIGN_ENTITY_LOST, "Assigned foreign entity could not be found" }
-    };
-
-    ValidationError(const std::string &server_message = {})
-        : ErrorBase()
-    {
-        bool found = false;
-        for (auto &i : UserMessages) {
-            if (i.second == server_message) {
-                found = true;
-                type_ = (enum Type) i.first;
-            }
-        }
-        if (!found && !server_message.empty()) {
-            type_ = _SERVER_PROVIDED_MESSAGE;
-            server_message_ = server_message;
-        }
-    }
-    ValidationError(Type type)
-        : ErrorBase()
-        , type_(type)
-    {
-
-    }
-    explicit ValidationError(const ValidationError &o) = default;
-    explicit ValidationError(ValidationError &&o) = default;
+    using Parent = EnumBasedError<ValidationErrors, ValidationErrorMessages>;
+    using Parent::Parent;
     ValidationError &operator=(const ValidationError &o) = default;
 
-    int Type() const override { return type_; }
     std::string Class() const override { return "ValidationError"; }
-    bool IsError() const override { return type_ != _NO_TYPE; }
-    std::string LogMessage() const override { return UserMessage(); }
-    std::string UserMessage() const override {
-        if (Type() == _SERVER_PROVIDED_MESSAGE)
-            return server_message_;
-        if (Type() != _NO_TYPE) {
-            if (UserMessages.find(type_) != UserMessages.end()) {
-                return UserMessages.at(type_);
-            }
-            else
-                return "Unexpected error";
-        }
-        return {};
-    }
-
-    bool Clear() {
-        if (server_message_.empty()) {
-            if (type_ == _NO_TYPE)
-                return false;
-        }
-        type_ = _NO_TYPE;
-        server_message_.clear();
-        return true;
-    }
-private:
-    enum Type type_ { _NO_TYPE };
-    std::string server_message_ {};
-public:
 };
 
 class TOGGL_INTERNAL_EXPORT BaseModel {
