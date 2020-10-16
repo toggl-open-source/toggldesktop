@@ -50,13 +50,21 @@ namespace TogglDesktop
 
             ViewModel.IsSubItem = !item.Group && item.GroupOpen;
             ViewModel.DurationInSeconds = item.DurationInSeconds;
-            ViewModel.TimeEntryLabel = item.ToTimeEntryLabelViewModel();
+            ResetTimeEntryLabelIfChanged(item);
 
             this.durationLabel.Text = item.Duration;
             this.durationPanel.ToolTip = $"{item.StartTimeString} - {item.EndTimeString}";
 
             this.unsyncedIcon.ShowOnlyIf(item.Unsynced);
             this.lockedIcon.ShowOnlyIf(item.Locked);
+        }
+
+        private void ResetTimeEntryLabelIfChanged(Toggl.TogglTimeEntryView item)
+        {
+            if (!ViewModel.TimeEntryLabel.IsEqualTo(item))
+            {
+                ViewModel.TimeEntryLabel = item.ToTimeEntryLabelViewModel();
+            }
         }
 
         #region open edit window event handlers
