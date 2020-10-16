@@ -18,13 +18,7 @@ namespace TogglDesktop
         private CompositeDisposable _disposable;
         public TimelineViewModel ViewModel
         {
-            get
-            {
-                if (Dispatcher.CheckAccess())
-                    return DataContext as TimelineViewModel;
-
-                return Dispatcher.Invoke(() => ViewModel);
-            }
+            get => DataContext as TimelineViewModel;
             set => DataContext = value;
         }
 
@@ -42,6 +36,7 @@ namespace TogglDesktop
                 _disposable = new CompositeDisposable();
 
                 ViewModel?.WhenAnyValue(x => x.SelectedScaleMode).Buffer(2, 1)
+                    .ObserveOn(RxApp.MainThreadScheduler)
                     .Select(b => (double)TimelineViewModel.ScaleModes[b[1]] / TimelineViewModel.ScaleModes[b[0]])
                     .Subscribe(ratio => SetMainViewScrollOffset(MainViewScroll.VerticalOffset * ratio))
                     .DisposeWith(_disposable);
@@ -51,6 +46,7 @@ namespace TogglDesktop
                     .Subscribe(_ => MainViewScroll.ScrollToVerticalOffset(ViewModel.CurrentTimeOffset - MainViewScroll.ActualHeight / 2))
                     .DisposeWith(_disposable);
                 ViewModel?.WhenAnyValue(x => x.FirstTimeEntryOffset)
+                    .ObserveOn(RxApp.MainThreadScheduler)
                     .Where(_ => !ViewModel.IsTodaySelected)
                     .Subscribe(SetMainViewScrollOffset)
                     .DisposeWith(_disposable);
