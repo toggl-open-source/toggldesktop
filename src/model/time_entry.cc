@@ -74,6 +74,58 @@ bool TimeEntry::ResolveError(const error &err) {
     return false;
 }
 
+bool TimeEntry::ResolveError(const Error &err) {
+    if (err->Class() == "ModelError") {
+        auto mErr = err.promote<ModelError>();
+        switch (mErr->Type()) {
+        case ERROR_DURATION_TOO_LARGE:
+            if (StopTime() && StartTime()) {
+                Poco::Int64 seconds =
+                    (std::min)(StopTime() - StartTime(),
+                               Poco::Int64(kMaxTimeEntryDurationSeconds));
+                SetDurationInSeconds(seconds, true);
+                return true;
+            }
+            break;
+        case ERROR_START_TIME_WRONG_YEAR:
+            if (StopTime() && StartTime()) {
+                Poco::Int64 seconds =
+                    (std::min)(StopTime() - StartTime(),
+                               Poco::Int64(kMaxTimeEntryDurationSeconds));
+                SetDurationInSeconds(seconds, true);
+                SetStartTime(StopTime() - Duration(), true);
+                return true;
+            }
+            break;
+        case ERROR_STOP_TIME_BEFORE_START_TIME:
+            if (StopTime() && StartTime()) {
+                SetStopTime(StartTime() + DurationInSeconds(), true);
+                return true;
+            }
+            break;
+        case ERROR_CANNOT_ACCESS_WORKSPACE:
+            SetWID(0);
+            SetPID(0, true);
+            SetTID(0, true);
+            return true;
+        case ERROR_CANNOT_ACCESS_PROJECT:
+            SetPID(0, true);
+            SetTID(0, true);
+            return true;
+        case ERROR_CANNOT_ACCESS_TASK:
+            SetTID(0, true);
+            return true;
+        case ERROR_BILLABLE_IS_PREMIUM:
+            SetBillable(false, true);
+            return true;
+        case ERROR_MISSING_CREATEDWITH:
+            SetCreatedWith(HTTPClient::Config.UserAgent());
+            return true;
+        }
+    }
+    return false;
+}
+
 bool TimeEntry::isNotFound(const error &err) {
     return std::string::npos != std::string(err).find(
         "Time entry not found");

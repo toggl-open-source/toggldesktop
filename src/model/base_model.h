@@ -21,6 +21,34 @@
 
 namespace toggl {
 
+enum ModelErrors {
+    ERROR_NAME_HAS_BEEN_TAKEN = ErrorBase::FIRST_AVAILABLE_ENUM,
+    ERROR_NAME_ALREADY_EXISTS,
+    ERROR_CANNOT_ACCESS_WORKSPACE,
+    ERROR_CANNOT_ACCESS_PROJECT,
+    ERROR_CANNOT_ACCESS_TASK,
+    ERROR_IS_IN_ANOTHER_WORKSPACE, // This should probably be handled by the library and not shown to the user
+    ERROR_ONLY_ADMINS_CAN_CHANGE_VISIBILITY,
+    ERROR_DURATION_TOO_LARGE,
+    ERROR_START_TIME_WRONG_YEAR,
+    ERROR_STOP_TIME_BEFORE_START_TIME,
+    ERROR_BILLABLE_IS_PREMIUM,
+    ERROR_MISSING_CREATEDWITH,
+    ERROR_TIME_ENTRY_LOCKED,
+    ERROR_TIME_ENTRY_NOT_FOUND,
+};
+inline static const std::map<int, std::string> ModelErrorMessages {
+    // why the hell are these two different?
+    { ERROR_NAME_HAS_BEEN_TAKEN, "Name already exists" },
+    { ERROR_NAME_ALREADY_EXISTS, "Name has already been taken" },
+    { ERROR_CANNOT_ACCESS_WORKSPACE, "Cannot access workspace" }
+};
+inline static const std::multimap<int, std::string> ModelErrorRegexes {
+    // again, I don't understand this but the message being checked was incomplete in commit 213d9876 so I'm sticking to it to be sure
+    { ERROR_NAME_ALREADY_EXISTS, "(Client|Project|Task) name already.*" },
+    { ERROR_CANNOT_ACCESS_WORKSPACE, "cannot access workspace" }
+};
+
 class ModelError : public ErrorBase {
 public:
     ~ModelError() {}

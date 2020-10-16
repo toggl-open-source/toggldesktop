@@ -124,7 +124,7 @@ namespace toggl {
          *
          * @return a shared pointer to a derived error type
          */
-        template<class T> std::shared_ptr<T> promote() {
+        template<class T> std::shared_ptr<T> promote() const {
             return std::dynamic_pointer_cast<T>(data_);
         }
     private:
