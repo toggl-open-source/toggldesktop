@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DynamicData.Binding;
 using ReactiveUI;
 using TogglDesktop.ViewModels;
 
@@ -35,13 +36,29 @@ namespace TogglDesktop
                 _disposable = new CompositeDisposable();
 
                 ViewModel?.WhenAnyValue(x => x.SelectedScaleMode).Buffer(2, 1)
-                    .Select(b => (double)ViewModel.ScaleModes[b[1]] / ViewModel.ScaleModes[b[0]])
-                    .Subscribe(ratio => MainViewScroll.ScrollToVerticalOffset(MainViewScroll.VerticalOffset * ratio))
+                    .ObserveOn(RxApp.MainThreadScheduler)
+                    .Select(b => (double)TimelineViewModel.ScaleModes[b[1]] / TimelineViewModel.ScaleModes[b[0]])
+                    .Subscribe(ratio => SetMainViewScrollOffset(MainViewScroll.VerticalOffset * ratio))
                     .DisposeWith(_disposable);
-                ViewModel?.WhenAnyValue(x => x.SelectedDate).Where(date => date.Date == DateTime.Today)
-                    .Subscribe(_ => SetScrollToCurrentTime())
+                ViewModel?.WhenValueChanged(x => x.IsTodaySelected)
+                    .Where(x => x)
+                    .ObserveOn(RxApp.MainThreadScheduler)
+                    .Subscribe(_ => MainViewScroll.ScrollToVerticalOffset(ViewModel.CurrentTimeOffset - MainViewScroll.ActualHeight / 2))
+                    .DisposeWith(_disposable);
+                ViewModel?.WhenAnyValue(x => x.FirstTimeEntryOffset)
+                    .ObserveOn(RxApp.MainThreadScheduler)
+                    .Where(_ => !ViewModel.IsTodaySelected)
+                    .Subscribe(SetMainViewScrollOffset)
                     .DisposeWith(_disposable);
             }
+        }
+
+        public void SetMainViewScrollOffset(double offset)
+        {
+            if (this.TryBeginInvoke(SetMainViewScrollOffset, offset))
+                return;
+
+            MainViewScroll.ScrollToVerticalOffset(offset);
         }
 
         private void RecordActivityInfoBoxOnMouseEnter(object sender, MouseEventArgs e)
@@ -67,15 +84,10 @@ namespace TogglDesktop
 
         private void OnMainViewScrollLoaded(object sender, RoutedEventArgs e)
         {
-            if (ViewModel?.SelectedDate.Date == DateTime.Today)
-                SetScrollToCurrentTime();
+            if (ViewModel?.IsTodaySelected == true)
+                MainViewScroll.ScrollToVerticalOffset(ViewModel.CurrentTimeOffset - MainViewScroll.ActualHeight / 2);
         }
 
-        private void SetScrollToCurrentTime()
-        {
-            var height = ViewModel.ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, ViewModel.SelectedScaleMode);
-            MainViewScroll.ScrollToVerticalOffset(height - MainViewScroll.ActualHeight / 2);
-        }
         private void OnTimeEntryBlockMouseEnter(object sender, MouseEventArgs e)
         {
             if (sender is FrameworkElement uiElement && uiElement.DataContext is TimeEntryBlock curBlock)
