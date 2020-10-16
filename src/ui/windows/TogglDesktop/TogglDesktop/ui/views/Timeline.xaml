@@ -37,15 +37,14 @@
                       IsChecked="{Binding RecordActivity}">
                     Record activity
                 </mah:ToggleSwitch>
-                <Grid Width="16" Height="16"
-                      VerticalAlignment="Center"
+                <Grid VerticalAlignment="Bottom"
                       HorizontalAlignment="Left"
-                      Margin="5 12 0 0">
-                    <Canvas MouseEnter="RecordActivityInfoBoxOnMouseEnter" x:Name="InfoIcon">
-                        <Path Fill="#B1B1B5" Data="{StaticResource Toggl.InfoIconGeometry}"/>
-                    </Canvas>
-                    <Popup IsOpen="False" Name="RecordActivityInfoPopup" StaysOpen="False" UseLayoutRounding="True"
-                           PlacementTarget="{Binding ElementName=InfoIcon}" AllowsTransparency="True">
+                      Margin="5 0 0 2">
+                    <ToggleButton Name="InfoButton"
+                                  Style="{StaticResource Toggl.Timeline.InfoButton}"/>
+                    <Popup IsOpen="{Binding ElementName=InfoButton, Path=IsChecked}" Name="RecordActivityInfoPopup" UseLayoutRounding="True"
+                           StaysOpen="{Binding ElementName=InfoButton, Path=IsMouseOver}"
+                           PlacementTarget="{Binding ElementName=InfoButton}" AllowsTransparency="True">
                         <Border BorderThickness="1" Background="{DynamicResource Toggl.CardBackground}"
                                 BorderBrush="{DynamicResource Toggl.Background}">
                             <StackPanel MaxWidth="250" Margin="10 10 10 10">
@@ -101,7 +100,7 @@
             <ScrollViewer Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
                           VerticalScrollBarVisibility="Auto"
                           HorizontalAlignment="Stretch"
-                          Margin="0 0"
+                          Margin="0 0 6 0"
                           Focusable="False"
                           IsTabStop="False"
                           UseLayoutRounding="True"
@@ -360,18 +359,18 @@
                     </Popup>
                 </Grid>
             </ScrollViewer>
+            <TextBlock Grid.Row="3" Grid.Column="1" Text="No entries here... Go ahead and track some time!" Width="125" HorizontalAlignment="Center"
+                       VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"
+                       Visibility="{Binding TimeEntryBlocks, Converter={StaticResource EmptyListToVisibleConverter}}"
+                       MouseWheel="HandleScrollViewerMouseWheel"/>
+            <TextBlock Grid.Row="3" Grid.Column="2" Text="No activity was recorded yet..." HorizontalAlignment="Center"
+                       VerticalAlignment="Center" TextAlignment="Center" 
+                       Visibility="{Binding ActivityBlocks, Converter={StaticResource EmptyListToVisibleConverter}}"
+                       MouseWheel="HandleScrollViewerMouseWheel">
+                <TextBlock.LayoutTransform>
+                    <RotateTransform Angle="90"/>
+                </TextBlock.LayoutTransform>
+            </TextBlock>
         </Grid>
-        <TextBlock Text="No entries here... Go ahead and track some time!" Width="125" HorizontalAlignment="Center"
-                   VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Margin="0 100 0 0"
-                   Visibility="{Binding TimeEntryBlocks, Converter={StaticResource EmptyListToVisibleConverter}}"
-                   MouseWheel="HandleScrollViewerMouseWheel"/>
-        <TextBlock Text="No activity was recorded yet..." HorizontalAlignment="Right"
-                   VerticalAlignment="Center" TextAlignment="Center" Margin="0 100 10 0"
-                   Visibility="{Binding ActivityBlocks, Converter={StaticResource EmptyListToVisibleConverter}}"
-                   MouseWheel="HandleScrollViewerMouseWheel">
-            <TextBlock.LayoutTransform>
-                <RotateTransform Angle="90"/>
-            </TextBlock.LayoutTransform>
-        </TextBlock>
     </Grid>
 </UserControl>

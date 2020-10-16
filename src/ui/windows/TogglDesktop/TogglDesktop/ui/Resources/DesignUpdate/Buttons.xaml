@@ -350,7 +350,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid>
+                    <Grid UseLayoutRounding="False">
                         <Rectangle Stroke="{DynamicResource Toggl.LightGrayBrush}"
                                    StrokeDashArray="1 1"
                                    StrokeThickness="2"
@@ -359,7 +359,7 @@
                                    RadiusY="7">
                         </Rectangle>
                         <Viewbox Stretch="None">
-                            <Path Opacity="0.348" Fill="{DynamicResource Toggl.DarkGrayBrush}" Data="M9.437 4.844v1.312h-3.28v3.281H4.843V6.156H1.562V4.844h3.282V1.561h1.312v3.281h3.281z"/>
+                            <Path Opacity="0.348" Fill="{DynamicResource Toggl.DarkGrayBrush}" Data="M 0 5h4.25v4.25h1.5v-4.25h4.25v-1.5h-4.25v-4.25h-1.5v4.25h-4.25Z"/>
                         </Viewbox>
                     </Grid>
                 </ControlTemplate>
@@ -392,6 +392,31 @@
                     <Grid Width="20" Height="20" Background="Transparent">
                         <Path Fill="{Binding Path=Foreground,  RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}}"
                               Data="M10 4c.552 0 1 .456 1 1.002V9h3.998c.514 0 .937.383.995.883L16 10c0 .552-.456 1-1.002 1H11v3.998a.999.999 0 0 1-.883.995L10 16c-.552 0-1-.456-1-1.002V11H5.002a.999.999 0 1 1 0-2H9V5.002c0-.514.383-.937.883-.995L10 4z"></Path>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ButtonBase" x:Key="Toggl.Timeline.InfoButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid x:Name="InfoIcon" Background="Transparent" VerticalAlignment="Center">
+                        <Path Data="{StaticResource Toggl.InfoIconGeometry}">
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Fill" Value="#B1B1B5"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=InfoButton, Path=IsMouseOver}" Value="True">
+                                            <Setter Property="Fill" Value="{DynamicResource Toggl.DarkGrayBrush}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=InfoButton, Path=IsChecked}" Value="True">
+                                            <Setter Property="Fill" Value="{DynamicResource Toggl.DarkGrayBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
