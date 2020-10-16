@@ -163,10 +163,6 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     std::vector<const TimelineEvent *> CompressedTimelineForUI(const Poco::LocalDateTime *date) const;
     std::vector<const TimelineEvent *> CompressedTimelineForUpload(const Poco::LocalDateTime *date = nullptr) const;
 
-    error UpdateJSON(
-        std::vector<TimeEntry *> * const,
-        std::string *result) const;
-
     // excludeCollapseTimeEntries should be removed when getting rid of Context::pullUserPreferences
     bool LoadUserPreferencesFromJSON(
         const Json::Value &data,
