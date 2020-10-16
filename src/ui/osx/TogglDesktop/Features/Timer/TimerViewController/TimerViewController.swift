@@ -512,7 +512,8 @@ class TimerViewController: NSViewController {
             object: projectAutoCompleteWindow,
             queue: .main
         ) { [unowned self] _ in
-            if self.projectAutoCompleteWindow.isVisible {
+            let hasChildWindows = self.projectAutoCompleteWindow.childWindows?.isEmpty == false
+            if self.projectAutoCompleteWindow.isVisible && !hasChildWindows {
                 self.projectAutocompleteResignTime = Date().timeIntervalSince1970
                 self.closeProjectAutoComplete()
             }
