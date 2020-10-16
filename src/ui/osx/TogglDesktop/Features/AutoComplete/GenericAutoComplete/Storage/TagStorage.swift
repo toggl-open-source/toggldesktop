@@ -19,7 +19,6 @@ extension Notification.Name {
     // MARK: Variables
 
     private(set) var tags: [Tag] = []
-    private var newTags: [Tag] = []
 
     // MARK: Public
 
@@ -42,7 +41,6 @@ extension Notification.Name {
     }
 
     func addNewTag(_ tag: Tag) {
-        newTags.append(tag)
         tags.append(tag)
     }
 }
@@ -50,21 +48,6 @@ extension Notification.Name {
 extension TagStorage {
 
     fileprivate func build(from viewItems: [ViewItem], complete: @escaping ([Tag]) -> Void) {
-        DispatchQueue.global(qos: .background).async {[weak self] in
-            guard let strongSelf = self else { return }
-            var tags = viewItems.map { Tag(viewItem: $0) }
-
-            // We have to add new tags manually
-            // It's a bug in Library
-            // There is no new tags, even if synced properly, until we open the TimeEntryEditor again
-            strongSelf.newTags.forEach { tag in
-                if !tags.contains(where: { $0.name == tag.name }) {
-                    tags.append(tag)
-                }
-            }
-            DispatchQueue.main.async {
-                complete(tags)
-            }
-        }
+        complete(viewItems.map { Tag(viewItem: $0) })
     }
 }
