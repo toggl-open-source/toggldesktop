@@ -414,6 +414,7 @@ final class TimerViewModel: NSObject {
         entryDescription = ""
         durationString = ""
         selectedTags = []
+        fetchTags()
         updateBillableStatus()
         focusTimer()
         actionsUsedBeforeStart = Set()

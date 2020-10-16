@@ -97,13 +97,12 @@ class TimerViewController: NSViewController {
 
         viewModel.projectDataSource.setup(with: projectAutoCompleteView)
         viewModel.tagsDataSource.setup(with: tagsAutoCompleteView)
-
-        viewModel.prepareData()
     }
 
     override func viewDidAppear() {
         super.viewDidAppear()
 
+        viewModel.prepareData()
         configureHideAutoCompleteWhenLostFocus()
     }
 
