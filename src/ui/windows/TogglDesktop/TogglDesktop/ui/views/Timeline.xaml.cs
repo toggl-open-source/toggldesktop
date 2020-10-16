@@ -105,5 +105,6 @@ namespace TogglDesktop
                 TimeEntryPopup.IsOpen = false;
             }
         }
+
     }
 }

@@ -42,7 +42,8 @@
                       Margin="5 0 0 2">
                     <ToggleButton Name="InfoButton"
                                   Style="{StaticResource Toggl.Timeline.InfoButton}"/>
-                    <Popup IsOpen="{Binding ElementName=InfoButton, Path=IsChecked}" Name="RecordActivityInfoPopup" StaysOpen="True" UseLayoutRounding="True"
+                    <Popup IsOpen="{Binding ElementName=InfoButton, Path=IsChecked}" Name="RecordActivityInfoPopup" UseLayoutRounding="True"
+                           StaysOpen="{Binding ElementName=InfoButton, Path=IsMouseOver}"
                            PlacementTarget="{Binding ElementName=InfoButton}" AllowsTransparency="True">
                         <Border BorderThickness="1" Background="{DynamicResource Toggl.CardBackground}"
                                 BorderBrush="{DynamicResource Toggl.Background}">
