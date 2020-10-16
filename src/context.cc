@@ -2746,14 +2746,14 @@ error Context::Login(
     }
 }
 
-error Context::AsyncSignup(const std::string &email,
+void Context::AsyncSignup(const std::string &email,
                            const std::string &password,
                            const uint64_t country_id) {
     std::thread backgroundThread([&](std::string email, std::string password, uint64_t country_id) {
         return this->Signup(email, password, country_id);
     }, email, password, country_id);
     backgroundThread.detach();
-    return noError;
+    return;
 }
 
 error Context::Signup(
@@ -2782,13 +2782,13 @@ error Context::GoogleSignup(
     return Login(access_token, kGoogleAccessToken, true);
 }
 
-error Context::AsyncGoogleSignup(const std::string &access_token,
+void Context::AsyncGoogleSignup(const std::string &access_token,
                                  const uint64_t country_id) {
     std::thread backgroundThread([&](std::string access_token, uint64_t country_id) {
         return this->GoogleSignup(access_token, country_id);
     }, access_token, country_id);
     backgroundThread.detach();
-    return noError;
+    return;
 }
 
 error Context::AppleSignup(
@@ -2803,7 +2803,7 @@ error Context::AppleSignup(
     return Login(access_token, kAppleAccessToken, true);
 }
 
-error Context::AsyncAppleSignup(
+void Context::AsyncAppleSignup(
     const std::string &access_token,
     const uint64_t country_id,
     const std::string &full_name) {
@@ -2811,7 +2811,7 @@ error Context::AsyncAppleSignup(
         return this->AppleSignup(access_token, country_id, full_name);
     }, access_token, country_id, full_name);
     backgroundThread.detach();
-    return noError;
+    return;
 }
 
 void Context::setUser(User *value, const bool logged_in) {
@@ -5758,12 +5758,8 @@ error Context::pushChanges(
             }
 
             // Update project id on time entries if needed
-            err = updateEntryProjects(
-                projects,
-                time_entries);
-            if (err != noError) {
-                return err;
-            }
+            updateEntryProjects(projects, time_entries);
+
             project_stopwatch.stop();
             ss << " | " << projects.size() << " projects in "
                << project_stopwatch.elapsed() / 1000 << " ms";
@@ -5904,7 +5900,7 @@ error Context::pushProjects(
     return err;
 }
 
-error Context::updateProjectClients(const std::vector<Client *> &clients,
+void Context::updateProjectClients(const std::vector<Client *> &clients,
                                     const std::vector<Project *> &projects) {
     for (auto it = projects.cbegin(); it != projects.cend(); ++it) {
         if (!(*it)->CID() && !(*it)->ClientGUID().empty()) {
@@ -5918,10 +5914,10 @@ error Context::updateProjectClients(const std::vector<Client *> &clients,
         }
     }
 
-    return noError;
+    return;
 }
 
-error Context::updateEntryProjects(const std::vector<Project *> &projects,
+void Context::updateEntryProjects(const std::vector<Project *> &projects,
                                    const std::vector<TimeEntry *> &time_entries) {
     for (std::vector<TimeEntry *>::const_iterator it =
         time_entries.begin();
@@ -5939,7 +5935,7 @@ error Context::updateEntryProjects(const std::vector<Project *> &projects,
         }
     }
 
-    return noError;
+    return;
 }
 
 error Context::pushEntries(
@@ -6783,10 +6779,10 @@ error Context::ToSAccept() {
     return noError;
 }
 
-error Context::ToggleEntriesGroup(std::string name) {
+void Context::ToggleEntriesGroup(std::string name) {
     entry_groups[name] = !entry_groups[name];
     OpenTimeEntryList();
-    return noError;
+    return;
 }
 
 error Context::AsyncPullCountries() {
