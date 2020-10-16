@@ -362,6 +362,7 @@ final class TimerViewModel: NSObject {
         if isNewEntry {
             entryDescription = entry.entryDescription ?? ""
             durationString = entry.duration ?? ""
+            onDescriptionFocusChanged?(false)
 
         } else if entry.isRunning() {
             let isDescriptionEditing = isEditingDescription?() ?? true
