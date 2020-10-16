@@ -29,7 +29,7 @@ namespace TogglDesktop
 
         private void OnThumbTopDragDelta(object sender, DragDeltaEventArgs e)
         {
-            if (ViewModel.Height + e.VerticalChange > 0)
+            if (ViewModel.Height - e.VerticalChange > 0)
             {
                 ViewModel.VerticalOffset += e.VerticalChange;
                 ViewModel.Height -= e.VerticalChange;

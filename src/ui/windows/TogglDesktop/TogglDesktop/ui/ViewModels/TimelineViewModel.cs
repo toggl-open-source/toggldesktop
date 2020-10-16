@@ -376,13 +376,12 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public bool IsEditViewOpened { get; set; }
 
-        private double _hourHeight;
+        private readonly double _hourHeight;
 
         public TimeEntryBlock(string timeEntryId, int hourHeight)
         {
             _hourHeight = hourHeight;
             TimeEntryId = timeEntryId;
-            CreateTimeEntryFromBlock = ReactiveCommand.Create(() => AddNewTimeEntry());
             OpenEditView = ReactiveCommand.Create(() => Toggl.Edit(TimeEntryId, false, Toggl.Description));
             CreateTimeEntryFromBlock = ReactiveCommand.Create(AddNewTimeEntry);
         }
