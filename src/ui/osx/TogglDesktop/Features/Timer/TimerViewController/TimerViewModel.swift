@@ -231,6 +231,21 @@ final class TimerViewModel: NSObject {
         actionsUsedBeforeStart.insert(TimerEditActionTypeProject)
     }
 
+    func didCreateNewProject(_ project: Project) {
+        if !isRunning {
+            // when TE is running, the project is set on Library level
+            clearProject()
+        }
+
+        timeEntry.projectGUID = project.guid
+        timeEntry.projectColor = project.colorHex
+        timeEntry.projectLabel = project.name
+        timeEntry.taskLabel = project.taskName
+        timeEntry.clientLabel = project.clientName
+
+        onProjectUpdated?(project)
+    }
+
     // MARK: - Private
 
     private func startTimeEntry() {
@@ -569,24 +584,6 @@ extension TimerViewModel: NSTableViewDelegate {
             return inputField.worksapceItemHeight
         default:
             return inputField.itemHeight
-        }
-    }
-}
-
-// MARK: - Project struct
-
-extension TimerViewModel {
-
-    struct Project {
-        let color: NSColor
-        let attributedTitle: NSAttributedString
-
-        init?(timeEntry: TimeEntryViewItem) {
-            guard timeEntry.projectLabel != nil, timeEntry.projectLabel.isEmpty == false else {
-                return nil
-            }
-            self.color = ConvertHexColor.hexCode(toNSColor: timeEntry.projectColor)
-            self.attributedTitle = ProjectTitleFactory().title(for: timeEntry)
         }
     }
 }

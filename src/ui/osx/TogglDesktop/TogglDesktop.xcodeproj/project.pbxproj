@@ -618,6 +618,8 @@
 		C2A84AEA2524668900DAA468 /* Comparable+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A84AE82524668900DAA468 /* Comparable+Utils.swift */; };
 		C2A84B022524D0ED00DAA468 /* AutocompleteSourceViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A84B012524D0ED00DAA468 /* AutocompleteSourceViewType.swift */; };
 		C2A84B032524D0ED00DAA468 /* AutocompleteSourceViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A84B012524D0ED00DAA468 /* AutocompleteSourceViewType.swift */; };
+		C2C076D62538728E00C20527 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C076D52538728E00C20527 /* Project.swift */; };
+		C2C076D72538728E00C20527 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C076D52538728E00C20527 /* Project.swift */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
 		C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */; };
@@ -1099,6 +1101,7 @@
 		C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDescriptionFieldHandler.swift; sourceTree = "<group>"; };
 		C2A84AE82524668900DAA468 /* Comparable+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Utils.swift"; sourceTree = "<group>"; };
 		C2A84B012524D0ED00DAA468 /* AutocompleteSourceViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteSourceViewType.swift; sourceTree = "<group>"; };
+		C2C076D52538728E00C20527 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
 		C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCell.m; sourceTree = "<group>"; usesTabs = 1; };
 		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../lib/osx/build/Kopsik.dylib; sourceTree = "<group>"; };
@@ -2138,6 +2141,7 @@
 			isa = PBXGroup;
 			children = (
 				BA01404922570893000E5B91 /* Tag.swift */,
+				C2C076D52538728E00C20527 /* Project.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3045,6 +3049,7 @@
 				BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */,
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
 				4988E66024CEC8460072C1B5 /* TimerViewController.swift in Sources */,
+				C2C076D62538728E00C20527 /* Project.swift in Sources */,
 				BA65A24D22B79FEC00F895FD /* OGSwitch.swift in Sources */,
 				BA4791F822F0478A00E24F79 /* NSView+Shadow+Border.swift in Sources */,
 				BA47DEB823969EAC005216AD /* InAppMessage.swift in Sources */,
@@ -3273,6 +3278,7 @@
 				BAE64DC82368334000244D2B /* ConvertHexColor.m in Sources */,
 				BAE64DC92368334000244D2B /* TimeEntryViewItem.m in Sources */,
 				4988E66124CEC8460072C1B5 /* TimerViewController.swift in Sources */,
+				C2C076D72538728E00C20527 /* Project.swift in Sources */,
 				BAE64DCA2368334000244D2B /* NoClientCellView.swift in Sources */,
 				BAE64DCB2368334000244D2B /* IdleNotificationWindowController.m in Sources */,
 				BAE64DCC2368334000244D2B /* Tag.swift in Sources */,

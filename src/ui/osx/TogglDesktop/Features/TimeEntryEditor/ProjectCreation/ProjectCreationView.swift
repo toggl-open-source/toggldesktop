@@ -12,7 +12,7 @@ import Carbon.HIToolbox
 protocol ProjectCreationViewDelegate: class {
 
     func projectCreationDidCancel()
-    func projectCreationDidAdd(with name: String, color: String, projectGUID: String)
+    func projectCreationDidAdd(newProject: Project)
     func projectCreationDidUpdateSize()
 }
 
@@ -142,11 +142,11 @@ final class ProjectCreationView: NSView {
         delegate?.projectCreationDidCancel()
     }
 
-    private func getSelectedClientData() -> (UInt64, String?) {
+    private func getSelectedClientData() -> (id: UInt64, guid: String?, name: String?) {
         if let selectedClient = ClientStorage.shared.client(with: clientAutoComplete.stringValue) {
-            return (selectedClient.ID, selectedClient.guid)
+            return (selectedClient.ID, selectedClient.guid, selectedClient.name)
         }
-        return (0, nil)
+        return (0, nil, nil)
     }
 
     @IBAction func addBtnOnTap(_ sender: Any) {
@@ -159,8 +159,8 @@ final class ProjectCreationView: NSView {
         // Safe for unwrapped
         let isBillable = timeEntryIsBillable
         let workspaceID = selectedWorkspace.ID
-        let clientID = clientData.0
-        let clientGUID = clientData.1
+        let clientID = clientData.id
+        let clientGUID = clientData.guid
         let projectName = projectTextField.stringValue
         let colorHex = selectedColor.hex
 
@@ -177,7 +177,14 @@ final class ProjectCreationView: NSView {
                                                                                    isBillable: isBillable)
         }
 
-        delegate?.projectCreationDidAdd(with: projectName, color: colorHex, projectGUID: projectGUID)
+        delegate?.projectCreationDidAdd(
+            newProject: Project(
+                guid: projectGUID,
+                name: projectName,
+                colorHex: colorHex,
+                clientName: clientData.name
+            )
+        )
     }
 
     @IBAction func publicProjectOnChange(_ sender: Any) {

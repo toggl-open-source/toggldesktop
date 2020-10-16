@@ -652,18 +652,16 @@ extension TimerViewController: ProjectCreationViewDelegate {
         closeProjectAutoComplete()
     }
 
-    func projectCreationDidAdd(with name: String, color: String, projectGUID: String) {
+    func projectCreationDidAdd(newProject: Project) {
         switch descriptionFieldHandler.state {
         case .projectFilter:
             descriptionFieldHandler.didSelectProject()
             analyticsTrackShortcutCreated(.project)
-
         default:
             closeProjectAutoComplete()
         }
 
-        // TODO: set project on UI
-        // problem is we don't have library method to get project by GUID and pass it to view model
+        viewModel.didCreateNewProject(newProject)
     }
 
     func projectCreationDidUpdateSize() {
