@@ -65,7 +65,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
 
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.
-    Property<ValidationError> ValidationError { };
+    Property<class ValidationError> ValidationError { };
 
     // Flag is set only when sync fails.
     // Its for viewing purposes only. It should not
