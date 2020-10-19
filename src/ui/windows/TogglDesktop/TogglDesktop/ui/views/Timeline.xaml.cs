@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using DynamicData.Binding;
 using ReactiveUI;
+using TogglDesktop.Resources;
 using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
@@ -37,7 +38,7 @@ namespace TogglDesktop
 
                 ViewModel?.WhenAnyValue(x => x.SelectedScaleMode).Buffer(2, 1)
                     .ObserveOn(RxApp.MainThreadScheduler)
-                    .Select(b => (double)TimelineViewModel.ScaleModes[b[1]] / TimelineViewModel.ScaleModes[b[0]])
+                    .Select(b => (double)TimelineConstants.ScaleModes[b[1]] / TimelineConstants.ScaleModes[b[0]])
                     .Subscribe(ratio => SetMainViewScrollOffset(MainViewScroll.VerticalOffset * ratio))
                     .DisposeWith(_disposable);
                 ViewModel?.WhenValueChanged(x => x.IsTodaySelected)

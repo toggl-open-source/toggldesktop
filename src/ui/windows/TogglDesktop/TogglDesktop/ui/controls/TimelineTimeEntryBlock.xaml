@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:converters="clr-namespace:TogglDesktop.Converters"
+             xmlns:res="clr-namespace:TogglDesktop.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:TimeEntryBlock, IsDesignTimeCreatable=False}">
@@ -13,10 +13,9 @@
         <ResourceDictionary>
             <converters:RectangleHeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
             <converters:BrushOpacityConverter x:Key="BrushOpacityConverter"/>
-            <sys:Double x:Key="DescriptionOpacity">0.2</sys:Double>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Button FontWeight="Normal" Command="{Binding OpenEditView}" MinHeight="2" Margin="0 0 4 0" Height="{Binding Height}">
+    <Button FontWeight="Normal" Command="{Binding OpenEditView}" MinHeight="{x:Static res:TimelineConstants.MinTimeEntryBlockHeight}" Margin="0 0 4 0" Height="{Binding Height}">
         <Button.Template>
             <ControlTemplate>
                 <Grid>
@@ -26,15 +25,14 @@
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="1" CornerRadius="8,8,8,8" Background="{DynamicResource Toggl.Background}" Margin="-10 0 0 0"/>
                     <Rectangle Grid.Column="0" Name ="TimeEntrySpan"
-                               Width="20"
+                               Width="{x:Static res:TimelineConstants.TimeEntryBlockWidth}"
                                Fill="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
                                RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
                                RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}">
                     </Rectangle>
                     <Border CornerRadius="0,8,8,0" Margin="-10 0 0 0" Grid.Column="1"
                             BorderThickness="1"
-                            Background="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource DescriptionOpacity}}"
-                            MinHeight="2"
+                            Background="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={x:Static res:TimelineConstants.DescriptionOpacity}}"
                             Visibility="{Binding ShowDescription, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <StackPanel Height="{Binding Height}" Margin="20,0,0,0">
                             <TextBlock Text="{Binding Description}" Style="{StaticResource Toggl.CaptionBlackText}"/>
@@ -68,7 +66,7 @@
                         </StackPanel>
                         <Border.Style>
                             <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={StaticResource DescriptionOpacity}}"/>
+                                <Setter Property="BorderBrush" Value="{Binding ElementName=TimeEntrySpan, Path=Fill, Converter={StaticResource BrushOpacityConverter},ConverterParameter={x:Static res:TimelineConstants.DescriptionOpacity}}"/>
                                 <Style.Triggers>
                                     <DataTrigger  Binding="{Binding IsEditViewOpened}" Value="True">
                                         <Setter Property="BorderBrush" Value="{Binding ElementName=TimeEntrySpan, Path=Fill}"></Setter>
@@ -77,6 +75,34 @@
                             </Style>
                         </Border.Style>
                     </Border>
+                    <Thumb VerticalAlignment="Top"
+                           HorizontalAlignment="Stretch"
+                           Grid.Column="0" Grid.ColumnSpan="2"
+                           Cursor="SizeNS"
+                           Name="ThumbTop"
+                           Visibility="{Binding IsResizable, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           DragDelta="OnThumbTopDragDelta"
+                           DragCompleted="OnThumbTopDragCompleted">
+                        <Thumb.Template>
+                            <ControlTemplate>
+                                <Rectangle Fill="Transparent" Height="5"/>
+                            </ControlTemplate>
+                        </Thumb.Template>
+                    </Thumb>
+                    <Thumb VerticalAlignment="Bottom"
+                           HorizontalAlignment="Stretch"
+                           Grid.Column="0" Grid.ColumnSpan="2"
+                           Cursor="SizeNS"
+                           Name="ThumbBottom"
+                           Visibility="{Binding IsResizable, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           DragDelta="OnThumbBottomDragDelta"
+                           DragCompleted="OnThumbBottomDragCompleted">
+                        <Thumb.Template>
+                            <ControlTemplate>
+                                <Rectangle Fill="Transparent" Height="5"/>
+                            </ControlTemplate>
+                        </Thumb.Template>
+                    </Thumb>
                 </Grid>
             </ControlTemplate>
         </Button.Template>

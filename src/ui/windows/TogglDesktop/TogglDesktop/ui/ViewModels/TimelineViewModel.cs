@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using TogglDesktop.Resources;
 
 namespace TogglDesktop.ViewModels
 {
@@ -46,7 +47,7 @@ namespace TogglDesktop.ViewModels
             DecreaseScale = ReactiveCommand.Create(() => SelectedScaleMode = ChangeScaleMode(1));
             var scaleModeObservable = this.WhenAnyValue(x => x.SelectedScaleMode);
             scaleModeObservable.Subscribe(_ =>
-                HourHeightView = ScaleModes[SelectedScaleMode] * GetHoursInLine(SelectedScaleMode));
+                HourHeightView = TimelineConstants.ScaleModes[SelectedScaleMode] * GetHoursInLine(SelectedScaleMode));
             scaleModeObservable.Select(GetHoursListFromScale).ToPropertyEx(this, x => x.HourViews);
             scaleModeObservable.Select(mode => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, mode))
                 .Subscribe(h => CurrentTimeOffset = h);
@@ -75,7 +76,7 @@ namespace TogglDesktop.ViewModels
         }
 
         private int ChangeScaleMode(int value) =>
-            SelectedScaleMode + value < 0 || SelectedScaleMode + value > ScaleModes.Count - 1
+            SelectedScaleMode + value < 0 || SelectedScaleMode + value > TimelineConstants.ScaleModes.Count - 1
                 ? SelectedScaleMode
                 : SelectedScaleMode + value;
 
@@ -118,7 +119,6 @@ namespace TogglDesktop.ViewModels
             }
         }
 
-        private const int MaxActivityBlockDurationInSec = 900;
         private static List<ActivityBlock> ConvertChunksToActivityBlocks(List<Toggl.TimelineChunkView> chunks, int selectedScaleMode)
         {
             var blocks = new List<ActivityBlock>();
@@ -146,7 +146,7 @@ namespace TogglDesktop.ViewModels
                         block.ActivityDescriptions.Add(activity);
                         duration += eventDesc.Duration;
                     }
-                    block.Height = (1.0 * Math.Min(duration, MaxActivityBlockDurationInSec) * ScaleModes[selectedScaleMode]) / (60 * 60);
+                    block.Height = (1.0 * Math.Min(duration, TimelineConstants.MaxActivityBlockDurationInSec) * TimelineConstants.ScaleModes[selectedScaleMode]) / (60 * 60);
                     if (block.ActivityDescriptions.Any())
                         blocks.Add(block);
                 }
@@ -171,9 +171,9 @@ namespace TogglDesktop.ViewModels
             {
                 var startTime = Toggl.DateTimeFromUnix(entry.Started);
                 var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(entry.Ended), selectedScaleMode);
-                var block = new TimeEntryBlock(entry.GUID)
+                var block = new TimeEntryBlock(entry.GUID, TimelineConstants.ScaleModes[selectedScaleMode])
                 {
-                    Height = height < 2 ? 2 : height,
+                    Height = Math.Max(height, TimelineConstants.MinTimeEntryBlockHeight),
                     VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime, selectedScaleMode),
                     Color = entry.Color,
                     Description = entry.Description.IsNullOrEmpty() ? "No Description" : entry.Description,
@@ -185,8 +185,9 @@ namespace TogglDesktop.ViewModels
                     HasTag = !entry.Tags.IsNullOrEmpty(),
                     IsBillable = entry.Billable,
                     Duration = entry.DateDuration,
-                    StartEndCaption = entry.StartTimeString + " - " + entry.EndTimeString
-                };
+                    StartEndCaption = entry.StartTimeString + " - " + entry.EndTimeString,
+                    IsResizable = height >= TimelineConstants.MinResizableTimeEntryBlockHeight
+            };
                 if (entry.Started != entry.Ended)
                 {
                     timeStampsList.Add((TimeStampType.Start, block));
@@ -217,7 +218,7 @@ namespace TogglDesktop.ViewModels
                 return res;
             });
             var offsets = new HashSet<double>();
-            var curOffset = 0;
+            var curOffset = 0d;
             var usedNumOfOffsets = 0;
             TimeEntryBlock prevLayerBlock = null;
             foreach (var item in timeStampsList)
@@ -227,9 +228,9 @@ namespace TogglDesktop.ViewModels
                     if (!offsets.Any())
                     {
                         offsets.Add(curOffset);
-                        curOffset += 25;
+                        curOffset += TimelineConstants.TimeEntryBlockWidth+TimelineConstants.GapBetweenOverlappingTEs;
                     }
-                    if (usedNumOfOffsets > 0 || item.Block.Height < 20)
+                    if (usedNumOfOffsets > 0 || item.Block.Height < TimelineConstants.MinShowTEDescriptionHeight)
                     {
                         item.Block.ShowDescription = false;
                         if (prevLayerBlock != null)
@@ -254,7 +255,7 @@ namespace TogglDesktop.ViewModels
         public static double ConvertTimeIntervalToHeight(DateTime start, DateTime end, int scaleMode)
         {
             var timeInterval = (end - start).TotalMinutes;
-            return timeInterval * ScaleModes[scaleMode] / 60;
+            return timeInterval * TimelineConstants.ScaleModes[scaleMode] / 60;
         }
 
         private static List<TimeEntryBlock> GenerateGapTimeEntryBlocks(List<Toggl.TogglTimeEntryView> timeEntries, int selectedScaleMode)
@@ -267,7 +268,7 @@ namespace TogglDesktop.ViewModels
                 if (prevEnd != null && entry.Started > prevEnd.Value)
                 {
                     var start = Toggl.DateTimeFromUnix(prevEnd.Value+1);
-                    var block = new TimeEntryBlock()
+                    var block = new TimeEntryBlock(TimelineConstants.ScaleModes[selectedScaleMode])
                     {
                         Height = ConvertTimeIntervalToHeight(start, Toggl.DateTimeFromUnix(entry.Started - 1), selectedScaleMode),
                         VerticalOffset =
@@ -284,14 +285,6 @@ namespace TogglDesktop.ViewModels
             
             return gaps;
         }
-
-        public static IReadOnlyDictionary<int, int> ScaleModes { get; } = new Dictionary<int, int>()
-        {
-            {0, 200},
-            {1, 100},
-            {2, 50},
-            {3, 25}
-        };
 
         [Reactive] 
         public int SelectedScaleMode { get; private set; } = 0;
@@ -353,8 +346,10 @@ namespace TogglDesktop.ViewModels
 
     public class TimeEntryBlock : ReactiveObject
     {
+        [Reactive]
         public double VerticalOffset { get; set; }
         public double HorizontalOffset { get; set; }
+        [Reactive]
         public double Height { get; set; }
         public string Color { get; set; }
         public bool ShowDescription { get; set; }
@@ -374,20 +369,43 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public bool IsEditViewOpened { get; set; }
 
-        public TimeEntryBlock(string timeEntryId)
+        public bool IsResizable { get; set; }
+
+        private readonly double _hourHeight;
+
+        public TimeEntryBlock(string timeEntryId, int hourHeight)
         {
+            _hourHeight = hourHeight;
             TimeEntryId = timeEntryId;
-            CreateTimeEntryFromBlock = ReactiveCommand.Create(() => AddNewTimeEntry());
             OpenEditView = ReactiveCommand.Create(() => Toggl.Edit(TimeEntryId, false, Toggl.Description));
             CreateTimeEntryFromBlock = ReactiveCommand.Create(AddNewTimeEntry);
         }
 
-        public TimeEntryBlock() : this(null) { }
+        public TimeEntryBlock(int hourHeight) : this(null, hourHeight) { }
 
         private void AddNewTimeEntry()
         {
             TimeEntryId = Toggl.CreateEmptyTimeEntry(Started, Ended);
             OpenEditView.Execute().Subscribe();
+        }
+
+        private long ConvertOffsetToTime(double height, DateTime date)
+        {
+            var hours = 1.0 * height / _hourHeight;
+            var dateTime = date.AddHours(hours);
+            return Toggl.UnixFromDateTime(dateTime);
+        }
+
+        public void ChangeStartTime()
+        {
+            Toggl.SetTimeEntryStartTimeStamp(TimeEntryId,
+                ConvertOffsetToTime(VerticalOffset, Toggl.DateTimeFromUnix(Started).Date));
+        }
+
+        public void ChangeEndTime()
+        {
+            Toggl.SetTimeEntryEndTimeStamp(TimeEntryId,
+                ConvertOffsetToTime(VerticalOffset+Height, Toggl.DateTimeFromUnix(Ended).Date));
         }
     }
 }
