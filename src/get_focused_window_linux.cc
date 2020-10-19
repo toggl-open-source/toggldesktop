@@ -4,7 +4,6 @@
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif
-#pragma GCC diagnostic ignored "-Wgnu"
 
 #include <unistd.h>
 #include <fcntl.h>

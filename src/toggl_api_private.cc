@@ -340,7 +340,7 @@ TogglTimeEntryView *time_entry_view_item_init(
     if (te.Tags.empty()) {
         view_item->Tags = nullptr;
     } else {
-        view_item->Tags = copy_string(te.Tags.c_str());
+        view_item->Tags = copy_string(te.Tags);
     }
     view_item->UpdatedAt = static_cast<unsigned int>(te.UpdatedAt);
     view_item->DateHeader = copy_string(te.DateHeader);

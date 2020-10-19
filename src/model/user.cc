@@ -17,7 +17,7 @@
 #include "model/timeline_event.h"
 #include "urls.h"
 #include "onboarding_service.h"
-#include "model/alpha_features.h";
+#include "model/alpha_features.h"
 
 #include <Poco/Base64Decoder.h>
 #include <Poco/Base64Encoder.h>
@@ -768,8 +768,6 @@ error User::LoadWorkspacesFromJSONString(const std::string & json) {
         // If default wid is missing there are no workspaces
         return error(kMissingWS); // NOLINT
     }
-
-    std::set<Poco::UInt64> alive;
 
     for (unsigned int i = 0; i < root.size(); i++) {
         loadUserWorkspaceFromJSON(root[i]);

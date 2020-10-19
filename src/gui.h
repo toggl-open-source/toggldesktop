@@ -364,9 +364,8 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
 
     void DisplayProjectColors();
 
-    void DisplayTimeline(
-        const bool open,
-        const std::vector<const TimelineEvent*> list,
+    void DisplayTimeline(const bool open,
+        const std::vector<const TimelineEvent *> &list,
         const std::vector<view::TimeEntry> &entries_list);
 
     TogglTimelineEventView* SortList(TogglTimelineEventView *head);
@@ -380,8 +379,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     void DisplayClientSelect(
         const std::vector<view::Generic> &list);
 
-    void DisplayTags(
-        const std::vector<view::Generic> list);
+    void DisplayTags(const std::vector<view::Generic> &list);
 
     void DisplayAutotrackerRules(
         const std::vector<view::AutotrackerRule> &autotracker_rules,
@@ -627,7 +625,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         }
     }
 
-    void DisplayOnLoginSSO(std::string ssoURL);
+    void DisplayOnLoginSSO(const std::string &ssoURL);
 
     void DisplayTimelineUI(const bool isEnabled);
 

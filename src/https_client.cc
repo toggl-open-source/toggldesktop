@@ -137,7 +137,7 @@ void ServerStatus::runActivity() {
                 high = 2.0;
             }
             float r = low + static_cast<float>(rand()) /
-                      (static_cast<float>(RAND_MAX / (high - low)));
+                      (static_cast<float>(RAND_MAX) / (high - low));
             delay_seconds = static_cast<int>(delay_seconds * r);
 
             logger().debug("err=", resp.err, ", random=", r, ", delay_seconds=", delay_seconds);

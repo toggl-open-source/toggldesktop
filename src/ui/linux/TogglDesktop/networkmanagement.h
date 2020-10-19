@@ -2,6 +2,12 @@
 #define NETWORKMANAGEMENT_H
 
 #include <QObject>
+
+#ifdef QT_DEPRECATED_VERSION_5_15
+#undef QT_DEPRECATED_VERSION_5_15
+#endif
+#define QT_DEPRECATED_VERSION_5_15
+
 #include <QNetworkConfigurationManager>
 
 class NetworkManagement : public QObject

@@ -83,9 +83,7 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
             return true;
         }
     }
-    else {
-        return QComboBox::eventFilter(o, e);
-    }
+    return QComboBox::eventFilter(o, e);
 }
 
 AutocompleteView *AutocompleteComboBox::currentView() {

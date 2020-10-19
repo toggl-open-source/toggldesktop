@@ -450,7 +450,7 @@ void GUI::DisplayTimeEntryList(const bool open,
 }
 
 void GUI::DisplayTimeline(const bool open,
-    const std::vector<const TimelineEvent *> list,
+    const std::vector<const TimelineEvent *> &list,
     const std::vector<view::TimeEntry> &entries_list) {
 
     if (!on_display_timeline_) {
@@ -497,7 +497,7 @@ void GUI::DisplayTimeline(const bool open,
         TogglTimelineEventView *first_event = nullptr;
         TogglTimelineEventView *ev = nullptr;
         for (std::vector<const TimelineEvent*>::const_iterator it = list.begin();
-                it != list.end(); it++) {
+                it != list.end(); ++it) {
             const TimelineEvent *event = *it;
 
             // Calculate the start time of the chunk
@@ -577,7 +577,7 @@ void GUI::DisplayTimeline(const bool open,
     }
 
     std::string formatted_date = Formatter::FormatDateHeader(TimelineDateAt());
-    char_t *date = copy_string(formatted_date.c_str());
+    char_t *date = copy_string(formatted_date);
     on_display_timeline_(open, date, first_chunk, first_entry, start_day, end_day);
     free(date);
     time_entry_view_list_clear(first_entry);
@@ -632,7 +632,7 @@ TogglTimelineEventView* GUI::SortList(TogglTimelineEventView *head) {
     return top;
 }
 
-void GUI::DisplayTags(const std::vector<view::Generic> list) {
+void GUI::DisplayTags(const std::vector<view::Generic> &list) {
     logger.debug("DisplayTags");
 
     TogglGenericView *first = generic_to_view_item_list(list);
@@ -831,7 +831,7 @@ void GUI::DisplayOnboarding(const OnboardingType onboarding_type) {
     }
 }
 
-void GUI::DisplayOnLoginSSO(std::string ssoURL) {
+void GUI::DisplayOnLoginSSO(const std::string &ssoURL) {
     if (on_display_login_sso) {
         char_t *ssl_url = copy_string(ssoURL);
         on_display_login_sso(ssl_url);

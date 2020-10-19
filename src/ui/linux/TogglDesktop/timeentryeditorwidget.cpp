@@ -282,8 +282,11 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         ui->newProject->setVisible(false);
         ui->addNewProject->setVisible(false);
     }
-
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    QStringList tags = view->Tags.split("\t", Qt::SkipEmptyParts);
+#else
     QStringList tags = view->Tags.split("\t", QString::SkipEmptyParts);
+#endif
     tags.sort();
     previousTagList = tags.join("\t");
 

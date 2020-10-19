@@ -394,9 +394,6 @@ std::string UIElements::String() const {
     if (display_client_select) {
         ss << "display_client_select ";
     }
-    if (display_client_select) {
-        ss << "display_client_select ";
-    }
     if (display_workspace_select) {
         ss << "display_workspace_select ";
     }
@@ -2480,7 +2477,7 @@ error Context::GetSSOIdentityProvider(const std::string &email) {
     return noError;
 }
 
-void Context::SetNeedEnableSSO(const std::string code) {
+void Context::SetNeedEnableSSO(const std::string &code) {
     need_enable_SSO = true;
     sso_confirmation_code = code;
 }
@@ -2490,7 +2487,7 @@ void Context::ResetEnableSSO() {
     sso_confirmation_code = "";
 }
 
-void Context::LoginSSO(const std::string api_token) {
+void Context::LoginSSO(const std::string &api_token) {
     Login(api_token, "api_token");
 }
 
@@ -2762,7 +2759,7 @@ error Context::AsyncGoogleSignup(const std::string &access_token,
 error Context::AppleSignup(
     const std::string &access_token,
     const uint64_t country_id,
-    const std::string full_name) {
+    const std::string &full_name) {
     std::string json("");
     error err = signupApple(access_token, &json, full_name, country_id);
     if (err != noError) {
@@ -2774,7 +2771,7 @@ error Context::AppleSignup(
 error Context::AsyncAppleSignup(
     const std::string &access_token,
     const uint64_t country_id,
-    const std::string full_name) {
+    const std::string &full_name) {
     std::thread backgroundThread([&](std::string access_token, uint64_t country_id, std::string full_name) {
         return this->AppleSignup(access_token, country_id, full_name);
     }, access_token, country_id, full_name);
@@ -2995,8 +2992,8 @@ TimeEntry *Context::Start(
     const std::string &duration,
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
-    const std::string project_guid,
-    const std::string tags,
+    const std::string &project_guid,
+    const std::string &tags,
     const bool prevent_on_app,
     const time_t started,
     const time_t ended,
@@ -3495,12 +3492,12 @@ error Context::SetTimeEntryDate(
     return displayError(save(true));
 }
 
-error Context::SetTimeEntryStart(const std::string GUID,
+error Context::SetTimeEntryStart(const std::string &GUID,
                                  const Poco::Int64 startAt) {
     return SetTimeEntryStartWithOption(GUID, startAt, GetKeepEndTimeFixed());
 }
 
-error Context::SetTimeEntryStartWithOption(const std::string GUID,
+error Context::SetTimeEntryStartWithOption(const std::string &GUID,
         const Poco::Int64 startAt,
         const bool keepEndTimeFixed) {
     TimeEntry *te = nullptr;
@@ -3593,7 +3590,7 @@ error Context::SetTimeEntryStart(
     return displayError(save(true));
 }
 
-error Context::SetTimeEntryStop(const std::string GUID,
+error Context::SetTimeEntryStop(const std::string &GUID,
                                 const Poco::Int64 endAt) {
     TimeEntry *te = nullptr;
 
@@ -4310,7 +4307,7 @@ error Context::UpdateAutotrackerRule(
             return noError;
         }
 
-        error err = user_->related.UpdateAutotrackerRule(rule_id, terms, tid, pid, start_time, end_time, days_of_week);
+        error err = user_->related.UpdateAutotrackerRule(rule_id, lowercase, tid, pid, start_time, end_time, days_of_week);
         if (noError != err) {
             return displayError(err);
         }
@@ -4699,7 +4696,7 @@ void Context::osShutdown() {
     handleStopRunningEntry();
 }
 
-const bool Context::handleStopRunningEntry() {
+bool Context::handleStopRunningEntry() {
 
     // Skip if this feature is not enable
     if (!settings_.stop_entry_on_shutdown_sleep) {
@@ -4932,7 +4929,7 @@ error Context::StartAutotrackerEvent(const TimelineEvent &event) {
         }
 
         if (settings_.start_autotracker_without_suggestions) {
-            auto te = user_->Start("", "", rule->TID(), rule->PID(), "", "", 0, 0, true);
+            user_->Start("", "", rule->TID(), rule->PID(), "", "", 0, 0, true);
         }
         else {
             UI()->DisplayAutotrackerNotification(p, t);
@@ -5135,7 +5132,12 @@ void Context::syncerActivityWrapper() {
                     displayError(error);
                     break;
                 }
-                state = user_->AlphaFeatureSettings->IsSyncEnabled() ? state = BATCHED : LEGACY;
+                if (user_->AlphaFeatureSettings->IsSyncEnabled()) {
+                    state = BATCHED;
+                }
+                else {
+                    state = LEGACY;
+                }
                 logger.log("Syncer - Syncing protocol was selected: ", (state == BATCHED ? "BATCHED" : "LEGACY"));
                 break;
             }
@@ -6547,7 +6549,7 @@ error Context::signUpWithProvider(
     std::string *user_data_json,
     const uint64_t country_id,
     const std::string &full_name,
-    const std::string provider) {
+    const std::string &provider) {
     try {
         poco_check_ptr(user_data_json);
 
