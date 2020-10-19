@@ -366,7 +366,7 @@ final class TimerViewModel: NSObject {
 
         } else if entry.isRunning() {
             let isDescriptionEditing = isEditingDescription?() ?? true
-            if entryDescription.isEmpty || !isDescriptionEditing {
+            if !isDescriptionEditing {
                 entryDescription = entry.entryDescription ?? ""
             }
 
