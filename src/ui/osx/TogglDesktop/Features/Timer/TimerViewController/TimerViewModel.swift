@@ -362,10 +362,11 @@ final class TimerViewModel: NSObject {
         if isNewEntry {
             entryDescription = entry.entryDescription ?? ""
             durationString = entry.duration ?? ""
+            onDescriptionFocusChanged?(false)
 
         } else if entry.isRunning() {
             let isDescriptionEditing = isEditingDescription?() ?? true
-            if entryDescription.isEmpty || !isDescriptionEditing {
+            if !isDescriptionEditing {
                 entryDescription = entry.entryDescription ?? ""
             }
 
@@ -413,6 +414,7 @@ final class TimerViewModel: NSObject {
         entryDescription = ""
         durationString = ""
         selectedTags = []
+        fetchTags()
         updateBillableStatus()
         focusTimer()
         actionsUsedBeforeStart = Set()
@@ -539,7 +541,7 @@ extension TimerViewModel: NSTableViewDelegate {
     }
 
     func tableViewSelectionDidChange(_ notification: Notification) {
-        guard let row = descriptionDataSource.input?.autocompleteTableView.selectedRow, row >= 0 else {
+        guard let row = descriptionDataSource.input?.autocompleteTableView.lastClicked, row >= 0 else {
             return
         }
 
