@@ -88,6 +88,7 @@ static CGFloat dropdownHorizontalPadding = 11;
 							  forIdentifier :@"AutoCompleteTableCell"];
 
 	[self.autocompleteTableView setDelegate:self];
+	[self.autocompleteTableView setRefusesFirstResponder:YES];
 
 	[self.autocompleteTableContainer setDocumentView:self.autocompleteTableView];
 	[self.autocompleteTableContainer setAutohidesScrollers:YES];

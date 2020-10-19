@@ -11,7 +11,6 @@
 
 @interface AutoCompleteTable ()
 @property (nonatomic, assign) NSInteger lastSelected;
-@property (nonatomic, assign) NSInteger lastClicked;
 @end
 
 @implementation AutoCompleteTable
@@ -30,15 +29,6 @@
 		[self setIntercellSpacing:NSMakeSize(0, 0)];
 	}
 	return self;
-}
-
-- (void)mouseDown:(NSEvent *)theEvent
-{
-	NSPoint globalLocation = [theEvent locationInWindow];
-	NSPoint localLocation = [self convertPoint:globalLocation fromView:nil];
-
-	self.lastClicked = [self rowAtPoint:localLocation];
-	[super mouseDown:theEvent];
 }
 
 - (void)drawGridInClipRect:(NSRect)clipRect
