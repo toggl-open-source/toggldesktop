@@ -284,6 +284,7 @@
       <DependentUpon>ReminderNotification.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Notifications\TogglNotification.cs" />
+    <Compile Include="ui\Resources\TimelineConstants.cs" />
     <Compile Include="ui\Theming\Theme.cs" />
     <Compile Include="ui\Theming\ThemeResourceDictionary.cs" />
     <Compile Include="ui\Theming\ThemeType.cs" />
