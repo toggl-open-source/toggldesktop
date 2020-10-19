@@ -14,8 +14,8 @@
 
 namespace toggl {
 
-#define min_f(a, b, c)  (fminf(a, fminf(b, c)))
-#define max_f(a, b, c)  (fmaxf(a, fmaxf(b, c)))
+#define min_f(a, b, c)  (fmin(a, fmin(b, c)))
+#define max_f(a, b, c)  (fmax(a, fmax(b, c)))
 #define safe_range_f(value, min, max) (fmin(max, fmax(value, min)))
 
 TogglHsvColor ColorConverter::GetAdaptiveColor(const std::string &hexColor, TogglAdaptiveColor type) {
