@@ -69,6 +69,8 @@
 // We'll add user email once userdata has been loaded
 @property (nonatomic, strong) NSMenuItem *currentUserEmailMenuItem;
 
+@property (nonatomic, weak) IBOutlet NSMenuItem *checkForUpdateMenuItem;
+
 // Where logs are written and db is kept
 @property (nonatomic, copy) NSString *app_path;
 @property (nonatomic, copy) NSString *db_path;
@@ -293,6 +295,8 @@ void *ctx;
 		[[SUUpdater sharedUpdater] setDelegate:self.aboutWindowController];
 		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 	}
+#else
+    self.checkForUpdateMenuItem.hidden = YES;
 #endif
 
 	// Listen for system shutdown, to automatically stop timer. Experimental feature.
