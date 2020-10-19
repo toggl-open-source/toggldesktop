@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -24,13 +24,13 @@
                                     <action selector="onAboutMenuItem:" target="494" id="tGk-iF-fGC"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="View changelog" id="s5O-CH-CUm" userLabel="View changelog">
+                            <menuItem title="View Changelog" id="s5O-CH-CUm" userLabel="View changelog">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="onViewChangelogMenuItem:" target="494" id="gfS-by-tbT"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Check for update..." id="fZK-ps-0cd">
+                            <menuItem title="Check for Updates..." id="fZK-ps-0cd">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="checkForUpdates:" target="L4h-36-cEH" id="s3V-9r-CqY"/>
@@ -166,14 +166,14 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="wuv-bR-uz5"/>
-                            <menuItem title="Clear cache" tag="6" id="OCn-tS-va2">
+                            <menuItem title="Clear Cache" tag="6" id="OCn-tS-va2">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="onClearCacheMenuItem:" target="494" id="kgh-DN-75s"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="ocd-ur-e1h"/>
-                            <menuItem title="Log out" tag="2" id="R7N-z5-83z">
+                            <menuItem title="Log Out" tag="2" id="R7N-z5-83z">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="onLogoutMenuItem:" target="494" id="EQe-ox-ZRs"/>
@@ -304,7 +304,11 @@
             </items>
             <point key="canvasLocation" x="139" y="154"/>
         </menu>
-        <customObject id="494" customClass="AppDelegate"/>
+        <customObject id="494" customClass="AppDelegate">
+            <connections>
+                <outlet property="checkForUpdateMenuItem" destination="fZK-ps-0cd" id="dq3-VW-Te1"/>
+            </connections>
+        </customObject>
         <customObject id="420" customClass="NSFontManager"/>
         <segmentedControl verticalHuggingPriority="750" id="1458">
             <rect key="frame" x="0.0" y="0.0" width="164" height="23"/>
