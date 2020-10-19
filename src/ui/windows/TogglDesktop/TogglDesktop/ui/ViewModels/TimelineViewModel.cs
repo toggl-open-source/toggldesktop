@@ -171,7 +171,7 @@ namespace TogglDesktop.ViewModels
             {
                 var startTime = Toggl.DateTimeFromUnix(entry.Started);
                 var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(entry.Ended), selectedScaleMode);
-                var block = new TimeEntryBlock(entry.GUID, ScaleModes[SelectedScaleMode])
+                var block = new TimeEntryBlock(entry.GUID, ScaleModes[selectedScaleMode])
                 {
                     Height = height < 2 ? 2 : height,
                     VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime, selectedScaleMode),
@@ -185,8 +185,9 @@ namespace TogglDesktop.ViewModels
                     HasTag = !entry.Tags.IsNullOrEmpty(),
                     IsBillable = entry.Billable,
                     Duration = entry.DateDuration,
-                    StartEndCaption = entry.StartTimeString + " - " + entry.EndTimeString
-                };
+                    StartEndCaption = entry.StartTimeString + " - " + entry.EndTimeString,
+                    IsResizable = height >= 14 //Resize handles take 5 px each (10 in total)
+            };
                 if (entry.Started != entry.Ended)
                 {
                     timeStampsList.Add((TimeStampType.Start, block));
@@ -267,7 +268,7 @@ namespace TogglDesktop.ViewModels
                 if (prevEnd != null && entry.Started > prevEnd.Value)
                 {
                     var start = Toggl.DateTimeFromUnix(prevEnd.Value+1);
-                    var block = new TimeEntryBlock(ScaleModes[SelectedScaleMode])
+                    var block = new TimeEntryBlock(ScaleModes[selectedScaleMode])
                     {
                         Height = ConvertTimeIntervalToHeight(start, Toggl.DateTimeFromUnix(entry.Started - 1), selectedScaleMode),
                         VerticalOffset =
@@ -375,6 +376,8 @@ namespace TogglDesktop.ViewModels
 
         [Reactive]
         public bool IsEditViewOpened { get; set; }
+
+        public bool IsResizable { get; set; }
 
         private readonly double _hourHeight;
 

@@ -82,6 +82,7 @@
                            Grid.Column="0" Grid.ColumnSpan="2"
                            Cursor="SizeNS"
                            Name="ThumbTop"
+                           Visibility="{Binding IsResizable, Converter={StaticResource BooleanToVisibilityConverter}}"
                            DragDelta="OnThumbTopDragDelta"
                            DragCompleted="OnThumbTopDragCompleted">
                         <Thumb.Template>
@@ -95,6 +96,7 @@
                            Grid.Column="0" Grid.ColumnSpan="2"
                            Cursor="SizeNS"
                            Name="ThumbBottom"
+                           Visibility="{Binding IsResizable, Converter={StaticResource BooleanToVisibilityConverter}}"
                            DragDelta="OnThumbBottomDragDelta"
                            DragCompleted="OnThumbBottomDragCompleted">
                         <Thumb.Template>
