@@ -108,7 +108,7 @@ TogglRgbColor ColorConverter::hsvToRgb(TogglHsvColor hsvColor) {
     double h = hsvColor.h;
     double s = hsvColor.s;
     double v = hsvColor.v;
-    double r, g, b;
+    double r = 0.0, g = 0.0, b = 0.0;
 
     int i = int(h * 6);
     double f = h * 6 - i;
@@ -154,7 +154,7 @@ TogglRgbColor ColorConverter::hsvToRgb(TogglHsvColor hsvColor) {
         break;
     }
     }
-    return { r , g, b };
+    return { r, g, b };
 }
 
 }
