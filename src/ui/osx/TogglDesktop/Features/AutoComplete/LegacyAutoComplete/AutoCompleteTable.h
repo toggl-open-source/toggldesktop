@@ -12,7 +12,6 @@
 
 @interface AutoCompleteTable : NSTableView
 @property (nonatomic, assign, readonly) NSInteger lastSelected;
-@property (nonatomic, assign, readonly) NSInteger lastClicked;
 @property (nonatomic, assign) NSInteger lastSavedSelected;
 
 - (void)nextItem;

@@ -541,7 +541,7 @@ extension TimerViewModel: NSTableViewDelegate {
     }
 
     func tableViewSelectionDidChange(_ notification: Notification) {
-        guard let row = descriptionDataSource.input?.autocompleteTableView.lastClicked, row >= 0 else {
+        guard let row = descriptionDataSource.input?.autocompleteTableView.lastSelected, row >= 0 else {
             return
         }
 
