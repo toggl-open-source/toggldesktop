@@ -254,6 +254,8 @@ class TogglApi : public QObject {
     QRect const getWindowsFrameSetting();
     void setWindowsFrameSetting(const QRect frame);
 
+    uint8_t getUserBeginningOfWeek();
+
  signals:
     void displayApp(
         const bool open);
