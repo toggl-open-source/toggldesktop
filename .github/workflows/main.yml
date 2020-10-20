@@ -432,7 +432,7 @@ jobs:
       run: |
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.sln
     - name: Sign binaries
-      if: github.event_name == 'release'
+      #if: github.event_name == 'release'
       run: |
         ./dist/windows/scripts/sign.sh cert_password=${{ secrets.CERT_WINDOWS_PASSWORD }}
       shell: bash
@@ -441,7 +441,7 @@ jobs:
         cd dist/windows
         makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglDesktopInstaller-x86.nsi  
     - name: Sign the installer
-      if: github.event_name == 'release'
+      #if: github.event_name == 'release'
       shell: cmd
       run: |
         "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -fd SHA256 -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx -p "${{ secrets.CERT_WINDOWS_PASSWORD }}" dist\windows\TogglDesktopInstaller.exe
@@ -499,7 +499,7 @@ jobs:
       run: |
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.sln
     - name: Sign binaries
-      if: github.event_name == 'release'
+      #if: github.event_name == 'release'
       run: |
         ./dist/windows/scripts/sign.sh cert_password=${{ secrets.CERT_WINDOWS_PASSWORD }}
       shell: bash
@@ -508,7 +508,7 @@ jobs:
         cd dist/windows
         makensis /DCERT_PASSWORD=${{ secrets.CERT_WINDOWS_PASSWORD }} TogglDesktopInstaller-x64.nsi
     - name: Sign the installer
-      if: github.event_name == 'release'
+      #if: github.event_name == 'release'
       shell: cmd
       run: |
         "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -fd SHA256 -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx -p "${{ secrets.CERT_WINDOWS_PASSWORD }}" dist\windows\TogglDesktopInstaller-x64.exe
