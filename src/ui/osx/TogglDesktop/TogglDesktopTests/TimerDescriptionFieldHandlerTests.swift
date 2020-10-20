@@ -76,27 +76,27 @@ class TimerDescriptionFieldHandlerTests: XCTestCase {
 
     // MARK: - Text processing
 
-    func testControlTextDidChangeDoNotCrashIfNoEditor() {
+    func testControlTextCursorDidChangeDoNotCrashIfNoEditor() {
         window.makeFirstResponder(nil)
     }
 
-    func testControlTextDidChangeProjectShortcut() {
-        assertControlTextDidChangeDetectShortcutAtStart(shortcut: "@", state: State.projectFilter)
-        assertControlTextDidChangeDetectShortcutAtEnd(shortcut: "@", state: State.projectFilter)
-        assertControlTextDidChangeNeedSpaceBeforeShortcut(shortcut: "@")
-        assertControlTextDidChangeDetectShortcutInMiddle(shortcut: "@", state: State.projectFilter)
-        assertControlTextDidChangeHandleTwoSameShortcuts(shortcut: "@", state: State.projectFilter)
+    func testControlTextCursorDidChangeProjectShortcut() {
+        assertControlTextCursorDidChangeDetectShortcutAtStart(shortcut: "@", state: State.projectFilter)
+        assertControlTextCursorDidChangeDetectShortcutAtEnd(shortcut: "@", state: State.projectFilter)
+        assertControlTextCursorDidChangeNeedSpaceBeforeShortcut(shortcut: "@")
+        assertControlTextCursorDidChangeDetectShortcutInMiddle(shortcut: "@", state: State.projectFilter)
+        assertControlTextCursorDidChangeHandleTwoSameShortcuts(shortcut: "@", state: State.projectFilter)
     }
 
-    func testControlTextDidChangeDetectTagShortcut() {
-        assertControlTextDidChangeDetectShortcutAtStart(shortcut: "#", state: State.tagsFilter)
-        assertControlTextDidChangeDetectShortcutAtEnd(shortcut: "#", state: State.tagsFilter)
-        assertControlTextDidChangeNeedSpaceBeforeShortcut(shortcut: "#")
-        assertControlTextDidChangeDetectShortcutInMiddle(shortcut: "#", state: State.tagsFilter)
-        assertControlTextDidChangeHandleTwoSameShortcuts(shortcut: "#", state: State.tagsFilter)
+    func testControlTextCursorDidChangeDetectTagShortcut() {
+        assertControlTextCursorDidChangeDetectShortcutAtStart(shortcut: "#", state: State.tagsFilter)
+        assertControlTextCursorDidChangeDetectShortcutAtEnd(shortcut: "#", state: State.tagsFilter)
+        assertControlTextCursorDidChangeNeedSpaceBeforeShortcut(shortcut: "#")
+        assertControlTextCursorDidChangeDetectShortcutInMiddle(shortcut: "#", state: State.tagsFilter)
+        assertControlTextCursorDidChangeHandleTwoSameShortcuts(shortcut: "#", state: State.tagsFilter)
     }
 
-    func assertControlTextDidChangeDetectShortcutAtStart(shortcut: String, state: (String) -> State) {
+    func assertControlTextCursorDidChangeDetectShortcutAtStart(shortcut: String, state: (String) -> State) {
         textField.stringValue = "\(shortcut)"
         moveCursorToEnd()
         XCTAssertEqual(handler.state, state(""))
@@ -110,7 +110,7 @@ class TimerDescriptionFieldHandlerTests: XCTestCase {
         XCTAssertEqual(handler.state, state("project with space"))
     }
 
-    func assertControlTextDidChangeDetectShortcutAtEnd(shortcut: String, state: (String) -> State) {
+    func assertControlTextCursorDidChangeDetectShortcutAtEnd(shortcut: String, state: (String) -> State) {
         textField.stringValue = "some \(shortcut)"
         moveCursorToEnd()
         XCTAssertEqual(handler.state, state(""))
@@ -124,13 +124,13 @@ class TimerDescriptionFieldHandlerTests: XCTestCase {
         XCTAssertEqual(handler.state, state("pr with space and long"))
     }
 
-    func assertControlTextDidChangeNeedSpaceBeforeShortcut(shortcut: String) {
+    func assertControlTextCursorDidChangeNeedSpaceBeforeShortcut(shortcut: String) {
         textField.stringValue = "some\(shortcut)withoutspace"
         moveCursorToEnd()
         XCTAssertEqual(handler.state, State.autocompleteFilter("some\(shortcut)withoutspace"))
     }
 
-    func assertControlTextDidChangeDetectShortcutInMiddle(shortcut: String, state: (String) -> State) {
+    func assertControlTextCursorDidChangeDetectShortcutInMiddle(shortcut: String, state: (String) -> State) {
         textField.stringValue = "some \(shortcut)|text"
         moveCursor(to: 6)
         XCTAssertEqual(handler.state, state(""))
@@ -148,7 +148,7 @@ class TimerDescriptionFieldHandlerTests: XCTestCase {
         XCTAssertEqual(handler.state, state("proj"))
     }
 
-    func assertControlTextDidChangeHandleTwoSameShortcuts(shortcut: String, state: (String) -> State) {
+    func assertControlTextCursorDidChangeHandleTwoSameShortcuts(shortcut: String, state: (String) -> State) {
         textField.stringValue = "\(shortcut)\(shortcut)"
         moveCursorToEnd()
         XCTAssertEqual(handler.state, state("\(shortcut)"))
@@ -168,11 +168,7 @@ class TimerDescriptionFieldHandlerTests: XCTestCase {
 
     // MARK: - Text processing - Autocomplete
 
-    func testControlTextDidChangeDetectAutocompleteFilter() {
-        textField.stringValue = ""
-        moveCursorToEnd()
-        XCTAssertEqual(handler.state, State.autocompleteFilter(""))
-
+    func testControlTextCursorDidChangeDetectAutocompleteFilter() {
         textField.stringValue = "some"
         moveCursorToEnd()
         XCTAssertEqual(handler.state, State.autocompleteFilter("some"))
@@ -180,15 +176,19 @@ class TimerDescriptionFieldHandlerTests: XCTestCase {
         textField.stringValue = "some query with space"
         moveCursorToEnd()
         XCTAssertEqual(handler.state, State.autocompleteFilter("some query with space"))
+
+        textField.stringValue = ""
+        moveCursorToEnd()
+        XCTAssertEqual(handler.state, State.autocompleteFilter(""))
     }
 
-    func testControlTextDidChangeAutocompleteNotDependOnCursorLocation() {
+    func testControlTextCursorDidChangeAutocompleteNotDependOnCursorLocation() {
         textField.stringValue = "some query"
         moveCursor(to: 4)
         XCTAssertEqual(handler.state, State.autocompleteFilter("some query"))
     }
 
-    func testControlTextDidChangeWithDisabledProjectShortcutFlag() {
+    func testControlTextCursorDidChangeWithDisabledProjectShortcutFlag() {
         handler.isShortcutEnabled = false
 
         textField.stringValue = "@"
