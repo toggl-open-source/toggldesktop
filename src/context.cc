@@ -3494,6 +3494,9 @@ error Context::SetTimeEntryDate(
 
 error Context::SetTimeEntryStart(const std::string &GUID,
                                  const Poco::Int64 startAt) {
+    if ("production" == environment_) {
+        analytics_.TrackTimelineResizing(db_->AnalyticsClientID(), shortOSName());
+    }
     return SetTimeEntryStartWithOption(GUID, startAt, GetKeepEndTimeFixed());
 }
 
@@ -3592,6 +3595,10 @@ error Context::SetTimeEntryStart(
 
 error Context::SetTimeEntryStop(const std::string &GUID,
                                 const Poco::Int64 endAt) {
+    if ("production" == environment_) {
+        analytics_.TrackTimelineResizing(db_->AnalyticsClientID(), shortOSName());
+    }
+
     TimeEntry *te = nullptr;
 
     {

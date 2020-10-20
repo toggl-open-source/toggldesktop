@@ -98,6 +98,8 @@ class Analytics : public Poco::TaskManager {
 
     void TrackTimerShortcut(const std::string &client_id, const TimerShortcutActionType action);
 
+    void TrackTimelineResizing(const std::string& client_id, const std::string& os);
+
  private:
     Poco::LocalDateTime settings_sync_date;
 
