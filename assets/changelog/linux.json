@@ -15,8 +15,7 @@
                 "It's possible to turn off SSL verification in case of connection issues",
                 "The preferences dialog now always displays the first tab (General)"
             ],
-            "date": "October 14th 2020",
-            "beta": "true"
+            "date": "October 20th 2020"
         },
         {
             "version": "7.5.279",
