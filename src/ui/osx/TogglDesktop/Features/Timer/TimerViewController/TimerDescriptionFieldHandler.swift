@@ -197,13 +197,12 @@ extension TimerDescriptionFieldHandler: NSTextFieldDelegate {
     }
 
     private func autocompleteControl(doCommandBy commandSelector: Selector) -> Bool {
+        if textField.isListHidden {
+            return descriptionSimpleControl(doCommandBy: commandSelector)
+        }
+
         if commandSelector == #selector(moveDown(_:)) {
-            if textField.isListHidden {
-                textField.toggleList(true)
-                return true
-            } else {
-                return onPerformAction(.autoCompleteTableSelectNext)
-            }
+            return onPerformAction(.autoCompleteTableSelectNext)
 
         } else if commandSelector == #selector(moveUp(_:)) {
             return onPerformAction(.autoCompleteTableSelectPrevious)
