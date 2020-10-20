@@ -1,6 +1,20 @@
 {
     "versions": [
         {
+            "version": "7.5.343",
+            "rows": [
+                "Timeline UI view (available only for part of all users now)",
+                "Autotracker - showing suggestion also when there is a running entry",
+                "Autotracker - possible to start tracking automatically without showing the suggestion",
+                "Added awareness of 'First day of the week' setting",
+                "Fix icon colors",
+                "Fix SSO login for Microsoft Store users"
+            ],
+            "date": "October 20th 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.295",
             "rows": [
                 "Change application icon",
