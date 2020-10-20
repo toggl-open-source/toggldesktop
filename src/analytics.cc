@@ -368,6 +368,12 @@ void Analytics::TrackSignupWithApple(const std::string &client_id) {
     TrackUserAuthentication(client_id, "signup", "apple");
 }
 
+void Analytics::TrackTimelineResizing(const std::string& client_id, const std::string& os) {
+    std::stringstream action;
+    action << "edit" << "/" << "resize";
+    TrackTimeEntryActivity(client_id, os, action.str(), 1);
+}
+
 void Analytics::TrackTimeEntryActivity(const std::string &client_id,
                                        const std::string& os,
                                        const std::string &action,
