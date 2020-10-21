@@ -64,6 +64,11 @@ MainWindowController::MainWindowController(
 
     readSettings();
 
+    for (auto &i : QStringList { "8", "16", "22", "24", "32", "36", "44", "48", "64", "72", "96", "128", "150", "192", "256", "310", "512" }) {
+        icon.addFile(":/icons/" + i + "x" + i + "/toggldesktop.png");
+        iconDisabled.addFile(":/icons/" + i + "x" + i + "/toggldesktop_gray.png");
+    }
+
     connect(TogglApi::instance, SIGNAL(displayApp(bool)),  // NOLINT
             this, SLOT(displayApp(bool)));  // NOLINT
 

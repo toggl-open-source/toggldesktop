@@ -6,15 +6,41 @@
         <file>images/icon-billable-color.png</file>
         <file>images/icon-tags-color.png</file>
         <file>images/continue.svg</file>
+        <file>icons/8x8/toggldesktop.png</file>
         <file>icons/16x16/toggldesktop.png</file>
+        <file>icons/22x22/toggldesktop.png</file>
         <file>icons/24x24/toggldesktop.png</file>
         <file>icons/32x32/toggldesktop.png</file>
+        <file>icons/36x36/toggldesktop.png</file>
+        <file>icons/44x44/toggldesktop.png</file>
         <file>icons/48x48/toggldesktop.png</file>
         <file>icons/64x64/toggldesktop.png</file>
+        <file>icons/72x72/toggldesktop.png</file>
         <file>icons/96x96/toggldesktop.png</file>
         <file>icons/128x128/toggldesktop.png</file>
+        <file>icons/150x150/toggldesktop.png</file>
+        <file>icons/192x192/toggldesktop.png</file>
         <file>icons/256x256/toggldesktop.png</file>
+        <file>icons/310x310/toggldesktop.png</file>
+        <file>icons/512x512/toggldesktop.png</file>
         <file>icons/1024x1024/toggldesktop.png</file>
+        <file>icons/8x8/toggldesktop_gray.png</file>
+        <file>icons/16x16/toggldesktop_gray.png</file>
+        <file>icons/22x22/toggldesktop_gray.png</file>
+        <file>icons/24x24/toggldesktop_gray.png</file>
+        <file>icons/32x32/toggldesktop_gray.png</file>
+        <file>icons/36x36/toggldesktop_gray.png</file>
+        <file>icons/44x44/toggldesktop_gray.png</file>
+        <file>icons/48x48/toggldesktop_gray.png</file>
+        <file>icons/64x64/toggldesktop_gray.png</file>
+        <file>icons/72x72/toggldesktop_gray.png</file>
+        <file>icons/96x96/toggldesktop_gray.png</file>
+        <file>icons/128x128/toggldesktop_gray.png</file>
+        <file>icons/150x150/toggldesktop_gray.png</file>
+        <file>icons/192x192/toggldesktop_gray.png</file>
+        <file>icons/256x256/toggldesktop_gray.png</file>
+        <file>icons/310x310/toggldesktop_gray.png</file>
+        <file>icons/512x512/toggldesktop_gray.png</file>
         <file>icons/1024x1024/toggldesktop_gray.png</file>
         <file>images/continue_regular.svg</file>
         <file>images/continue_light.svg</file>
