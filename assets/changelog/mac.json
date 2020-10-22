@@ -1,6 +1,18 @@
 {
     "versions": [
         {
+            "version": "7.5.347",
+            "rows": [
+                "Type @ to add a project or # to add tags",
+                "Entries that are created from Timeline now have a default duration of one hour",
+                "Popovers on Timeline hidden automatically when the mouse moves out of time entry or activity bubble",
+                "Fixed bug when the text cursor was jumping to the end of the line when editing a description",
+                "Plus other small improvements and bug fixes"
+            ],
+            "date": "October 22nd 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.298",
             "rows": [
                 "Stability improvements",
