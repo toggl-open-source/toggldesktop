@@ -268,6 +268,8 @@ namespace TogglDesktop.ViewModels
                     var start = Toggl.DateTimeFromUnix(prevEnd.Value+1);
                     var block = new TimeEntryBlock(TimelineConstants.ScaleModes[selectedScaleMode])
                     {
+                        Started = prevEnd.Value + 1,
+                        Ended = entry.Started - 1,
                         Height = ConvertTimeIntervalToHeight(start, Toggl.DateTimeFromUnix(entry.Started - 1), selectedScaleMode),
                         VerticalOffset =
                             ConvertTimeIntervalToHeight(new DateTime(start.Year, start.Month, start.Day), start, selectedScaleMode),
@@ -401,7 +403,7 @@ namespace TogglDesktop.ViewModels
 
         private void AddNewTimeEntry()
         {
-            TimeEntryId = Toggl.CreateEmptyTimeEntry((ulong)Started, (ulong)Ended);
+            TimeEntryId = Toggl.CreateEmptyTimeEntry(Started, Ended);
             OpenEditView.Execute().Subscribe();
         }
 
