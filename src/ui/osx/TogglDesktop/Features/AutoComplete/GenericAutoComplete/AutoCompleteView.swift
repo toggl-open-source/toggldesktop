@@ -227,7 +227,8 @@ extension AutoCompleteView {
             case .tab:
                 // Don't focus to create button if it's hidden
                 if strongSelf.createNewItemContainerView.isHidden {
-                    return false
+                    strongSelf.delegate?.shouldClose()
+                    return true
                 }
 
                 // Only focus to create button if the view is expaned
