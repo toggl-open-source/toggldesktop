@@ -59,7 +59,7 @@
                                                            FontSize = "{TemplateBinding FontSize}"
                                                            Foreground = "{DynamicResource Toggl.PrimaryTextBrush}"
                                                            SelectionBrush = "{DynamicResource MahApps.Brushes.Highlight}"
-                                                           Text = "{Binding Path=SelectedDate, StringFormat='ddd, dd/MM/yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" >
+                                                           Text = "{Binding Text, RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" >
                                                 <b:Interaction.Behaviors >
                                                     <behaviors:DatePickerTextBoxBehavior />
                                                 </b:Interaction.Behaviors >
