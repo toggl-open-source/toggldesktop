@@ -32,9 +32,9 @@
     },
     "linux": {
         "dev": {
-            "version": "7.5.349",
-            "linux_tar.gz": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.349/toggldesktop_linux_7.5.349_x86_64.tar.gz",
-            "linux_deb64": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.349/toggldesktop_7.5.349_ubuntu1604_amd64.deb"
+            "version": "7.5.350",
+            "linux_tar.gz": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.350/toggldesktop_linux_7.5.350_x86_64.tar.gz",
+            "linux_deb64": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.350/toggldesktop_7.5.350_ubuntu1604_amd64.deb"
         },
         "beta": {
             "version": "7.5.324",
