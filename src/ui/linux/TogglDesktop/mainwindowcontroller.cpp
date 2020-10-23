@@ -521,6 +521,9 @@ void MainWindowController::showEvent(QShowEvent *event) {
 
     // Avoid 'user already logged in' error from double UI start
     if (ui_started) {
+        if (qobject_cast<TimeEntryListWidget*>(ui->stackedWidget->currentWidget())) {
+            qobject_cast<TimeEntryListWidget*>(ui->stackedWidget->currentWidget())->focusDescription();
+        }
         return;
     }
     ui_started = true;
