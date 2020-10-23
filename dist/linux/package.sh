@@ -160,7 +160,9 @@ function package() {
 
     echo "=========== Packaging" >&2
     mv "$BINDIR/TogglDesktop.sh" "$BINDIR"/..
-    tar cvfz $reporoot/toggldesktop_$(uname -m).tar.gz * >/dev/null
+    cd ..
+    mv "$PREFIX" toggldesktop
+    tar cvfz $reporoot/toggldesktop_$(uname -m).tar.gz toggldesktop >/dev/null
 
     popd >/dev/null
     echo "=========== Result is: $reporoot/toggldesktop_$(uname -m).tar.gz ==========="
