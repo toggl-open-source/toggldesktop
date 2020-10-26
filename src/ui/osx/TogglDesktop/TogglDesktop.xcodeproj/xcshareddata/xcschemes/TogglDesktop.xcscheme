@@ -80,6 +80,12 @@
             ReferencedContainer = "container:TogglDesktop.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints YES"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

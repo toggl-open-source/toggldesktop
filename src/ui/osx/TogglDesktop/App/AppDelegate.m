@@ -132,13 +132,6 @@ void *ctx;
 {
 	NSLog(@"applicationDidFinishLaunching");
 
-	if (![self.environment isEqualToString:@"production"] && ![self.version isEqualToString:@"7.0.0"])
-	{
-		// Turn on UI constraint debugging, if not in production
-		[[NSUserDefaults standardUserDefaults] setBool:YES
-												forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
-	}
-
 	self.mainWindowController = [[MainWindowController alloc] initWithWindowNibName:@"MainWindowController"];
 	[self.mainWindowController.window setReleasedWhenClosed:NO];
 
