@@ -20,6 +20,7 @@
 @property (nonatomic, assign) NSInteger proxy_port;
 @property (nonatomic, copy) NSString *proxy_username;
 @property (nonatomic, copy) NSString *proxy_password;
+@property (nonatomic, assign) BOOL ignoreSSLVerification;
 @property (nonatomic, assign) BOOL timeline_recording_enabled;
 @property (nonatomic, assign) NSInteger idle_minutes;
 @property (nonatomic, assign) BOOL focus_on_shortcut;

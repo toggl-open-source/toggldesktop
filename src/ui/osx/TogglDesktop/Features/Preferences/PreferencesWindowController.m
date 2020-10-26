@@ -68,6 +68,7 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSButton *proxyDoNot;
 @property (weak) IBOutlet NSButton *proxySystem;
 @property (weak) IBOutlet NSButton *proxyToggl;
+@property (weak) IBOutlet NSButton *ignoreSSLCheckbox;
 @property (weak) IBOutlet NSButton *addAutotrackerRuleButton;
 @property (weak) IBOutlet NSButton *changeDurationButton;
 @property (weak) IBOutlet NSSegmentedControl *tabSegment;
@@ -90,6 +91,7 @@ typedef enum : NSUInteger
 - (IBAction)portTextFieldChanged:(id)sender;
 - (IBAction)usernameTextFieldChanged:(id)sender;
 - (IBAction)passwordTextFieldChanged:(id)sender;
+- (IBAction)ignoreSSLCheckboxChanged:(id)sender;
 - (IBAction)useIdleDetectionButtonChanged:(id)sender;
 - (IBAction)usePomodoroButtonChanged:(id)sender;
 - (IBAction)usePomodoroBreakButtonChanged:(id)sender;
@@ -238,6 +240,10 @@ extern void *ctx;
 {
 	toggl_set_settings_use_idle_detection(ctx,
 										  [Utils stateToBool:[self.useIdleDetectionButton state]]);
+}
+
+- (IBAction)ignoreSSLCheckboxChanged:(id)sender {
+    [[DesktopLibraryBridge shared] setSettingsIgnoreSSLCert:self.ignoreSSLCheckbox.state == NSControlStateValueOn];
 }
 
 - (IBAction)usePomodoroButtonChanged:(id)sender
@@ -412,6 +418,8 @@ const int kUseProxyToConnectToToggl = 2;
 	Settings *settings = cmd.settings;
     self.settings = settings;
 
+    [self setupProxyTab:settings];
+
 	[self.useIdleDetectionButton setState:[Utils boolToState:settings.idle_detection]];
 	[self.usePomodoroButton setState:[Utils boolToState:settings.pomodoro]];
 	[self.usePomodoroBreakButton setState:[Utils boolToState:settings.pomodoro_break]];
@@ -422,25 +430,6 @@ const int kUseProxyToConnectToToggl = 2;
 	[self.reminderCheckbox setState:[Utils boolToState:settings.reminder]];
 	[self.focusOnShortcutCheckbox setState:[Utils boolToState:settings.focus_on_shortcut]];
 	[self.stopOnShutdownCheckbox setState:[Utils boolToState:settings.stopWhenShutdown]];
-
-	if (!settings.use_proxy && !settings.autodetect_proxy)
-	{
-		[self selectProxyRadioWithTag:kUseNoProxy];
-	}
-
-	if (settings.use_proxy)
-	{
-		[self selectProxyRadioWithTag:kUseProxyToConnectToToggl];
-	}
-	[self.hostTextField setStringValue:settings.proxy_host];
-	[self.portTextField setIntegerValue:settings.proxy_port];
-	[self.usernameTextField setStringValue:settings.proxy_username];
-	[self.passwordTextField setStringValue:settings.proxy_password];
-
-	[self.hostTextField setEnabled:settings.use_proxy];
-	[self.portTextField setEnabled:settings.use_proxy];
-	[self.usernameTextField setEnabled:settings.use_proxy];
-	[self.passwordTextField setEnabled:settings.use_proxy];
 
 	self.idleMinutesTextField.integerValue = settings.idle_minutes;
 	self.idleMinutesTextField.enabled = settings.idle_detection;
@@ -499,6 +488,30 @@ const int kUseProxyToConnectToToggl = 2;
 
     // Permission for Auto Tracker
     self.permissionBtn.hidden = settings.autotrack ? [ObjcSystemPermissionManager isScreenRecordingPermissionGranted] : YES;
+}
+
+- (void)setupProxyTab:(Settings *)settings
+{
+    if (!settings.use_proxy && !settings.autodetect_proxy)
+    {
+        [self selectProxyRadioWithTag:kUseNoProxy];
+    }
+
+    if (settings.use_proxy)
+    {
+        [self selectProxyRadioWithTag:kUseProxyToConnectToToggl];
+    }
+    [self.hostTextField setStringValue:settings.proxy_host];
+    [self.portTextField setIntegerValue:settings.proxy_port];
+    [self.usernameTextField setStringValue:settings.proxy_username];
+    [self.passwordTextField setStringValue:settings.proxy_password];
+
+    [self.hostTextField setEnabled:settings.use_proxy];
+    [self.portTextField setEnabled:settings.use_proxy];
+    [self.usernameTextField setEnabled:settings.use_proxy];
+    [self.passwordTextField setEnabled:settings.use_proxy];
+
+    self.ignoreSSLCheckbox.state = settings.ignoreSSLVerification ? NSControlStateValueOn : NSControlStateValueOff;
 }
 
 - (void)selectProxyRadioWithTag:(NSInteger)tag
