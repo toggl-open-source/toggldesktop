@@ -619,7 +619,7 @@ TogglTimelineEventView *timeline_event_view_init(
     TogglTimelineEventView *event_view = new TogglTimelineEventView();
     event_view->Title = copy_string(event->Title());
     event_view->Filename = copy_string(event->Filename());
-    event_view->Duration = std::min(event->EndTime(), chunk_end) - std::max(event->Start(), chunk_start);
+    event_view->Duration = (std::min)(event->EndTime(), chunk_end) - (std::max)(event->Start(), chunk_start);
     event_view->DurationString = copy_string(toggl::Formatter::FormatDuration(event_view->Duration, toggl::Format::ImprovedOnlyMinAndSec));
     event_view->Header = false;
     event_view->Next = nullptr;
