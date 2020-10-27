@@ -65,13 +65,19 @@ void WindowChangeRecorder::inspectFocusedWindow() {
         }
     }
 
+    idle = idle || getIsLocked() || getIsSleeping();
+
     time_t now;
     time(&now);
 
     time_t time_delta = now - last_event_started_at_;
 
+    if (last_filename_ != filename) {
+        current_app_started_at_ = now;
+    }
+
     if (last_event_started_at_ > 0) {
-        if (!last_idle_ && last_autotracker_title_ != title) {
+        if (!idle && last_autotracker_title_ != title && now - current_app_started_at_ >= kAutotrackerThresholdSeconds) {
             // Notify that the timeline event has started
             // we'll use this in auto tracking
             last_autotracker_title_ = title;
@@ -84,7 +90,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
             timeline_datasource_->StartAutotrackerEvent(event);
         }
     }
-    idle = idle || getIsLocked() || getIsSleeping();
+    
     bool idleChanged = hasIdlenessChanged(idle);
 
     if (idleChanged) {

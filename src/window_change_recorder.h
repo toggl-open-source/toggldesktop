@@ -85,6 +85,7 @@ class TOGGL_INTERNAL_EXPORT WindowChangeRecorder {
     std::string last_title_;
     std::string last_filename_;
     time_t last_event_started_at_;
+    time_t current_app_started_at_;
     bool last_idle_;
 
     TimelineDatasource *timeline_datasource_;
