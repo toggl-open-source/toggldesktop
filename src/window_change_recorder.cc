@@ -97,14 +97,15 @@ void WindowChangeRecorder::inspectFocusedWindow() {
         last_autotracker_title_ = "";
     }
 
-    if (!idleChanged && !hasWindowChanged(title, filename)) {
+    bool windowHasChanged = hasWindowChanged(title, filename);
+    if (!idleChanged && !windowHasChanged) {
         return;
     }
 
     // Lite version of timeline recorder
     // Since we don't have Screen Recording permission yet => title will be empty
     // So we only track the primary timeline (treat title is filename)
-    if (is_catalina_OSX && last_title_ == title && last_filename_ == filename) {
+    if (is_catalina_OSX && !windowHasChanged) {
         return;
     }
 
