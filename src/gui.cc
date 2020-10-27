@@ -482,6 +482,9 @@ void GUI::DisplayTimeline(const bool open,
         }
     }
 
+    auto get_duration = [](time_t event_start, time_t event_end, time_t chunk_start, time_t chunk_end) {
+        return min(chunk_end, event_end) - max(chunk_start, event_start);
+    };
     // Get activity
     while (datetime.year() == TimelineDateAt().year()
             && datetime.month() == TimelineDateAt().month()
@@ -500,13 +503,7 @@ void GUI::DisplayTimeline(const bool open,
                 it != list.end(); ++it) {
             const TimelineEvent *event = *it;
 
-            // Calculate the start time of the chunk
-            // that fits this timeline event
-            time_t chunk_start_time =
-                (event->Start() / kTimelineChunkSeconds)
-                * kTimelineChunkSeconds;
-
-            if (epoch_time != chunk_start_time) {
+            if (event->EndTime() < epoch_time || event->StartTime() > epoch_time_end) {
                 // Skip event if does not match chunk
                 continue;
             }
@@ -518,20 +515,22 @@ void GUI::DisplayTimeline(const bool open,
             TogglTimelineEventView *event_app = first_event;
             while (event_app) {
                 if (compare_string(event_app->Filename, to_char_t(event->Filename())) == 0) {
-                    timeline_event_view_update_duration(event_app, event_app->Duration + event->Duration());
+                    timeline_event_view_update_duration(event_app, event_app->Duration + 
+                        get_duration(event->StartTime(), event->EndTime(), epoch_time, epoch_time_end));
                     app_present = true;
                     item_present = false;
                     ev = reinterpret_cast<TogglTimelineEventView *>(event_app->Event);
                     while (ev) {
                         if (compare_string(ev->Title, to_char_t(event->Title())) == 0) {
-                            timeline_event_view_update_duration(ev, ev->Duration + event->Duration());
+                            timeline_event_view_update_duration(ev, ev->Duration + 
+                                get_duration(event->StartTime(), event->EndTime(), epoch_time, epoch_time_end));
                             item_present = true;
                         }
                         ev = reinterpret_cast<TogglTimelineEventView *>(ev->Next);
                     }
 
                     if (!item_present) {
-                        TogglTimelineEventView *event_view = timeline_event_view_init(event);
+                        TogglTimelineEventView *event_view = timeline_event_view_init(event, epoch_time, epoch_time_end);
                         event_view->Next = event_app->Event;
                         event_app->Event = event_view;
                     }
@@ -540,7 +539,7 @@ void GUI::DisplayTimeline(const bool open,
             }
 
             if (!app_present) {
-                TogglTimelineEventView *app_event_view = timeline_event_view_init(event);
+                TogglTimelineEventView *app_event_view = timeline_event_view_init(event, epoch_time, epoch_time_end);
                 if (event->Duration() > 0) {
                     app_event_view->Header = true;
                     if (app_event_view->Title) {
@@ -549,7 +548,7 @@ void GUI::DisplayTimeline(const bool open,
                     }
                     app_event_view->Title = copy_string("");
 
-                    TogglTimelineEventView *event_view = timeline_event_view_init(event);
+                    TogglTimelineEventView *event_view = timeline_event_view_init(event, epoch_time, epoch_time_end);
                     app_event_view->Event = event_view;
                     app_event_view->Next = first_event;
                     first_event = app_event_view;
