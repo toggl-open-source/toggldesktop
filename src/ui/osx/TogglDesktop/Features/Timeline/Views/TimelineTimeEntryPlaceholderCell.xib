@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -37,7 +37,7 @@
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="k5r-l6-xWv" userLabel="Placeholder text">
                                     <rect key="frame" x="-2" y="0.0" width="89" height="15"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" title="No Description" id="UTS-5M-sr1">
-                                        <font key="font" metaFont="cellTitle"/>
+                                        <font key="font" metaFont="label" size="12"/>
                                         <color key="textColor" name="black-text-color"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
@@ -52,7 +52,7 @@
                         </stackView>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="sgG-mk-OCF" secondAttribute="trailing" priority="750" id="1eU-b1-bRH"/>
+                        <constraint firstAttribute="trailing" secondItem="sgG-mk-OCF" secondAttribute="trailing" id="1eU-b1-bRH"/>
                         <constraint firstItem="sgG-mk-OCF" firstAttribute="top" secondItem="U1Q-Ej-cVI" secondAttribute="top" constant="4" id="Loe-wm-cVI"/>
                         <constraint firstItem="sgG-mk-OCF" firstAttribute="leading" secondItem="U1Q-Ej-cVI" secondAttribute="leading" constant="30" id="w9I-VI-Rps"/>
                     </constraints>
