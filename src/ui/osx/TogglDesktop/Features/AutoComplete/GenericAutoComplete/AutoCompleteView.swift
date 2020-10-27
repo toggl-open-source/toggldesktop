@@ -79,7 +79,12 @@ final class AutoCompleteView: NSView {
 
     // MARK: OUTLET
 
-    @IBOutlet weak var tableView: KeyboardTableView!
+    @IBOutlet weak var tableView: KeyboardTableView! {
+        didSet {
+            tableView.refusesFirstResponder = true
+        }
+    }
+
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tableScrollView: NSScrollView!
     @IBOutlet weak var createNewItemBtn: CursorButton!
@@ -228,7 +233,7 @@ extension AutoCompleteView {
                 // Don't focus to create button if it's hidden
                 if strongSelf.createNewItemContainerView.isHidden {
                     strongSelf.delegate?.shouldClose()
-                    return true
+                    return false
                 }
 
                 // Only focus to create button if the view is expaned
