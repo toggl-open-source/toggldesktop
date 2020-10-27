@@ -37,6 +37,8 @@
 
 	self.autodetect_proxy = data->AutodetectProxy;
 
+    self.ignoreSSLVerification = data->ForceIgnoreCert;
+
 	self.remind_starts = [NSString stringWithUTF8String:data->RemindStarts];
 	self.remind_ends = [NSString stringWithUTF8String:data->RemindEnds];
 

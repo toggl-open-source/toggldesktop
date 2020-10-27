@@ -105,6 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setActiveTabAtIndex:(NSInteger) index;
 - (NSInteger)getActiveTabIndex;
+- (void)setSettingsIgnoreSSLCert:(BOOL)ignore;
 
 #pragma mark - Auto Tracker
 

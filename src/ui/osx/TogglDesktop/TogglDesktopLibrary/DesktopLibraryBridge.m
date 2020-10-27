@@ -352,6 +352,11 @@ void *ctx;
     return toggl_get_active_tab(ctx);
 }
 
+- (void)setSettingsIgnoreSSLCert:(BOOL)ignore
+{
+    toggl_set_settings_ignore_cert(ctx, ignore);
+}
+
 - (NSString *)createNewTimeEntryWithOldTimeEntry:(TimeEntryViewItem *) item
 {
     NSString *tags = [item.tags componentsJoinedByString:@"\t"];
