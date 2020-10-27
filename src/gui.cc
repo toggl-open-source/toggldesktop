@@ -16,7 +16,6 @@
 #include "model/time_entry.h"
 #include "model/user.h"
 #include "model/workspace.h"
-
 #include <Poco/Stopwatch.h>
 
 namespace toggl {
@@ -483,7 +482,7 @@ void GUI::DisplayTimeline(const bool open,
     }
 
     auto get_duration = [](time_t event_start, time_t event_end, time_t chunk_start, time_t chunk_end) {
-        return min(chunk_end, event_end) - max(chunk_start, event_start);
+        return std::min(chunk_end, event_end) - std::max(chunk_start, event_start);
     };
     // Get activity
     while (datetime.year() == TimelineDateAt().year()
