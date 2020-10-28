@@ -77,6 +77,13 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
             else
                 listView->keyPressEvent(ke);
             return true;
+        case Qt::Key_Home:
+        case Qt::Key_End:
+            if (!listView->isVisible())
+                lineEdit()->event(e);
+            else
+                listView->event(e);
+            return true;
         default:
             QComboBox::keyPressEvent(ke);
             //lineEdit()->keyPressEvent(ke);
