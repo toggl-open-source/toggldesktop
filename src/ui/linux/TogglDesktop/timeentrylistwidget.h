@@ -32,6 +32,7 @@ class TimeEntryListWidget : public QWidget {
     TimerWidget *timer();
 
  public slots:
+    void focusDescription();
     void focusTimeEntryList();
 
  protected:

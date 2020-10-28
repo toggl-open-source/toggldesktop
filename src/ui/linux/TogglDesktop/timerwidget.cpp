@@ -81,6 +81,10 @@ QString TimerWidget::currentEntryGuid() {
     return guid;
 }
 
+void TimerWidget::focusDescription() {
+    ui->description->setFocus(Qt::FocusReason::ActiveWindowFocusReason);
+}
+
 void TimerWidget::deleteTimeEntry() {
     if (guid.isEmpty())
         return;

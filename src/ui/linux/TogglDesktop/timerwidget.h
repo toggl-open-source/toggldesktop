@@ -27,6 +27,7 @@ class TimerWidget : public QFrame {
     QString currentEntryGuid();
 
  public slots:
+    void focusDescription();
     void deleteTimeEntry();
 
  signals:

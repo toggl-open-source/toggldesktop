@@ -45,6 +45,10 @@ TimerWidget *TimeEntryListWidget::timer() {
     return ui->timer;
 }
 
+void TimeEntryListWidget::focusDescription() {
+    ui->timer->focusDescription();
+}
+
 void TimeEntryListWidget::focusTimeEntryList() {
     if (!highlightedCell()) {
         ui->list->setFocus();
