@@ -265,8 +265,8 @@ HTTPResponse HTTPClient::Put(
 }
 
 HTTPResponse HTTPClient::request(
-    HTTPRequest req) const {
-    HTTPResponse resp = makeHttpRequest(req);
+    HTTPRequest req, bool_t loggingOn) const {
+    HTTPResponse resp = makeHttpRequest(req, loggingOn);
 
     if (kCannotConnectError == resp.err && isRedirect(resp.status_code)) {
         // Reattempt request to the given location.
@@ -275,14 +275,15 @@ HTTPResponse HTTPClient::request(
         req.host = uri.getScheme() + "://" + uri.getHost();
         req.relative_url = uri.getPathEtc();
 
-        logger().debug("Redirect to URL=", resp.body, " host=", req.host, " relative_url=", req.relative_url);
-        resp = makeHttpRequest(req);
+        if (loggingOn)
+            logger().debug("Redirect to URL=", resp.body, " host=", req.host, " relative_url=", req.relative_url);
+        resp = makeHttpRequest(req, loggingOn);
     }
     return resp;
 }
 
 HTTPResponse HTTPClient::makeHttpRequest(
-    HTTPRequest req) const {
+    HTTPRequest req, bool_t loggingOn) const {
 
     HTTPResponse resp;
 
@@ -339,7 +340,8 @@ HTTPResponse HTTPClient::makeHttpRequest(
         session->setTimeout(
             Poco::Timespan(req.timeout_seconds * Poco::Timespan::SECONDS));
 
-        logger().debug("Sending request to ", req.host, req.relative_url, " ..");
+        if (loggingOn)
+            logger().debug("Sending request to ", req.host, req.relative_url, " ..");
 
         std::string encoded_url("");
         Poco::URI::encode(req.relative_url, "", encoded_url);
@@ -419,9 +421,10 @@ HTTPResponse HTTPClient::makeHttpRequest(
         // Log out request contents
         std::stringstream request_string;
         poco_req.write(request_string);
-        logger().debug(request_string.str());
-
-        logger().debug("Request sent. Receiving response..");
+        if (loggingOn) {
+            logger().debug(request_string.str());
+            logger().debug("Request sent. Receiving response..");
+        }
 
         // Receive response
         Poco::Net::HTTPResponse response;
@@ -429,6 +432,7 @@ HTTPResponse HTTPClient::makeHttpRequest(
 
         resp.status_code = response.getStatus();
 
+        if (loggingOn)
         {
             std::stringstream ss;
             ss << "Response status code " << response.getStatus()
@@ -440,19 +444,18 @@ HTTPResponse HTTPClient::makeHttpRequest(
                 ss << ", unknown content encoding";
             }
             logger().debug(ss.str());
-        }
+            // Log out X-Toggl-Request-Id, so failed requests can be traced
+            if (response.has("X-Toggl-Request-Id")) {
+                logger().debug("X-Toggl-Request-Id "
+                    + response.get("X-Toggl-Request-Id"));
+            }
 
-        // Log out X-Toggl-Request-Id, so failed requests can be traced
-        if (response.has("X-Toggl-Request-Id")) {
-            logger().debug("X-Toggl-Request-Id "
-                           + response.get("X-Toggl-Request-Id"));
-        }
-
-        // Print out response headers
-        Poco::Net::NameValueCollection::ConstIterator it = response.begin();
-        while (it != response.end()) {
-            logger().debug(it->first + ": " + it->second);
-            ++it;
+            // Print out response headers
+            Poco::Net::NameValueCollection::ConstIterator it = response.begin();
+            while (it != response.end()) {
+                logger().debug(it->first + ": " + it->second);
+                ++it;
+            }
         }
 
         // When we get redirect, set the Location as response body
@@ -474,10 +477,12 @@ HTTPResponse HTTPClient::makeHttpRequest(
             // Write the response to string
         } else {
             std::streamsize n = Poco::StreamCopier::copyToString(is, resp.body);
-            logger().debug(n, " characters transferred with download");
+            if (loggingOn)
+                logger().debug(n, " characters transferred with download");
         }
 
-        logger().trace(resp.body);
+        if (loggingOn)
+            logger().trace(resp.body);
 
         if (429 == resp.status_code) {
             Poco::Timestamp ts = Poco::Timestamp() + (60 * kOneSecondInMicros);
@@ -535,7 +540,7 @@ Logger TogglClient::logger() const {
 }
 
 HTTPResponse TogglClient::request(
-    HTTPRequest req) const {
+    HTTPRequest req, bool_t loggingOn) const {
 
     error err = TogglStatus.Status();
     if (err != noError) {
@@ -570,9 +575,9 @@ HTTPResponse TogglClient::silentPost(
 }
 
 HTTPResponse TogglClient::silentGet(
-    HTTPRequest req) const {
+    HTTPRequest req, bool_t loggingOn) const {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
-    return HTTPClient::request(req);
+    return HTTPClient::request(req, loggingOn);
 }
 
 HTTPResponse TogglClient::silentDelete(
