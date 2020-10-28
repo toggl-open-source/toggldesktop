@@ -300,6 +300,11 @@ void PreferencesDialog::keyPressEvent(QKeyEvent *event) {
             ui->continueStopButton->setText(keySequence);
         }
     }
+    else {
+        if (event->key() == Qt::Key_Escape) {
+            close();
+        }
+    }
 }
 
 void PreferencesDialog::keyReleaseEvent(QKeyEvent *event) {
