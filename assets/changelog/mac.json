@@ -9,8 +9,7 @@
                 "Fixed bug when the text cursor was jumping to the end of the line when editing a description",
                 "Plus other small improvements and bug fixes"
             ],
-            "date": "October 22nd 2020",
-            "beta": "true"
+            "date": "October 28th 2020"
         },
         {
             "version": "7.5.298",
