@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_general">
       <attribute name="title">
@@ -513,6 +513,40 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>continueStopButton</tabstop>
+  <tabstop>continueStopClear</tabstop>
+  <tabstop>showHideButton</tabstop>
+  <tabstop>showHideClear</tabstop>
+  <tabstop>focusAppOnShortcut</tabstop>
+  <tabstop>pomodoroTimer</tabstop>
+  <tabstop>pomodoroMinutes</tabstop>
+  <tabstop>pomodoroBreakTimer</tabstop>
+  <tabstop>pomodoroBreakMinutes</tabstop>
+  <tabstop>idleDetection</tabstop>
+  <tabstop>idleMinutes</tabstop>
+  <tabstop>recordTimeline</tabstop>
+  <tabstop>stopEntry</tabstop>
+  <tabstop>useSystemProxySettings</tabstop>
+  <tabstop>useProxy</tabstop>
+  <tabstop>proxyHost</tabstop>
+  <tabstop>proxyPort</tabstop>
+  <tabstop>proxyUsername</tabstop>
+  <tabstop>proxyPassword</tabstop>
+  <tabstop>sslCheckbox</tabstop>
+  <tabstop>remindToTrackTime</tabstop>
+  <tabstop>reminderMinutes</tabstop>
+  <tabstop>reminderStartTimeEdit</tabstop>
+  <tabstop>reminderEndTimeEdit</tabstop>
+  <tabstop>dayCheckbox_1</tabstop>
+  <tabstop>dayCheckbox_2</tabstop>
+  <tabstop>dayCheckbox_3</tabstop>
+  <tabstop>dayCheckbox_4</tabstop>
+  <tabstop>dayCheckbox_5</tabstop>
+  <tabstop>dayCheckbox_6</tabstop>
+  <tabstop>dayCheckbox_7</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
