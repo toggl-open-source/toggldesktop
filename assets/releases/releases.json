@@ -2,20 +2,6 @@
     "win": {
         "dev": [
             {
-                "version": "7.5.346",
-                "timestamp": "21-10-2020",
-                "filename": [
-                    {
-                        "type": "windows",
-                        "name": "TogglDesktopInstaller-7.5.346.exe"
-                    },
-                    {
-                        "type": "windows64",
-                        "name": "TogglDesktopInstaller-x64-7.5.346.exe"
-                    }
-                ]
-            },
-            {
                 "version": "7.5.347",
                 "timestamp": "22-10-2020",
                 "filename": [
@@ -138,6 +124,20 @@
                     {
                         "type": "windows64",
                         "name": "TogglDesktopInstaller-x64-7.5.355.exe"
+                    }
+                ]
+            },
+            {
+                "version": "7.5.356",
+                "timestamp": "28-10-2020",
+                "filename": [
+                    {
+                        "type": "windows",
+                        "name": "TogglDesktopInstaller-7.5.356.exe"
+                    },
+                    {
+                        "type": "windows64",
+                        "name": "TogglDesktopInstaller-x64-7.5.356.exe"
                     }
                 ]
             }
