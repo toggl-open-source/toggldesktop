@@ -49,6 +49,7 @@ namespace TogglDesktop
             }
 
             _lastBeginningOfWeek = beginningOfWeek;
+            RefreshText();
         }
 
         public void Reset(bool mon, bool tue, bool wed, bool thu, bool fri, bool sat, bool sun)
