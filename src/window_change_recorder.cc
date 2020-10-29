@@ -65,13 +65,19 @@ void WindowChangeRecorder::inspectFocusedWindow() {
         }
     }
 
+    idle = idle || getIsLocked() || getIsSleeping();
+
     time_t now;
     time(&now);
 
     time_t time_delta = now - last_event_started_at_;
 
+    if (last_filename_ != filename) {
+        current_app_started_at_ = now;
+    }
+
     if (last_event_started_at_ > 0) {
-        if (!last_idle_ && last_autotracker_title_ != title) {
+        if (!idle && last_autotracker_title_ != title && now - current_app_started_at_ >= kAutotrackerThresholdSeconds) {
             // Notify that the timeline event has started
             // we'll use this in auto tracking
             last_autotracker_title_ = title;
@@ -84,21 +90,22 @@ void WindowChangeRecorder::inspectFocusedWindow() {
             timeline_datasource_->StartAutotrackerEvent(event);
         }
     }
-    idle = idle || getIsLocked() || getIsSleeping();
+    
     bool idleChanged = hasIdlenessChanged(idle);
 
     if (idleChanged) {
         last_autotracker_title_ = "";
     }
 
-    if (!idleChanged && !hasWindowChanged(title, filename)) {
+    bool windowHasChanged = hasWindowChanged(title, filename);
+    if (!idleChanged && !windowHasChanged) {
         return;
     }
 
     // Lite version of timeline recorder
     // Since we don't have Screen Recording permission yet => title will be empty
     // So we only track the primary timeline (treat title is filename)
-    if (is_catalina_OSX && last_title_ == title && last_filename_ == filename) {
+    if (is_catalina_OSX && !windowHasChanged) {
         return;
     }
 
