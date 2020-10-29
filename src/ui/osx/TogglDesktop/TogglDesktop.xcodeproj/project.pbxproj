@@ -614,6 +614,10 @@
 		C2060EB9252766FB00959A98 /* TimerDescriptionFieldHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2060EB7252766FB00959A98 /* TimerDescriptionFieldHandlerTests.swift */; };
 		C238D7DF251B7215004EC739 /* TimerDescriptionFieldHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */; };
 		C238D7E0251B7215004EC739 /* TimerDescriptionFieldHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */; };
+		C27E044F254AFFB0009871D0 /* TimerDurationControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27E044E254AFFB0009871D0 /* TimerDurationControl.swift */; };
+		C27E0450254AFFB0009871D0 /* TimerDurationControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27E044E254AFFB0009871D0 /* TimerDurationControl.swift */; };
+		C27E0454254B0008009871D0 /* TimerDurationControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = C27E0453254B0008009871D0 /* TimerDurationControl.xib */; };
+		C27E0455254B0008009871D0 /* TimerDurationControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = C27E0453254B0008009871D0 /* TimerDurationControl.xib */; };
 		C2A84AE92524668900DAA468 /* Comparable+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A84AE82524668900DAA468 /* Comparable+Utils.swift */; };
 		C2A84AEA2524668900DAA468 /* Comparable+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A84AE82524668900DAA468 /* Comparable+Utils.swift */; };
 		C2A84B022524D0ED00DAA468 /* AutocompleteSourceViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A84B012524D0ED00DAA468 /* AutocompleteSourceViewType.swift */; };
@@ -1099,6 +1103,8 @@
 		BAFBFCC721CD1D3C004B443F /* SystemService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SystemService.m; sourceTree = "<group>"; };
 		C2060EB7252766FB00959A98 /* TimerDescriptionFieldHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDescriptionFieldHandlerTests.swift; sourceTree = "<group>"; };
 		C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDescriptionFieldHandler.swift; sourceTree = "<group>"; };
+		C27E044E254AFFB0009871D0 /* TimerDurationControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDurationControl.swift; sourceTree = "<group>"; };
+		C27E0453254B0008009871D0 /* TimerDurationControl.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimerDurationControl.xib; sourceTree = "<group>"; };
 		C2A84AE82524668900DAA468 /* Comparable+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Utils.swift"; sourceTree = "<group>"; };
 		C2A84B012524D0ED00DAA468 /* AutocompleteSourceViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteSourceViewType.swift; sourceTree = "<group>"; };
 		C2C076D52538728E00C20527 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
@@ -2078,6 +2084,8 @@
 				493B01BC24D07F1200237D10 /* TimerViewModel.swift */,
 				C2A84B012524D0ED00DAA468 /* AutocompleteSourceViewType.swift */,
 				C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */,
+				C27E044E254AFFB0009871D0 /* TimerDurationControl.swift */,
+				C27E0453254B0008009871D0 /* TimerDurationControl.xib */,
 				4988E65F24CEC8460072C1B5 /* TimerViewController.xib */,
 			);
 			path = TimerViewController;
@@ -2443,6 +2451,7 @@
 				BA75FF2822BCC1FC00D3F08C /* TimelineTimeEntryCell.xib in Resources */,
 				BA75FF2C22BCC20D00D3F08C /* TimelineActivityCell.xib in Resources */,
 				BAF9364F23E8116900EE1076 /* TimelineResizeHoverController.xib in Resources */,
+				C27E0454254B0008009871D0 /* TimerDurationControl.xib in Resources */,
 				BA65A22122B7809300F895FD /* TimelineDashboardViewController.xib in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
 				3C0158F01C7B414E00FE63AA /* LoadMoreCell.xib in Resources */,
@@ -2512,6 +2521,7 @@
 				BAE64E262368334000244D2B /* LoadMoreCell.xib in Resources */,
 				BA37ACD323D8900C0013EE26 /* TimelineTimeLabelCell.xib in Resources */,
 				BAE64E272368334000244D2B /* CalendarViewController.xib in Resources */,
+				C27E0455254B0008009871D0 /* TimerDurationControl.xib in Resources */,
 				BA37AD0723D890570013EE26 /* DatePickerView.xib in Resources */,
 				BA37ACB723D890050013EE26 /* MainDashboardViewController.xib in Resources */,
 				BA37ACDE23D8900C0013EE26 /* TimelineTimeEntryHoverViewController.xib in Resources */,
@@ -2935,6 +2945,7 @@
 				BAF9364C23E8114800EE1076 /* TimelineResizeHoverController.swift in Sources */,
 				BA05367F225E238D00C26E1F /* ProjectWorksapceCellView.swift in Sources */,
 				BA5BDC2F24640D8A00FF3C28 /* PasswordStrengthView.swift in Sources */,
+				C27E044F254AFFB0009871D0 /* TimerDurationControl.swift in Sources */,
 				BA47DEB223966F9C005216AD /* InAppMessageViewController.swift in Sources */,
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
 				BA412C21224E1189003CA17A /* ClientCellView.swift in Sources */,
@@ -3164,6 +3175,7 @@
 				BA47DEB923969EAC005216AD /* InAppMessage.swift in Sources */,
 				BAE64D772368334000244D2B /* ProjectContentCellView.swift in Sources */,
 				BAE64D782368334000244D2B /* NSHoverButton.m in Sources */,
+				C27E0450254AFFB0009871D0 /* TimerDurationControl.swift in Sources */,
 				BAE64D792368334000244D2B /* SystemMessage.swift in Sources */,
 				BAE64D7A2368334000244D2B /* WorkspaceAutoCompleteTextField.swift in Sources */,
 				BAE64D7B2368334000244D2B /* NSTextFieldClickablePointer.m in Sources */,

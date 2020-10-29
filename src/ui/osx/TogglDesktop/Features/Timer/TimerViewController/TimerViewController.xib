@@ -13,24 +13,23 @@
                 <outlet property="buttonsStackView" destination="f3m-Ax-U74" id="MiL-8N-Bay"/>
                 <outlet property="descriptionContainerBox" destination="hG9-dZ-2ec" id="u09-Ec-oG5"/>
                 <outlet property="descriptionTextField" destination="ecT-b1-LZO" id="sXf-8p-YKn"/>
-                <outlet property="durationContainerBox" destination="gmz-ld-awU" id="TDb-In-h3a"/>
-                <outlet property="durationTextField" destination="W5p-vA-d55" id="SMZ-TE-Wwy"/>
                 <outlet property="projectButton" destination="jwm-bG-cK6" id="zt8-ru-Iob"/>
                 <outlet property="startButton" destination="4R2-ha-Q7h" id="BDU-Fw-r4V"/>
                 <outlet property="tagsButton" destination="R49-rR-d7b" id="pi0-oh-GRo"/>
+                <outlet property="trailingStackView" destination="Hnb-qT-7zu" id="aV9-6F-rkc"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="1634" height="94"/>
+            <rect key="frame" x="0.0" y="0.0" width="1536" height="94"/>
             <subviews>
                 <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Re1-LM-H1v">
-                    <rect key="frame" x="10" y="10" width="1614" height="74"/>
+                    <rect key="frame" x="10" y="10" width="1516" height="74"/>
                     <subviews>
                         <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k4i-6V-NQ3">
-                            <rect key="frame" x="0.0" y="44" width="1611" height="30"/>
+                            <rect key="frame" x="0.0" y="44" width="1503" height="30"/>
                             <subviews>
                                 <box horizontalCompressionResistancePriority="749" boxType="custom" cornerRadius="15" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="hG9-dZ-2ec" customClass="TimerContainerBox" customModule="Toggl_Track" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="1469" height="30"/>
@@ -69,49 +68,10 @@
                                     <color key="borderColor" name="lighter-grey-color"/>
                                 </box>
                                 <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hnb-qT-7zu">
-                                    <rect key="frame" x="1473" y="0.0" width="138" height="30"/>
+                                    <rect key="frame" x="1473" y="0.0" width="30" height="30"/>
                                     <subviews>
-                                        <box boxType="custom" cornerRadius="15" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="gmz-ld-awU" customClass="TimerContainerBox" customModule="Toggl_Track" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="98" height="30"/>
-                                            <view key="contentView" id="NlQ-wO-aE5">
-                                                <rect key="frame" x="1" y="1" width="96" height="28"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                <subviews>
-                                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="W5p-vA-d55" userLabel="Duration" customClass="ResponderTextField" customModule="Toggl_Track" customModuleProvider="target">
-                                                        <rect key="frame" x="-2" y="0.0" width="100" height="28"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="96" id="Uzp-uz-Lwn"/>
-                                                        </constraints>
-                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" alignment="right" placeholderString="0:00:00" usesSingleLineMode="YES" id="jU8-mo-9tb" customClass="VerticallyCenteredTextFieldCell" customModule="Toggl_Track" customModuleProvider="target">
-                                                            <font key="font" metaFont="menu" size="14"/>
-                                                            <color key="textColor" name="black-text-color"/>
-                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
-                                                                    <real key="value" value="12"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="shouldDrawFocusRing" value="NO"/>
-                                                            </userDefinedRuntimeAttributes>
-                                                        </textFieldCell>
-                                                        <connections>
-                                                            <outlet property="delegate" destination="-2" id="g9v-YR-W3Q"/>
-                                                        </connections>
-                                                    </textField>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="W5p-vA-d55" secondAttribute="bottom" id="gJR-25-2cw"/>
-                                                    <constraint firstItem="W5p-vA-d55" firstAttribute="top" secondItem="NlQ-wO-aE5" secondAttribute="top" id="uEf-m3-ZEM"/>
-                                                    <constraint firstItem="W5p-vA-d55" firstAttribute="leading" secondItem="NlQ-wO-aE5" secondAttribute="leading" id="uba-yP-gOh"/>
-                                                    <constraint firstAttribute="trailing" secondItem="W5p-vA-d55" secondAttribute="trailing" id="zqD-rc-yWF"/>
-                                                </constraints>
-                                            </view>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="30" id="1kA-pP-1e7"/>
-                                            </constraints>
-                                            <color key="borderColor" name="lighter-grey-color"/>
-                                        </box>
                                         <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4R2-ha-Q7h" customClass="NSHoverButton">
-                                            <rect key="frame" x="108" y="0.0" width="30" height="30"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="30" id="9sU-HM-bNp"/>
                                                 <constraint firstAttribute="height" constant="30" id="WIU-1C-bOA"/>
@@ -127,10 +87,8 @@
                                     </subviews>
                                     <visibilityPriorities>
                                         <integer value="1000"/>
-                                        <integer value="1000"/>
                                     </visibilityPriorities>
                                     <customSpacing>
-                                        <real value="3.4028234663852886e+38"/>
                                         <real value="3.4028234663852886e+38"/>
                                     </customSpacing>
                                 </stackView>
@@ -277,7 +235,7 @@
                 <constraint firstItem="Re1-LM-H1v" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="10" id="H58-G5-0qe"/>
                 <constraint firstAttribute="bottom" secondItem="Re1-LM-H1v" secondAttribute="bottom" constant="10" id="hmj-6x-bMe"/>
             </constraints>
-            <point key="canvasLocation" x="-586.5" y="156"/>
+            <point key="canvasLocation" x="-636" y="156"/>
         </customView>
     </objects>
     <resources>
