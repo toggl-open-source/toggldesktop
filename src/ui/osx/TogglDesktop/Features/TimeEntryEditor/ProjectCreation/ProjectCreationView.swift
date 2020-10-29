@@ -84,7 +84,7 @@ final class ProjectCreationView: NSView {
         }
     }
     private lazy var colorPickerView: ColorPickerView = {
-        let picker = ColorPickerView.xibView() as ColorPickerView
+        let picker = ColorPickerView.xibView()
         picker.delegate = self
         colorPickerContainerBox.addSubview(picker)
         picker.edgesToSuperView()

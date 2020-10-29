@@ -46,7 +46,7 @@ class AutoCompleteTextField: UndoTextField, NSTextFieldDelegate, AutoCompleteVie
         window.isSeparateWindow = isSeperateWindow
         return window
     }()
-    lazy var autoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
+    lazy var autoCompleteView = AutoCompleteView.xibView()
     var isSeperateWindow: Bool { return true }
     private var _state = State.collapse {
         didSet {

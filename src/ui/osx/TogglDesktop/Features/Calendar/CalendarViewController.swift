@@ -144,7 +144,7 @@ extension CalendarViewController {
 
         // Map to label
         let labels = rotatedDays.map { title -> DayLabel in
-            let label = DayLabel.xibView() as DayLabel
+            let label = DayLabel.xibView()
             label.stringValue = title.uppercased()
             return label
         }

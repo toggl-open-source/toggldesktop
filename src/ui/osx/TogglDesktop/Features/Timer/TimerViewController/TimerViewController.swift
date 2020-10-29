@@ -15,12 +15,12 @@ class TimerViewController: NSViewController {
     private lazy var projectAutoCompleteWindow: AutoCompleteViewWindow = {
         return AutoCompleteViewWindow(view: projectAutoCompleteView)
     }()
-    private var projectAutoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
+    private var projectAutoCompleteView = AutoCompleteView.xibView()
     private var projectAutocompleteDidResignObserver: Any?
     private var projectAutocompleteResignTime: TimeInterval = 0
 
     private lazy var projectCreationView: ProjectCreationView = {
-        let view = ProjectCreationView.xibView() as ProjectCreationView
+        let view = ProjectCreationView.xibView()
         view.delegate = self
         return view
     }()
@@ -28,7 +28,7 @@ class TimerViewController: NSViewController {
     private lazy var tagsAutoCompleteWindow: AutoCompleteViewWindow = {
         return AutoCompleteViewWindow(view: tagsAutoCompleteView)
     }()
-    private var tagsAutoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
+    private var tagsAutoCompleteView = AutoCompleteView.xibView()
     private var tagsAutocompleteDidResignObserver: Any?
     private var tagsAutocompleteResignTime: TimeInterval = 0
 
