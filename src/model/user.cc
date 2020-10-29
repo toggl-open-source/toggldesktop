@@ -1449,6 +1449,8 @@ void User::CompressTimeline() {
             chunk = compressed[key];
             chunk->SetEndTime(chunk->EndTime() + duration);
             event->Delete();
+            //Needed to be deleted from database
+            event->MarkAsDeletedOnServer();
         }
         compressed[key] = chunk;
     }
