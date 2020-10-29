@@ -3810,20 +3810,6 @@
     "linux": {
         "dev": [
             {
-                "version": "7.5.351",
-                "timestamp": "26-10-2020",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_7.5.351_x86_64.tar.gz"
-                    },
-                    {
-                        "type": "linux_deb64",
-                        "name": "toggldesktop_7.5.351_ubuntu1604_amd64.deb"
-                    }
-                ]
-            },
-            {
                 "version": "7.5.352",
                 "timestamp": "27-10-2020",
                 "filename": [
@@ -3946,6 +3932,20 @@
                     {
                         "type": "linux_deb64",
                         "name": "toggldesktop_7.5.361_ubuntu1604_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.5.362",
+                "timestamp": "29-10-2020",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_7.5.362_x86_64.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.5.362_ubuntu1604_amd64.deb"
                     }
                 ]
             }
