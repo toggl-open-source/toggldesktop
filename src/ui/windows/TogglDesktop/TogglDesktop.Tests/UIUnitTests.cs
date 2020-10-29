@@ -20,6 +20,7 @@ namespace TogglDesktop.Tests
         [InlineData(new[] { true,  true,  true,  true,  true,  true,  true},  DayOfWeek.Monday, "every day")]
         [InlineData(new[] { true,  true,  false, false, false, false, false}, DayOfWeek.Monday, "on Monday, Sunday")]
         [InlineData(new[] { true,  true,  false, false, false, false, false}, DayOfWeek.Sunday, "on Sunday, Monday")]
+        [InlineData(new[] { false, true,  true,  true,  true,  true,  false}, DayOfWeek.Sunday, "on weekdays")]
         public void TestSelectedDaysOfWeekText(bool[] daysChecked, DayOfWeek beginningOfWeek, string expectedText)
         {
             var isDayChecked = daysChecked.WithIndex()
