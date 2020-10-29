@@ -87,7 +87,6 @@ final class OnboardingViewController: NSViewController {
         preparePopoverContentView(with: payload)
 
         popover.show(relativeTo: presentView.bounds, of: presentView, preferredEdge: payload.preferEdges)
-        popover.positioningRect = payload.positioningRect(payload.hint, popover.positioningRect)
     }
 
     /// Dismiss all onboard view
@@ -160,6 +159,11 @@ extension OnboardingViewController: NSPopoverDelegate {
 
     func popoverWillClose(_ notification: Notification) {
         delegate?.onboardingViewControllerDidClose()
+    }
+
+    func popoverWillShow(_ notification: Notification) {
+        guard let payload = payload else { return }
+        popover.positioningRect = payload.positioningRect(payload.hint, popover.positioningRect)
     }
 }
 
