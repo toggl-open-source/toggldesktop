@@ -17,6 +17,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:RectangleHeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
+            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid MinHeight="100">
@@ -147,6 +148,23 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <GridSplitter Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="1" Background="{DynamicResource Toggl.TimelineSeparatorBrush}"/>
+                    <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0" Visibility="{Binding RunningTimeEntryBlock, Converter={StaticResource NullToVisibilityConverter}}">
+                        <controls:TimelineRunningTimeEntryBlock DataContext="{Binding RunningTimeEntryBlock}"
+                                                                Canvas.Top="{Binding VerticalOffset}"
+                                                                Canvas.Left="{Binding HorizontalOffset}"
+                                                                MouseEnter="OnTimeEntryBlockMouseEnter"
+                                                                MouseLeave="OnTimeEntyrBlockMouseLeave">
+                            <controls:TimelineRunningTimeEntryBlock.Style>
+                                <Style TargetType="FrameworkElement">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ShowDescription}" Value="True">
+                                            <Setter Property="Width" Value="{Binding ElementName=RunningTimeEntryCanvas, Path=ActualWidth}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </controls:TimelineRunningTimeEntryBlock.Style>
+                        </controls:TimelineRunningTimeEntryBlock>
+                    </Canvas>
                     <Canvas Grid.Row="1" Grid.ColumnSpan="5" Grid.Column="0"
                             Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanToVisibilityConverter}}"
                             x:Name="CurrentTimeCanvas">
@@ -197,21 +215,6 @@
                             </Style>
                         </ItemsControl.ItemContainerStyle>
                     </ItemsControl>
-                    <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0">
-                        <controls:TimelineRunningTimeEntryBlock DataContext="{Binding RunningTimeEntryBlock}"
-                                                                Canvas.Top="{Binding VerticalOffset}"
-                                                                Canvas.Left="{Binding HorizontalOffset}">
-                            <controls:TimelineRunningTimeEntryBlock.Style>
-                                <Style TargetType="FrameworkElement">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ShowDescription}" Value="True">
-                                            <Setter Property="Width" Value="{Binding ElementName=RunningTimeEntryCanvas, Path=ActualWidth}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </controls:TimelineRunningTimeEntryBlock.Style>
-                        </controls:TimelineRunningTimeEntryBlock>
-                    </Canvas>
                     <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=GapTimeEntryBlocks}" Margin="10 0 0 0">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
