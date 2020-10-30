@@ -181,6 +181,7 @@ namespace TogglDesktop.ViewModels
                     Description = entry.Description.IsNullOrEmpty() ? "No Description" : entry.Description,
                     ProjectName = entry.ProjectLabel,
                     ClientName = entry.ClientLabel,
+                    TaskName = entry.TaskLabel,
                     ShowDescription = true,
                     HasTag = !entry.Tags.IsNullOrEmpty(),
                     IsBillable = entry.Billable,
@@ -354,6 +355,7 @@ namespace TogglDesktop.ViewModels
         public string Description { get; set; }
         public string ProjectName { get; set; }
         public string ClientName { get; set; }
+        public string TaskName { get; set; }
         [Reactive]
         public ulong Started { get; set; } = 0;
 
