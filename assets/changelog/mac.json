@@ -5,8 +5,7 @@
             "rows": [
                 "Prevent possible crash on app launch on some devices"
             ],
-            "date": "October 30th 2020",
-            "beta": "true"
+            "date": "October 30th 2020"
         },
         {
             "version": "7.5.347",
