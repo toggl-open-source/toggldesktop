@@ -214,7 +214,7 @@ class TOGGL_INTERNAL_EXPORT TogglClient : public HTTPClient {
         HTTPRequest req) const;
 
     HTTPResponse silentGet(
-        HTTPRequest req, bool_t loggingOn = true) const;
+        HTTPRequest req) const;
 
     HTTPResponse silentDelete(
         HTTPRequest req) const;

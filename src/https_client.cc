@@ -575,9 +575,9 @@ HTTPResponse TogglClient::silentPost(
 }
 
 HTTPResponse TogglClient::silentGet(
-    HTTPRequest req, bool_t loggingOn) const {
+    HTTPRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
-    return HTTPClient::request(req, loggingOn);
+    return HTTPClient::request(req, false);
 }
 
 HTTPResponse TogglClient::silentDelete(
