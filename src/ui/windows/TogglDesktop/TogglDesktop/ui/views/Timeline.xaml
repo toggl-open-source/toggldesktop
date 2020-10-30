@@ -345,6 +345,11 @@
                                     <TextBlock Foreground="{Binding Color, Converter={StaticResource AdaptProjectTextColorConverter}}"
                                              Text="{Binding ProjectName}" FontSize="12"
                                              VerticalAlignment="Center"/>
+                                    <TextBlock Foreground="{Binding Color, Converter={StaticResource AdaptProjectTextColorConverter}}"
+                                               Padding="4 0 0 0"
+                                               Text="{Binding TaskName, Converter={StaticResource StringFormatIfNotEmptyConverter}, ConverterParameter='- {0}'}"
+                                               FontSize="12"
+                                               Visibility="{Binding TaskName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
                                 </DockPanel>
                                 <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding ClientName}" Style="{StaticResource Toggl.CaptionText}"/>
                                 <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0">
