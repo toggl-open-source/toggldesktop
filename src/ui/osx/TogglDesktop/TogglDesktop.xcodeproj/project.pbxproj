@@ -626,6 +626,10 @@
 		C2A84B032524D0ED00DAA468 /* AutocompleteSourceViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A84B012524D0ED00DAA468 /* AutocompleteSourceViewType.swift */; };
 		C2C076D62538728E00C20527 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C076D52538728E00C20527 /* Project.swift */; };
 		C2C076D72538728E00C20527 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C076D52538728E00C20527 /* Project.swift */; };
+		C2C98DBA254BFEF1006A98F8 /* TimeEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C98DB9254BFEF1006A98F8 /* TimeEditView.swift */; };
+		C2C98DBB254BFEF1006A98F8 /* TimeEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C98DB9254BFEF1006A98F8 /* TimeEditView.swift */; };
+		C2C98DBF254BFF01006A98F8 /* TimeEditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2C98DBE254BFF01006A98F8 /* TimeEditView.xib */; };
+		C2C98DC0254BFF01006A98F8 /* TimeEditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2C98DBE254BFF01006A98F8 /* TimeEditView.xib */; };
 		C2C98DE7254C4087006A98F8 /* ObservationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C98DE6254C4087006A98F8 /* ObservationToken.swift */; };
 		C2C98DE8254C4087006A98F8 /* ObservationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C98DE6254C4087006A98F8 /* ObservationToken.swift */; };
 		C2C98DEC254C50E1006A98F8 /* ResponderObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C98DEB254C50E1006A98F8 /* ResponderObservable.swift */; };
@@ -1115,6 +1119,8 @@
 		C2A84AE82524668900DAA468 /* Comparable+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Utils.swift"; sourceTree = "<group>"; };
 		C2A84B012524D0ED00DAA468 /* AutocompleteSourceViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteSourceViewType.swift; sourceTree = "<group>"; };
 		C2C076D52538728E00C20527 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		C2C98DB9254BFEF1006A98F8 /* TimeEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEditView.swift; sourceTree = "<group>"; };
+		C2C98DBE254BFF01006A98F8 /* TimeEditView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeEditView.xib; sourceTree = "<group>"; };
 		C2C98DE6254C4087006A98F8 /* ObservationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservationToken.swift; sourceTree = "<group>"; };
 		C2C98DEB254C50E1006A98F8 /* ResponderObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponderObservable.swift; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
@@ -2096,8 +2102,6 @@
 				493B01BC24D07F1200237D10 /* TimerViewModel.swift */,
 				C2A84B012524D0ED00DAA468 /* AutocompleteSourceViewType.swift */,
 				C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */,
-				C27E044E254AFFB0009871D0 /* TimerDurationControl.swift */,
-				C27E0453254B0008009871D0 /* TimerDurationControl.xib */,
 				4988E65F24CEC8460072C1B5 /* TimerViewController.xib */,
 			);
 			path = TimerViewController;
@@ -2106,6 +2110,10 @@
 		C2060EA62527541600959A98 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C27E044E254AFFB0009871D0 /* TimerDurationControl.swift */,
+				C27E0453254B0008009871D0 /* TimerDurationControl.xib */,
+				C2C98DB9254BFEF1006A98F8 /* TimeEditView.swift */,
+				C2C98DBE254BFF01006A98F8 /* TimeEditView.xib */,
 				BA4791FD22F0479200E24F79 /* TimerContainerBox.swift */,
 			);
 			path = Views;
@@ -2457,6 +2465,7 @@
 				BA412C23224E11AC003CA17A /* ClientCellView.xib in Resources */,
 				BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
+				C2C98DBF254BFF01006A98F8 /* TimeEditView.xib in Resources */,
 				BA0140482257080F000E5B91 /* TagCellView.xib in Resources */,
 				BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */,
 				BA13E578243476FA005244AD /* OnboardingViewController.xib in Resources */,
@@ -2527,6 +2536,7 @@
 				BAD4F9C8246D392C0032F0C7 /* PasswordRuleView.xib in Resources */,
 				BAE64E222368334000244D2B /* TagCellView.xib in Resources */,
 				BAE64E232368334000244D2B /* ProjectCreationView.xib in Resources */,
+				C2C98DC0254BFF01006A98F8 /* TimeEditView.xib in Resources */,
 				BAE64E242368334000244D2B /* NoClientCellView.xib in Resources */,
 				BAF9365023E8116900EE1076 /* TimelineResizeHoverController.xib in Resources */,
 				BAE64E252368334000244D2B /* TimeEntryCell.xib in Resources */,
@@ -3042,6 +3052,7 @@
 				BA00E9F3234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift in Sources */,
 				BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */,
 				BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */,
+				C2C98DBA254BFEF1006A98F8 /* TimeEditView.swift in Sources */,
 				BA7D334F224897FC00B953A8 /* ProjectHeaderCellView.swift in Sources */,
 				BA13D20A2269BA6500EB3833 /* CalendarDataSource.swift in Sources */,
 				BA49912E22C0BA14008149D9 /* TimelineDateFormatter.swift in Sources */,
@@ -3275,6 +3286,7 @@
 				BA37ACD623D8900C0013EE26 /* TimelineEmptyTimeEntryCell.swift in Sources */,
 				BAE64DAE2368334000244D2B /* EditorPopover.swift in Sources */,
 				BAE64DAF2368334000244D2B /* ProjectHeaderCellView.swift in Sources */,
+				C2C98DBB254BFEF1006A98F8 /* TimeEditView.swift in Sources */,
 				BAE64DB12368334000244D2B /* CalendarDataSource.swift in Sources */,
 				BAE64DB22368334000244D2B /* CustomFocusRingButton.swift in Sources */,
 				BAE64DB32368334000244D2B /* AutoCompleteTextField.swift in Sources */,

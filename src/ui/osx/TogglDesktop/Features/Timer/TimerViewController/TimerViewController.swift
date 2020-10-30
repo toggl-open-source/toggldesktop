@@ -47,6 +47,8 @@ class TimerViewController: NSViewController {
         static let billableOffTooltip = NSLocalizedString("Non-billable", comment: "Tooltip for timer billable button when Off")
         static let billableUnavailableTooltip = NSLocalizedString("Billable rates is not on your plan",
                                                                   comment: "Tooltip for timer billable button when disabled")
+
+        static let durationControlSize = NSSize(width: 90, height: 30)
     }
 
     // MARK: - Outlets
@@ -406,8 +408,8 @@ class TimerViewController: NSViewController {
 
     private func setupDurationControl() {
         durationControl = TimerDurationControl.xibView()
-        durationControl.widthAnchor.constraint(equalToConstant: 96).isActive = true
-        durationControl.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        durationControl.widthAnchor.constraint(equalToConstant: Constants.durationControlSize.width).isActive = true
+        durationControl.heightAnchor.constraint(equalToConstant: Constants.durationControlSize.height).isActive = true
         trailingStackView.insertView(durationControl, at: 0, in: .leading)
 
         durationControl.onDurationTextChange = { [unowned self] text in
@@ -417,6 +419,7 @@ class TimerViewController: NSViewController {
         durationControl.onPerformAction = { [unowned self] action in
             switch action {
             case .enterPress:
+                view.window?.makeFirstResponder(nil)
                 if !self.viewModel.isRunning {
                     self.viewModel.startStopAction()
                 }

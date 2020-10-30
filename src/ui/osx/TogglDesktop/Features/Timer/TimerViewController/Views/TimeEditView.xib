@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe" customClass="TimeEditView" customModule="Toggl_Track" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="256" height="148"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box boxType="custom" cornerRadius="8" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="GfM-qi-LYd">
+                    <rect key="frame" x="0.0" y="0.0" width="256" height="148"/>
+                    <view key="contentView" id="SIL-am-mKQ">
+                        <rect key="frame" x="1" y="1" width="254" height="146"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="sVF-vD-5lX" userLabel="Time Field Container">
+                                <rect key="frame" x="16" y="84" width="96" height="50"/>
+                                <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Mk-Mx-TIX">
+                                        <rect key="frame" x="-2" y="34" width="46" height="16"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="START" id="UoV-Pi-y41">
+                                            <font key="font" metaFont="systemMedium" size="13"/>
+                                            <color key="textColor" name="grey-text-color"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="7f9-Da-ISN">
+                                        <rect key="frame" x="0.0" y="0.0" width="96" height="30"/>
+                                        <view key="contentView" id="hii-Tl-GLv">
+                                            <rect key="frame" x="1" y="1" width="94" height="28"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GzC-fm-PNM" customClass="UndoTextField">
+                                                    <rect key="frame" x="-2" y="0.0" width="98" height="28"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="right" placeholderString="0:00:00" id="7s7-AI-lJH" customClass="VerticallyCenteredTextFieldCell" customModule="Toggl_Track" customModuleProvider="target">
+                                                        <font key="font" metaFont="menu" size="14"/>
+                                                        <color key="textColor" name="black-text-color"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                                <real key="value" value="8"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textFieldCell>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="c22-O7-iKe" id="6d7-xj-vir"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="GzC-fm-PNM" secondAttribute="bottom" id="cah-JR-iHf"/>
+                                                <constraint firstItem="GzC-fm-PNM" firstAttribute="leading" secondItem="hii-Tl-GLv" secondAttribute="leading" id="hhK-XQ-cD0"/>
+                                                <constraint firstAttribute="trailing" secondItem="GzC-fm-PNM" secondAttribute="trailing" id="hyR-zO-gIH"/>
+                                                <constraint firstItem="GzC-fm-PNM" firstAttribute="top" secondItem="hii-Tl-GLv" secondAttribute="top" id="zCU-e5-xJH"/>
+                                            </constraints>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="96" id="Obe-Kg-wWJ"/>
+                                            <constraint firstAttribute="height" constant="30" id="Xor-M6-bzk"/>
+                                        </constraints>
+                                        <color key="borderColor" name="upload-border-color"/>
+                                        <color key="fillColor" name="editor-background-color"/>
+                                    </box>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="4Mk-Mx-TIX" firstAttribute="top" secondItem="sVF-vD-5lX" secondAttribute="top" id="3lv-Pa-1Gf"/>
+                                    <constraint firstItem="7f9-Da-ISN" firstAttribute="top" secondItem="4Mk-Mx-TIX" secondAttribute="bottom" constant="4" id="861-jA-Odg"/>
+                                    <constraint firstAttribute="bottom" secondItem="7f9-Da-ISN" secondAttribute="bottom" id="l7i-hI-5tO"/>
+                                    <constraint firstItem="7f9-Da-ISN" firstAttribute="leading" secondItem="sVF-vD-5lX" secondAttribute="leading" id="v4s-d0-dmZ"/>
+                                    <constraint firstItem="4Mk-Mx-TIX" firstAttribute="leading" secondItem="sVF-vD-5lX" secondAttribute="leading" id="vWF-76-y0O"/>
+                                    <constraint firstAttribute="trailing" secondItem="7f9-Da-ISN" secondAttribute="trailing" id="wef-lQ-O8m"/>
+                                </constraints>
+                            </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="A6g-th-xyB" userLabel="Time Field Container">
+                                <rect key="frame" x="142" y="84" width="96" height="50"/>
+                                <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WgJ-O7-ngF">
+                                        <rect key="frame" x="-2" y="34" width="31" height="16"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="END" id="Hvf-bJ-Rch">
+                                            <font key="font" metaFont="systemMedium" size="13"/>
+                                            <color key="textColor" name="grey-text-color"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="c1z-zr-wS9">
+                                        <rect key="frame" x="0.0" y="0.0" width="96" height="30"/>
+                                        <view key="contentView" id="yrG-Mc-7A1">
+                                            <rect key="frame" x="1" y="1" width="94" height="28"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yz5-YC-hjP" customClass="UndoTextField">
+                                                    <rect key="frame" x="-2" y="0.0" width="98" height="28"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" alignment="right" id="Zci-4q-P6g" customClass="VerticallyCenteredTextFieldCell" customModule="Toggl_Track" customModuleProvider="target">
+                                                        <font key="font" metaFont="menu" size="14"/>
+                                                        <color key="textColor" name="black-text-color"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                                <real key="value" value="8"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textFieldCell>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="yz5-YC-hjP" secondAttribute="trailing" id="J2r-ou-11c"/>
+                                                <constraint firstItem="yz5-YC-hjP" firstAttribute="leading" secondItem="yrG-Mc-7A1" secondAttribute="leading" id="LzA-zq-xAY"/>
+                                                <constraint firstItem="yz5-YC-hjP" firstAttribute="top" secondItem="yrG-Mc-7A1" secondAttribute="top" id="P9w-ac-rM3"/>
+                                                <constraint firstAttribute="bottom" secondItem="yz5-YC-hjP" secondAttribute="bottom" id="dsX-ID-CWn"/>
+                                            </constraints>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="7E6-Vi-y3P"/>
+                                            <constraint firstAttribute="width" constant="96" id="svT-7l-t6G"/>
+                                        </constraints>
+                                        <color key="borderColor" name="quaternaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="fillColor" name="editor-background-color"/>
+                                    </box>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="c1z-zr-wS9" firstAttribute="leading" secondItem="A6g-th-xyB" secondAttribute="leading" id="Q8p-am-vDr"/>
+                                    <constraint firstAttribute="trailing" secondItem="c1z-zr-wS9" secondAttribute="trailing" id="SUY-wN-rgv"/>
+                                    <constraint firstItem="WgJ-O7-ngF" firstAttribute="leading" secondItem="A6g-th-xyB" secondAttribute="leading" id="Sdt-oc-Lcn"/>
+                                    <constraint firstItem="WgJ-O7-ngF" firstAttribute="top" secondItem="A6g-th-xyB" secondAttribute="top" id="VzJ-Bb-sbz"/>
+                                    <constraint firstAttribute="bottom" secondItem="c1z-zr-wS9" secondAttribute="bottom" id="iw2-tI-b0J"/>
+                                    <constraint firstItem="c1z-zr-wS9" firstAttribute="top" secondItem="WgJ-O7-ngF" secondAttribute="bottom" constant="4" id="xYR-9c-3Qt"/>
+                                </constraints>
+                            </customView>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2oP-p3-wSn">
+                                <rect key="frame" x="112" y="96" width="30" height="7"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="duration-arrow" id="Qf1-j8-mKi"/>
+                            </imageView>
+                            <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="0wY-G9-sKx">
+                                <rect key="frame" x="16" y="16" width="222" height="30"/>
+                                <view key="contentView" id="JHb-Vf-cnk">
+                                    <rect key="frame" x="1" y="1" width="220" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <box boxType="custom" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="YSn-xx-d8B">
+                                            <rect key="frame" x="30" y="-1" width="160" height="30"/>
+                                            <view key="contentView" id="t9F-eI-yHh">
+                                                <rect key="frame" x="1" y="1" width="158" height="28"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vJ4-Ci-Cmv">
+                                                        <rect key="frame" x="6" y="3" width="146" height="25"/>
+                                                        <subviews>
+                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lIP-dg-XbA" customClass="CursorButton" customModule="Toggl_Track" customModuleProvider="target">
+                                                                <rect key="frame" x="0.0" y="4" width="61" height="17"/>
+                                                                <buttonCell key="cell" type="bevel" title="Tuesday," bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="0ZN-i2-ud9">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="menu" size="14"/>
+                                                                </buttonCell>
+                                                                <color key="contentTintColor" name="black-text-color"/>
+                                                            </button>
+                                                            <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IcL-re-HKO" customClass="KeyboardDatePicker" customModule="Toggl_Track" customModuleProvider="target">
+                                                                <rect key="frame" x="61" y="0.0" width="85" height="25"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="25" id="AFn-jk-hjv"/>
+                                                                </constraints>
+                                                                <datePickerCell key="cell" alignment="left" drawsBackground="NO" datePickerStyle="textField" id="ofN-Zc-xLU">
+                                                                    <font key="font" metaFont="system" size="14"/>
+                                                                    <date key="date" timeIntervalSinceReferenceDate="-569750400">
+                                                                        <!--1982-12-12 16:00:00 +0000-->
+                                                                    </date>
+                                                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="textColor" name="black-text-color"/>
+                                                                </datePickerCell>
+                                                            </datePicker>
+                                                        </subviews>
+                                                        <visibilityPriorities>
+                                                            <integer value="1000"/>
+                                                            <integer value="1000"/>
+                                                        </visibilityPriorities>
+                                                        <customSpacing>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                        </customSpacing>
+                                                    </stackView>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="vJ4-Ci-Cmv" firstAttribute="centerY" secondItem="t9F-eI-yHh" secondAttribute="centerY" constant="-1" id="6A5-SK-alm"/>
+                                                    <constraint firstItem="vJ4-Ci-Cmv" firstAttribute="centerX" secondItem="t9F-eI-yHh" secondAttribute="centerX" id="We9-RJ-OYg"/>
+                                                </constraints>
+                                            </view>
+                                            <color key="borderColor" name="upload-border-color"/>
+                                            <color key="fillColor" name="editor-background-color"/>
+                                        </box>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fu1-wD-m4F">
+                                            <rect key="frame" x="190" y="0.0" width="30" height="28"/>
+                                            <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="next_date_arrow" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="qXM-vH-7PF">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                        </button>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dgD-Nq-pU2">
+                                            <rect key="frame" x="0.0" y="0.0" width="30" height="28"/>
+                                            <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="previous_date_arrow" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="xem-qX-mAF">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="dgD-Nq-pU2" secondAttribute="bottom" id="3Ov-KU-0ud"/>
+                                        <constraint firstAttribute="trailing" secondItem="fu1-wD-m4F" secondAttribute="trailing" id="CAn-AF-SDJ"/>
+                                        <constraint firstItem="fu1-wD-m4F" firstAttribute="top" secondItem="JHb-Vf-cnk" secondAttribute="top" id="EGt-dX-H3p"/>
+                                        <constraint firstItem="YSn-xx-d8B" firstAttribute="top" secondItem="JHb-Vf-cnk" secondAttribute="top" constant="-1" id="VH3-iR-HrU"/>
+                                        <constraint firstItem="YSn-xx-d8B" firstAttribute="leading" secondItem="dgD-Nq-pU2" secondAttribute="trailing" id="WM5-fh-PY0"/>
+                                        <constraint firstAttribute="trailing" secondItem="YSn-xx-d8B" secondAttribute="trailing" constant="30" id="Zfc-vP-xel"/>
+                                        <constraint firstItem="YSn-xx-d8B" firstAttribute="leading" secondItem="JHb-Vf-cnk" secondAttribute="leading" constant="30" id="dRz-Ma-lwP"/>
+                                        <constraint firstItem="dgD-Nq-pU2" firstAttribute="top" secondItem="JHb-Vf-cnk" secondAttribute="top" id="fXs-qO-6sx"/>
+                                        <constraint firstItem="fu1-wD-m4F" firstAttribute="leading" secondItem="YSn-xx-d8B" secondAttribute="trailing" id="ggd-h6-B9h"/>
+                                        <constraint firstItem="dgD-Nq-pU2" firstAttribute="leading" secondItem="JHb-Vf-cnk" secondAttribute="leading" id="n8t-vq-cvL"/>
+                                        <constraint firstAttribute="bottom" secondItem="fu1-wD-m4F" secondAttribute="bottom" id="opc-wG-DoC"/>
+                                        <constraint firstAttribute="bottom" secondItem="YSn-xx-d8B" secondAttribute="bottom" constant="-1" id="ym8-KB-njw"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="ZNv-le-0uy"/>
+                                </constraints>
+                                <color key="borderColor" name="upload-border-color"/>
+                                <color key="fillColor" name="editor-background-color"/>
+                            </box>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fVo-LF-7n2">
+                                <rect key="frame" x="18" y="50" width="82" height="16"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="START DATE" id="Mor-IR-d0G">
+                                    <font key="font" metaFont="systemMedium" size="13"/>
+                                    <color key="textColor" name="grey-text-color"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="2oP-p3-wSn" firstAttribute="leading" secondItem="sVF-vD-5lX" secondAttribute="trailing" id="1Fo-ha-7pj"/>
+                            <constraint firstItem="sVF-vD-5lX" firstAttribute="top" secondItem="SIL-am-mKQ" secondAttribute="top" constant="12" id="3y7-d3-e0A"/>
+                            <constraint firstItem="2oP-p3-wSn" firstAttribute="centerY" secondItem="7f9-Da-ISN" secondAttribute="centerY" id="B1R-h3-Xap"/>
+                            <constraint firstAttribute="bottom" secondItem="0wY-G9-sKx" secondAttribute="bottom" constant="16" id="CHj-hN-VfY"/>
+                            <constraint firstItem="sVF-vD-5lX" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="16" id="DKb-63-DoX"/>
+                            <constraint firstItem="A6g-th-xyB" firstAttribute="top" secondItem="SIL-am-mKQ" secondAttribute="top" constant="12" id="ESQ-gk-2TR"/>
+                            <constraint firstItem="0wY-G9-sKx" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="16" id="HaX-A8-yWI"/>
+                            <constraint firstAttribute="trailing" secondItem="A6g-th-xyB" secondAttribute="trailing" constant="16" id="M1m-V0-5xr"/>
+                            <constraint firstItem="0wY-G9-sKx" firstAttribute="top" secondItem="fVo-LF-7n2" secondAttribute="bottom" constant="4" id="X1k-HC-b28"/>
+                            <constraint firstAttribute="trailing" secondItem="0wY-G9-sKx" secondAttribute="trailing" constant="16" id="XlI-JU-mMb"/>
+                            <constraint firstItem="A6g-th-xyB" firstAttribute="leading" secondItem="2oP-p3-wSn" secondAttribute="trailing" id="c4h-lh-QRI"/>
+                            <constraint firstItem="fVo-LF-7n2" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="20" symbolic="YES" id="fXR-2z-j2S"/>
+                        </constraints>
+                    </view>
+                    <color key="borderColor" name="color-project-btn-border-color"/>
+                    <color key="fillColor" name="auto-complete-background"/>
+                </box>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="GfM-qi-LYd" secondAttribute="trailing" id="5st-Ny-xP0"/>
+                <constraint firstItem="GfM-qi-LYd" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="ajn-YU-El5"/>
+                <constraint firstItem="GfM-qi-LYd" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="mas-7r-XB1"/>
+                <constraint firstAttribute="bottom" secondItem="GfM-qi-LYd" secondAttribute="bottom" id="ttE-uW-vxv"/>
+            </constraints>
+            <connections>
+                <outlet property="nextKeyView" destination="GzC-fm-PNM" id="SB2-Ha-1tt"/>
+                <outlet property="startTextField" destination="GzC-fm-PNM" id="btD-Qh-cLd"/>
+            </connections>
+            <point key="canvasLocation" x="-172" y="154"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="duration-arrow" width="12" height="7"/>
+        <image name="next_date_arrow" width="4" height="7"/>
+        <image name="previous_date_arrow" width="4" height="7"/>
+        <namedColor name="auto-complete-background">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="black-text-color">
+            <color red="0.17254901960784313" green="0.074509803921568626" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="color-project-btn-border-color">
+            <color red="0.17254901960784313" green="0.074509803921568626" blue="0.2196078431372549" alpha="0.10000000149011612" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="editor-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="grey-text-color">
+            <color red="0.33725490196078434" green="0.2627450980392157" blue="0.37647058823529411" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="upload-border-color">
+            <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

@@ -1,5 +1,5 @@
 //
-//  AutoCompleteWindow.swift
+//  DropdownWindow.swift
 //  TogglDesktop
 //
 //  Created by Andrew Nester on 29.10.2020.
@@ -50,7 +50,7 @@ final class DropdownWindow: NSWindow {
         if isSeparateWindow {
             location.y -= Constants.topPadding
         } else {
-            location.y -= -Constants.topPaddingLarge
+            location.y += Constants.topPaddingLarge
             height += Constants.topPaddingLarge
         }
 
