@@ -1,6 +1,14 @@
 {
     "versions": [
         {
+            "version": "7.5.363",
+            "rows": [
+                "Prevent possible crash on app launch on some devices"
+            ],
+            "date": "October 30th 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.347",
             "rows": [
                 "Type @ to add a project or # to add tags",
