@@ -6,11 +6,13 @@
              xmlns:local="clr-namespace:TogglDesktop.ui.controls"
              xmlns:converters="clr-namespace:TogglDesktop.Converters"
              xmlns:res="clr-namespace:TogglDesktop.Resources"
+             xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance viewModels:TimeEntryBlock, IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <ResourceDictionary>
-            <converters:RectangleHeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
+            <converters:TimelineHeightToCornerRadiusConverter x:Key="TimelineHeightToCornerRadiusConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Button FontWeight="Normal" Command="{Binding OpenEditView}" MinHeight="{x:Static res:TimelineConstants.MinTimeEntryBlockHeight}" Margin="0 0 4 0" Height="{Binding Height}">
@@ -25,7 +27,7 @@
                     <Border Grid.Column="0" Name ="TimeEntrySpan"
                             Width="{x:Static res:TimelineConstants.TimeEntryBlockWidth}"
                             Background="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
-                            CornerRadius="8,8,0,0">
+                            CornerRadius="{Binding Height, Converter={StaticResource TimelineHeightToCornerRadiusConverter}, ConverterParameter=false}">
                     </Border>
                     <local:TimelineTimeEntryDescription Grid.Column="1"/>
                     <Thumb VerticalAlignment="Top"

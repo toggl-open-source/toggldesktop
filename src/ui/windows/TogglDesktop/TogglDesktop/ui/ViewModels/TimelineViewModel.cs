@@ -93,7 +93,7 @@ namespace TogglDesktop.ViewModels
                     handler => Toggl.OnStoppedTimerState -= handler)
                 .Subscribe(_ => RunningTimeEntryBlock = null);
             this.WhenAnyValue(x => x.CurrentTimeOffset).Where(_ => RunningTimeEntryBlock != null).Subscribe(curOffset =>
-                RunningTimeEntryBlock.Height = curOffset - RunningTimeEntryBlock.VerticalOffset);
+                RunningTimeEntryBlock.Height = Math.Max(curOffset - RunningTimeEntryBlock.VerticalOffset - 2, TimelineConstants.MinTimeEntryBlockHeight));
         }
 
         private int ChangeScaleMode(int value) =>
@@ -280,7 +280,7 @@ namespace TogglDesktop.ViewModels
             {
                 Started = runningTimeEntry.Started,
                 Ended = (ulong)Toggl.UnixFromDateTime(DateTime.Now),
-                Height = Math.Min(ConvertTimeIntervalToHeight(startTime, DateTime.Now, selectedScaleMode), TimelineConstants.MinTimeEntryBlockHeight),
+                Height = Math.Max(ConvertTimeIntervalToHeight(startTime, DateTime.Now, selectedScaleMode), TimelineConstants.MinTimeEntryBlockHeight),
                 VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime, selectedScaleMode),
                 Color = runningTimeEntry.Color,
                 Description = runningTimeEntry.Description.IsNullOrEmpty() ? "No Description" : runningTimeEntry.Description,
@@ -300,6 +300,7 @@ namespace TogglDesktop.ViewModels
             }
 
             block.HorizontalOffset = offset;
+            block.ShowDescription = offset == 0;
             return block;
         }
 

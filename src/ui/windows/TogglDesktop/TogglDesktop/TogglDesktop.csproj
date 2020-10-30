@@ -274,6 +274,7 @@
     <Compile Include="ui\Converters\BindingProxy.cs" />
     <Compile Include="ui\Converters\EmptyStringToHiddenConverter.cs" />
     <Compile Include="ui\Converters\ColorsToBrushConverter.cs" />
+    <Compile Include="ui\Converters\TimelineHeightToCornerRadiusConverter.cs" />
     <Compile Include="ui\Converters\TrimPathConverter.cs" />
     <Compile Include="ui\IRecyclable.cs" />
     <Compile Include="ui\KeyboardShortcuts.cs" />

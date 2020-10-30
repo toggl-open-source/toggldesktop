@@ -200,7 +200,17 @@
                     <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0">
                         <controls:TimelineRunningTimeEntryBlock DataContext="{Binding RunningTimeEntryBlock}"
                                                                 Canvas.Top="{Binding VerticalOffset}"
-                                                                Canvas.Left="{Binding HorizontalOffset}"/>
+                                                                Canvas.Left="{Binding HorizontalOffset}">
+                            <controls:TimelineRunningTimeEntryBlock.Style>
+                                <Style TargetType="FrameworkElement">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ShowDescription}" Value="True">
+                                            <Setter Property="Width" Value="{Binding ElementName=RunningTimeEntryCanvas, Path=ActualWidth}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </controls:TimelineRunningTimeEntryBlock.Style>
+                        </controls:TimelineRunningTimeEntryBlock>
                     </Canvas>
                     <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=GapTimeEntryBlocks}" Margin="10 0 0 0">
                         <ItemsControl.ItemsPanel>
