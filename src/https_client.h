@@ -12,6 +12,7 @@
 #include "proxy.h"
 #include "types.h"
 #include "util/logger.h"
+#include "toggl_api.h"
 
 #include <Poco/Activity.h>
 #include <Poco/Timestamp.h>
@@ -168,7 +169,7 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
 
  protected:
     virtual HTTPResponse request(
-        HTTPRequest req) const;
+        HTTPRequest req, bool_t loggingOn = true) const;
 
     virtual Logger logger() const;
 
@@ -183,7 +184,7 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
     bool isRedirect(const Poco::Int64 status_code) const;
 
     virtual HTTPResponse makeHttpRequest(
-        HTTPRequest req) const;
+        HTTPRequest req, bool_t loggingOn = true) const;
 
     std::string clientIDForRefererHeader() const;
 
@@ -222,7 +223,7 @@ class TOGGL_INTERNAL_EXPORT TogglClient : public HTTPClient {
         HTTPRequest req) const;
 
  protected:
-    virtual HTTPResponse request(HTTPRequest req) const override;
+    virtual HTTPResponse request(HTTPRequest req, bool_t loggingOn = true) const override;
     virtual Logger logger() const override;
 
  private:
