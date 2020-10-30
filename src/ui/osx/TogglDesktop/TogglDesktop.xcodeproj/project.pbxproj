@@ -626,6 +626,10 @@
 		C2A84B032524D0ED00DAA468 /* AutocompleteSourceViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A84B012524D0ED00DAA468 /* AutocompleteSourceViewType.swift */; };
 		C2C076D62538728E00C20527 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C076D52538728E00C20527 /* Project.swift */; };
 		C2C076D72538728E00C20527 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C076D52538728E00C20527 /* Project.swift */; };
+		C2C98DE7254C4087006A98F8 /* ObservationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C98DE6254C4087006A98F8 /* ObservationToken.swift */; };
+		C2C98DE8254C4087006A98F8 /* ObservationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C98DE6254C4087006A98F8 /* ObservationToken.swift */; };
+		C2C98DEC254C50E1006A98F8 /* ResponderObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C98DEB254C50E1006A98F8 /* ResponderObservable.swift */; };
+		C2C98DED254C50E1006A98F8 /* ResponderObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C98DEB254C50E1006A98F8 /* ResponderObservable.swift */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
 		C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */; };
@@ -1111,6 +1115,8 @@
 		C2A84AE82524668900DAA468 /* Comparable+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Utils.swift"; sourceTree = "<group>"; };
 		C2A84B012524D0ED00DAA468 /* AutocompleteSourceViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteSourceViewType.swift; sourceTree = "<group>"; };
 		C2C076D52538728E00C20527 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		C2C98DE6254C4087006A98F8 /* ObservationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservationToken.swift; sourceTree = "<group>"; };
+		C2C98DEB254C50E1006A98F8 /* ResponderObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponderObservable.swift; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
 		C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCell.m; sourceTree = "<group>"; usesTabs = 1; };
 		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../lib/osx/build/Kopsik.dylib; sourceTree = "<group>"; };
@@ -1260,6 +1266,8 @@
 				745126B519A28AA600390F47 /* Reachability.m */,
 				490CCCE624D30382007D392B /* ProjectTitleFactory.swift */,
 				BA35B22022E6E9E200FA560E /* Key.swift */,
+				C2C98DE6254C4087006A98F8 /* ObservationToken.swift */,
+				C2C98DEB254C50E1006A98F8 /* ResponderObservable.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2918,6 +2926,7 @@
 				BA01E8A1232F77B3006B93EC /* ClickableImageView.m in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
 				BA2A116B247BB72A00B97FAE /* Color+Adaptive.swift in Sources */,
+				C2C98DE7254C4087006A98F8 /* ObservationToken.swift in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
 				BAA3107223CC476D008F2893 /* LayerBackedViewController.swift in Sources */,
 				BAE6379A22B225C70024DD08 /* AddTagButton.swift in Sources */,
@@ -3002,6 +3011,7 @@
 				BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */,
 				BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */,
 				BA5BDC2C2464079800FF3C28 /* PasswordStrengthValidation.swift in Sources */,
+				C2C98DEC254C50E1006A98F8 /* ResponderObservable.swift in Sources */,
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
 				BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */,
 				BA4791F322F0478A00E24F79 /* String+Search.swift in Sources */,
@@ -3149,6 +3159,7 @@
 				BAE64D5F2368334000244D2B /* TimeEntryCell.m in Sources */,
 				BAE64D602368334000244D2B /* MainWindowController.m in Sources */,
 				BAE64D612368334000244D2B /* AddTagButton.swift in Sources */,
+				C2C98DE8254C4087006A98F8 /* ObservationToken.swift in Sources */,
 				BAE64D652368334000244D2B /* TimeEntrySnapshot.swift in Sources */,
 				BAE64D662368334000244D2B /* DescriptionAutoCompleteTextField.swift in Sources */,
 				BAE64D672368334000244D2B /* DateInfo.swift in Sources */,
@@ -3233,6 +3244,7 @@
 				BAE64D9A2368334000244D2B /* OverlayViewController.m in Sources */,
 				BAE64D9B2368334000244D2B /* ClientAutoCompleteTextField.swift in Sources */,
 				BA37AD0623D890570013EE26 /* DatePickerView.swift in Sources */,
+				C2C98DED254C50E1006A98F8 /* ResponderObservable.swift in Sources */,
 				BAE64D9C2368334000244D2B /* TimeEntryListViewController.m in Sources */,
 				BA37ACE223D8900C0013EE26 /* PanelSwitcherButton.swift in Sources */,
 				BA13E582243480C5005244AD /* OnboardingService+Objc.swift in Sources */,

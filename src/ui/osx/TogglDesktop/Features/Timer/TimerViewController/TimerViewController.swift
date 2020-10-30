@@ -292,7 +292,7 @@ class TimerViewController: NSViewController {
 
     private func setupDescriptionField() {
         descriptionTextField.displayMode = .fullscreen
-        descriptionTextField.responderDelegate = descriptionContainerBox
+        descriptionContainerBox.setup(for: descriptionTextField)
         descriptionTextField.delegate = descriptionFieldHandler
 
         descriptionFieldHandler.onStateChanged = { [weak self] newState, oldState in

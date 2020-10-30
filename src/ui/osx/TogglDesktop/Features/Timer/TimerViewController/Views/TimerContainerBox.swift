@@ -8,7 +8,7 @@
 
 import Cocoa
 
-final class TimerContainerBox: NSBox, TextFieldResponderDelegate {
+final class TimerContainerBox: NSBox {
 
     enum State {
         case inactive
@@ -60,6 +60,15 @@ final class TimerContainerBox: NSBox, TextFieldResponderDelegate {
         renderLayout(for: state)
     }
 
+    func setup(for textField: ResponderObservable) {
+        textField.observeBecomeFirstResponder(self) { [weak self] in
+            self?.renderLayout(for: .active)
+        }
+        textField.observeResignFirstResponder(self) { [weak self] in
+            self?.renderLayout(for: .inactive)
+        }
+    }
+
     // MARK: Mouse Events
 
     override func mouseEntered(with event: NSEvent) {
@@ -78,15 +87,7 @@ final class TimerContainerBox: NSBox, TextFieldResponderDelegate {
         }
     }
 
-    // MARK: TextFieldResponderDelegate
-
-    func didBecomeFirstResponder(_ sender: NSTextField) {
-        renderLayout(for: .active)
-    }
-
-    func didResignFirstResponder(_ sender: NSTextField) {
-        renderLayout(for: .inactive)
-    }
+    // MARK: Private
 
     private func renderLayout(for state: State) {
         self.state = state

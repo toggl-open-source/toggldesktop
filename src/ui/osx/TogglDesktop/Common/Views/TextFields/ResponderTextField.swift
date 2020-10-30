@@ -8,40 +8,39 @@
 
 import Foundation
 
-protocol TextFieldResponderDelegate: AnyObject {
-    func didBecomeFirstResponder(_ sender: NSTextField)
-    func didResignFirstResponder(_ sender: NSTextField)
-}
+class ResponderTextField: NSTextField, ResponderObservable {
 
-class ResponderTextField: NSTextField {
-    weak var responderDelegate: TextFieldResponderDelegate?
+    var observations = (
+        becomeResponder: [UUID: () -> Void](),
+        resignResponder: [UUID: () -> Void]()
+    )
 
     override func becomeFirstResponder() -> Bool {
         defer {
-            responderDelegate?.didBecomeFirstResponder(self)
+            observations.becomeResponder.values.forEach { $0() }
         }
         return super.becomeFirstResponder()
     }
 
     override func resignFirstResponder() -> Bool {
         defer {
-            responderDelegate?.didResignFirstResponder(self)
+            observations.resignResponder.values.forEach { $0() }
         }
         return super.resignFirstResponder()
     }
 
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
-        responderDelegate?.didBecomeFirstResponder(self)
+        observations.becomeResponder.values.forEach { $0() }
     }
 
     override func textDidBeginEditing(_ notification: Notification) {
         super.textDidBeginEditing(notification)
-        responderDelegate?.didBecomeFirstResponder(self)
+        observations.becomeResponder.values.forEach { $0() }
     }
 
     override func textDidEndEditing(_ notification: Notification) {
         super.textDidEndEditing(notification)
-        responderDelegate?.didResignFirstResponder(self)
+        observations.resignResponder.values.forEach { $0() }
     }
 }

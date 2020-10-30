@@ -44,7 +44,7 @@ class TimerDurationControl: NSView {
     }
 
     private func setup() {
-        durationTextField.responderDelegate = backgroundBox
+        backgroundBox.setup(for: durationTextField)
         durationTextField.delegate = self
     }
 
