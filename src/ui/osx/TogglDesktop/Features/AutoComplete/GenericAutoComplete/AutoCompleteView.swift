@@ -8,63 +8,6 @@
 
 import Cocoa
 
-final class AutoCompleteViewWindow: NSWindow {
-
-    // MARK: Private
-
-    private var topPadding: CGFloat = 5.0
-    var isSeparateWindow = true
-    override var canBecomeMain: Bool {
-        return true
-    }
-    override var canBecomeKey: Bool {
-        return true
-    }
-
-    // MARK: Init
-
-    init(view: NSView) {
-        super.init(contentRect: view.bounds,
-                   styleMask: .borderless,
-                   backing: .buffered,
-                   defer: true)
-        contentView = view
-        hasShadow = true
-        backgroundColor = NSColor.clear
-        isOpaque = false
-        setContentBorderThickness(0, for: NSRectEdge(rawValue: 0)!)
-    }
-
-    func layoutFrame(with textField: NSTextField, origin: CGPoint, size: CGSize) {
-        guard let window = textField.window else { return }
-        var height = size.height
-
-        // Convert
-        var location = CGPoint.zero
-        let point = textField.superview!.convert(origin, to: nil)
-        if #available(OSX 10.12, *) {
-            location = window.convertPoint(toScreen: point)
-        } else {
-            location = window.convertToScreen(NSRect(origin: point, size: size)).origin
-        }
-
-        if isSeparateWindow {
-            location.y -= topPadding
-        } else {
-            location.y -= -30.0
-            height += 30.0
-        }
-
-        setFrame(CGRect(x: 0, y: 0, width: size.width, height: height), display: false)
-        setFrameTopLeftPoint(location)
-    }
-
-    func cancel() {
-        parent?.removeChildWindow(self)
-        orderOut(nil)
-    }
-}
-
 protocol AutoCompleteViewDelegate: class {
 
     func didTapOnCreateButton()

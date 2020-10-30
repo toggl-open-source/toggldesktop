@@ -12,8 +12,8 @@ class TimerViewController: NSViewController {
 
     let viewModel = TimerViewModel()
 
-    private lazy var projectAutoCompleteWindow: AutoCompleteViewWindow = {
-        return AutoCompleteViewWindow(view: projectAutoCompleteView)
+    private lazy var projectAutoCompleteWindow: DropdownWindow = {
+        return DropdownWindow(view: projectAutoCompleteView)
     }()
     private var projectAutoCompleteView = AutoCompleteView.xibView()
     private var projectAutocompleteDidResignObserver: Any?
@@ -25,8 +25,8 @@ class TimerViewController: NSViewController {
         return view
     }()
 
-    private lazy var tagsAutoCompleteWindow: AutoCompleteViewWindow = {
-        return AutoCompleteViewWindow(view: tagsAutoCompleteView)
+    private lazy var tagsAutoCompleteWindow: DropdownWindow = {
+        return DropdownWindow(view: tagsAutoCompleteView)
     }()
     private var tagsAutoCompleteView = AutoCompleteView.xibView()
     private var tagsAutocompleteDidResignObserver: Any?
@@ -481,7 +481,7 @@ class TimerViewController: NSViewController {
         viewModel.tagsDataSource.sizeToFit()
     }
 
-    private func presentAutoComplete(window: AutoCompleteViewWindow,
+    private func presentAutoComplete(window: DropdownWindow,
                                      withContentView contentView: AutoCompleteView,
                                      from: AutocompleteSourceViewType) {
         window.contentView = contentView
