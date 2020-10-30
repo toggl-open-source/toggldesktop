@@ -244,8 +244,14 @@
     <Compile Include="ui\controls\TimeEntryLabel.xaml.cs">
       <DependentUpon>TimeEntryLabel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\controls\TimelineRunningTimeEntryBlock.xaml.cs">
+      <DependentUpon>TimelineRunningTimeEntryBlock.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\TimelineTimeEntryBlock.xaml.cs">
       <DependentUpon>TimelineTimeEntryBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\TimelineTimeEntryDescription.xaml.cs">
+      <DependentUpon>TimelineTimeEntryDescription.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\TrayToolTipControl.xaml.cs">
       <DependentUpon>TrayToolTipControl.xaml</DependentUpon>
@@ -482,7 +488,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\controls\TimelineRunningTimeEntryBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ui\controls\TimelineTimeEntryBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\TimelineTimeEntryDescription.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

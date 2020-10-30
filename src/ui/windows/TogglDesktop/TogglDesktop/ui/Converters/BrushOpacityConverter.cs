@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
+using TogglDesktop.Theming;
 
 namespace TogglDesktop.Converters
 {
@@ -9,8 +10,10 @@ namespace TogglDesktop.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is SolidColorBrush brush && parameter is double opacity)
+            if (parameter is double opacity)
             {
+                var hex = value as string;
+                var brush = Utils.AdaptedProjectColorBrushFromString(hex, Theme.ShapeColorAdaptation.Value);
                 var newBrush = new SolidColorBrush(brush.Color)
                 {
                     Opacity = opacity

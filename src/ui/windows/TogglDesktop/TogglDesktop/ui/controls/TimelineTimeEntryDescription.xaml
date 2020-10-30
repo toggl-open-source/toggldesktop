@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="TogglDesktop.ui.controls.TimelineTimeEntryDescription"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TogglDesktop.ui.controls"
+             xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
+             xmlns:converters="clr-namespace:TogglDesktop.Converters"
+             xmlns:res="clr-namespace:TogglDesktop.Resources"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance viewModels:TimeEntryBlock, IsDesignTimeCreatable=False}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:BrushOpacityConverter x:Key="BrushOpacityConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Border CornerRadius="0,8,8,0" Margin="-10 0 0 0"
+            BorderThickness="1"
+            Background="{Binding Color, Converter={StaticResource BrushOpacityConverter}, ConverterParameter={x:Static res:TimelineConstants.DescriptionOpacity}}"
+            Visibility="{Binding ShowDescription, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <StackPanel Height="{Binding Height}" Margin="20,0,0,0">
+            <TextBlock Text="{Binding Description}" Style="{StaticResource Toggl.CaptionBlackText}"/>
+            <DockPanel>
+                <Ellipse Width="8" Height="8"
+                         DockPanel.Dock="Left"
+                         Margin="0 0 5 0"
+                         VerticalAlignment="Center"
+                         Fill="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
+                         Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                <TextBlock Foreground="{Binding Color, Converter={StaticResource AdaptProjectTextColorConverter}}"
+                           Text="{Binding ProjectName}" FontSize="12"
+                           VerticalAlignment="Center"/>
+            </DockPanel>
+            <TextBlock Text="{Binding ClientName}" Style="{StaticResource Toggl.CaptionText}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                    <Viewbox Visibility="{Binding HasTag, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Path Style="{StaticResource Toggl.TagIcon}"/>
+                    </Viewbox>
+                    <Viewbox DockPanel.Dock="Left" Visibility="{Binding IsBillable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Path Style="{StaticResource Toggl.DollarIcon}"/>
+                    </Viewbox>
+                </StackPanel>
+                <TextBlock Margin="0 0 5 0" Grid.Column="1" DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding Duration}" Style="{StaticResource Toggl.CaptionBlackText}"/>
+            </Grid>
+        </StackPanel>
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="BorderBrush" Value="{Binding Color, Converter={StaticResource BrushOpacityConverter},ConverterParameter={x:Static res:TimelineConstants.DescriptionOpacity}}"/>
+                <Style.Triggers>
+                    <DataTrigger  Binding="{Binding IsEditViewOpened}" Value="True">
+                        <Setter Property="BorderBrush" Value="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"></Setter>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+    </Border>
+</UserControl>

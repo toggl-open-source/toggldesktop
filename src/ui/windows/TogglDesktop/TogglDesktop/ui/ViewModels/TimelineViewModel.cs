@@ -73,6 +73,27 @@ namespace TogglDesktop.ViewModels
             Observable.Timer(TimeSpan.Zero,TimeSpan.FromMinutes(1))
                 .Select(_ => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, SelectedScaleMode))
                 .Subscribe(h => CurrentTimeOffset = h);
+            var timeEntryBlocksObservable = this.WhenAnyValue(x => x.TimeEntryBlocks);
+            Observable.FromEvent<Toggl.DisplayRunningTimerState, Toggl.TogglTimeEntryView>(handler =>
+                    {
+                        void h(Toggl.TogglTimeEntryView te) => handler(te);
+                        return h;
+                    },
+                    handler => Toggl.OnRunningTimerState += handler,
+                    handler => Toggl.OnRunningTimerState -= handler)
+                .Where(te => te.GUID != RunningTimeEntryBlock?.TimeEntryId)
+                .CombineLatest(timeEntryBlocksObservable, scaleModeObservable, ConvertToRunningTimeEntryBlock)
+                .Subscribe(te => RunningTimeEntryBlock = te);
+            Observable.FromEvent<Toggl.DisplayStoppedTimerState, Unit>(handler =>
+                    {
+                        void h() => handler(Unit.Default);
+                        return h;
+                    },
+                    handler => Toggl.OnStoppedTimerState += handler,
+                    handler => Toggl.OnStoppedTimerState -= handler)
+                .Subscribe(_ => RunningTimeEntryBlock = null);
+            this.WhenAnyValue(x => x.CurrentTimeOffset).Where(_ => RunningTimeEntryBlock != null).Subscribe(curOffset =>
+                RunningTimeEntryBlock.Height = curOffset - RunningTimeEntryBlock.VerticalOffset);
         }
 
         private int ChangeScaleMode(int value) =>
@@ -251,6 +272,37 @@ namespace TogglDesktop.ViewModels
             return blocks;
         }
 
+        private static TimeEntryBlock ConvertToRunningTimeEntryBlock(Toggl.TogglTimeEntryView runningTimeEntry,
+            List<TimeEntryBlock> timeEntries, int selectedScaleMode)
+        {
+            var startTime = Toggl.DateTimeFromUnix(runningTimeEntry.Started);
+            var block = new TimeEntryBlock(runningTimeEntry.GUID, TimelineConstants.ScaleModes[selectedScaleMode])
+            {
+                Started = runningTimeEntry.Started,
+                Ended = (ulong)Toggl.UnixFromDateTime(DateTime.Now),
+                Height = Math.Min(ConvertTimeIntervalToHeight(startTime, DateTime.Now, selectedScaleMode), TimelineConstants.MinTimeEntryBlockHeight),
+                VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime, selectedScaleMode),
+                Color = runningTimeEntry.Color,
+                Description = runningTimeEntry.Description.IsNullOrEmpty() ? "No Description" : runningTimeEntry.Description,
+                ProjectName = runningTimeEntry.ProjectLabel,
+                ClientName = runningTimeEntry.ClientLabel,
+                ShowDescription = true,
+                HasTag = !runningTimeEntry.Tags.IsNullOrEmpty(),
+                IsBillable = runningTimeEntry.Billable
+            };
+            double offset = 0d;
+            foreach (var entry in timeEntries)
+            {
+                if (entry.Ended > block.Started && entry.Started < block.Ended)
+                {
+                    offset += TimelineConstants.TimeEntryBlockWidth + TimelineConstants.GapBetweenOverlappingTEs;
+                }
+            }
+
+            block.HorizontalOffset = offset;
+            return block;
+        }
+
         public static double ConvertTimeIntervalToHeight(DateTime start, DateTime end, int scaleMode)
         {
             var timeInterval = (end - start).TotalMinutes;
@@ -312,7 +364,10 @@ namespace TogglDesktop.ViewModels
         public TimeEntryBlock SelectedTimeEntryBlock { get; set; }
         
         public List<TimeEntryBlock> TimeEntryBlocks { [ObservableAsProperty] get; }
-        
+
+        [Reactive]
+        public TimeEntryBlock RunningTimeEntryBlock { get; set; }
+
         public List<TimeEntryBlock> GapTimeEntryBlocks { [ObservableAsProperty] get; }
 
         [Reactive]

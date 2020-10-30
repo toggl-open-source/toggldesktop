@@ -10,6 +10,7 @@
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              xmlns:converters="clr-namespace:TogglDesktop.Converters"
              xmlns:res="clr-namespace:TogglDesktop.Resources"
+             xmlns:controls="clr-namespace:TogglDesktop.ui.controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:TimelineViewModel, IsDesignTimeCreatable=False}">
@@ -196,6 +197,11 @@
                             </Style>
                         </ItemsControl.ItemContainerStyle>
                     </ItemsControl>
+                    <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0">
+                        <controls:TimelineRunningTimeEntryBlock DataContext="{Binding RunningTimeEntryBlock}"
+                                                                Canvas.Top="{Binding VerticalOffset}"
+                                                                Canvas.Left="{Binding HorizontalOffset}"/>
+                    </Canvas>
                     <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=GapTimeEntryBlocks}" Margin="10 0 0 0">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
