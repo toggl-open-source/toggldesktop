@@ -28,52 +28,6 @@
 
 namespace toggl {
 
-bool TimeEntry::ResolveError(const error &err) {
-    if (durationTooLarge(err) && StopTime() && StartTime()) {
-        Poco::Int64 seconds =
-            (std::min)(StopTime() - StartTime(),
-                       Poco::Int64(kMaxTimeEntryDurationSeconds));
-        SetDurationInSeconds(seconds, true);
-        return true;
-    }
-    if (startTimeWrongYear(err) && StopTime() && StartTime()) {
-        Poco::Int64 seconds =
-            (std::min)(StopTime() - StartTime(),
-                       Poco::Int64(kMaxTimeEntryDurationSeconds));
-        SetDurationInSeconds(seconds, true);
-        SetStartTime(StopTime() - Duration(), true);
-        return true;
-    }
-    if (stopTimeMustBeAfterStartTime(err) && StopTime() && StartTime()) {
-        SetStopTime(StartTime() + DurationInSeconds(), true);
-        return true;
-    }
-    if (userCannotAccessWorkspace(err)) {
-        SetWID(0);
-        SetPID(0, true);
-        SetTID(0, true);
-        return true;
-    }
-    if (userCannotAccessTheSelectedProject(err)) {
-        SetPID(0, true);
-        SetTID(0, true);
-        return true;
-    }
-    if (userCannotAccessSelectedTask(err)) {
-        SetTID(0, true);
-        return true;
-    }
-    if (billableIsAPremiumFeature(err)) {
-        SetBillable(false, true);
-        return true;
-    }
-    if (isMissingCreatedWith(err)) {
-        SetCreatedWith(HTTPClient::Config.UserAgent());
-        return true;
-    }
-    return false;
-}
-
 bool TimeEntry::ResolveError(const Error &err) {
     if (err->Class() == "ModelError") {
         auto mErr = err.promote<ModelError>();
@@ -124,51 +78,6 @@ bool TimeEntry::ResolveError(const Error &err) {
         }
     }
     return false;
-}
-
-bool TimeEntry::isNotFound(const error &err) {
-    return std::string::npos != std::string(err).find(
-        "Time entry not found");
-}
-bool TimeEntry::isLocked(const error& err) {
-    return std::string::npos != std::string(err).find(
-        "Entries can't be added or edited in this period");
-}
-bool TimeEntry::isMissingCreatedWith(const error &err) const {
-    return std::string::npos != std::string(err).find(
-        "created_with needs to be provided an a valid string");
-}
-
-bool TimeEntry::userCannotAccessTheSelectedProject(
-    const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "User cannot access the selected project"));
-}
-
-bool TimeEntry::userCannotAccessSelectedTask(
-    const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "User cannot access selected task"));
-}
-
-bool TimeEntry::durationTooLarge(const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "Max allowed duration per 1 time entry is 999 hours"));
-}
-
-bool TimeEntry::startTimeWrongYear(const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "Start time year must be between 2006 and 2030"));
-}
-
-bool TimeEntry::stopTimeMustBeAfterStartTime(const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "Stop time must be after start time"));
-}
-
-bool TimeEntry::billableIsAPremiumFeature(const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "Billable is a premium feature"));
 }
 
 void TimeEntry::DiscardAt(const Poco::Int64 at) {

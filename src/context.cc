@@ -5984,19 +5984,22 @@ error Context::pushEntries(
         }
 
         if (resp.err != noError) {
+            // TODO ERRORS
+            ModelError err { resp.body };
+
             // if we're able to solve the error
-            if ((*it)->ResolveError(resp.body)) {
+            if ((*it)->ResolveError(err)) {
                 displayError(save(false));
             }
 
             // if time entry is locked pull the updated info about locked reports in the workspaces
-            if ((*it)->isLocked(resp.body)) {
+            if (err.Type() == ModelErrors::ERROR_TIME_ENTRY_LOCKED) {
                 pullWorkspacePreferences();
                 displayError(save(false));
             }
 
             // Not found on server. Probably deleted already.
-            if ((*it)->isNotFound(resp.body)) {
+            if (err.Type() == ModelErrors::ERROR_TIME_ENTRY_NOT_FOUND) {
                 (*it)->MarkAsDeletedOnServer();
                 continue;
             }
@@ -6546,8 +6549,9 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
             }
             else if (i["payload"]["result"].isMember("error_message") && i["payload"]["result"]["error_message"].isMember("default_message")) {
                 std::string errorMessage = i["payload"]["result"]["error_message"]["default_message"].asString();
+                ModelError error { errorMessage };
                 // Not found on server. Probably deleted already.
-                if (TimeEntry::isNotFound(errorMessage)) {
+                if (error.Type() == ModelErrors::ERROR_TIME_ENTRY_NOT_FOUND) {
                     model->MarkAsDeletedOnServer();
                     continue;
                 }

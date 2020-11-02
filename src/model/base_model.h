@@ -49,13 +49,12 @@ inline static const std::multimap<int, std::string> ModelErrorRegexes {
     { ERROR_CANNOT_ACCESS_WORKSPACE, "cannot access workspace" }
 };
 
-class ModelError : public ErrorBase {
+class ModelError : public EnumBasedError<ModelErrors, ModelErrorMessages, ModelErrorRegexes> {
 public:
-    ~ModelError() {}
+    using Parent = EnumBasedError<ModelErrors, ModelErrorMessages, ModelErrorRegexes>;
+    using Parent::Parent;
+    ModelError &operator=(const ModelError &o) = default;
     std::string Class() const override { return "ModelError"; }
-    int Type() const override { return 0; }
-    std::string LogMessage() const override { return "hu"; }
-    std::string UserMessage() const override { return "ha"; }
 };
 
 enum ValidationErrors {

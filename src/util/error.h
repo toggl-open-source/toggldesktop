@@ -32,7 +32,8 @@ namespace toggl {
         }
     };
 
-    template <class Enum, const std::map<int, std::string> &Messages>
+    inline static const std::multimap<int, std::string> EnumBasedErrorNoRegexes;
+    template <class Enum, const std::map<int, std::string> &Messages, const std::multimap<int, std::string> &Regexes = EnumBasedErrorNoRegexes>
     class EnumBasedError : public ErrorBase {
     public:
         EnumBasedError(const std::string &custom_message = {})
@@ -95,7 +96,23 @@ namespace toggl {
         std::string Class() const override { return "NoError"; }
         bool IsError() const override { return false; }
         std::string LogMessage() const override { return {}; }
-        std::string UserMessage() const override { return {}; }
+    };
+
+    class GenericError : public ErrorBase {
+    public:
+        GenericError(const std::string &log_message, const std::string &user_message)
+            : ErrorBase()
+            , log_message_(log_message)
+            , user_message_(user_message)
+        {}
+        virtual ~GenericError() {}
+        std::string Class() const override { return "GenericError"; }
+        bool IsError() const override { return true; }
+        std::string LogMessage() const override { return log_message_; }
+        std::string UserMessage() const override { return user_message_; }
+    protected:
+        std::string log_message_;
+        std::string user_message_;
     };
 
     class Error {
