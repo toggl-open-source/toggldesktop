@@ -93,6 +93,8 @@ namespace TogglDesktop.ViewModels
                 .Subscribe(_ => RunningTimeEntryBlock = null);
             this.WhenAnyValue(x => x.CurrentTimeOffset).Where(_ => RunningTimeEntryBlock != null).Subscribe(curOffset =>
                 RunningTimeEntryBlock.Height = Math.Max(curOffset - RunningTimeEntryBlock.VerticalOffset - 1, TimelineConstants.MinTimeEntryBlockHeight));
+            this.WhenAnyValue(x => x.TimeEntryBlocks, x => x.RunningTimeEntryBlock, x => x.IsTodaySelected)
+                .Select(item => item.Item1?.Any() == true || (item.Item2 != null && item.Item3)).ToPropertyEx(this, x => x.AnyTimeEntries);
         }
 
         private int ChangeScaleMode(int value) =>
@@ -297,6 +299,7 @@ namespace TogglDesktop.ViewModels
             {
                 if (entry.Ended > block.Started && entry.Started < block.Ended)
                 {
+                    entry.ShowDescription = false;
                     offset += TimelineConstants.TimeEntryBlockWidth + TimelineConstants.GapBetweenOverlappingTEs;
                 }
             }
@@ -370,6 +373,8 @@ namespace TogglDesktop.ViewModels
 
         [Reactive]
         public TimeEntryBlock RunningTimeEntryBlock { get; set; }
+
+        public bool AnyTimeEntries { [ObservableAsProperty] get; }
 
         public List<TimeEntryBlock> GapTimeEntryBlocks { [ObservableAsProperty] get; }
 

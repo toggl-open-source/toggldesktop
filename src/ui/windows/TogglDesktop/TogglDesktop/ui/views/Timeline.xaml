@@ -17,7 +17,6 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:RectangleHeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
-            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid MinHeight="100">
@@ -148,7 +147,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <GridSplitter Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="1" Background="{DynamicResource Toggl.TimelineSeparatorBrush}"/>
-                    <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0" Visibility="{Binding RunningTimeEntryBlock, Converter={StaticResource NullToVisibilityConverter}}">
+                    <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0" Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <controls:TimelineRunningTimeEntryBlock DataContext="{Binding RunningTimeEntryBlock}"
                                                                 Canvas.Top="{Binding VerticalOffset}"
                                                                 Canvas.Left="{Binding HorizontalOffset}"
@@ -386,7 +385,7 @@
             </ScrollViewer>
             <TextBlock Grid.Row="3" Grid.Column="1" Text="No entries here... Go ahead and track some time!" Width="125" HorizontalAlignment="Center"
                        VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"
-                       Visibility="{Binding TimeEntryBlocks, Converter={StaticResource EmptyListToVisibleConverter}}"
+                       Visibility="{Binding AnyTimeEntries, Converter={StaticResource BooleanInvertToVisibilityConverter}}"
                        MouseWheel="HandleScrollViewerMouseWheel"/>
             <TextBlock Grid.Row="3" Grid.Column="2" Text="No activity was recorded yet..." HorizontalAlignment="Center"
                        VerticalAlignment="Center" TextAlignment="Center" 

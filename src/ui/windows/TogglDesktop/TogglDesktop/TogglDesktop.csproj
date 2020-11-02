@@ -265,7 +265,6 @@
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
     <Compile Include="ui\Converters\HasAnyFlagToVisibilityConverter.cs" />
     <Compile Include="ui\Converters\IsSelectableItemConverter.cs" />
-    <Compile Include="ui\Converters\NullToVisibilityConverter.cs" />
     <Compile Include="ui\Converters\PopupAlignmentAwareConverter.cs" />
     <Compile Include="ui\Converters\RectangleHeightToRadiusConverter.cs" />
     <Compile Include="ui\Converters\StringFormatIfNotEmptyConverter.cs" />
