@@ -284,10 +284,14 @@ namespace TogglDesktop.ViewModels
                 : new TimeEntryBlock(runningTimeEntry.GUID, TimelineConstants.ScaleModes[selectedScaleMode]);
             block.Started = runningTimeEntry.Started;
             block.Ended = (ulong) Toggl.UnixFromDateTime(DateTime.Now);
-            block.VerticalOffset =
-                ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime,
-                    selectedScaleMode);
-            block.Height = Math.Max(curTimeLine - block.VerticalOffset - 1, TimelineConstants.MinTimeEntryBlockHeight);
+            //this is for the sake of resizing: we don't want to update height or vertical offset while user is dragging the entry
+            if (runningTimeEntryBlock?.TimeEntryId != runningTimeEntry.GUID)
+            {
+                block.VerticalOffset =
+                    ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime,
+                        selectedScaleMode);
+                block.Height = Math.Max(curTimeLine - block.VerticalOffset - 1, TimelineConstants.MinTimeEntryBlockHeight);
+            }
             block.Color = runningTimeEntry.Color;
             block.Description = runningTimeEntry.Description.IsNullOrEmpty()
                 ? "No Description"
