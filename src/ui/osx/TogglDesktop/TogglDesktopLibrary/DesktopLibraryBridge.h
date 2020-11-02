@@ -115,6 +115,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString * _Nullable)formatDurationTimestampt:(NSTimeInterval)duration;
 - (int64_t)secondsFromDurationString:(NSString *)durationString;
+- (NSString * _Nullable)formatTime:(NSTimeInterval)time;
+- (NSTimeInterval)timestampFromString:(NSString *)timeString;
 
 #pragma mark - Colors
 

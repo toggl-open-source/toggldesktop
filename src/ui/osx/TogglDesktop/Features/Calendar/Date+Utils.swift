@@ -15,6 +15,10 @@ extension Calendar {
 
 extension Date {
 
+    var seconds: Int {
+        Calendar.current.dateComponents([.second], from: self).second ?? 0
+    }
+
     func dayOfWeekString() -> String? {
         guard let weekday = Calendar.current.dateComponents([.weekday], from: self).weekday else {
             return nil
