@@ -69,7 +69,10 @@ namespace TogglDesktop.ViewModels
                 SelectedForEditTEId = open ? te.GUID : SelectedForEditTEId;
             this.WhenAnyValue(x => x.SelectedForEditTEId, x => x.TimeEntryBlocks)
                 .ObserveOn(RxApp.TaskpoolScheduler).Subscribe(_ =>
-                TimeEntryBlocks?.ForEach(te => te.IsEditViewOpened = SelectedForEditTEId == te.TimeEntryId));
+                    TimeEntryBlocks?.ForEach(te => te.IsEditViewOpened = SelectedForEditTEId == te.TimeEntryId));
+            this.WhenAnyValue(x => x.SelectedForEditTEId, x => x.RunningTimeEntryBlock)
+                .ObserveOn(RxApp.TaskpoolScheduler).Where(pair => pair.Item2 != null)
+                .Subscribe(pair => pair.Item2.IsEditViewOpened = pair.Item1 == pair.Item2.TimeEntryId);
             Observable.Timer(TimeSpan.Zero,TimeSpan.FromMinutes(1))
                 .Select(_ => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, SelectedScaleMode))
                 .Subscribe(h => CurrentTimeOffset = h);
@@ -291,7 +294,6 @@ namespace TogglDesktop.ViewModels
                 : runningTimeEntry.Description;
             block.ProjectName = runningTimeEntry.ProjectLabel;
             block.ClientName = runningTimeEntry.ClientLabel;
-            block.ShowDescription = true;
             block.HasTag = !runningTimeEntry.Tags.IsNullOrEmpty();
             block.IsBillable = runningTimeEntry.Billable;
             double offset = 0d;
