@@ -566,30 +566,6 @@ std::string Formatter::EscapeJSONString(const std::string &input) {
     return ss.str();
 }
 
-error Formatter::CollectErrors(std::vector<error> * const errors) {
-    std::stringstream ss;
-    ss << "Errors encountered while syncing data: ";
-    std::set<error> unique;
-    for (std::vector<error>::const_iterator it = errors->begin();
-            it != errors->end();
-            ++it) {
-        error err = *it;
-        if (!err.empty() && err[err.size() - 1] == '\n') {
-            err[err.size() - 1] = '.';
-        }
-        // skip error if not unique
-        if (unique.end() != unique.find(err)) {
-            continue;
-        }
-        if (it != errors->begin()) {
-            ss << " ";
-        }
-        ss << err;
-        unique.insert(err);
-    }
-    return error(ss.str());
-}
-
 bool CompareClientByName(Client *a, Client *b) {
     return (Poco::UTF8::icompare(a->Name(), b->Name()) < 0);
 }
