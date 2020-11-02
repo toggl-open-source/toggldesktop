@@ -21,7 +21,11 @@ final class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var recordSwitcher: OGSwitch!
     @IBOutlet weak var collectionView: TimelineCollectionView!
     @IBOutlet weak var emptyLbl: NSTextField!
-    @IBOutlet weak var emptyActivityLbl: NSTextField!
+    @IBOutlet weak var emptyActivityLbl: NSTextField! {
+        didSet {
+            emptyActivityLbl.frameCenterRotation = -90
+        }
+    }
     @IBOutlet weak var emptyActivityLblPadding: NSLayoutConstraint!
     @IBOutlet weak var zoomContainerView: NSView!
     @IBOutlet weak var collectionViewContainerView: NSView!
@@ -269,7 +273,6 @@ extension TimelineDashboardViewController {
         datePickerView.edgesToSuperView()
         datePickerView.delegate = self
         datePickerView.setBackgroundForTimeline()
-        emptyActivityLbl.frameCenterRotation = -90
 
         // Forect Render the view
         _ = activityHoverController.view
