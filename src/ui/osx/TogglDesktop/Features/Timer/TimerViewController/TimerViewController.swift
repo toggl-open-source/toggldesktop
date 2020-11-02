@@ -138,8 +138,14 @@ class TimerViewController: NSViewController {
         }
 
         viewModel.onDurationChanged = { [unowned self] duration in
-            if self.durationControl.stringValue != duration {
-                self.durationControl.stringValue = duration
+            if self.durationControl.durationStringValue != duration {
+                self.durationControl.durationStringValue = duration
+            }
+        }
+
+        viewModel.onStartTimeChanged = { [unowned self] startTime in
+            if self.durationControl.startTimeStringValue != startTime {
+                self.durationControl.startTimeStringValue = startTime
             }
         }
 
@@ -414,6 +420,10 @@ class TimerViewController: NSViewController {
 
         durationControl.onDurationTextChange = { [unowned self] text in
             self.viewModel.setDuration(text)
+        }
+
+        durationControl.onStartTextChange = { [unowned self] text in
+            self.viewModel.setStartTime(text)
         }
 
         durationControl.onPerformAction = { [unowned self] action in

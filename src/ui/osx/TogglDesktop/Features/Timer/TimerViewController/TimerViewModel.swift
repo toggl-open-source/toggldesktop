@@ -20,8 +20,13 @@ final class TimerViewModel: NSObject {
 
     private(set) var durationString: String = "" {
         didSet {
-            guard durationString != oldValue else { return }
             onDurationChanged?(durationString)
+        }
+    }
+
+    private(set) var startTimeString: String = "" {
+        didSet {
+            onStartTimeChanged?(startTimeString)
         }
     }
 
@@ -81,6 +86,7 @@ final class TimerViewModel: NSObject {
     var onIsRunning: ((Bool) -> Void)?
     var onDescriptionChanged: ((String) -> Void)?
     var onDurationChanged: ((String) -> Void)?
+    var onStartTimeChanged: ((String) -> Void)?
     var onTagSelected: ((Bool) -> Void)?
     var onProjectUpdated: ((Project?) -> Void)?
     /// Called when project was selected via autocomplete data source
@@ -193,17 +199,48 @@ final class TimerViewModel: NSObject {
 
     func setDuration(_ duration: String) {
         guard durationString != duration else { return }
-        self.durationString = duration
+
+        if !duration.isEmpty {
+            timeEntry.started = startDate(fromDurationString: duration)
+            startTimeString = timeString(fromDate: timeEntry.started)
+
+            let duration = Date().timeIntervalSince(timeEntry.started)
+            durationString = DesktopLibraryBridge.shared().convertDuraton(inSecond: Int64(duration))
+        }
 
         if timeEntry.isRunning() {
-            timeEntry.started = startDate(fromDurationString: durationString)
-
             if let timeEntryGUID = timeEntry.guid {
-                save(duration: durationString, forEntryWithGUID: timeEntryGUID)
+                save(duration: duration, forEntryWithGUID: timeEntryGUID)
             }
         }
 
         actionsUsedBeforeStart.insert(TimerEditActionTypeDuration)
+    }
+
+    func setStartTime(_ startString: String) {
+        guard !startString.isEmpty else { return }
+
+        var newTimestamp = DesktopLibraryBridge.shared().timestamp(from: startString)
+        guard newTimestamp > 0 else { return }
+
+        if timeEntry.isRunning(), let startDate = timeEntry.started {
+            // because start time string can have only hours and minutes,
+            // we are manually adding remainder seconds from current time entry
+            newTimestamp += TimeInterval(startDate.seconds)
+        } else {
+            // when not running we round the duration to minutes for ease of use
+            newTimestamp += TimeInterval(Date().seconds)
+        }
+
+        timeEntry.started = Date(timeIntervalSince1970: newTimestamp)
+        startTimeString = timeString(fromDate: timeEntry.started)
+
+        let duration = Date().timeIntervalSince1970 - newTimestamp
+        durationString = DesktopLibraryBridge.shared().convertDuraton(inSecond: Int64(duration))
+
+        if timeEntry.isRunning(), let guid = timeEntry.guid {
+            DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: newTimestamp, guid: guid, keepEndTimeFixed: false)
+        }
     }
 
     func createNewTag(withName name: String) {
@@ -324,11 +361,18 @@ final class TimerViewModel: NSObject {
 
     private func startDate(fromDurationString durationString: String) -> Date {
         if durationString.isEmpty {
-            return Date(timeIntervalSince1970: 0)
+            return Date()
         } else {
             let durationSec = DesktopLibraryBridge.shared().seconds(fromDurationString: durationString)
             return Date(timeIntervalSinceNow: Double(-durationSec))
         }
+    }
+
+    private func timeString(fromDate date: Date?) -> String {
+        guard let date = date else {
+            return ""
+        }
+        return DesktopLibraryBridge.shared().formatTime(date.timeIntervalSince1970) ?? ""
     }
 
     @objc
@@ -362,6 +406,7 @@ final class TimerViewModel: NSObject {
         if isNewEntry {
             entryDescription = entry.entryDescription ?? ""
             durationString = entry.duration ?? ""
+            startTimeString = entry.startTimeString ?? ""
             onDescriptionFocusChanged?(false)
 
         } else if entry.isRunning() {
@@ -373,6 +418,10 @@ final class TimerViewModel: NSObject {
             let isDurationEditing = isEditingDuration?() ?? true
             if durationString.isEmpty || !isDurationEditing {
                 durationString = entry.duration ?? ""
+            }
+
+            if startTimeString != entry.startTimeString {
+                startTimeString = entry.startTimeString ?? ""
             }
 
         } else {
@@ -413,6 +462,7 @@ final class TimerViewModel: NSObject {
         isRunning = false
         entryDescription = ""
         durationString = ""
+        startTimeString = ""
         selectedTags = []
         fetchTags()
         updateBillableStatus()

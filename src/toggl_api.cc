@@ -642,6 +642,35 @@ char_t *toggl_format_tracked_time_duration(
     return copy_string(formatted);
 }
 
+char_t *toggl_format_time(
+    const int64_t time) {
+
+    std::string formatted = toggl::Formatter::FormatTimeForTimeEntryEditor(time);
+    return copy_string(formatted);
+}
+
+int64_t toggl_timestamp_from_time_string(const char_t *time) {
+    int hours(0), minutes(0);
+    if (!toggl::Formatter::ParseTimeInput(to_string(time), &hours, &minutes)) {
+        return 0;
+    }
+
+    Poco::LocalDateTime now;
+
+    Poco::LocalDateTime dt(
+        now.year(), now.month(), now.day(),
+        hours, minutes, 0);
+
+    // check if time is in future and subtrack 1 day if needed
+    if (dt.utcTime() > now.utcTime()) {
+        Poco::LocalDateTime new_date =
+            dt - Poco::Timespan(1 * Poco::Timespan::DAYS);
+        dt = new_date;
+    }
+
+    return dt.utc().timestamp().epochTime();
+}
+
 char_t *toggl_start_with_current_running(
     void *context,
     const char_t *description,

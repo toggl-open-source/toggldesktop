@@ -11,17 +11,27 @@ import Foundation
 class TimerDurationControl: NSView {
 
     var onDurationTextChange: ((String) -> Void)?
+    var onStartTextChange: ((String) -> Void)? {
+        didSet {
+            timeEditView.onStartTextChange = onStartTextChange
+        }
+    }
 
     /// Feature flag for duration dropdown. Set to `true` to test the current implementation.
     var isDurationDropdownEnabled = false
 
-    var stringValue: String {
+    var durationStringValue: String {
         get { durationTextField.stringValue }
         set { durationTextField.stringValue = newValue }
     }
 
+    var startTimeStringValue: String {
+        get { timeEditView.startStringValue }
+        set { timeEditView.startStringValue = newValue }
+    }
+
     var isEditing: Bool {
-        durationTextField.currentEditor() != nil
+        durationTextField.currentEditor() != nil && window?.isKeyWindow == true
     }
 
     override var canBecomeKeyView: Bool { true }
@@ -42,6 +52,8 @@ class TimerDurationControl: NSView {
         static let minWindowPadding: CGFloat = 8
     }
 
+    private var notificationObserverToken: Any?
+
     // MARK: UI Components
 
     @IBOutlet private weak var durationTextField: ResponderTextField!
@@ -60,6 +72,12 @@ class TimerDurationControl: NSView {
         setup()
     }
 
+    deinit {
+        if let token = notificationObserverToken {
+            NotificationCenter.default.removeObserver(token)
+        }
+    }
+
     override func becomeFirstResponder() -> Bool {
         durationTextField.nextKeyView = nextKeyView
         return durationTextField.becomeFirstResponder()
@@ -75,6 +93,18 @@ class TimerDurationControl: NSView {
 
         durationTextField.observeResignFirstResponder(self) { [weak self] in
             self?.closeDropdown()
+        }
+
+        timeEditView.onStartTextChange = onStartTextChange
+
+        notificationObserverToken = NotificationCenter.default.addObserver(
+            forName: NSWindow.didResignKeyNotification,
+            object: window,
+            queue: .main
+        ) { [unowned self] notification in
+            if (notification.object as? NSWindow) == self.window {
+                self.onDurationTextChange?(self.durationTextField.stringValue)
+            }
         }
     }
 

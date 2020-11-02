@@ -388,6 +388,8 @@ void *ctx;
     return nil;
 }
 
+#pragma mark - Formatter
+
 - (NSString *)formatDurationTimestampt:(NSTimeInterval)duration
 {
     char *durationStr = toggl_format_duration_time(ctx, duration);
@@ -402,6 +404,22 @@ void *ctx;
 - (int64_t)secondsFromDurationString:(NSString *)durationString {
     return toggl_parse_duration_string_into_seconds([durationString UTF8String]);
 }
+
+- (NSString *)formatTime:(NSTimeInterval)time {
+    char *timeStr = toggl_format_time(time);
+    if (timeStr) {
+        NSString *time = [NSString stringWithUTF8String:timeStr];
+        free(timeStr);
+        return time;
+    }
+    return nil;
+}
+
+- (NSTimeInterval)timestampFromString:(NSString *)timeString {
+    return toggl_timestamp_from_time_string([timeString UTF8String]);
+}
+
+#pragma mark - Colors
 
 - (NSColor *) getAdaptiveColorForShapeFromColor:(NSColor *) color {
     TogglAdaptiveColor type = [self isDarkTheme] ? AdaptiveColorShapeOnDarkBackground : AdaptiveColorShapeOnLightBackground;

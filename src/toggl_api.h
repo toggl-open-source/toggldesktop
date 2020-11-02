@@ -1165,6 +1165,13 @@ typedef enum {
     TOGGL_EXPORT char_t *toggl_format_tracked_time_duration(
         const int64_t duration_in_seconds);
 
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_format_time(
+        const int64_t time);
+
+    TOGGL_EXPORT int64_t toggl_timestamp_from_time_string(
+        const char_t *time);
+
     TOGGL_EXPORT int64_t toggl_parse_duration_string_into_seconds(
         const char_t *duration_string);
 
