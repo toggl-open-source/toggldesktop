@@ -1433,9 +1433,9 @@ Error Database::loadProjects(
                 }
                 model->SetWID(rs[5].convert<Poco::UInt64>());
                 if (rs[6].isEmpty()) {
-                    model->SetColor("");
+                    model->SetColorCode("");
                 } else {
-                    model->SetColor(rs[6].convert<std::string>());
+                    model->SetColorCode(rs[6].convert<std::string>());
                 }
                 if (rs[7].isEmpty()) {
                     model->SetCID(0);

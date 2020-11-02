@@ -84,11 +84,6 @@ void BaseModel::Delete() {
     SetUIModified();
 }
 
-bool BaseModel::userCannotAccessWorkspace(const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        kCannotAccessWorkspaceError));
-}
-
 Logger BaseModel::logger() const {
     return { ModelName() };
 }

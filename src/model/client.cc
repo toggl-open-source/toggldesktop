@@ -90,22 +90,17 @@ Json::Value Client::SyncPayload() const {
     return result;
 }
 
-bool Client::ResolveError(const toggl::error &err) {
-    if (nameHasAlreadyBeenTaken(err)) {
+bool Client::ResolveError(const Error &err) {
+    if (err->Type() == ModelErrors::ERROR_NAME_HAS_BEEN_TAKEN) {
         SetName(Name() + " 1");
         return true;
     }
-    if (err.find(kClientNameAlreadyExists) != std::string::npos) {
+    if (err->Type() == ModelErrors::ERROR_NAME_ALREADY_EXISTS) {
         // remove duplicate from db
         MarkAsDeletedOnServer();
         return true;
     }
     return false;
-}
-
-bool Client::nameHasAlreadyBeenTaken(const error &err) {
-    return (std::string::npos != std::string(err).find(
-        "Name has already been taken"));
 }
 
 }   // namespace toggl

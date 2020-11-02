@@ -115,18 +115,18 @@ TEST(TimeEntry, TagSplitter) {
 
 TEST(Project, ProjectsHaveColorCodes) {
     Project p;
-    p.SetColor("1");
+    p.SetColorCode("1");
     ASSERT_EQ("#9e5bd9", p.ColorCode());
-    p.SetColor("");
+    p.SetColorCode("");
     ASSERT_EQ("", p.ColorCode());
-    p.SetColor("0");
+    p.SetColorCode("0");
     ASSERT_EQ("#0b83d9", p.ColorCode());
 }
 
 TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {
     Project p;
     p.SetPrivate(false);
-    error err = error("Only admins can change project visibility");
+    Error err = ModelError("Only admins can change project visibility");
     ASSERT_TRUE(p.ResolveError(err));
     ASSERT_TRUE(p.Private());
 }

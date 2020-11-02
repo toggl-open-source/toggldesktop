@@ -129,7 +129,7 @@ Error Migrations::migrateAutotracker() {
 
         "alter table autotracker_settings"
         " add column days_of_week integer not null default 0;");
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
 
@@ -705,7 +705,7 @@ Error Migrations::migrateUsers() {
         "users.beginning_of_week",
         "alter table users"
         " add column beginning_of_week integer not null default 1;");
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
     // TODO when modifying the structure of this table, drop the store_start_and_stop_time,
@@ -1416,7 +1416,7 @@ Error Migrations::migrateSettings() {
         "settings.start_autotracker_without_suggestions",
         "ALTER TABLE settings "
         "ADD COLUMN start_autotracker_without_suggestions INTEGER NOT NULL DEFAULT 0;");
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
 
@@ -1454,7 +1454,7 @@ Error Migrations::migrateOnboardingStates() {
         "onboarding_states.is_present_text_shortcuts_onboarding",
         "ALTER TABLE onboarding_states "
         "ADD COLUMN is_present_text_shortcuts_onboarding integer not null default 0;");
-    if (err != noError) {
+    if (err->IsError()) {
         return err;
     }
 

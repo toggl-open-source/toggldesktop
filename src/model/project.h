@@ -38,9 +38,8 @@ class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
     void SetBillable(bool value);
     void SetClientName(const std::string &value);
 
-    void SetColor(const std::string &value);
+    void SetColorCode(const std::string &value);
     std::string ColorCode() const;
-    error SetColorCode(const std::string &color_code);
 
     void SetName(const std::string &value);
     std::string FullName() const;
@@ -53,13 +52,9 @@ class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
     Json::Value SaveToJSON(int apiVersion = 8) const override;
     Json::Value SyncMetadata() const override;
     Json::Value SyncPayload() const override;
-    bool ResolveError(const toggl::error &err);
+    bool ResolveError(const Error &err);
 
     static std::vector<std::string> ColorCodes;
-
-private:
-    bool clientIsInAnotherWorkspace(const toggl::error &err) const;
-    bool onlyAdminsCanChangeProjectVisibility(const toggl::error &err) const;
 };
 
 template<typename T, size_t N> T *end(T (&ra)[N]);

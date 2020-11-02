@@ -36,10 +36,7 @@ class TOGGL_INTERNAL_EXPORT Client : public BaseModel {
     Json::Value SaveToJSON(int apiVersion = 8) const override;
     Json::Value SyncMetadata() const override;
     Json::Value SyncPayload() const override;
-    bool ResolveError(const toggl::error &err);
-
- private:
-    static bool nameHasAlreadyBeenTaken(const error &err);
+    bool ResolveError(const Error &err);
 };
 
 }  // namespace toggl

@@ -5825,7 +5825,8 @@ error Context::pushClients(
 
         if (resp.err != noError) {
             // if we're able to solve the error
-            if ((*it)->ResolveError(resp.body)) {
+            Error error = ModelError { resp.body };
+            if ((*it)->ResolveError(error)) {
                 displayError(save(false));
             }
             continue;
@@ -5881,7 +5882,8 @@ error Context::pushProjects(
 
         if (resp.err != noError) {
             // if we're able to solve the error
-            if ((*it)->ResolveError(resp.body)) {
+            Error error = ModelError { resp.body };
+            if ((*it)->ResolveError(error)) {
                 displayError(save(false));
             }
             continue;

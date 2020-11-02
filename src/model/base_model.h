@@ -46,7 +46,10 @@ inline static const std::map<int, std::string> ModelErrorMessages {
 inline static const std::multimap<int, std::string> ModelErrorRegexes {
     // again, I don't understand this but the message being checked was incomplete in commit 213d9876 so I'm sticking to it to be sure
     { ERROR_NAME_ALREADY_EXISTS, "(Client|Project|Task) name already.*" },
-    { ERROR_CANNOT_ACCESS_WORKSPACE, "cannot access workspace" }
+    { ERROR_CANNOT_ACCESS_WORKSPACE, "cannot access workspace" },
+    { ERROR_IS_IN_ANOTHER_WORKSPACE, "client is in another workspace" },
+    { ERROR_IS_IN_ANOTHER_WORKSPACE, "Client with the ID .* isn't present in workspace" },
+    { ERROR_ONLY_ADMINS_CAN_CHANGE_VISIBILITY, "Only admins can change project visibility" }
 };
 
 class ModelError : public EnumBasedError<ModelErrors, ModelErrorMessages, ModelErrorRegexes> {
@@ -160,9 +163,6 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
 
  protected:
     Logger logger() const;
-
-    bool userCannotAccessWorkspace(const toggl::error &err) const;
-
 };
 
 }  // namespace toggl
