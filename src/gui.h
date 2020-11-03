@@ -327,6 +327,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     void DisplayApp();
 
     error DisplayError(const error &err);
+    Error DisplayError(const Error &err);
 
     // Overlay screen triggers
     error DisplayWSError();

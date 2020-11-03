@@ -7,6 +7,7 @@
 #include <vector>
 #include <cstring>
 #include <ctime>
+#include <map>
 
 #include <json/json.h>  // NOLINT
 
@@ -19,6 +20,61 @@
 #include <Poco/Types.h>
 
 namespace toggl {
+
+enum ModelErrors {
+    ERROR_NAME_HAS_BEEN_TAKEN = ErrorBase::FIRST_AVAILABLE_ENUM,
+    ERROR_NAME_ALREADY_EXISTS,
+    ERROR_CANNOT_ACCESS_WORKSPACE,
+    ERROR_CANNOT_ACCESS_PROJECT,
+    ERROR_CANNOT_ACCESS_TASK,
+    ERROR_IS_IN_ANOTHER_WORKSPACE, // This should probably be handled by the library and not shown to the user
+    ERROR_ONLY_ADMINS_CAN_CHANGE_VISIBILITY,
+    ERROR_DURATION_TOO_LARGE,
+    ERROR_START_TIME_WRONG_YEAR,
+    ERROR_STOP_TIME_BEFORE_START_TIME,
+    ERROR_BILLABLE_IS_PREMIUM,
+    ERROR_MISSING_CREATEDWITH,
+    ERROR_TIME_ENTRY_LOCKED,
+    ERROR_TIME_ENTRY_NOT_FOUND,
+};
+inline static const std::map<int, std::string> ModelErrorMessages {
+    // why the hell are these two different?
+    { ERROR_NAME_HAS_BEEN_TAKEN, "Name already exists" },
+    { ERROR_NAME_ALREADY_EXISTS, "Name has already been taken" },
+    { ERROR_CANNOT_ACCESS_WORKSPACE, "Cannot access workspace" }
+};
+inline static const std::multimap<int, std::string> ModelErrorRegexes {
+    // again, I don't understand this but the message being checked was incomplete in commit 213d9876 so I'm sticking to it to be sure
+    { ERROR_NAME_ALREADY_EXISTS, "(Client|Project|Task) name already.*" },
+    { ERROR_CANNOT_ACCESS_WORKSPACE, "cannot access workspace" },
+    { ERROR_IS_IN_ANOTHER_WORKSPACE, "client is in another workspace" },
+    { ERROR_IS_IN_ANOTHER_WORKSPACE, "Client with the ID .* isn't present in workspace" },
+    { ERROR_ONLY_ADMINS_CAN_CHANGE_VISIBILITY, "Only admins can change project visibility" }
+};
+
+class ModelError : public EnumBasedError<ModelErrors, ModelErrorMessages, ModelErrorRegexes> {
+public:
+    using Parent = EnumBasedError<ModelErrors, ModelErrorMessages, ModelErrorRegexes>;
+    using Parent::Parent;
+    ModelError &operator=(const ModelError &o) = default;
+    std::string Class() const override { return "ModelError"; }
+};
+
+enum ValidationErrors {
+    ERROR_FOREIGN_ENTITY_LOST = ErrorBase::FIRST_AVAILABLE_ENUM,
+};
+inline static const std::map<int, std::string> ValidationErrorMessages {
+    { ERROR_FOREIGN_ENTITY_LOST, "Assigned foreign entity could not be found" }
+};
+
+class ValidationError : public EnumBasedError<ValidationErrors, ValidationErrorMessages> {
+public:
+    using Parent = EnumBasedError<ValidationErrors, ValidationErrorMessages>;
+    using Parent::Parent;
+    ValidationError &operator=(const ValidationError &o) = default;
+
+    std::string Class() const override { return "ValidationError"; }
+};
 
 class TOGGL_INTERNAL_EXPORT BaseModel {
  public:
@@ -39,7 +95,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
 
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.
-    Property<std::string> ValidationError { "" };
+    Property<class ValidationError> ValidationError { };
 
     // Flag is set only when sync fails.
     // Its for viewing purposes only. It should not
@@ -90,7 +146,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     void EnsureGUID();
 
     void ClearValidationError();
-    void SetValidationError(const std::string &value);
+    void SetValidationError(const class ValidationError &value);
 
     virtual std::string String() const = 0;
     virtual std::string ModelName() const = 0;
@@ -103,23 +159,10 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     virtual Json::Value SyncMetadata() const { return {}; }
     virtual Json::Value SyncPayload() const { return {}; }
 
-    virtual bool DuplicateResource(const toggl::error &err) const {
-        return false;
-    }
-    virtual bool ResourceCannotBeCreated(const toggl::error &err) const {
-        return false;
-    }
-    virtual bool ResolveError(const toggl::error &err) {
-        return false;
-    }
-
     void Delete();
 
  protected:
     Logger logger() const;
-
-    bool userCannotAccessWorkspace(const toggl::error &err) const;
-
 };
 
 }  // namespace toggl

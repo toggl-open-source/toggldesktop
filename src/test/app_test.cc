@@ -70,7 +70,7 @@ TEST(TimeEntry, WillNotPushUnlessValidationErrorIsCleared) {
     ASSERT_TRUE(te.NeedsPush());
 
     // Simulate getting an error from backend
-    te.SetValidationError("All you do is wrong");
+    te.SetValidationError({"All you do is wrong"});
     ASSERT_EQ("All you do is wrong", te.ValidationError());
     ASSERT_FALSE(te.NeedsPush());
 
@@ -115,18 +115,18 @@ TEST(TimeEntry, TagSplitter) {
 
 TEST(Project, ProjectsHaveColorCodes) {
     Project p;
-    p.SetColor("1");
+    p.SetColorCode("1");
     ASSERT_EQ("#9e5bd9", p.ColorCode());
-    p.SetColor("");
+    p.SetColorCode("");
     ASSERT_EQ("", p.ColorCode());
-    p.SetColor("0");
+    p.SetColorCode("0");
     ASSERT_EQ("#0b83d9", p.ColorCode());
 }
 
 TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {
     Project p;
     p.SetPrivate(false);
-    error err = error("Only admins can change project visibility");
+    Error err = ModelError("Only admins can change project visibility");
     ASSERT_TRUE(p.ResolveError(err));
     ASSERT_TRUE(p.Private());
 }
@@ -1247,26 +1247,6 @@ TEST(TimeEntry, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
     te->StopTracking();
     ASSERT_FALSE(te->IsTracking());
     ASSERT_LT(te->StartTime(), te->StopTime());
-}
-
-TEST(Formatter, CollectErrors) {
-    {
-        std::vector<error> errors;
-        errors.push_back(error("foo"));
-        errors.push_back(error("bar"));
-        errors.push_back(error("foo"));
-        error err = Formatter::CollectErrors(&errors);
-        ASSERT_EQ("Errors encountered while syncing data: foo bar", err);
-    }
-
-    {
-        std::vector<error> errors;
-        errors.push_back(error("foo\n"));
-        errors.push_back(error("bar\n"));
-        errors.push_back(error("foo\n"));
-        error err = Formatter::CollectErrors(&errors);
-        ASSERT_EQ("Errors encountered while syncing data: foo. bar.", err);
-    }
 }
 
 TEST(Formatter, ParseTimeInput) {

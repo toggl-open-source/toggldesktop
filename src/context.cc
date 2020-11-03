@@ -1047,6 +1047,38 @@ error Context::displayError(const error &err) {
 
     if (user_ && (err.find(kRequestIsNotPossible) != std::string::npos
                   || (err.find(kForbiddenError) != std::string::npos))) {
+        Error err = pullWorkspaces();
+        if (err != noError) {
+            // Check for missing WS error and
+            if (err->Class() == "UserError" && err->Type() == ERROR_USER_LOST_ACCESS_TO_WORKSPACE) {
+                overlay_visible_ = true;
+                UI()->DisplayWSError();
+                return noError;
+            }
+        }
+    }
+
+    return UI()->DisplayError(err);
+}
+
+error Context::reportError(const Error &err) {
+    /* TODO
+    if ((err.find(kUnauthorizedError) != std::string::npos)) {
+        if (user_) {
+            setUser(nullptr);
+        }
+    }
+    */
+    /* TODO
+    if (err.find(kUnsupportedAppError) != std::string::npos) {
+        urls::SetImATeapot(true);
+    } else {
+        urls::SetImATeapot(false);
+    }
+    */
+    /* TODO
+    if (user_ && (err.find(kRequestIsNotPossible) != std::string::npos
+                  || (err.find(kForbiddenError) != std::string::npos))) {
         error err = pullWorkspaces();
         if (err != noError) {
             // Check for missing WS error and
@@ -1057,6 +1089,9 @@ error Context::displayError(const error &err) {
             }
         }
     }
+    */
+
+
 
     return UI()->DisplayError(err);
 }
@@ -2711,14 +2746,14 @@ error Context::Login(
     }
 }
 
-error Context::AsyncSignup(const std::string &email,
+void Context::AsyncSignup(const std::string &email,
                            const std::string &password,
                            const uint64_t country_id) {
     std::thread backgroundThread([&](std::string email, std::string password, uint64_t country_id) {
         return this->Signup(email, password, country_id);
     }, email, password, country_id);
     backgroundThread.detach();
-    return noError;
+    return;
 }
 
 error Context::Signup(
@@ -2747,13 +2782,13 @@ error Context::GoogleSignup(
     return Login(access_token, kGoogleAccessToken, true);
 }
 
-error Context::AsyncGoogleSignup(const std::string &access_token,
+void Context::AsyncGoogleSignup(const std::string &access_token,
                                  const uint64_t country_id) {
     std::thread backgroundThread([&](std::string access_token, uint64_t country_id) {
         return this->GoogleSignup(access_token, country_id);
     }, access_token, country_id);
     backgroundThread.detach();
-    return noError;
+    return;
 }
 
 error Context::AppleSignup(
@@ -2768,7 +2803,7 @@ error Context::AppleSignup(
     return Login(access_token, kAppleAccessToken, true);
 }
 
-error Context::AsyncAppleSignup(
+void Context::AsyncAppleSignup(
     const std::string &access_token,
     const uint64_t country_id,
     const std::string &full_name) {
@@ -2776,7 +2811,7 @@ error Context::AsyncAppleSignup(
         return this->AppleSignup(access_token, country_id, full_name);
     }, access_token, country_id, full_name);
     backgroundThread.detach();
-    return noError;
+    return;
 }
 
 void Context::setUser(User *value, const bool logged_in) {
@@ -5723,12 +5758,8 @@ error Context::pushChanges(
             }
 
             // Update project id on time entries if needed
-            err = updateEntryProjects(
-                projects,
-                time_entries);
-            if (err != noError) {
-                return err;
-            }
+            updateEntryProjects(projects, time_entries);
+
             project_stopwatch.stop();
             ss << " | " << projects.size() << " projects in "
                << project_stopwatch.elapsed() / 1000 << " ms";
@@ -5794,7 +5825,8 @@ error Context::pushClients(
 
         if (resp.err != noError) {
             // if we're able to solve the error
-            if ((*it)->ResolveError(resp.body)) {
+            Error error = ModelError { resp.body };
+            if ((*it)->ResolveError(error)) {
                 displayError(save(false));
             }
             continue;
@@ -5850,7 +5882,8 @@ error Context::pushProjects(
 
         if (resp.err != noError) {
             // if we're able to solve the error
-            if ((*it)->ResolveError(resp.body)) {
+            Error error = ModelError { resp.body };
+            if ((*it)->ResolveError(error)) {
                 displayError(save(false));
             }
             continue;
@@ -5869,7 +5902,7 @@ error Context::pushProjects(
     return err;
 }
 
-error Context::updateProjectClients(const std::vector<Client *> &clients,
+void Context::updateProjectClients(const std::vector<Client *> &clients,
                                     const std::vector<Project *> &projects) {
     for (auto it = projects.cbegin(); it != projects.cend(); ++it) {
         if (!(*it)->CID() && !(*it)->ClientGUID().empty()) {
@@ -5883,10 +5916,10 @@ error Context::updateProjectClients(const std::vector<Client *> &clients,
         }
     }
 
-    return noError;
+    return;
 }
 
-error Context::updateEntryProjects(const std::vector<Project *> &projects,
+void Context::updateEntryProjects(const std::vector<Project *> &projects,
                                    const std::vector<TimeEntry *> &time_entries) {
     for (std::vector<TimeEntry *>::const_iterator it =
         time_entries.begin();
@@ -5904,7 +5937,7 @@ error Context::updateEntryProjects(const std::vector<Project *> &projects,
         }
     }
 
-    return noError;
+    return;
 }
 
 error Context::pushEntries(
@@ -5953,19 +5986,22 @@ error Context::pushEntries(
         }
 
         if (resp.err != noError) {
+            // TODO ERRORS
+            Error err = ModelError { resp.body };
+
             // if we're able to solve the error
-            if ((*it)->ResolveError(resp.body)) {
+            if ((*it)->ResolveError(err)) {
                 displayError(save(false));
             }
 
             // if time entry is locked pull the updated info about locked reports in the workspaces
-            if ((*it)->isLocked(resp.body)) {
+            if (err->Type() == ModelErrors::ERROR_TIME_ENTRY_LOCKED) {
                 pullWorkspacePreferences();
                 displayError(save(false));
             }
 
             // Not found on server. Probably deleted already.
-            if ((*it)->isNotFound(resp.body)) {
+            if (err->Type() == ModelErrors::ERROR_TIME_ENTRY_NOT_FOUND) {
                 (*it)->MarkAsDeletedOnServer();
                 continue;
             }
@@ -6154,11 +6190,11 @@ bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
     return t < lockedTime;
 }
 
-error Context::pullWorkspaces() {
+Error Context::pullWorkspaces() {
     std::string api_token = user_->APIToken();
 
     if (api_token.empty()) {
-        return error("cannot pull user data without API token");
+        return GenericError("cannot pull user data without API token", {});
     }
 
     std::string json("");
@@ -6174,9 +6210,10 @@ error Context::pullWorkspaces() {
         if (resp.err != noError) {
             if (resp.err.find(kForbiddenError) != std::string::npos) {
                 // User has no workspaces
-                return error(kMissingWS); // NOLINT
+                return UserError { ERROR_USER_LOST_ACCESS_TO_WORKSPACE };
             }
-            return resp.err;
+            // TODO ERRORS this should just return the error from HTTPClient (not implemented yet)
+            return GenericError { {}, resp.err };
         }
 
         json = resp.body;
@@ -6185,15 +6222,15 @@ error Context::pullWorkspaces() {
 
     }
     catch (const Poco::Exception& exc) {
-        return exc.displayText();
+        return GenericError { {}, exc.displayText() };
     }
     catch (const std::exception& ex) {
-        return ex.what();
+        return GenericError { {}, ex.what() };
     }
     catch (const std::string & ex) {
-        return ex;
+        return GenericError { {}, ex };
     }
-    return noError;
+    return NoError { };
 }
 
 error Context::pullWorkspacePreferences() {
@@ -6393,7 +6430,7 @@ void Context::syncCollectJSON(Json::Value &array, const std::vector<T*> &source)
         if (!found) {
             logger.error("Was not able to sync entity: ", i->String());
             i->SetUnsynced();
-            i->SetValidationError(kForeignEntityLostError);
+            i->SetValidationError(ValidationError{ERROR_FOREIGN_ENTITY_LOST});
         }
 
         // If updating, there always has to be a payload
@@ -6425,7 +6462,7 @@ bool Context::syncTranslateGUIDToLocalID(Json::Value &item) {
         }
         else {
             Project *project = this->user_->related.ProjectByGUID(guid);
-            if (project && project->ValidationError() != kForeignEntityLostError) {
+            if (project && project->ValidationError().Type() != ERROR_FOREIGN_ENTITY_LOST) {
                 auto localID = project->LocalID();
                 item["project_id"] = Json::Int64(-localID);
             }
@@ -6441,7 +6478,7 @@ bool Context::syncTranslateGUIDToLocalID(Json::Value &item) {
         }
         else {
             Client *client = this->user_->related.ClientByGUID(guid);
-            if (client && client->ValidationError() != kForeignEntityLostError) {
+            if (client && client->ValidationError().Type() != ERROR_FOREIGN_ENTITY_LOST) {
                 auto localID = client->LocalID();
                 item["client_id"] = Json::Int64(-localID);
             }
@@ -6515,13 +6552,14 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
             }
             else if (i["payload"]["result"].isMember("error_message") && i["payload"]["result"]["error_message"].isMember("default_message")) {
                 std::string errorMessage = i["payload"]["result"]["error_message"]["default_message"].asString();
+                Error error = ModelError { errorMessage };
                 // Not found on server. Probably deleted already.
-                if (TimeEntry::isNotFound(errorMessage)) {
+                if (error->Type() == ModelErrors::ERROR_TIME_ENTRY_NOT_FOUND) {
                     model->MarkAsDeletedOnServer();
                     continue;
                 }
                 model->SetUnsynced();
-                model->SetValidationError(errorMessage);
+                model->SetValidationError(ValidationError(errorMessage));
                 logger.error("Sync: Error when syncing ", modelInfo, ": ", errorMessage);
                 displayError(errorMessage);
                 return errorMessage;
@@ -6748,10 +6786,10 @@ error Context::ToSAccept() {
     return noError;
 }
 
-error Context::ToggleEntriesGroup(std::string name) {
+void Context::ToggleEntriesGroup(std::string name) {
     entry_groups[name] = !entry_groups[name];
     OpenTimeEntryList();
-    return noError;
+    return;
 }
 
 error Context::AsyncPullCountries() {

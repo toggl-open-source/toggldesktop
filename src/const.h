@@ -53,7 +53,6 @@
 #define kInvalidDateError "Date year must be between 2006 and 2030"
 #define kStartNotBeforeStopError "Stop time must be after start time"
 #define kMaximumDescriptionLengthError "Maximum length for description (3000 chars) exceeded"
-#define kForeignEntityLostError "Assigned foreign entity could not be found"
 
 #define kCheckYourSignupError "Signup failed - please check your details. The e-mail might be already taken."  // NOLINT
 #define kEndpointGoneError "The API endpoint used by this app is gone. Please contact Toggl support!"  // NOLINT
@@ -94,7 +93,6 @@
 #define kProjectNameAlreadyExists "Project name already exists"
 #define kClientNameAlreadyExists "Client name already exists"
 #define kDatabaseDiskMalformed "The database disk image is malformed"
-#define kMissingWS "You no longer have access to your last workspace"
 #define kOutOfDatePleaseUpgrade "Your version of Toggl Track is out of date, please upgrade!"
 #define kThisEntryCantBeSavedPleaseAdd "This entry can't be saved - please add"
 #define kOneLoginAttemptLeft "Incorrect email or password. One more try before account gets locked for 5 minutes."

@@ -21,6 +21,39 @@
 
 namespace toggl {
 
+// TODO ERRORS a lot of these should not actually be user-facing
+enum UserErrors {
+    ERROR_OFFLINE_LOGIN_MISSING_EMAIL = ErrorBase::FIRST_AVAILABLE_ENUM,
+    ERROR_OFFLINE_LOGIN_MISSING_PASSWORD,
+    ERROR_OFFLINE_LOGIN_MISSING_TOKEN,
+    ERROR_OFFLINE_LOGIN_FAILED,
+    ERROR_OFFLINE_DECRYPT_MISSING_EMAIL,
+    ERROR_OFFLINE_DECRYPT_MISSING_PASSWORD,
+    ERROR_OFFLINE_DECRYPT_EMPTY_STRING,
+
+    ERROR_USER_LOST_ACCESS_TO_WORKSPACE
+};
+inline static const std::map<int, std::string> UserErrorMessages {
+    // why the hell are these two different?
+    { ERROR_OFFLINE_LOGIN_MISSING_EMAIL, "cannot enable offline login without an e-mail" },
+    { ERROR_OFFLINE_LOGIN_MISSING_PASSWORD, "cannot enable offline login without a password" },
+    { ERROR_OFFLINE_LOGIN_MISSING_TOKEN, "cannot enable offline login without an API token" },
+    { ERROR_OFFLINE_LOGIN_FAILED, "offline login encryption failed" },
+    { ERROR_OFFLINE_DECRYPT_MISSING_EMAIL, "cannot decrypt offline data without an e-mail" },
+    { ERROR_OFFLINE_DECRYPT_MISSING_PASSWORD, "cannot decrypt offline data without a password" },
+    { ERROR_OFFLINE_DECRYPT_EMPTY_STRING, "cannot decrypt empty string" },
+    { ERROR_USER_LOST_ACCESS_TO_WORKSPACE, "You no longer have access to your last workspace" }
+};
+
+class UserError : public EnumBasedError<UserErrors, UserErrorMessages> {
+public:
+    using Parent = EnumBasedError<UserErrors, UserErrorMessages>;
+    using Parent::Parent;
+    UserError &operator=(const UserError &o) = default;
+    std::string Class() const override { return "UserError"; }
+};
+
+
 class TOGGL_INTERNAL_EXPORT User : public BaseModel {
  public:
     User() : BaseModel(),
@@ -68,7 +101,7 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     // Derived data and modifiers
     bool HasValidSinceDate() const;
 
-    error EnableOfflineLogin(
+    Error EnableOfflineLogin(
         const std::string &password);
 
     bool HasPremiumWorkspaces() const;
@@ -141,20 +174,20 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     void RemoveProjectFromRelatedModels(Poco::UInt64 pid);
     void RemoveTaskFromRelatedModels(Poco::UInt64 tid);
 
-    error LoadUserUpdateFromJSONString(const std::string &json);
+    Error LoadUserUpdateFromJSONString(const std::string &json);
 
-    error LoadUserAndRelatedDataFromJSONString(const std::string &json,
+    Error LoadUserAndRelatedDataFromJSONString(const std::string &json,
         bool including_related_data, bool syncServer);
 
     void LoadUserAndRelatedDataFromJSON(const Json::Value &root,
         bool including_related_data,
         bool syncServer);
 
-    error LoadWorkspacesFromJSONString(const std::string & json);
+    Error LoadWorkspacesFromJSONString(const std::string & json);
 
-    error LoadTimeEntriesFromJSONString(const std::string &json);
+    Error LoadTimeEntriesFromJSONString(const std::string &json);
 
-    error SetAPITokenFromOfflineData(const std::string &password);
+    Error SetAPITokenFromOfflineData(const std::string &password);
 
     void MarkTimelineBatchAsUploaded(
         const std::vector<const TimelineEvent*> &events);
@@ -195,15 +228,15 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         }
     }
 
-    static error UserID(
+    static Error UserID(
         const std::string &json_data_string,
         Poco::UInt64 *result);
 
-    static error LoginToken(
+    static Error LoginToken(
         const std::string &json_data_string,
         std::string *result);
 
-    static error GenerateOfflineLogin(
+    static Error GenerateOfflineLogin(
         const std::string &email,
         const std::string &password,
         std::string *result);
@@ -216,10 +249,10 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         Json::Value data,
         std::set<Poco::UInt64> *alive = nullptr);
 
-    error loadUserFromJSON(
+    Error loadUserFromJSON(
         const Json::Value &node);
 
-    error loadRelatedDataFromJSON(const Json::Value &node,
+    Error loadRelatedDataFromJSON(const Json::Value &node,
         bool including_related_data,
         bool syncServer);
 

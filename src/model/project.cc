@@ -73,7 +73,7 @@ void Project::SetBillable(bool value) {
         SetDirty();
 }
 
-void Project::SetColor(const std::string &value) {
+void Project::SetColorCode(const std::string &value) {
     if (Color.Set(Poco::UTF8::toLower(value)))
         SetDirty();
 }
@@ -84,11 +84,6 @@ std::string Project::ColorCode() const {
         return Color();
     }
     return ColorCodes[index % ColorCodes.size()];
-}
-
-error Project::SetColorCode(const std::string &color_code) {
-    SetColor(color_code);
-    return noError;
 }
 
 void Project::SetWID(Poco::UInt64 value) {
@@ -108,9 +103,9 @@ void Project::SetClientName(const std::string &value) {
 
 void Project::LoadFromJSON(const Json::Value &data, bool) {
     if (data.isMember("hex_color")) {
-        SetColor(data["hex_color"].asString());
+        SetColorCode(data["hex_color"].asString());
     } else {
-        SetColor(data["color"].asString());
+        SetColorCode(data["color"].asString());
     }
 
     SetID(data["id"].asUInt64());
@@ -193,43 +188,20 @@ Json::Value Project::SyncPayload() const {
     return result;
 }
 
-bool Project::DuplicateResource(const toggl::error &err) const {
-    return (std::string::npos !=
-            std::string(err).find("Name has already been taken"));
-}
-
-bool Project::ResourceCannotBeCreated(const toggl::error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "User cannot add or edit projects in workspace"));
-}
-
-bool Project::clientIsInAnotherWorkspace(const toggl::error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "client is in another workspace")
-            || (std::string::npos != std::string(err).find("Client with the ID")
-                && std::string::npos != std::string(err).find("isn't present in workspace")));
-}
-
-bool Project::onlyAdminsCanChangeProjectVisibility(
-    const toggl::error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "Only admins can change project visibility"));
-}
-
-bool Project::ResolveError(const toggl::error &err) {
-    if (userCannotAccessWorkspace(err)) {
+bool Project::ResolveError(const Error &err) {
+    if (err->Type() == ModelErrors::ERROR_CANNOT_ACCESS_WORKSPACE) {
         SetWID(0);
         return true;
     }
-    if (clientIsInAnotherWorkspace(err)) {
+    if (err->Type() == ModelErrors::ERROR_IS_IN_ANOTHER_WORKSPACE) {
         SetCID(0);
         return true;
     }
-    if (!Private() && onlyAdminsCanChangeProjectVisibility(err)) {
+    if (!Private() && err->Type() == ModelErrors::ERROR_ONLY_ADMINS_CAN_CHANGE_VISIBILITY) {
         SetPrivate(true);
         return true;
     }
-    if (err.find(kProjectNameAlready) != std::string::npos) {
+    if (err->Type() == ERROR_NAME_ALREADY_EXISTS) {
         // remove duplicate from db
         MarkAsDeletedOnServer();
         return true;

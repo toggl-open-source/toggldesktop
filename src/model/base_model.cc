@@ -20,7 +20,7 @@ bool BaseModel::NeedsPush() const {
     // pushed again unless the error is somehow fixed by user.
     // We will assume that if user modifies the model, the error
     // will go away. But until then, don't push the errored data.
-    return ValidationError().empty() &&
+    return !ValidationError().IsError() &&
            (NeedsPOST() || NeedsPUT() || NeedsDELETE());
 }
 
@@ -51,10 +51,11 @@ void BaseModel::EnsureGUID() {
 }
 
 void BaseModel::ClearValidationError() {
-    SetValidationError(noError);
+    if (ValidationError->Clear())
+        SetDirty();
 }
 
-void BaseModel::SetValidationError(const std::string &value) {
+void BaseModel::SetValidationError(const class ValidationError &value) {
     if (ValidationError.Set(value))
         SetDirty();
 }
@@ -81,11 +82,6 @@ void BaseModel::MarkAsDeletedOnServer() {
 void BaseModel::Delete() {
     SetDeletedAt(time(nullptr));
     SetUIModified();
-}
-
-bool BaseModel::userCannotAccessWorkspace(const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        kCannotAccessWorkspaceError));
 }
 
 Logger BaseModel::logger() const {

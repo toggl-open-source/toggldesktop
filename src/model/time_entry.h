@@ -77,9 +77,6 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     void DiscardAt(const Poco::Int64);
     void StopTracking();
 
-    static bool isNotFound(const error &err);
-    static bool isLocked(const error &err);
-
     const std::string GroupHash() const;
 
     // User-triggered changes to timer:
@@ -91,7 +88,7 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     std::string ModelName() const override;
     std::string ModelURL() const override;
     std::string String() const override;
-    virtual bool ResolveError(const error &err) override;
+    virtual bool ResolveError(const Error &err);
     void LoadFromJSON(const Json::Value &value, bool syncServer);
     Json::Value SaveToJSON(int apiVersion = 8) const override;
     Json::Value SyncMetadata() const override;
@@ -112,14 +109,6 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     bool setDurationStringMMSS(const std::string &value);
 
     void loadTagsFromJSON(Json::Value value);
-
-    bool durationTooLarge(const error &err) const;
-    bool startTimeWrongYear(const error &err) const;
-    bool stopTimeMustBeAfterStartTime(const error &err) const;
-    bool userCannotAccessTheSelectedProject(const error &err) const;
-    bool userCannotAccessSelectedTask(const error &err) const;
-    bool billableIsAPremiumFeature(const error &err) const;
-    bool isMissingCreatedWith(const error &err) const;
 };
 
 }  // namespace toggl

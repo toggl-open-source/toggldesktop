@@ -304,7 +304,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string &password,
         const bool isSignup = false);
 
-    error AsyncSignup(
+    void AsyncSignup(
         const std::string &email,
         const std::string &password,
         const uint64_t country_id);
@@ -318,7 +318,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string &access_token,
         const uint64_t country_id);
 
-    error AsyncGoogleSignup(
+    void AsyncGoogleSignup(
         const std::string &access_token,
         const uint64_t country_id);
 
@@ -327,7 +327,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const uint64_t country_id,
         const std::string &full_name);
 
-    error AsyncAppleSignup(
+    void AsyncAppleSignup(
         const std::string &access_token,
         const uint64_t country_id,
         const std::string &full_name);
@@ -561,7 +561,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const int64_t promotion_type,
         const int64_t promotion_response);
 
-    error ToggleEntriesGroup(
+    void ToggleEntriesGroup(
         std::string name);
 
     error AsyncPullCountries();
@@ -671,6 +671,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     void updateUI(const UIElements &elements);
 
     error displayError(const error &err);
+    error reportError(const Error &err);
 
     void scheduleSync();
 
@@ -728,10 +729,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::map<std::string, BaseModel *> &models,
         const std::vector<TimeEntry *> &time_entries,
         const std::string &api_token);
-    error updateProjectClients(
+    void updateProjectClients(
         const std::vector<Client *> &clients,
         const std::vector<Project *> &projects);
-    error updateEntryProjects(
+    void updateEntryProjects(
         const std::vector<Project *> &projects,
         const std::vector<TimeEntry *> &time_entries);
     error signup(
@@ -771,7 +772,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error logAndDisplayUserTriedEditingLockedEntry();
 
-    error pullWorkspaces();
+    Error pullWorkspaces();
 
     error pullWorkspacePreferences();
     error pullWorkspacePreferences(Workspace *workspace, std::string* json);
