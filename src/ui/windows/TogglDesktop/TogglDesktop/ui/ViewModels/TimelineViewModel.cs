@@ -52,9 +52,9 @@ namespace TogglDesktop.ViewModels
             scaleModeObservable.Select(mode => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, mode))
                 .Subscribe(h => CurrentTimeOffset = h);
 
-            Toggl.TimelineChunks.CombineLatest(scaleModeObservable, ConvertChunksToActivityBlocks)
+            Toggl.TimelineChunks.CombineLatest(scaleModeObservable, (items, mode) => ConvertChunksToActivityBlocks (items, mode, SelectedDate))
                 .ToPropertyEx(this, x => x.ActivityBlocks);
-            Toggl.TimelineTimeEntries.CombineLatest(scaleModeObservable, ConvertTimeEntriesToBlocks)
+            Toggl.TimelineTimeEntries.CombineLatest(scaleModeObservable, (items, mode) => ConvertTimeEntriesToBlocks (items, mode, SelectedDate))
                 .ToPropertyEx(this, x => x.TimeEntryBlocks);
             Toggl.TimelineTimeEntries.CombineLatest(scaleModeObservable, GenerateGapTimeEntryBlocks)
                 .ToPropertyEx(this, x => x.GapTimeEntryBlocks);
@@ -119,7 +119,7 @@ namespace TogglDesktop.ViewModels
             }
         }
 
-        private static List<ActivityBlock> ConvertChunksToActivityBlocks(List<Toggl.TimelineChunkView> chunks, int selectedScaleMode)
+        private static List<ActivityBlock> ConvertChunksToActivityBlocks(List<Toggl.TimelineChunkView> chunks, int selectedScaleMode, DateTime selectedDate)
         {
             var blocks = new List<ActivityBlock>();
             foreach (var chunk in chunks)
@@ -129,7 +129,7 @@ namespace TogglDesktop.ViewModels
                     var start = Toggl.DateTimeFromUnix(chunk.Started);
                     var block = new ActivityBlock()
                     {
-                        Offset = ConvertTimeIntervalToHeight(new DateTime(start.Year, start.Month, start.Day), start, selectedScaleMode),
+                        Offset = ConvertTimeIntervalToHeight(selectedDate, start, selectedScaleMode),
                         TimeInterval = chunk.StartTimeString+" - "+chunk.EndTimeString,
                         ActivityDescriptions = new List<ActivityDescription>()
                     };
@@ -160,7 +160,7 @@ namespace TogglDesktop.ViewModels
             End,
             Empty
         }
-        private static List<TimeEntryBlock> ConvertTimeEntriesToBlocks(List<Toggl.TogglTimeEntryView> timeEntries, int selectedScaleMode)
+        private static List<TimeEntryBlock> ConvertTimeEntriesToBlocks(List<Toggl.TogglTimeEntryView> timeEntries, int selectedScaleMode, DateTime selectedDate)
         {
             var timeStampsList = new List<(TimeStampType Type, TimeEntryBlock Block)>();
             var blocks = new List<TimeEntryBlock>();
@@ -176,7 +176,7 @@ namespace TogglDesktop.ViewModels
                     Started = entry.Started,
                     Ended = entry.Ended,
                     Height = Math.Max(height, TimelineConstants.MinTimeEntryBlockHeight),
-                    VerticalOffset = ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime, selectedScaleMode),
+                    VerticalOffset = ConvertTimeIntervalToHeight(selectedDate, startTime, selectedScaleMode),
                     Color = entry.Color,
                     Description = entry.Description.IsNullOrEmpty() ? "No Description" : entry.Description,
                     ProjectName = entry.ProjectLabel,
@@ -186,7 +186,7 @@ namespace TogglDesktop.ViewModels
                     HasTag = !entry.Tags.IsNullOrEmpty(),
                     IsBillable = entry.Billable,
                     IsResizable = height >= TimelineConstants.MinResizableTimeEntryBlockHeight
-            };
+                };
                 if (entry.Started != entry.Ended)
                 {
                     timeStampsList.Add((TimeStampType.Start, block));
