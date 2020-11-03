@@ -872,6 +872,16 @@ void Context::updateUI(const UIElements &what) {
             std::sort(time_entries.begin(), time_entries.end(),
                       CompareByStart);
 
+            Poco::LocalDateTime datetime(
+                UI()->TimelineDateAt().year(),
+                UI()->TimelineDateAt().month(),
+                UI()->TimelineDateAt().day());
+            int tzd = datetime.tzd();
+
+            // Get all entires in this day (no chunk, no overlap)
+            time_t start_day = datetime.timestamp().epochTime() - tzd;
+            time_t end_day = start_day + 86400; // one day
+
             // Collect the time entries into a list
             for (unsigned int i = 0; i < time_entries.size(); i++) {
                 TimeEntry *te = time_entries[i];
@@ -880,11 +890,7 @@ void Context::updateUI(const UIElements &what) {
                     continue;
                 }
 
-                Poco::LocalDateTime te_date(Poco::Timestamp::fromEpochTime(te->StartTime()));
-                if (te_date.year() == UI()->TimelineDateAt().year()
-                        && te_date.month() == UI()->TimelineDateAt().month()
-                        && te_date.day() == UI()->TimelineDateAt().day()) {
-
+                if (te->StartTime() <= end_day && te->StopTime() >= start_day) {
                     view::TimeEntry view;
                     view.Fill(te);
                     view.GenerateRoundedTimes();

@@ -471,8 +471,9 @@ void GUI::DisplayTimeline(const bool open,
         view::TimeEntry te = entries_list.at(i);
         TogglTimeEntryView *item = time_entry_view_item_init(te);
         time_t start_time_entry = Poco::Timestamp::fromEpochTime(item->Started).epochTime();
+        time_t end_time_entry = Poco::Timestamp::fromEpochTime(item->Ended).epochTime();
 
-        if (start_time_entry >= start_day && start_time_entry <= end_day) {
+        if (end_time_entry >= start_day && start_time_entry <= end_day) {
             item->Next = first_entry;
             first_entry = item;
         } else {
