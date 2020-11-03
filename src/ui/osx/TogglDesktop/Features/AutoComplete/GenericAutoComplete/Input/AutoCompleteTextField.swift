@@ -41,12 +41,12 @@ class AutoCompleteTextField: UndoTextField, NSTextFieldDelegate, AutoCompleteVie
     // MARK: Variables
 
     weak var autoCompleteDelegate: AutoCompleteTextFieldDelegate?
-    lazy var autoCompleteWindow: AutoCompleteViewWindow = {
-        let window = AutoCompleteViewWindow(view: autoCompleteView)
+    lazy var autoCompleteWindow: DropdownWindow = {
+        let window = DropdownWindow(view: autoCompleteView)
         window.isSeparateWindow = isSeperateWindow
         return window
     }()
-    lazy var autoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
+    lazy var autoCompleteView = AutoCompleteView.xibView()
     var isSeperateWindow: Bool { return true }
     private var _state = State.collapse {
         didSet {

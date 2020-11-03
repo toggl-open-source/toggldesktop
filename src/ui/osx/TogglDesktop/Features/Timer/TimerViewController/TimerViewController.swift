@@ -12,23 +12,23 @@ class TimerViewController: NSViewController {
 
     let viewModel = TimerViewModel()
 
-    private lazy var projectAutoCompleteWindow: AutoCompleteViewWindow = {
-        return AutoCompleteViewWindow(view: projectAutoCompleteView)
+    private lazy var projectAutoCompleteWindow: DropdownWindow = {
+        return DropdownWindow(view: projectAutoCompleteView)
     }()
-    private var projectAutoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
+    private var projectAutoCompleteView = AutoCompleteView.xibView()
     private var projectAutocompleteDidResignObserver: Any?
     private var projectAutocompleteResignTime: TimeInterval = 0
 
     private lazy var projectCreationView: ProjectCreationView = {
-        let view = ProjectCreationView.xibView() as ProjectCreationView
+        let view = ProjectCreationView.xibView()
         view.delegate = self
         return view
     }()
 
-    private lazy var tagsAutoCompleteWindow: AutoCompleteViewWindow = {
-        return AutoCompleteViewWindow(view: tagsAutoCompleteView)
+    private lazy var tagsAutoCompleteWindow: DropdownWindow = {
+        return DropdownWindow(view: tagsAutoCompleteView)
     }()
-    private var tagsAutoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
+    private var tagsAutoCompleteView = AutoCompleteView.xibView()
     private var tagsAutocompleteDidResignObserver: Any?
     private var tagsAutocompleteResignTime: TimeInterval = 0
 
@@ -38,6 +38,8 @@ class TimerViewController: NSViewController {
         descriptionTextField.currentEditor() != nil
     }
 
+    private var durationControl: TimerDurationControl!
+
     private enum Constants {
         static let emptyProjectButtonTooltip = NSLocalizedString("Select project (@)", comment: "Tooltip for timer project button")
         static let emptyTagsButtonTooltip = NSLocalizedString("Select tags (#)", comment: "Tooltip for timer tags button")
@@ -45,6 +47,8 @@ class TimerViewController: NSViewController {
         static let billableOffTooltip = NSLocalizedString("Non-billable", comment: "Tooltip for timer billable button when Off")
         static let billableUnavailableTooltip = NSLocalizedString("Billable rates is not on your plan",
                                                                   comment: "Tooltip for timer billable button when disabled")
+
+        static let durationControlSize = NSSize(width: 90, height: 30)
     }
 
     // MARK: - Outlets
@@ -57,8 +61,7 @@ class TimerViewController: NSViewController {
 
     @IBOutlet weak var startButton: NSHoverButton!
     @IBOutlet weak var descriptionContainerBox: TimerContainerBox!
-    @IBOutlet weak var durationContainerBox: TimerContainerBox!
-    @IBOutlet weak var durationTextField: ResponderTextField!
+    @IBOutlet weak var trailingStackView: NSStackView!
     @IBOutlet weak var projectButton: SelectableButton!
     @IBOutlet weak var tagsButton: SelectableButton!
     @IBOutlet weak var billableButton: SelectableButton!
@@ -70,8 +73,7 @@ class TimerViewController: NSViewController {
         super.viewDidLoad()
 
         setupDescriptionField()
-
-        durationTextField.responderDelegate = durationContainerBox
+        setupDurationControl()
 
         projectAutoCompleteView.delegate = self
         tagsAutoCompleteView.delegate = self
@@ -87,7 +89,7 @@ class TimerViewController: NSViewController {
         }
 
         viewModel.isEditingDuration = { [weak self] in
-            return self?.durationTextField.currentEditor() != nil
+            return self?.durationControl.isEditing == true
         }
 
         // !!!: we're passing views into view model - refactor this someday
@@ -136,8 +138,8 @@ class TimerViewController: NSViewController {
         }
 
         viewModel.onDurationChanged = { [unowned self] duration in
-            if self.durationTextField.stringValue != duration {
-                self.durationTextField.stringValue = duration
+            if self.durationControl.stringValue != duration {
+                self.durationControl.stringValue = duration
             }
         }
 
@@ -292,7 +294,7 @@ class TimerViewController: NSViewController {
 
     private func setupDescriptionField() {
         descriptionTextField.displayMode = .fullscreen
-        descriptionTextField.responderDelegate = descriptionContainerBox
+        descriptionContainerBox.setup(for: descriptionTextField)
         descriptionTextField.delegate = descriptionFieldHandler
 
         descriptionFieldHandler.onStateChanged = { [weak self] newState, oldState in
@@ -404,6 +406,28 @@ class TimerViewController: NSViewController {
         billableButton.toolTip = Constants.billableOffTooltip
     }
 
+    private func setupDurationControl() {
+        durationControl = TimerDurationControl.xibView()
+        durationControl.widthAnchor.constraint(equalToConstant: Constants.durationControlSize.width).isActive = true
+        durationControl.heightAnchor.constraint(equalToConstant: Constants.durationControlSize.height).isActive = true
+        trailingStackView.insertView(durationControl, at: 0, in: .leading)
+
+        durationControl.onDurationTextChange = { [unowned self] text in
+            self.viewModel.setDuration(text)
+        }
+
+        durationControl.onPerformAction = { [unowned self] action in
+            switch action {
+            case .enterPress:
+                view.window?.makeFirstResponder(nil)
+                if !self.viewModel.isRunning {
+                    self.viewModel.startStopAction()
+                }
+                return true
+            }
+        }
+    }
+
     private func setupProjectButtonContextMenu() {
         if projectButton.isSelected {
             let menu = NSMenu()
@@ -416,8 +440,8 @@ class TimerViewController: NSViewController {
     }
 
     private func setupKeyViewLoop() {
-        descriptionTextField.nextKeyView = durationTextField
-        durationTextField.nextKeyView = startButton
+        descriptionTextField.nextKeyView = durationControl
+        durationControl.nextKeyView = startButton
         startButton.nextKeyView = projectButton
         projectButton.nextKeyView = tagsButton
 
@@ -460,7 +484,7 @@ class TimerViewController: NSViewController {
         viewModel.tagsDataSource.sizeToFit()
     }
 
-    private func presentAutoComplete(window: AutoCompleteViewWindow,
+    private func presentAutoComplete(window: DropdownWindow,
                                      withContentView contentView: AutoCompleteView,
                                      from: AutocompleteSourceViewType) {
         window.contentView = contentView
@@ -549,36 +573,6 @@ class TimerViewController: NSViewController {
     @objc
     private func clearProject() {
         viewModel.clearProject()
-    }
-}
-
-// MARK: - NSTextFieldDelegate
-
-extension TimerViewController: NSTextFieldDelegate {
-
-    func controlTextDidEndEditing(_ obj: Notification) {
-        if let textField = obj.object as? NSTextField, textField == durationTextField {
-            viewModel.setDuration(textField.stringValue)
-        }
-    }
-
-    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        if textView == durationTextField.currentEditor() {
-            return durationControl(doCommandBy: commandSelector)
-        } else {
-            return false
-        }
-    }
-
-    private func durationControl(doCommandBy commandSelector: Selector) -> Bool {
-        if commandSelector == #selector(insertNewline(_:)) {
-            view.window?.makeFirstResponder(nil)
-            if !viewModel.isRunning {
-                viewModel.startStopAction()
-            }
-        }
-
-        return false
     }
 }
 

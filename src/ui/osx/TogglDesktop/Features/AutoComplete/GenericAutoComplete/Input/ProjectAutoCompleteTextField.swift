@@ -26,7 +26,7 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
     }
     var dotImageView: DotImageView?
     private lazy var projectCreationView: ProjectCreationView = {
-        let view = ProjectCreationView.xibView() as ProjectCreationView
+        let view = ProjectCreationView.xibView()
         view.delegate = self
         return view
     }()

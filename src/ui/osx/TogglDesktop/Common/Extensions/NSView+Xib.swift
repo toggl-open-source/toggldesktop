@@ -10,13 +10,13 @@ import Cocoa
 
 extension NSObject {
 
-    class func xibView<T: NSObject>() -> T {
+    class func xibView() -> Self {
         let name = String(describing: self)
         let nib = NSNib(nibNamed: name, bundle: nil)!
         var objectArray: NSArray?
         nib.instantiate(withOwner: self, topLevelObjects: &objectArray)
         for view in objectArray! {
-            if let xibView = view as? T {
+            if let xibView = view as? Self {
                 return xibView
             }
         }

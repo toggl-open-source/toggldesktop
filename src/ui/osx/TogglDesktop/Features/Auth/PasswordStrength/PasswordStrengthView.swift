@@ -95,7 +95,7 @@ extension PasswordStrengthView {
     /// Map all model rules to Rule View
     private func renderRulesStackView() {
         let views = PasswordStrengthValidation.Rule.allCases.map { rule -> PasswordRuleView in
-            let view = PasswordRuleView.xibView() as PasswordRuleView
+            let view = PasswordRuleView.xibView()
             view.config(with: rule, status: .none)
             return view
         }
@@ -104,7 +104,6 @@ extension PasswordStrengthView {
         }
     }
 
-    /// <#Description#>
     private func updateUI() {
         let action = {
             NSAnimationContext.runAnimationGroup({[weak self] (context) in

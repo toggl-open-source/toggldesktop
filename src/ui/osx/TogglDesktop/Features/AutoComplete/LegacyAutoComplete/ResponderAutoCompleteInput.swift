@@ -8,35 +8,39 @@
 
 import Foundation
 
-class ResponderAutoCompleteInput: AutoCompleteInput {
-    weak var responderDelegate: TextFieldResponderDelegate?
+class ResponderAutoCompleteInput: AutoCompleteInput, ResponderObservable {
+
+    var observations = (
+        becomeResponder: [UUID: () -> Void](),
+        resignResponder: [UUID: () -> Void]()
+    )
 
     override func becomeFirstResponder() -> Bool {
         defer {
-            responderDelegate?.didBecomeFirstResponder(self)
+            observations.becomeResponder.values.forEach { $0() }
         }
         return super.becomeFirstResponder()
     }
 
     override func resignFirstResponder() -> Bool {
         defer {
-            responderDelegate?.didResignFirstResponder(self)
+            observations.resignResponder.values.forEach { $0() }
         }
         return super.resignFirstResponder()
     }
 
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
-        responderDelegate?.didBecomeFirstResponder(self)
+        observations.becomeResponder.values.forEach { $0() }
     }
 
     override func textDidBeginEditing(_ notification: Notification) {
         super.textDidBeginEditing(notification)
-        responderDelegate?.didBecomeFirstResponder(self)
+        observations.becomeResponder.values.forEach { $0() }
     }
 
     override func textDidEndEditing(_ notification: Notification) {
         super.textDidEndEditing(notification)
-        responderDelegate?.didResignFirstResponder(self)
+        observations.resignResponder.values.forEach { $0() }
     }
 }

@@ -45,7 +45,7 @@ final class TimelineDashboardViewController: NSViewController {
         }
     }
     private var isFirstTime = true
-    lazy var datePickerView: DatePickerView = DatePickerView.xibView()
+    lazy var datePickerView = DatePickerView.xibView()
     private lazy var datasource = TimelineDatasource(collectionView)
 
     private var zoomLevel: TimelineDatasource.ZoomLevel = .x1 {

@@ -326,7 +326,7 @@ extension EditorViewController {
             // Render tag token
             var visibleTokens: [TagTokenView] = []
             let tokens = tags.map { tag -> TagTokenView in
-                let view = TagTokenView.xibView() as TagTokenView
+                let view = TagTokenView.xibView()
                 view.delegate = self
                 view.render(tag)
                 return view
@@ -341,7 +341,7 @@ extension EditorViewController {
                     tagStackView.addArrangedSubview(token)
                     visibleTokens.append(token)
                 } else {
-                    let moreToken = TagTokenView.xibView() as TagTokenView
+                    let moreToken = TagTokenView.xibView()
                     moreToken.delegate = self
                     moreToken.render(Tag.moreTag)
                     tagStackView.addArrangedSubview(moreToken)
