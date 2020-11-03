@@ -86,8 +86,8 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
     // avoid duplicates
     bool HasMatchingAutotrackerRule(const std::string &lowercase_term) const;
 
-    error DeleteAutotrackerRule(const Poco::Int64 local_id);
-    error UpdateAutotrackerRule(
+    Error DeleteAutotrackerRule(const Poco::Int64 local_id);
+    Error UpdateAutotrackerRule(
         const Poco::Int64 local_id,
         std::string terms,
         const Poco::UInt64 tid,

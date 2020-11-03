@@ -1047,10 +1047,10 @@ error Context::displayError(const error &err) {
 
     if (user_ && (err.find(kRequestIsNotPossible) != std::string::npos
                   || (err.find(kForbiddenError) != std::string::npos))) {
-        error err = pullWorkspaces();
+        Error err = pullWorkspaces();
         if (err != noError) {
             // Check for missing WS error and
-            if (err.find(kMissingWS) != std::string::npos) {
+            if (err->Class() == "UserError" && err->Type() == ERROR_USER_LOST_ACCESS_TO_WORKSPACE) {
                 overlay_visible_ = true;
                 UI()->DisplayWSError();
                 return noError;
@@ -6190,11 +6190,11 @@ bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
     return t < lockedTime;
 }
 
-error Context::pullWorkspaces() {
+Error Context::pullWorkspaces() {
     std::string api_token = user_->APIToken();
 
     if (api_token.empty()) {
-        return error("cannot pull user data without API token");
+        return GenericError("cannot pull user data without API token", {});
     }
 
     std::string json("");
@@ -6210,9 +6210,10 @@ error Context::pullWorkspaces() {
         if (resp.err != noError) {
             if (resp.err.find(kForbiddenError) != std::string::npos) {
                 // User has no workspaces
-                return error(kMissingWS); // NOLINT
+                return UserError { ERROR_USER_LOST_ACCESS_TO_WORKSPACE };
             }
-            return resp.err;
+            // TODO ERRORS this should just return the error from HTTPClient (not implemented yet)
+            return GenericError { {}, resp.err };
         }
 
         json = resp.body;
@@ -6221,15 +6222,15 @@ error Context::pullWorkspaces() {
 
     }
     catch (const Poco::Exception& exc) {
-        return exc.displayText();
+        return GenericError { {}, exc.displayText() };
     }
     catch (const std::exception& ex) {
-        return ex.what();
+        return GenericError { {}, ex.what() };
     }
     catch (const std::string & ex) {
-        return ex;
+        return GenericError { {}, ex };
     }
-    return noError;
+    return NoError { };
 }
 
 error Context::pullWorkspacePreferences() {

@@ -49,9 +49,9 @@ void RelatedData::Clear() {
     clearList(&TimelineEvents);
 }
 
-error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
+Error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
     if (!local_id) {
-        return error("cannot delete rule without an ID");
+        return GenericError("cannot delete rule without an ID", {});
     }
     for (std::vector<AutotrackerRule *>::iterator it =
         AutotrackerRules.begin();
@@ -65,10 +65,10 @@ error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
             break;
         }
     }
-    return noError;
+    return NoError {};
 }
 
-error RelatedData::UpdateAutotrackerRule(
+Error RelatedData::UpdateAutotrackerRule(
     const Poco::Int64 local_id,
     std::string terms,
     const Poco::UInt64 tid,
@@ -78,7 +78,7 @@ error RelatedData::UpdateAutotrackerRule(
     const Poco::UInt8 days_of_week) {
 
     if (!local_id) {
-        return error("cannot update rule without an ID");
+        return GenericError("cannot update rule without an ID", {});
     }
     for (std::vector<AutotrackerRule*>::iterator it =
         AutotrackerRules.begin();
@@ -96,7 +96,7 @@ error RelatedData::UpdateAutotrackerRule(
             break;
         }
     }
-    return noError;
+    return NoError {};
 }
 
 AutotrackerRule *RelatedData::FindAutotrackerRule(

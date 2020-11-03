@@ -654,22 +654,22 @@ void User::loadUserTaskFromJSON(
     model->LoadFromJSON(data);
 }
 
-error User::LoadUserUpdateFromJSONString(
+Error User::LoadUserUpdateFromJSONString(
     const std::string &json) {
 
     if (json.empty()) {
-        return noError;
+        return NoError {};
     }
 
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(json, root)) {
-        return error("Failed to LoadUserUpdateFromJSONString");
+        return GenericError("Failed to LoadUserUpdateFromJSONString", "");
     }
 
     loadUserUpdateFromJSON(root);
 
-    return noError;
+    return NoError {};
 }
 
 void User::loadUserUpdateFromJSON(
@@ -733,58 +733,58 @@ void User::loadUserWorkspaceFromJSON(
     model->LoadFromJSON(data);
 }
 
-error User::LoadUserAndRelatedDataFromJSONString(const std::string &json,
+Error User::LoadUserAndRelatedDataFromJSONString(const std::string &json,
     bool including_related_data,
     bool syncServer) {
 
     if (json.empty()) {
         Logger("json").warning("cannot load empty JSON");
-        return noError;
+        return NoError {};
     }
 
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(json, root)) {
-        return error("Failed to LoadUserAndRelatedDataFromJSONString");
+        return GenericError("Failed to LoadUserAndRelatedDataFromJSONString", {});
     }
 
     LoadUserAndRelatedDataFromJSON(root, including_related_data, syncServer);
-    return noError;
+    return NoError {};
 }
 
-error User::LoadWorkspacesFromJSONString(const std::string & json) {
+Error User::LoadWorkspacesFromJSONString(const std::string & json) {
     if (json.empty()) {
-        return noError;
+        return NoError {};
     }
 
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(json, root)) {
-        return error("Failed to LoadWorkspacessFromJSONString");
+        return GenericError("Failed to LoadWorkspacessFromJSONString", {});
     }
 
     if (root.size() == 0) {
         // Handle missing workspace issue.
         // If default wid is missing there are no workspaces
-        return error(kMissingWS); // NOLINT
+        return UserError { ERROR_USER_LOST_ACCESS_TO_WORKSPACE };
     }
 
     for (unsigned int i = 0; i < root.size(); i++) {
         loadUserWorkspaceFromJSON(root[i]);
     }
 
-    return noError;
+    return NoError {};
 }
 
-error User::LoadTimeEntriesFromJSONString(const std::string & json) {
+Error User::LoadTimeEntriesFromJSONString(const std::string & json) {
     if (json.empty()) {
-        return noError;
+        return NoError {};
     }
 
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(json, root)) {
-        return error("Failed to LoadTimeEntriesFromJSONString");
+        return GenericError("Failed to LoadTimeEntriesFromJSONString", {});
     }
 
     std::set<Poco::UInt64> alive;
@@ -795,7 +795,7 @@ error User::LoadTimeEntriesFromJSONString(const std::string & json) {
 
     deleteZombies(related.TimeEntries, alive);
 
-    return noError;
+    return NoError {};
 }
 
 void User::LoadUserAndRelatedDataFromJSON(
@@ -824,11 +824,12 @@ void User::LoadUserAndRelatedDataFromJSON(
     }
 }
 
-error User::loadUserFromJSON(const Json::Value &data) {
+Error User::loadUserFromJSON(const Json::Value &data) {
 
     if (!data["id"].asUInt64() && !data["user_id"].asUInt64()) {
         logger().error("Backend is sending invalid data: ignoring update without an ID");
-        return kBackendIsSendingInvalidData;
+        // TODO ERRORS
+        return GenericError { {}, kBackendIsSendingInvalidData };
     }
 
     if (data["id"].asUInt64())
@@ -840,10 +841,10 @@ error User::loadUserFromJSON(const Json::Value &data) {
     SetEmail(data["email"].asString());
     SetFullname(data["fullname"].asString());
 
-    return noError;
+    return NoError {};
 }
 
-error User::loadRelatedDataFromJSON(
+Error User::loadRelatedDataFromJSON(
     const Json::Value &data,
     bool including_related_data,
     bool syncServer) {
@@ -944,7 +945,7 @@ error User::loadRelatedDataFromJSON(
         }
     }
 
-    return noError;
+    return NoError {};
 }
 
 void User::loadUserClientFromSyncJSON(
@@ -1189,7 +1190,7 @@ void User::LoadAlphaFeaturesFromJSON(const Json::Value& data) {
     AlphaFeatureSettings->ReadAlphaFeatures(data);
 }
 
-error User::UserID(
+Error User::UserID(
     const std::string &json_data_string,
     Poco::UInt64 *result) {
     *result = 0;
@@ -1197,13 +1198,13 @@ error User::UserID(
     Json::Reader reader;
     bool ok = reader.parse(json_data_string, root);
     if (!ok) {
-        return error("error parsing UserID JSON");
+        return GenericError("error parsing UserID JSON", {});
     }
     *result = root["data"]["id"].asUInt64();
-    return noError;
+    return NoError {};
 }
 
-error User::LoginToken(
+Error User::LoginToken(
     const std::string &json_data_string,
     std::string *result) {
     *result = "";
@@ -1211,10 +1212,10 @@ error User::LoginToken(
     Json::Reader reader;
     bool ok = reader.parse(json_data_string, root);
     if (!ok) {
-        return error("error parsing UserID JSON");
+        return GenericError("error parsing UserID JSON", {});
     }
     *result = root["login_token"].asString();
-    return noError;
+    return NoError {};
 }
 
 std::string User::generateKey(const std::string &password) {
@@ -1227,15 +1228,15 @@ std::string User::generateKey(const std::string &password) {
     return Poco::DigestEngine::digestToHex(digest);
 }
 
-error User::SetAPITokenFromOfflineData(const std::string &password) {
+Error User::SetAPITokenFromOfflineData(const std::string &password) {
     if (Email().empty()) {
-        return error("cannot decrypt offline data without an e-mail");
+        return UserError { ERROR_OFFLINE_DECRYPT_MISSING_EMAIL };
     }
     if (password.empty()) {
-        return error("cannot decrypt offline data without a password");
+        return UserError { ERROR_OFFLINE_DECRYPT_MISSING_PASSWORD };
     }
     if (OfflineData().empty()) {
-        return error("cannot decrypt empty string");
+        return UserError { ERROR_OFFLINE_DECRYPT_EMPTY_STRING };
     }
     try {
         Poco::Crypto::CipherFactory& factory =
@@ -1246,7 +1247,7 @@ error User::SetAPITokenFromOfflineData(const std::string &password) {
         Json::Value data;
         Json::Reader reader;
         if (!reader.parse(OfflineData(), data)) {
-            return error("failed to parse offline data");
+            return GenericError("failed to parse offline data", {});
         }
 
         std::istringstream istr(data["salt"].asString());
@@ -1266,25 +1267,25 @@ error User::SetAPITokenFromOfflineData(const std::string &password) {
 
         SetAPIToken(decrypted);
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return GenericError { {}, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return GenericError { {}, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return GenericError { {}, ex };
     }
-    return noError;
+    return NoError {};
 }
 
-error User::EnableOfflineLogin(
+Error User::EnableOfflineLogin(
     const std::string &password) {
     if (Email().empty()) {
-        return error("cannot enable offline login without an e-mail");
+        return UserError { ERROR_OFFLINE_LOGIN_MISSING_EMAIL };
     }
     if (password.empty()) {
-        return error("cannot enable offline login without a password");
+        return UserError { ERROR_OFFLINE_LOGIN_MISSING_PASSWORD };
     }
     if (APIToken().empty()) {
-        return error("cannot enable offline login without an API token");
+        return UserError { ERROR_OFFLINE_LOGIN_MISSING_TOKEN };
     }
     try {
         Poco::Crypto::CipherFactory& factory =
@@ -1318,21 +1319,21 @@ error User::EnableOfflineLogin(
         SetOfflineData(json);
 
         std::string token = APIToken();
-        error err = SetAPITokenFromOfflineData(password);
-        if (err != noError) {
+        Error err = SetAPITokenFromOfflineData(password);
+        if (err->IsError()) {
             return err;
         }
         if (token != APIToken()) {
-            return error("offline login encryption failed");
+            return UserError { ERROR_OFFLINE_LOGIN_FAILED };
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return GenericError { {}, exc.displayText() };
     } catch(const std::exception& ex) {
-        return ex.what();
+        return GenericError { {}, ex.what() };
     } catch(const std::string & ex) {
-        return ex;
+        return GenericError { {}, ex };
     }
-    return noError;
+    return NoError {};
 }
 
 bool User::CanSeeBillable(
