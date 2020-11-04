@@ -288,7 +288,8 @@ public static class Utils
     }
 
     public static SolidColorBrush AdaptedProjectColorBrushFromString(string hex,
-        Toggl.TogglAdaptiveColor adaptationType)
+        Toggl.TogglAdaptiveColor adaptationType,
+        double opacity = 1.0)
     {
         var projectColorString = string.IsNullOrEmpty(hex) ? "999999" : (hex.StartsWith("#") ? hex.Substring(1) : hex);
         var rgbColor = Toggl.GetAdaptiveRgbColorFromHex(projectColorString, adaptationType);
@@ -296,7 +297,10 @@ public static class Utils
             (byte) Math.Round(rgbColor.r * 255.0),
             (byte) Math.Round(rgbColor.g * 255.0),
             (byte) Math.Round(rgbColor.b * 255.0));
-        var brush = new SolidColorBrush(color);
+        var brush = new SolidColorBrush(color)
+        {
+            Opacity = opacity
+        };
         brush.Freeze();
         return brush;
     }

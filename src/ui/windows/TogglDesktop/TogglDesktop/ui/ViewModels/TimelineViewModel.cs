@@ -71,7 +71,7 @@ namespace TogglDesktop.ViewModels
                 .ObserveOn(RxApp.TaskpoolScheduler).Subscribe(_ =>
                     TimeEntryBlocks?.ForEach(te => te.IsEditViewOpened = SelectedForEditTEId == te.TimeEntryId));
             this.WhenAnyValue(x => x.SelectedForEditTEId, x => x.RunningTimeEntryBlock)
-                .ObserveOn(RxApp.TaskpoolScheduler).Where(pair => pair.Item2 != null)
+                .Where(pair => pair.Item2 != null)
                 .Subscribe(pair => pair.Item2.IsEditViewOpened = pair.Item1 == pair.Item2.TimeEntryId);
             Observable.Timer(TimeSpan.Zero,TimeSpan.FromMinutes(1))
                 .Select(_ => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, SelectedScaleMode))
