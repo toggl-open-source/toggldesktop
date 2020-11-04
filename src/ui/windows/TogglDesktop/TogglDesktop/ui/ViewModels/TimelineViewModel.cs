@@ -54,8 +54,8 @@ namespace TogglDesktop.ViewModels
 
             Toggl.TimelineChunks.CombineLatest(scaleModeObservable, (items, mode) => ConvertChunksToActivityBlocks (items, mode, SelectedDate))
                 .ToPropertyEx(this, x => x.ActivityBlocks);
-            Toggl.TimelineTimeEntries.CombineLatest(scaleModeObservable, (items, mode) => ConvertTimeEntriesToBlocks (items, mode, SelectedDate))
-                .ToPropertyEx(this, x => x.TimeEntryBlocks);
+            var timeEntryBlocksObservable = Toggl.TimelineTimeEntries.CombineLatest(scaleModeObservable, ConvertTimeEntriesToBlocks, SelectedDate);
+            timeEntryBlocksObservable.ToPropertyEx(this, x => x.TimeEntryBlocks);
             Toggl.TimelineTimeEntries.CombineLatest(scaleModeObservable, GenerateGapTimeEntryBlocks)
                 .ToPropertyEx(this, x => x.GapTimeEntryBlocks);
 
@@ -76,7 +76,6 @@ namespace TogglDesktop.ViewModels
             Observable.Timer(TimeSpan.Zero,TimeSpan.FromMinutes(1))
                 .Select(_ => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, SelectedScaleMode))
                 .Subscribe(h => CurrentTimeOffset = h);
-            var timeEntryBlocksObservable = this.WhenAnyValue(x => x.TimeEntryBlocks);
             Observable.FromEvent<Toggl.DisplayRunningTimerState, Toggl.TogglTimeEntryView>(handler =>
                     {
                         void h(Toggl.TogglTimeEntryView te) => handler(te);
@@ -284,14 +283,10 @@ namespace TogglDesktop.ViewModels
                 : new TimeEntryBlock(runningTimeEntry.GUID, TimelineConstants.ScaleModes[selectedScaleMode]);
             block.Started = runningTimeEntry.Started;
             block.Ended = (ulong) Toggl.UnixFromDateTime(DateTime.Now);
-            //this is for the sake of resizing: we don't want to update height or vertical offset while user is dragging the entry
-            if (runningTimeEntryBlock?.TimeEntryId != runningTimeEntry.GUID)
-            {
-                block.VerticalOffset =
-                    ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime,
-                        selectedScaleMode);
-                block.Height = Math.Max(curTimeLine - block.VerticalOffset - 1, TimelineConstants.MinTimeEntryBlockHeight);
-            }
+            block.VerticalOffset =
+                ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime,
+                    selectedScaleMode);
+            block.Height = Math.Max(curTimeLine - block.VerticalOffset - 1, TimelineConstants.MinTimeEntryBlockHeight);
             block.Color = runningTimeEntry.Color;
             block.Description = runningTimeEntry.Description.IsNullOrEmpty()
                 ? "No Description"
