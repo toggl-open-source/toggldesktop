@@ -471,6 +471,7 @@ public static partial class Toggl
 
     public static bool Stop(bool preventOnApp = false)
     {
+        OnUserTimeEntryStop();
         return toggl_stop(ctx, preventOnApp);
     }
 
@@ -1207,6 +1208,8 @@ public static partial class Toggl
     public delegate void UserTimeEntryStart();
 
     public static event UserTimeEntryStart OnUserTimeEntryStart = delegate { };
+
+    public static event Action OnUserTimeEntryStop = delegate { };
 
     #endregion
 
