@@ -53,4 +53,15 @@ extension Date {
         let between = Calendar.current.dateComponents([.month], from: self, to: endDate)
         return between.month ?? 0
     }
+
+    static func combine(dayFrom dayDate: Date, withTimeFrom timeDate: Date) -> Date? {
+        let dayComponents = Calendar.current.dateComponents([.year, .month, .day], from: dayDate)
+        let timeComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: timeDate)
+
+        guard let day = Calendar.current.date(from: dayComponents) else {
+            return nil
+        }
+
+        return Calendar.current.date(byAdding: timeComponents, to: day)
+    }
 }

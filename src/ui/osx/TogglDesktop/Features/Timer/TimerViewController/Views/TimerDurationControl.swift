@@ -11,9 +11,16 @@ import Foundation
 class TimerDurationControl: NSView {
 
     var onDurationTextChange: ((String) -> Void)?
+
     var onStartTextChange: ((String) -> Void)? {
         didSet {
             timeEditView.onStartTextChange = onStartTextChange
+        }
+    }
+
+    var onStartDateChange: ((Date) -> Void)? {
+        didSet {
+            timeEditView.onStartDateChange = onStartDateChange
         }
     }
 
@@ -28,6 +35,11 @@ class TimerDurationControl: NSView {
     var startTimeStringValue: String {
         get { timeEditView.startStringValue }
         set { timeEditView.startStringValue = newValue }
+    }
+
+    var startDateValue: Date {
+        get { timeEditView.startDateValue }
+        set { timeEditView.startDateValue = newValue }
     }
 
     var isEditing: Bool {
@@ -96,6 +108,7 @@ class TimerDurationControl: NSView {
         }
 
         timeEditView.onStartTextChange = onStartTextChange
+        timeEditView.onStartDateChange = onStartDateChange
 
         notificationObserverToken = NotificationCenter.default.addObserver(
             forName: NSWindow.didResignKeyNotification,

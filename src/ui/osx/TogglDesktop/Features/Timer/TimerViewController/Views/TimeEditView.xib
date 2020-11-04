@@ -21,7 +21,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="sVF-vD-5lX" userLabel="Time Field Container">
-                                <rect key="frame" x="16" y="84" width="96" height="50"/>
+                                <rect key="frame" x="12" y="84" width="96" height="50"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Mk-Mx-TIX">
                                         <rect key="frame" x="-2" y="34" width="46" height="16"/>
@@ -79,7 +79,7 @@
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="A6g-th-xyB" userLabel="Time Field Container">
-                                <rect key="frame" x="142" y="84" width="96" height="50"/>
+                                <rect key="frame" x="146" y="84" width="96" height="50"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WgJ-O7-ngF">
                                         <rect key="frame" x="-2" y="34" width="31" height="16"/>
@@ -134,23 +134,23 @@
                                 </constraints>
                             </customView>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2oP-p3-wSn">
-                                <rect key="frame" x="112" y="96" width="30" height="7"/>
+                                <rect key="frame" x="108" y="96" width="38" height="7"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="duration-arrow" id="Qf1-j8-mKi"/>
                             </imageView>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="0wY-G9-sKx">
-                                <rect key="frame" x="16" y="16" width="222" height="30"/>
+                                <rect key="frame" x="12" y="16" width="230" height="30"/>
                                 <view key="contentView" id="JHb-Vf-cnk">
-                                    <rect key="frame" x="1" y="1" width="220" height="28"/>
+                                    <rect key="frame" x="1" y="1" width="228" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box boxType="custom" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="YSn-xx-d8B">
-                                            <rect key="frame" x="30" y="-1" width="160" height="30"/>
+                                            <rect key="frame" x="30" y="-1" width="168" height="30"/>
                                             <view key="contentView" id="t9F-eI-yHh">
-                                                <rect key="frame" x="1" y="1" width="158" height="28"/>
+                                                <rect key="frame" x="1" y="1" width="166" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vJ4-Ci-Cmv">
-                                                        <rect key="frame" x="6" y="3" width="146" height="25"/>
+                                                        <rect key="frame" x="10" y="3" width="146" height="25"/>
                                                         <subviews>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lIP-dg-XbA" customClass="CursorButton" customModule="Toggl_Track" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="4" width="61" height="17"/>
@@ -159,6 +159,9 @@
                                                                     <font key="font" metaFont="menu" size="14"/>
                                                                 </buttonCell>
                                                                 <color key="contentTintColor" name="black-text-color"/>
+                                                                <connections>
+                                                                    <action selector="todayButtonClicked:" target="c22-O7-iKe" id="0C7-0W-PM0"/>
+                                                                </connections>
                                                             </button>
                                                             <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IcL-re-HKO" customClass="KeyboardDatePicker" customModule="Toggl_Track" customModuleProvider="target">
                                                                 <rect key="frame" x="61" y="0.0" width="85" height="25"/>
@@ -173,6 +176,9 @@
                                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="textColor" name="black-text-color"/>
                                                                 </datePickerCell>
+                                                                <connections>
+                                                                    <action selector="datePickerChanged:" target="c22-O7-iKe" id="4Jy-yg-wNT"/>
+                                                                </connections>
                                                             </datePicker>
                                                         </subviews>
                                                         <visibilityPriorities>
@@ -193,19 +199,25 @@
                                             <color key="borderColor" name="upload-border-color"/>
                                             <color key="fillColor" name="editor-background-color"/>
                                         </box>
-                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fu1-wD-m4F">
-                                            <rect key="frame" x="190" y="0.0" width="30" height="28"/>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fu1-wD-m4F" userLabel="Next Day Button">
+                                            <rect key="frame" x="198" y="0.0" width="30" height="28"/>
                                             <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="next_date_arrow" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="qXM-vH-7PF">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
+                                            <connections>
+                                                <action selector="nextDayButtonClicked:" target="c22-O7-iKe" id="kik-i1-cxT"/>
+                                            </connections>
                                         </button>
-                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dgD-Nq-pU2">
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dgD-Nq-pU2" userLabel="Prev Day Button">
                                             <rect key="frame" x="0.0" y="0.0" width="30" height="28"/>
                                             <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="previous_date_arrow" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="xem-qX-mAF">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
+                                            <connections>
+                                                <action selector="previousDayButtonClicked:" target="c22-O7-iKe" id="A5y-UE-HuB"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -230,7 +242,7 @@
                                 <color key="fillColor" name="editor-background-color"/>
                             </box>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fVo-LF-7n2">
-                                <rect key="frame" x="18" y="50" width="82" height="16"/>
+                                <rect key="frame" x="10" y="50" width="82" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="START DATE" id="Mor-IR-d0G">
                                     <font key="font" metaFont="systemMedium" size="13"/>
                                     <color key="textColor" name="grey-text-color"/>
@@ -242,15 +254,16 @@
                             <constraint firstItem="2oP-p3-wSn" firstAttribute="leading" secondItem="sVF-vD-5lX" secondAttribute="trailing" id="1Fo-ha-7pj"/>
                             <constraint firstItem="sVF-vD-5lX" firstAttribute="top" secondItem="SIL-am-mKQ" secondAttribute="top" constant="12" id="3y7-d3-e0A"/>
                             <constraint firstItem="2oP-p3-wSn" firstAttribute="centerY" secondItem="7f9-Da-ISN" secondAttribute="centerY" id="B1R-h3-Xap"/>
-                            <constraint firstAttribute="bottom" secondItem="0wY-G9-sKx" secondAttribute="bottom" constant="16" id="CHj-hN-VfY"/>
-                            <constraint firstItem="sVF-vD-5lX" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="16" id="DKb-63-DoX"/>
+                            <constraint firstAttribute="bottom" secondItem="0wY-G9-sKx" secondAttribute="bottom" priority="750" constant="16" id="CHj-hN-VfY"/>
+                            <constraint firstItem="sVF-vD-5lX" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="12" id="DKb-63-DoX"/>
                             <constraint firstItem="A6g-th-xyB" firstAttribute="top" secondItem="SIL-am-mKQ" secondAttribute="top" constant="12" id="ESQ-gk-2TR"/>
-                            <constraint firstItem="0wY-G9-sKx" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="16" id="HaX-A8-yWI"/>
-                            <constraint firstAttribute="trailing" secondItem="A6g-th-xyB" secondAttribute="trailing" constant="16" id="M1m-V0-5xr"/>
+                            <constraint firstItem="0wY-G9-sKx" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="12" id="HaX-A8-yWI"/>
+                            <constraint firstAttribute="trailing" secondItem="A6g-th-xyB" secondAttribute="trailing" constant="12" id="M1m-V0-5xr"/>
                             <constraint firstItem="0wY-G9-sKx" firstAttribute="top" secondItem="fVo-LF-7n2" secondAttribute="bottom" constant="4" id="X1k-HC-b28"/>
-                            <constraint firstAttribute="trailing" secondItem="0wY-G9-sKx" secondAttribute="trailing" constant="16" id="XlI-JU-mMb"/>
+                            <constraint firstAttribute="trailing" secondItem="0wY-G9-sKx" secondAttribute="trailing" constant="12" id="XlI-JU-mMb"/>
                             <constraint firstItem="A6g-th-xyB" firstAttribute="leading" secondItem="2oP-p3-wSn" secondAttribute="trailing" id="c4h-lh-QRI"/>
-                            <constraint firstItem="fVo-LF-7n2" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="20" symbolic="YES" id="fXR-2z-j2S"/>
+                            <constraint firstItem="fVo-LF-7n2" firstAttribute="top" secondItem="sVF-vD-5lX" secondAttribute="bottom" constant="18" id="d7O-aZ-MKT"/>
+                            <constraint firstItem="fVo-LF-7n2" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="12" id="fXR-2z-j2S"/>
                         </constraints>
                     </view>
                     <color key="borderColor" name="color-project-btn-border-color"/>
@@ -264,8 +277,13 @@
                 <constraint firstAttribute="bottom" secondItem="GfM-qi-LYd" secondAttribute="bottom" id="ttE-uW-vxv"/>
             </constraints>
             <connections>
+                <outlet property="contentView" destination="SIL-am-mKQ" id="eCI-aQ-GsB"/>
+                <outlet property="dateBox" destination="0wY-G9-sKx" id="8CJ-gg-ITS"/>
+                <outlet property="dateBoxBottomConstraint" destination="CHj-hN-VfY" id="Bnn-Po-yQs"/>
+                <outlet property="datePicker" destination="IcL-re-HKO" id="RaD-mg-rBd"/>
                 <outlet property="nextKeyView" destination="GzC-fm-PNM" id="SB2-Ha-1tt"/>
                 <outlet property="startTextField" destination="GzC-fm-PNM" id="btD-Qh-cLd"/>
+                <outlet property="todayButton" destination="lIP-dg-XbA" id="F8g-bO-cTw"/>
             </connections>
             <point key="canvasLocation" x="-172" y="154"/>
         </customView>
