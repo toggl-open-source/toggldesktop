@@ -76,14 +76,8 @@ namespace TogglDesktop.ViewModels
             Observable.Timer(TimeSpan.Zero,TimeSpan.FromMinutes(1))
                 .Select(_ => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, SelectedScaleMode))
                 .Subscribe(h => CurrentTimeOffset = h);
-            Observable.FromEvent<Toggl.DisplayRunningTimerState, Toggl.TogglTimeEntryView>(handler =>
-                    {
-                        void h(Toggl.TogglTimeEntryView te) => handler(te);
-                        return h;
-                    },
-                    handler => Toggl.OnRunningTimerState += handler,
-                    handler => Toggl.OnRunningTimerState -= handler)
-                .CombineLatest(timeEntryBlocksObservable, (te, tes) => ConvertToRunningTimeEntryBlock(te, RunningTimeEntryBlock, tes, SelectedScaleMode, CurrentTimeOffset))
+            Toggl.RunningTimeEntry.Select(te =>
+                    ConvertToRunningTimeEntryBlock(te, RunningTimeEntryBlock, TimeEntryBlocks, SelectedScaleMode))
                 .Subscribe(te => RunningTimeEntryBlock = te);
             Observable.FromEvent<Toggl.DisplayStoppedTimerState, Unit>(handler =>
                     {

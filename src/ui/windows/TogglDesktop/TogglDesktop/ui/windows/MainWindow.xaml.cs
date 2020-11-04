@@ -240,7 +240,7 @@ namespace TogglDesktop
             Toggl.OnOnlineState += this.onOnlineState;
             Toggl.OnURL += this.onURL;
             Toggl.OnUserTimeEntryStart += this.onUserTimeEntryStart;
-            Toggl.OnRunningTimerState += this.onRunningTimerState;
+            Toggl.RunningTimeEntry.Subscribe(this.onRunningTimerState);
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
             Toggl.OnSettings += this.onSettings;
             Toggl.OnDisplayInAppNotification += this.onDisplayInAppNotification;

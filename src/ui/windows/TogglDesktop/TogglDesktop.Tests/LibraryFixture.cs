@@ -18,11 +18,11 @@ namespace TogglDesktop.Tests
         {
             Toggl.Env = "test";
             Toggl.OnTimeEntryList += (open, list, button) => TimeEntries = list;
-            Toggl.OnRunningTimerState += te =>
+            Toggl.RunningTimeEntry.Subscribe( te =>
             {
                 RunningEntry = te;
                 IsRunning = true;
-            };
+            });
             Toggl.OnStoppedTimerState += () =>
             {
                 RunningEntry = default;
