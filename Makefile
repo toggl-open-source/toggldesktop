@@ -54,7 +54,7 @@ executable_release=$(shell $(xcodebuild_command_release) \
 			 -showBuildSettings \
 			| grep -w 'BUILT_PRODUCTS_DIR' \
 			| cut -d'=' -f 2)/TogglDesktop.app/Contents/MacOS/TogglDesktop
-pocolib=$(pocodir)/lib/Darwin/x86_64/
+pocolib=$(pocodir)/lib/Darwin/arm64/
 osname=mac
 
 pococflags = \
@@ -190,7 +190,7 @@ lua:
 	cd third_party/lua && make macosx && make local
 
 openssl:
-	cd $(openssldir) && ./config -fPIC no-shared no-dso && ./Configure darwin64-x86_64-cc && make $(LEGACYMACOSSDK)
+	cd $(openssldir) && ./config -fPIC no-shared no-dso && ./Configure darwin64-arm64-cc && make $(LEGACYMACOSSDK)
 
 poco:
 	cd $(pocodir) && \
