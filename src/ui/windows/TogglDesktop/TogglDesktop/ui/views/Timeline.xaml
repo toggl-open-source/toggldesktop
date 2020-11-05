@@ -10,7 +10,6 @@
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              xmlns:converters="clr-namespace:TogglDesktop.Converters"
              xmlns:res="clr-namespace:TogglDesktop.Resources"
-             xmlns:controls="clr-namespace:TogglDesktop.ui.controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:TimelineViewModel, IsDesignTimeCreatable=False}">
@@ -148,12 +147,12 @@
                     </ItemsControl>
                     <GridSplitter Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="1" Background="{DynamicResource Toggl.TimelineSeparatorBrush}"/>
                     <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0" Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <controls:TimelineRunningTimeEntryBlock DataContext="{Binding RunningTimeEntryBlock}"
+                        <togglDesktop:TimelineRunningTimeEntryBlock DataContext="{Binding RunningTimeEntryBlock}"
                                                                 Canvas.Top="{Binding VerticalOffset}"
                                                                 Canvas.Left="{Binding HorizontalOffset}"
                                                                 MouseEnter="OnTimeEntryBlockMouseEnter"
                                                                 MouseLeave="OnTimeEntyrBlockMouseLeave">
-                            <controls:TimelineRunningTimeEntryBlock.Style>
+                            <togglDesktop:TimelineRunningTimeEntryBlock.Style>
                                 <Style TargetType="FrameworkElement">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ShowDescription}" Value="True">
@@ -161,8 +160,8 @@
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </controls:TimelineRunningTimeEntryBlock.Style>
-                        </controls:TimelineRunningTimeEntryBlock>
+                            </togglDesktop:TimelineRunningTimeEntryBlock.Style>
+                        </togglDesktop:TimelineRunningTimeEntryBlock>
                     </Canvas>
                     <Canvas Grid.Row="1" Grid.ColumnSpan="5" Grid.Column="0"
                             Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanToVisibilityConverter}}"

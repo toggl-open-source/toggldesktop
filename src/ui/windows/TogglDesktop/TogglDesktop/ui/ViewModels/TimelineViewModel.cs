@@ -54,7 +54,8 @@ namespace TogglDesktop.ViewModels
 
             Toggl.TimelineChunks.CombineLatest(scaleModeObservable, (items, mode) => ConvertChunksToActivityBlocks (items, mode, SelectedDate))
                 .ToPropertyEx(this, x => x.ActivityBlocks);
-            var timeEntryBlocksObservable = Toggl.TimelineTimeEntries.CombineLatest(scaleModeObservable, ConvertTimeEntriesToBlocks, SelectedDate);
+            var timeEntryBlocksObservable = Toggl.TimelineTimeEntries.CombineLatest(scaleModeObservable,
+                (tes, mode) => ConvertTimeEntriesToBlocks(tes, mode, SelectedDate));
             timeEntryBlocksObservable.ToPropertyEx(this, x => x.TimeEntryBlocks);
             Toggl.TimelineTimeEntries.CombineLatest(scaleModeObservable, GenerateGapTimeEntryBlocks)
                 .ToPropertyEx(this, x => x.GapTimeEntryBlocks);

@@ -250,8 +250,8 @@
     <Compile Include="ui\controls\TimelineTimeEntryBlock.xaml.cs">
       <DependentUpon>TimelineTimeEntryBlock.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\controls\TimelineTimeEntryDescription.xaml.cs">
-      <DependentUpon>TimelineTimeEntryDescription.xaml</DependentUpon>
+    <Compile Include="ui\controls\TimelineTimeEntryInfo.xaml.cs">
+      <DependentUpon>TimelineTimeEntryInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\TrayToolTipControl.xaml.cs">
       <DependentUpon>TrayToolTipControl.xaml</DependentUpon>
@@ -496,7 +496,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\controls\TimelineTimeEntryDescription.xaml">
+    <Page Include="ui\controls\TimelineTimeEntryInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

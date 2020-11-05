@@ -6,7 +6,7 @@
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              xmlns:converters="clr-namespace:TogglDesktop.Converters"
              xmlns:res="clr-namespace:TogglDesktop.Resources"
-             xmlns:controls="clr-namespace:TogglDesktop.ui.controls"
+             xmlns:togglDesktop="clr-namespace:TogglDesktop"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:TimeEntryBlock, IsDesignTimeCreatable=False}">
@@ -30,7 +30,7 @@
                                RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
                                RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}">
                     </Rectangle>
-                    <controls:TimelineTimeEntryDescription Grid.Column="1"/>
+                    <togglDesktop:TimelineTimeEntryInfo Grid.Column="1"/>
                     <Thumb VerticalAlignment="Top"
                            HorizontalAlignment="Stretch"
                            Grid.Column="0" Grid.ColumnSpan="2"
