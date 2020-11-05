@@ -103,7 +103,7 @@
 #define XF86XK_KbdBrightnessUp     0x1008FF05
 #define XF86XK_KbdBrightnessDown   0x1008FF06
 #define XF86XK_Standby             0x1008FF10
-#define XF86XK_AudioLowerVolume    0x1008FF11
+#define XF86XK_AudioLowerVolume	   0x1008FF11
 #define XF86XK_AudioMute           0x1008FF12
 #define XF86XK_AudioRaiseVolume    0x1008FF13
 #define XF86XK_AudioPlay           0x1008FF14
@@ -186,10 +186,8 @@
 #define XF86XK_MenuKB              0x1008FF65
 #define XF86XK_MenuPB              0x1008FF66
 #define XF86XK_MySites             0x1008FF67
-#define XF86XK_New                 0x1008FF68
 #define XF86XK_News                0x1008FF69
 #define XF86XK_OfficeHome          0x1008FF6A
-#define XF86XK_Open                0x1008FF6B
 #define XF86XK_Option              0x1008FF6C
 #define XF86XK_Paste               0x1008FF6D
 #define XF86XK_Phone               0x1008FF6E
@@ -244,6 +242,8 @@
 
 
 // end of XF86keysyms.h
+
+QT_BEGIN_NAMESPACE
 
 // keyboard mapping table
 static const unsigned int KeyTbl[] = {
@@ -330,66 +330,66 @@ static const unsigned int KeyTbl[] = {
 
     // International & multi-key character composition
     XK_ISO_Level3_Shift,        Qt::Key_AltGr,
-    XK_Multi_key,               Qt::Key_Multi_key,
-    XK_Codeinput,               Qt::Key_Codeinput,
-    XK_SingleCandidate,         Qt::Key_SingleCandidate,
-    XK_MultipleCandidate,       Qt::Key_MultipleCandidate,
-    XK_PreviousCandidate,       Qt::Key_PreviousCandidate,
+    XK_Multi_key,		Qt::Key_Multi_key,
+    XK_Codeinput,		Qt::Key_Codeinput,
+    XK_SingleCandidate,		Qt::Key_SingleCandidate,
+    XK_MultipleCandidate,	Qt::Key_MultipleCandidate,
+    XK_PreviousCandidate,	Qt::Key_PreviousCandidate,
 
     // Misc Functions
-    XK_Mode_switch,             Qt::Key_Mode_switch,
-    XK_script_switch,           Qt::Key_Mode_switch,
+    XK_Mode_switch,		Qt::Key_Mode_switch,
+    XK_script_switch,		Qt::Key_Mode_switch,
 
     // Japanese keyboard support
-    XK_Kanji,                   Qt::Key_Kanji,
-    XK_Muhenkan,                Qt::Key_Muhenkan,
-    //XK_Henkan_Mode,           Qt::Key_Henkan_Mode,
-    XK_Henkan_Mode,             Qt::Key_Henkan,
-    XK_Henkan,                  Qt::Key_Henkan,
-    XK_Romaji,                  Qt::Key_Romaji,
-    XK_Hiragana,                Qt::Key_Hiragana,
-    XK_Katakana,                Qt::Key_Katakana,
-    XK_Hiragana_Katakana,       Qt::Key_Hiragana_Katakana,
-    XK_Zenkaku,                 Qt::Key_Zenkaku,
-    XK_Hankaku,                 Qt::Key_Hankaku,
-    XK_Zenkaku_Hankaku,         Qt::Key_Zenkaku_Hankaku,
-    XK_Touroku,                 Qt::Key_Touroku,
-    XK_Massyo,                  Qt::Key_Massyo,
-    XK_Kana_Lock,               Qt::Key_Kana_Lock,
-    XK_Kana_Shift,              Qt::Key_Kana_Shift,
-    XK_Eisu_Shift,              Qt::Key_Eisu_Shift,
-    XK_Eisu_toggle,             Qt::Key_Eisu_toggle,
-    //XK_Kanji_Bangou,          Qt::Key_Kanji_Bangou,
-    //XK_Zen_Koho,              Qt::Key_Zen_Koho,
-    //XK_Mae_Koho,              Qt::Key_Mae_Koho,
-    XK_Kanji_Bangou,            Qt::Key_Codeinput,
-    XK_Zen_Koho,                Qt::Key_MultipleCandidate,
-    XK_Mae_Koho,                Qt::Key_PreviousCandidate,
+    XK_Kanji,			Qt::Key_Kanji,
+    XK_Muhenkan,		Qt::Key_Muhenkan,
+    //XK_Henkan_Mode,		Qt::Key_Henkan_Mode,
+    XK_Henkan_Mode,		Qt::Key_Henkan,
+    XK_Henkan,			Qt::Key_Henkan,
+    XK_Romaji,			Qt::Key_Romaji,
+    XK_Hiragana,		Qt::Key_Hiragana,
+    XK_Katakana,		Qt::Key_Katakana,
+    XK_Hiragana_Katakana,	Qt::Key_Hiragana_Katakana,
+    XK_Zenkaku,			Qt::Key_Zenkaku,
+    XK_Hankaku,			Qt::Key_Hankaku,
+    XK_Zenkaku_Hankaku,		Qt::Key_Zenkaku_Hankaku,
+    XK_Touroku,			Qt::Key_Touroku,
+    XK_Massyo,			Qt::Key_Massyo,
+    XK_Kana_Lock,		Qt::Key_Kana_Lock,
+    XK_Kana_Shift,		Qt::Key_Kana_Shift,
+    XK_Eisu_Shift,		Qt::Key_Eisu_Shift,
+    XK_Eisu_toggle,		Qt::Key_Eisu_toggle,
+    //XK_Kanji_Bangou,		Qt::Key_Kanji_Bangou,
+    //XK_Zen_Koho,		Qt::Key_Zen_Koho,
+    //XK_Mae_Koho,		Qt::Key_Mae_Koho,
+    XK_Kanji_Bangou,		Qt::Key_Codeinput,
+    XK_Zen_Koho,		Qt::Key_MultipleCandidate,
+    XK_Mae_Koho,		Qt::Key_PreviousCandidate,
 
-#ifdef XK_KOREAN
+    #ifdef XK_KOREAN
     // Korean keyboard support
-    XK_Hangul,                  Qt::Key_Hangul,
-    XK_Hangul_Start,            Qt::Key_Hangul_Start,
-    XK_Hangul_End,              Qt::Key_Hangul_End,
-    XK_Hangul_Hanja,            Qt::Key_Hangul_Hanja,
-    XK_Hangul_Jamo,             Qt::Key_Hangul_Jamo,
-    XK_Hangul_Romaja,           Qt::Key_Hangul_Romaja,
-    //XK_Hangul_Codeinput,      Qt::Key_Hangul_Codeinput,
-    XK_Hangul_Codeinput,        Qt::Key_Codeinput,
-    XK_Hangul_Jeonja,           Qt::Key_Hangul_Jeonja,
-    XK_Hangul_Banja,            Qt::Key_Hangul_Banja,
-    XK_Hangul_PreHanja,         Qt::Key_Hangul_PreHanja,
-    XK_Hangul_PostHanja,        Qt::Key_Hangul_PostHanja,
+    XK_Hangul,			Qt::Key_Hangul,
+    XK_Hangul_Start,		Qt::Key_Hangul_Start,
+    XK_Hangul_End,		Qt::Key_Hangul_End,
+    XK_Hangul_Hanja,		Qt::Key_Hangul_Hanja,
+    XK_Hangul_Jamo,		Qt::Key_Hangul_Jamo,
+    XK_Hangul_Romaja,		Qt::Key_Hangul_Romaja,
+    //XK_Hangul_Codeinput,	Qt::Key_Hangul_Codeinput,
+    XK_Hangul_Codeinput,	Qt::Key_Codeinput,
+    XK_Hangul_Jeonja,		Qt::Key_Hangul_Jeonja,
+    XK_Hangul_Banja,		Qt::Key_Hangul_Banja,
+    XK_Hangul_PreHanja,		Qt::Key_Hangul_PreHanja,
+    XK_Hangul_PostHanja,	Qt::Key_Hangul_PostHanja,
     //XK_Hangul_SingleCandidate,Qt::Key_Hangul_SingleCandidate,
     //XK_Hangul_MultipleCandidate,Qt::Key_Hangul_MultipleCandidate,
     //XK_Hangul_PreviousCandidate,Qt::Key_Hangul_PreviousCandidate,
-    XK_Hangul_SingleCandidate,  Qt::Key_SingleCandidate,
+    XK_Hangul_SingleCandidate,	Qt::Key_SingleCandidate,
     XK_Hangul_MultipleCandidate,Qt::Key_MultipleCandidate,
     XK_Hangul_PreviousCandidate,Qt::Key_PreviousCandidate,
-    XK_Hangul_Special,          Qt::Key_Hangul_Special,
-    //XK_Hangul_switch,         Qt::Key_Hangul_switch,
-    XK_Hangul_switch,           Qt::Key_Mode_switch,
-#endif  // XK_KOREAN
+    XK_Hangul_Special,		Qt::Key_Hangul_Special,
+    //XK_Hangul_switch,		Qt::Key_Hangul_switch,
+    XK_Hangul_switch,		Qt::Key_Mode_switch,
+    #endif  // XK_KOREAN
 
     // dead keys
     XK_dead_grave,              Qt::Key_Dead_Grave,
@@ -413,7 +413,7 @@ static const unsigned int KeyTbl[] = {
     XK_dead_horn,               Qt::Key_Dead_Horn,
 
     // Special keys from X.org - This include multimedia keys,
-        // wireless/bluetooth/uwb keys, special launcher keys, etc.
+    // wireless/bluetooth/uwb keys, special launcher keys, etc.
     XF86XK_Back,                Qt::Key_Back,
     XF86XK_Forward,             Qt::Key_Forward,
     XF86XK_Stop,                Qt::Key_Stop,
@@ -431,7 +431,6 @@ static const unsigned int KeyTbl[] = {
     XF86XK_AudioPrev,           Qt::Key_MediaPrevious,
     XF86XK_AudioNext,           Qt::Key_MediaNext,
     XF86XK_AudioRecord,         Qt::Key_MediaRecord,
-    XF86XK_AudioPause,          Qt::Key_MediaPause,
     XF86XK_Mail,                Qt::Key_LaunchMail,
     XF86XK_MyComputer,          Qt::Key_Launch0,  // ### Qt 6: remap properly
     XF86XK_Calculator,          Qt::Key_Launch1,
@@ -486,14 +485,8 @@ static const unsigned int KeyTbl[] = {
     XF86XK_MenuKB,              Qt::Key_MenuKB,
     XF86XK_MenuPB,              Qt::Key_MenuPB,
     XF86XK_MySites,             Qt::Key_MySites,
-#if QT_VERSION >= 0x050400
-    XF86XK_New,                 Qt::Key_New,
-#endif
     XF86XK_News,                Qt::Key_News,
     XF86XK_OfficeHome,          Qt::Key_OfficeHome,
-#if QT_VERSION >= 0x050400
-    XF86XK_Open,                Qt::Key_Open,
-#endif
     XF86XK_Option,              Qt::Key_Option,
     XF86XK_Paste,               Qt::Key_Paste,
     XF86XK_Phone,               Qt::Key_Phone,
@@ -535,21 +528,17 @@ static const unsigned int KeyTbl[] = {
     XF86XK_Select,              Qt::Key_Select,
     XF86XK_View,                Qt::Key_View,
     XF86XK_TopMenu,             Qt::Key_TopMenu,
-#if QT_VERSION >= 0x050400
     XF86XK_Red,                 Qt::Key_Red,
     XF86XK_Green,               Qt::Key_Green,
     XF86XK_Yellow,              Qt::Key_Yellow,
     XF86XK_Blue,                Qt::Key_Blue,
-#endif
     XF86XK_Bluetooth,           Qt::Key_Bluetooth,
     XF86XK_Suspend,             Qt::Key_Suspend,
     XF86XK_Hibernate,           Qt::Key_Hibernate,
-#if QT_VERSION >= 0x050400
     XF86XK_TouchpadToggle,      Qt::Key_TouchpadToggle,
     XF86XK_TouchpadOn,          Qt::Key_TouchpadOn,
     XF86XK_TouchpadOff,         Qt::Key_TouchpadOff,
     XF86XK_AudioMicMute,        Qt::Key_MicMute,
-#endif
     XF86XK_Launch0,             Qt::Key_Launch2, // ### Qt 6: remap properly
     XF86XK_Launch1,             Qt::Key_Launch3,
     XF86XK_Launch2,             Qt::Key_Launch4,
