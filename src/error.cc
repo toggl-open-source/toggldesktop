@@ -118,22 +118,10 @@ bool IsUserError(const error &err) {
     if (err.find(kPaymentRequiredError) != std::string::npos) {
         return true;
     }
-    if (err.find("File not found") != std::string::npos) {
-        return true;
-    }
-    if (err.find("SSL context exception") != std::string::npos) {
-        return true;
-    }
-    if (err.find("Access to file denied") != std::string::npos) {
-        return true;
-    }
     if (err.find(kBadRequestError) != std::string::npos) {
         return true;
     }
     if (err.find(kUnauthorizedError) != std::string::npos) {
-        return true;
-    }
-    if (err.find(kCannotWriteFile) != std::string::npos) {
         return true;
     }
     if (err.find(kIsSuspended) != std::string::npos) {
@@ -157,6 +145,22 @@ bool IsUserError(const error &err) {
         return true;
     }
     if (err.find("Start time year must be between 2010 and 2100")
+            != std::string::npos) {
+        return true;
+    }
+    if (err.find("Stop time year must be between 2010 and 2100")
+            != std::string::npos) {
+        return true;
+    }
+    if (err.find("Start time year must be between 2006 and 2030")
+            != std::string::npos) {
+        return true;
+    }
+    if (err.find("Stop time year must be between 2006 and 2030")
+            != std::string::npos) {
+        return true;
+    }
+    if (err.find("Max allowed duration per 1 time entry is 999 hours")
             != std::string::npos) {
         return true;
     }
@@ -204,6 +208,18 @@ bool IsUserError(const error &err) {
         return true;
     }
     if (err.find(kThisEntryCantBeSavedPleaseAdd) != std::string::npos) {
+        return true;
+    }
+    if (err.find("Currently running time entry has unmet constraints") != std::string::npos) {
+        return true;
+    }
+    if (err.find("User cannot access the selected project") != std::string::npos) {
+        return true;
+    }
+    if (err.find("Entries can't be added or edited in this period. Contact your admin for details.") != std::string::npos) {
+        return true;
+    }
+    if (err.find("workspace does not have the tasks feature") != std::string::npos) {
         return true;
     }
     return false;
