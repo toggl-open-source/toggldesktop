@@ -69,6 +69,8 @@ selectedProjectId(0) {
 
     descriptionPlaceholder = "What are you doing?";
     tagsHolder = "";
+
+    displayStoppedTimerState();
 }
 
 TimerWidget::~TimerWidget() {
