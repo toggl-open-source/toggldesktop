@@ -189,7 +189,7 @@
                                 <Canvas Name="TimeEntryCanvas" Background="Transparent" 
                                         MouseDown="OnTimeEntryCanvasMouseDown"
                                         MouseMove="OnTimeEntryCanvasMouseMove"
-                                        DragLeave="OnTimeEntryCanvasDragEnded"/>
+                                        MouseUp="OnTimeEntryCanvasMouseUp"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>

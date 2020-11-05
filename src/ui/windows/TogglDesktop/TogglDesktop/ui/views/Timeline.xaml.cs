@@ -111,6 +111,7 @@ namespace TogglDesktop
         private string _timeEntryId;
         private void OnTimeEntryCanvasMouseDown(object sender, MouseButtonEventArgs e)
         {
+            Mouse.Capture(sender as UIElement);
             _dragStartedPoint = e.GetPosition(TimeEntryBlocks).Y;
             _timeEntryId = ViewModel.AddNewTimeEntry(_dragStartedPoint.Value);
         }
@@ -126,7 +127,7 @@ namespace TogglDesktop
             }
         }
 
-        private void OnTimeEntryCanvasDragEnded(object sender, DragEventArgs e)
+        private void OnTimeEntryCanvasMouseUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             if (_timeEntryId != null)
             {
@@ -135,6 +136,7 @@ namespace TogglDesktop
             }
             _dragStartedPoint = null;
             _timeEntryId = null;
+            Mouse.Capture(null);
         }
     }
 }
