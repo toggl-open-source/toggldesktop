@@ -1,14 +1,14 @@
 #! /usr/bin/env perl
-# Copyright 2007-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2007-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
 
 
 # ====================================================================
-# Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
+# Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
 # project. The module is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
@@ -36,7 +36,10 @@
 # ppc_AES_encrypt_compact operates at 42 cycles per byte, while
 # ppc_AES_decrypt_compact - at 55 (in 64-bit build).
 
-$flavour = shift;
+# $output is the last argument if it looks like a file (it has an extension)
+# $flavour is the first argument if it doesn't look like a file
+$output = $#ARGV >= 0 && $ARGV[$#ARGV] =~ m|\.\w+$| ? pop : undef;
+$flavour = $#ARGV >= 0 && $ARGV[0] !~ m|\.| ? shift : undef;
 
 if ($flavour =~ /64/) {
 	$SIZE_T	=8;
@@ -59,7 +62,8 @@ $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
 ( $xlate="${dir}../../perlasm/ppc-xlate.pl" and -f $xlate) or
 die "can't locate ppc-xlate.pl";
 
-open STDOUT,"| $^X $xlate $flavour ".shift || die "can't call $xlate: $!";
+open STDOUT,"| $^X $xlate $flavour \"$output\""
+    or die "can't call $xlate: $!";
 
 $FRAME=32*$SIZE_T;
 
@@ -1433,10 +1437,10 @@ $code.=<<___;
 	xor	$s1,$s1,$acc05
 	xor	$s2,$s2,$acc06
 	xor	$s3,$s3,$acc07
-	xor	$s0,$s0,$acc08		# ^= ROTATE(r8,8)	
-	xor	$s1,$s1,$acc09	
-	xor	$s2,$s2,$acc10	
-	xor	$s3,$s3,$acc11	
+	xor	$s0,$s0,$acc08		# ^= ROTATE(r8,8)
+	xor	$s1,$s1,$acc09
+	xor	$s2,$s2,$acc10
+	xor	$s3,$s3,$acc11
 
 	b	Ldec_compact_loop
 .align	4
@@ -1456,4 +1460,4 @@ ___
 
 $code =~ s/\`([^\`]*)\`/eval $1/gem;
 print $code;
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

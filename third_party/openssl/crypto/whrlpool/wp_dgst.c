@@ -1,7 +1,7 @@
 /*
- * Copyright 2005-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2005-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -9,14 +9,6 @@
 
 /**
  * The Whirlpool hashing function.
- *
- * <P>
- * <b>References</b>
- *
- * <P>
- * The Whirlpool algorithm was developed by
- * <a href="mailto:pbarreto@scopus.com.br">Paulo S. L. M. Barreto</a> and
- * <a href="mailto:vincent.rijmen@cryptomathic.com">Vincent Rijmen</a>.
  *
  * See
  *      P.S.L.M. Barreto, V. Rijmen,
@@ -60,14 +52,20 @@
  * input. This is done for performance.
  */
 
+/*
+ * Whirlpool low level APIs are deprecated for public use, but still ok for
+ * internal use.
+ */
+#include "internal/deprecated.h"
+
 #include <openssl/crypto.h>
-#include "wp_locl.h"
+#include "wp_local.h"
 #include <string.h>
 
 int WHIRLPOOL_Init(WHIRLPOOL_CTX *c)
 {
     memset(c, 0, sizeof(*c));
-    return (1);
+    return 1;
 }
 
 int WHIRLPOOL_Update(WHIRLPOOL_CTX *c, const void *_inp, size_t bytes)
@@ -88,7 +86,7 @@ int WHIRLPOOL_Update(WHIRLPOOL_CTX *c, const void *_inp, size_t bytes)
     if (bytes)
         WHIRLPOOL_BitUpdate(c, inp, bytes * 8);
 
-    return (1);
+    return 1;
 }
 
 void WHIRLPOOL_BitUpdate(WHIRLPOOL_CTX *c, const void *_inp, size_t bits)
@@ -247,9 +245,9 @@ int WHIRLPOOL_Final(unsigned char *md, WHIRLPOOL_CTX *c)
     if (md) {
         memcpy(md, c->H.c, WHIRLPOOL_DIGEST_LENGTH);
         OPENSSL_cleanse(c, sizeof(*c));
-        return (1);
+        return 1;
     }
-    return (0);
+    return 0;
 }
 
 unsigned char *WHIRLPOOL(const void *inp, size_t bytes, unsigned char *md)
@@ -262,5 +260,5 @@ unsigned char *WHIRLPOOL(const void *inp, size_t bytes, unsigned char *md)
     WHIRLPOOL_Init(&ctx);
     WHIRLPOOL_Update(&ctx, inp, bytes);
     WHIRLPOOL_Final(md, &ctx);
-    return (md);
+    return md;
 }

@@ -1,7 +1,7 @@
 /*
- * Copyright 2004-2018 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2004-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -11,13 +11,12 @@
 
 #include "internal/cryptlib.h"
 #include <openssl/crypto.h>
-#include <openssl/lhash.h>
 #include <openssl/buffer.h>
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
-#include "internal/x509_int.h"
+#include "crypto/x509.h"
 
-#include "x509_lcl.h"
+#include "x509_local.h"
 
 /* X509_VERIFY_PARAM functions */
 
@@ -79,50 +78,32 @@ static int int_x509_param_set_hosts(X509_VERIFY_PARAM *vpm, int mode,
     return 1;
 }
 
-static void x509_verify_param_zero(X509_VERIFY_PARAM *param)
-{
-    if (!param)
-        return;
-    param->name = NULL;
-    param->purpose = 0;
-    param->trust = X509_TRUST_DEFAULT;
-    /*
-     * param->inh_flags = X509_VP_FLAG_DEFAULT;
-     */
-    param->inh_flags = 0;
-    param->flags = 0;
-    param->depth = -1;
-    param->auth_level = -1; /* -1 means unset, 0 is explicit */
-    sk_ASN1_OBJECT_pop_free(param->policies, ASN1_OBJECT_free);
-    param->policies = NULL;
-    sk_OPENSSL_STRING_pop_free(param->hosts, str_free);
-    param->hosts = NULL;
-    OPENSSL_free(param->peername);
-    param->peername = NULL;
-    OPENSSL_free(param->email);
-    param->email = NULL;
-    param->emaillen = 0;
-    OPENSSL_free(param->ip);
-    param->ip = NULL;
-    param->iplen = 0;
-}
 
 X509_VERIFY_PARAM *X509_VERIFY_PARAM_new(void)
 {
     X509_VERIFY_PARAM *param;
 
     param = OPENSSL_zalloc(sizeof(*param));
-    if (param == NULL)
+    if (param == NULL) {
+        X509err(X509_F_X509_VERIFY_PARAM_NEW, ERR_R_MALLOC_FAILURE);
         return NULL;
-    x509_verify_param_zero(param);
+    }
+    param->trust = X509_TRUST_DEFAULT;
+    /* param->inh_flags = X509_VP_FLAG_DEFAULT; */
+    param->depth = -1;
+    param->auth_level = -1; /* -1 means unset, 0 is explicit */
     return param;
 }
 
 void X509_VERIFY_PARAM_free(X509_VERIFY_PARAM *param)
 {
-    if (!param)
+    if (param == NULL)
         return;
-    x509_verify_param_zero(param);
+    sk_ASN1_OBJECT_pop_free(param->policies, ASN1_OBJECT_free);
+    sk_OPENSSL_STRING_pop_free(param->hosts, str_free);
+    OPENSSL_free(param->peername);
+    OPENSSL_free(param->email);
+    OPENSSL_free(param->ip);
     OPENSSL_free(param);
 }
 
@@ -161,14 +142,14 @@ void X509_VERIFY_PARAM_free(X509_VERIFY_PARAM *param)
 /* Macro to test if a field should be copied from src to dest */
 
 #define test_x509_verify_param_copy(field, def) \
-        (to_overwrite || \
-                ((src->field != def) && (to_default || (dest->field == def))))
+    (to_overwrite \
+         || ((src->field != def) && (to_default || (dest->field == def))))
 
 /* Macro to test and copy a field if necessary */
 
 #define x509_verify_param_copy(field, def) \
-        if (test_x509_verify_param_copy(field, def)) \
-                dest->field = src->field
+    if (test_x509_verify_param_copy(field, def)) \
+        dest->field = src->field;
 
 int X509_VERIFY_PARAM_inherit(X509_VERIFY_PARAM *dest,
                               const X509_VERIFY_PARAM *src)
@@ -258,14 +239,16 @@ int X509_VERIFY_PARAM_set1(X509_VERIFY_PARAM *to,
 static int int_x509_param_set1(char **pdest, size_t *pdestlen,
                                const char *src, size_t srclen)
 {
-    void *tmp;
+    char *tmp;
     if (src) {
         if (srclen == 0)
             srclen = strlen(src);
 
-        tmp = OPENSSL_memdup(src, srclen);
+        tmp = OPENSSL_malloc(srclen + 1);
         if (tmp == NULL)
             return 0;
+        memcpy(tmp, src, srclen);
+        tmp[srclen] = '\0'; /* enforce NUL termination */
     } else {
         tmp = NULL;
         srclen = 0;
@@ -301,7 +284,7 @@ int X509_VERIFY_PARAM_clear_flags(X509_VERIFY_PARAM *param,
     return 1;
 }
 
-unsigned long X509_VERIFY_PARAM_get_flags(X509_VERIFY_PARAM *param)
+unsigned long X509_VERIFY_PARAM_get_flags(const X509_VERIFY_PARAM *param)
 {
     return param->flags;
 }
@@ -351,9 +334,9 @@ void X509_VERIFY_PARAM_set_time(X509_VERIFY_PARAM *param, time_t t)
 int X509_VERIFY_PARAM_add0_policy(X509_VERIFY_PARAM *param,
                                   ASN1_OBJECT *policy)
 {
-    if (!param->policies) {
+    if (param->policies == NULL) {
         param->policies = sk_ASN1_OBJECT_new_null();
-        if (!param->policies)
+        if (param->policies == NULL)
             return 0;
     }
     if (!sk_ASN1_OBJECT_push(param->policies, policy))
@@ -367,17 +350,17 @@ int X509_VERIFY_PARAM_set1_policies(X509_VERIFY_PARAM *param,
     int i;
     ASN1_OBJECT *oid, *doid;
 
-    if (!param)
+    if (param == NULL)
         return 0;
     sk_ASN1_OBJECT_pop_free(param->policies, ASN1_OBJECT_free);
 
-    if (!policies) {
+    if (policies == NULL) {
         param->policies = NULL;
         return 1;
     }
 
     param->policies = sk_ASN1_OBJECT_new_null();
-    if (!param->policies)
+    if (param->policies == NULL)
         return 0;
 
     for (i = 0; i < sk_ASN1_OBJECT_num(policies); i++) {
@@ -392,6 +375,11 @@ int X509_VERIFY_PARAM_set1_policies(X509_VERIFY_PARAM *param,
     }
     param->flags |= X509_V_FLAG_POLICY_CHECK;
     return 1;
+}
+
+char *X509_VERIFY_PARAM_get0_host(X509_VERIFY_PARAM *param, int idx)
+{
+    return sk_OPENSSL_STRING_value(param->hosts, idx);
 }
 
 int X509_VERIFY_PARAM_set1_host(X509_VERIFY_PARAM *param,
@@ -417,7 +405,7 @@ unsigned int X509_VERIFY_PARAM_get_hostflags(const X509_VERIFY_PARAM *param)
     return param->hostflags;
 }
 
-char *X509_VERIFY_PARAM_get0_peername(X509_VERIFY_PARAM *param)
+char *X509_VERIFY_PARAM_get0_peername(const X509_VERIFY_PARAM *param)
 {
     return param->peername;
 }
@@ -440,11 +428,34 @@ void X509_VERIFY_PARAM_move_peername(X509_VERIFY_PARAM *to,
         from->peername = NULL;
 }
 
+char *X509_VERIFY_PARAM_get0_email(X509_VERIFY_PARAM *param)
+{
+    return param->email;
+}
+
 int X509_VERIFY_PARAM_set1_email(X509_VERIFY_PARAM *param,
                                  const char *email, size_t emaillen)
 {
     return int_x509_param_set1(&param->email, &param->emaillen,
                                email, emaillen);
+}
+
+static unsigned char
+*int_X509_VERIFY_PARAM_get0_ip(X509_VERIFY_PARAM *param, size_t *plen)
+{
+    if (param == NULL || param->ip == NULL)
+        return NULL;
+    if (plen != NULL)
+        *plen = param->iplen;
+    return param->ip;
+}
+
+char *X509_VERIFY_PARAM_get1_ip_asc(X509_VERIFY_PARAM *param)
+{
+    size_t iplen;
+    unsigned char *ip = int_X509_VERIFY_PARAM_get0_ip(param, &iplen);
+
+    return  ip == NULL ? NULL : ipaddr_to_asc(ip, iplen);
 }
 
 int X509_VERIFY_PARAM_set1_ip(X509_VERIFY_PARAM *param,
@@ -574,10 +585,9 @@ int X509_VERIFY_PARAM_add0_table(X509_VERIFY_PARAM *param)
             return 0;
     } else {
         idx = sk_X509_VERIFY_PARAM_find(param_table, param);
-        if (idx != -1) {
-            ptmp = sk_X509_VERIFY_PARAM_value(param_table, idx);
+        if (idx >= 0) {
+            ptmp = sk_X509_VERIFY_PARAM_delete(param_table, idx);
             X509_VERIFY_PARAM_free(ptmp);
-            (void)sk_X509_VERIFY_PARAM_delete(param_table, idx);
         }
     }
     if (!sk_X509_VERIFY_PARAM_push(param_table, param))
@@ -607,9 +617,9 @@ const X509_VERIFY_PARAM *X509_VERIFY_PARAM_lookup(const char *name)
     X509_VERIFY_PARAM pm;
 
     pm.name = (char *)name;
-    if (param_table) {
+    if (param_table != NULL) {
         idx = sk_X509_VERIFY_PARAM_find(param_table, &pm);
-        if (idx != -1)
+        if (idx >= 0)
             return sk_X509_VERIFY_PARAM_value(param_table, idx);
     }
     return OBJ_bsearch_table(&pm, default_table, OSSL_NELEM(default_table));

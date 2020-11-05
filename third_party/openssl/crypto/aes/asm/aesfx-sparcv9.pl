@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2016-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -22,7 +22,7 @@
 # April 2016
 #
 # Add "teaser" CBC and CTR mode-specific subroutines. "Teaser" means
-# that parallelizeable nature of CBC decrypt and CTR is not utilized
+# that parallelizable nature of CBC decrypt and CTR is not utilized
 # yet. CBC encrypt on the other hand is as good as it can possibly
 # get processing one byte in 4.1 cycles with 128-bit key on SPARC64 X.
 # This is ~6x faster than pure software implementation...
@@ -33,8 +33,7 @@
 # instructions and improve single-block and short-input performance
 # with misaligned data.
 
-$output = pop;
-open STDOUT,">$output";
+$output = pop and open STDOUT,">$output";
 
 {
 my ($inp,$out,$key,$rounds,$tmp,$mask) = map("%o$_",(0..5));
@@ -1267,4 +1266,4 @@ foreach (split("\n",$code)) {
     print $_,"\n";
 }
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -11,10 +11,9 @@ $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
 push(@INC,"${dir}","${dir}../../perlasm");
 require "x86asm.pl";
 
-$output = pop;
-open STDOUT,">$output";
+$output = pop and open STDOUT,">$output";
 
-&asm_init($ARGV[0],$0);
+&asm_init($ARGV[0]);
 
 $sse2=0;
 for (@ARGV) { $sse2=1 if (/-DOPENSSL_IA32_SSE2/); }
@@ -31,7 +30,7 @@ for (@ARGV) { $sse2=1 if (/-DOPENSSL_IA32_SSE2/); }
 
 &asm_finish();
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";
 
 sub bn_mul_add_words
 	{
@@ -54,7 +53,7 @@ sub bn_mul_add_words
 		&movd("mm0",&wparam(3));	# mm0 = w
 		&pxor("mm1","mm1");		# mm1 = carry_in
 		&jmp(&label("maw_sse2_entry"));
-		
+
 	&set_label("maw_sse2_unrolled",16);
 		&movd("mm3",&DWP(0,$r,"",0));	# mm3 = r[0]
 		&paddq("mm1","mm3");		# mm1 = carry_in + r[0]
@@ -675,20 +674,20 @@ sub bn_sub_part_words
 	    &adc($c,0);
 	    &mov(&DWP($i*4,$r,"",0),$tmp1); 	# *r
 	}
-	    
+
 	&comment("");
 	&add($b,32);
 	&add($r,32);
 	&sub($num,8);
 	&jnz(&label("pw_neg_loop"));
-	    
+
 	&set_label("pw_neg_finish",0);
 	&mov($tmp2,&wparam(4));	# get dl
 	&mov($num,0);
 	&sub($num,$tmp2);
 	&and($num,7);
 	&jz(&label("pw_end"));
-	    
+
 	for ($i=0; $i<7; $i++)
 	{
 	    &comment("dl<0 Tail Round $i");
@@ -705,9 +704,9 @@ sub bn_sub_part_words
 	}
 
 	&jmp(&label("pw_end"));
-	
+
 	&set_label("pw_pos",0);
-	
+
 	&and($num,0xfffffff8);	# num / 8
 	&jz(&label("pw_pos_finish"));
 
@@ -722,18 +721,18 @@ sub bn_sub_part_words
 	    &mov(&DWP($i*4,$r,"",0),$tmp1);	# *r
 	    &jnc(&label("pw_nc".$i));
 	}
-	    
+
 	&comment("");
 	&add($a,32);
 	&add($r,32);
 	&sub($num,8);
 	&jnz(&label("pw_pos_loop"));
-	    
+
 	&set_label("pw_pos_finish",0);
 	&mov($num,&wparam(4));	# get dl
 	&and($num,7);
 	&jz(&label("pw_end"));
-	    
+
 	for ($i=0; $i<7; $i++)
 	{
 	    &comment("dl>0 Tail Round $i");
@@ -754,17 +753,17 @@ sub bn_sub_part_words
 	    &mov(&DWP($i*4,$r,"",0),$tmp1);	# *r
 	    &set_label("pw_nc".$i,0);
 	}
-	    
+
 	&comment("");
 	&add($a,32);
 	&add($r,32);
 	&sub($num,8);
 	&jnz(&label("pw_nc_loop"));
-	    
+
 	&mov($num,&wparam(4));	# get dl
 	&and($num,7);
 	&jz(&label("pw_nc_end"));
-	    
+
 	for ($i=0; $i<7; $i++)
 	{
 	    &mov($tmp1,&DWP($i*4,$a,"",0));	# *a

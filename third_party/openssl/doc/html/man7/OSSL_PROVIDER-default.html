@@ -1,0 +1,395 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>OSSL_PROVIDER-default</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a>
+    <ul>
+      <li><a href="#Properties">Properties</a></li>
+    </ul>
+  </li>
+  <li><a href="#OPERATIONS-AND-ALGORITHMS">OPERATIONS AND ALGORITHMS</a>
+    <ul>
+      <li><a href="#Hashing-Algorithms-Message-Digests">Hashing Algorithms / Message Digests</a></li>
+      <li><a href="#Symmetric-Ciphers">Symmetric Ciphers</a></li>
+      <li><a href="#Message-Authentication-Code-MAC">Message Authentication Code (MAC)</a></li>
+      <li><a href="#Key-Derivation-Function-KDF">Key Derivation Function (KDF)</a></li>
+      <li><a href="#Key-Exchange">Key Exchange</a></li>
+      <li><a href="#Asymmetric-Signature">Asymmetric Signature</a></li>
+      <li><a href="#Asymmetric-Cipher">Asymmetric Cipher</a></li>
+      <li><a href="#Asymmetric-Key-Management">Asymmetric Key Management</a></li>
+      <li><a href="#Asymmetric-Key-Encoder">Asymmetric Key Encoder</a></li>
+    </ul>
+  </li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>OSSL_PROVIDER-default - OpenSSL default provider</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The OpenSSL default provider supplies the majority of OpenSSL&#39;s diverse algorithm implementations. It also acts as a fallback when no other provider has been loaded.</p>
+
+<h2 id="Properties">Properties</h2>
+
+<p>The implementations in this provider specifically have this property defined:</p>
+
+<dl>
+
+<dt id="provider-default">&quot;provider=default&quot;</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>It may be used in a property query string with fetching functions such as <a href="../man3/EVP_MD_fetch.html">EVP_MD_fetch(3)</a> or <a href="../man3/EVP_CIPHER_fetch.html">EVP_CIPHER_fetch(3)</a>, as well as with other functions that take a property query string, such as <a href="../man3/EVP_PKEY_CTX_new_from_name.html">EVP_PKEY_CTX_new_from_name(3)</a>.</p>
+
+<p>It isn&#39;t mandatory to query for this property, except to make sure to get implementations of this provider and none other.</p>
+
+<p>Some implementations may define additional properties. Exact information is listed below</p>
+
+<h1 id="OPERATIONS-AND-ALGORITHMS">OPERATIONS AND ALGORITHMS</h1>
+
+<p>The OpenSSL default provider supports these operations and algorithms:</p>
+
+<h2 id="Hashing-Algorithms-Message-Digests">Hashing Algorithms / Message Digests</h2>
+
+<dl>
+
+<dt id="SHA1-see-EVP_MD-SHA1-7">SHA1, see <a href="../man7/EVP_MD-SHA1.html">EVP_MD-SHA1(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="SHA2-see-EVP_MD-SHA2-7">SHA2, see <a href="../man7/EVP_MD-SHA2.html">EVP_MD-SHA2(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="SHA3-see-EVP_MD-SHA3-7">SHA3, see <a href="../man7/EVP_MD-SHA3.html">EVP_MD-SHA3(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="KECCAK-KMAC-see-EVP_MD-KECCAK-KMAC-7">KECCAK-KMAC, see <a href="../man7/EVP_MD-KECCAK-KMAC.html">EVP_MD-KECCAK-KMAC(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="SHAKE-see-EVP_MD-SHAKE-7">SHAKE, see <a href="../man7/EVP_MD-SHAKE.html">EVP_MD-SHAKE(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="BLAKE2-see-EVP_MD-BLAKE2-7">BLAKE2, see <a href="../man7/EVP_MD-BLAKE2.html">EVP_MD-BLAKE2(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="SM3-see-EVP_MD-SM3-7">SM3, see <a href="../man7/EVP_MD-SM3.html">EVP_MD-SM3(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="MD5-see-EVP_MD-MD5-7">MD5, see <a href="../man7/EVP_MD-MD5.html">EVP_MD-MD5(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="MD5-SHA1-see-EVP_MD-MD5-SHA1-7">MD5-SHA1, see <a href="../man7/EVP_MD-MD5-SHA1.html">EVP_MD-MD5-SHA1(7)</a></dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="Symmetric-Ciphers">Symmetric Ciphers</h2>
+
+<dl>
+
+<dt id="AES-see-EVP_CIPHER-AES-7">AES, see <a href="../man7/EVP_CIPHER-AES.html">EVP_CIPHER-AES(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="ARIA-see-EVP_CIPHER-ARIA-7">ARIA, see <a href="../man7/EVP_CIPHER-ARIA.html">EVP_CIPHER-ARIA(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="CAMELLIA-see-EVP_CIPHER-CAMELLIA-7">CAMELLIA, see <a href="../man7/EVP_CIPHER-CAMELLIA.html">EVP_CIPHER-CAMELLIA(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="DES-see-EVP_CIPHER-DES-7">DES, see <a href="../man7/EVP_CIPHER-DES.html">EVP_CIPHER-DES(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="BF-see-EVP_CIPHER-BF-7">BF, see <a href="../man7/EVP_CIPHER-BF.html">EVP_CIPHER-BF(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="IDEA-see-EVP_CIPHER-IDEA-7">IDEA, see <a href="../man7/EVP_CIPHER-IDEA.html">EVP_CIPHER-IDEA(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="CAST5-see-EVP_CIPHER-CAST5-7">CAST5, see <a href="../man7/EVP_CIPHER-CAST5.html">EVP_CIPHER-CAST5(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="SEED-see-EVP_CIPHER-SEED-7">SEED, see <a href="../man7/EVP_CIPHER-SEED.html">EVP_CIPHER-SEED(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="SM4-see-EVP_CIPHER-SM4-7">SM4, see <a href="../man7/EVP_CIPHER-SM4.html">EVP_CIPHER-SM4(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="RC2-see-EVP_CIPHER-RC2-7">RC2, see <a href="../man7/EVP_CIPHER-RC2.html">EVP_CIPHER-RC2(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="RC4-see-EVP_CIPHER-RC4-7">RC4, see <a href="../man7/EVP_CIPHER-RC4.html">EVP_CIPHER-RC4(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="RC5-see-EVP_CIPHER-RC5-7">RC5, see <a href="../man7/EVP_CIPHER-RC5.html">EVP_CIPHER-RC5(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="ChaCha20-see-EVP_CIPHER-ChaCha20-7">ChaCha20, see <a href="../man7/EVP_CIPHER-ChaCha20.html">EVP_CIPHER-ChaCha20(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="ChaCha20-Poly1305-see-EVP_CIPHER-ChaCha20-Poly1305-7">ChaCha20-Poly1305, see <a href="../man7/EVP_CIPHER-ChaCha20-Poly1305.html">EVP_CIPHER-ChaCha20-Poly1305(7)</a></dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="Message-Authentication-Code-MAC">Message Authentication Code (MAC)</h2>
+
+<dl>
+
+<dt id="BLAKE2-see-EVP_MAC-BLAKE2-7">BLAKE2, see <a href="../man7/EVP_MAC-BLAKE2.html">EVP_MAC-BLAKE2(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="CMAC-see-EVP_MAC-CMAC-7">CMAC, see <a href="../man7/EVP_MAC-CMAC.html">EVP_MAC-CMAC(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="GMAC-see-EVP_MAC-GMAC-7">GMAC, see <a href="../man7/EVP_MAC-GMAC.html">EVP_MAC-GMAC(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="HMAC-see-EVP_MAC-HMAC-7">HMAC, see <a href="../man7/EVP_MAC-HMAC.html">EVP_MAC-HMAC(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="KMAC-see-EVP_MAC-KMAC-7">KMAC, see <a href="../man7/EVP_MAC-KMAC.html">EVP_MAC-KMAC(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="SIPHASH-see-EVP_MAC-Siphash-7">SIPHASH, see <a href="../man7/EVP_MAC-Siphash.html">EVP_MAC-Siphash(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="POLY1305-see-EVP_MAC-Poly1305-7">POLY1305, see <a href="../man7/EVP_MAC-Poly1305.html">EVP_MAC-Poly1305(7)</a></dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="Key-Derivation-Function-KDF">Key Derivation Function (KDF)</h2>
+
+<dl>
+
+<dt id="HKDF-see-EVP_KDF-HKDF-7">HKDF, see <a href="../man7/EVP_KDF-HKDF.html">EVP_KDF-HKDF(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="SSKDF-see-EVP_KDF-SS-7">SSKDF, see <a href="../man7/EVP_KDF-SS.html">EVP_KDF-SS(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="PBKDF2-see-EVP_KDF-PBKDF2-7">PBKDF2, see <a href="../man7/EVP_KDF-PBKDF2.html">EVP_KDF-PBKDF2(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="PKCS12KDF-see-EVP_KDF-PKCS12KDF-7">PKCS12KDF, see <a href="../man7/EVP_KDF-PKCS12KDF.html">EVP_KDF-PKCS12KDF(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="SSHKDF-see-EVP_KDF-SSHKDF-7">SSHKDF, see <a href="../man7/EVP_KDF-SSHKDF.html">EVP_KDF-SSHKDF(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="TLS1-PRF-see-EVP_KDF-TLS1_PRF-7">TLS1-PRF, see <a href="../man7/EVP_KDF-TLS1_PRF.html">EVP_KDF-TLS1_PRF(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="KBKDF-see-EVP_KDF-KB-7">KBKDF, see <a href="../man7/EVP_KDF-KB.html">EVP_KDF-KB(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="X942KDF-see-EVP_KDF-X942-7">X942KDF, see <a href="../man7/EVP_KDF-X942.html">EVP_KDF-X942(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="SCRYPT-see-EVP_KDF-SCRYPT-7">SCRYPT, see <a href="../man7/EVP_KDF-SCRYPT.html">EVP_KDF-SCRYPT(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="KRB5KDF-see-EVP_KDF-KRB5KDF-7">KRB5KDF, see <a href="../man7/EVP_KDF-KRB5KDF.html">EVP_KDF-KRB5KDF(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="X963KDF-see-EVP_KDF-X963-7">X963KDF, see <a href="../man7/EVP_KDF-X963.html">EVP_KDF-X963(7)</a></dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="Key-Exchange">Key Exchange</h2>
+
+<dl>
+
+<dt id="DH-see-EVP_KEYEXCH-DH-7">DH, see <a href="../man7/EVP_KEYEXCH-DH.html">EVP_KEYEXCH-DH(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="ECDH-see-EVP_KEYEXCH-ECDH-7">ECDH, see <a href="../man7/EVP_KEYEXCH-ECDH.html">EVP_KEYEXCH-ECDH(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="X25519-see-EVP_KEYEXCH-X25519-7">X25519, see <a href="../man7/EVP_KEYEXCH-X25519.html">EVP_KEYEXCH-X25519(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="X448-see-EVP_KEYEXCH-X448-7">X448, see <a href="../man7/EVP_KEYEXCH-X448.html">EVP_KEYEXCH-X448(7)</a></dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="Asymmetric-Signature">Asymmetric Signature</h2>
+
+<dl>
+
+<dt id="DSA-see-EVP_SIGNATURE-DSA-7">DSA, see <a href="../man7/EVP_SIGNATURE-DSA.html">EVP_SIGNATURE-DSA(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="RSA-see-EVP_SIGNATURE-RSA-7">RSA, see <a href="../man7/EVP_SIGNATURE-RSA.html">EVP_SIGNATURE-RSA(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="HMAC-see-EVP_SIGNATURE-HMAC-7">HMAC, see <a href="../man7/EVP_SIGNATURE-HMAC.html">EVP_SIGNATURE-HMAC(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="SIPHASH-see-EVP_SIGNATURE-Siphash-7">SIPHASH, see <a href="../man7/EVP_SIGNATURE-Siphash.html">EVP_SIGNATURE-Siphash(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="POLY1305-see-EVP_SIGNATURE-Poly1305-7">POLY1305, see <a href="../man7/EVP_SIGNATURE-Poly1305.html">EVP_SIGNATURE-Poly1305(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="CMAC-see-EVP_SIGNATURE-CMAC-7">CMAC, see <a href="../man7/EVP_SIGNATURE-CMAC.html">EVP_SIGNATURE-CMAC(7)</a></dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="Asymmetric-Cipher">Asymmetric Cipher</h2>
+
+<dl>
+
+<dt id="RSA-see-EVP_ASYM_CIPHER-RSA-7">RSA, see <a href="../man7/EVP_ASYM_CIPHER-RSA.html">EVP_ASYM_CIPHER-RSA(7)</a></dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="Asymmetric-Key-Management">Asymmetric Key Management</h2>
+
+<dl>
+
+<dt id="DH-see-EVP_KEYMGMT-DH-7">DH, see <a href="../man7/EVP_KEYMGMT-DH.html">EVP_KEYMGMT-DH(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="DSA-see-EVP_KEYMGMT-DSA-7">DSA, see <a href="../man7/EVP_KEYMGMT-DSA.html">EVP_KEYMGMT-DSA(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="RSA-see-EVP_KEYMGMT-RSA-7">RSA, see <a href="../man7/EVP_KEYMGMT-RSA.html">EVP_KEYMGMT-RSA(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="EC-see-EVP_KEYMGMT-EC-7">EC, see <a href="../man7/EVP_KEYMGMT-EC.html">EVP_KEYMGMT-EC(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="X25519-see-EVP_KEYMGMT-X25519-7">X25519, see <a href="../man7/EVP_KEYMGMT-X25519.html">EVP_KEYMGMT-X25519(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="X448-see-EVP_KEYMGMT-X448-7">X448, see <a href="../man7/EVP_KEYMGMT-X448.html">EVP_KEYMGMT-X448(7)</a></dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="Asymmetric-Key-Encoder">Asymmetric Key Encoder</h2>
+
+<p>The default provider also includes all of the encoding algorithms present in the base provider. Some of these have the property &quot;fips=yes&quot;, to allow them to be used together with the FIPS provider.</p>
+
+<dl>
+
+<dt id="RSA-see-OSSL_ENCODER-RSA-7">RSA, see <a href="../man7/OSSL_ENCODER-RSA.html">OSSL_ENCODER-RSA(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="DH-see-OSSL_ENCODER-DH-7">DH, see <a href="../man7/OSSL_ENCODER-DH.html">OSSL_ENCODER-DH(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="DSA-see-OSSL_ENCODER-DSA-7">DSA, see <a href="../man7/OSSL_ENCODER-DSA.html">OSSL_ENCODER-DSA(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="EC-see-OSSL_ENCODER-EC-7">EC, see <a href="../man7/OSSL_ENCODER-EC.html">OSSL_ENCODER-EC(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="X25519-see-OSSL_ENCODER-X25519-7">X25519, see <a href="../man7/OSSL_ENCODER-X25519.html">OSSL_ENCODER-X25519(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="X448-see-OSSL_ENCODER-X448-7">X448, see <a href="../man7/OSSL_ENCODER-X448.html">OSSL_ENCODER-X448(7)</a></dt>
+<dd>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man7/openssl-core.h.html">openssl-core.h(7)</a>, <a href="../man7/openssl-core_dispatch.h.html">openssl-core_dispatch.h(7)</a>, <a href="../man7/provider.html">provider(7)</a>, <a href="../man7/OSSL_PROVIDER-base.html">OSSL_PROVIDER-base(7)</a></p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

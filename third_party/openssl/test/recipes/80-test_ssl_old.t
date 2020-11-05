@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2015-2018 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2015-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -13,18 +13,25 @@ use warnings;
 use POSIX;
 use File::Basename;
 use File::Copy;
-use OpenSSL::Test qw/:DEFAULT with bldtop_file srctop_file cmdstr/;
+use OpenSSL::Test qw/:DEFAULT with bldtop_file bldtop_dir srctop_file srctop_dir cmdstr/;
 use OpenSSL::Test::Utils;
 
+BEGIN {
 setup("test_ssl");
+}
 
-$ENV{CTLOG_FILE} = srctop_file("test", "ct", "log_list.conf");
+use lib srctop_dir('Configurations');
+use lib bldtop_dir('.');
+use platform;
 
-my ($no_rsa, $no_dsa, $no_dh, $no_ec, $no_srp, $no_psk,
-    $no_ssl3, $no_tls1, $no_tls1_1, $no_tls1_2,
+my $no_fips = disabled('fips') || ($ENV{NO_FIPS} // 0);
+my $infile = bldtop_file('providers', platform->dso('fips'));
+
+my ($no_rsa, $no_dsa, $no_dh, $no_ec, $no_psk,
+    $no_ssl3, $no_tls1, $no_tls1_1, $no_tls1_2, $no_tls1_3,
     $no_dtls, $no_dtls1, $no_dtls1_2, $no_ct) =
-    anydisabled qw/rsa dsa dh ec srp psk
-                   ssl3 tls1 tls1_1 tls1_2
+    anydisabled qw/rsa dsa dh ec psk
+                   ssl3 tls1 tls1_1 tls1_2 tls1_3
                    dtls dtls1 dtls1_2 ct/;
 my $no_anytls = alldisabled(available_protocols("tls"));
 my $no_anydtls = alldisabled(available_protocols("dtls"));
@@ -36,36 +43,30 @@ my $digest = "-sha1";
 my @reqcmd = ("openssl", "req");
 my @x509cmd = ("openssl", "x509", $digest);
 my @verifycmd = ("openssl", "verify");
-my @gendsacmd = ("openssl", "gendsa");
+my @genpkeycmd = ("openssl", "genpkey");
 my $dummycnf = srctop_file("apps", "openssl.cnf");
 
+my $cnf = srctop_file("test", "ca-and-certs.cnf");
 my $CAkey = "keyCA.ss";
 my $CAcert="certCA.ss";
 my $CAserial="certCA.srl";
 my $CAreq="reqCA.ss";
-my $CAconf=srctop_file("test","CAss.cnf");
 my $CAreq2="req2CA.ss";	# temp
-
-my $Uconf=srctop_file("test","Uss.cnf");
 my $Ukey="keyU.ss";
 my $Ureq="reqU.ss";
 my $Ucert="certU.ss";
-
 my $Dkey="keyD.ss";
 my $Dreq="reqD.ss";
 my $Dcert="certD.ss";
-
 my $Ekey="keyE.ss";
 my $Ereq="reqE.ss";
 my $Ecert="certE.ss";
 
-my $P1conf=srctop_file("test","P1ss.cnf");
+my $proxycnf=srctop_file("test", "proxy.cnf");
 my $P1key="keyP1.ss";
 my $P1req="reqP1.ss";
 my $P1cert="certP1.ss";
 my $P1intermediate="tmp_intP1.ss";
-
-my $P2conf=srctop_file("test","P2ss.cnf");
 my $P2key="keyP2.ss";
 my $P2req="reqP2.ss";
 my $P2cert="certP2.ss";
@@ -78,9 +79,17 @@ my $client_sess="client.ss";
 # If you're adding tests here, you probably want to convert them to the
 # new format in ssl_test.c and add recipes to 80-test_ssl_new.t instead.
 plan tests =>
-    1				# For testss
-    +6  			# For the first testssl
+   ($no_fips ? 0 : 1 + 5) # For fipsinstall + testssl with fips provider
+    + 1                   # For testss
+    + 5                   # For the testssl with default provider
     ;
+
+unless ($no_fips) {
+    ok(run(app(['openssl', 'fipsinstall',
+                '-out', bldtop_file('providers', 'fipsmodule.cnf'),
+                '-module', $infile])),
+       "fipsinstall");
+}
 
 subtest 'test_ss' => sub {
     if (testss()) {
@@ -95,15 +104,15 @@ subtest 'test_ss' => sub {
 };
 
 note('test_ssl -- key U');
-testssl("keyU.ss", $Ucert, $CAcert);
+testssl("keyU.ss", $Ucert, $CAcert, "default", srctop_file("test","default.cnf"));
+unless ($no_fips) {
+    testssl("keyU.ss", $Ucert, $CAcert, "fips",
+            srctop_file("test","fips-and-base.cnf"));
+}
 
 # -----------
 # subtest functions
 sub testss {
-    open RND, ">>", ".rnd";
-    print RND "string to make the random number generator think it has entropy";
-    close RND;
-
     my @req_dsa = ("-newkey",
                    "dsa:".srctop_file("apps", "dsa1024.pem"));
     my $dsaparams = srctop_file("apps", "dsa1024.pem");
@@ -118,7 +127,7 @@ sub testss {
 
   SKIP: {
       skip 'failure', 16 unless
-	  ok(run(app([@reqcmd, "-config", $CAconf,
+	  ok(run(app([@reqcmd, "-config", $cnf,
 		      "-out", $CAreq, "-keyout", $CAkey,
 		      @req_new])),
 	     'make cert request');
@@ -126,7 +135,7 @@ sub testss {
       skip 'failure', 15 unless
 	  ok(run(app([@x509cmd, "-CAcreateserial", "-in", $CAreq, "-days", "30",
 		      "-req", "-out", $CAcert, "-signkey", $CAkey,
-		      "-extfile", $CAconf, "-extensions", "v3_ca"],
+		      "-extfile", $cnf, "-extensions", "v3_ca"],
 		     stdout => "err.ss")),
 	     'convert request into self-signed cert');
 
@@ -152,7 +161,7 @@ sub testss {
 	     'verify signature');
 
       skip 'failure', 10 unless
-	  ok(run(app([@reqcmd, "-config", $Uconf,
+	  ok(run(app([@reqcmd, "-config", $cnf, "-section", "userreq",
 		      "-out", $Ureq, "-keyout", $Ukey, @req_new],
 		     stdout => "err.ss")),
 	     'make a user cert request');
@@ -161,7 +170,7 @@ sub testss {
 	  ok(run(app([@x509cmd, "-CAcreateserial", "-in", $Ureq, "-days", "30",
 		      "-req", "-out", $Ucert,
 		      "-CA", $CAcert, "-CAkey", $CAkey, "-CAserial", $CAserial,
-		      "-extfile", $Uconf, "-extensions", "v3_ee"],
+		      "-extfile", $cnf, "-extensions", "v3_ee"],
 		     stdout => "err.ss"))
 	     && run(app([@verifycmd, "-CAfile", $CAcert, $Ucert])),
 	     'sign user cert request');
@@ -182,12 +191,13 @@ sub testss {
             SKIP: {
                 $ENV{CN2} = "DSA Certificate";
                 skip 'failure', 4 unless
-                    ok(run(app([@gendsacmd, "-out", $Dkey,
-                                $dsaparams],
+                    ok(run(app([@genpkeycmd, "-out", $Dkey,
+                                "-paramfile", $dsaparams],
                                stdout => "err.ss")),
                        "make a DSA key");
                 skip 'failure', 3 unless
-                    ok(run(app([@reqcmd, "-new", "-config", $Uconf,
+                    ok(run(app([@reqcmd, "-new", "-config", $cnf,
+                                "-section", "userreq",
                                 "-out", $Dreq, "-key", $Dkey],
                                stdout => "err.ss")),
                        "make a DSA user cert request");
@@ -199,7 +209,7 @@ sub testss {
                                 "-out", $Dcert,
                                 "-CA", $CAcert, "-CAkey", $CAkey,
                                 "-CAserial", $CAserial,
-                                "-extfile", $Uconf,
+                                "-extfile", $cnf,
                                 "-extensions", "v3_ee_dsa"],
                                stdout => "err.ss")),
                        "sign DSA user cert request");
@@ -225,11 +235,15 @@ sub testss {
             SKIP: {
                 $ENV{CN2} = "ECDSA Certificate";
                 skip 'failure', 4 unless
-                    ok(run(app(["openssl", "ecparam", "-name", "P-256",
+                    ok(run(app(["openssl", "genpkey", "-genparam",
+                                "-algorithm", "EC",
+                                "-pkeyopt", "ec_paramgen_curve:P-256",
+                                "-pkeyopt", "ec_param_enc:named_curve",
                                 "-out", "ecp.ss"])),
                        "make EC parameters");
                 skip 'failure', 3 unless
-                    ok(run(app([@reqcmd, "-config", $Uconf,
+                    ok(run(app([@reqcmd, "-config", $cnf,
+                                "-section", "userreq",
                                 "-out", $Ereq, "-keyout", $Ekey,
                                 "-newkey", "ec:ecp.ss"],
                                stdout => "err.ss")),
@@ -242,7 +256,7 @@ sub testss {
                                 "-out", $Ecert,
                                 "-CA", $CAcert, "-CAkey", $CAkey,
                                 "-CAserial", $CAserial,
-                                "-extfile", $Uconf,
+                                "-extfile", $cnf,
                                 "-extensions", "v3_ee_ec"],
                                stdout => "err.ss")),
                        "sign ECDSA/ECDH user cert request");
@@ -259,7 +273,7 @@ sub testss {
       };
 
       skip 'failure', 5 unless
-	  ok(run(app([@reqcmd, "-config", $P1conf,
+	  ok(run(app([@reqcmd, "-config", $proxycnf,
 		      "-out", $P1req, "-keyout", $P1key, @req_new],
 		     stdout => "err.ss")),
 	     'make a proxy cert request');
@@ -269,7 +283,7 @@ sub testss {
 	  ok(run(app([@x509cmd, "-CAcreateserial", "-in", $P1req, "-days", "30",
 		      "-req", "-out", $P1cert,
 		      "-CA", $Ucert, "-CAkey", $Ukey,
-		      "-extfile", $P1conf, "-extensions", "v3_proxy"],
+		      "-extfile", $proxycnf, "-extensions", "proxy"],
 		     stdout => "err.ss")),
 	     'sign proxy with user cert');
 
@@ -282,7 +296,7 @@ sub testss {
 	 'Certificate details');
 
       skip 'failure', 2 unless
-	  ok(run(app([@reqcmd, "-config", $P2conf,
+	  ok(run(app([@reqcmd, "-config", $proxycnf, "-section", "proxy2_req",
 		      "-out", $P2req, "-keyout", $P2key,
 		      @req_new],
 		     stdout => "err.ss")),
@@ -293,7 +307,7 @@ sub testss {
 	  ok(run(app([@x509cmd, "-CAcreateserial", "-in", $P2req, "-days", "30",
 		      "-req", "-out", $P2cert,
 		      "-CA", $P1cert, "-CAkey", $P1key,
-		      "-extfile", $P2conf, "-extensions", "v3_proxy"],
+		      "-extfile", $proxycnf, "-extensions", "proxy_2"],
 		     stdout => "err.ss")),
 	     'sign second proxy cert request with the first proxy cert');
 
@@ -311,12 +325,14 @@ sub testss {
 }
 
 sub testssl {
-    my ($key, $cert, $CAtmp) = @_;
+    my ($key, $cert, $CAtmp, $provider, $configfile) = @_;
     my @CA = $CAtmp ? ("-CAfile", $CAtmp) : ("-CApath", bldtop_dir("certs"));
 
     my @ssltest = ("ssltest_old",
 		   "-s_key", $key, "-s_cert", $cert,
-		   "-c_key", $key, "-c_cert", $cert);
+		   "-c_key", $key, "-c_cert", $cert,
+		   "-provider", $provider,
+		   "-config", $configfile);
 
     my $serverinfo = srctop_file("test","serverinfo.pem");
 
@@ -331,11 +347,14 @@ sub testssl {
 
     subtest 'standard SSL tests' => sub {
 	######################################################################
-      plan tests => 21;
+      plan tests => 13;
 
       SKIP: {
 	  skip "SSLv3 is not supported by this OpenSSL build", 4
 	      if disabled("ssl3");
+
+	  skip "SSLv3 is not supported by the FIPS provider", 4
+	      if $provider eq "fips";
 
 	  ok(run(test([@ssltest, "-bio_pair", "-ssl3"])),
 	     'test sslv3 via BIO pair');
@@ -353,34 +372,6 @@ sub testssl {
 
 	  ok(run(test([@ssltest, "-bio_pair"])),
 	     'test sslv2/sslv3 via BIO pair');
-	}
-
-      SKIP: {
-	  skip "DTLSv1 is not supported by this OpenSSL build", 4
-	      if disabled("dtls1");
-
-	  ok(run(test([@ssltest, "-dtls1"])),
-	     'test dtlsv1');
-	  ok(run(test([@ssltest, "-dtls1", "-server_auth", @CA])),
-	   'test dtlsv1 with server authentication');
-	  ok(run(test([@ssltest, "-dtls1", "-client_auth", @CA])),
-	     'test dtlsv1 with client authentication');
-	  ok(run(test([@ssltest, "-dtls1", "-server_auth", "-client_auth", @CA])),
-	     'test dtlsv1 with both server and client authentication');
-	}
-
-      SKIP: {
-	  skip "DTLSv1.2 is not supported by this OpenSSL build", 4
-	      if disabled("dtls1_2");
-
-	  ok(run(test([@ssltest, "-dtls12"])),
-	     'test dtlsv1.2');
-	  ok(run(test([@ssltest, "-dtls12", "-server_auth", @CA])),
-	     'test dtlsv1.2 with server authentication');
-	  ok(run(test([@ssltest, "-dtls12", "-client_auth", @CA])),
-	     'test dtlsv1.2 with client authentication');
-	  ok(run(test([@ssltest, "-dtls12", "-server_auth", "-client_auth", @CA])),
-	     'test dtlsv1.2 with both server and client authentication');
 	}
 
       SKIP: {
@@ -426,68 +417,80 @@ sub testssl {
         my @exkeys = ();
         my $ciphers = "-PSK:-SRP";
 
-        if ($no_dh) {
-            note "skipping DHE tests\n";
-            $ciphers .= ":-kDHE";
-        }
-        if ($no_dsa) {
-            note "skipping DSA tests\n";
-            $ciphers .= ":-aDSA";
-        } else {
+        if (!$no_dsa) {
             push @exkeys, "-s_cert", "certD.ss", "-s_key", "keyD.ss";
         }
 
-        if ($no_ec) {
-            note "skipping EC tests\n";
-            $ciphers .= ":!aECDSA:!kECDH";
-        } else {
+        if (!$no_ec) {
             push @exkeys, "-s_cert", "certE.ss", "-s_key", "keyE.ss";
         }
 
 	my @protocols = ();
 	# We only use the flags that ssltest_old understands
+	push @protocols, "-tls1_3" unless $no_tls1_3;
 	push @protocols, "-tls1_2" unless $no_tls1_2;
-	push @protocols, "-tls1" unless $no_tls1;
-	push @protocols, "-ssl3" unless $no_ssl3;
+	push @protocols, "-tls1" unless $no_tls1 || $provider eq "fips";
+	push @protocols, "-ssl3" unless $no_ssl3 || $provider eq "fips";
 	my $protocolciphersuitecount = 0;
 	my %ciphersuites = ();
+	my %ciphersstatus = ();
 	foreach my $protocol (@protocols) {
-	    $ciphersuites{$protocol} =
-		[ map { s|\R||; split(/:/, $_) }
-		  run(app(["openssl", "ciphers", "-s", $protocol,
-			   "ALL:$ciphers"]), capture => 1) ];
-	    $protocolciphersuitecount += scalar @{$ciphersuites{$protocol}};
+	    my $ciphersstatus = undef;
+	    my @ciphers = run(app(["openssl", "ciphers", "-s", $protocol,
+				   "ALL:$ciphers"]),
+			      capture => 1, statusvar => \$ciphersstatus);
+	    @ciphers = grep {!/CAMELLIA|ARIA|CHACHA/} @ciphers;
+	    $ciphersstatus{$protocol} = $ciphersstatus;
+	    if ($ciphersstatus) {
+		$ciphersuites{$protocol} = [ map { s|\R||; split(/:/, $_) }
+					     @ciphers ];
+		$protocolciphersuitecount += scalar @{$ciphersuites{$protocol}};
+	    }
 	}
 
         plan skip_all => "None of the ciphersuites to test are available in this OpenSSL build"
             if $protocolciphersuitecount + scalar(keys %ciphersuites) == 0;
 
-        # The count of protocols is because in addition to the ciphersuits
-        # we got above, we're running a weak DH test for each protocol
-	plan tests => $protocolciphersuitecount + scalar(keys %ciphersuites);
+        # The count of protocols is because in addition to the ciphersuites
+        # we got above, we're running a weak DH test for each protocol (except
+        # TLSv1.3)
+        my $testcount = scalar(@protocols) + $protocolciphersuitecount
+                        + scalar(keys %ciphersuites);
+        $testcount-- unless $no_tls1_3;
+        plan tests => $testcount;
 
-	foreach my $protocol (sort keys %ciphersuites) {
-	    note "Testing ciphersuites for $protocol";
-	    # ssltest_old doesn't know -tls1_2, but that's fine, since that's
-	    # the default choice if TLSv1.2 enabled
-	    my $flag = $protocol eq "-tls1_2" ? "" : $protocol;
-	    foreach my $cipher (@{$ciphersuites{$protocol}}) {
+        foreach my $protocol (@protocols) {
+            ok($ciphersstatus{$protocol}, "Getting ciphers for $protocol");
+        }
+
+        foreach my $protocol (sort keys %ciphersuites) {
+            note "Testing ciphersuites for $protocol";
+            # ssltest_old doesn't know -tls1_3, but that's fine, since that's
+            # the default choice if TLSv1.3 enabled
+            my $flag = $protocol eq "-tls1_3" ? "" : $protocol;
+            my $ciphersuites = "";
+            foreach my $cipher (@{$ciphersuites{$protocol}}) {
                 if ($protocol eq "-ssl3" && $cipher =~ /ECDH/ ) {
                     note "*****SKIPPING $protocol $cipher";
                     ok(1);
                 } else {
+                    if ($protocol eq "-tls1_3") {
+                        $ciphersuites = $cipher;
+                        $cipher = "";
+                    }
                     ok(run(test([@ssltest, @exkeys, "-cipher", $cipher,
-                                 $flag || ()])),
+                                 "-ciphersuites", $ciphersuites, $flag || ()])),
                        "Testing $cipher");
-               }
-	    }
+                }
+            }
+            next if $protocol eq "-tls1_3";
             is(run(test([@ssltest,
                          "-s_cipher", "EDH",
                          "-c_cipher", 'EDH:@SECLEVEL=1',
                          "-dhe512",
-                         $protocol eq "SSLv3" ? ("-ssl3") : ()])), 0,
+                         $protocol])), 0,
                "testing connection with weak DH, expecting failure");
-	}
+        }
     };
 
     subtest 'RSA/(EC)DHE/PSK tests' => sub {
@@ -497,7 +500,7 @@ sub testssl {
 
       SKIP: {
 	  skip "TLSv1.0 is not supported by this OpenSSL build", 5
-	      if $no_tls1;
+	      if $no_tls1 || $provider eq "fips";
 
 	SKIP: {
 	    skip "skipping anonymous DH tests", 1
@@ -511,13 +514,13 @@ sub testssl {
 	    skip "skipping RSA tests", 2
 		if $no_rsa;
 
-	    ok(run(test(["ssltest_old", "-v", "-bio_pair", "-tls1", "-s_cert", srctop_file("apps","server2.pem"), "-no_dhe", "-no_ecdhe", "-num", "10", "-f", "-time"])),
+	    ok(run(test(["ssltest_old", "-provider", "default", "-v", "-bio_pair", "-tls1", "-s_cert", srctop_file("apps","server2.pem"), "-no_dhe", "-no_ecdhe", "-num", "10", "-f", "-time"])),
 	       'test tlsv1 with 1024bit RSA, no (EC)DHE, multiple handshakes');
 
 	    skip "skipping RSA+DHE tests", 1
 		if $no_dh;
 
-	    ok(run(test(["ssltest_old", "-v", "-bio_pair", "-tls1", "-s_cert", srctop_file("apps","server2.pem"), "-dhe1024dsa", "-num", "10", "-f", "-time"])),
+	    ok(run(test(["ssltest_old", "-provider", "default", "-v", "-bio_pair", "-tls1", "-s_cert", srctop_file("apps","server2.pem"), "-dhe1024dsa", "-num", "10", "-f", "-time"])),
 	       'test tlsv1 with 1024bit RSA, 1024bit DHE, multiple handshakes');
 	  }
 
@@ -542,7 +545,7 @@ sub testssl {
 
       SKIP: {
 	  skip "TLSv1.0 is not supported by this OpenSSL build", 1
-	      if $no_tls1;
+	      if $no_tls1 || $provider eq "fips";
 
 	  ok(run(test([@ssltest, "-bio_pair", "-tls1", "-custom_ext"])),
 	     'test tls1 with custom extensions');
@@ -556,7 +559,7 @@ sub testssl {
 
       SKIP: {
 	  skip "TLSv1.0 is not supported by this OpenSSL build", 5
-	      if $no_tls1;
+	      if $no_tls1 || $provider eq "fips";
 
 	  note('echo test tls1 with serverinfo');
 	  ok(run(test([@ssltest, "-bio_pair", "-tls1", "-serverinfo_file", $serverinfo])));
@@ -566,64 +569,4 @@ sub testssl {
 	  ok(run(test([@ssltest, "-bio_pair", "-tls1", "-custom_ext", "-serverinfo_file", $serverinfo, "-serverinfo_sct", "-serverinfo_tack"])));
 	}
     };
-
-    subtest 'SRP tests' => sub {
-
-	plan tests => 4;
-
-      SKIP: {
-	  skip "skipping SRP tests", 4
-	      if $no_srp || alldisabled(grep !/^ssl3/, available_protocols("tls"));
-
-	  ok(run(test([@ssltest, "-tls1", "-cipher", "SRP", "-srpuser", "test", "-srppass", "abc123"])),
-	     'test tls1 with SRP');
-
-	  ok(run(test([@ssltest, "-bio_pair", "-tls1", "-cipher", "SRP", "-srpuser", "test", "-srppass", "abc123"])),
-	     'test tls1 with SRP via BIO pair');
-
-	  ok(run(test([@ssltest, "-tls1", "-cipher", "aSRP", "-srpuser", "test", "-srppass", "abc123"])),
-	     'test tls1 with SRP auth');
-
-	  ok(run(test([@ssltest, "-bio_pair", "-tls1", "-cipher", "aSRP", "-srpuser", "test", "-srppass", "abc123"])),
-	     'test tls1 with SRP auth via BIO pair');
-	}
-    };
 }
-
-unlink $CAkey;
-unlink $CAcert;
-unlink $CAserial;
-unlink $CAreq;
-unlink $CAreq2;
-
-unlink $Ukey;
-unlink $Ureq;
-unlink $Ucert;
-unlink basename($Ucert, '.ss').'.srl';
-
-unlink $Dkey;
-unlink $Dreq;
-unlink $Dcert;
-
-unlink $Ekey;
-unlink $Ereq;
-unlink $Ecert;
-
-unlink $P1key;
-unlink $P1req;
-unlink $P1cert;
-unlink basename($P1cert, '.ss').'.srl';
-unlink $P1intermediate;
-unlink "intP1.ss";
-
-unlink $P2key;
-unlink $P2req;
-unlink $P2cert;
-unlink $P2intermediate;
-unlink "intP2.ss";
-
-unlink "ecp.ss";
-unlink "err.ss";
-
-unlink $server_sess;
-unlink $client_sess;

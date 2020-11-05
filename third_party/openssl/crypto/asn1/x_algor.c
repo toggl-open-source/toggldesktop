@@ -1,7 +1,7 @@
 /*
- * Copyright 1998-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1998-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -11,7 +11,7 @@
 #include <openssl/x509.h>
 #include <openssl/asn1.h>
 #include <openssl/asn1t.h>
-#include "internal/evp_int.h"
+#include "crypto/evp.h"
 
 ASN1_SEQUENCE(X509_ALGOR) = {
         ASN1_SIMPLE(X509_ALGOR, algorithm, ASN1_OBJECT),
@@ -28,18 +28,19 @@ IMPLEMENT_ASN1_DUP_FUNCTION(X509_ALGOR)
 
 int X509_ALGOR_set0(X509_ALGOR *alg, ASN1_OBJECT *aobj, int ptype, void *pval)
 {
-    if (!alg)
+    if (alg == NULL)
         return 0;
+
     if (ptype != V_ASN1_UNDEF) {
         if (alg->parameter == NULL)
             alg->parameter = ASN1_TYPE_new();
         if (alg->parameter == NULL)
             return 0;
     }
-    if (alg) {
-        ASN1_OBJECT_free(alg->algorithm);
-        alg->algorithm = aobj;
-    }
+
+    ASN1_OBJECT_free(alg->algorithm);
+    alg->algorithm = aobj;
+
     if (ptype == 0)
         return 1;
     if (ptype == V_ASN1_UNDEF) {
@@ -90,4 +91,37 @@ int X509_ALGOR_cmp(const X509_ALGOR *a, const X509_ALGOR *b)
     if (!a->parameter && !b->parameter)
         return 0;
     return ASN1_TYPE_cmp(a->parameter, b->parameter);
+}
+
+int X509_ALGOR_copy(X509_ALGOR *dest, const X509_ALGOR *src)
+{
+    if (src == NULL || dest == NULL)
+	return 0;
+
+    if (dest->algorithm)
+         ASN1_OBJECT_free(dest->algorithm);
+    dest->algorithm = NULL;
+
+    if (dest->parameter)
+        ASN1_TYPE_free(dest->parameter);
+    dest->parameter = NULL;
+
+    if (src->algorithm)
+        if ((dest->algorithm = OBJ_dup(src->algorithm)) == NULL)
+	    return 0;
+
+    if (src->parameter != NULL) {
+        dest->parameter = ASN1_TYPE_new();
+        if (dest->parameter == NULL)
+            return 0;
+
+        /* Assuming this is also correct for a BOOL.
+         * set does copy as a side effect.
+         */
+        if (ASN1_TYPE_set1(dest->parameter, 
+              src->parameter->type, src->parameter->value.ptr) == 0)
+	    return 0;
+    }
+
+    return 1;
 }

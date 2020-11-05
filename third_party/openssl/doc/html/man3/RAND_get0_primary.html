@@ -1,0 +1,82 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>RAND_get0_primary</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>RAND_get0_primary, RAND_get0_public, RAND_get0_private - get access to the global EVP_RAND_CTX instances</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/rand.h&gt;
+
+ EVP_RAND_CTX *RAND_get0_primary(OPENSSL_CTX *ctx);
+ EVP_RAND_CTX *RAND_get0_public(OPENSSL_CTX *ctx);
+ EVP_RAND_CTX *RAND_get0_private(OPENSSL_CTX *ctx);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The default RAND API implementation (RAND_OpenSSL()) utilizes three shared DRBG instances which are accessed via the RAND API:</p>
+
+<p>The <i>public</i> and <i>private</i> DRBG are thread-local instances, which are used by RAND_bytes() and RAND_priv_bytes(), respectively. The <i>primary</i> DRBG is a global instance, which is not intended to be used directly, but is used internally to reseed the other two instances.</p>
+
+<p>These functions here provide access to the shared DRBG instances.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>RAND_get0_primary() returns a pointer to the <i>primary</i> DRBG instance for the given OPENSSL_CTX <b>ctx</b>.</p>
+
+<p>RAND_get0_public() returns a pointer to the <i>public</i> DRBG instance for the given OPENSSL_CTX <b>ctx</b>.</p>
+
+<p>RAND_get0_private() returns a pointer to the <i>private</i> DRBG instance for the given OPENSSL_CTX <b>ctx</b>.</p>
+
+<p>In all the above cases the <b>ctx</b> parameter can be NULL in which case the default OPENSSL_CTX is used.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>It is not thread-safe to access the <i>primary</i> DRBG instance. The <i>public</i> and <i>private</i> DRBG instance can be accessed safely, because they are thread-local. Note however, that changes to these two instances apply only to the current thread.</p>
+
+<p>For that reason it is recommended not to change the settings of these three instances directly. Instead, an application should change the default settings for new DRBG instances at initialization time, before creating additional threads.</p>
+
+<p>During initialization, it is possible to change the reseed interval and reseed time interval. It is also possible to exchange the reseeding callbacks entirely.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man3/EVP_RAND.html">EVP_RAND(3)</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>These functions were added in OpenSSL 3.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

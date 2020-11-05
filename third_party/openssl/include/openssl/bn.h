@@ -1,36 +1,30 @@
 /*
- * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright (c) 2002, Oracle and/or its affiliates. All rights reserved
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
-/* ====================================================================
- * Copyright 2002 Sun Microsystems, Inc. ALL RIGHTS RESERVED.
- *
- * Portions of the attached software ("Contribution") are developed by
- * SUN MICROSYSTEMS, INC., and are contributed to the OpenSSL project.
- *
- * The Contribution is licensed pursuant to the Eric Young open source
- * license provided above.
- *
- * The binary polynomial arithmetic software is originally written by
- * Sheueling Chang Shantz and Douglas Stebila of Sun Microsystems Laboratories.
- *
- */
+#ifndef OPENSSL_BN_H
+# define OPENSSL_BN_H
+# pragma once
 
-#ifndef HEADER_BN_H
-# define HEADER_BN_H
+# include <openssl/macros.h>
+# ifndef OPENSSL_NO_DEPRECATED_3_0
+#  define HEADER_BN_H
+# endif
 
 # include <openssl/e_os2.h>
 # ifndef OPENSSL_NO_STDIO
 #  include <stdio.h>
 # endif
 # include <openssl/opensslconf.h>
-# include <openssl/ossl_typ.h>
+# include <openssl/types.h>
 # include <openssl/crypto.h>
+# include <openssl/bnerr.h>
 
 #ifdef  __cplusplus
 extern "C" {
@@ -68,12 +62,12 @@ extern "C" {
  * avoid leaking exponent information through timing,
  * BN_mod_exp_mont() will call BN_mod_exp_mont_consttime,
  * BN_div() will call BN_div_no_branch,
- * BN_mod_inverse() will call BN_mod_inverse_no_branch.
+ * BN_mod_inverse() will call bn_mod_inverse_no_branch.
  */
 # define BN_FLG_CONSTTIME        0x04
 # define BN_FLG_SECURE           0x08
 
-# if OPENSSL_API_COMPAT < 0x00908000L
+# ifndef OPENSSL_NO_DEPRECATED_0_9_8
 /* deprecated name for the flag */
 #  define BN_FLG_EXP_CONSTTIME BN_FLG_CONSTTIME
 #  define BN_FLG_FREE            0x8000 /* used for debugging */
@@ -115,8 +109,9 @@ void BN_GENCB_set(BN_GENCB *gencb, int (*callback) (int, int, BN_GENCB *),
 
 void *BN_GENCB_get_arg(BN_GENCB *cb);
 
-# define BN_prime_checks 0      /* default: select number of iterations based
-                                 * on the size of the number */
+# ifndef OPENSSL_NO_DEPRECATED_3_0
+#  define BN_prime_checks 0      /* default: select number of iterations based
+                                  * on the size of the number */
 
 /*
  * BN_prime_checks_for_size() returns the number of Miller-Rabin iterations
@@ -181,14 +176,15 @@ void *BN_GENCB_get_arg(BN_GENCB *cb);
  *  (b) >=    6 |     >=    12 |         34 |         64 bit
  */
 
-# define BN_prime_checks_for_size(b) ((b) >= 3747 ?  3 : \
-                                (b) >=  1345 ?  4 : \
-                                (b) >=  476 ?  5 : \
-                                (b) >=  400 ?  6 : \
-                                (b) >=  347 ?  7 : \
-                                (b) >=  308 ?  8 : \
-                                (b) >=  55  ? 27 : \
-                                /* b >= 6 */ 34)
+#  define BN_prime_checks_for_size(b) ((b) >= 3747 ?  3 : \
+                                      (b) >=  1345 ?  4 : \
+                                      (b) >=  476 ?  5 : \
+                                      (b) >=  400 ?  6 : \
+                                      (b) >=  347 ?  7 : \
+                                      (b) >=  308 ?  8 : \
+                                      (b) >=  55  ? 27 : \
+                                      /* b >= 6 */ 34)
+# endif
 
 # define BN_num_bytes(a) ((BN_num_bits(a)+7)/8)
 
@@ -202,7 +198,7 @@ int BN_is_odd(const BIGNUM *a);
 
 void BN_zero_ex(BIGNUM *a);
 
-# if OPENSSL_API_COMPAT >= 0x00908000L
+# if OPENSSL_API_LEVEL > 908
 #  define BN_zero(a)      BN_zero_ex(a)
 # else
 #  define BN_zero(a)      (BN_set_word((a),0))
@@ -210,15 +206,23 @@ void BN_zero_ex(BIGNUM *a);
 
 const BIGNUM *BN_value_one(void);
 char *BN_options(void);
+BN_CTX *BN_CTX_new_ex(OPENSSL_CTX *ctx);
 BN_CTX *BN_CTX_new(void);
+BN_CTX *BN_CTX_secure_new_ex(OPENSSL_CTX *ctx);
 BN_CTX *BN_CTX_secure_new(void);
 void BN_CTX_free(BN_CTX *c);
 void BN_CTX_start(BN_CTX *ctx);
 BIGNUM *BN_CTX_get(BN_CTX *ctx);
 void BN_CTX_end(BN_CTX *ctx);
+int BN_rand_ex(BIGNUM *rnd, int bits, int top, int bottom, BN_CTX *ctx);
 int BN_rand(BIGNUM *rnd, int bits, int top, int bottom);
-int BN_pseudo_rand(BIGNUM *rnd, int bits, int top, int bottom);
+int BN_priv_rand_ex(BIGNUM *rnd, int bits, int top, int bottom, BN_CTX *ctx);
+int BN_priv_rand(BIGNUM *rnd, int bits, int top, int bottom);
+int BN_rand_range_ex(BIGNUM *r, const BIGNUM *range, BN_CTX *ctx);
 int BN_rand_range(BIGNUM *rnd, const BIGNUM *range);
+int BN_priv_rand_range_ex(BIGNUM *r, const BIGNUM *range, BN_CTX *ctx);
+int BN_priv_rand_range(BIGNUM *rnd, const BIGNUM *range);
+int BN_pseudo_rand(BIGNUM *rnd, int bits, int top, int bottom);
 int BN_pseudo_rand_range(BIGNUM *rnd, const BIGNUM *range);
 int BN_num_bits(const BIGNUM *a);
 int BN_num_bits_word(BN_ULONG l);
@@ -233,6 +237,8 @@ int BN_bn2bin(const BIGNUM *a, unsigned char *to);
 int BN_bn2binpad(const BIGNUM *a, unsigned char *to, int tolen);
 BIGNUM *BN_lebin2bn(const unsigned char *s, int len, BIGNUM *ret);
 int BN_bn2lebinpad(const BIGNUM *a, unsigned char *to, int tolen);
+BIGNUM *BN_native2bn(const unsigned char *s, int len, BIGNUM *ret);
+int BN_bn2nativepad(const BIGNUM *a, unsigned char *to, int tolen);
 BIGNUM *BN_mpi2bn(const unsigned char *s, int len, BIGNUM *ret);
 int BN_bn2mpi(const BIGNUM *a, unsigned char *to);
 int BN_sub(BIGNUM *r, const BIGNUM *a, const BIGNUM *b);
@@ -349,12 +355,16 @@ DEPRECATEDIN_0_9_8(int
                                         BN_CTX *ctx, void *cb_arg,
                                         int do_trial_division))
 
+DEPRECATEDIN_3_0(int BN_is_prime_ex(const BIGNUM *p, int nchecks, BN_CTX *ctx, BN_GENCB *cb))
+DEPRECATEDIN_3_0(int BN_is_prime_fasttest_ex(const BIGNUM *p, int nchecks, BN_CTX *ctx,
+                            int do_trial_division, BN_GENCB *cb))
 /* Newer versions */
+int BN_generate_prime_ex2(BIGNUM *ret, int bits, int safe,
+                         const BIGNUM *add, const BIGNUM *rem, BN_GENCB *cb,
+                         BN_CTX *ctx);
 int BN_generate_prime_ex(BIGNUM *ret, int bits, int safe, const BIGNUM *add,
                          const BIGNUM *rem, BN_GENCB *cb);
-int BN_is_prime_ex(const BIGNUM *p, int nchecks, BN_CTX *ctx, BN_GENCB *cb);
-int BN_is_prime_fasttest_ex(const BIGNUM *p, int nchecks, BN_CTX *ctx,
-                            int do_trial_division, BN_GENCB *cb);
+int BN_check_prime(const BIGNUM *p, BN_CTX *ctx, BN_GENCB *cb);
 
 int BN_X931_generate_Xpq(BIGNUM *Xp, BIGNUM *Xq, int nbits, BN_CTX *ctx);
 
@@ -517,6 +527,7 @@ int BN_generate_dsa_nonce(BIGNUM *out, const BIGNUM *range,
                           const BIGNUM *priv, const unsigned char *message,
                           size_t message_len, BN_CTX *ctx);
 
+# ifndef OPENSSL_NO_DH
 /* Primes from RFC 2409 */
 BIGNUM *BN_get_rfc2409_prime_768(BIGNUM *bn);
 BIGNUM *BN_get_rfc2409_prime_1024(BIGNUM *bn);
@@ -529,96 +540,20 @@ BIGNUM *BN_get_rfc3526_prime_4096(BIGNUM *bn);
 BIGNUM *BN_get_rfc3526_prime_6144(BIGNUM *bn);
 BIGNUM *BN_get_rfc3526_prime_8192(BIGNUM *bn);
 
-# if OPENSSL_API_COMPAT < 0x10100000L
-#  define get_rfc2409_prime_768 BN_get_rfc2409_prime_768
-#  define get_rfc2409_prime_1024 BN_get_rfc2409_prime_1024
-#  define get_rfc3526_prime_1536 BN_get_rfc3526_prime_1536
-#  define get_rfc3526_prime_2048 BN_get_rfc3526_prime_2048
-#  define get_rfc3526_prime_3072 BN_get_rfc3526_prime_3072
-#  define get_rfc3526_prime_4096 BN_get_rfc3526_prime_4096
-#  define get_rfc3526_prime_6144 BN_get_rfc3526_prime_6144
-#  define get_rfc3526_prime_8192 BN_get_rfc3526_prime_8192
+#  ifndef OPENSSL_NO_DEPRECATED_1_1_0
+#   define get_rfc2409_prime_768 BN_get_rfc2409_prime_768
+#   define get_rfc2409_prime_1024 BN_get_rfc2409_prime_1024
+#   define get_rfc3526_prime_1536 BN_get_rfc3526_prime_1536
+#   define get_rfc3526_prime_2048 BN_get_rfc3526_prime_2048
+#   define get_rfc3526_prime_3072 BN_get_rfc3526_prime_3072
+#   define get_rfc3526_prime_4096 BN_get_rfc3526_prime_4096
+#   define get_rfc3526_prime_6144 BN_get_rfc3526_prime_6144
+#   define get_rfc3526_prime_8192 BN_get_rfc3526_prime_8192
+#  endif
 # endif
 
 int BN_bntest_rand(BIGNUM *rnd, int bits, int top, int bottom);
 
-/* BEGIN ERROR CODES */
-/*
- * The following lines are auto generated by the script mkerr.pl. Any changes
- * made after this point may be overwritten when the script is next run.
- */
-
-int ERR_load_BN_strings(void);
-
-/* Error codes for the BN functions. */
-
-/* Function codes. */
-# define BN_F_BNRAND                                      127
-# define BN_F_BN_BLINDING_CONVERT_EX                      100
-# define BN_F_BN_BLINDING_CREATE_PARAM                    128
-# define BN_F_BN_BLINDING_INVERT_EX                       101
-# define BN_F_BN_BLINDING_NEW                             102
-# define BN_F_BN_BLINDING_UPDATE                          103
-# define BN_F_BN_BN2DEC                                   104
-# define BN_F_BN_BN2HEX                                   105
-# define BN_F_BN_COMPUTE_WNAF                             142
-# define BN_F_BN_CTX_GET                                  116
-# define BN_F_BN_CTX_NEW                                  106
-# define BN_F_BN_CTX_START                                129
-# define BN_F_BN_DIV                                      107
-# define BN_F_BN_DIV_RECP                                 130
-# define BN_F_BN_EXP                                      123
-# define BN_F_BN_EXPAND_INTERNAL                          120
-# define BN_F_BN_GENCB_NEW                                143
-# define BN_F_BN_GENERATE_DSA_NONCE                       140
-# define BN_F_BN_GENERATE_PRIME_EX                        141
-# define BN_F_BN_GF2M_MOD                                 131
-# define BN_F_BN_GF2M_MOD_EXP                             132
-# define BN_F_BN_GF2M_MOD_MUL                             133
-# define BN_F_BN_GF2M_MOD_SOLVE_QUAD                      134
-# define BN_F_BN_GF2M_MOD_SOLVE_QUAD_ARR                  135
-# define BN_F_BN_GF2M_MOD_SQR                             136
-# define BN_F_BN_GF2M_MOD_SQRT                            137
-# define BN_F_BN_LSHIFT                                   145
-# define BN_F_BN_MOD_EXP2_MONT                            118
-# define BN_F_BN_MOD_EXP_MONT                             109
-# define BN_F_BN_MOD_EXP_MONT_CONSTTIME                   124
-# define BN_F_BN_MOD_EXP_MONT_WORD                        117
-# define BN_F_BN_MOD_EXP_RECP                             125
-# define BN_F_BN_MOD_EXP_SIMPLE                           126
-# define BN_F_BN_MOD_INVERSE                              110
-# define BN_F_BN_MOD_INVERSE_NO_BRANCH                    139
-# define BN_F_BN_MOD_LSHIFT_QUICK                         119
-# define BN_F_BN_MOD_SQRT                                 121
-# define BN_F_BN_MPI2BN                                   112
-# define BN_F_BN_NEW                                      113
-# define BN_F_BN_RAND                                     114
-# define BN_F_BN_RAND_RANGE                               122
-# define BN_F_BN_RSHIFT                                   146
-# define BN_F_BN_SET_WORDS                                144
-# define BN_F_BN_USUB                                     115
-
-/* Reason codes. */
-# define BN_R_ARG2_LT_ARG3                                100
-# define BN_R_BAD_RECIPROCAL                              101
-# define BN_R_BIGNUM_TOO_LONG                             114
-# define BN_R_BITS_TOO_SMALL                              118
-# define BN_R_CALLED_WITH_EVEN_MODULUS                    102
-# define BN_R_DIV_BY_ZERO                                 103
-# define BN_R_ENCODING_ERROR                              104
-# define BN_R_EXPAND_ON_STATIC_BIGNUM_DATA                105
-# define BN_R_INPUT_NOT_REDUCED                           110
-# define BN_R_INVALID_LENGTH                              106
-# define BN_R_INVALID_RANGE                               115
-# define BN_R_INVALID_SHIFT                               119
-# define BN_R_NOT_A_SQUARE                                111
-# define BN_R_NOT_INITIALIZED                             107
-# define BN_R_NO_INVERSE                                  108
-# define BN_R_NO_SOLUTION                                 116
-# define BN_R_PRIVATE_KEY_TOO_LARGE                       117
-# define BN_R_P_IS_NOT_PRIME                              112
-# define BN_R_TOO_MANY_ITERATIONS                         113
-# define BN_R_TOO_MANY_TEMPORARY_VARIABLES                109
 
 # ifdef  __cplusplus
 }

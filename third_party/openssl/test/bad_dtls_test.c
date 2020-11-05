@@ -1,7 +1,7 @@
 /*
- * Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2016-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -29,6 +29,8 @@
  */
 #include <string.h>
 
+#include <openssl/core_names.h>
+#include <openssl/params.h>
 #include <openssl/opensslconf.h>
 #include <openssl/bio.h>
 #include <openssl/crypto.h>
@@ -37,9 +39,9 @@
 #include <openssl/err.h>
 #include <openssl/rand.h>
 #include <openssl/kdf.h>
-
-#include "../ssl/packet_locl.h"
-#include "../e_os.h" /* for OSSL_NELEM() */
+#include "internal/packet.h"
+#include "internal/nelem.h"
+#include "testutil.h"
 
 /* For DTLS1_BAD_VER packets the MAC doesn't include the handshake header */
 #define MAC_OFFSET (DTLS1_RT_HEADER_LENGTH + DTLS1_HM_HEADER_LENGTH)
@@ -118,7 +120,7 @@ static int validate_client_hello(BIO *wbio)
     long len;
     unsigned char *data;
     int cookie_found = 0;
-    unsigned int u;
+    unsigned int u = 0;
 
     len = BIO_get_mem_data(wbio, (char **)&data);
     if (!PACKET_buf_init(&pkt, data, len))
@@ -182,7 +184,7 @@ static int validate_client_hello(BIO *wbio)
     /* Update handshake MAC for second ClientHello (with cookie) */
     if (cookie_found && !EVP_DigestUpdate(handshake_md, data + MAC_OFFSET,
                                           len - MAC_OFFSET))
-            printf("EVP_DigestUpdate() failed\n");
+        return 0;
 
     (void)BIO_reset(wbio);
 
@@ -259,7 +261,7 @@ static int send_server_hello(BIO *rbio)
 
     if (!EVP_DigestUpdate(handshake_md, server_hello + MAC_OFFSET,
                           sizeof(server_hello) - MAC_OFFSET))
-        printf("EVP_DigestUpdate() failed\n");
+        return 0;
 
     BIO_write(rbio, server_hello, sizeof(server_hello));
     BIO_write(rbio, change_cipher_spec, sizeof(change_cipher_spec));
@@ -268,7 +270,7 @@ static int send_server_hello(BIO *rbio)
 }
 
 /* Create header, HMAC, pad, encrypt and send a record */
-static int send_record(BIO *rbio, unsigned char type, unsigned long seqnr,
+static int send_record(BIO *rbio, unsigned char type, uint64_t seqnr,
                        const void *msg, size_t len)
 {
     /* Note that the order of the record header fields on the wire,
@@ -278,16 +280,16 @@ static int send_record(BIO *rbio, unsigned char type, unsigned long seqnr,
     static unsigned char seq[6] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
     static unsigned char ver[2] = { 0x01, 0x00 }; /* DTLS1_BAD_VER */
     unsigned char lenbytes[2];
-    HMAC_CTX *ctx;
+    EVP_MAC *hmac;
+    EVP_MAC_CTX *ctx;
     EVP_CIPHER_CTX *enc_ctx;
     unsigned char iv[16];
     unsigned char pad;
     unsigned char *enc;
+    OSSL_PARAM params[3];
 
-#ifdef SIXTY_FOUR_BIT_LONG
     seq[0] = (seqnr >> 40) & 0xff;
     seq[1] = (seqnr >> 32) & 0xff;
-#endif
     seq[2] = (seqnr >> 24) & 0xff;
     seq[3] = (seqnr >> 16) & 0xff;
     seq[4] = (seqnr >> 8) & 0xff;
@@ -302,18 +304,26 @@ static int send_record(BIO *rbio, unsigned char type, unsigned long seqnr,
     memcpy(enc, msg, len);
 
     /* Append HMAC to data */
-    ctx = HMAC_CTX_new();
-    HMAC_Init_ex(ctx, mac_key, 20, EVP_sha1(), NULL);
-    HMAC_Update(ctx, epoch, 2);
-    HMAC_Update(ctx, seq, 6);
-    HMAC_Update(ctx, &type, 1);
-    HMAC_Update(ctx, ver, 2); /* Version */
-    lenbytes[0] = len >> 8;
-    lenbytes[1] = len & 0xff;
-    HMAC_Update(ctx, lenbytes, 2); /* Length */
-    HMAC_Update(ctx, enc, len); /* Finally the data itself */
-    HMAC_Final(ctx, enc + len, NULL);
-    HMAC_CTX_free(ctx);
+    hmac = EVP_MAC_fetch(NULL, "HMAC", NULL);
+    ctx = EVP_MAC_CTX_new(hmac);
+    EVP_MAC_free(hmac);
+    params[0] = OSSL_PARAM_construct_utf8_string(OSSL_MAC_PARAM_DIGEST,
+                                                 "SHA1", 0);
+    params[1] = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_KEY,
+                                                  mac_key, 20);
+    params[2] = OSSL_PARAM_construct_end();
+    EVP_MAC_CTX_set_params(ctx, params);
+    EVP_MAC_init(ctx);
+    EVP_MAC_update(ctx, epoch, 2);
+    EVP_MAC_update(ctx, seq, 6);
+    EVP_MAC_update(ctx, &type, 1);
+    EVP_MAC_update(ctx, ver, 2); /* Version */
+    lenbytes[0] = (unsigned char)(len >> 8);
+    lenbytes[1] = (unsigned char)(len);
+    EVP_MAC_update(ctx, lenbytes, 2); /* Length */
+    EVP_MAC_update(ctx, enc, len); /* Finally the data itself */
+    EVP_MAC_final(ctx, enc + len, NULL, SHA_DIGEST_LENGTH);
+    EVP_MAC_CTX_free(ctx);
 
     /* Append padding bytes */
     len += SHA_DIGEST_LENGTH;
@@ -333,8 +343,8 @@ static int send_record(BIO *rbio, unsigned char type, unsigned long seqnr,
     BIO_write(rbio, ver, 2);
     BIO_write(rbio, epoch, 2);
     BIO_write(rbio, seq, 6);
-    lenbytes[0] = (len + sizeof(iv)) >> 8;
-    lenbytes[1] = (len + sizeof(iv)) & 0xff;
+    lenbytes[0] = (unsigned char)((len + sizeof(iv)) >> 8);
+    lenbytes[1] = (unsigned char)(len + sizeof(iv));
     BIO_write(rbio, lenbytes, 2);
 
     BIO_write(rbio, iv, sizeof(iv));
@@ -365,7 +375,7 @@ static int send_finished(SSL *s, BIO *rbio)
 
     /* Generate Finished MAC */
     if (!EVP_DigestFinal_ex(handshake_md, handshake_hash, NULL))
-        printf("EVP_DigestFinal_ex() failed\n");
+        return 0;
 
     do_PRF(TLS_MD_SERVER_FINISH_CONST, TLS_MD_SERVER_FINISH_CONST_SIZE,
            handshake_hash, EVP_MD_CTX_size(handshake_md),
@@ -428,7 +438,7 @@ static int validate_ccs(BIO *wbio)
 #define DROP(x)   { x##UL, 1 }
 
 static struct {
-    unsigned long seq;
+    uint64_t seq;
     int drop;
 } tests[] = {
     NODROP(1), NODROP(3), NODROP(2),
@@ -443,23 +453,17 @@ static struct {
     /* The last test should be NODROP, because a DROP wouldn't get tested. */
 };
 
-int main(int argc, char *argv[])
+static int test_bad_dtls(void)
 {
-    SSL_SESSION *sess;
-    SSL_CTX *ctx;
-    SSL *con;
-    BIO *rbio;
-    BIO *wbio;
-    BIO *err;
+    SSL_SESSION *sess = NULL;
+    SSL_CTX *ctx = NULL;
+    SSL *con = NULL;
+    BIO *rbio = NULL;
+    BIO *wbio = NULL;
     time_t now = 0;
     int testresult = 0;
     int ret;
     int i;
-
-    err = BIO_new_fp(stderr, BIO_NOCLOSE | BIO_FP_TEXT);
-
-    CRYPTO_set_mem_debug(1);
-    CRYPTO_mem_ctrl(CRYPTO_MEM_CHECK_ON);
 
     RAND_bytes(session_id, sizeof(session_id));
     RAND_bytes(master_secret, sizeof(master_secret));
@@ -470,99 +474,78 @@ int main(int argc, char *argv[])
     memcpy(server_random, &now, sizeof(now));
 
     sess = client_session();
-    if (sess == NULL) {
-        printf("Failed to generate SSL_SESSION\n");
+    if (!TEST_ptr(sess))
         goto end;
-    }
 
     handshake_md = EVP_MD_CTX_new();
-    if (handshake_md == NULL ||
-        !EVP_DigestInit_ex(handshake_md, EVP_md5_sha1(), NULL)) {
-        printf("Failed to initialise handshake_md\n");
+    if (!TEST_ptr(handshake_md)
+            || !TEST_true(EVP_DigestInit_ex(handshake_md, EVP_md5_sha1(),
+                                            NULL)))
         goto end;
-    }
 
     ctx = SSL_CTX_new(DTLS_client_method());
-    if (ctx == NULL) {
-        printf("Failed to allocate SSL_CTX\n");
-        goto end_md;
-    }
-    if (!SSL_CTX_set_min_proto_version(ctx, DTLS1_BAD_VER)) {
-        printf("SSL_CTX_set_min_proto_version() failed\n");
-        goto end_ctx;
-    }
-    if (!SSL_CTX_set_max_proto_version(ctx, DTLS1_BAD_VER)) {
-        printf("SSL_CTX_set_max_proto_version() failed\n");
-        goto end_ctx;
-    }
-
-    if (!SSL_CTX_set_cipher_list(ctx, "AES128-SHA")) {
-        printf("SSL_CTX_set_cipher_list() failed\n");
-        goto end_ctx;
-    }
+    if (!TEST_ptr(ctx)
+            || !TEST_true(SSL_CTX_set_min_proto_version(ctx, DTLS1_BAD_VER))
+            || !TEST_true(SSL_CTX_set_max_proto_version(ctx, DTLS1_BAD_VER))
+            || !TEST_true(SSL_CTX_set_cipher_list(ctx, "AES128-SHA")))
+        goto end;
 
     con = SSL_new(ctx);
-    if (!SSL_set_session(con, sess)) {
-        printf("SSL_set_session() failed\n");
-        goto end_con;
-    }
+    if (!TEST_ptr(con)
+            || !TEST_true(SSL_set_session(con, sess)))
+        goto end;
     SSL_SESSION_free(sess);
 
     rbio = BIO_new(BIO_s_mem());
     wbio = BIO_new(BIO_s_mem());
 
-    BIO_set_nbio(rbio, 1);
-    BIO_set_nbio(wbio, 1);
+    if (!TEST_ptr(rbio)
+            || !TEST_ptr(wbio))
+        goto end;
 
     SSL_set_bio(con, rbio, wbio);
+
+    if (!TEST_true(BIO_up_ref(rbio))) {
+        /*
+         * We can't up-ref but we assigned ownership to con, so we shouldn't
+         * free in the "end" block
+         */
+        rbio = wbio = NULL;
+        goto end;
+    }
+
+    if (!TEST_true(BIO_up_ref(wbio))) {
+        wbio = NULL;
+        goto end;
+    }
+
     SSL_set_connect_state(con);
 
     /* Send initial ClientHello */
     ret = SSL_do_handshake(con);
-    if (ret > 0 || SSL_get_error(con, ret) != SSL_ERROR_WANT_READ) {
-        printf("Unexpected handshake result at initial call!\n");
-        goto end_con;
-    }
+    if (!TEST_int_le(ret, 0)
+            || !TEST_int_eq(SSL_get_error(con, ret), SSL_ERROR_WANT_READ)
+            || !TEST_int_eq(validate_client_hello(wbio), 1)
+            || !TEST_true(send_hello_verify(rbio)))
+        goto end;
 
-    if (validate_client_hello(wbio) != 1) {
-        printf("Initial ClientHello failed validation\n");
-        goto end_con;
-    }
-    if (send_hello_verify(rbio) != 1) {
-        printf("Failed to send HelloVerify\n");
-        goto end_con;
-    }
     ret = SSL_do_handshake(con);
-    if (ret > 0 || SSL_get_error(con, ret) != SSL_ERROR_WANT_READ) {
-        printf("Unexpected handshake result after HelloVerify!\n");
-        goto end_con;
-    }
-    if (validate_client_hello(wbio) != 2) {
-        printf("Second ClientHello failed validation\n");
-        goto end_con;
-    }
-    if (send_server_hello(rbio) != 1) {
-        printf("Failed to send ServerHello\n");
-        goto end_con;
-    }
+    if (!TEST_int_le(ret, 0)
+            || !TEST_int_eq(SSL_get_error(con, ret), SSL_ERROR_WANT_READ)
+            || !TEST_int_eq(validate_client_hello(wbio), 2)
+            || !TEST_true(send_server_hello(rbio)))
+        goto end;
+
     ret = SSL_do_handshake(con);
-    if (ret > 0 || SSL_get_error(con, ret) != SSL_ERROR_WANT_READ) {
-        printf("Unexpected handshake result after ServerHello!\n");
-        goto end_con;
-    }
-    if (send_finished(con, rbio) != 1) {
-        printf("Failed to send Finished\n");
-        goto end_con;
-    }
+    if (!TEST_int_le(ret, 0)
+            || !TEST_int_eq(SSL_get_error(con, ret), SSL_ERROR_WANT_READ)
+            || !TEST_true(send_finished(con, rbio)))
+        goto end;
+
     ret = SSL_do_handshake(con);
-    if (ret < 1) {
-        printf("Handshake not successful after Finished!\n");
-        goto end_con;
-    }
-    if (validate_ccs(wbio) != 1) {
-        printf("Failed to validate client CCS/Finished\n");
-        goto end_con;
-    }
+    if (!TEST_int_gt(ret, 0)
+            || !TEST_true(validate_ccs(wbio)))
+        goto end;
 
     /* While we're here and crafting packets by hand, we might as well do a
        bit of a stress test on the DTLS record replay handling. Not Cisco-DTLS
@@ -570,55 +553,46 @@ int main(int argc, char *argv[])
        before, and in fact was broken even for a basic 0, 2, 1 test case
        when this test was first added.... */
     for (i = 0; i < (int)OSSL_NELEM(tests); i++) {
-        unsigned long recv_buf[2];
+        uint64_t recv_buf[2];
 
-        if (send_record(rbio, SSL3_RT_APPLICATION_DATA, tests[i].seq,
-                        &tests[i].seq, sizeof(unsigned long)) != 1) {
-            printf("Failed to send data seq #0x%lx (%d)\n",
-                   tests[i].seq, i);
-            goto end_con;
+        if (!TEST_true(send_record(rbio, SSL3_RT_APPLICATION_DATA, tests[i].seq,
+                                   &tests[i].seq, sizeof(uint64_t)))) {
+            TEST_error("Failed to send data seq #0x%x%08x (%d)\n",
+                       (unsigned int)(tests[i].seq >> 32), (unsigned int)tests[i].seq, i);
+            goto end;
         }
 
         if (tests[i].drop)
             continue;
 
-        ret = SSL_read(con, recv_buf, 2 * sizeof(unsigned long));
-        if (ret != sizeof(unsigned long)) {
-            printf("SSL_read failed or wrong size on seq#0x%lx (%d)\n",
-                   tests[i].seq, i);
-            goto end_con;
+        ret = SSL_read(con, recv_buf, 2 * sizeof(uint64_t));
+        if (!TEST_int_eq(ret, (int)sizeof(uint64_t))) {
+            TEST_error("SSL_read failed or wrong size on seq#0x%x%08x (%d)\n",
+                       (unsigned int)(tests[i].seq >> 32), (unsigned int)tests[i].seq, i);
+            goto end;
         }
-        if (recv_buf[0] != tests[i].seq) {
-            printf("Wrong data packet received (0x%lx not 0x%lx) at packet %d\n",
-                   recv_buf[0], tests[i].seq, i);
-            goto end_con;
-        }
+        if (!TEST_true(recv_buf[0] == tests[i].seq))
+            goto end;
     }
-    if (tests[i-1].drop) {
-        printf("Error: last test cannot be DROP()\n");
-        goto end_con;
-    }
-    testresult=1;
 
- end_con:
-    SSL_free(con);
- end_ctx:
-    SSL_CTX_free(ctx);
- end_md:
-    EVP_MD_CTX_free(handshake_md);
+    /* The last test cannot be DROP() */
+    if (!TEST_false(tests[i-1].drop))
+        goto end;
+
+    testresult = 1;
+
  end:
-    ERR_print_errors_fp(stderr);
+    BIO_free(rbio);
+    BIO_free(wbio);
+    SSL_free(con);
+    SSL_CTX_free(ctx);
+    EVP_MD_CTX_free(handshake_md);
 
-    if (!testresult) {
-        printf("Cisco BadDTLS test: FAILED\n");
-    }
+    return testresult;
+}
 
-
-#ifndef OPENSSL_NO_CRYPTO_MDEBUG
-    if (CRYPTO_mem_leaks(err) <= 0)
-        testresult = 0;
-#endif
-    BIO_free(err);
-
-    return testresult?0:1;
+int setup_tests(void)
+{
+    ADD_TEST(test_bad_dtls);
+    return 1;
 }

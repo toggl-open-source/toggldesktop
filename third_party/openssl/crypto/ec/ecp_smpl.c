@@ -1,22 +1,23 @@
 /*
- * Copyright 2001-2019 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2001-2020 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright (c) 2002, Oracle and/or its affiliates. All rights reserved
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
-/* ====================================================================
- * Copyright 2002 Sun Microsystems, Inc. ALL RIGHTS RESERVED.
- * Portions of this software developed by SUN MICROSYSTEMS, INC.,
- * and contributed to the OpenSSL project.
+/*
+ * ECDSA low level APIs are deprecated for public use, but still ok for
+ * internal use.
  */
+#include "internal/deprecated.h"
 
 #include <openssl/err.h>
 #include <openssl/symhacks.h>
 
-#include "ec_lcl.h"
+#include "ec_local.h"
 
 const EC_METHOD *EC_GFp_simple_method(void)
 {
@@ -37,8 +38,6 @@ const EC_METHOD *EC_GFp_simple_method(void)
         ec_GFp_simple_point_clear_finish,
         ec_GFp_simple_point_copy,
         ec_GFp_simple_point_set_to_infinity,
-        ec_GFp_simple_set_Jprojective_coordinates_GFp,
-        ec_GFp_simple_get_Jprojective_coordinates_GFp,
         ec_GFp_simple_point_set_affine_coordinates,
         ec_GFp_simple_point_get_affine_coordinates,
         0, 0, 0,
@@ -69,7 +68,14 @@ const EC_METHOD *EC_GFp_simple_method(void)
         0, /* keycopy */
         0, /* keyfinish */
         ecdh_simple_compute_key,
-        ec_GFp_simple_blind_coordinates
+        ecdsa_simple_sign_setup,
+        ecdsa_simple_sign_sig,
+        ecdsa_simple_verify_sig,
+        0, /* field_inverse_mod_ord */
+        ec_GFp_simple_blind_coordinates,
+        ec_GFp_simple_ladder_pre,
+        ec_GFp_simple_ladder_step,
+        ec_GFp_simple_ladder_post
     };
 
     return &ret;
@@ -147,7 +153,7 @@ int ec_GFp_simple_group_set_curve(EC_GROUP *group,
     }
 
     if (ctx == NULL) {
-        ctx = new_ctx = BN_CTX_new();
+        ctx = new_ctx = BN_CTX_new_ex(group->libctx);
         if (ctx == NULL)
             return 0;
     }
@@ -205,7 +211,7 @@ int ec_GFp_simple_group_get_curve(const EC_GROUP *group, BIGNUM *p, BIGNUM *a,
     if (a != NULL || b != NULL) {
         if (group->meth->field_decode) {
             if (ctx == NULL) {
-                ctx = new_ctx = BN_CTX_new();
+                ctx = new_ctx = BN_CTX_new_ex(group->libctx);
                 if (ctx == NULL)
                     return 0;
             }
@@ -249,7 +255,7 @@ int ec_GFp_simple_group_check_discriminant(const EC_GROUP *group, BN_CTX *ctx)
     BN_CTX *new_ctx = NULL;
 
     if (ctx == NULL) {
-        ctx = new_ctx = BN_CTX_new();
+        ctx = new_ctx = BN_CTX_new_ex(group->libctx);
         if (ctx == NULL) {
             ECerr(EC_F_EC_GFP_SIMPLE_GROUP_CHECK_DISCRIMINANT,
                   ERR_R_MALLOC_FAILURE);
@@ -308,8 +314,7 @@ int ec_GFp_simple_group_check_discriminant(const EC_GROUP *group, BN_CTX *ctx)
     ret = 1;
 
  err:
-    if (ctx != NULL)
-        BN_CTX_end(ctx);
+    BN_CTX_end(ctx);
     BN_CTX_free(new_ctx);
     return ret;
 }
@@ -378,7 +383,7 @@ int ec_GFp_simple_set_Jprojective_coordinates_GFp(const EC_GROUP *group,
     int ret = 0;
 
     if (ctx == NULL) {
-        ctx = new_ctx = BN_CTX_new();
+        ctx = new_ctx = BN_CTX_new_ex(group->libctx);
         if (ctx == NULL)
             return 0;
     }
@@ -437,7 +442,7 @@ int ec_GFp_simple_get_Jprojective_coordinates_GFp(const EC_GROUP *group,
 
     if (group->meth->field_decode != 0) {
         if (ctx == NULL) {
-            ctx = new_ctx = BN_CTX_new();
+            ctx = new_ctx = BN_CTX_new_ex(group->libctx);
             if (ctx == NULL)
                 return 0;
         }
@@ -511,7 +516,7 @@ int ec_GFp_simple_point_get_affine_coordinates(const EC_GROUP *group,
     }
 
     if (ctx == NULL) {
-        ctx = new_ctx = BN_CTX_new();
+        ctx = new_ctx = BN_CTX_new_ex(group->libctx);
         if (ctx == NULL)
             return 0;
     }
@@ -631,7 +636,7 @@ int ec_GFp_simple_add(const EC_GROUP *group, EC_POINT *r, const EC_POINT *a,
     p = group->field;
 
     if (ctx == NULL) {
-        ctx = new_ctx = BN_CTX_new();
+        ctx = new_ctx = BN_CTX_new_ex(group->libctx);
         if (ctx == NULL)
             return 0;
     }
@@ -788,8 +793,7 @@ int ec_GFp_simple_add(const EC_GROUP *group, EC_POINT *r, const EC_POINT *a,
     ret = 1;
 
  end:
-    if (ctx)                    /* otherwise we already called BN_CTX_end */
-        BN_CTX_end(ctx);
+    BN_CTX_end(ctx);
     BN_CTX_free(new_ctx);
     return ret;
 }
@@ -816,7 +820,7 @@ int ec_GFp_simple_dbl(const EC_GROUP *group, EC_POINT *r, const EC_POINT *a,
     p = group->field;
 
     if (ctx == NULL) {
-        ctx = new_ctx = BN_CTX_new();
+        ctx = new_ctx = BN_CTX_new_ex(group->libctx);
         if (ctx == NULL)
             return 0;
     }
@@ -969,7 +973,7 @@ int ec_GFp_simple_is_on_curve(const EC_GROUP *group, const EC_POINT *point,
     p = group->field;
 
     if (ctx == NULL) {
-        ctx = new_ctx = BN_CTX_new();
+        ctx = new_ctx = BN_CTX_new_ex(group->libctx);
         if (ctx == NULL)
             return -1;
     }
@@ -1086,7 +1090,7 @@ int ec_GFp_simple_cmp(const EC_GROUP *group, const EC_POINT *a,
     field_sqr = group->meth->field_sqr;
 
     if (ctx == NULL) {
-        ctx = new_ctx = BN_CTX_new();
+        ctx = new_ctx = BN_CTX_new_ex(group->libctx);
         if (ctx == NULL)
             return -1;
     }
@@ -1172,7 +1176,7 @@ int ec_GFp_simple_make_affine(const EC_GROUP *group, EC_POINT *point,
         return 1;
 
     if (ctx == NULL) {
-        ctx = new_ctx = BN_CTX_new();
+        ctx = new_ctx = BN_CTX_new_ex(group->libctx);
         if (ctx == NULL)
             return 0;
     }
@@ -1183,9 +1187,9 @@ int ec_GFp_simple_make_affine(const EC_GROUP *group, EC_POINT *point,
     if (y == NULL)
         goto err;
 
-    if (!EC_POINT_get_affine_coordinates_GFp(group, point, x, y, ctx))
+    if (!EC_POINT_get_affine_coordinates(group, point, x, y, ctx))
         goto err;
-    if (!EC_POINT_set_affine_coordinates_GFp(group, point, x, y, ctx))
+    if (!EC_POINT_set_affine_coordinates(group, point, x, y, ctx))
         goto err;
     if (!point->Z_is_one) {
         ECerr(EC_F_EC_GFP_SIMPLE_MAKE_AFFINE, ERR_R_INTERNAL_ERROR);
@@ -1213,7 +1217,7 @@ int ec_GFp_simple_points_make_affine(const EC_GROUP *group, size_t num,
         return 1;
 
     if (ctx == NULL) {
-        ctx = new_ctx = BN_CTX_new();
+        ctx = new_ctx = BN_CTX_new_ex(group->libctx);
         if (ctx == NULL)
             return 0;
     }
@@ -1221,7 +1225,7 @@ int ec_GFp_simple_points_make_affine(const EC_GROUP *group, size_t num,
     BN_CTX_start(ctx);
     tmp = BN_CTX_get(ctx);
     tmp_Z = BN_CTX_get(ctx);
-    if (tmp == NULL || tmp_Z == NULL)
+    if (tmp_Z == NULL)
         goto err;
 
     prod_Z = OPENSSL_malloc(num * sizeof(prod_Z[0]));
@@ -1375,6 +1379,7 @@ int ec_GFp_simple_field_sqr(const EC_GROUP *group, BIGNUM *r, const BIGNUM *a,
  * Computes the multiplicative inverse of a in GF(p), storing the result in r.
  * If a is zero (or equivalent), you'll get a EC_R_CANNOT_INVERT error.
  * Since we don't have a Mont structure here, SCA hardening is with blinding.
+ * NB: "a" must be in _decoded_ form. (i.e. field_decode must precede.)
  */
 int ec_GFp_simple_field_inv(const EC_GROUP *group, BIGNUM *r, const BIGNUM *a,
                             BN_CTX *ctx)
@@ -1383,7 +1388,8 @@ int ec_GFp_simple_field_inv(const EC_GROUP *group, BIGNUM *r, const BIGNUM *a,
     BN_CTX *new_ctx = NULL;
     int ret = 0;
 
-    if (ctx == NULL && (ctx = new_ctx = BN_CTX_secure_new()) == NULL)
+    if (ctx == NULL
+            && (ctx = new_ctx = BN_CTX_secure_new_ex(group->libctx)) == NULL)
         return 0;
 
     BN_CTX_start(ctx);
@@ -1391,7 +1397,7 @@ int ec_GFp_simple_field_inv(const EC_GROUP *group, BIGNUM *r, const BIGNUM *a,
         goto err;
 
     do {
-        if (!BN_rand_range(e, group->field))
+        if (!BN_priv_rand_range_ex(e, group->field, ctx))
         goto err;
     } while (BN_is_zero(e));
 
@@ -1434,37 +1440,285 @@ int ec_GFp_simple_blind_coordinates(const EC_GROUP *group, EC_POINT *p,
     temp = BN_CTX_get(ctx);
     if (temp == NULL) {
         ECerr(EC_F_EC_GFP_SIMPLE_BLIND_COORDINATES, ERR_R_MALLOC_FAILURE);
-        goto err;
+        goto end;
     }
 
-    /* make sure lambda is not zero */
+    /*-
+     * Make sure lambda is not zero.
+     * If the RNG fails, we cannot blind but nevertheless want
+     * code to continue smoothly and not clobber the error stack.
+     */
     do {
-        if (!BN_rand_range(lambda, group->field)) {
-            ECerr(EC_F_EC_GFP_SIMPLE_BLIND_COORDINATES, ERR_R_BN_LIB);
-            goto err;
+        ERR_set_mark();
+        ret = BN_priv_rand_range_ex(lambda, group->field, ctx);
+        ERR_pop_to_mark();
+        if (ret == 0) {
+            ret = 1;
+            goto end;
         }
     } while (BN_is_zero(lambda));
 
     /* if field_encode defined convert between representations */
-    if (group->meth->field_encode != NULL
-        && !group->meth->field_encode(group, lambda, lambda, ctx))
-        goto err;
-    if (!group->meth->field_mul(group, p->Z, p->Z, lambda, ctx))
-        goto err;
-    if (!group->meth->field_sqr(group, temp, lambda, ctx))
-        goto err;
-    if (!group->meth->field_mul(group, p->X, p->X, temp, ctx))
-        goto err;
-    if (!group->meth->field_mul(group, temp, temp, lambda, ctx))
-        goto err;
-    if (!group->meth->field_mul(group, p->Y, p->Y, temp, ctx))
-        goto err;
+    if ((group->meth->field_encode != NULL
+         && !group->meth->field_encode(group, lambda, lambda, ctx))
+        || !group->meth->field_mul(group, p->Z, p->Z, lambda, ctx)
+        || !group->meth->field_sqr(group, temp, lambda, ctx)
+        || !group->meth->field_mul(group, p->X, p->X, temp, ctx)
+        || !group->meth->field_mul(group, temp, temp, lambda, ctx)
+        || !group->meth->field_mul(group, p->Y, p->Y, temp, ctx))
+        goto end;
+
     p->Z_is_one = 0;
+    ret = 1;
+
+ end:
+    BN_CTX_end(ctx);
+    return ret;
+}
+
+/*-
+ * Input:
+ * - p: affine coordinates
+ *
+ * Output:
+ * - s := p, r := 2p: blinded projective (homogeneous) coordinates
+ *
+ * For doubling we use Formula 3 from Izu-Takagi "A fast parallel elliptic curve
+ * multiplication resistant against side channel attacks" appendix, described at
+ * https://hyperelliptic.org/EFD/g1p/auto-shortw-xz.html#doubling-dbl-2002-it-2
+ * simplified for Z1=1.
+ *
+ * Blinding uses the equivalence relation (\lambda X, \lambda Y, \lambda Z)
+ * for any non-zero \lambda that holds for projective (homogeneous) coords.
+ */
+int ec_GFp_simple_ladder_pre(const EC_GROUP *group,
+                             EC_POINT *r, EC_POINT *s,
+                             EC_POINT *p, BN_CTX *ctx)
+{
+    BIGNUM *t1, *t2, *t3, *t4, *t5 = NULL;
+
+    t1 = s->Z;
+    t2 = r->Z;
+    t3 = s->X;
+    t4 = r->X;
+    t5 = s->Y;
+
+    if (!p->Z_is_one /* r := 2p */
+        || !group->meth->field_sqr(group, t3, p->X, ctx)
+        || !BN_mod_sub_quick(t4, t3, group->a, group->field)
+        || !group->meth->field_sqr(group, t4, t4, ctx)
+        || !group->meth->field_mul(group, t5, p->X, group->b, ctx)
+        || !BN_mod_lshift_quick(t5, t5, 3, group->field)
+        /* r->X coord output */
+        || !BN_mod_sub_quick(r->X, t4, t5, group->field)
+        || !BN_mod_add_quick(t1, t3, group->a, group->field)
+        || !group->meth->field_mul(group, t2, p->X, t1, ctx)
+        || !BN_mod_add_quick(t2, group->b, t2, group->field)
+        /* r->Z coord output */
+        || !BN_mod_lshift_quick(r->Z, t2, 2, group->field))
+        return 0;
+
+    /* make sure lambda (r->Y here for storage) is not zero */
+    do {
+        if (!BN_priv_rand_range_ex(r->Y, group->field, ctx))
+            return 0;
+    } while (BN_is_zero(r->Y));
+
+    /* make sure lambda (s->Z here for storage) is not zero */
+    do {
+        if (!BN_priv_rand_range_ex(s->Z, group->field, ctx))
+            return 0;
+    } while (BN_is_zero(s->Z));
+
+    /* if field_encode defined convert between representations */
+    if (group->meth->field_encode != NULL
+        && (!group->meth->field_encode(group, r->Y, r->Y, ctx)
+            || !group->meth->field_encode(group, s->Z, s->Z, ctx)))
+        return 0;
+
+    /* blind r and s independently */
+    if (!group->meth->field_mul(group, r->Z, r->Z, r->Y, ctx)
+        || !group->meth->field_mul(group, r->X, r->X, r->Y, ctx)
+        || !group->meth->field_mul(group, s->X, p->X, s->Z, ctx)) /* s := p */
+        return 0;
+
+    r->Z_is_one = 0;
+    s->Z_is_one = 0;
+
+    return 1;
+}
+
+/*-
+ * Input:
+ * - s, r: projective (homogeneous) coordinates
+ * - p: affine coordinates
+ *
+ * Output:
+ * - s := r + s, r := 2r: projective (homogeneous) coordinates
+ *
+ * Differential addition-and-doubling using Eq. (9) and (10) from Izu-Takagi
+ * "A fast parallel elliptic curve multiplication resistant against side channel
+ * attacks", as described at
+ * https://hyperelliptic.org/EFD/g1p/auto-shortw-xz.html#ladder-mladd-2002-it-4
+ */
+int ec_GFp_simple_ladder_step(const EC_GROUP *group,
+                              EC_POINT *r, EC_POINT *s,
+                              EC_POINT *p, BN_CTX *ctx)
+{
+    int ret = 0;
+    BIGNUM *t0, *t1, *t2, *t3, *t4, *t5, *t6 = NULL;
+
+    BN_CTX_start(ctx);
+    t0 = BN_CTX_get(ctx);
+    t1 = BN_CTX_get(ctx);
+    t2 = BN_CTX_get(ctx);
+    t3 = BN_CTX_get(ctx);
+    t4 = BN_CTX_get(ctx);
+    t5 = BN_CTX_get(ctx);
+    t6 = BN_CTX_get(ctx);
+
+    if (t6 == NULL
+        || !group->meth->field_mul(group, t6, r->X, s->X, ctx)
+        || !group->meth->field_mul(group, t0, r->Z, s->Z, ctx)
+        || !group->meth->field_mul(group, t4, r->X, s->Z, ctx)
+        || !group->meth->field_mul(group, t3, r->Z, s->X, ctx)
+        || !group->meth->field_mul(group, t5, group->a, t0, ctx)
+        || !BN_mod_add_quick(t5, t6, t5, group->field)
+        || !BN_mod_add_quick(t6, t3, t4, group->field)
+        || !group->meth->field_mul(group, t5, t6, t5, ctx)
+        || !group->meth->field_sqr(group, t0, t0, ctx)
+        || !BN_mod_lshift_quick(t2, group->b, 2, group->field)
+        || !group->meth->field_mul(group, t0, t2, t0, ctx)
+        || !BN_mod_lshift1_quick(t5, t5, group->field)
+        || !BN_mod_sub_quick(t3, t4, t3, group->field)
+        /* s->Z coord output */
+        || !group->meth->field_sqr(group, s->Z, t3, ctx)
+        || !group->meth->field_mul(group, t4, s->Z, p->X, ctx)
+        || !BN_mod_add_quick(t0, t0, t5, group->field)
+        /* s->X coord output */
+        || !BN_mod_sub_quick(s->X, t0, t4, group->field)
+        || !group->meth->field_sqr(group, t4, r->X, ctx)
+        || !group->meth->field_sqr(group, t5, r->Z, ctx)
+        || !group->meth->field_mul(group, t6, t5, group->a, ctx)
+        || !BN_mod_add_quick(t1, r->X, r->Z, group->field)
+        || !group->meth->field_sqr(group, t1, t1, ctx)
+        || !BN_mod_sub_quick(t1, t1, t4, group->field)
+        || !BN_mod_sub_quick(t1, t1, t5, group->field)
+        || !BN_mod_sub_quick(t3, t4, t6, group->field)
+        || !group->meth->field_sqr(group, t3, t3, ctx)
+        || !group->meth->field_mul(group, t0, t5, t1, ctx)
+        || !group->meth->field_mul(group, t0, t2, t0, ctx)
+        /* r->X coord output */
+        || !BN_mod_sub_quick(r->X, t3, t0, group->field)
+        || !BN_mod_add_quick(t3, t4, t6, group->field)
+        || !group->meth->field_sqr(group, t4, t5, ctx)
+        || !group->meth->field_mul(group, t4, t4, t2, ctx)
+        || !group->meth->field_mul(group, t1, t1, t3, ctx)
+        || !BN_mod_lshift1_quick(t1, t1, group->field)
+        /* r->Z coord output */
+        || !BN_mod_add_quick(r->Z, t4, t1, group->field))
+        goto err;
 
     ret = 1;
 
  err:
-     BN_CTX_end(ctx);
-     return ret;
+    BN_CTX_end(ctx);
+    return ret;
 }
 
+/*-
+ * Input:
+ * - s, r: projective (homogeneous) coordinates
+ * - p: affine coordinates
+ *
+ * Output:
+ * - r := (x,y): affine coordinates
+ *
+ * Recovers the y-coordinate of r using Eq. (8) from Brier-Joye, "Weierstrass
+ * Elliptic Curves and Side-Channel Attacks", modified to work in mixed
+ * projective coords, i.e. p is affine and (r,s) in projective (homogeneous)
+ * coords, and return r in affine coordinates.
+ *
+ * X4 = two*Y1*X2*Z3*Z2;
+ * Y4 = two*b*Z3*SQR(Z2) + Z3*(a*Z2+X1*X2)*(X1*Z2+X2) - X3*SQR(X1*Z2-X2);
+ * Z4 = two*Y1*Z3*SQR(Z2);
+ *
+ * Z4 != 0 because:
+ *  - Z2==0 implies r is at infinity (handled by the BN_is_zero(r->Z) branch);
+ *  - Z3==0 implies s is at infinity (handled by the BN_is_zero(s->Z) branch);
+ *  - Y1==0 implies p has order 2, so either r or s are infinity and handled by
+ *    one of the BN_is_zero(...) branches.
+ */
+int ec_GFp_simple_ladder_post(const EC_GROUP *group,
+                              EC_POINT *r, EC_POINT *s,
+                              EC_POINT *p, BN_CTX *ctx)
+{
+    int ret = 0;
+    BIGNUM *t0, *t1, *t2, *t3, *t4, *t5, *t6 = NULL;
+
+    if (BN_is_zero(r->Z))
+        return EC_POINT_set_to_infinity(group, r);
+
+    if (BN_is_zero(s->Z)) {
+        if (!EC_POINT_copy(r, p)
+            || !EC_POINT_invert(group, r, ctx))
+            return 0;
+        return 1;
+    }
+
+    BN_CTX_start(ctx);
+    t0 = BN_CTX_get(ctx);
+    t1 = BN_CTX_get(ctx);
+    t2 = BN_CTX_get(ctx);
+    t3 = BN_CTX_get(ctx);
+    t4 = BN_CTX_get(ctx);
+    t5 = BN_CTX_get(ctx);
+    t6 = BN_CTX_get(ctx);
+
+    if (t6 == NULL
+        || !BN_mod_lshift1_quick(t4, p->Y, group->field)
+        || !group->meth->field_mul(group, t6, r->X, t4, ctx)
+        || !group->meth->field_mul(group, t6, s->Z, t6, ctx)
+        || !group->meth->field_mul(group, t5, r->Z, t6, ctx)
+        || !BN_mod_lshift1_quick(t1, group->b, group->field)
+        || !group->meth->field_mul(group, t1, s->Z, t1, ctx)
+        || !group->meth->field_sqr(group, t3, r->Z, ctx)
+        || !group->meth->field_mul(group, t2, t3, t1, ctx)
+        || !group->meth->field_mul(group, t6, r->Z, group->a, ctx)
+        || !group->meth->field_mul(group, t1, p->X, r->X, ctx)
+        || !BN_mod_add_quick(t1, t1, t6, group->field)
+        || !group->meth->field_mul(group, t1, s->Z, t1, ctx)
+        || !group->meth->field_mul(group, t0, p->X, r->Z, ctx)
+        || !BN_mod_add_quick(t6, r->X, t0, group->field)
+        || !group->meth->field_mul(group, t6, t6, t1, ctx)
+        || !BN_mod_add_quick(t6, t6, t2, group->field)
+        || !BN_mod_sub_quick(t0, t0, r->X, group->field)
+        || !group->meth->field_sqr(group, t0, t0, ctx)
+        || !group->meth->field_mul(group, t0, t0, s->X, ctx)
+        || !BN_mod_sub_quick(t0, t6, t0, group->field)
+        || !group->meth->field_mul(group, t1, s->Z, t4, ctx)
+        || !group->meth->field_mul(group, t1, t3, t1, ctx)
+        || (group->meth->field_decode != NULL
+            && !group->meth->field_decode(group, t1, t1, ctx))
+        || !group->meth->field_inv(group, t1, t1, ctx)
+        || (group->meth->field_encode != NULL
+            && !group->meth->field_encode(group, t1, t1, ctx))
+        || !group->meth->field_mul(group, r->X, t5, t1, ctx)
+        || !group->meth->field_mul(group, r->Y, t0, t1, ctx))
+        goto err;
+
+    if (group->meth->field_set_to_one != NULL) {
+        if (!group->meth->field_set_to_one(group, r->Z, ctx))
+            goto err;
+    } else {
+        if (!BN_one(r->Z))
+            goto err;
+    }
+
+    r->Z_is_one = 1;
+    ret = 1;
+
+ err:
+    BN_CTX_end(ctx);
+    return ret;
+}

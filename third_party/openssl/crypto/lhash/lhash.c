@@ -1,7 +1,7 @@
 /*
  * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -12,9 +12,10 @@
 #include <stdlib.h>
 #include <openssl/crypto.h>
 #include <openssl/lhash.h>
-#include <ctype.h>
-#include "internal/lhash.h"
-#include "lhash_lcl.h"
+#include <openssl/err.h>
+#include "crypto/ctype.h"
+#include "crypto/lhash.h"
+#include "lhash_local.h"
 
 /*
  * A hashing implementation that appears to be based on the linear hashing
@@ -23,9 +24,9 @@
  *
  * Litwin, Witold (1980), "Linear hashing: A new tool for file and table
  * addressing", Proc. 6th Conference on Very Large Databases: 212-223
- * http://hackthology.com/pdfs/Litwin-1980-Linear_Hashing.pdf
+ * https://hackthology.com/pdfs/Litwin-1980-Linear_Hashing.pdf
  *
- * From the wikipedia article "Linear hashing is used in the BDB Berkeley
+ * From the Wikipedia article "Linear hashing is used in the BDB Berkeley
  * database system, which in turn is used by many software systems such as
  * OpenLDAP, using a C implementation derived from the CACM article and first
  * published on the Usenet in 1988 by Esmond Pitt."
@@ -47,11 +48,15 @@ OPENSSL_LHASH *OPENSSL_LH_new(OPENSSL_LH_HASHFUNC h, OPENSSL_LH_COMPFUNC c)
 {
     OPENSSL_LHASH *ret;
 
-    if ((ret = OPENSSL_zalloc(sizeof(*ret))) == NULL)
+    if ((ret = OPENSSL_zalloc(sizeof(*ret))) == NULL) {
+        /*
+         * Do not set the error code, because the ERR code uses LHASH
+         * and we want to avoid possible endless error loop.
+         * CRYPTOerr(CRYPTO_F_OPENSSL_LH_NEW, ERR_R_MALLOC_FAILURE);
+         */
         return NULL;
+    }
     if ((ret->b = OPENSSL_zalloc(sizeof(*ret->b) * MIN_NODES)) == NULL)
-        goto err;
-    if ((ret->retrieve_stats_lock = CRYPTO_THREAD_lock_new()) == NULL) 
         goto err;
     ret->comp = ((c == NULL) ? (OPENSSL_LH_COMPFUNC)strcmp : c);
     ret->hash = ((h == NULL) ? (OPENSSL_LH_HASHFUNC)OPENSSL_LH_strhash : h);
@@ -60,7 +65,7 @@ OPENSSL_LHASH *OPENSSL_LH_new(OPENSSL_LH_HASHFUNC h, OPENSSL_LH_COMPFUNC c)
     ret->pmax = MIN_NODES / 2;
     ret->up_load = UP_LOAD;
     ret->down_load = DOWN_LOAD;
-    return (ret);
+    return ret;
 
 err:
     OPENSSL_free(ret->b);
@@ -69,6 +74,16 @@ err:
 }
 
 void OPENSSL_LH_free(OPENSSL_LHASH *lh)
+{
+    if (lh == NULL)
+        return;
+
+    OPENSSL_LH_flush(lh);
+    OPENSSL_free(lh->b);
+    OPENSSL_free(lh);
+}
+
+void OPENSSL_LH_flush(OPENSSL_LHASH *lh)
 {
     unsigned int i;
     OPENSSL_LH_NODE *n, *nn;
@@ -83,10 +98,8 @@ void OPENSSL_LH_free(OPENSSL_LHASH *lh)
             OPENSSL_free(n);
             n = nn;
         }
+        lh->b[i] = NULL;
     }
-    CRYPTO_THREAD_lock_free(lh->retrieve_stats_lock);
-    OPENSSL_free(lh->b);
-    OPENSSL_free(lh);
 }
 
 void *OPENSSL_LH_insert(OPENSSL_LHASH *lh, void *data)
@@ -104,7 +117,7 @@ void *OPENSSL_LH_insert(OPENSSL_LHASH *lh, void *data)
     if (*rn == NULL) {
         if ((nn = OPENSSL_malloc(sizeof(*nn))) == NULL) {
             lh->error++;
-            return (NULL);
+            return NULL;
         }
         nn->data = data;
         nn->next = NULL;
@@ -114,12 +127,11 @@ void *OPENSSL_LH_insert(OPENSSL_LHASH *lh, void *data)
         lh->num_insert++;
         lh->num_items++;
     } else {                    /* replace same key */
-
         ret = (*rn)->data;
         (*rn)->data = data;
         lh->num_replace++;
     }
-    return (ret);
+    return ret;
 }
 
 void *OPENSSL_LH_delete(OPENSSL_LHASH *lh, const void *data)
@@ -133,7 +145,7 @@ void *OPENSSL_LH_delete(OPENSSL_LHASH *lh, const void *data)
 
     if (*rn == NULL) {
         lh->num_no_delete++;
-        return (NULL);
+        return NULL;
     } else {
         nn = *rn;
         *rn = nn->next;
@@ -147,7 +159,7 @@ void *OPENSSL_LH_delete(OPENSSL_LHASH *lh, const void *data)
         (lh->down_load >= (lh->num_items * LH_LOAD_MULT / lh->num_nodes)))
         contract(lh);
 
-    return (ret);
+    return ret;
 }
 
 void *OPENSSL_LH_retrieve(OPENSSL_LHASH *lh, const void *data)
@@ -155,18 +167,19 @@ void *OPENSSL_LH_retrieve(OPENSSL_LHASH *lh, const void *data)
     unsigned long hash;
     OPENSSL_LH_NODE **rn;
     void *ret;
-    int scratch;
 
-    lh->error = 0;
+    tsan_store((TSAN_QUALIFIER int *)&lh->error, 0);
+
     rn = getrn(lh, data, &hash);
 
     if (*rn == NULL) {
-        CRYPTO_atomic_add(&lh->num_retrieve_miss, 1, &scratch, lh->retrieve_stats_lock);
+        tsan_counter(&lh->num_retrieve_miss);
         return NULL;
     } else {
         ret = (*rn)->data;
-        CRYPTO_atomic_add(&lh->num_retrieve, 1, &scratch, lh->retrieve_stats_lock);
+        tsan_counter(&lh->num_retrieve);
     }
+
     return ret;
 }
 
@@ -294,10 +307,9 @@ static OPENSSL_LH_NODE **getrn(OPENSSL_LHASH *lh,
     OPENSSL_LH_NODE **ret, *n1;
     unsigned long hash, nn;
     OPENSSL_LH_COMPFUNC cf;
-    int scratch;
 
     hash = (*(lh->hash)) (data);
-    CRYPTO_atomic_add(&lh->num_hash_calls, 1, &scratch, lh->retrieve_stats_lock);
+    tsan_counter(&lh->num_hash_calls);
     *rhash = hash;
 
     nn = hash % lh->pmax;
@@ -307,17 +319,17 @@ static OPENSSL_LH_NODE **getrn(OPENSSL_LHASH *lh,
     cf = lh->comp;
     ret = &(lh->b[(int)nn]);
     for (n1 = *ret; n1 != NULL; n1 = n1->next) {
-        CRYPTO_atomic_add(&lh->num_hash_comps, 1, &scratch, lh->retrieve_stats_lock);
+        tsan_counter(&lh->num_hash_comps);
         if (n1->hash != hash) {
             ret = &(n1->next);
             continue;
         }
-        CRYPTO_atomic_add(&lh->num_comp_calls, 1, &scratch, lh->retrieve_stats_lock);
+        tsan_counter(&lh->num_comp_calls);
         if (cf(n1->data, data) == 0)
             break;
         ret = &(n1->next);
     }
-    return (ret);
+    return ret;
 }
 
 /*
@@ -333,12 +345,7 @@ unsigned long OPENSSL_LH_strhash(const char *c)
     int r;
 
     if ((c == NULL) || (*c == '\0'))
-        return (ret);
-/*-
-    unsigned char b[16];
-    MD5(c,strlen(c),b);
-    return(b[0]|(b[1]<<8)|(b[2]<<16)|(b[3]<<24));
-*/
+        return ret;
 
     n = 0x100;
     while (*c) {
@@ -350,7 +357,7 @@ unsigned long OPENSSL_LH_strhash(const char *c)
         ret ^= v * v;
         c++;
     }
-    return ((ret >> 16) ^ ret);
+    return (ret >> 16) ^ ret;
 }
 
 unsigned long openssl_lh_strcasehash(const char *c)
@@ -364,7 +371,7 @@ unsigned long openssl_lh_strcasehash(const char *c)
         return ret;
 
     for (n = 0x100; *c != '\0'; n += 0x100) {
-        v = n | tolower(*c);
+        v = n | ossl_tolower(*c);
         r = (int)((v >> 2) ^ v) & 0x0f;
         ret = (ret << r) | (ret >> (32 - r));
         ret &= 0xFFFFFFFFL;

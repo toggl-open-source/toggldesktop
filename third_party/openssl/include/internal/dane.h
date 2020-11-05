@@ -1,14 +1,14 @@
 /*
  * Copyright 2015-2016 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
-#ifndef HEADER_INTERNAL_DANE_H
-#define HEADER_INTERNAL_DANE_H
+#ifndef OSSL_INTERNAL_DANE_H
+#define OSSL_INTERNAL_DANE_H
 
 #include <openssl/safestack.h>
 
@@ -100,4 +100,4 @@ struct ssl_dane_st {
 #define DANETLS_HAS_DANE_TA(dane) ((dane)&&((dane)->umask & DANETLS_DANE_TA_MASK))
 #define DANETLS_HAS_DANE_EE(dane) ((dane)&&((dane)->umask & DANETLS_DANE_EE_MASK))
 
-#endif /* HEADER_INTERNAL_DANE_H */
+#endif /* OSSL_INTERNAL_DANE_H */

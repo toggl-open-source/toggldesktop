@@ -1,7 +1,7 @@
 /*
  * Copyright 1999-2016 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -14,15 +14,15 @@
 int NETSCAPE_SPKI_set_pubkey(NETSCAPE_SPKI *x, EVP_PKEY *pkey)
 {
     if ((x == NULL) || (x->spkac == NULL))
-        return (0);
-    return (X509_PUBKEY_set(&(x->spkac->pubkey), pkey));
+        return 0;
+    return X509_PUBKEY_set(&(x->spkac->pubkey), pkey);
 }
 
 EVP_PKEY *NETSCAPE_SPKI_get_pubkey(NETSCAPE_SPKI *x)
 {
     if ((x == NULL) || (x->spkac == NULL))
-        return (NULL);
-    return (X509_PUBKEY_get(x->spkac->pubkey));
+        return NULL;
+    return X509_PUBKEY_get(x->spkac->pubkey);
 }
 
 /* Load a Netscape SPKI from a base64 encoded string */

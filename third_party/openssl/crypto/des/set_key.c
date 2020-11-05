@@ -1,7 +1,7 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -15,13 +15,16 @@
  * 1.1 added norm_expand_bits
  * 1.0 First working version
  */
-#include <openssl/crypto.h>
-#include "des_locl.h"
 
-OPENSSL_IMPLEMENT_GLOBAL(int, DES_check_key, 0)
-                                                    /*
-                                                     * defaults to false
-                                                     */
+/*
+ * DES low level APIs are deprecated for public use, but still ok for internal
+ * use.
+ */
+#include "internal/deprecated.h"
+
+#include <openssl/crypto.h>
+#include "des_local.h"
+
 static const unsigned char odd_parity[256] = {
     1, 1, 2, 2, 4, 4, 7, 7, 8, 8, 11, 11, 13, 13, 14, 14,
     16, 16, 19, 19, 21, 21, 22, 22, 25, 25, 26, 26, 28, 28, 31, 31,
@@ -65,9 +68,9 @@ int DES_check_key_parity(const_DES_cblock *key)
 
     for (i = 0; i < DES_KEY_SZ; i++) {
         if ((*key)[i] != odd_parity[(*key)[i]])
-            return (0);
+            return 0;
     }
-    return (1);
+    return 1;
 }
 
 /*-
@@ -77,8 +80,6 @@ int DES_check_key_parity(const_DES_cblock *key)
  * %T Security for Computer Networks
  * %I John Wiley & Sons
  * %D 1984
- * Many thanks to smb@ulysses.att.com (Steven Bellovin) for the reference
- * (and actual cblock values).
  */
 #define NUM_WEAK_KEY    16
 static const DES_cblock weak_keys[NUM_WEAK_KEY] = {
@@ -107,15 +108,9 @@ int DES_is_weak_key(const_DES_cblock *key)
     int i;
 
     for (i = 0; i < NUM_WEAK_KEY; i++)
-        /*
-         * Added == 0 to comparison, I obviously don't run this section very
-         * often :-(, thanks to engineering@MorningStar.Com for the fix eay
-         * 93/06/29 Another problem, I was comparing only the first 4 bytes,
-         * 97/03/18
-         */
         if (memcmp(weak_keys[i], key, sizeof(DES_cblock)) == 0)
-            return (1);
-    return (0);
+            return 1;
+    return 0;
 }
 
 /*-
@@ -286,12 +281,7 @@ static const DES_LONG des_skb[8][64] = {
 
 int DES_set_key(const_DES_cblock *key, DES_key_schedule *schedule)
 {
-    if (DES_check_key) {
-        return DES_set_key_checked(key, schedule);
-    } else {
-        DES_set_key_unchecked(key, schedule);
-        return 0;
-    }
+    return DES_set_key_checked(key, schedule);
 }
 
 /*-
@@ -302,9 +292,9 @@ int DES_set_key(const_DES_cblock *key, DES_key_schedule *schedule)
 int DES_set_key_checked(const_DES_cblock *key, DES_key_schedule *schedule)
 {
     if (!DES_check_key_parity(key))
-        return (-1);
+        return -1;
     if (DES_is_weak_key(key))
-        return (-2);
+        return -2;
     DES_set_key_unchecked(key, schedule);
     return 0;
 }
@@ -329,8 +319,8 @@ void DES_set_key_unchecked(const_DES_cblock *key, DES_key_schedule *schedule)
     c2l(in, d);
 
     /*
-     * do PC1 in 47 simple operations :-) Thanks to John Fletcher
-     * (john_fletcher@lccmail.ocf.llnl.gov) for the inspiration. :-)
+     * do PC1 in 47 simple operations. Thanks to John Fletcher
+     * for the inspiration.
      */
     PERM_OP(d, c, t, 4, 0x0f0f0f0fL);
     HPERM_OP(c, t, -2, 0xcccc0000L);
@@ -377,13 +367,5 @@ void DES_set_key_unchecked(const_DES_cblock *key, DES_key_schedule *schedule)
 
 int DES_key_sched(const_DES_cblock *key, DES_key_schedule *schedule)
 {
-    return (DES_set_key(key, schedule));
+    return DES_set_key(key, schedule);
 }
-
-/*-
-#undef des_fixup_key_parity
-void des_fixup_key_parity(des_cblock *key)
-        {
-        des_set_odd_parity(key);
-        }
-*/

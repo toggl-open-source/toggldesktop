@@ -1,7 +1,7 @@
 /*
  * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include <errno.h>
-#include "bio_lcl.h"
+#include "bio_local.h"
 #include "internal/cryptlib.h"
 
 static int null_write(BIO *h, const char *buf, int num);
@@ -20,7 +20,11 @@ static long null_ctrl(BIO *h, int cmd, long arg1, void *arg2);
 static const BIO_METHOD null_method = {
     BIO_TYPE_NULL,
     "NULL",
+    /* TODO: Convert to new style write function */
+    bwrite_conv,
     null_write,
+    /* TODO: Convert to new style read function */
+    bread_conv,
     null_read,
     null_puts,
     null_gets,
@@ -32,17 +36,17 @@ static const BIO_METHOD null_method = {
 
 const BIO_METHOD *BIO_s_null(void)
 {
-    return (&null_method);
+    return &null_method;
 }
 
 static int null_read(BIO *b, char *out, int outl)
 {
-    return (0);
+    return 0;
 }
 
 static int null_write(BIO *b, const char *in, int inl)
 {
-    return (inl);
+    return inl;
 }
 
 static long null_ctrl(BIO *b, int cmd, long num, void *ptr)
@@ -67,17 +71,17 @@ static long null_ctrl(BIO *b, int cmd, long num, void *ptr)
         ret = 0;
         break;
     }
-    return (ret);
+    return ret;
 }
 
 static int null_gets(BIO *bp, char *buf, int size)
 {
-    return (0);
+    return 0;
 }
 
 static int null_puts(BIO *bp, const char *str)
 {
     if (str == NULL)
-        return (0);
-    return (strlen(str));
+        return 0;
+    return strlen(str);
 }

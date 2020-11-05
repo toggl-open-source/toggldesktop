@@ -1,14 +1,20 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2019 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
-#ifndef HEADER_STACK_H
-# define HEADER_STACK_H
+#ifndef OPENSSL_STACK_H
+# define OPENSSL_STACK_H
+# pragma once
+
+# include <openssl/macros.h>
+# ifndef OPENSSL_NO_DEPRECATED_3_0
+#  define HEADER_STACK_H
+# endif
 
 #ifdef  __cplusplus
 extern "C" {
@@ -27,9 +33,13 @@ void *OPENSSL_sk_set(OPENSSL_STACK *st, int i, const void *data);
 
 OPENSSL_STACK *OPENSSL_sk_new(OPENSSL_sk_compfunc cmp);
 OPENSSL_STACK *OPENSSL_sk_new_null(void);
+OPENSSL_STACK *OPENSSL_sk_new_reserve(OPENSSL_sk_compfunc c, int n);
+int OPENSSL_sk_reserve(OPENSSL_STACK *st, int n);
 void OPENSSL_sk_free(OPENSSL_STACK *);
 void OPENSSL_sk_pop_free(OPENSSL_STACK *st, void (*func) (void *));
-OPENSSL_STACK *OPENSSL_sk_deep_copy(const OPENSSL_STACK *, OPENSSL_sk_copyfunc c, OPENSSL_sk_freefunc f);
+OPENSSL_STACK *OPENSSL_sk_deep_copy(const OPENSSL_STACK *,
+                                    OPENSSL_sk_copyfunc c,
+                                    OPENSSL_sk_freefunc f);
 int OPENSSL_sk_insert(OPENSSL_STACK *sk, const void *data, int where);
 void *OPENSSL_sk_delete(OPENSSL_STACK *st, int loc);
 void *OPENSSL_sk_delete_ptr(OPENSSL_STACK *st, const void *p);
@@ -40,12 +50,13 @@ int OPENSSL_sk_unshift(OPENSSL_STACK *st, const void *data);
 void *OPENSSL_sk_shift(OPENSSL_STACK *st);
 void *OPENSSL_sk_pop(OPENSSL_STACK *st);
 void OPENSSL_sk_zero(OPENSSL_STACK *st);
-OPENSSL_sk_compfunc OPENSSL_sk_set_cmp_func(OPENSSL_STACK *sk, OPENSSL_sk_compfunc cmp);
+OPENSSL_sk_compfunc OPENSSL_sk_set_cmp_func(OPENSSL_STACK *sk,
+                                            OPENSSL_sk_compfunc cmp);
 OPENSSL_STACK *OPENSSL_sk_dup(const OPENSSL_STACK *st);
 void OPENSSL_sk_sort(OPENSSL_STACK *st);
 int OPENSSL_sk_is_sorted(const OPENSSL_STACK *st);
 
-# if OPENSSL_API_COMPAT < 0x10100000L
+# ifndef OPENSSL_NO_DEPRECATED_1_1_0
 #  define _STACK OPENSSL_STACK
 #  define sk_num OPENSSL_sk_num
 #  define sk_value OPENSSL_sk_value

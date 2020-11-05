@@ -1,19 +1,20 @@
 /*
- * Copyright 2012-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2012-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
 #include <stdio.h>
-#include <ctype.h>
 #include <openssl/crypto.h>
 #include "internal/cryptlib.h"
 #include <openssl/conf.h>
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
+#include <openssl/trace.h>
+#include "crypto/evp.h"
 
 /* Algorithm configuration module. */
 
@@ -24,6 +25,9 @@ static int alg_module_init(CONF_IMODULE *md, const CONF *cnf)
     STACK_OF(CONF_VALUE) *sktmp;
     CONF_VALUE *oval;
 
+    OSSL_TRACE2(CONF, "Loading EVP module: name %s, value %s\n",
+                CONF_imodule_get_name(md), CONF_imodule_get_value(md));
+
     oid_section = CONF_imodule_get_value(md);
     if ((sktmp = NCONF_get_section(cnf, oid_section)) == NULL) {
         EVPerr(EVP_F_ALG_MODULE_INIT, EVP_R_ERROR_LOADING_SECTION);
@@ -33,26 +37,29 @@ static int alg_module_init(CONF_IMODULE *md, const CONF *cnf)
         oval = sk_CONF_VALUE_value(sktmp, i);
         if (strcmp(oval->name, "fips_mode") == 0) {
             int m;
+
             if (!X509V3_get_value_bool(oval, &m)) {
                 EVPerr(EVP_F_ALG_MODULE_INIT, EVP_R_INVALID_FIPS_MODE);
                 return 0;
             }
-            if (m > 0) {
-#ifdef OPENSSL_FIPS
-                if (!FIPS_mode() && !FIPS_mode_set(1)) {
-                    EVPerr(EVP_F_ALG_MODULE_INIT,
-                           EVP_R_ERROR_SETTING_FIPS_MODE);
-                    return 0;
-                }
-#else
-                EVPerr(EVP_F_ALG_MODULE_INIT, EVP_R_FIPS_MODE_NOT_SUPPORTED);
+            /*
+             * fips_mode is deprecated and should not be used in new
+             * configurations.
+             */
+            if (!EVP_default_properties_enable_fips(cnf->libctx, m > 0)) {
+                EVPerr(EVP_F_ALG_MODULE_INIT, EVP_R_SET_DEFAULT_PROPERTY_FAILURE);
                 return 0;
-#endif
+            }
+        } else if (strcmp(oval->name, "default_properties") == 0) {
+            if (!evp_set_default_properties_int(cnf->libctx, oval->value, 0)) {
+                EVPerr(EVP_F_ALG_MODULE_INIT, EVP_R_SET_DEFAULT_PROPERTY_FAILURE);
+                return 0;
             }
         } else {
             EVPerr(EVP_F_ALG_MODULE_INIT, EVP_R_UNKNOWN_OPTION);
             ERR_add_error_data(4, "name=", oval->name,
                                ", value=", oval->value);
+            return 0;
         }
 
     }
@@ -61,5 +68,6 @@ static int alg_module_init(CONF_IMODULE *md, const CONF *cnf)
 
 void EVP_add_alg_module(void)
 {
+    OSSL_TRACE(CONF, "Adding config module 'alg_section'\n");
     CONF_module_add("alg_section", alg_module_init, 0);
 }

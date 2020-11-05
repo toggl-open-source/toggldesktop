@@ -1,11 +1,17 @@
 /*
- * Copyright 2006-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2006-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
+
+/*
+ * DSA low level APIs are deprecated for public use, but still ok for
+ * internal use.
+ */
+#include "internal/deprecated.h"
 
 #include <stdio.h>
 #include "internal/cryptlib.h"
@@ -20,12 +26,12 @@ int DSA_print_fp(FILE *fp, const DSA *x, int off)
 
     if ((b = BIO_new(BIO_s_file())) == NULL) {
         DSAerr(DSA_F_DSA_PRINT_FP, ERR_R_BUF_LIB);
-        return (0);
+        return 0;
     }
     BIO_set_fp(b, fp, BIO_NOCLOSE);
     ret = DSA_print(b, x, off);
     BIO_free(b);
-    return (ret);
+    return ret;
 }
 
 int DSAparams_print_fp(FILE *fp, const DSA *x)
@@ -35,12 +41,12 @@ int DSAparams_print_fp(FILE *fp, const DSA *x)
 
     if ((b = BIO_new(BIO_s_file())) == NULL) {
         DSAerr(DSA_F_DSAPARAMS_PRINT_FP, ERR_R_BUF_LIB);
-        return (0);
+        return 0;
     }
     BIO_set_fp(b, fp, BIO_NOCLOSE);
     ret = DSAparams_print(b, x);
     BIO_free(b);
-    return (ret);
+    return ret;
 }
 #endif
 

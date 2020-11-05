@@ -1,7 +1,7 @@
 /*
- * Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2016-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -14,7 +14,7 @@
 #include <openssl/evp.h>
 #include <openssl/x509.h>
 
-#include "ct_locl.h"
+#include "ct_local.h"
 
 typedef enum sct_signature_type_t {
     SIGNATURE_TYPE_NOT_SET = -1,
@@ -122,7 +122,9 @@ int SCT_CTX_verify(const SCT_CTX *sctx, const SCT *sct)
     if (ctx == NULL)
         goto end;
 
-    if (!EVP_DigestVerifyInit(ctx, NULL, EVP_sha256(), NULL, sctx->pkey))
+    if (!EVP_DigestVerifyInit_with_libctx(ctx, NULL,
+                                          "SHA2-256", sctx->libctx, sctx->propq,
+                                          sctx->pkey))
         goto end;
 
     if (!sct_ctx_update(ctx, sctx, sct))

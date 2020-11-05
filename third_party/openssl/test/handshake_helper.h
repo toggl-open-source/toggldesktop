@@ -1,14 +1,14 @@
 /*
- * Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2016-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
-#ifndef HEADER_HANDSHAKE_HELPER_H
-#define HEADER_HANDSHAKE_HELPER_H
+#ifndef OSSL_TEST_HANDSHAKE_HELPER_H
+#define OSSL_TEST_HANDSHAKE_HELPER_H
 
 #include "ssl_test_ctx.h"
 
@@ -34,6 +34,7 @@ typedef struct handshake_result {
     ssl_servername_t servername;
     /* Session ticket status */
     ssl_session_ticket_t session_ticket;
+    int compression;
     /* Was this called on the second context? */
     int session_ticket_do_not_call;
     char *client_npn_negotiated;
@@ -45,6 +46,27 @@ typedef struct handshake_result {
     int server_resumed;
     /* Temporary key type */
     int tmp_key_type;
+    /* server certificate key type */
+    int server_cert_type;
+    /* server signing hash */
+    int server_sign_hash;
+    /* server signature type */
+    int server_sign_type;
+    /* server CA names */
+    STACK_OF(X509_NAME) *server_ca_names;
+    /* client certificate key type */
+    int client_cert_type;
+    /* client signing hash */
+    int client_sign_hash;
+    /* client signature type */
+    int client_sign_type;
+    /* Client CA names */
+    STACK_OF(X509_NAME) *client_ca_names;
+    /* Session id status */
+    ssl_session_id_t session_id;
+    char *cipher;
+    /* session ticket application data */
+    char *result_session_ticket_app_data;
 } HANDSHAKE_RESULT;
 
 HANDSHAKE_RESULT *HANDSHAKE_RESULT_new(void);
@@ -56,4 +78,4 @@ HANDSHAKE_RESULT *do_handshake(SSL_CTX *server_ctx, SSL_CTX *server2_ctx,
                                SSL_CTX *resume_client_ctx,
                                const SSL_TEST_CTX *test_ctx);
 
-#endif  /* HEADER_HANDSHAKE_HELPER_H */
+#endif  /* OSSL_TEST_HANDSHAKE_HELPER_H */

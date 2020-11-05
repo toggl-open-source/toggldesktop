@@ -1,7 +1,7 @@
 /*
  * Copyright 1995-2017 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -13,7 +13,7 @@
 #include <limits.h>
 #include <openssl/asn1.h>
 #include <openssl/bn.h>
-#include "asn1_locl.h"
+#include "asn1_local.h"
 
 ASN1_INTEGER *ASN1_INTEGER_dup(const ASN1_INTEGER *x)
 {
@@ -396,7 +396,7 @@ ASN1_INTEGER *d2i_ASN1_UINTEGER(ASN1_INTEGER **a, const unsigned char **pp,
 
     if ((a == NULL) || ((*a) == NULL)) {
         if ((ret = ASN1_INTEGER_new()) == NULL)
-            return (NULL);
+            return NULL;
         ret->type = V_ASN1_INTEGER;
     } else
         ret = (*a);
@@ -438,12 +438,12 @@ ASN1_INTEGER *d2i_ASN1_UINTEGER(ASN1_INTEGER **a, const unsigned char **pp,
     if (a != NULL)
         (*a) = ret;
     *pp = p;
-    return (ret);
+    return ret;
  err:
     ASN1err(ASN1_F_D2I_ASN1_UINTEGER, i);
     if ((a == NULL) || (*a != ret))
         ASN1_INTEGER_free(ret);
-    return (NULL);
+    return NULL;
 }
 
 static ASN1_STRING *bn_to_asn1_string(const BIGNUM *bn, ASN1_STRING *ai,
@@ -487,7 +487,7 @@ static ASN1_STRING *bn_to_asn1_string(const BIGNUM *bn, ASN1_STRING *ai,
  err:
     if (ret != ai)
         ASN1_INTEGER_free(ret);
-    return (NULL);
+    return NULL;
 }
 
 static BIGNUM *asn1_string_to_bn(const ASN1_INTEGER *ai, BIGNUM *bn,

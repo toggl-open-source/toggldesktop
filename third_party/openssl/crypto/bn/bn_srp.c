@@ -1,19 +1,19 @@
 /*
- * Copyright 2014-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2014-2017 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
-#include "bn_lcl.h"
-#include "e_os.h"
+#include "bn_local.h"
+#include "internal/nelem.h"
 
 #ifndef OPENSSL_NO_SRP
 
 #include <openssl/srp.h>
-#include <internal/bn_srp.h>
+#include "crypto/bn_srp.h"
 
 # if (BN_BYTES == 8)
 #  if (defined(_WIN32) || defined(_WIN64)) && !defined(__MINGW32__)

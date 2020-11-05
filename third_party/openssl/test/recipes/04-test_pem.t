@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2017 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2017-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -28,10 +28,13 @@ my %cert_expected = (
     "cert-1023line.pem" => 1,
     "cert-1024line.pem" => 1,
     "cert-1025line.pem" => 1,
+    "cert-254-chars-at-the-end.pem" => 1,
+    "cert-254-chars-in-the-middle.pem" => 1,
     "cert-255line.pem" => 1,
     "cert-256line.pem" => 1,
     "cert-257line.pem" => 1,
     "cert-blankline.pem" => 0,
+    "cert-bom.pem" => 1,
     "cert-comment.pem" => 0,
     "cert-earlypad.pem" => 0,
     "cert-extrapad.pem" => 0,
@@ -42,6 +45,7 @@ my %cert_expected = (
     "cert-misalignedpad.pem" => 0,
     "cert-onecolumn.pem" => 1,
     "cert-oneline.pem" => 1,
+    "cert-oneline-multiple-of-254.pem" => 1,
     "cert-shortandlongline.pem" => 1,
     "cert-shortline.pem" => 1,
     "cert-threecolumn.pem" => 1,
@@ -76,7 +80,7 @@ my %dsa_expected = (
     "dsa.pem" => 1
 );
 
-plan tests =>  scalar keys(%cert_expected) + scalar keys(%dsa_expected) + 1;
+plan tests =>  scalar keys(%cert_expected) + scalar keys(%dsa_expected) + 2;
 
 foreach my $input (keys %cert_expected) {
     my @common = ($cmd, "x509", "-text", "-noout", "-inform", "PEM", "-in");
@@ -104,3 +108,5 @@ SKIP: {
     my @match = grep /00:a0:3a:21:14:5d:cd:b6:d5:a0:3e:49:23:c1:3a:/, @data;
     ok(scalar @match > 0 ? 1 : 0);
 }
+
+ok(run(test(["pemtest"])), "running pemtest");

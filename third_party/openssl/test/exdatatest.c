@@ -1,7 +1,7 @@
 /*
- * Copyright 2015-2017 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2015-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -12,10 +12,14 @@
 #include <stdlib.h>
 #include <openssl/crypto.h>
 
+#include "testutil.h"
+
 static long saved_argl;
 static void *saved_argp;
 static int saved_idx;
 static int saved_idx2;
+static int saved_idx3;
+static int gbl_result;
 
 /*
  * SIMPLE EX_DATA IMPLEMENTATION
@@ -25,28 +29,31 @@ static int saved_idx2;
 static void exnew(void *parent, void *ptr, CRYPTO_EX_DATA *ad,
           int idx, long argl, void *argp)
 {
-    OPENSSL_assert(idx == saved_idx);
-    OPENSSL_assert(argl == saved_argl);
-    OPENSSL_assert(argp == saved_argp);
-    OPENSSL_assert(ptr == NULL);
+    if (!TEST_int_eq(idx, saved_idx)
+        || !TEST_long_eq(argl, saved_argl)
+        || !TEST_ptr_eq(argp, saved_argp)
+        || !TEST_ptr_null(ptr))
+        gbl_result = 0;
 }
 
 static int exdup(CRYPTO_EX_DATA *to, const CRYPTO_EX_DATA *from,
-          void *from_d, int idx, long argl, void *argp)
+          void **from_d, int idx, long argl, void *argp)
 {
-    OPENSSL_assert(idx == saved_idx);
-    OPENSSL_assert(argl == saved_argl);
-    OPENSSL_assert(argp == saved_argp);
-    OPENSSL_assert(from_d != NULL);
+    if (!TEST_int_eq(idx, saved_idx)
+        || !TEST_long_eq(argl, saved_argl)
+        || !TEST_ptr_eq(argp, saved_argp)
+        || !TEST_ptr(from_d))
+        gbl_result = 0;
     return 1;
 }
 
 static void exfree(void *parent, void *ptr, CRYPTO_EX_DATA *ad,
             int idx, long argl, void *argp)
 {
-    OPENSSL_assert(idx == saved_idx);
-    OPENSSL_assert(argl == saved_argl);
-    OPENSSL_assert(argp == saved_argp);
+    if (!TEST_int_eq(idx, saved_idx)
+        || !TEST_long_eq(argl, saved_argl)
+        || !TEST_ptr_eq(argp, saved_argp))
+        gbl_result = 0;
 }
 
 /*
@@ -64,58 +71,57 @@ typedef struct myobj_ex_data_st {
 static void exnew2(void *parent, void *ptr, CRYPTO_EX_DATA *ad,
           int idx, long argl, void *argp)
 {
-    int ret;
-    MYOBJ_EX_DATA *ex_data;
+    MYOBJ_EX_DATA *ex_data = OPENSSL_zalloc(sizeof(*ex_data));
 
-    OPENSSL_assert(idx == saved_idx2);
-    OPENSSL_assert(argl == saved_argl);
-    OPENSSL_assert(argp == saved_argp);
-    OPENSSL_assert(ptr == NULL);
-
-    ex_data = OPENSSL_zalloc(sizeof(*ex_data));
-    OPENSSL_assert(ex_data != NULL);
-    ret = CRYPTO_set_ex_data(ad, saved_idx2, ex_data);
-    OPENSSL_assert(ret);
-
-    ex_data->new = 1;
+    if (!TEST_true(idx == saved_idx2 || idx == saved_idx3)
+        || !TEST_long_eq(argl, saved_argl)
+        || !TEST_ptr_eq(argp, saved_argp)
+        || !TEST_ptr_null(ptr)
+        || !TEST_ptr(ex_data)
+        || !TEST_true(CRYPTO_set_ex_data(ad, idx, ex_data))) {
+        gbl_result = 0;
+        OPENSSL_free(ex_data);
+    } else {
+        ex_data->new = 1;
+    }
 }
 
 static int exdup2(CRYPTO_EX_DATA *to, const CRYPTO_EX_DATA *from,
-          void *from_d, int idx, long argl, void *argp)
+          void **from_d, int idx, long argl, void *argp)
 {
     MYOBJ_EX_DATA **update_ex_data = (MYOBJ_EX_DATA**)from_d;
-    MYOBJ_EX_DATA *ex_data = CRYPTO_get_ex_data(to, saved_idx2);
+    MYOBJ_EX_DATA *ex_data = NULL;
 
-    OPENSSL_assert(idx == saved_idx2);
-    OPENSSL_assert(argl == saved_argl);
-    OPENSSL_assert(argp == saved_argp);
-    OPENSSL_assert(from_d != NULL);
-    OPENSSL_assert(*update_ex_data != NULL);
-    OPENSSL_assert(ex_data != NULL);
-    OPENSSL_assert(ex_data->new);
-
-    /* Copy hello over */
-    ex_data->hello = (*update_ex_data)->hello;
-    /* indicate this is a dup */
-    ex_data->dup = 1;
-    /* Keep my original ex_data */
-    *update_ex_data = ex_data;
+    if (!TEST_true(idx == saved_idx2 || idx == saved_idx3)
+        || !TEST_long_eq(argl, saved_argl)
+        || !TEST_ptr_eq(argp, saved_argp)
+        || !TEST_ptr(from_d)
+        || !TEST_ptr(*update_ex_data)
+        || !TEST_ptr(ex_data = CRYPTO_get_ex_data(to, idx))
+        || !TEST_true(ex_data->new)) {
+        gbl_result = 0;
+    } else {
+        /* Copy hello over */
+        ex_data->hello = (*update_ex_data)->hello;
+        /* indicate this is a dup */
+        ex_data->dup = 1;
+        /* Keep my original ex_data */
+        *update_ex_data = ex_data;
+    }
     return 1;
 }
 
 static void exfree2(void *parent, void *ptr, CRYPTO_EX_DATA *ad,
             int idx, long argl, void *argp)
 {
-    MYOBJ_EX_DATA *ex_data = CRYPTO_get_ex_data(ad, saved_idx2);
-    int ret;
+    MYOBJ_EX_DATA *ex_data = CRYPTO_get_ex_data(ad, idx);
 
-    OPENSSL_assert(ex_data != NULL);
+    if (!TEST_true(idx == saved_idx2 || idx == saved_idx3)
+        || !TEST_long_eq(argl, saved_argl)
+        || !TEST_ptr_eq(argp, saved_argp)
+        || !TEST_true(CRYPTO_set_ex_data(ad, idx, NULL)))
+        gbl_result = 0;
     OPENSSL_free(ex_data);
-    OPENSSL_assert(idx == saved_idx2);
-    OPENSSL_assert(argl == saved_argl);
-    OPENSSL_assert(argp == saved_argp);
-    ret = CRYPTO_set_ex_data(ad, saved_idx2, NULL);
-    OPENSSL_assert(ret);
 }
 
 typedef struct myobj_st {
@@ -124,21 +130,21 @@ typedef struct myobj_st {
     int st;
 } MYOBJ;
 
-static MYOBJ *MYOBJ_new()
+static MYOBJ *MYOBJ_new(void)
 {
     static int count = 0;
     MYOBJ *obj = OPENSSL_malloc(sizeof(*obj));
 
     obj->id = ++count;
     obj->st = CRYPTO_new_ex_data(CRYPTO_EX_INDEX_APP, obj, &obj->ex_data);
-    OPENSSL_assert(obj->st != 0);
     return obj;
 }
 
 static void MYOBJ_sethello(MYOBJ *obj, char *cp)
 {
     obj->st = CRYPTO_set_ex_data(&obj->ex_data, saved_idx, cp);
-    OPENSSL_assert(obj->st != 0);
+    if (!TEST_int_eq(obj->st, 1))
+        gbl_result = 0;
 }
 
 static char *MYOBJ_gethello(MYOBJ *obj)
@@ -149,19 +155,45 @@ static char *MYOBJ_gethello(MYOBJ *obj)
 static void MYOBJ_sethello2(MYOBJ *obj, char *cp)
 {
     MYOBJ_EX_DATA* ex_data = CRYPTO_get_ex_data(&obj->ex_data, saved_idx2);
-    if (ex_data != NULL)
+
+    if (TEST_ptr(ex_data))
         ex_data->hello = cp;
     else
-        obj->st = 0;
+        obj->st = gbl_result = 0;
 }
 
 static char *MYOBJ_gethello2(MYOBJ *obj)
 {
     MYOBJ_EX_DATA* ex_data = CRYPTO_get_ex_data(&obj->ex_data, saved_idx2);
-    if (ex_data != NULL)
+
+    if (TEST_ptr(ex_data))
         return ex_data->hello;
 
-    obj->st = 0;
+    obj->st = gbl_result = 0;
+    return NULL;
+}
+
+static void MYOBJ_allochello3(MYOBJ *obj, char *cp)
+{
+    MYOBJ_EX_DATA* ex_data = NULL;
+
+    if (TEST_ptr_null(ex_data = CRYPTO_get_ex_data(&obj->ex_data, saved_idx3))
+        && TEST_true(CRYPTO_alloc_ex_data(CRYPTO_EX_INDEX_APP, obj,
+                                          &obj->ex_data, saved_idx3))
+        && TEST_ptr(ex_data = CRYPTO_get_ex_data(&obj->ex_data, saved_idx3)))
+        ex_data->hello = cp;
+    else
+        obj->st = gbl_result = 0;
+}
+
+static char *MYOBJ_gethello3(MYOBJ *obj)
+{
+    MYOBJ_EX_DATA* ex_data = CRYPTO_get_ex_data(&obj->ex_data, saved_idx3);
+
+    if (TEST_ptr(ex_data))
+        return ex_data->hello;
+
+    obj->st = gbl_result = 0;
     return NULL;
 }
 
@@ -175,18 +207,19 @@ static MYOBJ *MYOBJ_dup(MYOBJ *in)
 {
     MYOBJ *obj = MYOBJ_new();
 
-    obj->st = CRYPTO_dup_ex_data(CRYPTO_EX_INDEX_APP, &obj->ex_data,
+    obj->st |= CRYPTO_dup_ex_data(CRYPTO_EX_INDEX_APP, &obj->ex_data,
                                  &in->ex_data);
-    OPENSSL_assert(obj->st != 0);
     return obj;
 }
 
-int main()
+static int test_exdata(void)
 {
     MYOBJ *t1, *t2, *t3;
     MYOBJ_EX_DATA *ex_data;
     const char *cp;
     char *p;
+
+    gbl_result = 1;
 
     p = OPENSSL_strdup("hello world");
     saved_argl = 21;
@@ -199,36 +232,80 @@ int main()
                                          exnew2, exdup2, exfree2);
     t1 = MYOBJ_new();
     t2 = MYOBJ_new();
-    OPENSSL_assert(t1->st && t2->st);
-    ex_data = CRYPTO_get_ex_data(&t1->ex_data, saved_idx2);
-    OPENSSL_assert(ex_data != NULL);
-    ex_data = CRYPTO_get_ex_data(&t2->ex_data, saved_idx2);
-    OPENSSL_assert(ex_data != NULL);
+    if (!TEST_int_eq(t1->st, 1) || !TEST_int_eq(t2->st, 1))
+        return 0;
+    if (!TEST_ptr(CRYPTO_get_ex_data(&t1->ex_data, saved_idx2)))
+        return 0;
+
+    /*
+     * saved_idx3 differs from other indexes by being created after the exdata
+     * was initialized.
+     */
+    saved_idx3 = CRYPTO_get_ex_new_index(CRYPTO_EX_INDEX_APP,
+                                         saved_argl, saved_argp,
+                                         exnew2, exdup2, exfree2);
+    if (!TEST_ptr_null(CRYPTO_get_ex_data(&t1->ex_data, saved_idx3)))
+        return 0;
+
     MYOBJ_sethello(t1, p);
     cp = MYOBJ_gethello(t1);
-    OPENSSL_assert(cp == p);
-    cp = MYOBJ_gethello(t2);
-    OPENSSL_assert(cp == NULL);
+    if (!TEST_ptr_eq(cp, p))
+        return 0;
+
     MYOBJ_sethello2(t1, p);
     cp = MYOBJ_gethello2(t1);
-    OPENSSL_assert(cp == p);
-    OPENSSL_assert(t1->st);
+    if (!TEST_ptr_eq(cp, p))
+        return 0;
+
+    MYOBJ_allochello3(t1, p);
+    cp = MYOBJ_gethello3(t1);
+    if (!TEST_ptr_eq(cp, p))
+        return 0;
+
+    cp = MYOBJ_gethello(t2);
+    if (!TEST_ptr_null(cp))
+        return 0;
+
     cp = MYOBJ_gethello2(t2);
-    OPENSSL_assert(cp == NULL);
-    OPENSSL_assert(t2->st);
+    if (!TEST_ptr_null(cp))
+        return 0;
+
     t3 = MYOBJ_dup(t1);
+    if (!TEST_int_eq(t3->st, 1))
+        return 0;
+
     ex_data = CRYPTO_get_ex_data(&t3->ex_data, saved_idx2);
-    OPENSSL_assert(ex_data != NULL);
-    OPENSSL_assert(ex_data->dup);
+    if (!TEST_ptr(ex_data))
+        return 0;
+    if (!TEST_int_eq(ex_data->dup, 1))
+        return 0;
+
     cp = MYOBJ_gethello(t3);
-    OPENSSL_assert(cp == p);
+    if (!TEST_ptr_eq(cp, p))
+        return 0;
+
     cp = MYOBJ_gethello2(t3);
-    OPENSSL_assert(cp == p);
-    OPENSSL_assert(t3->st);
+    if (!TEST_ptr_eq(cp, p))
+        return 0;
+
+    cp = MYOBJ_gethello3(t3);
+    if (!TEST_ptr_eq(cp, p))
+        return 0;
+
     MYOBJ_free(t1);
     MYOBJ_free(t2);
     MYOBJ_free(t3);
     OPENSSL_free(saved_argp);
     OPENSSL_free(p);
-    return 0;
+
+    if (gbl_result)
+      return 1;
+    else
+      return 0;
+}
+
+int setup_tests(void)
+{
+    ADD_TEST(test_exdata);
+    return 1;
 }

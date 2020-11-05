@@ -1,14 +1,20 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
+/*
+ * DES low level APIs are deprecated for public use, but still ok for internal
+ * use.
+ */
+#include "internal/deprecated.h"
+
 #include <openssl/crypto.h>
-#include "des_locl.h"
+#include "des_local.h"
 
 void DES_string_to_key(const char *str, DES_cblock *key)
 {
@@ -17,10 +23,6 @@ void DES_string_to_key(const char *str, DES_cblock *key)
 
     memset(key, 0, 8);
     length = strlen(str);
-#ifdef OLD_STR_TO_KEY
-    for (i = 0; i < length; i++)
-        (*key)[i % 8] ^= (str[i] << 1);
-#else                           /* MIT COMPATIBLE */
     for (i = 0; i < length; i++) {
         register unsigned char j = str[i];
 
@@ -34,7 +36,6 @@ void DES_string_to_key(const char *str, DES_cblock *key)
             (*key)[7 - (i % 8)] ^= j;
         }
     }
-#endif
     DES_set_odd_parity(key);
     DES_set_key_unchecked(key, &ks);
     DES_cbc_cksum((const unsigned char *)str, key, length, &ks, key);
@@ -50,20 +51,6 @@ void DES_string_to_2keys(const char *str, DES_cblock *key1, DES_cblock *key2)
     memset(key1, 0, 8);
     memset(key2, 0, 8);
     length = strlen(str);
-#ifdef OLD_STR_TO_KEY
-    if (length <= 8) {
-        for (i = 0; i < length; i++) {
-            (*key2)[i] = (*key1)[i] = (str[i] << 1);
-        }
-    } else {
-        for (i = 0; i < length; i++) {
-            if ((i / 8) & 1)
-                (*key2)[i % 8] ^= (str[i] << 1);
-            else
-                (*key1)[i % 8] ^= (str[i] << 1);
-        }
-    }
-#else                           /* MIT COMPATIBLE */
     for (i = 0; i < length; i++) {
         register unsigned char j = str[i];
 
@@ -84,7 +71,6 @@ void DES_string_to_2keys(const char *str, DES_cblock *key1, DES_cblock *key2)
     }
     if (length <= 8)
         memcpy(key2, key1, 8);
-#endif
     DES_set_odd_parity(key1);
     DES_set_odd_parity(key2);
     DES_set_key_unchecked(key1, &ks);

@@ -1,8 +1,8 @@
 #! /usr/bin/env perl
 # Author: Marc Bevand <bevand_m (at) epita.fr>
-# Copyright 2005-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2005-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -119,9 +119,10 @@ EOF
 }
 
 no warnings qw(uninitialized);
-my $flavour = shift;
-my $output  = shift;
-if ($flavour =~ /\./) { $output = $flavour; undef $flavour; }
+# $output is the last argument if it looks like a file (it has an extension)
+# $flavour is the first argument if it doesn't look like a file
+my $output = $#ARGV >= 0 && $ARGV[$#ARGV] =~ m|\.\w+$| ? pop : undef;
+my $flavour = $#ARGV >= 0 && $ARGV[0] !~ m|\.| ? shift : undef;
 
 my $win64=0; $win64=1 if ($flavour =~ /[nm]asm|mingw64/ || $output =~ /\.asm$/);
 
@@ -130,7 +131,8 @@ $0 =~ m/(.*[\/\\])[^\/\\]+$/; my $dir=$1; my $xlate;
 ( $xlate="${dir}../../perlasm/x86_64-xlate.pl" and -f $xlate) or
 die "can't locate x86_64-xlate.pl";
 
-open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\"";
+open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\""
+    or die "can't call $xlate: $!";
 *STDOUT=*OUT;
 
 $code .= <<EOF;
@@ -140,11 +142,17 @@ $code .= <<EOF;
 .globl md5_block_asm_data_order
 .type md5_block_asm_data_order,\@function,3
 md5_block_asm_data_order:
+.cfi_startproc
 	push	%rbp
+.cfi_push	%rbp
 	push	%rbx
+.cfi_push	%rbx
 	push	%r12
+.cfi_push	%r12
 	push	%r14
+.cfi_push	%r14
 	push	%r15
+.cfi_push	%r15
 .Lprologue:
 
 	# rdi = arg #1 (ctx, MD5_CTX pointer)
@@ -261,13 +269,20 @@ $code .= <<EOF;
 	mov	%edx,		3*4(%rbp)	# ctx->D = D
 
 	mov	(%rsp),%r15
+.cfi_restore	%r15
 	mov	8(%rsp),%r14
+.cfi_restore	%r14
 	mov	16(%rsp),%r12
+.cfi_restore	%r12
 	mov	24(%rsp),%rbx
+.cfi_restore	%rbx
 	mov	32(%rsp),%rbp
+.cfi_restore	%rbp
 	add	\$40,%rsp
+.cfi_adjust_cfa_offset	-40
 .Lepilogue:
 	ret
+.cfi_endproc
 .size md5_block_asm_data_order,.-md5_block_asm_data_order
 EOF
 
@@ -377,4 +392,4 @@ ___
 
 print $code;
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

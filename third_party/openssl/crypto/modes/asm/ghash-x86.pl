@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2010-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2010-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -103,14 +103,13 @@
 #
 # Does it make sense to increase Naggr? To start with it's virtually
 # impossible in 32-bit mode, because of limited register bank
-# capacity. Otherwise improvement has to be weighed agiainst slower
+# capacity. Otherwise improvement has to be weighed against slower
 # setup, as well as code size and complexity increase. As even
 # optimistic estimate doesn't promise 30% performance improvement,
 # there are currently no plans to increase Naggr.
 #
-# Special thanks to David Woodhouse <dwmw2@infradead.org> for
-# providing access to a Westmere-based system on behalf of Intel
-# Open Source Technology Centre.
+# Special thanks to David Woodhouse for providing access to a
+# Westmere-based system on behalf of Intel Open Source Technology Centre.
 
 # January 2010
 #
@@ -136,10 +135,9 @@ $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
 push(@INC,"${dir}","${dir}../../perlasm");
 require "x86asm.pl";
 
-$output=pop;
-open STDOUT,">$output";
+$output=pop and open STDOUT,">$output";
 
-&asm_init($ARGV[0],"ghash-x86.pl",$x86only = $ARGV[$#ARGV] eq "386");
+&asm_init($ARGV[0],$x86only = $ARGV[$#ARGV] eq "386");
 
 $sse2=0;
 for (@ARGV) { $sse2=1 if (/-DOPENSSL_IA32_SSE2/); }
@@ -811,7 +809,7 @@ sub mmx_loop() {
     &bswap	($dat);
     &pshufw	($Zhi,$Zhi,0b00011011);		# 76543210
     &bswap	("ebx");
-    
+
     &cmp	("ecx",&DWP(528+16+8,"esp"));	# are we done?
     &jne	(&label("outer"));
   }
@@ -915,7 +913,7 @@ my ($Xhi,$Xi) = @_;
 	&psllq		($Xi,57);		#
 	&movdqa		($T1,$Xi);		#
 	&pslldq		($Xi,8);
-	&psrldq		($T1,8);		#	
+	&psrldq		($T1,8);		#
 	&pxor		($Xi,$T2);
 	&pxor		($Xhi,$T1);		#
 
@@ -1085,7 +1083,7 @@ my ($Xhi,$Xi) = @_;
 	  &psllq	($Xi,57);		#
 	  &movdqa	($T1,$Xi);		#
 	  &pslldq	($Xi,8);
-	  &psrldq	($T1,8);		#	
+	  &psrldq	($T1,8);		#
 	  &pxor		($Xi,$T2);
 	  &pxor		($Xhi,$T1);		#
 	&pshufd		($T1,$Xhn,0b01001110);
@@ -1379,7 +1377,7 @@ my ($Xhi,$Xi)=@_;
 &asciz("GHASH for x86, CRYPTOGAMS by <appro\@openssl.org>");
 &asm_finish();
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";
 
 # A question was risen about choice of vanilla MMX. Or rather why wasn't
 # SSE2 chosen instead? In addition to the fact that MMX runs on legacy

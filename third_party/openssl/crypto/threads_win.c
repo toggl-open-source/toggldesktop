@@ -1,7 +1,7 @@
 /*
- * Copyright 2016-2018 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2016-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -17,15 +17,22 @@
 
 CRYPTO_RWLOCK *CRYPTO_THREAD_lock_new(void)
 {
-    CRYPTO_RWLOCK *lock = OPENSSL_zalloc(sizeof(CRITICAL_SECTION));
-    if (lock == NULL)
-        return NULL;
+    CRYPTO_RWLOCK *lock;
 
+    if ((lock = OPENSSL_zalloc(sizeof(CRITICAL_SECTION))) == NULL) {
+        /* Don't set error, to avoid recursion blowup. */
+        return NULL;
+    }
+
+# if !defined(_WIN32_WCE)
     /* 0x400 is the spin count value suggested in the documentation */
     if (!InitializeCriticalSectionAndSpinCount(lock, 0x400)) {
         OPENSSL_free(lock);
         return NULL;
     }
+# else
+    InitializeCriticalSection(lock);
+# endif
 
     return lock;
 }
@@ -148,8 +155,17 @@ int CRYPTO_THREAD_compare_id(CRYPTO_THREAD_ID a, CRYPTO_THREAD_ID b)
 
 int CRYPTO_atomic_add(int *val, int amount, int *ret, CRYPTO_RWLOCK *lock)
 {
-    *ret = InterlockedExchangeAdd(val, amount) + amount;
+    *ret = (int)InterlockedExchangeAdd((long volatile *)val, (long)amount) + amount;
     return 1;
 }
 
+int openssl_init_fork_handlers(void)
+{
+    return 0;
+}
+
+int openssl_get_fork_id(void)
+{
+    return 0;
+}
 #endif

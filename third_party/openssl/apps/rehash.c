@@ -1,19 +1,15 @@
 /*
- * Copyright 2015-2018 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2015-2020 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright (c) 2013-2014 Timo Teräs <timo.teras@gmail.com>
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
-/*
- * C implementation based on the original Perl and shell versions
- *
- * Copyright (c) 2013-2014 Timo Teräs <timo.teras@iki.fi>
- */
-
 #include "apps.h"
+#include "progs.h"
 
 #if defined(OPENSSL_SYS_UNIX) || defined(__APPLE__) || \
     (defined(__VMS) && defined(__DECC) && __CRTL_VER >= 80300000)
@@ -46,7 +42,6 @@
 # include <openssl/pem.h>
 # include <openssl/x509.h>
 
-
 # ifndef PATH_MAX
 #  define PATH_MAX 4096
 # endif
@@ -54,6 +49,26 @@
 #  define NAME_MAX 255
 # endif
 # define MAX_COLLISIONS  256
+
+# if defined(OPENSSL_SYS_VXWORKS)
+/*
+ * VxWorks has no symbolic links
+ */
+
+#  define lstat(path, buf) stat(path, buf)
+
+int symlink(const char *target, const char *linkpath)
+{
+    errno = ENOSYS;
+    return -1;
+}
+
+ssize_t readlink(const char *pathname, char *buf, size_t bufsiz)
+{
+    errno = ENOSYS;
+    return -1;
+}
+# endif
 
 typedef struct hentry_st {
     struct hentry_st *next;
@@ -217,7 +232,7 @@ static int do_file(const char *filename, const char *fullpath, enum Hash h)
 {
     STACK_OF (X509_INFO) *inf = NULL;
     X509_INFO *x;
-    X509_NAME *name = NULL;
+    const X509_NAME *name = NULL;
     BIO *b;
     const char *ext;
     unsigned char digest[EVP_MAX_MD_SIZE];
@@ -255,19 +270,27 @@ static int do_file(const char *filename, const char *fullpath, enum Hash h)
         goto end;
     }
     x = sk_X509_INFO_value(inf, 0);
-    if (x->x509) {
+    if (x->x509 != NULL) {
         type = TYPE_CERT;
         name = X509_get_subject_name(x->x509);
-        X509_digest(x->x509, evpmd, digest, NULL);
-    } else if (x->crl) {
+        if (!X509_digest(x->x509, evpmd, digest, NULL)) {
+            BIO_printf(bio_err, "out of memory\n");
+            ++errs;
+            goto end;
+        }
+    } else if (x->crl != NULL) {
         type = TYPE_CRL;
         name = X509_CRL_get_issuer(x->crl);
-        X509_CRL_digest(x->crl, evpmd, digest, NULL);
+        if (!X509_CRL_digest(x->crl, evpmd, digest, NULL)) {
+            BIO_printf(bio_err, "out of memory\n");
+            ++errs;
+            goto end;
+        }
     } else {
         ++errs;
         goto end;
     }
-    if (name) {
+    if (name != NULL) {
         if ((h == HASH_NEW) || (h == HASH_BOTH))
             errs += add_entry(type, X509_NAME_hash(name), filename, digest, 1, ~0);
         if ((h == HASH_OLD) || (h == HASH_BOTH))
@@ -298,24 +321,6 @@ static int ends_with_dirsep(const char *path)
     return *path == '/';
 }
 
-static int massage_filename(char *name)
-{
-# ifdef __VMS
-    char *p = strchr(name, ';');
-    char *q = p;
-
-    if (q != NULL) {
-        for (q++; *q != '\0'; q++) {
-            if (!isdigit((unsigned char)*q))
-                return 1;
-        }
-    }
-
-    *p = '\0';
-# endif
-    return 1;
-}
-
 /*
  * Process a directory; return number of errors found.
  */
@@ -330,7 +335,7 @@ static int do_dir(const char *dirname, enum Hash h)
     size_t i;
     const char *pathsep;
     const char *filename;
-    char *buf, *copy;
+    char *buf, *copy = NULL;
     STACK_OF(OPENSSL_STRING) *files = NULL;
 
     if (app_access(dirname, W_OK) < 0) {
@@ -347,14 +352,16 @@ static int do_dir(const char *dirname, enum Hash h)
 
     if ((files = sk_OPENSSL_STRING_new_null()) == NULL) {
         BIO_printf(bio_err, "Skipping %s, out of memory\n", dirname);
-        exit(1);
+        errs = 1;
+        goto err;
     }
     while ((filename = OPENSSL_DIR_read(&d, dirname)) != NULL) {
-        if ((copy = strdup(filename)) == NULL
-                || !massage_filename(copy)
+        if ((copy = OPENSSL_strdup(filename)) == NULL
                 || sk_OPENSSL_STRING_push(files, copy) == 0) {
+            OPENSSL_free(copy);
             BIO_puts(bio_err, "out of memory\n");
-            exit(1);
+            errs = 1;
+            goto err;
         }
     }
     OPENSSL_DIR_end(&d);
@@ -372,7 +379,6 @@ static int do_dir(const char *dirname, enum Hash h)
             continue;
         errs += do_file(filename, buf, h);
     }
-    sk_OPENSSL_STRING_pop_free(files, str_free);
 
     for (i = 0; i < OSSL_NELEM(hash_table); i++) {
         for (bp = hash_table[i]; bp; bp = nextbp) {
@@ -440,24 +446,35 @@ static int do_dir(const char *dirname, enum Hash h)
         hash_table[i] = NULL;
     }
 
+ err:
+    sk_OPENSSL_STRING_pop_free(files, str_free);
     OPENSSL_free(buf);
     return errs;
 }
 
 typedef enum OPTION_choice {
     OPT_ERR = -1, OPT_EOF = 0, OPT_HELP,
-    OPT_COMPAT, OPT_OLD, OPT_N, OPT_VERBOSE
+    OPT_COMPAT, OPT_OLD, OPT_N, OPT_VERBOSE,
+    OPT_PROV_ENUM
 } OPTION_CHOICE;
 
-OPTIONS rehash_options[] = {
-    {OPT_HELP_STR, 1, '-', "Usage: %s [options] [cert-directory...]\n"},
-    {OPT_HELP_STR, 1, '-', "Valid options are:\n"},
+const OPTIONS rehash_options[] = {
+    {OPT_HELP_STR, 1, '-', "Usage: %s [options] [directory...]\n"},
+
+    OPT_SECTION("General"),
     {"help", OPT_HELP, '-', "Display this summary"},
     {"h", OPT_HELP, '-', "Display this summary"},
     {"compat", OPT_COMPAT, '-', "Create both new- and old-style hash links"},
     {"old", OPT_OLD, '-', "Use old-style hash to generate links"},
     {"n", OPT_N, '-', "Do not remove existing links"},
+
+    OPT_SECTION("Output"),
     {"v", OPT_VERBOSE, '-', "Verbose output"},
+
+    OPT_PROV_OPTIONS,
+
+    OPT_PARAMETERS(),
+    {"directory", 0, 0, "One or more directories to process (optional)"},
     {NULL}
 };
 
@@ -492,6 +509,10 @@ int rehash_main(int argc, char **argv)
         case OPT_VERBOSE:
             verbose = 1;
             break;
+        case OPT_PROV_CASES:
+            if (!opt_provider(o))
+                goto end;
+            break;
         }
     }
     argc = opt_num_rest();
@@ -500,8 +521,8 @@ int rehash_main(int argc, char **argv)
     evpmd = EVP_sha1();
     evpmdsize = EVP_MD_size(evpmd);
 
-    if (*argv) {
-        while (*argv)
+    if (*argv != NULL) {
+        while (*argv != NULL)
             errs += do_dir(*argv++, h);
     } else if ((env = getenv(X509_get_default_cert_dir_env())) != NULL) {
         char lsc[2] = { LIST_SEPARATOR_CHAR, '\0' };
@@ -518,14 +539,14 @@ int rehash_main(int argc, char **argv)
 }
 
 #else
-OPTIONS rehash_options[] = {
+const OPTIONS rehash_options[] = {
     {NULL}
 };
 
 int rehash_main(int argc, char **argv)
 {
     BIO_printf(bio_err, "Not available; use c_rehash script\n");
-    return (1);
+    return 1;
 }
 
 #endif /* defined(OPENSSL_SYS_UNIX) || defined(__APPLE__) */

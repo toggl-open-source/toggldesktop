@@ -1,17 +1,18 @@
 /*
- * Copyright 2012-2018 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2012-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
 #include <stdio.h>
-#include "ssl_locl.h"
+#include "ssl_local.h"
 #include <openssl/conf.h>
 #include <openssl/objects.h>
 #include <openssl/dh.h>
+#include "internal/nelem.h"
 
 /*
  * structure holding name tables. This is used for permitted elements in lists
@@ -202,15 +203,21 @@ static int cmd_ClientSignatureAlgorithms(SSL_CONF_CTX *cctx, const char *value)
     return rv > 0;
 }
 
-static int cmd_Curves(SSL_CONF_CTX *cctx, const char *value)
+static int cmd_Groups(SSL_CONF_CTX *cctx, const char *value)
 {
     int rv;
     if (cctx->ssl)
-        rv = SSL_set1_curves_list(cctx->ssl, value);
+        rv = SSL_set1_groups_list(cctx->ssl, value);
     /* NB: ctx == NULL performs syntax checking only */
     else
-        rv = SSL_CTX_set1_curves_list(cctx->ctx, value);
+        rv = SSL_CTX_set1_groups_list(cctx->ctx, value);
     return rv > 0;
+}
+
+/* This is the old name for cmd_Groups - retained for backwards compatibility */
+static int cmd_Curves(SSL_CONF_CTX *cctx, const char *value)
+{
+    return cmd_Groups(cctx, value);
 }
 
 #ifndef OPENSSL_NO_EC
@@ -218,7 +225,6 @@ static int cmd_Curves(SSL_CONF_CTX *cctx, const char *value)
 static int cmd_ECDHParameters(SSL_CONF_CTX *cctx, const char *value)
 {
     int rv = 1;
-    EC_KEY *ecdh;
     int nid;
 
     /* Ignore values supported by 1.0.2 for the automatic selection */
@@ -235,14 +241,11 @@ static int cmd_ECDHParameters(SSL_CONF_CTX *cctx, const char *value)
         nid = OBJ_sn2nid(value);
     if (nid == 0)
         return 0;
-    ecdh = EC_KEY_new_by_curve_name(nid);
-    if (!ecdh)
-        return 0;
+
     if (cctx->ctx)
-        rv = SSL_CTX_set_tmp_ecdh(cctx->ctx, ecdh);
+        rv = SSL_CTX_set1_groups(cctx->ctx, &nid, 1);
     else if (cctx->ssl)
-        rv = SSL_set_tmp_ecdh(cctx->ssl, ecdh);
-    EC_KEY_free(ecdh);
+        rv = SSL_set1_groups(cctx->ssl, &nid, 1);
 
     return rv > 0;
 }
@@ -250,10 +253,22 @@ static int cmd_ECDHParameters(SSL_CONF_CTX *cctx, const char *value)
 static int cmd_CipherString(SSL_CONF_CTX *cctx, const char *value)
 {
     int rv = 1;
+
     if (cctx->ctx)
         rv = SSL_CTX_set_cipher_list(cctx->ctx, value);
     if (cctx->ssl)
         rv = SSL_set_cipher_list(cctx->ssl, value);
+    return rv > 0;
+}
+
+static int cmd_Ciphersuites(SSL_CONF_CTX *cctx, const char *value)
+{
+    int rv = 1;
+
+    if (cctx->ctx)
+        rv = SSL_CTX_set_ciphersuites(cctx->ctx, value);
+    if (cctx->ssl)
+        rv = SSL_set_ciphersuites(cctx->ssl, value);
     return rv > 0;
 }
 
@@ -266,6 +281,7 @@ static int cmd_Protocol(SSL_CONF_CTX *cctx, const char *value)
         SSL_FLAG_TBL_INV("TLSv1", SSL_OP_NO_TLSv1),
         SSL_FLAG_TBL_INV("TLSv1.1", SSL_OP_NO_TLSv1_1),
         SSL_FLAG_TBL_INV("TLSv1.2", SSL_OP_NO_TLSv1_2),
+        SSL_FLAG_TBL_INV("TLSv1.3", SSL_OP_NO_TLSv1_3),
         SSL_FLAG_TBL_INV("DTLSv1", SSL_OP_NO_DTLSv1),
         SSL_FLAG_TBL_INV("DTLSv1.2", SSL_OP_NO_DTLSv1_2)
     };
@@ -285,12 +301,20 @@ static int protocol_from_string(const char *value)
         const char *name;
         int version;
     };
+    /*
+     * Note: To avoid breaking previously valid configurations, we must retain
+     * legacy entries in this table even if the underlying protocol is no
+     * longer supported.  This also means that the constants SSL3_VERSION, ...
+     * need to be retained indefinitely.  This table can only grow, never
+     * shrink.
+     */
     static const struct protocol_versions versions[] = {
         {"None", 0},
         {"SSLv3", SSL3_VERSION},
         {"TLSv1", TLS1_VERSION},
         {"TLSv1.1", TLS1_1_VERSION},
         {"TLSv1.2", TLS1_2_VERSION},
+        {"TLSv1.3", TLS1_3_VERSION},
         {"DTLSv1", DTLS1_VERSION},
         {"DTLSv1.2", DTLS1_2_VERSION}
     };
@@ -360,6 +384,12 @@ static int cmd_Options(SSL_CONF_CTX *cctx, const char *value)
                      SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION),
         SSL_FLAG_TBL_INV("EncryptThenMac", SSL_OP_NO_ENCRYPT_THEN_MAC),
         SSL_FLAG_TBL("NoRenegotiation", SSL_OP_NO_RENEGOTIATION),
+        SSL_FLAG_TBL("AllowNoDHEKEX", SSL_OP_ALLOW_NO_DHE_KEX),
+        SSL_FLAG_TBL("PrioritizeChaCha", SSL_OP_PRIORITIZE_CHACHA),
+        SSL_FLAG_TBL("MiddleboxCompat", SSL_OP_ENABLE_MIDDLEBOX_COMPAT),
+        SSL_FLAG_TBL_INV("AntiReplay", SSL_OP_NO_ANTI_REPLAY),
+        SSL_FLAG_TBL_INV("ExtendedMasterSecret", SSL_OP_NO_EXTENDED_MASTER_SECRET),
+        SSL_FLAG_TBL_INV("CANames", SSL_OP_DISABLE_TLSEXT_CA_NAMES)
     };
     if (value == NULL)
         return -3;
@@ -375,7 +405,12 @@ static int cmd_VerifyMode(SSL_CONF_CTX *cctx, const char *value)
         SSL_FLAG_VFY_SRV("Request", SSL_VERIFY_PEER),
         SSL_FLAG_VFY_SRV("Require",
                          SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT),
-        SSL_FLAG_VFY_SRV("Once", SSL_VERIFY_PEER | SSL_VERIFY_CLIENT_ONCE)
+        SSL_FLAG_VFY_SRV("Once", SSL_VERIFY_PEER | SSL_VERIFY_CLIENT_ONCE),
+        SSL_FLAG_VFY_SRV("RequestPostHandshake",
+                         SSL_VERIFY_PEER | SSL_VERIFY_POST_HANDSHAKE),
+        SSL_FLAG_VFY_SRV("RequirePostHandshake",
+                         SSL_VERIFY_PEER | SSL_VERIFY_POST_HANDSHAKE |
+                         SSL_VERIFY_FAIL_IF_NO_PEER_CERT),
     };
     if (value == NULL)
         return -3;
@@ -400,7 +435,7 @@ static int cmd_Certificate(SSL_CONF_CTX *cctx, const char *value)
         char **pfilename = &cctx->cert_filename[c->key - c->pkeys];
         OPENSSL_free(*pfilename);
         *pfilename = OPENSSL_strdup(value);
-        if (!*pfilename)
+        if (*pfilename == NULL)
             rv = 0;
     }
 
@@ -428,46 +463,77 @@ static int cmd_ServerInfoFile(SSL_CONF_CTX *cctx, const char *value)
 }
 
 static int do_store(SSL_CONF_CTX *cctx,
-                    const char *CAfile, const char *CApath, int verify_store)
+                    const char *CAfile, const char *CApath, const char *CAstore,
+                    int verify_store)
 {
     CERT *cert;
     X509_STORE **st;
-    if (cctx->ctx)
+    SSL_CTX *ctx;
+    OPENSSL_CTX *libctx = NULL;
+    const char *propq = NULL;
+
+    if (cctx->ctx != NULL) {
         cert = cctx->ctx->cert;
-    else if (cctx->ssl)
+        ctx = cctx->ctx;
+    } else if (cctx->ssl != NULL) {
         cert = cctx->ssl->cert;
-    else
+        ctx = cctx->ssl->ctx;
+    } else {
         return 1;
+    }
+    if (ctx != NULL) {
+        libctx = ctx->libctx;
+        propq = ctx->propq;
+    }
     st = verify_store ? &cert->verify_store : &cert->chain_store;
     if (*st == NULL) {
         *st = X509_STORE_new();
         if (*st == NULL)
             return 0;
     }
-    return X509_STORE_load_locations(*st, CAfile, CApath) > 0;
+
+    if (CAfile != NULL && !X509_STORE_load_file_with_libctx(*st, CAfile,
+                                                            libctx, propq))
+        return 0;
+    if (CApath != NULL && !X509_STORE_load_path(*st, CApath))
+        return 0;
+    if (CAstore != NULL && !X509_STORE_load_store_with_libctx(*st, CAstore,
+                                                              libctx, propq))
+        return 0;
+    return 1;
 }
 
 static int cmd_ChainCAPath(SSL_CONF_CTX *cctx, const char *value)
 {
-    return do_store(cctx, NULL, value, 0);
+    return do_store(cctx, NULL, value, NULL, 0);
 }
 
 static int cmd_ChainCAFile(SSL_CONF_CTX *cctx, const char *value)
 {
-    return do_store(cctx, value, NULL, 0);
+    return do_store(cctx, value, NULL, NULL, 0);
+}
+
+static int cmd_ChainCAStore(SSL_CONF_CTX *cctx, const char *value)
+{
+    return do_store(cctx, NULL, NULL, value, 0);
 }
 
 static int cmd_VerifyCAPath(SSL_CONF_CTX *cctx, const char *value)
 {
-    return do_store(cctx, NULL, value, 1);
+    return do_store(cctx, NULL, value, NULL, 1);
 }
 
 static int cmd_VerifyCAFile(SSL_CONF_CTX *cctx, const char *value)
 {
-    return do_store(cctx, value, NULL, 1);
+    return do_store(cctx, value, NULL, NULL, 1);
 }
 
-static int cmd_ClientCAFile(SSL_CONF_CTX *cctx, const char *value)
+static int cmd_VerifyCAStore(SSL_CONF_CTX *cctx, const char *value)
+{
+    return do_store(cctx, NULL, NULL, value, 1);
+}
+
+static int cmd_RequestCAFile(SSL_CONF_CTX *cctx, const char *value)
 {
     if (cctx->canames == NULL)
         cctx->canames = sk_X509_NAME_new_null();
@@ -476,13 +542,37 @@ static int cmd_ClientCAFile(SSL_CONF_CTX *cctx, const char *value)
     return SSL_add_file_cert_subjects_to_stack(cctx->canames, value);
 }
 
-static int cmd_ClientCAPath(SSL_CONF_CTX *cctx, const char *value)
+static int cmd_ClientCAFile(SSL_CONF_CTX *cctx, const char *value)
+{
+    return cmd_RequestCAFile(cctx, value);
+}
+
+static int cmd_RequestCAPath(SSL_CONF_CTX *cctx, const char *value)
 {
     if (cctx->canames == NULL)
         cctx->canames = sk_X509_NAME_new_null();
     if (cctx->canames == NULL)
         return 0;
     return SSL_add_dir_cert_subjects_to_stack(cctx->canames, value);
+}
+
+static int cmd_ClientCAPath(SSL_CONF_CTX *cctx, const char *value)
+{
+    return cmd_RequestCAPath(cctx, value);
+}
+
+static int cmd_RequestCAStore(SSL_CONF_CTX *cctx, const char *value)
+{
+    if (cctx->canames == NULL)
+        cctx->canames = sk_X509_NAME_new_null();
+    if (cctx->canames == NULL)
+        return 0;
+    return SSL_add_store_cert_subjects_to_stack(cctx->canames, value);
+}
+
+static int cmd_ClientCAStore(SSL_CONF_CTX *cctx, const char *value)
+{
+    return cmd_RequestCAStore(cctx, value);
 }
 
 #ifndef OPENSSL_NO_DH
@@ -512,6 +602,40 @@ static int cmd_DHParameters(SSL_CONF_CTX *cctx, const char *value)
     return rv > 0;
 }
 #endif
+
+static int cmd_RecordPadding(SSL_CONF_CTX *cctx, const char *value)
+{
+    int rv = 0;
+    int block_size = atoi(value);
+
+    /*
+     * All we care about is a non-negative value,
+     * the setters check the range
+     */
+    if (block_size >= 0) {
+        if (cctx->ctx)
+            rv = SSL_CTX_set_block_padding(cctx->ctx, block_size);
+        if (cctx->ssl)
+            rv = SSL_set_block_padding(cctx->ssl, block_size);
+    }
+    return rv;
+}
+
+
+static int cmd_NumTickets(SSL_CONF_CTX *cctx, const char *value)
+{
+    int rv = 0;
+    int num_tickets = atoi(value);
+
+    if (num_tickets >= 0) {
+        if (cctx->ctx)
+            rv = SSL_CTX_set_num_tickets(cctx->ctx, num_tickets);
+        if (cctx->ssl)
+            rv = SSL_set_num_tickets(cctx->ssl, num_tickets);
+    }
+    return rv;
+}
+
 typedef struct {
     int (*cmd) (SSL_CONF_CTX *cctx, const char *value);
     const char *str_file;
@@ -537,6 +661,7 @@ static const ssl_conf_cmd_tbl ssl_conf_cmds[] = {
     SSL_CONF_CMD_SWITCH("no_tls1", 0),
     SSL_CONF_CMD_SWITCH("no_tls1_1", 0),
     SSL_CONF_CMD_SWITCH("no_tls1_2", 0),
+    SSL_CONF_CMD_SWITCH("no_tls1_3", 0),
     SSL_CONF_CMD_SWITCH("bugs", 0),
     SSL_CONF_CMD_SWITCH("no_comp", 0),
     SSL_CONF_CMD_SWITCH("comp", 0),
@@ -548,14 +673,21 @@ static const ssl_conf_cmd_tbl ssl_conf_cmds[] = {
     SSL_CONF_CMD_SWITCH("no_renegotiation", 0),
     SSL_CONF_CMD_SWITCH("no_resumption_on_reneg", SSL_CONF_FLAG_SERVER),
     SSL_CONF_CMD_SWITCH("no_legacy_server_connect", SSL_CONF_FLAG_SERVER),
+    SSL_CONF_CMD_SWITCH("allow_no_dhe_kex", 0),
+    SSL_CONF_CMD_SWITCH("prioritize_chacha", SSL_CONF_FLAG_SERVER),
     SSL_CONF_CMD_SWITCH("strict", 0),
+    SSL_CONF_CMD_SWITCH("no_middlebox", 0),
+    SSL_CONF_CMD_SWITCH("anti_replay", SSL_CONF_FLAG_SERVER),
+    SSL_CONF_CMD_SWITCH("no_anti_replay", SSL_CONF_FLAG_SERVER),
     SSL_CONF_CMD_STRING(SignatureAlgorithms, "sigalgs", 0),
     SSL_CONF_CMD_STRING(ClientSignatureAlgorithms, "client_sigalgs", 0),
     SSL_CONF_CMD_STRING(Curves, "curves", 0),
+    SSL_CONF_CMD_STRING(Groups, "groups", 0),
 #ifndef OPENSSL_NO_EC
     SSL_CONF_CMD_STRING(ECDHParameters, "named_curve", SSL_CONF_FLAG_SERVER),
 #endif
     SSL_CONF_CMD_STRING(CipherString, "cipher", 0),
+    SSL_CONF_CMD_STRING(Ciphersuites, "ciphersuites", 0),
     SSL_CONF_CMD_STRING(Protocol, NULL, 0),
     SSL_CONF_CMD_STRING(MinProtocol, "min_protocol", 0),
     SSL_CONF_CMD_STRING(MaxProtocol, "max_protocol", 0),
@@ -572,21 +704,36 @@ static const ssl_conf_cmd_tbl ssl_conf_cmds[] = {
                  SSL_CONF_TYPE_DIR),
     SSL_CONF_CMD(ChainCAFile, "chainCAfile", SSL_CONF_FLAG_CERTIFICATE,
                  SSL_CONF_TYPE_FILE),
+    SSL_CONF_CMD(ChainCAStore, "chainCAstore", SSL_CONF_FLAG_CERTIFICATE,
+                 SSL_CONF_TYPE_STORE),
     SSL_CONF_CMD(VerifyCAPath, "verifyCApath", SSL_CONF_FLAG_CERTIFICATE,
                  SSL_CONF_TYPE_DIR),
     SSL_CONF_CMD(VerifyCAFile, "verifyCAfile", SSL_CONF_FLAG_CERTIFICATE,
                  SSL_CONF_TYPE_FILE),
+    SSL_CONF_CMD(VerifyCAStore, "verifyCAstore", SSL_CONF_FLAG_CERTIFICATE,
+                 SSL_CONF_TYPE_STORE),
+    SSL_CONF_CMD(RequestCAFile, "requestCAFile", SSL_CONF_FLAG_CERTIFICATE,
+                 SSL_CONF_TYPE_FILE),
     SSL_CONF_CMD(ClientCAFile, NULL,
                  SSL_CONF_FLAG_SERVER | SSL_CONF_FLAG_CERTIFICATE,
                  SSL_CONF_TYPE_FILE),
+    SSL_CONF_CMD(RequestCAPath, NULL, SSL_CONF_FLAG_CERTIFICATE,
+                 SSL_CONF_TYPE_DIR),
     SSL_CONF_CMD(ClientCAPath, NULL,
                  SSL_CONF_FLAG_SERVER | SSL_CONF_FLAG_CERTIFICATE,
                  SSL_CONF_TYPE_DIR),
+    SSL_CONF_CMD(RequestCAStore, "requestCAStore", SSL_CONF_FLAG_CERTIFICATE,
+                 SSL_CONF_TYPE_STORE),
+    SSL_CONF_CMD(ClientCAStore, NULL,
+                 SSL_CONF_FLAG_SERVER | SSL_CONF_FLAG_CERTIFICATE,
+                 SSL_CONF_TYPE_STORE),
 #ifndef OPENSSL_NO_DH
     SSL_CONF_CMD(DHParameters, "dhparam",
                  SSL_CONF_FLAG_SERVER | SSL_CONF_FLAG_CERTIFICATE,
-                 SSL_CONF_TYPE_FILE)
+                 SSL_CONF_TYPE_FILE),
 #endif
+    SSL_CONF_CMD_STRING(RecordPadding, "record_padding", 0),
+    SSL_CONF_CMD_STRING(NumTickets, "num_tickets", SSL_CONF_FLAG_SERVER),
 };
 
 /* Supported switches: must match order of switches in ssl_conf_cmds */
@@ -595,6 +742,7 @@ static const ssl_switch_tbl ssl_cmd_switches[] = {
     {SSL_OP_NO_TLSv1, 0},       /* no_tls1 */
     {SSL_OP_NO_TLSv1_1, 0},     /* no_tls1_1 */
     {SSL_OP_NO_TLSv1_2, 0},     /* no_tls1_2 */
+    {SSL_OP_NO_TLSv1_3, 0},     /* no_tls1_3 */
     {SSL_OP_ALL, 0},            /* bugs */
     {SSL_OP_NO_COMPRESSION, 0}, /* no_comp */
     {SSL_OP_NO_COMPRESSION, SSL_TFLAG_INV}, /* comp */
@@ -611,12 +759,22 @@ static const ssl_switch_tbl ssl_cmd_switches[] = {
     {SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION, 0},
     /* no_legacy_server_connect */
     {SSL_OP_LEGACY_SERVER_CONNECT, SSL_TFLAG_INV},
+    /* allow_no_dhe_kex */
+    {SSL_OP_ALLOW_NO_DHE_KEX, 0},
+    /* chacha reprioritization */
+    {SSL_OP_PRIORITIZE_CHACHA, 0},
     {SSL_CERT_FLAG_TLS_STRICT, SSL_TFLAG_CERT}, /* strict */
+    /* no_middlebox */
+    {SSL_OP_ENABLE_MIDDLEBOX_COMPAT, SSL_TFLAG_INV},
+    /* anti_replay */
+    {SSL_OP_NO_ANTI_REPLAY, SSL_TFLAG_INV},
+    /* no_anti_replay */
+    {SSL_OP_NO_ANTI_REPLAY, 0},
 };
 
 static int ssl_conf_cmd_skip_prefix(SSL_CONF_CTX *cctx, const char **pcmd)
 {
-    if (!pcmd || !*pcmd)
+    if (pcmd == NULL || *pcmd == NULL)
         return 0;
     /* If a prefix is set, check and skip */
     if (cctx->prefix) {
@@ -734,13 +892,14 @@ int SSL_CONF_cmd_argv(SSL_CONF_CTX *cctx, int *pargc, char ***pargv)
 {
     int rv;
     const char *arg = NULL, *argn;
-    if (pargc && *pargc == 0)
+
+    if (pargc != NULL && *pargc == 0)
         return 0;
-    if (!pargc || *pargc > 0)
+    if (pargc == NULL || *pargc > 0)
         arg = **pargv;
     if (arg == NULL)
         return 0;
-    if (!pargc || *pargc > 1)
+    if (pargc == NULL || *pargc > 1)
         argn = (*pargv)[1];
     else
         argn = NULL;
@@ -804,9 +963,9 @@ int SSL_CONF_CTX_finish(SSL_CONF_CTX *cctx)
     }
     if (cctx->canames) {
         if (cctx->ssl)
-            SSL_set_client_CA_list(cctx->ssl, cctx->canames);
+            SSL_set0_CA_list(cctx->ssl, cctx->canames);
         else if (cctx->ctx)
-            SSL_CTX_set_client_CA_list(cctx->ctx, cctx->canames);
+            SSL_CTX_set0_CA_list(cctx->ctx, cctx->canames);
         else
             sk_X509_NAME_pop_free(cctx->canames, X509_NAME_free);
         cctx->canames = NULL;

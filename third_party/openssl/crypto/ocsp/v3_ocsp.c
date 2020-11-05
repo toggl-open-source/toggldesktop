@@ -1,7 +1,7 @@
 /*
- * Copyright 2000-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2000-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -12,9 +12,9 @@
 # include <openssl/conf.h>
 # include <openssl/asn1.h>
 # include <openssl/ocsp.h>
-# include "ocsp_lcl.h"
+# include "ocsp_local.h"
 # include <openssl/x509v3.h>
-# include "../x509v3/ext_dat.h"
+# include "../x509/ext_dat.h"
 
 /*
  * OCSP extensions and a couple of CRL entry extensions
@@ -28,7 +28,7 @@ static int i2r_object(const X509V3_EXT_METHOD *method, void *obj, BIO *out,
                       int indent);
 
 static void *ocsp_nonce_new(void);
-static int i2d_ocsp_nonce(void *a, unsigned char **pp);
+static int i2d_ocsp_nonce(const void *a, unsigned char **pp);
 static void *d2i_ocsp_nonce(void *a, const unsigned char **pp, long length);
 static void ocsp_nonce_free(void *a);
 static int i2r_ocsp_nonce(const X509V3_EXT_METHOD *method, void *nonce,
@@ -170,9 +170,9 @@ static void *ocsp_nonce_new(void)
     return ASN1_OCTET_STRING_new();
 }
 
-static int i2d_ocsp_nonce(void *a, unsigned char **pp)
+static int i2d_ocsp_nonce(const void *a, unsigned char **pp)
 {
-    ASN1_OCTET_STRING *os = a;
+    const ASN1_OCTET_STRING *os = a;
     if (pp) {
         memcpy(*pp, os->data, os->length);
         *pp += os->length;

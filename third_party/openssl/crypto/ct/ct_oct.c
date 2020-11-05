@@ -1,7 +1,7 @@
 /*
- * Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2016-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -19,7 +19,7 @@
 #include <openssl/ct.h>
 #include <openssl/err.h>
 
-#include "ct_locl.h"
+#include "ct_local.h"
 
 int o2i_SCT_signature(SCT *sct, const unsigned char **in, size_t len)
 {
@@ -101,7 +101,7 @@ SCT *o2i_SCT(SCT **psct, const unsigned char **in, size_t len)
         }
         len -= 43;
         p++;
-        sct->log_id = BUF_memdup(p, CT_V1_HASHLEN);
+        sct->log_id = OPENSSL_memdup(p, CT_V1_HASHLEN);
         if (sct->log_id == NULL)
             goto err;
         sct->log_id_len = CT_V1_HASHLEN;
@@ -115,7 +115,7 @@ SCT *o2i_SCT(SCT **psct, const unsigned char **in, size_t len)
             goto err;
         }
         if (len2 > 0) {
-            sct->ext = BUF_memdup(p, len2);
+            sct->ext = OPENSSL_memdup(p, len2);
             if (sct->ext == NULL)
                 goto err;
         }
@@ -132,7 +132,7 @@ SCT *o2i_SCT(SCT **psct, const unsigned char **in, size_t len)
         *in = p + len;
     } else {
         /* If not V1 just cache encoding */
-        sct->sct = BUF_memdup(p, len);
+        sct->sct = OPENSSL_memdup(p, len);
         if (sct->sct == NULL)
             goto err;
         sct->sct_len = len;

@@ -1,0 +1,183 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>OSSL_DECODER_from_bio</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a>
+    <ul>
+      <li><a href="#Functions">Functions</a></li>
+      <li><a href="#Constructor">Constructor</a></li>
+    </ul>
+  </li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>OSSL_DECODER_from_bio, OSSL_DECODER_from_fp, OSSL_DECODER_CTX_set_input_type, OSSL_DECODER_CTX_add_decoder, OSSL_DECODER_CTX_add_extra, OSSL_DECODER_CTX_num_decoders, OSSL_DECODER_INSTANCE, OSSL_DECODER_CONSTRUCT, OSSL_DECODER_CLEANUP, OSSL_DECODER_CTX_set_construct, OSSL_DECODER_CTX_set_construct_data, OSSL_DECODER_CTX_set_cleanup, OSSL_DECODER_CTX_get_construct, OSSL_DECODER_CTX_get_construct_data, OSSL_DECODER_CTX_get_cleanup, OSSL_DECODER_export, OSSL_DECODER_INSTANCE_decoder, OSSL_DECODER_INSTANCE_decoder_ctx - Routines to perform a decoding</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/decoder.h&gt;
+
+ int OSSL_DECODER_from_bio(OSSL_DECODER_CTX *ctx, BIO *in);
+ int OSSL_DECODER_from_fp(OSSL_DECODER_CTX *ctx, FILE *fp);
+
+ int OSSL_DECODER_CTX_set_input_type(OSSL_DECODER_CTX *ctx,
+                                     const char *input_type);
+ int OSSL_DECODER_CTX_add_decoder(OSSL_DECODER_CTX *ctx, OSSL_DECODER *decoder);
+ int OSSL_DECODER_CTX_add_extra(OSSL_DECODER_CTX *ctx);
+ int OSSL_DECODER_CTX_num_decoders(OSSL_DECODER_CTX *ctx);
+
+ typedef struct ossl_decoder_instance_st OSSL_DECODER_INSTANCE;
+ OSSL_DECODER *
+ OSSL_DECODER_INSTANCE_decoder(OSSL_DECODER_INSTANCE *decoder_inst);
+ void *OSSL_DECODER_INSTANCE_decoder_ctx(OSSL_DECODER_INSTANCE *decoder_inst);
+
+ typedef int (OSSL_DECODER_CONSTRUCT)(OSSL_DECODER_INSTANCE *decoder_inst,
+                                      const OSSL_PARAM *object,
+                                      void *construct_data);
+ typedef void (OSSL_DECODER_CLEANUP)(void *construct_data);
+
+ int OSSL_DECODER_CTX_set_construct(OSSL_DECODER_CTX *ctx,
+                                    OSSL_DECODER_CONSTRUCT *construct);
+ int OSSL_DECODER_CTX_set_construct_data(OSSL_DECODER_CTX *ctx,
+                                         void *construct_data);
+ int OSSL_DECODER_CTX_set_cleanup(OSSL_DECODER_CTX *ctx,
+                                  OSSL_DECODER_CLEANUP *cleanup);
+ OSSL_DECODER_CONSTRUCT *OSSL_DECODER_CTX_get_construct(OSSL_DECODER_CTX *ctx);
+ void *OSSL_DECODER_CTX_get_construct_data(OSSL_DECODER_CTX *ctx);
+ OSSL_DECODER_CLEANUP *OSSL_DECODER_CTX_get_cleanup(OSSL_DECODER_CTX *ctx);
+
+ int OSSL_DECODER_export(OSSL_DECODER_INSTANCE *decoder_inst,
+                         void *reference, size_t reference_sz,
+                         OSSL_CALLBACK *export_cb, void *export_cbarg);</code></pre>
+
+<p>Feature availability macros:</p>
+
+<dl>
+
+<dt id="OSSL_DECODER_from_fp-is-only-available-when-OPENSSL_NO_STDIO-is-undefined">OSSL_DECODER_from_fp() is only available when <b>OPENSSL_NO_STDIO</b> is undefined.</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The <b>OSSL_DECODER_CTX</b> holds data about multiple decoders, as needed to figure out what the input data is and to attempt to unpack it into one of several possible related results. This also includes chaining decoders, so the output from one can become the input for another. This allows having generic format decoders such as PEM to DER, as well as more specialized decoders like DER to RSA.</p>
+
+<p>The chains may be limited by specifying an input type, which is considered a starting point. This is both considered by OSSL_DECODER_CTX_add_extra(), which will stop adding on more decoder implementations when it has already added those that take the specified input type, and OSSL_DECODER_from_bio(), which will only start the decoding process with the decoder implementations that take that input type. For example, if the input type is set to <code>DER</code>, a PEM to DER decoder will be ignored.</p>
+
+<p>The input type can also be NULL, which means that the caller doesn&#39;t know what type of input they have. In this case, OSSL_DECODER_from_bio() will simply try with one decoder implementation after the other, and thereby discover what kind of input the caller gave it.</p>
+
+<p>For every decoding done, even an intermediary one, a constructor provided by the caller is called to attempt to construct an appropriate type / structure that the caller knows how to handle from the current decoding result. The constructor is set with OSSL_DECODER_CTX_set_construct().</p>
+
+<p><b>OSSL_DECODER_INSTANCE</b> is an opaque structure that contains data about the decoder that was just used, and that may be useful for the constructor. There are some functions to extract data from this type, described further down.</p>
+
+<h2 id="Functions">Functions</h2>
+
+<p>OSSL_DECODER_from_bio() runs the decoding process for the context <i>ctx</i>, with the input coming from the <b>BIO</b> <i>in</i>. Should it make a difference, it&#39;s recommended to have the BIO set in binary mode rather than text mode.</p>
+
+<p>OSSL_DECODER_from_fp() does the same thing as OSSL_DECODER_from_bio(), except that the input is coming from the <b>FILE</b> <i>fp</i>.</p>
+
+<p>OSSL_DECODER_CTX_add_decoder() populates the <b>OSSL_DECODER_CTX</b> <i>ctx</i> with a decoder, to be used to attempt to decode some encoded input.</p>
+
+<p>OSSL_DECODER_CTX_add_extra() finds decoders that generate input for already added decoders, and adds them as well. This is used to build decoder chains.</p>
+
+<p>OSSL_DECODER_CTX_set_input_type() sets the starting input type. This limits the decoder chains to be considered, as explained in the general description above.</p>
+
+<p>OSSL_DECODER_CTX_num_decoders() gets the number of decoders currently added to the context <i>ctx</i>.</p>
+
+<p>OSSL_DECODER_CTX_set_construct() sets the constructor <i>construct</i>.</p>
+
+<p>OSSL_DECODER_CTX_set_construct_data() sets the constructor data that is passed to the constructor every time it&#39;s called.</p>
+
+<p>OSSL_DECODER_CTX_set_cleanup() sets the constructor data <i>cleanup</i> function. This is called by <a href="../man3/OSSL_DECODER_CTX_free.html">OSSL_DECODER_CTX_free(3)</a>.</p>
+
+<p>OSSL_DECODER_CTX_get_construct(), OSSL_DECODER_CTX_get_construct_data() and OSSL_DECODER_CTX_get_cleanup() return the values that have been set by OSSL_DECODER_CTX_set_construct(), OSSL_DECODER_CTX_set_construct_data() and OSSL_DECODER_CTX_set_cleanup() respectively.</p>
+
+<p>OSSL_DECODER_export() is a fallback function for constructors that cannot use the data they get directly for diverse reasons. It takes the same decode instance <i>decoder_inst</i> that the constructor got and an object <i>reference</i>, unpacks the object which it refers to, and exports it by creating an <a href="../man3/OSSL_PARAM.html">OSSL_PARAM(3)</a> array that it then passes to <i>export_cb</i>, along with <i>export_arg</i>.</p>
+
+<p>OSSL_DECODER_INSTANCE_decoder() can be used to get the decoder method from a decoder instance <i>decoder_inst</i>.</p>
+
+<p>OSSL_DECODER_INSTANCE_decoder-ctx() can be used to get the decoder method&#39;s provider context from a decoder instance <i>decoder_inst</i>.</p>
+
+<h2 id="Constructor">Constructor</h2>
+
+<p>A <b>OSSL_DECODER_CONSTRUCT</b> gets the following arguments:</p>
+
+<dl>
+
+<dt id="decoder_inst"><i>decoder_inst</i></dt>
+<dd>
+
+<p>The <b>OSSL_DECODER_INSTANCE</b> for the decoder from which the constructor gets its data.</p>
+
+</dd>
+<dt id="object"><i>object</i></dt>
+<dd>
+
+<p>A provider-native object abstraction produced by the decoder. Further information on the provider-native object abstraction can be found in <a href="../man7/provider-object.html">provider-object(7)</a>.</p>
+
+</dd>
+<dt id="construct_data"><i>construct_data</i></dt>
+<dd>
+
+<p>The pointer that was set with OSSL_DECODE_CTX_set_construct_data().</p>
+
+</dd>
+</dl>
+
+<p>The constructor is expected to return 1 when the data it receives can be constructed, otherwise 0.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>OSSL_DECODER_from_bio() and OSSL_DECODER_from_fp() return 1 on success, or 0 on failure.</p>
+
+<p>OSSL_DECODER_CTX_add_decoder(), OSSL_DECODER_CTX_add_extra(), OSSL_DECODER_CTX_set_construct(), OSSL_DECODER_CTX_set_construct_data() and OSSL_DECODER_CTX_set_cleanup() return 1 on success, or 0 on failure.</p>
+
+<p>OSSL_DECODER_CTX_get_construct(), OSSL_DECODER_CTX_get_construct_data() and OSSL_DECODER_CTX_get_cleanup() return the current pointers to the cosntructor, the constructor data and the cleanup functions, respectively.</p>
+
+<p>OSSL_DECODER_CTX_num_decoders() returns the current number of decoders. It returns 0 if <i>ctx</i> is NULL.</p>
+
+<p>OSSL_DECODER_export() returns 1 on success, or 0 on failure.</p>
+
+<p>OSSL_DECODER_INSTANCE_decoder() returns an <b>OSSL_DECODER</b> pointer on success, or NULL on failure.</p>
+
+<p>OSSL_DECODER_INSTANCE_decoder_ctx() returns a provider context pointer on success, or NULL on failure.&gt;</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man7/provider.html">provider(7)</a>, <a href="../man3/OSSL_DECODER_CTX.html">OSSL_DECODER_CTX(3)</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The functions described here were added in OpenSSL 3.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

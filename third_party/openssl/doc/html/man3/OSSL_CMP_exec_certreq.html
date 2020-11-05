@@ -1,0 +1,114 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>OSSL_CMP_exec_certreq</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#EXAMPLES">EXAMPLES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>OSSL_CMP_exec_certreq, OSSL_CMP_exec_IR_ses, OSSL_CMP_exec_CR_ses, OSSL_CMP_exec_P10CR_ses, OSSL_CMP_exec_KUR_ses, OSSL_CMP_IR, OSSL_CMP_CR, OSSL_CMP_P10CR, OSSL_CMP_KUR, OSSL_CMP_try_certreq, OSSL_CMP_exec_RR_ses, OSSL_CMP_exec_GENM_ses - functions implementing CMP client transactions</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/cmp.h&gt;
+
+ X509 *OSSL_CMP_exec_certreq(OSSL_CMP_CTX *ctx, int req_type,
+                             const OSSL_CRMF_MSG *crm);
+ X509 *OSSL_CMP_exec_IR_ses(OSSL_CMP_CTX *ctx);
+ X509 *OSSL_CMP_exec_CR_ses(OSSL_CMP_CTX *ctx);
+ X509 *OSSL_CMP_exec_P10CR_ses(OSSL_CMP_CTX *ctx);
+ X509 *OSSL_CMP_exec_KUR_ses(OSSL_CMP_CTX *ctx);
+ #define OSSL_CMP_IR
+ #define OSSL_CMP_CR
+ #define OSSL_CMP_P10CR
+ #define OSSL_CMP_KUR
+ int OSSL_CMP_try_certreq(OSSL_CMP_CTX *ctx, int req_type,
+                          const OSSL_CRMF_MSG *crm, int *checkAfter);
+ X509 *OSSL_CMP_exec_RR_ses(OSSL_CMP_CTX *ctx);
+ STACK_OF(OSSL_CMP_ITAV) *OSSL_CMP_exec_GENM_ses(OSSL_CMP_CTX *ctx);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>This is the OpenSSL API for doing CMP (Certificate Management Protocol) client-server transactions, i.e., sequences of CMP requests and responses.</p>
+
+<p>All functions take a populated OSSL_CMP_CTX structure as their first argument. Usually the server name, port, and path (&quot;CMP alias&quot;) need to be set, as well as credentials the client can use for authenticating itself to the client. In order to authenticate the server the client typically needs a trust store. The functions return their respective main results directly, while there are also accessor functions for retrieving various results and status information from the <b>ctx</b>. See <a href="../man3/OSSL_CMP_CTX_new.html">OSSL_CMP_CTX_new(3)</a> etc. for details.</p>
+
+<p>The default conveying protocol is HTTP. Timeout values may be given per request-response pair and per transaction. See <a href="../man3/OSSL_CMP_MSG_http_perform.html">OSSL_CMP_MSG_http_perform(3)</a> for details.</p>
+
+<p>OSSL_CMP_exec_IR_ses() requests an initial certificate from the given PKI.</p>
+
+<p>OSSL_CMP_exec_CR_ses() requests an additional certificate.</p>
+
+<p>OSSL_CMP_exec_P10CR_ses() conveys a legacy PKCS#10 CSR requesting a certificate.</p>
+
+<p>OSSL_CMP_exec_KUR_ses() obtains an updated certificate.</p>
+
+<p>These four types of certificate enrollment are implemented as macros calling OSSL_CMP_exec_certreq().</p>
+
+<p>OSSL_CMP_exec_certreq() performs a certificate request of the type specified by the <b>req_type</b> parameter, which may be IR, CR, P10CR, or KUR. For IR, CR, and KUR, the certificate template to be used in the request may be supplied via the <b>crm</b> parameter pointing to a CRMF structure. Typically <b>crm</b> is NULL, then the template ingredients are taken from <b>ctx</b> and need to be filled in using <a href="../man3/OSSL_CMP_CTX_set1_subjectName.html">OSSL_CMP_CTX_set1_subjectName(3)</a>, <a href="../man3/OSSL_CMP_CTX_set0_newPkey.html">OSSL_CMP_CTX_set0_newPkey(3)</a>, <a href="../man3/OSSL_CMP_CTX_set1_oldCert.html">OSSL_CMP_CTX_set1_oldCert(3)</a>, etc. For P10CR, <a href="../man3/OSSL_CMP_CTX_set1_p10CSR.html">OSSL_CMP_CTX_set1_p10CSR(3)</a> needs to be used instead. The enrollment session may be blocked by sleeping until the addressed CA (or an intermedate PKI component) can fully process and answer the request.</p>
+
+<p>OSSL_CMP_try_certreq() is an alternative to the above functions that is more flexible regarding what to do after receiving a checkAfter value. When called for the first time (with no certificate request in progress for the given <b>ctx</b>) it starts a new transaction by sending a certificate request constructed as stated above using the <b>req_type</b> and optional <b>crm</b> parameter. Otherwise (when according to <b>ctx</b> a &#39;waiting&#39; status has been received before) it continues polling for the pending request unless the <b>req_type</b> argument is &lt; 0, which aborts the request. If the requested certificate is available the function returns 1 and the caller can use <a href="../man3/OSSL_CMP_CTX_get0_newCert.html">OSSL_CMP_CTX_get0_newCert(3)</a> to retrieve the new certificate. If no error occurred but no certificate is available yet then OSSL_CMP_try_certreq() remembers in the CMP context that it should be retried and returns -1 after assigning the received checkAfter value via the output pointer argument (unless it is NULL). The checkAfter value indicates the number of seconds the caller should let pass before trying again. The caller is free to sleep for the given number of seconds or for some other time and/or to do anything else before retrying by calling OSSL_CMP_try_certreq() again with the same parameter values as before. OSSL_CMP_try_certreq() then polls to see whether meanwhile the requested certificate is available. If the caller decides to abort the pending certificate request and provides a negative value as the <b>req_type</b> argument then OSSL_CMP_try_certreq() aborts the CMP transaction by sending an error message to the server.</p>
+
+<p>OSSL_CMP_exec_RR_ses() requests the revocation of the certificate specified in the <b>ctx</b> using <a href="../man3/OSSL_CMP_CTX_set1_oldCert.html">OSSL_CMP_CTX_set1_oldCert(3)</a>. RFC 4210 is vague in which PKIStatus should be returned by the server. We take &quot;accepted&quot; and &quot;grantedWithMods&quot; as clear success and handle &quot;revocationWarning&quot; and &quot;revocationNotification&quot; just as warnings because CAs typically return them as an indication that the certificate was already revoked. &quot;rejection&quot; is a clear error. The values &quot;waiting&quot; and &quot;keyUpdateWarning&quot; make no sense for revocation and thus are treated as an error as well.</p>
+
+<p>OSSL_CMP_exec_GENM_ses() sends a general message containing the sequence of infoType and infoValue pairs (InfoTypeAndValue; short: <b>ITAV</b>) provided in the <b>ctx</b> using <a href="../man3/OSSL_CMP_CTX_push0_genm_ITAV.html">OSSL_CMP_CTX_push0_genm_ITAV(3)</a>. It returns the list of <b>ITAV</b>s received in the GenRep. This can be used, for instance, to poll for CRLs or CA Key Updates. See RFC 4210 section 5.3.19 and appendix E.5 for details.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>CMP is defined in RFC 4210 (and CRMF in RFC 4211).</p>
+
+<p>So far the CMP client implementation is limited to one request per CMP message (and consequently to at most one response component per CMP message).</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>OSSL_CMP_exec_certreq(), OSSL_CMP_exec_IR_ses(), OSSL_CMP_exec_CR_ses(), OSSL_CMP_exec_P10CR_ses(), and OSSL_CMP_exec_KUR_ses() return a pointer to the newly obtained X509 certificate on success, <b>NULL</b> on error. This pointer will be freed implicitly by OSSL_CMP_CTX_free() or CSSL_CMP_CTX_reinit().</p>
+
+<p>OSSL_CMP_try_certreq() returns 1 if the requested certificate is available via <a href="../man3/OSSL_CMP_CTX_get0_newCert.html">OSSL_CMP_CTX_get0_newCert(3)</a> or on successfully aborting a pending certificate request, 0 on error, and -1 in case a &#39;waiting&#39; status has been received and checkAfter value is available. In the latter case <a href="../man3/OSSL_CMP_CTX_get0_newCert.html">OSSL_CMP_CTX_get0_newCert(3)</a> yields NULL and the output parameter <b>checkAfter</b> has been used to assign the received value unless <b>checkAfter</b> is NULL.</p>
+
+<p>OSSL_CMP_exec_RR_ses() returns the pointer to the revoked certificate on success, <b>NULL</b> on error. This pointer will be freed implicitly by OSSL_CMP_CTX_free().</p>
+
+<p>OSSL_CMP_exec_GENM_ses() returns a pointer to the received <b>ITAV</b> sequence on success, <b>NULL</b> on error. This pointer must be freed by the caller.</p>
+
+<h1 id="EXAMPLES">EXAMPLES</h1>
+
+<p>See OSSL_CMP_CTX for examples on how to prepare the context for these functions.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man3/OSSL_CMP_CTX_new.html">OSSL_CMP_CTX_new(3)</a>, <a href="../man3/OSSL_CMP_CTX_free.html">OSSL_CMP_CTX_free(3)</a>, <a href="../man3/OSSL_CMP_CTX_set1_subjectName.html">OSSL_CMP_CTX_set1_subjectName(3)</a>, <a href="../man3/OSSL_CMP_CTX_set0_newPkey.html">OSSL_CMP_CTX_set0_newPkey(3)</a>, <a href="../man3/OSSL_CMP_CTX_set1_p10CSR.html">OSSL_CMP_CTX_set1_p10CSR(3)</a>, <a href="../man3/OSSL_CMP_CTX_set1_oldCert.html">OSSL_CMP_CTX_set1_oldCert(3)</a>, <a href="../man3/OSSL_CMP_CTX_get0_newCert.html">OSSL_CMP_CTX_get0_newCert(3)</a>, <a href="../man3/OSSL_CMP_CTX_push0_genm_ITAV.html">OSSL_CMP_CTX_push0_genm_ITAV(3)</a>, <a href="../man3/OSSL_CMP_MSG_http_perform.html">OSSL_CMP_MSG_http_perform(3)</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The OpenSSL CMP support was added in OpenSSL 3.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2007-2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

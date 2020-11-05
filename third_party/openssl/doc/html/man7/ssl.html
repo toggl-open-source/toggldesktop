@@ -1,0 +1,122 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ssl</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#DATA-STRUCTURES">DATA STRUCTURES</a></li>
+  <li><a href="#HEADER-FILES">HEADER FILES</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>ssl - OpenSSL SSL/TLS library</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<p>See the individual manual pages for details.</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The OpenSSL <b>ssl</b> library implements several versions of the Secure Sockets Layer, Transport Layer Security, and Datagram Transport Layer Security protocols. This page gives a brief overview of the extensive API and data types provided by the library.</p>
+
+<p>An <b>SSL_CTX</b> object is created as a framework to establish TLS/SSL enabled connections (see <a href="../man3/SSL_CTX_new.html">SSL_CTX_new(3)</a>). Various options regarding certificates, algorithms etc. can be set in this object.</p>
+
+<p>When a network connection has been created, it can be assigned to an <b>SSL</b> object. After the <b>SSL</b> object has been created using <a href="../man3/SSL_new.html">SSL_new(3)</a>, <a href="../man3/SSL_set_fd.html">SSL_set_fd(3)</a> or <a href="../man3/SSL_set_bio.html">SSL_set_bio(3)</a> can be used to associate the network connection with the object.</p>
+
+<p>When the TLS/SSL handshake is performed using <a href="../man3/SSL_accept.html">SSL_accept(3)</a> or <a href="../man3/SSL_connect.html">SSL_connect(3)</a> respectively. <a href="../man3/SSL_read_ex.html">SSL_read_ex(3)</a>, <a href="../man3/SSL_read.html">SSL_read(3)</a>, <a href="../man3/SSL_write_ex.html">SSL_write_ex(3)</a> and <a href="../man3/SSL_write.html">SSL_write(3)</a> are used to read and write data on the TLS/SSL connection. <a href="../man3/SSL_shutdown.html">SSL_shutdown(3)</a> can be used to shut down the TLS/SSL connection.</p>
+
+<h1 id="DATA-STRUCTURES">DATA STRUCTURES</h1>
+
+<p>Here are some of the main data structures in the library.</p>
+
+<dl>
+
+<dt id="SSL_METHOD-SSL-Method"><b>SSL_METHOD</b> (SSL Method)</dt>
+<dd>
+
+<p>This is a dispatch structure describing the internal <b>ssl</b> library methods/functions which implement the various protocol versions (SSLv3 TLSv1, ...). It&#39;s needed to create an <b>SSL_CTX</b>.</p>
+
+</dd>
+<dt id="SSL_CIPHER-SSL-Cipher"><b>SSL_CIPHER</b> (SSL Cipher)</dt>
+<dd>
+
+<p>This structure holds the algorithm information for a particular cipher which are a core part of the SSL/TLS protocol. The available ciphers are configured on a <b>SSL_CTX</b> basis and the actual ones used are then part of the <b>SSL_SESSION</b>.</p>
+
+</dd>
+<dt id="SSL_CTX-SSL-Context"><b>SSL_CTX</b> (SSL Context)</dt>
+<dd>
+
+<p>This is the global context structure which is created by a server or client once per program life-time and which holds mainly default values for the <b>SSL</b> structures which are later created for the connections.</p>
+
+</dd>
+<dt id="SSL_SESSION-SSL-Session"><b>SSL_SESSION</b> (SSL Session)</dt>
+<dd>
+
+<p>This is a structure containing the current TLS/SSL session details for a connection: <b>SSL_CIPHER</b>s, client and server certificates, keys, etc.</p>
+
+</dd>
+<dt id="SSL-SSL-Connection"><b>SSL</b> (SSL Connection)</dt>
+<dd>
+
+<p>This is the main SSL/TLS structure which is created by a server or client per established connection. This actually is the core structure in the SSL API. At run-time the application usually deals with this structure which has links to mostly all other structures.</p>
+
+</dd>
+</dl>
+
+<h1 id="HEADER-FILES">HEADER FILES</h1>
+
+<p>Currently the OpenSSL <b>ssl</b> library provides the following C header files containing the prototypes for the data structures and functions:</p>
+
+<dl>
+
+<dt id="openssl-ssl.h"><i>&lt;openssl/ssl.h&gt;</i></dt>
+<dd>
+
+<p>This is the common header file for the SSL/TLS API. Include it into your program to make the API of the <b>ssl</b> library available. It internally includes both more private SSL headers and headers from the <b>crypto</b> library. Whenever you need hard-core details on the internals of the SSL API, look inside this header file. This file also includes the others listed below.</p>
+
+</dd>
+<dt id="openssl-ssl2.h"><i>&lt;openssl/ssl2.h&gt;</i></dt>
+<dd>
+
+<p>Unused. Present for backwards compatibility only.</p>
+
+</dd>
+<dt id="openssl-ssl3.h"><i>&lt;openssl/ssl3.h&gt;</i></dt>
+<dd>
+
+<p>This is the sub header file dealing with the SSLv3 protocol only.</p>
+
+</dd>
+<dt id="openssl-tls1.h"><i>&lt;openssl/tls1.h&gt;</i></dt>
+<dd>
+
+<p>This is the sub header file dealing with the TLSv1 protocol only.</p>
+
+</dd>
+</dl>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2000-2018 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

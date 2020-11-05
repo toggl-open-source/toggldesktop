@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>OPENSSL_CTX</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>OPENSSL_CTX, OPENSSL_CTX_new, OPENSSL_CTX_free, OPENSSL_CTX_load_config, OPENSSL_CTX_set0_default - OpenSSL library context</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/crypto.h&gt;
+
+ typedef struct openssl_ctx_st OPENSSL_CTX;
+
+ OPENSSL_CTX *OPENSSL_CTX_new(void);
+ int OPENSSL_CTX_load_config(OPENSSL_CTX *ctx, const char *config_file);
+ void OPENSSL_CTX_free(OPENSSL_CTX *ctx);
+ OPENSSL_CTX *OPENSSL_CTX_set0_default(OPENSSL_CTX *ctx);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p><b>OPENSSL_CTX</b> is an internal OpenSSL library context type. Applications may allocate their own, but may also use NULL to use a default context with functions that take an <b>OPENSSL_CTX</b> argument.</p>
+
+<p>When a non default library context is in use care should be taken with multi-threaded applications to properly clean up thread local resources before the OPENSSL_CTX is freed. See <a href="../man3/OPENSSL_thread_stop_ex.html">OPENSSL_thread_stop_ex(3)</a> for more information.</p>
+
+<p>OPENSSL_CTX_new() creates a new OpenSSL library context.</p>
+
+<p>OPENSSL_CTX_load_config() loads a configuration file using the given <code>ctx</code>. This can be used to associate a library context with providers that are loaded from a configuration.</p>
+
+<p>OPENSSL_CTX_free() frees the given <i>ctx</i>, unless it happens to be the default OpenSSL library context.</p>
+
+<p>OPENSSL_CTX_set0_default() sets the default OpenSSL library context to be <i>ctx</i> in the current thread. The previous default library context is returned. Care should be taken by the caller to restore the previous default library context with a subsequent call of this function.</p>
+
+<p>Care should be taken when changing the default library context and starting async jobs (see <a href="../man3/ASYNC_start_job.html">ASYNC_start_job(3)</a>), as the default library context when the job is started will be used throughout the lifetime of an async job, no matter how the calling thread makes further default library context changes in the mean time. This means that the calling thread must not free the library context that was the default at the start of the async job before that job has finished.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>OPENSSL_CTX_new() and OPENSSL_CTX_set0_default() return a library context pointer on success, or NULL on error.</p>
+
+<p>OPENSSL_CTX_free() doesn&#39;t return any value.</p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>OPENSSL_CTX, OPENSSL_CTX_new(), OPENSSL_CTX_load_config(), OPENSSL_CTX_free() and OPENSSL_CTX_set0_default() were added in OpenSSL 3.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2019-2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

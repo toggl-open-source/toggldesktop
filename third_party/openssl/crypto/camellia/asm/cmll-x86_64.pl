@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2008-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2008-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -36,9 +36,10 @@
 # EM64T, pre-Core2 Intel x86_64 CPU, is not as impressive, because it
 # apparently emulates some of 64-bit operations in [32-bit] microcode.
 
-$flavour = shift;
-$output  = shift;
-if ($flavour =~ /\./) { $output = $flavour; undef $flavour; }
+# $output is the last argument if it looks like a file (it has an extension)
+# $flavour is the first argument if it doesn't look like a file
+$output = $#ARGV >= 0 && $ARGV[$#ARGV] =~ m|\.\w+$| ? pop : undef;
+$flavour = $#ARGV >= 0 && $ARGV[0] !~ m|\.| ? shift : undef;
 
 $win64=0; $win64=1 if ($flavour =~ /[nm]asm|mingw64/ || $output =~ /\.asm$/);
 
@@ -47,7 +48,8 @@ $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
 ( $xlate="${dir}../../perlasm/x86_64-xlate.pl" and -f $xlate) or
 die "can't locate x86_64-xlate.pl";
 
-open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\"";
+open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\""
+    or die "can't call $xlate: $!";
 *STDOUT=*OUT;
 
 sub hi() { my $r=shift; $r =~ s/%[er]([a-d])x/%\1h/;    $r; }
@@ -125,11 +127,13 @@ $code=<<___;
 .type	Camellia_EncryptBlock,\@abi-omnipotent
 .align	16
 Camellia_EncryptBlock:
+.cfi_startproc
 	movl	\$128,%eax
 	subl	$arg0d,%eax
 	movl	\$3,$arg0d
 	adcl	\$0,$arg0d	# keyBitLength==128?3:4
 	jmp	.Lenc_rounds
+.cfi_endproc
 .size	Camellia_EncryptBlock,.-Camellia_EncryptBlock
 # V2
 .globl	Camellia_EncryptBlock_Rounds
@@ -137,11 +141,17 @@ Camellia_EncryptBlock:
 .align	16
 .Lenc_rounds:
 Camellia_EncryptBlock_Rounds:
+.cfi_startproc
 	push	%rbx
+.cfi_push	%rbx
 	push	%rbp
+.cfi_push	%rbp
 	push	%r13
+.cfi_push	%r13
 	push	%r14
+.cfi_push	%r14
 	push	%r15
+.cfi_push	%r15
 .Lenc_prologue:
 
 	#mov	%rsi,$inp		# put away arguments
@@ -173,18 +183,26 @@ Camellia_EncryptBlock_Rounds:
 	mov	@S[3],12($out)
 
 	mov	0(%rsp),%r15
+.cfi_restore	%r15
 	mov	8(%rsp),%r14
+.cfi_restore	%r14
 	mov	16(%rsp),%r13
+.cfi_restore	%r13
 	mov	24(%rsp),%rbp
+.cfi_restore	%rbp
 	mov	32(%rsp),%rbx
+.cfi_restore	%rbx
 	lea	40(%rsp),%rsp
+.cfi_adjust_cfa_offset	-40
 .Lenc_epilogue:
 	ret
+.cfi_endproc
 .size	Camellia_EncryptBlock_Rounds,.-Camellia_EncryptBlock_Rounds
 
 .type	_x86_64_Camellia_encrypt,\@abi-omnipotent
 .align	16
 _x86_64_Camellia_encrypt:
+.cfi_startproc
 	xor	0($key),@S[1]
 	xor	4($key),@S[0]		# ^=key[0-3]
 	xor	8($key),@S[3]
@@ -228,6 +246,7 @@ $code.=<<___;
 	mov	$t3,@S[3]
 
 	.byte	0xf3,0xc3		# rep ret
+.cfi_endproc
 .size	_x86_64_Camellia_encrypt,.-_x86_64_Camellia_encrypt
 
 # V1.x API
@@ -235,11 +254,13 @@ $code.=<<___;
 .type	Camellia_DecryptBlock,\@abi-omnipotent
 .align	16
 Camellia_DecryptBlock:
+.cfi_startproc
 	movl	\$128,%eax
 	subl	$arg0d,%eax
 	movl	\$3,$arg0d
 	adcl	\$0,$arg0d	# keyBitLength==128?3:4
 	jmp	.Ldec_rounds
+.cfi_endproc
 .size	Camellia_DecryptBlock,.-Camellia_DecryptBlock
 # V2
 .globl	Camellia_DecryptBlock_Rounds
@@ -247,11 +268,17 @@ Camellia_DecryptBlock:
 .align	16
 .Ldec_rounds:
 Camellia_DecryptBlock_Rounds:
+.cfi_startproc
 	push	%rbx
+.cfi_push	%rbx
 	push	%rbp
+.cfi_push	%rbp
 	push	%r13
+.cfi_push	%r13
 	push	%r14
+.cfi_push	%r14
 	push	%r15
+.cfi_push	%r15
 .Ldec_prologue:
 
 	#mov	%rsi,$inp		# put away arguments
@@ -283,18 +310,26 @@ Camellia_DecryptBlock_Rounds:
 	mov	@S[3],12($out)
 
 	mov	0(%rsp),%r15
+.cfi_restore	%r15
 	mov	8(%rsp),%r14
+.cfi_restore	%r14
 	mov	16(%rsp),%r13
+.cfi_restore	%r13
 	mov	24(%rsp),%rbp
+.cfi_restore	%rbp
 	mov	32(%rsp),%rbx
+.cfi_restore	%rbx
 	lea	40(%rsp),%rsp
+.cfi_adjust_cfa_offset	-40
 .Ldec_epilogue:
 	ret
+.cfi_endproc
 .size	Camellia_DecryptBlock_Rounds,.-Camellia_DecryptBlock_Rounds
 
 .type	_x86_64_Camellia_decrypt,\@abi-omnipotent
 .align	16
 _x86_64_Camellia_decrypt:
+.cfi_startproc
 	xor	0($key),@S[1]
 	xor	4($key),@S[0]		# ^=key[0-3]
 	xor	8($key),@S[3]
@@ -339,6 +374,7 @@ $code.=<<___;
 	mov	$t1,@S[3]
 
 	.byte	0xf3,0xc3		# rep ret
+.cfi_endproc
 .size	_x86_64_Camellia_decrypt,.-_x86_64_Camellia_decrypt
 ___
 
@@ -409,11 +445,17 @@ $code.=<<___;
 .type	Camellia_Ekeygen,\@function,3
 .align	16
 Camellia_Ekeygen:
+.cfi_startproc
 	push	%rbx
+.cfi_push	%rbx
 	push	%rbp
+.cfi_push	%rbp
 	push	%r13
+.cfi_push	%r13
 	push	%r14
+.cfi_push	%r14
 	push	%r15
+.cfi_push	%r15
 .Lkey_prologue:
 
 	mov	%edi,${keyend}d		# put away arguments, keyBitLength
@@ -573,13 +615,20 @@ $code.=<<___;
 	mov	\$4,%eax
 .Ldone:
 	mov	0(%rsp),%r15
+.cfi_restore	%r15
 	mov	8(%rsp),%r14
+.cfi_restore	%r14
 	mov	16(%rsp),%r13
+.cfi_restore	%r13
 	mov	24(%rsp),%rbp
+.cfi_restore	%rbp
 	mov	32(%rsp),%rbx
+.cfi_restore	%rbx
 	lea	40(%rsp),%rsp
+.cfi_adjust_cfa_offset	-40
 .Lkey_epilogue:
 	ret
+.cfi_endproc
 .size	Camellia_Ekeygen,.-Camellia_Ekeygen
 ___
 }
@@ -637,17 +686,26 @@ $code.=<<___;
 .type	Camellia_cbc_encrypt,\@function,6
 .align	16
 Camellia_cbc_encrypt:
+.cfi_startproc
+	endbranch
 	cmp	\$0,%rdx
 	je	.Lcbc_abort
 	push	%rbx
+.cfi_push	%rbx
 	push	%rbp
+.cfi_push	%rbp
 	push	%r12
+.cfi_push	%r12
 	push	%r13
+.cfi_push	%r13
 	push	%r14
+.cfi_push	%r14
 	push	%r15
+.cfi_push	%r15
 .Lcbc_prologue:
 
 	mov	%rsp,%rbp
+.cfi_def_cfa_register	%rbp
 	sub	\$64,%rsp
 	and	\$-64,%rsp
 
@@ -668,6 +726,7 @@ Camellia_cbc_encrypt:
 
 	mov	%r8,$_ivp
 	mov	%rbp,$_rsp
+.cfi_cfa_expression	$_rsp,deref,+56
 
 .Lcbc_body:
 	lea	.LCamellia_SBOX(%rip),$Tbl
@@ -856,15 +915,24 @@ Camellia_cbc_encrypt:
 .align	16
 .Lcbc_done:
 	mov	$_rsp,%rcx
+.cfi_def_cfa	%rcx,56
 	mov	0(%rcx),%r15
+.cfi_restore	%r15
 	mov	8(%rcx),%r14
+.cfi_restore	%r14
 	mov	16(%rcx),%r13
+.cfi_restore	%r13
 	mov	24(%rcx),%r12
+.cfi_restore	%r12
 	mov	32(%rcx),%rbp
+.cfi_restore	%rbp
 	mov	40(%rcx),%rbx
+.cfi_restore	%rbx
 	lea	48(%rcx),%rsp
+.cfi_def_cfa	%rsp,8
 .Lcbc_abort:
 	ret
+.cfi_endproc
 .size	Camellia_cbc_encrypt,.-Camellia_cbc_encrypt
 
 .asciz	"Camellia for x86_64 by <appro\@openssl.org>"
@@ -1085,4 +1153,4 @@ ___
 
 $code =~ s/\`([^\`]*)\`/eval $1/gem;
 print $code;
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

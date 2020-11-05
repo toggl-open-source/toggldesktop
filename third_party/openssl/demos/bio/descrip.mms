@@ -23,7 +23,7 @@ SHARED = TRUE
 	@ !
 
 # Because we use an option file, we need to redefine this
-.obj.exe : 
+.obj.exe :
 	$(LINK) $(LINKFLAGS) $<,OPT:/OPT
 
 all : client-arg.exe client-conf.exe saccept.exe sconnect.exe -
@@ -37,7 +37,7 @@ server-arg.exe : server-arg.obj
 server-cmod.exe : server-cmod.obj
 server-conf.exe : server-conf.obj
 
-# Stoopid MMS doesn't infer this automatically...
+# MMS doesn't infer this automatically...
 client-arg.obj : client-arg.c
 client-conf.obj : client-conf.c
 saccept.obj : saccept.c

@@ -1,8 +1,9 @@
-# SSL tests
+SSL tests
+=========
 
 SSL testcases are configured in the `ssl-tests` directory.
 
-Each `ssl_*.conf.in` file contains a number of test configurations. These files
+Each `ssl_*.cnf.in` file contains a number of test configurations. These files
 are used to generate testcases in the OpenSSL CONF format.
 
 The precise test output can be dependent on the library configuration. The test
@@ -10,24 +11,23 @@ harness generates the output files on the fly.
 
 However, for verification, we also include checked-in configuration outputs
 corresponding to the default configuration. These testcases live in
-`test/ssl-tests/*.conf` files.
+`test/ssl-tests/*.cnf` files.
 
-For more details, see `ssl-tests/01-simple.conf.in` for an example.
+For more details, see `ssl-tests/01-simple.cnf.in` for an example.
 
-## Configuring the test
+Configuring the test
+--------------------
 
 First, give your test a name. The names do not have to be unique.
 
 An example test input looks like this:
 
-```
     {
         name => "test-default",
         server => { "CipherString" => "DEFAULT" },
         client => { "CipherString" => "DEFAULT" },
         test   => { "ExpectedResult" => "Success" },
     }
-```
 
 The test section supports the following options
 
@@ -81,6 +81,11 @@ handshake.
   - Yes - a session ticket is expected
   - No - a session ticket is not expected
 
+* SessionIdExpected - whether or not a session id is expected
+  - Ignore - do not check for a session id (default)
+  - Yes - a session id is expected
+  - No - a session id is not expected
+
 * ResumptionExpected - whether or not resumption is expected (Resume mode only)
   - Yes - resumed handshake
   - No - full handshake (default)
@@ -89,19 +94,35 @@ handshake.
 
 * ExpectedTmpKeyType - the expected algorithm or curve of server temp key
 
-## Configuring the client and server
+* ExpectedServerCertType, ExpectedClientCertType - the expected algorithm or
+  curve of server or client certificate
+
+* ExpectedServerSignHash, ExpectedClientSignHash - the expected
+  signing hash used by server or client certificate
+
+* ExpectedServerSignType, ExpectedClientSignType - the expected
+  signature type used by server or client when signing messages
+
+* ExpectedClientCANames - for client auth list of CA names the server must
+  send. If this is "empty" the list is expected to be empty otherwise it
+  is a file of certificates whose subject names form the list.
+
+* ExpectedServerCANames - list of CA names the client must send, TLS 1.3 only.
+  If this is "empty" the list is expected to be empty otherwise it is a file
+  of certificates whose subject names form the list.
+
+Configuring the client and server
+---------------------------------
 
 The client and server configurations can be any valid `SSL_CTX`
 configurations. For details, see the manpages for `SSL_CONF_cmd`.
 
 Give your configurations as a dictionary of CONF commands, e.g.
 
-```
-server => {
-    "CipherString" => "DEFAULT",
-    "MinProtocol" => "TLSv1",
-}
-```
+    server => {
+        "CipherString" => "DEFAULT",
+        "MinProtocol" => "TLSv1",
+    }
 
 The following sections may optionally be defined:
 
@@ -124,14 +145,12 @@ The following sections may optionally be defined:
 Additional handshake settings can be configured in the `extra` section of each
 client and server:
 
-```
-client => {
-    "CipherString" => "DEFAULT",
-    extra => {
-        "ServerName" => "server2",
+    client => {
+        "CipherString" => "DEFAULT",
+        extra => {
+            "ServerName" => "server2",
+        }
     }
-}
-```
 
 #### Supported client-side options
 
@@ -170,6 +189,9 @@ client => {
   protocols can be specified as a comma-separated list, and a callback with the
   recommended behaviour will be installed automatically.
 
+* SRPUser, SRPPassword - SRP settings. For client, this is the SRP user to
+  connect as; for server, this is a known SRP user.
+
 ### Default server and client configurations
 
 The default server certificate and CA files are added to the configurations
@@ -177,54 +199,45 @@ automatically. Server certificate verification is requested by default.
 
 You can override these options by redefining them:
 
-```
-client => {
-    "VerifyCAFile" => "/path/to/custom/file"
-}
-```
+    client => {
+        "VerifyCAFile" => "/path/to/custom/file"
+    }
 
 or by deleting them
 
-```
-client => {
-    "VerifyCAFile" => undef
-}
-```
+    client => {
+        "VerifyCAFile" => undef
+    }
 
-## Adding a test to the test harness
+Adding a test to the test harness
+---------------------------------
 
 1. Add a new test configuration to `test/ssl-tests`, following the examples of
-   existing `*.conf.in` files (for example, `01-simple.conf.in`).
+   existing `*.cnf.in` files (for example, `01-simple.cnf.in`).
 
-2. Generate the generated `*.conf` test input file. You can do so by running
+2. Generate the generated `*.cnf` test input file. You can do so by running
    `generate_ssl_tests.pl`:
 
-```
-$ ./config
-$ cd test
-$ TOP=.. perl -I testlib/ generate_ssl_tests.pl ssl-tests/my.conf.in \
-  > ssl-tests/my.conf
-```
+    $ ./config
+    $ cd test
+    $ TOP=.. perl -I ../util/perl/ generate_ssl_tests.pl \
+      ssl-tests/my.cnf.in default > ssl-tests/my.cnf
 
-where `my.conf.in` is your test input file.
+where `my.cnf.in` is your test input file and `default` is the provider to use.
+For all the pre-generated test files you should use the default provider.
 
-For example, to generate the test cases in `ssl-tests/01-simple.conf.in`, do
+For example, to generate the test cases in `ssl-tests/01-simple.cnf.in`, do
 
-```
-$ TOP=.. perl -I testlib/ generate_ssl_tests.pl ssl-tests/01-simple.conf.in > ssl-tests/01-simple.conf
-```
+    $ TOP=.. perl -I ../util/perl/ generate_ssl_tests.pl \
+      ssl-tests/01-simple.cnf.in default > ssl-tests/01-simple.cnf
 
 Alternatively (hackish but simple), you can comment out
 
-```
-unlink glob $tmp_file;
-```
+    unlink glob $tmp_file;
 
 in `test/recipes/80-test_ssl_new.t` and run
 
-```
-$ make TESTS=test_ssl_new test
-```
+    $ make TESTS=test_ssl_new test
 
 This will save the generated output in a `*.tmp` file in the build directory.
 
@@ -232,13 +245,13 @@ This will save the generated output in a `*.tmp` file in the build directory.
    the test suite has any skip conditions, update those too (see
    `test/recipes/80-test_ssl_new.t` for details).
 
-## Running the tests with the test harness
+Running the tests with the test harness
+---------------------------------------
 
-```
-HARNESS_VERBOSE=yes make TESTS=test_ssl_new test
-```
+    HARNESS_VERBOSE=yes make TESTS=test_ssl_new test
 
-## Running a test manually
+Running a test manually
+-----------------------
 
 These steps are only needed during development. End users should run `make test`
 or follow the instructions above to run the SSL test suite.
@@ -247,17 +260,13 @@ To run an SSL test manually from the command line, the `TEST_CERTS_DIR`
 environment variable to point to the location of the certs. E.g., from the root
 OpenSSL directory, do
 
-```
-$ CTLOG_FILE=test/ct/log_list.conf TEST_CERTS_DIR=test/certs test/ssl_test \
-  test/ssl-tests/01-simple.conf
-```
+    $ CTLOG_FILE=test/ct/log_list.cnf TEST_CERTS_DIR=test/certs test/ssl_test \
+      test/ssl-tests/01-simple.cnf
 
 or for shared builds
 
-```
-$ CTLOG_FILE=test/ct/log_list.conf  TEST_CERTS_DIR=test/certs \
-  util/shlib_wrap.sh test/ssl_test test/ssl-tests/01-simple.conf
-```
+    $ CTLOG_FILE=test/ct/log_list.cnf  TEST_CERTS_DIR=test/certs \
+      util/wrap.pl test/ssl_test test/ssl-tests/01-simple.cnf
 
 Note that the test expectations sometimes depend on the Configure settings. For
 example, the negotiated protocol depends on the set of available (enabled)
@@ -268,7 +277,7 @@ The Perl test harness automatically generates expected outputs, so users who
 just run `make test` do not need any extra steps.
 
 However, when running a test manually, keep in mind that the repository version
-of the generated `test/ssl-tests/*.conf` correspond to expected outputs in with
+of the generated `test/ssl-tests/*.cnf` correspond to expected outputs in with
 the default Configure options. To run `ssl_test` manually from the command line
 in a build with a different configuration, you may need to generate the right
-`*.conf` file from the `*.conf.in` input first.
+`*.cnf` file from the `*.cnf.in` input first.

@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2012-2018 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2012-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -16,7 +16,7 @@
 
 # October 2012.
 #
-# SPARCv9 VIS3 Montgomery multiplicaion procedure suitable for T3 and
+# SPARCv9 VIS3 Montgomery multiplication procedure suitable for T3 and
 # onward. There are three new instructions used here: umulxhi,
 # addxc[cc] and initializing store. On T3 RSA private key operations
 # are 1.54/1.87/2.11/2.26 times faster for 512/1024/2048/4096-bit key
@@ -25,8 +25,7 @@
 # for reference purposes, because T4 has dedicated Montgomery
 # multiplication and squaring *instructions* that deliver even more.
 
-$output = pop;
-open STDOUT,">$output";
+$output = pop and open STDOUT,">$output";
 
 $frame = "STACK_FRAME";
 $bias = "STACK_BIAS";
@@ -381,4 +380,4 @@ foreach (split("\n",$code)) {
 	print $_,"\n";
 }
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

@@ -1,24 +1,25 @@
 /*
- * Copyright 2016-2018 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2016-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
 /*
- * Licensed under the OpenSSL licenses, (the "License");
+ * Licensed under the Apache License 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * https://www.openssl.org/source/license.html
  * or in the file LICENSE in the source distribution.
  */
 
-#include "dsa_locl.h"
+#include "dsa_local.h"
 #include <string.h>
 #include <openssl/err.h>
 
+#ifndef OPENSSL_NO_DEPRECATED_3_0
 DSA_METHOD *DSA_meth_new(const char *name, int flags)
 {
     DSA_METHOD *dsam = OPENSSL_zalloc(sizeof(*dsam));
@@ -132,7 +133,7 @@ int DSA_meth_set_sign_setup(DSA_METHOD *dsam,
 }
 
 int (*DSA_meth_get_verify(const DSA_METHOD *dsam))
-        (const unsigned char *, int , DSA_SIG *, DSA *)
+        (const unsigned char *, int, DSA_SIG *, DSA *)
 {
     return dsam->dsa_do_verify;
 }
@@ -222,3 +223,4 @@ int DSA_meth_set_keygen(DSA_METHOD *dsam, int (*keygen) (DSA *))
     dsam->dsa_keygen = keygen;
     return 1;
 }
+#endif

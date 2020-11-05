@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>SSL_CTX_set1_curves</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>SSL_CTX_set1_groups, SSL_CTX_set1_groups_list, SSL_set1_groups, SSL_set1_groups_list, SSL_get1_groups, SSL_get_shared_group, SSL_get_negotiated_group, SSL_CTX_set1_curves, SSL_CTX_set1_curves_list, SSL_set1_curves, SSL_set1_curves_list, SSL_get1_curves, SSL_get_shared_curve - EC supported curve functions</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/ssl.h&gt;
+
+ int SSL_CTX_set1_groups(SSL_CTX *ctx, int *glist, int glistlen);
+ int SSL_CTX_set1_groups_list(SSL_CTX *ctx, char *list);
+
+ int SSL_set1_groups(SSL *ssl, int *glist, int glistlen);
+ int SSL_set1_groups_list(SSL *ssl, char *list);
+
+ int SSL_get1_groups(SSL *ssl, int *groups);
+ int SSL_get_shared_group(SSL *s, int n);
+ int SSL_get_negotiated_group(SSL *s);
+
+ int SSL_CTX_set1_curves(SSL_CTX *ctx, int *clist, int clistlen);
+ int SSL_CTX_set1_curves_list(SSL_CTX *ctx, char *list);
+
+ int SSL_set1_curves(SSL *ssl, int *clist, int clistlen);
+ int SSL_set1_curves_list(SSL *ssl, char *list);
+
+ int SSL_get1_curves(SSL *ssl, int *curves);
+ int SSL_get_shared_curve(SSL *s, int n);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>For all of the functions below that set the supported groups there must be at least one group in the list. A number of these functions identify groups via a unique integer NID value. However, support for some groups may be added by external providers. In this case there will be no NID assigned for the group. When setting such groups applications should use the &quot;list&quot; form of these functions (i.e. SSL_CTX_set1_groups_list() and SSL_set1_groups_list).</p>
+
+<p>SSL_CTX_set1_groups() sets the supported groups for <b>ctx</b> to <b>glistlen</b> groups in the array <b>glist</b>. The array consist of all NIDs of groups in preference order. For a TLS client the groups are used directly in the supported groups extension. For a TLS server the groups are used to determine the set of shared groups. Currently supported groups for <b>TLSv1.3</b> are <b>NID_X9_62_prime256v1</b>, <b>NID_secp384r1</b>, <b>NID_secp521r1</b>, <b>NID_X25519</b>, <b>NID_X448</b>, <b>NID_ffdhe2048</b>, <b>NID_ffdhe3072</b>, <b>NID_ffdhe4096</b>, <b>NID_ffdhe6144</b> and <b>NID_ffdhe8192</b>.</p>
+
+<p>SSL_CTX_set1_groups_list() sets the supported groups for <b>ctx</b> to string <b>list</b>. The string is a colon separated list of group NIDs or names, for example &quot;P-521:P-384:P-256:X25519:ffdhe2048&quot;. Currently supported groups for <b>TLSv1.3</b> are <b>P-256</b>, <b>P-384</b>, <b>P-521</b>, <b>X25519</b>, <b>X448</b>, <b>ffdhe2048</b>, <b>ffdhe3072</b>, <b>ffdhe4096</b>, <b>ffdhe6144</b>, <b>ffdhe8192</b>. Support for other groups may be added by external providers.</p>
+
+<p>SSL_set1_groups() and SSL_set1_groups_list() are similar except they set supported groups for the SSL structure <b>ssl</b>.</p>
+
+<p>SSL_get1_groups() returns the set of supported groups sent by a client in the supported groups extension. It returns the total number of supported groups. The <b>groups</b> parameter can be <b>NULL</b> to simply return the number of groups for memory allocation purposes. The <b>groups</b> array is in the form of a set of group NIDs in preference order. It can return zero if the client did not send a supported groups extension. If a supported group NID is unknown then the value is set to the bitwise OR of TLSEXT_nid_unknown (0x1000000) and the id of the group.</p>
+
+<p>SSL_get_shared_group() returns the NID of the shared group <b>n</b> for a server-side SSL <b>ssl</b>. If <b>n</b> is -1 then the total number of shared groups is returned, which may be zero. Other than for diagnostic purposes, most applications will only be interested in the first shared group so <b>n</b> is normally set to zero. If the value <b>n</b> is out of range, NID_undef is returned. If the NID for the shared group is unknown then the value is set to the bitwise OR of TLSEXT_nid_unknown (0x1000000) and the id of the group.</p>
+
+<p>SSL_get_negotiated_group() returns the NID of the negotiated group on a TLSv1.3 connection for key exchange. This can be called by either client or server. If the NID for the shared group is unknown then the value is set to the bitwise OR of TLSEXT_nid_unknown (0x1000000) and the id of the group.</p>
+
+<p>All these functions are implemented as macros.</p>
+
+<p>The curve functions are synonyms for the equivalently named group functions and are identical in every respect. They exist because, prior to TLS1.3, there was only the concept of supported curves. In TLS1.3 this was renamed to supported groups, and extended to include Diffie Hellman groups. The group functions should be used in preference.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>If an application wishes to make use of several of these functions for configuration purposes either on a command line or in a file it should consider using the SSL_CONF interface instead of manually parsing options.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>SSL_CTX_set1_groups(), SSL_CTX_set1_groups_list(), SSL_set1_groups() and SSL_set1_groups_list(), return 1 for success and 0 for failure.</p>
+
+<p>SSL_get1_groups() returns the number of groups, which may be zero.</p>
+
+<p>SSL_get_shared_group() returns the NID of shared group <b>n</b> or NID_undef if there is no shared group <b>n</b>; or the total number of shared groups if <b>n</b> is -1.</p>
+
+<p>When called on a client <b>ssl</b>, SSL_get_shared_group() has no meaning and returns -1.</p>
+
+<p>SSL_get_negotiated_group() returns the NID of the negotiated group on a TLSv1.3 connection for key exchange. Or it returns NID_undef if no negotiated group.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man7/ssl.html">ssl(7)</a>, <a href="../man3/SSL_CTX_add_extra_chain_cert.html">SSL_CTX_add_extra_chain_cert(3)</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The curve functions were added in OpenSSL 1.0.2. The equivalent group functions were added in OpenSSL 1.1.1. The SSL_get_negotiated_group() function was added in OpenSSL 3.0.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2013-2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

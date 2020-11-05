@@ -1,0 +1,13 @@
+
+openssl_conf = openssl_init
+
+[openssl_init]
+providers = providers
+
+[providers]
+p_test_configured = p_test_configured
+
+[p_test_configured]
+module = p_test.dylib
+activate = 1
+greeting = Hello OpenSSL, greetings from Test Provider

@@ -1,7 +1,7 @@
 /*
- * Copyright 1999-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1999-2017 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -15,16 +15,15 @@
  * See ssl/ssltest.c for some hints on how this can be used.
  */
 
+#include "e_os.h"
 #include <assert.h>
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "bio_lcl.h"
+#include "bio_local.h"
 #include <openssl/err.h>
 #include <openssl/crypto.h>
-
-#include "e_os.h"
 
 static int bio_new(BIO *bio);
 static int bio_free(BIO *bio);
@@ -39,7 +38,11 @@ static void bio_destroy_pair(BIO *bio);
 static const BIO_METHOD methods_biop = {
     BIO_TYPE_BIO,
     "BIO pair",
+    /* TODO: Convert to new style write function */
+    bwrite_conv,
     bio_write,
+    /* TODO: Convert to new style read function */
+    bread_conv,
     bio_read,
     bio_puts,
     NULL /* no bio_gets */ ,

@@ -1,7 +1,7 @@
 /*
- * Copyright 2015-2018 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2015-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -16,10 +16,10 @@
 #undef _FORTIFY_SOURCE
 
 /* This must be the first #include file */
-#include "async_locl.h"
+#include "async_local.h"
 
 #include <openssl/err.h>
-#include <internal/cryptlib_int.h>
+#include "crypto/cryptlib.h"
 #include <string.h>
 
 #define ASYNC_JOB_RUNNING   0
@@ -30,14 +30,16 @@
 static CRYPTO_THREAD_LOCAL ctxkey;
 static CRYPTO_THREAD_LOCAL poolkey;
 
+static void async_delete_thread_state(void *arg);
+
 static async_ctx *async_ctx_new(void)
 {
     async_ctx *nctx;
 
-    if (!ossl_init_thread_start(OPENSSL_INIT_THREAD_ASYNC))
+    if (!ossl_init_thread_start(NULL, NULL, async_delete_thread_state))
         return NULL;
 
-    nctx = OPENSSL_malloc(sizeof(async_ctx));
+    nctx = OPENSSL_malloc(sizeof(*nctx));
     if (nctx == NULL) {
         ASYNCerr(ASYNC_F_ASYNC_CTX_NEW, ERR_R_MALLOC_FAILURE);
         goto err;
@@ -79,7 +81,7 @@ static ASYNC_JOB *async_job_new(void)
 {
     ASYNC_JOB *job = NULL;
 
-    job = OPENSSL_zalloc(sizeof(ASYNC_JOB));
+    job = OPENSSL_zalloc(sizeof(*job));
     if (job == NULL) {
         ASYNCerr(ASYNC_F_ASYNC_JOB_NEW, ERR_R_MALLOC_FAILURE);
         return NULL;
@@ -168,6 +170,7 @@ int ASYNC_start_job(ASYNC_JOB **job, ASYNC_WAIT_CTX *wctx, int *ret,
                     int (*func)(void *), void *args, size_t size)
 {
     async_ctx *ctx;
+    OPENSSL_CTX *libctx;
 
     if (!OPENSSL_init_crypto(OPENSSL_INIT_ASYNC, NULL))
         return ASYNC_ERR;
@@ -201,6 +204,11 @@ int ASYNC_start_job(ASYNC_JOB **job, ASYNC_WAIT_CTX *wctx, int *ret,
 
             if (ctx->currjob->status == ASYNC_JOB_PAUSED) {
                 ctx->currjob = *job;
+                /*
+                 * Restore the default libctx to what it was the last time the
+                 * fibre ran
+                 */
+                libctx = OPENSSL_CTX_set0_default(ctx->currjob->libctx);
                 /* Resume previous job */
                 if (!async_fibre_swapcontext(&ctx->dispatcher,
                         &ctx->currjob->fibrectx, 1)) {
@@ -208,6 +216,12 @@ int ASYNC_start_job(ASYNC_JOB **job, ASYNC_WAIT_CTX *wctx, int *ret,
                              ASYNC_R_FAILED_TO_SWAP_CONTEXT);
                     goto err;
                 }
+                /*
+                 * In case the fibre changed the default libctx we set it back
+                 * again to what it was originally, and remember what it had
+                 * been changed to.
+                 */
+                ctx->currjob->libctx = OPENSSL_CTX_set0_default(libctx);
                 continue;
             }
 
@@ -238,11 +252,17 @@ int ASYNC_start_job(ASYNC_JOB **job, ASYNC_WAIT_CTX *wctx, int *ret,
 
         ctx->currjob->func = func;
         ctx->currjob->waitctx = wctx;
+        libctx = openssl_ctx_get_concrete(NULL);
         if (!async_fibre_swapcontext(&ctx->dispatcher,
                 &ctx->currjob->fibrectx, 1)) {
             ASYNCerr(ASYNC_F_ASYNC_START_JOB, ASYNC_R_FAILED_TO_SWAP_CONTEXT);
             goto err;
         }
+        /*
+         * In case the fibre changed the default libctx we set it back again
+         * to what it was, and remember what it had been changed to.
+         */
+        ctx->currjob->libctx = OPENSSL_CTX_set0_default(libctx);
     }
 
 err:
@@ -285,7 +305,7 @@ static void async_empty_pool(async_pool *pool)
 {
     ASYNC_JOB *job;
 
-    if (!pool || !pool->jobs)
+    if (pool == NULL || pool->jobs == NULL)
         return;
 
     do {
@@ -326,7 +346,7 @@ int ASYNC_init_thread(size_t max_size, size_t init_size)
     if (!OPENSSL_init_crypto(OPENSSL_INIT_ASYNC, NULL))
         return 0;
 
-    if (!ossl_init_thread_start(OPENSSL_INIT_THREAD_ASYNC))
+    if (!ossl_init_thread_start(NULL, NULL, async_delete_thread_state))
         return 0;
 
     pool = OPENSSL_zalloc(sizeof(*pool));
@@ -335,7 +355,7 @@ int ASYNC_init_thread(size_t max_size, size_t init_size)
         return 0;
     }
 
-    pool->jobs = sk_ASYNC_JOB_new_null();
+    pool->jobs = sk_ASYNC_JOB_new_reserve(NULL, init_size);
     if (pool->jobs == NULL) {
         ASYNCerr(ASYNC_F_ASYNC_INIT_THREAD, ERR_R_MALLOC_FAILURE);
         OPENSSL_free(pool);
@@ -357,7 +377,7 @@ int ASYNC_init_thread(size_t max_size, size_t init_size)
             break;
         }
         job->funcargs = NULL;
-        sk_ASYNC_JOB_push(pool->jobs, job);
+        sk_ASYNC_JOB_push(pool->jobs, job); /* Cannot fail due to reserve */
         curr_size++;
     }
     pool->curr_size = curr_size;
@@ -374,7 +394,8 @@ err:
     return 0;
 }
 
-void async_delete_thread_state(void)
+/* TODO(3.0): arg ignored for now */
+static void async_delete_thread_state(void *arg)
 {
     async_pool *pool = (async_pool *)CRYPTO_THREAD_get_local(&poolkey);
 
@@ -393,7 +414,7 @@ void ASYNC_cleanup_thread(void)
     if (!OPENSSL_init_crypto(OPENSSL_INIT_ASYNC, NULL))
         return;
 
-    async_delete_thread_state();
+    async_delete_thread_state(NULL);
 }
 
 ASYNC_JOB *ASYNC_get_current_job(void)

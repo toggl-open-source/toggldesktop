@@ -1,7 +1,7 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -11,7 +11,7 @@
 #include "internal/cryptlib.h"
 #include <openssl/asn1t.h>
 #include <openssl/x509.h>
-#include "internal/x509_int.h"
+#include "crypto/x509.h"
 
 /*-
  * X509_REQ_INFO is handled in an unusual way to get round
@@ -45,6 +45,29 @@ static int rinf_cb(int operation, ASN1_VALUE **pval, const ASN1_ITEM *it,
     return 1;
 }
 
+static int req_cb(int operation, ASN1_VALUE **pval, const ASN1_ITEM *it,
+                  void *exarg)
+{
+#ifndef OPENSSL_NO_SM2
+    X509_REQ *ret = (X509_REQ *)*pval;
+
+    switch (operation) {
+    case ASN1_OP_D2I_PRE:
+        ASN1_OCTET_STRING_free(ret->distinguishing_id);
+        /* fall thru */
+    case ASN1_OP_NEW_POST:
+        ret->distinguishing_id = NULL;
+        break;
+
+    case ASN1_OP_FREE_POST:
+        ASN1_OCTET_STRING_free(ret->distinguishing_id);
+        break;
+    }
+#endif
+
+    return 1;
+}
+
 ASN1_SEQUENCE_enc(X509_REQ_INFO, enc, rinf_cb) = {
         ASN1_SIMPLE(X509_REQ_INFO, version, ASN1_INTEGER),
         ASN1_SIMPLE(X509_REQ_INFO, subject, X509_NAME),
@@ -57,7 +80,7 @@ ASN1_SEQUENCE_enc(X509_REQ_INFO, enc, rinf_cb) = {
 
 IMPLEMENT_ASN1_FUNCTIONS(X509_REQ_INFO)
 
-ASN1_SEQUENCE_ref(X509_REQ, 0) = {
+ASN1_SEQUENCE_ref(X509_REQ, req_cb) = {
         ASN1_EMBED(X509_REQ, req_info, X509_REQ_INFO),
         ASN1_EMBED(X509_REQ, sig_alg, X509_ALGOR),
         ASN1_SIMPLE(X509_REQ, signature, ASN1_BIT_STRING)
@@ -66,3 +89,14 @@ ASN1_SEQUENCE_ref(X509_REQ, 0) = {
 IMPLEMENT_ASN1_FUNCTIONS(X509_REQ)
 
 IMPLEMENT_ASN1_DUP_FUNCTION(X509_REQ)
+
+void X509_REQ_set0_distinguishing_id(X509_REQ *x, ASN1_OCTET_STRING *d_id)
+{
+    ASN1_OCTET_STRING_free(x->distinguishing_id);
+    x->distinguishing_id = d_id;
+}
+
+ASN1_OCTET_STRING *X509_REQ_get0_distinguishing_id(X509_REQ *x)
+{
+    return x->distinguishing_id;
+}
