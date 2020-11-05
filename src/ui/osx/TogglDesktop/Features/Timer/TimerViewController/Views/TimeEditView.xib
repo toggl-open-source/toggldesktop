@@ -154,7 +154,7 @@
                                                         <subviews>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lIP-dg-XbA" customClass="CursorButton" customModule="Toggl_Track" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="4" width="61" height="17"/>
-                                                                <buttonCell key="cell" type="bevel" title="Tuesday," bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="0ZN-i2-ud9">
+                                                                <buttonCell key="cell" type="bevel" title="Tuesday," bezelStyle="rounded" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="0ZN-i2-ud9">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="menu" size="14"/>
                                                                 </buttonCell>
@@ -168,10 +168,10 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="25" id="AFn-jk-hjv"/>
                                                                 </constraints>
-                                                                <datePickerCell key="cell" alignment="left" drawsBackground="NO" datePickerStyle="textField" id="ofN-Zc-xLU">
+                                                                <datePickerCell key="cell" refusesFirstResponder="YES" alignment="left" drawsBackground="NO" datePickerStyle="textField" useCurrentDate="YES" id="ofN-Zc-xLU">
                                                                     <font key="font" metaFont="system" size="14"/>
-                                                                    <date key="date" timeIntervalSinceReferenceDate="-569750400">
-                                                                        <!--1982-12-12 16:00:00 +0000-->
+                                                                    <date key="date" timeIntervalSinceReferenceDate="626269538.47442997">
+                                                                        <!--2020-11-05 11:45:38 +0000-->
                                                                     </date>
                                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="textColor" name="black-text-color"/>
@@ -199,7 +199,7 @@
                                             <color key="borderColor" name="upload-border-color"/>
                                             <color key="fillColor" name="editor-background-color"/>
                                         </box>
-                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fu1-wD-m4F" userLabel="Next Day Button">
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fu1-wD-m4F" userLabel="Next Day Button" customClass="CursorButton" customModule="Toggl_Track" customModuleProvider="target">
                                             <rect key="frame" x="198" y="0.0" width="30" height="28"/>
                                             <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="next_date_arrow" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="qXM-vH-7PF">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -209,7 +209,7 @@
                                                 <action selector="nextDayButtonClicked:" target="c22-O7-iKe" id="kik-i1-cxT"/>
                                             </connections>
                                         </button>
-                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dgD-Nq-pU2" userLabel="Prev Day Button">
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dgD-Nq-pU2" userLabel="Prev Day Button" customClass="CursorButton" customModule="Toggl_Track" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="30" height="28"/>
                                             <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="previous_date_arrow" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="xem-qX-mAF">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -281,7 +281,9 @@
                 <outlet property="dateBox" destination="0wY-G9-sKx" id="8CJ-gg-ITS"/>
                 <outlet property="dateBoxBottomConstraint" destination="CHj-hN-VfY" id="Bnn-Po-yQs"/>
                 <outlet property="datePicker" destination="IcL-re-HKO" id="RaD-mg-rBd"/>
+                <outlet property="nextDayButton" destination="fu1-wD-m4F" id="eMk-aU-q1g"/>
                 <outlet property="nextKeyView" destination="GzC-fm-PNM" id="SB2-Ha-1tt"/>
+                <outlet property="prevDayButton" destination="dgD-Nq-pU2" id="jXO-Sc-ZX7"/>
                 <outlet property="startTextField" destination="GzC-fm-PNM" id="btD-Qh-cLd"/>
                 <outlet property="todayButton" destination="lIP-dg-XbA" id="F8g-bO-cTw"/>
             </connections>
