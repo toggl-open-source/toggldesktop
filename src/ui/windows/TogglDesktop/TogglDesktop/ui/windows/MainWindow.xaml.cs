@@ -192,6 +192,7 @@ namespace TogglDesktop
             this.timerEntryListView.Entries.CloseEditPopup += (sender, args) => this.closeEditPopup(true);
 
             this.editPopup.IsVisibleChanged += this.editPopupVisibleChanged;
+            editPopup.Activated += (s, e) => updateEditPopupLocation();
             this.editPopup.SizeChanged += (sender, args) => this.updateEntriesListWidth();
 
             this.idleNotificationWindow.AddedIdleTimeAsNewEntry += (o, e) => this.ShowOnTop();
@@ -543,7 +544,6 @@ namespace TogglDesktop
 
         private void editPopupVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            this.updateEditPopupLocation();
             this.updateEntriesListWidth();
             if (editPopup.IsVisible == false && ReferenceEquals(this.activeView, this.timerEntryListView))
             {
@@ -855,7 +855,7 @@ namespace TogglDesktop
                 bool left = s.Right - (this.Left + this.ActualWidth) < this.editPopup.Width;
 
                 var x = this.Left;
-                var y = this.Top;
+                var y = Top + editPopup.Height > s.Bottom ? s.Bottom - editPopup.Height : Top;
 
                 if (!left)
                 {
