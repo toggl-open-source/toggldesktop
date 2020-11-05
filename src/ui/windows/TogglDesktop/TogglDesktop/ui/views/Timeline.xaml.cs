@@ -129,8 +129,12 @@ namespace TogglDesktop
 
         private void OnTimeEntryCanvasMouseUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            if (_timeEntryId != null)
+            if (_timeEntryId != null && _dragStartedPoint != null)
             {
+                if (Math.Abs(mouseButtonEventArgs.GetPosition(TimeEntryBlocks).Y - _dragStartedPoint.Value) <= 2)
+                {
+                    ViewModel.TimeEntryBlocks[_timeEntryId].Height = TimelineConstants.ScaleModes[ViewModel.SelectedScaleMode];
+                }
                 ViewModel.TimeEntryBlocks[_timeEntryId].ChangeStartTime();
                 ViewModel.TimeEntryBlocks[_timeEntryId].ChangeEndTime();
             }
