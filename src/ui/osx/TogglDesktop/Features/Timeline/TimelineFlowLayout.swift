@@ -248,7 +248,7 @@ extension TimelineFlowLayout {
             print("Missing timestamp for at \(indexPath)")
             return nil
         }
-        let beginDay = Date.startOfDay(from: timestamp.start)
+        let beginDay = Date.startOfDay(from: currentDate.timeIntervalSince1970)
 
         // Length of time entry
         let span = CGFloat(timestamp.end - timestamp.start)
