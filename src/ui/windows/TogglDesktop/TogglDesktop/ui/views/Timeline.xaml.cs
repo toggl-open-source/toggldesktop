@@ -107,5 +107,34 @@ namespace TogglDesktop
             }
         }
 
+        private double? _dragStartedPoint;
+        private string _timeEntryId;
+        private void OnTimeEntryCanvasMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _dragStartedPoint = e.GetPosition(TimeEntryBlocks).Y;
+            _timeEntryId = ViewModel.AddNewTimeEntry(_dragStartedPoint.Value);
+        }
+
+        private void OnTimeEntryCanvasMouseMove(object sender, MouseEventArgs e)
+        {
+            if (_dragStartedPoint != null && _timeEntryId != null && e.LeftButton == MouseButtonState.Pressed)
+            {
+                var verticalChange = Math.Abs(e.GetPosition(TimeEntryBlocks).Y - _dragStartedPoint.Value);
+                ViewModel.TimeEntryBlocks[_timeEntryId].VerticalOffset =
+                    Math.Min(_dragStartedPoint.Value, e.GetPosition(TimeEntryBlocks).Y);
+                ViewModel.TimeEntryBlocks[_timeEntryId].Height = verticalChange;
+            }
+        }
+
+        private void OnTimeEntryCanvasDragEnded(object sender, DragEventArgs e)
+        {
+            if (_timeEntryId != null)
+            {
+                ViewModel.TimeEntryBlocks[_timeEntryId].ChangeStartTime();
+                ViewModel.TimeEntryBlocks[_timeEntryId].ChangeEndTime();
+            }
+            _dragStartedPoint = null;
+            _timeEntryId = null;
+        }
     }
 }

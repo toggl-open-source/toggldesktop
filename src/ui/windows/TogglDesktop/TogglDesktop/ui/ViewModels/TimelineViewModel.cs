@@ -67,7 +67,7 @@ namespace TogglDesktop.ViewModels
 
             this.WhenAnyValue(x => x.TimeEntryBlocks)
                 .Where(blocks => blocks != null && blocks.Any())
-                .Select(blocks => blocks.Min(te => te.VerticalOffset))
+                .Select(blocks => blocks.Min(te => te.Value.VerticalOffset))
                 .ToPropertyEx(this, x => x.FirstTimeEntryOffset);
 
             Toggl.OnTimeEntryList += HandleTimeEntryListChanged;
@@ -75,7 +75,7 @@ namespace TogglDesktop.ViewModels
                 SelectedForEditTEId = open ? te.GUID : SelectedForEditTEId;
             this.WhenAnyValue(x => x.SelectedForEditTEId, x => x.TimeEntryBlocks)
                 .ObserveOn(RxApp.TaskpoolScheduler).Subscribe(_ =>
-                    TimeEntryBlocks?.ForEach(te => te.IsEditViewOpened = SelectedForEditTEId == te.TimeEntryId));
+                    TimeEntryBlocks?.ForEach(te => te.Value.IsEditViewOpened = SelectedForEditTEId == te.TimeEntryId));
             this.WhenAnyValue(x => x.SelectedForEditTEId, x => x.RunningTimeEntryBlock)
                 .Where(pair => pair.Item2 != null)
                 .Subscribe(pair => pair.Item2.IsEditViewOpened = pair.Item1 == pair.Item2.TimeEntryId);
@@ -183,7 +183,7 @@ namespace TogglDesktop.ViewModels
             double currentTimeOffset)
         {
             var timeStampsList = new List<(TimeStampType Type, TimeEntryBlock Block)>();
-            var blocks = new List<TimeEntryBlock>();
+            var blocks = new Dictionary<string, TimeEntryBlock>();
             //The idea is to place all the starts and ends in sorted order and then assign an offset to each time entry block from the list:
             // - if it's a start time stamp, then pick up the minimum available offset, if none is available assign a new one.
             // - if it's an end time stamp, then release the offset which it occupied.
@@ -221,7 +221,7 @@ namespace TogglDesktop.ViewModels
                 {
                     timeStampsList.Add((TimeStampType.Empty, block));
                 }
-                blocks.Add(block);
+                blocks.Add(entry.GUID, block);
             }
             //There can be a situation that next time entry starts exactly at the same moment, the previous one ended.
             //This situation must not be considered as overlap. So the comparison logic if time stamps are the same:
@@ -310,6 +310,15 @@ namespace TogglDesktop.ViewModels
             return gaps;
         }
 
+        public string AddNewTimeEntry(double offset)
+        {
+            var started = TimelineConstants.ConvertOffsetToTime(offset, SelectedDate,
+                TimelineConstants.ScaleModes[SelectedScaleMode]);
+            var timeEntryId = Toggl.CreateEmptyTimeEntry(started, started);
+            Toggl.Edit(timeEntryId, false, Toggl.Description);
+            return timeEntryId;
+        }
+
         [Reactive] 
         public int SelectedScaleMode { get; private set; } = 0;
         [Reactive] 
@@ -336,7 +345,7 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public TimeEntryBlock SelectedTimeEntryBlock { get; set; }
         
-        public List<TimeEntryBlock> TimeEntryBlocks { [ObservableAsProperty]get; }
+        public Dictionary<string, TimeEntryBlock> TimeEntryBlocks { [ObservableAsProperty]get; }
 
         public TimeEntryBlock RunningTimeEntryBlock { [ObservableAsProperty]get; }
 

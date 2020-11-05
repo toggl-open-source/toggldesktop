@@ -186,12 +186,15 @@
                     <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=TimeEntryBlocks}" Margin="10 0 0 0" Name="TimeEntryBlocks">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <Canvas Name="TimeEntryCanvas" />
+                                <Canvas Name="TimeEntryCanvas" Background="Transparent" 
+                                        MouseDown="OnTimeEntryCanvasMouseDown"
+                                        MouseMove="OnTimeEntryCanvasMouseMove"
+                                        DragLeave="OnTimeEntryCanvasDragEnded"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <togglDesktop:TimelineTimeEntryBlock Panel.ZIndex="1" DataContext="{Binding Path=.}"
+                                <togglDesktop:TimelineTimeEntryBlock Panel.ZIndex="1" DataContext="{Binding Path=Value}"
                                                                      MouseEnter="OnTimeEntryBlockMouseEnter"
                                                                      MouseLeave="OnTimeEntyrBlockMouseLeave">
                                     <togglDesktop:TimelineTimeEntryBlock.Style>
@@ -208,8 +211,8 @@
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemContainerStyle>
                             <Style TargetType="ContentPresenter">
-                                <Setter Property="Canvas.Left" Value="{Binding HorizontalOffset}" />
-                                <Setter Property="Canvas.Top" Value="{Binding VerticalOffset}" />
+                                <Setter Property="Canvas.Left" Value="{Binding Value.HorizontalOffset}" />
+                                <Setter Property="Canvas.Top" Value="{Binding Value.VerticalOffset}" />
                             </Style>
                         </ItemsControl.ItemContainerStyle>
                     </ItemsControl>
