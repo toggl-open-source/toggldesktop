@@ -262,7 +262,12 @@ extern "C" {
         TimerShortcutActionTypeTagCreated
     } TimerShortcutActionType;
 
-typedef enum {
+    typedef enum {
+        DurationDropdownActionTypeStartTimeChange,
+        DurationDropdownActionTypeDateChange
+    } DurationDropdownActionType;
+
+    typedef enum {
         TogglServerStaging = 0,
         TogglServerProduction
     } TogglServerType;
@@ -1316,6 +1321,10 @@ typedef enum {
     TOGGL_EXPORT void track_timer_shortcut(
         void *context,
         TimerShortcutActionType action);
+
+    TOGGL_EXPORT void track_duration_dropdown(
+        void *context,
+        DurationDropdownActionType action);
 
     TOGGL_EXPORT bool_t toggl_update_time_entry(
         void *context,
