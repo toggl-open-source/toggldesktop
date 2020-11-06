@@ -471,7 +471,7 @@ public static partial class Toggl
 
     public static bool Stop(bool preventOnApp = false)
     {
-        OnUserTimeEntryStop();
+        RunningTimeEntry.OnNext(null);
         return toggl_stop(ctx, preventOnApp);
     }
 
@@ -929,7 +929,7 @@ public static partial class Toggl
     
     public static readonly BehaviorSubject<DateTime> TimelineSelectedDate = new BehaviorSubject<DateTime>(DateTime.Today);
 
-    public static readonly Subject<TogglTimeEntryView> RunningTimeEntry = new Subject<TogglTimeEntryView>();
+    public static readonly BehaviorSubject<TogglTimeEntryView?> RunningTimeEntry = new BehaviorSubject<TogglTimeEntryView?>(null);
     public static event DisplayTimelineUI OnDisplayTimelineUI = delegate { };
     private static void listenToLibEvents()
     {
@@ -1208,8 +1208,6 @@ public static partial class Toggl
     public delegate void UserTimeEntryStart();
 
     public static event UserTimeEntryStart OnUserTimeEntryStart = delegate { };
-
-    public static event Action OnUserTimeEntryStop = delegate { };
 
     #endregion
 

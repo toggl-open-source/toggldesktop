@@ -24,7 +24,7 @@ namespace TogglDesktop.Tutorial
             this.tutorialManager.Timer.DescriptionTextBoxTextChanged -= this.onDescriptionTextChanged;
         }
 
-        private void onRunningTimerState(Toggl.TogglTimeEntryView te)
+        private void onRunningTimerState(Toggl.TogglTimeEntryView? te)
         {
             this.tutorialManager.ActivateScreen<BasicTutorialScreen4>();
         }

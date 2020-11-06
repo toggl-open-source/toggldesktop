@@ -54,11 +54,11 @@ namespace TogglDesktop.ViewModels
 
             Toggl.TimelineChunks.CombineLatest(scaleModeObservable, (items, mode) => ConvertChunksToActivityBlocks (items, mode, SelectedDate))
                 .ToPropertyEx(this, x => x.ActivityBlocks);
-            var timeEntryBlocksObservable = Toggl.TimelineTimeEntries.CombineLatest(scaleModeObservable,
-                (tes, mode) => ConvertTimeEntriesToBlocks(tes, mode, SelectedDate));
-            timeEntryBlocksObservable.ToPropertyEx(this, x => x.TimeEntryBlocks);
-            Toggl.TimelineTimeEntries.CombineLatest(scaleModeObservable, GenerateGapTimeEntryBlocks)
-                .ToPropertyEx(this, x => x.GapTimeEntryBlocks);
+            var blocksObservable = Toggl.TimelineTimeEntries
+                .CombineLatest(Toggl.RunningTimeEntry, (list, te) => (TimeEntries: list, Running: te))
+                .CombineLatest(scaleModeObservable,
+                    (t, mode) => ConvertTimeEntriesToBlocks(t.TimeEntries, t.Running, mode, SelectedDate));
+            blocksObservable.Select(blocks => GenerateGapTimeEntryBlocks(blocks, SelectedScaleMode)).ToPropertyEx(this, x => x.GapTimeEntryBlocks);
 
             this.WhenAnyValue(x => x.TimeEntryBlocks)
                 .Where(blocks => blocks != null && blocks.Any())
@@ -77,13 +77,12 @@ namespace TogglDesktop.ViewModels
             Observable.Timer(TimeSpan.Zero,TimeSpan.FromMinutes(1))
                 .Select(_ => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, SelectedScaleMode))
                 .Subscribe(h => CurrentTimeOffset = h);
-            Toggl.RunningTimeEntry.Select(te =>
-                    ConvertToRunningTimeEntryBlock(te, RunningTimeEntryBlock, TimeEntryBlocks, SelectedScaleMode,
-                        this.WhenAnyValue(x => x.CurrentTimeOffset)))
-                .Subscribe(te => RunningTimeEntryBlock = te);
-            Toggl.OnUserTimeEntryStop += () => RunningTimeEntryBlock = null;
+            this.WhenAnyValue(x => x.CurrentTimeOffset).Where(_ => RunningTimeEntryBlock != null)
+                .Select(off => Math.Max(TimelineConstants.MinTimeEntryBlockHeight,
+                    CurrentTimeOffset - RunningTimeEntryBlock.VerticalOffset))
+                .Subscribe(h => RunningTimeEntryBlock.Height = h);
             this.WhenAnyValue(x => x.TimeEntryBlocks, x => x.RunningTimeEntryBlock, x => x.IsTodaySelected,
-                (blocks, running, isToday) => blocks.Any() || (running != null && isToday))
+                (blocks, running, isToday) => blocks?.Any() == true || (running != null && isToday))
                 .ToPropertyEx(this, x => x.AnyTimeEntries);
         }
 
@@ -172,21 +171,25 @@ namespace TogglDesktop.ViewModels
             End,
             Empty
         }
-        private static List<TimeEntryBlock> ConvertTimeEntriesToBlocks(List<Toggl.TogglTimeEntryView> timeEntries, int selectedScaleMode, DateTime selectedDate)
+        private List<Toggl.TogglTimeEntryView> ConvertTimeEntriesToBlocks(List<Toggl.TogglTimeEntryView> timeEntries, Toggl.TogglTimeEntryView? runningEntry, int selectedScaleMode, DateTime selectedDate)
         {
             var timeStampsList = new List<(TimeStampType Type, TimeEntryBlock Block)>();
             var blocks = new List<TimeEntryBlock>();
             //The idea is to place all the starts and ends in sorted order and then assign an offset to each time entry block from the list:
             // - if it's a start time stamp, then pick up the minimum available offset, if none is available assign a new one.
             // - if it's an end time stamp, then release the offset which it occupied.
-            foreach (var entry in timeEntries)
+            IEnumerable<Toggl.TogglTimeEntryView> allEntries = timeEntries;
+            if (runningEntry != null)
+                allEntries = allEntries.Union(new List<Toggl.TogglTimeEntryView>(){runningEntry.Value});
+            foreach (var entry in allEntries)
             {
                 var startTime = Toggl.DateTimeFromUnix(entry.Started);
-                var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(entry.Ended), selectedScaleMode);
+                var ended = entry.Equals(runningEntry) ? (ulong) Toggl.UnixFromDateTime(DateTime.Now) : entry.Ended;
+                var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(ended), selectedScaleMode);
                 var block = new TimeEntryBlock(entry.GUID, TimelineConstants.ScaleModes[selectedScaleMode])
                 {
                     Started = entry.Started,
-                    Ended = entry.Ended,
+                    Ended = ended,
                     Height = Math.Max(height, TimelineConstants.MinTimeEntryBlockHeight),
                     VerticalOffset = ConvertTimeIntervalToHeight(selectedDate, startTime, selectedScaleMode),
                     Color = entry.Color,
@@ -259,46 +262,10 @@ namespace TogglDesktop.ViewModels
                 }
             }
 
-            return blocks;
-        }
+            RunningTimeEntryBlock = blocks.FirstOrDefault(b => b.TimeEntryId == runningEntry?.GUID);
+            TimeEntryBlocks = blocks.Where(b => b.TimeEntryId != runningEntry?.GUID).ToList();
 
-        private IDisposable _heightObservable;
-        private TimeEntryBlock ConvertToRunningTimeEntryBlock(Toggl.TogglTimeEntryView runningTimeEntry, TimeEntryBlock runningTimeEntryBlock,
-            List<TimeEntryBlock> timeEntries, int selectedScaleMode, IObservable<double> currentTime)
-        {
-            var startTime = Toggl.DateTimeFromUnix(runningTimeEntry.Started);
-            TimeEntryBlock block = runningTimeEntryBlock?.TimeEntryId == runningTimeEntry.GUID
-                ? runningTimeEntryBlock
-                : new TimeEntryBlock(runningTimeEntry.GUID, TimelineConstants.ScaleModes[selectedScaleMode]);
-            block.Started = runningTimeEntry.Started;
-            block.Ended = (ulong) Toggl.UnixFromDateTime(DateTime.Now);
-            block.VerticalOffset =
-                ConvertTimeIntervalToHeight(new DateTime(startTime.Year, startTime.Month, startTime.Day), startTime,
-                    selectedScaleMode);
-            _heightObservable?.Dispose();
-            _heightObservable = currentTime.Subscribe(h =>
-                block.Height = Math.Max(h - block.VerticalOffset - 1, TimelineConstants.MinTimeEntryBlockHeight));
-            block.Color = runningTimeEntry.Color;
-            block.Description = runningTimeEntry.Description.IsNullOrEmpty()
-                ? "No Description"
-                : runningTimeEntry.Description;
-            block.ProjectName = runningTimeEntry.ProjectLabel;
-            block.ClientName = runningTimeEntry.ClientLabel;
-            block.HasTag = !runningTimeEntry.Tags.IsNullOrEmpty();
-            block.IsBillable = runningTimeEntry.Billable;
-            double offset = 0d;
-            foreach (var entry in timeEntries)
-            {
-                if (entry.Ended > block.Started && entry.Started < block.Ended)
-                {
-                    entry.ShowDescription = false;
-                    offset += TimelineConstants.TimeEntryBlockWidth + TimelineConstants.GapBetweenOverlappingTEs;
-                }
-            }
-
-            block.HorizontalOffset = offset;
-            block.ShowDescription = block.Height > TimelineConstants.MinShowTEDescriptionHeight && offset == 0;
-            return block;
+            return timeEntries;
         }
 
         public static double ConvertTimeIntervalToHeight(DateTime start, DateTime end, int scaleMode)
@@ -361,7 +328,8 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public TimeEntryBlock SelectedTimeEntryBlock { get; set; }
         
-        public List<TimeEntryBlock> TimeEntryBlocks { [ObservableAsProperty] get; }
+        [Reactive]
+        public List<TimeEntryBlock> TimeEntryBlocks { get; private set; }
 
         [Reactive]
         public TimeEntryBlock RunningTimeEntryBlock { get; set; }

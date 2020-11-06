@@ -309,7 +309,7 @@ namespace TogglDesktop
             this.updateTracking(null);
         }
 
-        private void onRunningTimerState(Toggl.TogglTimeEntryView te)
+        private void onRunningTimerState(Toggl.TogglTimeEntryView? te)
         {
             if (this.TryBeginInvoke(this.onRunningTimerState, te))
                 return;

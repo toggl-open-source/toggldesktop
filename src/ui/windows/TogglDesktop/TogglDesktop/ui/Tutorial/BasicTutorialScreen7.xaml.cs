@@ -24,7 +24,7 @@ namespace TogglDesktop.Tutorial
             Toggl.OnTimeEntryEditor -= this.onTimerEntryEditor;
         }
 
-        private void onRunningTimerState(Toggl.TogglTimeEntryView te)
+        private void onRunningTimerState(Toggl.TogglTimeEntryView? te)
         {
             this.quitTutorial();
         }

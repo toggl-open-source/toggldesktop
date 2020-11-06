@@ -22,7 +22,7 @@ namespace TogglDesktop.Tutorial
             _runningTimeEntryObservable.Dispose();
         }
 
-        private void onRunningTimerState(Toggl.TogglTimeEntryView te)
+        private void onRunningTimerState(Toggl.TogglTimeEntryView? te)
         {
             this.activateScreen<BasicTutorialScreen4>();
         }
