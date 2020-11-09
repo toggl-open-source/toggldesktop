@@ -99,7 +99,7 @@
                     </view>
                     <color key="fillColor" name="white-background-color"/>
                 </box>
-                <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G" userLabel="timerBox" customClass="NSBoxClickable">
+                <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G" userLabel="timerBox">
                     <rect key="frame" x="0.0" y="0.0" width="411" height="150"/>
                     <view key="contentView" id="gK5-Lo-ktx">
                         <rect key="frame" x="0.0" y="0.0" width="411" height="150"/>
