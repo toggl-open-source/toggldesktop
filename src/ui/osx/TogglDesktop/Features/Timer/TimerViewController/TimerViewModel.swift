@@ -26,7 +26,7 @@ final class TimerViewModel: NSObject {
 
     private(set) var startTimeString: String = "" {
         didSet {
-            onStartTimeChanged?(startTimeString)
+            onStartTimeChanged?(startTimeString, timeEntry.started ?? Date())
         }
     }
 
@@ -86,7 +86,7 @@ final class TimerViewModel: NSObject {
     var onIsRunning: ((Bool) -> Void)?
     var onDescriptionChanged: ((String) -> Void)?
     var onDurationChanged: ((String) -> Void)?
-    var onStartTimeChanged: ((String) -> Void)?
+    var onStartTimeChanged: ((String, Date) -> Void)?
     var onTagSelected: ((Bool) -> Void)?
     var onProjectUpdated: ((Project?) -> Void)?
     /// Called when project was selected via autocomplete data source
@@ -202,16 +202,15 @@ final class TimerViewModel: NSObject {
 
         if !duration.isEmpty {
             timeEntry.started = startDate(fromDurationString: duration)
-            startTimeString = timeString(fromDate: timeEntry.started)
-
-            let duration = Date().timeIntervalSince(timeEntry.started)
-            durationString = DesktopLibraryBridge.shared().convertDuraton(inSecond: Int64(duration))
+            reloadTimeStrings()
+        } else if !timeEntry.isRunning() {
+            timeEntry.started = nil
+            durationString = ""
+            startTimeString = ""
         }
 
-        if timeEntry.isRunning() {
-            if let timeEntryGUID = timeEntry.guid {
-                save(duration: duration, forEntryWithGUID: timeEntryGUID)
-            }
+        if timeEntry.isRunning(), let guid = timeEntry.guid {
+            save(duration: duration, forEntryWithGUID: guid)
         }
 
         actionsUsedBeforeStart.insert(TimerEditActionTypeDuration)
@@ -232,14 +231,50 @@ final class TimerViewModel: NSObject {
             newTimestamp += TimeInterval(Date().seconds)
         }
 
-        timeEntry.started = Date(timeIntervalSince1970: newTimestamp)
-        startTimeString = timeString(fromDate: timeEntry.started)
+        var newDate = Date(timeIntervalSince1970: newTimestamp)
+        // `newDate` is always "today" or "yesterday"
+        if let currentTime = timeEntry.started, newDate.daysBetween(endDate: currentTime) != 0 {
+            // update to be the same day as old start time
+            newDate = Date.combine(dayFrom: timeEntry.started, withTimeFrom: newDate) ?? newDate
+        }
 
-        let duration = Date().timeIntervalSince1970 - newTimestamp
-        durationString = DesktopLibraryBridge.shared().convertDuraton(inSecond: Int64(duration))
+        timeEntry.started = newDate
+        reloadTimeStrings()
 
         if timeEntry.isRunning(), let guid = timeEntry.guid {
-            DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: newTimestamp, guid: guid, keepEndTimeFixed: false)
+            DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: timeEntry.started.timeIntervalSince1970,
+                                                                   guid: guid,
+                                                                   keepEndTimeFixed: false)
+        }
+    }
+
+    /// Sets date for current time entry. Only year, month and day components are used to update the current time entry start time.
+    /// So use this method only to set the "start day".
+    func setStartDate(_ startDate: Date) {
+        guard startDate < Date() else { return }
+
+        if timeEntry.started == nil {
+            timeEntry.started = startDate
+        }
+
+        guard var combinedDateTime = Date.combine(dayFrom: startDate, withTimeFrom: timeEntry.started) else {
+            return
+        }
+
+        if !timeEntry.isRunning() {
+            // when not running we round the duration to minutes for ease of use
+            combinedDateTime = combinedDateTime.addingTimeInterval(
+                TimeInterval(Date().seconds - combinedDateTime.seconds)
+            )
+        }
+
+        timeEntry.started = combinedDateTime < Date() ? combinedDateTime : Date()
+        reloadTimeStrings()
+
+        if timeEntry.isRunning(), let guid = timeEntry.guid {
+            DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: timeEntry.started.timeIntervalSince1970,
+                                                                   guid: guid,
+                                                                   keepEndTimeFixed: false)
         }
     }
 
@@ -357,6 +392,13 @@ final class TimerViewModel: NSObject {
         } else {
             billableState = .unavailable
         }
+    }
+
+    private func reloadTimeStrings() {
+        startTimeString = timeString(fromDate: timeEntry.started)
+        durationString = DesktopLibraryBridge.shared().convertDuraton(
+            inSecond: Int64(Date().timeIntervalSince(timeEntry.started))
+        )
     }
 
     private func startDate(fromDurationString durationString: String) -> Date {

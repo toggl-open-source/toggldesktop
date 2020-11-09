@@ -143,10 +143,11 @@ class TimerViewController: NSViewController {
             }
         }
 
-        viewModel.onStartTimeChanged = { [unowned self] startTime in
-            if self.durationControl.startTimeStringValue != startTime {
-                self.durationControl.startTimeStringValue = startTime
+        viewModel.onStartTimeChanged = { [unowned self] startTimeString, startDate in
+            if self.durationControl.startTimeStringValue != startTimeString {
+                self.durationControl.startTimeStringValue = startTimeString
             }
+            self.durationControl.startDateValue = startDate
         }
 
         viewModel.onTagSelected = { [unowned self] isSelected in
@@ -424,6 +425,10 @@ class TimerViewController: NSViewController {
 
         durationControl.onStartTextChange = { [unowned self] text in
             self.viewModel.setStartTime(text)
+        }
+
+        durationControl.onStartDateChange = { [unowned self] startDate in
+            self.viewModel.setStartDate(startDate)
         }
 
         durationControl.onPerformAction = { [unowned self] action in
