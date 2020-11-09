@@ -1696,6 +1696,16 @@ void track_timer_shortcut(
     app(context)->TrackTimerShortcut(action);
 }
 
+void track_duration_dropdown(
+     void *context,
+     DurationDropdownActionType action) {
+
+     if (!context) {
+         return;
+     }
+     app(context)->TrackDurationDropdown(action);
+ }
+
 bool_t toggl_update_time_entry(
     void *context,
     const char_t *guid,

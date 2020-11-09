@@ -97,6 +97,7 @@ class Analytics : public Poco::TaskManager {
     void TrackTimerStart(const std::string &client_id, const TimerEditActionType actions);
 
     void TrackTimerShortcut(const std::string &client_id, const TimerShortcutActionType action);
+    void TrackDurationDropdown(const std::string &client_id, const DurationDropdownActionType action);
 
     void TrackTimelineResizing(const std::string& client_id, const std::string& os);
 

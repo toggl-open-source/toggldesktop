@@ -517,6 +517,11 @@ void *ctx;
     track_timer_shortcut(ctx, action);
 }
 
+- (void)trackDurationDropdown:(DurationDropdownActionType)action
+{
+    track_duration_dropdown(ctx, action);
+}
+
 #pragma mark - General
 
 - (uint64_t)defaultWorkspaceID

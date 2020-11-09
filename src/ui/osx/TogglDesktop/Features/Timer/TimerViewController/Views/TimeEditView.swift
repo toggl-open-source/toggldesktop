@@ -39,6 +39,7 @@ class TimeEditView: NSView {
             }
             update(with: dateValue)
             onStartDateChange?(dateValue)
+            DesktopLibraryBridge.shared().trackDurationDropdown(DurationDropdownActionTypeDateChange)
         }
     }
 
@@ -156,6 +157,7 @@ extension TimeEditView: NSTextFieldDelegate {
     func controlTextDidEndEditing(_ obj: Notification) {
         if obj.object as? NSTextField == startTextField, isStartFieldChanged {
             onStartTextChange?(startStringValue)
+            DesktopLibraryBridge.shared().trackDurationDropdown(DurationDropdownActionTypeStartTimeChange)
             isStartFieldChanged = false
         }
     }

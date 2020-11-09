@@ -461,4 +461,20 @@ void Analytics::TrackTimerShortcut(const std::string &client_id, const TimerShor
     Track(client_id, category, action_str);
 }
 
+void Analytics::TrackDurationDropdown(const std::string &client_id, const DurationDropdownActionType action) {
+    std::string category = "timer-duration-dropdown";
+    std::string action_str = "";
+
+    switch (action) {
+        case DurationDropdownActionTypeStartTimeChange:
+            action_str = "start-time-change";
+            break;
+        case DurationDropdownActionTypeDateChange:
+            action_str = "date-change";
+            break;
+    }
+
+    Track(client_id, category, action_str);
+}
+
 }  // namespace toggl

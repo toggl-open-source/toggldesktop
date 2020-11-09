@@ -6921,6 +6921,12 @@ void Context::TrackTimerShortcut(TimerShortcutActionType action) {
     }
 }
 
+void Context::TrackDurationDropdown(DurationDropdownActionType action) {
+    if ("production" == environment_) {
+        analytics_.TrackDurationDropdown(db_->AnalyticsClientID(), action);
+    }
+}
+
 error Context::UpdateTimeEntry(
     const std::string &GUID,
     const std::string &description,
