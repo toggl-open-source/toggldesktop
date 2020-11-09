@@ -113,7 +113,7 @@ namespace TogglDesktop
         {
             Mouse.Capture(sender as UIElement);
             _dragStartedPoint = e.GetPosition(TimeEntryBlocks).Y;
-            _timeEntryId = ViewModel.AddNewTimeEntry(_dragStartedPoint.Value);
+            _timeEntryId = ViewModel.AddNewTimeEntry(_dragStartedPoint.Value, 0);
         }
 
         private void OnTimeEntryCanvasMouseMove(object sender, MouseEventArgs e)
@@ -135,8 +135,7 @@ namespace TogglDesktop
                 {
                     ViewModel.TimeEntryBlocks[_timeEntryId].Height = TimelineConstants.ScaleModes[ViewModel.SelectedScaleMode];
                 }
-                ViewModel.TimeEntryBlocks[_timeEntryId].ChangeStartTime();
-                ViewModel.TimeEntryBlocks[_timeEntryId].ChangeEndTime();
+                ViewModel.TimeEntryBlocks[_timeEntryId].ChangeStartEndTime();
             }
             _dragStartedPoint = null;
             _timeEntryId = null;
