@@ -12,7 +12,7 @@
              d:DataContext="{d:DesignInstance viewModels:TimeEntryBlock, IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <ResourceDictionary>
-            <converters:RectangleHeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
+            <converters:TimelineHeightToCornerRadiusConverter x:Key="TimelineHeightToCornerRadiusConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Button FontWeight="Normal" Command="{Binding OpenEditView}" MinHeight="{x:Static res:TimelineConstants.MinTimeEntryBlockHeight}" Margin="0 0 4 0" Height="{Binding Height}">
@@ -24,12 +24,11 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="1" CornerRadius="8,8,8,8" Background="{DynamicResource Toggl.Background}" Margin="-10 0 0 0"/>
-                    <Rectangle Grid.Column="0" Name ="TimeEntrySpan"
-                               Width="{x:Static res:TimelineConstants.TimeEntryBlockWidth}"
-                               Fill="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
-                               RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
-                               RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}">
-                    </Rectangle>
+                    <Border Grid.Column="0" Name ="TimeEntrySpan"
+                            Width="{x:Static res:TimelineConstants.TimeEntryBlockWidth}"
+                            Background="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
+                            CornerRadius="{Binding Height, Converter={StaticResource TimelineHeightToCornerRadiusConverter}, ConverterParameter=true}">
+                    </Border>
                     <togglDesktop:TimelineTimeEntryInfo Grid.Column="1"/>
                     <Thumb VerticalAlignment="Top"
                            HorizontalAlignment="Stretch"

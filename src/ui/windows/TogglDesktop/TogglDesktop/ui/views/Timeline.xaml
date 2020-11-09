@@ -15,7 +15,7 @@
              d:DataContext="{d:DesignInstance viewModels:TimelineViewModel, IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <ResourceDictionary>
-            <converters:RectangleHeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
+            <converters:TimelineHeightToCornerRadiusConverter x:Key="TimelineHeightToCornerRadiusConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid MinHeight="100">
@@ -276,14 +276,15 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Rectangle Width="20" Height="{Binding Height}"
-                                           MinHeight="6"
-                                           MaxHeight="50"
-                                           RadiusX="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusX'}"
-                                           RadiusY="{Binding Height, Converter={StaticResource HeightToRadiusConverter}, ConverterParameter='RadiusY'}"
-                                           Panel.ZIndex="1" 
-                                           Fill="{DynamicResource Toggl.AccentBrush}"
-                                           MouseEnter="OnActivityMouseEnter"/>
+                                <Border Width="{x:Static res:TimelineConstants.TimeEntryBlockWidth}"
+                                        MinHeight="6"
+                                        MaxHeight="50"
+                                        Height="{Binding Height}"
+                                        Background="{DynamicResource Toggl.AccentBrush}"
+                                        Panel.ZIndex="1"
+                                        MouseEnter="OnActivityMouseEnter"
+                                        CornerRadius="{Binding Height, Converter={StaticResource TimelineHeightToCornerRadiusConverter}, ConverterParameter=true}">
+                                </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemContainerStyle>
