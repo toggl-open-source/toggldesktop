@@ -600,6 +600,11 @@ public static partial class Toggl
             return false;
         }
 
+        if (!toggl_set_settings_start_autotracker_while_timer_is_running(ctx, settings.StartAutotrackerWhileTimerIsRunning))
+        {
+            return false;
+        }
+
         return toggl_timeline_toggle_recording(ctx, settings.RecordTimeline);
     }
 

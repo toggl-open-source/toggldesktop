@@ -315,6 +315,8 @@ public         bool StopEntryOnShutdownSleep;
 public         bool ShowTouchBar;
 [MarshalAs(UnmanagedType.I1)]
 public         bool StartAutotrackerWithoutSuggestions;
+[MarshalAs(UnmanagedType.I1)]
+public         bool StartAutotrackerWhileTimerIsRunning;
 public         byte ActiveTab;
 public         byte ColorTheme;
 [MarshalAs(UnmanagedType.I1)]
@@ -1367,6 +1369,13 @@ private static extern bool toggl_set_settings_start_autotracker_without_suggesti
         IntPtr context,
 [MarshalAs(UnmanagedType.I1)]
         bool start_autotracker_without_suggestions);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+[return: MarshalAs(UnmanagedType.I1)]
+private static extern bool toggl_set_settings_start_autotracker_while_timer_is_running(
+        IntPtr context,
+[MarshalAs(UnmanagedType.I1)]
+        bool start_autotracker_while_timer_is_running);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
 [return:MarshalAs(UnmanagedType.I1)]

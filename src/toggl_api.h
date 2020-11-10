@@ -193,6 +193,7 @@ extern "C" {
         bool_t StopEntryOnShutdownSleep;
         bool_t ShowTouchBar;
         bool_t StartAutotrackerWithoutSuggestions;
+        bool_t StartAutotrackerWhileTimerIsRunning;
         uint8_t ActiveTab;
         uint8_t ColorTheme;
         bool_t ForceIgnoreCert;
@@ -902,6 +903,10 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_set_settings_start_autotracker_without_suggestions(
         void *context,
         const bool_t start_autotracker_without_suggestions);
+
+    TOGGL_EXPORT bool_t toggl_set_settings_start_autotracker_while_timer_is_running(
+        void* context,
+        const bool_t start_autotracker_while_timer_is_running);
 
     TOGGL_EXPORT bool_t toggl_set_settings_active_tab(
         void *context,

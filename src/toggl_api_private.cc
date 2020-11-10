@@ -491,6 +491,7 @@ TogglSettingsView *settings_view_item_init(
     view->StopEntryOnShutdownSleep = settings.stop_entry_on_shutdown_sleep;
     view->ShowTouchBar = settings.show_touch_bar;
     view->StartAutotrackerWithoutSuggestions = settings.start_autotracker_without_suggestions;
+    view->StartAutotrackerWhileTimerIsRunning = settings.start_autotracker_while_timer_is_running;
     view->ActiveTab = settings.active_tab;
     view->ColorTheme = settings.color_theme;
     view->ForceIgnoreCert = settings.force_ignore_cert;

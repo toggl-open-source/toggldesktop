@@ -183,6 +183,12 @@ bool_t toggl_set_settings_start_autotracker_without_suggestions(
     return toggl::noError == app(context)->SetSettingsStartAutotrackerWithoutSuggestions(start_autotracker_without_suggestions);
 }
 
+bool_t toggl_set_settings_start_autotracker_while_timer_is_running(
+    void* context,
+    const bool_t start_autotracker_while_timer_is_running) {
+    return toggl::noError == app(context)->SetSettingsStartAutotrackerWhileTimerIsRunning(start_autotracker_while_timer_is_running);
+}
+
 bool_t toggl_set_settings_active_tab(
     void *context,
     const uint8_t active_tab) {

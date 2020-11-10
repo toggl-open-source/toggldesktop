@@ -2065,6 +2065,11 @@ error Context::SetSettingsStartAutotrackerWithoutSuggestions(const bool start_au
         db()->SetSettingsStartAutotrackerWithoutSuggestions(start_autotracker_without_suggestions));
 }
 
+error Context::SetSettingsStartAutotrackerWhileTimerIsRunning(const bool start_autotracker_while_timer_is_running) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsStartAutotrackerWhileTimerIsRunning(start_autotracker_while_timer_is_running));
+}
+
 error Context::SetSettingsActiveTab(const uint8_t active_tab) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsActiveTab(active_tab));
