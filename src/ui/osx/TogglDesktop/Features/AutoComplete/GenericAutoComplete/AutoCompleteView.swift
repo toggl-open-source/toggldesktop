@@ -197,7 +197,7 @@ extension AutoCompleteView {
             self?.dataSource?.selectRow(at: clickedRow)
         }
 
-        createNewItemBtn.didPressKey = { key in
+        createNewItemBtn.didPressKey = { key, _ in
             if key == .tab {
                 self.delegate?.shouldClose()
             }
