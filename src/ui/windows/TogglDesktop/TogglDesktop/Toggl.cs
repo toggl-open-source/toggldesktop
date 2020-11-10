@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -471,7 +472,6 @@ public static partial class Toggl
 
     public static bool Stop(bool preventOnApp = false)
     {
-        RunningTimeEntry.OnNext(null);
         return toggl_stop(ctx, preventOnApp);
     }
 
@@ -905,7 +905,6 @@ public static partial class Toggl
     public static event DisplayViewItems OnClientSelect = delegate { };
     public static event DisplayViewItems OnTags = delegate { };
     public static event DisplaySettings OnSettings = delegate { };
-    public static event DisplayStoppedTimerState OnStoppedTimerState = delegate { };
     public static event DisplayURL OnURL = delegate { };
     public static event DisplayIdleNotification OnIdleNotification = delegate { };
     public static event DisplayAutotrackerRules OnAutotrackerRules = delegate { };
@@ -930,6 +929,7 @@ public static partial class Toggl
     public static readonly BehaviorSubject<DateTime> TimelineSelectedDate = new BehaviorSubject<DateTime>(DateTime.Today);
 
     public static readonly BehaviorSubject<TogglTimeEntryView?> RunningTimeEntry = new BehaviorSubject<TogglTimeEntryView?>(null);
+    public static IObservable<Unit> StoppedTimerState = RunningTimeEntry.Where(te => te == null).Select(_ => Unit.Default);
     public static event DisplayTimelineUI OnDisplayTimelineUI = delegate { };
     private static void listenToLibEvents()
     {
@@ -1080,9 +1080,9 @@ public static partial class Toggl
         {
             if (te == IntPtr.Zero)
             {
-                using (Performance.Measure("Calling OnStoppedTimerState"))
+                using (Performance.Measure("Calling StoppedTimerState"))
                 {
-                    OnStoppedTimerState();
+                    RunningTimeEntry.OnNext(null);
                     return;
                 }
             }
