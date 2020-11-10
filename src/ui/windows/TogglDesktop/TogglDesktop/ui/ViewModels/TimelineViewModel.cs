@@ -56,7 +56,7 @@ namespace TogglDesktop.ViewModels
                 .ToPropertyEx(this, x => x.ActivityBlocks);
             var blocksObservable = Toggl.TimelineTimeEntries
                 .CombineLatest(Toggl.RunningTimeEntry, scaleModeObservable,
-                    (list, running, mode) => ConvertTimeEntriesToBlocks(list, running, mode, SelectedDate));
+                    (list, running, mode) => ConvertTimeEntriesToBlocks(list, running, mode, SelectedDate, CurrentTimeOffset));
             var blocksWithRunningObservable = blocksObservable.CombineLatest(Toggl.RunningTimeEntry, (list, te) => (TimeEntries: list, Running: te));
             blocksWithRunningObservable.Select(tuple => tuple.TimeEntries.FirstOrDefault(b => b.TimeEntryId == tuple.Running?.GUID))
                 .ToPropertyEx(this, x => x.RunningTimeEntryBlock);
@@ -176,7 +176,11 @@ namespace TogglDesktop.ViewModels
             End,
             Empty
         }
-        private static List<TimeEntryBlock> ConvertTimeEntriesToBlocks(List<Toggl.TogglTimeEntryView> timeEntries, Toggl.TogglTimeEntryView? runningEntry, int selectedScaleMode, DateTime selectedDate)
+        private static List<TimeEntryBlock> ConvertTimeEntriesToBlocks(List<Toggl.TogglTimeEntryView> timeEntries,
+            Toggl.TogglTimeEntryView? runningEntry,
+            int selectedScaleMode,
+            DateTime selectedDate,
+            double currentTimeOffset)
         {
             var timeStampsList = new List<(TimeStampType Type, TimeEntryBlock Block)>();
             var blocks = new List<TimeEntryBlock>();
@@ -189,7 +193,9 @@ namespace TogglDesktop.ViewModels
             foreach (var entry in allEntries)
             {
                 var startTime = Toggl.DateTimeFromUnix(entry.Started);
-                var ended = entry.GUID == runningEntry?.GUID ? (ulong) Toggl.UnixFromDateTime(DateTime.Now) : entry.Ended;
+                var ended = entry.GUID == runningEntry?.GUID 
+                    ? TimelineConstants.ConvertOffsetToTime(currentTimeOffset, selectedDate, TimelineConstants.ScaleModes[selectedScaleMode])
+                    : entry.Ended;
                 var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(ended), selectedScaleMode);
                 var block = new TimeEntryBlock(entry.GUID, TimelineConstants.ScaleModes[selectedScaleMode])
                 {
@@ -414,10 +420,10 @@ namespace TogglDesktop.ViewModels
             OpenEditView = ReactiveCommand.Create(() => Toggl.Edit(TimeEntryId, false, Toggl.Description));
             CreateTimeEntryFromBlock = ReactiveCommand.Create(AddNewTimeEntry);
             this.WhenAnyValue(x => x.VerticalOffset)
-                .Select(h => ConvertOffsetToTime(h, Toggl.DateTimeFromUnix(Started).Date))
+                .Select(h => TimelineConstants.ConvertOffsetToTime(h, Toggl.DateTimeFromUnix(Started).Date, _hourHeight))
                 .Subscribe(next => Started = next);
             this.WhenAnyValue(x => x.Height, x => x.VerticalOffset)
-                .Select(h => ConvertOffsetToTime(h.Item1+h.Item2, Toggl.DateTimeFromUnix(Ended).Date))
+                .Select(h => TimelineConstants.ConvertOffsetToTime(h.Item1+h.Item2, Toggl.DateTimeFromUnix(Ended).Date, _hourHeight))
                 .Subscribe(next => Ended = next);
             this.WhenAnyValue(x => x.Started, x => x.Ended)
                 .Select(pair => $"{Toggl.DateTimeFromUnix(pair.Item1):HH:mm tt} - {Toggl.DateTimeFromUnix(pair.Item2):HH:mm tt}")
@@ -443,23 +449,15 @@ namespace TogglDesktop.ViewModels
             OpenEditView.Execute().Subscribe();
         }
 
-        private ulong ConvertOffsetToTime(double height, DateTime date)
-        {
-            var hours = 1.0 * height / _hourHeight;
-            var dateTime = date.AddHours(hours);
-            var unixTime = Toggl.UnixFromDateTime(dateTime);
-            return unixTime >=0 ? (ulong)unixTime : 0;
-        }
-
         public void ChangeStartTime()
         {
-            var timeStamp = ConvertOffsetToTime(VerticalOffset, Toggl.DateTimeFromUnix(Started).Date);
+            var timeStamp = TimelineConstants.ConvertOffsetToTime(VerticalOffset, Toggl.DateTimeFromUnix(Started).Date, _hourHeight);
             Toggl.SetTimeEntryStartTimeStamp(TimeEntryId, (long) timeStamp);
         }
 
         public void ChangeEndTime()
         {
-            var timeStamp = ConvertOffsetToTime(VerticalOffset + Height, Toggl.DateTimeFromUnix(Ended).Date);
+            var timeStamp = TimelineConstants.ConvertOffsetToTime(VerticalOffset + Height, Toggl.DateTimeFromUnix(Ended).Date, _hourHeight);
             Toggl.SetTimeEntryEndTimeStamp(TimeEntryId, (long) timeStamp);
         }
     }

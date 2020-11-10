@@ -29,7 +29,24 @@
                             Background="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
                             CornerRadius="{Binding Height, Converter={StaticResource TimelineHeightToCornerRadiusConverter}, ConverterParameter=false}">
                     </Border>
-                    <togglDesktop:TimelineTimeEntryInfo Grid.Column="1"/>
+                    <Border CornerRadius="0,8,0,0"
+                            Margin="-10 0 0 0"
+                            Grid.Column="1"
+                            BorderThickness="1"
+                            Background="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}, ConverterParameter={x:Static res:TimelineConstants.DescriptionOpacity}}"
+                            Visibility="{Binding ShowDescription, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <togglDesktop:TimelineTimeEntryInfo/>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderBrush" Value="{Binding Color, Converter={StaticResource AdaptProjectColorConverter},ConverterParameter={x:Static res:TimelineConstants.DescriptionOpacity}}"/>
+                                <Style.Triggers>
+                                    <DataTrigger  Binding="{Binding IsEditViewOpened}" Value="True">
+                                        <Setter Property="BorderBrush" Value="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
                     <Thumb VerticalAlignment="Top"
                            HorizontalAlignment="Stretch"
                            Grid.Column="0" Grid.ColumnSpan="2"
