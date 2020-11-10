@@ -55,9 +55,14 @@ namespace TogglDesktop.ViewModels
             Toggl.TimelineChunks.CombineLatest(scaleModeObservable, (items, mode) => ConvertChunksToActivityBlocks (items, mode, SelectedDate))
                 .ToPropertyEx(this, x => x.ActivityBlocks);
             var blocksObservable = Toggl.TimelineTimeEntries
-                .CombineLatest(Toggl.RunningTimeEntry, (list, te) => (TimeEntries: list, Running: te))
-                .CombineLatest(scaleModeObservable,
-                    (t, mode) => ConvertTimeEntriesToBlocks(t.TimeEntries, t.Running, mode, SelectedDate));
+                .CombineLatest(Toggl.RunningTimeEntry, scaleModeObservable,
+                    (list, running, mode) => ConvertTimeEntriesToBlocks(list, running, mode, SelectedDate));
+            var blocksWithRunningObservable = blocksObservable.CombineLatest(Toggl.RunningTimeEntry, (list, te) => (TimeEntries: list, Running: te));
+            blocksWithRunningObservable.Select(tuple => tuple.TimeEntries.FirstOrDefault(b => b.TimeEntryId == tuple.Running?.GUID))
+                .ToPropertyEx(this, x => x.RunningTimeEntryBlock);
+            blocksWithRunningObservable.Select(tuple =>
+                    tuple.TimeEntries.Where(b => b.TimeEntryId != tuple.Running?.GUID).ToList())
+                .ToPropertyEx(this, x => x.TimeEntryBlocks);
             blocksObservable.Select(blocks => GenerateGapTimeEntryBlocks(blocks, SelectedScaleMode)).ToPropertyEx(this, x => x.GapTimeEntryBlocks);
 
             this.WhenAnyValue(x => x.TimeEntryBlocks)
@@ -171,7 +176,7 @@ namespace TogglDesktop.ViewModels
             End,
             Empty
         }
-        private List<Toggl.TogglTimeEntryView> ConvertTimeEntriesToBlocks(List<Toggl.TogglTimeEntryView> timeEntries, Toggl.TogglTimeEntryView? runningEntry, int selectedScaleMode, DateTime selectedDate)
+        private static List<TimeEntryBlock> ConvertTimeEntriesToBlocks(List<Toggl.TogglTimeEntryView> timeEntries, Toggl.TogglTimeEntryView? runningEntry, int selectedScaleMode, DateTime selectedDate)
         {
             var timeStampsList = new List<(TimeStampType Type, TimeEntryBlock Block)>();
             var blocks = new List<TimeEntryBlock>();
@@ -184,7 +189,7 @@ namespace TogglDesktop.ViewModels
             foreach (var entry in allEntries)
             {
                 var startTime = Toggl.DateTimeFromUnix(entry.Started);
-                var ended = entry.Equals(runningEntry) ? (ulong) Toggl.UnixFromDateTime(DateTime.Now) : entry.Ended;
+                var ended = entry.GUID == runningEntry?.GUID ? (ulong) Toggl.UnixFromDateTime(DateTime.Now) : entry.Ended;
                 var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(ended), selectedScaleMode);
                 var block = new TimeEntryBlock(entry.GUID, TimelineConstants.ScaleModes[selectedScaleMode])
                 {
@@ -262,10 +267,7 @@ namespace TogglDesktop.ViewModels
                 }
             }
 
-            RunningTimeEntryBlock = blocks.FirstOrDefault(b => b.TimeEntryId == runningEntry?.GUID);
-            TimeEntryBlocks = blocks.Where(b => b.TimeEntryId != runningEntry?.GUID).ToList();
-
-            return timeEntries;
+            return blocks;
         }
 
         public static double ConvertTimeIntervalToHeight(DateTime start, DateTime end, int scaleMode)
@@ -274,7 +276,7 @@ namespace TogglDesktop.ViewModels
             return timeInterval * TimelineConstants.ScaleModes[scaleMode] / 60;
         }
 
-        private static List<TimeEntryBlock> GenerateGapTimeEntryBlocks(List<Toggl.TogglTimeEntryView> timeEntries, int selectedScaleMode)
+        private static List<TimeEntryBlock> GenerateGapTimeEntryBlocks(List<TimeEntryBlock> timeEntries, int selectedScaleMode)
         {
             var gaps = new List<TimeEntryBlock>();
             timeEntries.Sort((te1,te2) => te1.Started.CompareTo(te2.Started));
@@ -328,11 +330,9 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public TimeEntryBlock SelectedTimeEntryBlock { get; set; }
         
-        [Reactive]
-        public List<TimeEntryBlock> TimeEntryBlocks { get; private set; }
+        public List<TimeEntryBlock> TimeEntryBlocks { [ObservableAsProperty]get; }
 
-        [Reactive]
-        public TimeEntryBlock RunningTimeEntryBlock { get; set; }
+        public TimeEntryBlock RunningTimeEntryBlock { [ObservableAsProperty]get; }
 
         public bool AnyTimeEntries { [ObservableAsProperty] get; }
 
