@@ -154,6 +154,7 @@ namespace TogglDesktop
             #region auto tracker
 
             this.enableAutotrackerCheckbox.IsChecked = settings.Autotrack;
+            this.showAutotrackerWhileTimerIsRunning.IsChecked = settings.StartAutotrackerWhileTimerIsRunning;
             this.startTrackingWithoutSuggestionCheckbox.IsChecked = settings.StartAutotrackerWithoutSuggestions;
 
             #endregion
@@ -296,6 +297,7 @@ namespace TogglDesktop
                 #region auto tracker
 
                 Autotrack = isChecked(this.enableAutotrackerCheckbox),
+                StartAutotrackerWhileTimerIsRunning = isChecked(this.showAutotrackerWhileTimerIsRunning),
                 StartAutotrackerWithoutSuggestions = isChecked(this.startTrackingWithoutSuggestionCheckbox),
 
                 #endregion
