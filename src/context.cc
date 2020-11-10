@@ -4906,10 +4906,9 @@ error Context::StartAutotrackerEvent(const TimelineEvent &event) {
 
         TimeEntry* runningEntry = user_->RunningTimeEntry();
         if (runningEntry) {
-            // TODO: on Windows show suggestion also where there is a running entry (#3917)
-            //if (POCO_OS_WINDOWS_NT != POCO_OS) {
-            return noError;
-            //}
+            if (!settings_.start_autotracker_while_timer_is_running) {
+                return noError;
+            }
         }
 
         AutotrackerRule *rule = user_->related.FindAutotrackerRule(event);
