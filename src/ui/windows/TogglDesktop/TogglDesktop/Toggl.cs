@@ -471,6 +471,7 @@ public static partial class Toggl
 
     public static bool Stop(bool preventOnApp = false)
     {
+        RunningTimeEntry.OnNext(null);
         return toggl_stop(ctx, preventOnApp);
     }
 
@@ -904,7 +905,6 @@ public static partial class Toggl
     public static event DisplayViewItems OnClientSelect = delegate { };
     public static event DisplayViewItems OnTags = delegate { };
     public static event DisplaySettings OnSettings = delegate { };
-    public static event DisplayRunningTimerState OnRunningTimerState = delegate { };
     public static event DisplayStoppedTimerState OnStoppedTimerState = delegate { };
     public static event DisplayURL OnURL = delegate { };
     public static event DisplayIdleNotification OnIdleNotification = delegate { };
@@ -928,6 +928,8 @@ public static partial class Toggl
         new BehaviorSubject<List<TogglTimeEntryView>>(new List<TogglTimeEntryView>());
     
     public static readonly BehaviorSubject<DateTime> TimelineSelectedDate = new BehaviorSubject<DateTime>(DateTime.Today);
+
+    public static readonly BehaviorSubject<TogglTimeEntryView?> RunningTimeEntry = new BehaviorSubject<TogglTimeEntryView?>(null);
     public static event DisplayTimelineUI OnDisplayTimelineUI = delegate { };
     private static void listenToLibEvents()
     {
@@ -1086,7 +1088,7 @@ public static partial class Toggl
             }
             using (Performance.Measure("Calling OnRunningTimerState"))
             {
-                OnRunningTimerState(marshalStruct<TogglTimeEntryView>(te));
+                RunningTimeEntry.OnNext(marshalStruct<TogglTimeEntryView>(te));
             }
         });
 

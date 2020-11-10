@@ -10,7 +10,8 @@ namespace TogglDesktop.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var hex = value as string;
-            return Utils.AdaptedProjectColorBrushFromString(hex, Theme.ShapeColorAdaptation.Value);
+            var opacity = parameter is double val && val >= 0 && val <= 1 ? val : 1.0;
+            return Utils.AdaptedProjectColorBrushFromString(hex, Theme.ShapeColorAdaptation.Value, opacity);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

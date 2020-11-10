@@ -244,8 +244,14 @@
     <Compile Include="ui\controls\TimeEntryLabel.xaml.cs">
       <DependentUpon>TimeEntryLabel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\controls\TimelineRunningTimeEntryBlock.xaml.cs">
+      <DependentUpon>TimelineRunningTimeEntryBlock.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\TimelineTimeEntryBlock.xaml.cs">
       <DependentUpon>TimelineTimeEntryBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\TimelineTimeEntryInfo.xaml.cs">
+      <DependentUpon>TimelineTimeEntryInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\TrayToolTipControl.xaml.cs">
       <DependentUpon>TrayToolTipControl.xaml</DependentUpon>
@@ -253,14 +259,12 @@
     <Compile Include="ui\Converters\AdaptProjectColorConverter.cs" />
     <Compile Include="ui\Converters\AndConverter.cs" />
     <Compile Include="ui\Converters\BooleanInvertToVisibilityConverter.cs" />
-    <Compile Include="ui\Converters\BrushOpacityConverter.cs" />
     <Compile Include="ui\Converters\CapitalizeConverter.cs" />
     <Compile Include="ui\Converters\EmptyListToCollapsedConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
     <Compile Include="ui\Converters\HasAnyFlagToVisibilityConverter.cs" />
     <Compile Include="ui\Converters\IsSelectableItemConverter.cs" />
     <Compile Include="ui\Converters\PopupAlignmentAwareConverter.cs" />
-    <Compile Include="ui\Converters\RectangleHeightToRadiusConverter.cs" />
     <Compile Include="ui\Converters\StringFormatIfNotEmptyConverter.cs" />
     <Compile Include="ui\Converters\BytesToStringConverter.cs" />
     <Compile Include="ui\Converters\EnumEqualToVisibilityConverter.cs" />
@@ -268,6 +272,7 @@
     <Compile Include="ui\Converters\BindingProxy.cs" />
     <Compile Include="ui\Converters\EmptyStringToHiddenConverter.cs" />
     <Compile Include="ui\Converters\ColorsToBrushConverter.cs" />
+    <Compile Include="ui\Converters\TimelineHeightToCornerRadiusConverter.cs" />
     <Compile Include="ui\Converters\TrimPathConverter.cs" />
     <Compile Include="ui\IRecyclable.cs" />
     <Compile Include="ui\KeyboardShortcuts.cs" />
@@ -396,6 +401,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="utilities\StringExtensions.cs" />
+    <Compile Include="utilities\TimelineUtils.cs" />
     <Compile Include="utilities\Utils.cs" />
     <Compile Include="utilities\Win32.cs" />
     <Compile Include="ui\windows\FeedbackWindow.xaml.cs">
@@ -482,7 +488,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\controls\TimelineRunningTimeEntryBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ui\controls\TimelineTimeEntryBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\TimelineTimeEntryInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

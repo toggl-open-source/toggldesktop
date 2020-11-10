@@ -1,4 +1,7 @@
 ﻿
+using System;
+using System.Reactive.Disposables;
+
 namespace TogglDesktop.Tutorial
 {
     public partial class BasicTutorialScreen3
@@ -8,17 +11,18 @@ namespace TogglDesktop.Tutorial
             this.InitializeComponent();
         }
 
+        private IDisposable _runningTimeEntryObservable;
         protected override void initialise()
         {
-            Toggl.OnRunningTimerState += this.onRunningTimerState;
+            _runningTimeEntryObservable = Toggl.RunningTimeEntry.Subscribe(this.onRunningTimerState);
         }
 
         protected override void cleanup()
         {
-            Toggl.OnRunningTimerState -= this.onRunningTimerState;
+            _runningTimeEntryObservable.Dispose();
         }
 
-        private void onRunningTimerState(Toggl.TogglTimeEntryView te)
+        private void onRunningTimerState(Toggl.TogglTimeEntryView? te)
         {
             this.activateScreen<BasicTutorialScreen4>();
         }
