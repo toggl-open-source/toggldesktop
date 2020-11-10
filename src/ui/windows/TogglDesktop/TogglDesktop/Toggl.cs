@@ -472,7 +472,6 @@ public static partial class Toggl
 
     public static bool Stop(bool preventOnApp = false)
     {
-        RunningTimeEntry.OnNext(null);
         return toggl_stop(ctx, preventOnApp);
     }
 
