@@ -14,7 +14,7 @@ class ProjectTitleFactory: NSObject {
 
     private let fontSize: CGFloat = 12
     private let leadingDotFontSize: CGFloat = 10
-    private let defaultTextColor = NSColor.togglGreyText
+    private let defaultTextColor = Color.greyText.color
 
     @objc
     func title(for entry: TimeEntryViewItem) -> NSAttributedString {

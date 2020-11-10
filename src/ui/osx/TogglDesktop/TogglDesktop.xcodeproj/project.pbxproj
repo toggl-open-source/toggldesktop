@@ -56,8 +56,6 @@
 		49A1204D24E9629A00167A71 /* ResponderAutoCompleteInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A1204C24E9629A00167A71 /* ResponderAutoCompleteInput.swift */; };
 		49A1204E24E9629A00167A71 /* ResponderAutoCompleteInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A1204C24E9629A00167A71 /* ResponderAutoCompleteInput.swift */; };
 		49D3603B24878FA000527DE8 /* TogglDesktopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */; };
-		49DC602D24D05DE100E961A8 /* NSColor+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC602C24D05DE100E961A8 /* NSColor+Theme.swift */; };
-		49DC602E24D05DE100E961A8 /* NSColor+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC602C24D05DE100E961A8 /* NSColor+Theme.swift */; };
 		49DC603024D072DB00E961A8 /* NSImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC602F24D072DB00E961A8 /* NSImage+Tint.swift */; };
 		49DC603124D072DB00E961A8 /* NSImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC602F24D072DB00E961A8 /* NSImage+Tint.swift */; };
 		622BBF654A6A958692A4633B /* Pods_TogglDesktop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 776525112125F6AD81DF4DEF /* Pods_TogglDesktop.framework */; };
@@ -612,6 +610,8 @@
 		C2060EB9252766FB00959A98 /* TimerDescriptionFieldHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2060EB7252766FB00959A98 /* TimerDescriptionFieldHandlerTests.swift */; };
 		C238D7DF251B7215004EC739 /* TimerDescriptionFieldHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */; };
 		C238D7E0251B7215004EC739 /* TimerDescriptionFieldHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */; };
+		C23A5966255C393E00A56A54 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23A5965255C393E00A56A54 /* Colors.swift */; };
+		C23A5967255C393E00A56A54 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23A5965255C393E00A56A54 /* Colors.swift */; };
 		C27B27E6256E82A600E88A20 /* KeyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27B27E5256E82A600E88A20 /* KeyButton.swift */; };
 		C27B27E7256E82A600E88A20 /* KeyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27B27E5256E82A600E88A20 /* KeyButton.swift */; };
 		C27B27FB256E854700E88A20 /* HoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27B27FA256E854700E88A20 /* HoverButton.swift */; };
@@ -776,7 +776,6 @@
 		49D3603824878FA000527DE8 /* TogglDesktopTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TogglDesktopTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D3603A24878FA000527DE8 /* TogglDesktopTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TogglDesktopTests.swift; sourceTree = "<group>"; };
 		49D3603C24878FA000527DE8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49DC602C24D05DE100E961A8 /* NSColor+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Theme.swift"; sourceTree = "<group>"; };
 		49DC602F24D072DB00E961A8 /* NSImage+Tint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Tint.swift"; sourceTree = "<group>"; };
 		4BCB2D1F3BD02A806D947C18 /* Pods-TogglDesktop-AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop-AppStore.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktop-AppStore/Pods-TogglDesktop-AppStore.release.xcconfig"; sourceTree = "<group>"; };
 		523FD02C959288FBFA20F5B1 /* Pods-TogglDesktop-AppStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop-AppStore.debug.xcconfig"; path = "Target Support Files/Pods-TogglDesktop-AppStore/Pods-TogglDesktop-AppStore.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1115,6 +1114,7 @@
 		C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDescriptionFieldHandler.swift; sourceTree = "<group>"; };
 		C27B27E5256E82A600E88A20 /* KeyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyButton.swift; sourceTree = "<group>"; };
 		C27B27FA256E854700E88A20 /* HoverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverButton.swift; sourceTree = "<group>"; };
+		C23A5965255C393E00A56A54 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		C27E044E254AFFB0009871D0 /* TimerDurationControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDurationControl.swift; sourceTree = "<group>"; };
 		C27E0453254B0008009871D0 /* TimerDurationControl.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimerDurationControl.xib; sourceTree = "<group>"; };
 		C27E0469254B2772009871D0 /* DropdownWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownWindow.swift; sourceTree = "<group>"; };
@@ -1255,6 +1255,7 @@
 			children = (
 				BAE007DD21FAF00D00404379 /* Media.xcassets */,
 				BAF50DE421A29FED0090BA95 /* Images.xcassets */,
+				C23A5965255C393E00A56A54 /* Colors.swift */,
 				3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */,
 				4917325624C06BA3003EE7CC /* cacert.pem */,
 			);
@@ -1385,7 +1386,6 @@
 		49850A9624BF4C5D00D7E22F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				49DC602C24D05DE100E961A8 /* NSColor+Theme.swift */,
 				BA81896923016148000710EA /* NSColor+VisibleColor.swift */,
 				BA4791EB22F0478900E24F79 /* NSColor+Utils.swift */,
 				BA4791EA22F0478900E24F79 /* String+Search.swift */,
@@ -3000,7 +3000,6 @@
 				746947FA1AF3FE3E0024BED7 /* AutotrackerRuleItem.m in Sources */,
 				3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */,
 				BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */,
-				49DC602D24D05DE100E961A8 /* NSColor+Theme.swift in Sources */,
 				74098C331919899600CBDFB9 /* Utils.m in Sources */,
 				BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */,
 				BA9C2E0C224C8F58002AD2A1 /* KeyboardTableView.swift in Sources */,
@@ -3067,6 +3066,7 @@
 				BA65A22422B7823200F895FD /* MainDashboardViewController.swift in Sources */,
 				BAD307D3229C1BD000C727DB /* KeyboardDatePicker.swift in Sources */,
 				BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */,
+				C23A5966255C393E00A56A54 /* Colors.swift in Sources */,
 				BA01404C22570967000E5B91 /* TagStorage.swift in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
 				BAA0104F22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift in Sources */,
@@ -3235,7 +3235,6 @@
 				BAE64D8A2368334000244D2B /* CursorButton.swift in Sources */,
 				BA37ACFC23D890250013EE26 /* String+Search.swift in Sources */,
 				BAE64D8B2368334000244D2B /* KeyboardTableView.swift in Sources */,
-				49DC602E24D05DE100E961A8 /* NSColor+Theme.swift in Sources */,
 				BAE64D8D2368334000244D2B /* main.m in Sources */,
 				BA37ACE823D890100013EE26 /* TimeChunk.swift in Sources */,
 				BAE64D8E2368334000244D2B /* FeedbackWindowController.m in Sources */,
@@ -3302,6 +3301,7 @@
 				BAE64DB82368334000244D2B /* TagStorage.swift in Sources */,
 				BAE64DB92368334000244D2B /* ViewItem.m in Sources */,
 				BAE64DBA2368334000244D2B /* CalendarCollectionView.swift in Sources */,
+				C23A5967255C393E00A56A54 /* Colors.swift in Sources */,
 				BAE64DBD2368334000244D2B /* ProjectDataSource.swift in Sources */,
 				BAE64DBE2368334000244D2B /* AutoCompleteRowView.swift in Sources */,
 				BA4A7D5523755A4200A42095 /* TouchBarService+Name.swift in Sources */,

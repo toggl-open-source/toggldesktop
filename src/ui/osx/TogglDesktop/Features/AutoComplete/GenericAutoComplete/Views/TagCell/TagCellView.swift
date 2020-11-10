@@ -78,8 +78,8 @@ final class TagCellView: HoverTableCellView {
         checkButton.toolTip = tag.name
         nameLabel.toolTip = tag.name
 
-        checkButton.setTextColor(isSelected ? NSColor.togglGreen : NSColor.textColor)
-        nameLabel.textColor = isSelected ? NSColor.togglGreen : NSColor.textColor
+        checkButton.setTextColor(isSelected ? Color.green.color : NSColor.textColor)
+        nameLabel.textColor = isSelected ? Color.green.color : NSColor.textColor
     }
 
     func selectCheckBox() {

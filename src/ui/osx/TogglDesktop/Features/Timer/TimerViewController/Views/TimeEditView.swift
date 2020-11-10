@@ -52,7 +52,7 @@ class TimeEditView: NSView {
     private enum Constants {
         static let dayNameAttribute: [NSAttributedString.Key: Any] = {
             return [NSAttributedString.Key.font: NSFont.systemFont(ofSize: 14),
-                    NSAttributedString.Key.foregroundColor: NSColor.togglBlackText]
+                    NSAttributedString.Key.foregroundColor: Color.blackText.color]
         }()
 
         static let calendarTopPadding: CGFloat = 8

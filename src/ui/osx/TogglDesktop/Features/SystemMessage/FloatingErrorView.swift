@@ -17,8 +17,8 @@ final class FloatingErrorView: NSView {
 
     // MARK: Variables
     var onClose: (() -> Void)?
-    fileprivate lazy var errorColor = NSColor.togglErrorTitle
-    fileprivate lazy var informativeColor = NSColor.togglGreen
+    fileprivate lazy var errorColor = Color.errorTitle.color
+    fileprivate lazy var informativeColor = Color.green.color
 
     // MARK: Init
 

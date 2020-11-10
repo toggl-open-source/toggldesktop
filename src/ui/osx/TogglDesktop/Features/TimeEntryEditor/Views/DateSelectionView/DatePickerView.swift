@@ -52,7 +52,7 @@ final class DatePickerView: NSView {
     }()
     private lazy var dayNameAttribute: [NSAttributedString.Key: Any] = {
         return [NSAttributedString.Key.font: NSFont.systemFont(ofSize: 14),
-                NSAttributedString.Key.foregroundColor: NSColor.togglBlackText]
+                NSAttributedString.Key.foregroundColor: Color.blackText.color]
     }()
     var isEnabled: Bool = true {
         didSet {

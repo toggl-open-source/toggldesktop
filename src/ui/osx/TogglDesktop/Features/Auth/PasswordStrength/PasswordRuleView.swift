@@ -45,11 +45,11 @@ final class PasswordRuleView: NSView {
     private func getTextColor(for status: PasswordStrengthValidation.MatchStatus) -> NSColor {
         switch status {
         case .match:
-            return NSColor.togglGreen
+            return Color.green.color
         case .unmatch:
-            return NSColor.togglErrorTitle
+            return Color.errorTitle.color
         case .none:
-            return NSColor.togglGreyText
+            return Color.greyText.color
         }
     }
 
