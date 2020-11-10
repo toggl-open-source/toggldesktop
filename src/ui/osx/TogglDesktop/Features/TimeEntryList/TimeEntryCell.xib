@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,7 +15,7 @@
                 <outlet property="continueButton" destination="Gcj-ki-Hus" id="5Hq-z8-gbu"/>
                 <outlet property="descriptionLblLeading" destination="R7O-XO-Nkp" id="8TD-nZ-dZM"/>
                 <outlet property="descriptionTextField" destination="CwR-d5-aWs" id="hgE-Xa-icI"/>
-                <outlet property="dotView" destination="4Gn-rS-ham" id="itC-ET-45w"/>
+                <outlet property="dotView" destination="gge-xd-zMT" id="O9F-cV-Rl1"/>
                 <outlet property="durationTextField" destination="xwb-FG-Z4X" id="zdA-d0-xCT"/>
                 <outlet property="groupBox" destination="dmW-8k-lRI" id="vgX-xs-f5a"/>
                 <outlet property="groupButton" destination="yV9-eP-fCj" id="PKX-Rb-eud"/>
@@ -48,36 +48,39 @@
                         <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-d5-aWs">
                             <rect key="frame" x="-2" y="33" width="252" height="15"/>
                             <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Blogpost about nefdsffdsf Blogpost about nefdsffdsf Blogpost about nefdsffdsf" placeholderString="+ Add description" id="KGe-cR-NlL">
-                                <font key="font" metaFont="label" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" name="black-text-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="4Gn-rS-ham" customClass="DotImageView" customModule="Toggl_Track" customModuleProvider="target">
+                        <box boxType="custom" borderWidth="0.0" cornerRadius="4" translatesAutoresizingMaskIntoConstraints="NO" id="gge-xd-zMT" userLabel="Dot View">
                             <rect key="frame" x="1" y="20" width="8" height="8"/>
+                            <view key="contentView" id="Ozg-US-Gtz">
+                                <rect key="frame" x="0.0" y="0.0" width="8" height="8"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </view>
                             <constraints>
-                                <constraint firstAttribute="width" constant="8" id="6qL-Rv-KSh"/>
-                                <constraint firstAttribute="height" constant="8" id="KsB-HW-geh"/>
+                                <constraint firstAttribute="height" constant="8" id="DZR-UQ-xUa"/>
+                                <constraint firstAttribute="width" constant="8" id="H93-rB-oYi"/>
                             </constraints>
-                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="vYQ-WX-2jd"/>
-                        </imageView>
+                        </box>
                         <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="ProjectTextField">
                             <rect key="frame" x="14" y="15" width="236" height="18"/>
                             <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL - project NEW - TOGGL - project NEW - TOGGL - project NEW - TOGGL - project" placeholderString="+ Add project" id="apI-Za-Hk2">
-                                <font key="font" metaFont="label" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="4Gn-rS-ham" firstAttribute="leading" secondItem="Uu2-26-kM4" secondAttribute="leading" constant="1" id="B7Y-fJ-gVm"/>
+                        <constraint firstItem="gge-xd-zMT" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="5" id="26y-SY-zDG"/>
+                        <constraint firstItem="gge-xd-zMT" firstAttribute="leading" secondItem="Uu2-26-kM4" secondAttribute="leading" constant="1" id="3XI-NQ-f6u"/>
+                        <constraint firstItem="gge-xd-zMT" firstAttribute="centerY" secondItem="deS-e6-3Ui" secondAttribute="centerY" id="AcK-9Y-A5V"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CwR-d5-aWs" secondAttribute="trailing" id="Fh8-VB-Tui"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="Uu2-26-kM4" secondAttribute="leading" id="SWH-SV-SCw"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="deS-e6-3Ui" secondAttribute="trailing" id="WlF-7m-Nhh"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" id="YCG-LB-ufm"/>
-                        <constraint firstItem="deS-e6-3Ui" firstAttribute="centerY" secondItem="4Gn-rS-ham" secondAttribute="centerY" id="Yji-cw-PuA"/>
-                        <constraint firstItem="4Gn-rS-ham" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="5" id="iar-9z-U4N"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="top" secondItem="Uu2-26-kM4" secondAttribute="top" constant="16" id="meS-eh-0Ic"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="Uu2-26-kM4" secondAttribute="leading" constant="16" id="w0I-0b-kLQ"/>
                     </constraints>
@@ -117,7 +120,7 @@
                         <constraint firstAttribute="width" constant="54" id="Jlj-SX-18w"/>
                     </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="1.25 h" id="Ten-lK-6RR">
-                        <font key="font" metaFont="label" size="12"/>
+                        <font key="font" metaFont="cellTitle"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -216,7 +219,6 @@
         <image name="continue-timer-button" width="13" height="14"/>
         <image name="syncing-error" width="19" height="20"/>
         <image name="time-entry-billable" width="16" height="16"/>
-        <image name="time-entry-dot" width="8" height="8"/>
         <image name="time-entry-tag" width="16" height="16"/>
         <namedColor name="black-text-color">
             <color red="0.17254901960784313" green="0.074509803921568626" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
