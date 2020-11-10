@@ -25,7 +25,7 @@
 @property (weak) IBOutlet NSButton *groupButton;
 @property (weak) IBOutlet NSButton *continueButton;
 @property (weak) IBOutlet NSBox *backgroundBox;
-@property (weak) IBOutlet DotImageView *dotView;
+@property (weak) IBOutlet NSBox *dotView;
 @property (weak) IBOutlet NSLayoutConstraint *projectConstrainLeading;
 @property (weak) IBOutlet NSBox *horizontalLine;
 @property (weak) IBOutlet NSTextField *descriptionTextField;
@@ -261,7 +261,7 @@ extern void *ctx;
 	{
 		NSColor *projectColor = [ConvertHexColor hexCodeToNSColor:view_item.ProjectColor];
 		self.dotView.hidden = NO;
-		[self.dotView fillWith:projectColor];
+		self.dotView.fillColor = [projectColor getAdaptiveColorForShape];
 		[self.projectTextField setTitleWithTimeEntry:view_item];
 		self.projectTextField.toolTip = view_item.ProjectAndTaskLabel;
 		self.projectConstrainLeading.constant = 16;
