@@ -24,9 +24,6 @@ class TimerDurationControl: NSView {
         }
     }
 
-    /// Feature flag for duration dropdown. Set to `true` to test the current implementation.
-    var isDurationDropdownEnabled = false
-
     var durationStringValue: String {
         get { durationTextField.stringValue }
         set { durationTextField.stringValue = newValue }
@@ -128,10 +125,6 @@ class TimerDurationControl: NSView {
     // MARK: - Private
 
     private func presentDropdown() {
-        guard isDurationDropdownEnabled else {
-            return
-        }
-
         let windowRect = dropdownWindowRect(fromView: durationTextField, offset: Constants.dropdownOffset)
         dropdownWindow.setFrame(windowRect, display: false)
         dropdownWindow.setFrameTopLeftPoint(windowRect.origin)
