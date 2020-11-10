@@ -47,6 +47,7 @@ class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
     , stop_entry_on_shutdown_sleep(false)
     , show_touch_bar(true)
     , start_autotracker_without_suggestions(false)
+    , start_autotracker_while_timer_is_running(false)
     , active_tab(0)
     , color_theme(0)
     , force_ignore_cert(false) {}
@@ -83,6 +84,7 @@ class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
     bool stop_entry_on_shutdown_sleep;
     bool show_touch_bar;
     bool start_autotracker_without_suggestions;
+    bool start_autotracker_while_timer_is_running;
     Poco::UInt8 active_tab;
     Poco::UInt8 color_theme;
     bool force_ignore_cert;

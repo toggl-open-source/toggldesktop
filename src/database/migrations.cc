@@ -1420,6 +1420,14 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.start_autotracker_while_timer_is_running",
+        "ALTER TABLE settings "
+        "ADD COLUMN start_autotracker_while_timer_is_running INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 

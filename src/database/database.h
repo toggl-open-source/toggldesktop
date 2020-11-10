@@ -129,6 +129,8 @@ class TOGGL_INTERNAL_EXPORT Database {
 
     error SetSettingsStartAutotrackerWithoutSuggestions(const bool &start_autotracker_without_suggestions);
 
+    error SetSettingsStartAutotrackerWhileTimerIsRunning(const bool &start_autotracker_while_timer_is_running);
+
     error SetSettingsActiveTab(const uint8_t &active_tab);
 
     error SetSettingsColorTheme(const uint8_t &color_theme);

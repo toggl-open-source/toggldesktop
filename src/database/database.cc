@@ -424,7 +424,7 @@ error Database::LoadSettings(Settings *settings) {
                   "open_editor_on_shortcut, has_seen_beta_offering, "
                   "pomodoro, pomodoro_minutes, "
                   "pomodoro_break, pomodoro_break_minutes, stop_entry_on_shutdown_sleep, show_touch_bar, active_tab, color_theme, "
-                  "force_ignore_cert, start_autotracker_without_suggestions "
+                  "force_ignore_cert, start_autotracker_without_suggestions, start_autotracker_while_timer_is_running "
                   "from settings "
                   "limit 1",
                   into(settings->use_idle_detection),
@@ -460,6 +460,7 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->color_theme),
                   into(settings->force_ignore_cert),
                   into(settings->start_autotracker_without_suggestions),
+                  into(settings->start_autotracker_while_timer_is_running),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -857,6 +858,10 @@ error Database::SetSettingsShowTouchBar(const bool &show_touch_bar) {
 
 error Database::SetSettingsStartAutotrackerWithoutSuggestions(const bool &start_autotracker_without_suggestions) {
     return setSettingsValue("start_autotracker_without_suggestions", start_autotracker_without_suggestions);
+}
+
+error Database::SetSettingsStartAutotrackerWhileTimerIsRunning(const bool &start_autotracker_while_timer_is_running) {
+    return setSettingsValue("start_autotracker_while_timer_is_running", start_autotracker_while_timer_is_running);
 }
 
 error Database::SetSettingsActiveTab(const uint8_t &active_tab) {

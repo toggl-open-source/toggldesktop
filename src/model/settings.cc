@@ -38,6 +38,7 @@ Json::Value Settings::SaveToJSON(int) const {
     json["stop_entry_on_shutdown_sleep"] = stop_entry_on_shutdown_sleep;
     json["show_touch_bar"] = show_touch_bar;
     json["start_autotracker_without_suggestions"] = start_autotracker_without_suggestions;
+    json["start_autotracker_while_timer_is_running"] = start_autotracker_while_timer_is_running;
     json["active_tab"] = active_tab;
     json["color_theme"] = color_theme;
     json["force_ignore_cert"] = force_ignore_cert;
@@ -77,6 +78,7 @@ std::string Settings::String() const {
        << " stop_entry_on_shutdown_sleep=" << stop_entry_on_shutdown_sleep
        << " show_touch_bar=" << show_touch_bar
        << " start_autotracker_without_suggestions=" << start_autotracker_without_suggestions
+       << " start_autotracker_while_timer_is_running=" << start_autotracker_while_timer_is_running
        << " active_tab=" << active_tab
        << " color_theme=" << color_theme
        << " force_ignore_cert=" << force_ignore_cert;
@@ -115,6 +117,7 @@ bool Settings::IsSame(const Settings &other) const {
             && (stop_entry_on_shutdown_sleep == other.stop_entry_on_shutdown_sleep)
             && (show_touch_bar == other.show_touch_bar)
             && (start_autotracker_without_suggestions == other.start_autotracker_without_suggestions)
+            && (start_autotracker_while_timer_is_running == other.start_autotracker_while_timer_is_running)
             && (active_tab == other.active_tab)
             && (color_theme == other.color_theme)
             && (force_ignore_cert == other.force_ignore_cert));
