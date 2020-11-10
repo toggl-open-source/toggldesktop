@@ -929,7 +929,7 @@ public static partial class Toggl
     public static readonly BehaviorSubject<DateTime> TimelineSelectedDate = new BehaviorSubject<DateTime>(DateTime.Today);
 
     public static readonly BehaviorSubject<TogglTimeEntryView?> RunningTimeEntry = new BehaviorSubject<TogglTimeEntryView?>(null);
-    public static IObservable<Unit> StoppedTimerState = RunningTimeEntry.Where(te => te == null).Select(_ => new Unit());
+    public static IObservable<Unit> StoppedTimerState = RunningTimeEntry.Where(te => te == null).Select(_ => Unit.Default);
     public static event DisplayTimelineUI OnDisplayTimelineUI = delegate { };
     private static void listenToLibEvents()
     {
