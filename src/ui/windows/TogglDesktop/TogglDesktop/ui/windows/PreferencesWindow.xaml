@@ -340,9 +340,14 @@
                         <mah:ToggleSwitch Name="enableAutotrackerCheckbox" x:FieldModifier="private"
                                           Margin="0 14 0 0"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="1" IsEnabled="{Binding ElementName=enableAutotrackerCheckbox, Path=IsChecked}">
+                    <StackPanel Grid.Row="1" IsEnabled="{Binding ElementName=enableAutotrackerCheckbox, Path=IsChecked}"
+                                Margin="0 30 0 0">
                         <TextBlock Style="{StaticResource Toggl.BodyText}"
-                                   Margin="0 30 0 0"
+                                   Text="Show suggestions also when the timer is running" />
+                        <mah:ToggleSwitch x:Name="showAutotrackerWhileTimerIsRunning" x:FieldModifier="private"
+                                          Margin="0 14 0 0" />
+                        <TextBlock Style="{StaticResource Toggl.BodyText}"
+                                   Margin="0 12 0 0"
                                    Text="Allow starting tracking automatically without showing the suggestion" />
                         <mah:ToggleSwitch x:Name="startTrackingWithoutSuggestionCheckbox" x:FieldModifier="private"
                                           Margin="0 14 0 0" />
