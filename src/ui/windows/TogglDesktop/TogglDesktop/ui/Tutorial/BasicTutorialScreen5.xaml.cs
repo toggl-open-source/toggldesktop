@@ -1,10 +1,13 @@
 ﻿
+using System;
 using System.Collections.Generic;
 
 namespace TogglDesktop.Tutorial
 {
     public partial class BasicTutorialScreen5
     {
+        private IDisposable _timerStateObservable;
+
         public BasicTutorialScreen5()
         {
             this.InitializeComponent();
@@ -13,13 +16,13 @@ namespace TogglDesktop.Tutorial
         protected override void initialise()
         {
             Toggl.OnTimeEntryList += this.onTimeEntryList;
-            Toggl.OnStoppedTimerState += this.onStoppedTimerState;
+            _timerStateObservable = Toggl.StoppedTimerState.Subscribe(_ => this.onStoppedTimerState());
         }
 
         protected override void cleanup()
         {
             Toggl.OnTimeEntryList -= this.onTimeEntryList;
-            Toggl.OnStoppedTimerState -= this.onStoppedTimerState;
+            _timerStateObservable.Dispose();
         }
 
         private void onTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list, bool showLoadMoreButton)

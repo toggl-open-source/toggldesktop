@@ -28,7 +28,7 @@ namespace TogglDesktop.ui.ViewModels
             setupSecondsTimer();
 
             Toggl.RunningTimeEntry.Subscribe(onRunningTimerState);
-            Toggl.OnStoppedTimerState += onStoppedTimerState;
+            Toggl.StoppedTimerState.Subscribe(_ => this.onStoppedTimerState());
 
             ResetRunningTimeEntry(false, true);
         }
@@ -107,7 +107,7 @@ namespace TogglDesktop.ui.ViewModels
 
         private void onStoppedTimerState()
         {
-            using (Performance.Measure("timer responding to OnStoppedTimerState"))
+            using (Performance.Measure("timer responding to StoppedTimerState"))
             {
                 secondsTimer.IsEnabled = false;
                 ResetRunningTimeEntry(false);

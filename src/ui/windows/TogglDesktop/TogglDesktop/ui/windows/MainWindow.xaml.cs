@@ -241,7 +241,7 @@ namespace TogglDesktop
             Toggl.OnURL += this.onURL;
             Toggl.OnUserTimeEntryStart += this.onUserTimeEntryStart;
             Toggl.RunningTimeEntry.Subscribe(this.onRunningTimerState);
-            Toggl.OnStoppedTimerState += this.onStoppedTimerState;
+            Toggl.StoppedTimerState.Subscribe(_ => this.onStoppedTimerState());
             Toggl.OnSettings += this.onSettings;
             Toggl.OnDisplayInAppNotification += this.onDisplayInAppNotification;
         }

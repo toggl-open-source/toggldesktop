@@ -14,21 +14,17 @@ namespace TogglDesktop.Tests
 
         public string MeJson = File.ReadAllText("me.json");
 
+        private readonly IDisposable _runningTimerState;
+
         public LibraryFixture()
         {
             Toggl.Env = "test";
             Toggl.OnTimeEntryList += (open, list, button) => TimeEntries = list;
-            Toggl.RunningTimeEntry.Subscribe( te =>
+            _runningTimerState = Toggl.RunningTimeEntry.Subscribe( te =>
             {
-                if (te != null)
-                    RunningEntry = te.Value;
-                IsRunning = true;
+                RunningEntry = te ?? default;
+                IsRunning = te.HasValue;
             });
-            Toggl.OnStoppedTimerState += () =>
-            {
-                RunningEntry = default;
-                IsRunning = false;
-            };
             Assert.True(Toggl.StartUI("0.0.0"));
             Toggl.ClearCache();
             Toggl.SetManualMode(false);
@@ -36,6 +32,7 @@ namespace TogglDesktop.Tests
 
         public void Dispose()
         {
+            _runningTimerState.Dispose();
             Toggl.Clear();
         }
     }

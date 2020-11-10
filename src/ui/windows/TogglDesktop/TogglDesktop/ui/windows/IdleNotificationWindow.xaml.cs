@@ -16,7 +16,7 @@ namespace TogglDesktop
         {
             this.InitializeComponent();
             Toggl.OnIdleNotification += this.onIdleNotification;
-            Toggl.OnStoppedTimerState += this.onStoppedTimerState;
+            Toggl.StoppedTimerState.Subscribe(_ => this.onStoppedTimerState());
         }
 
         private void onIdleNotification(string guid, string since, string duration, long started, string description)
