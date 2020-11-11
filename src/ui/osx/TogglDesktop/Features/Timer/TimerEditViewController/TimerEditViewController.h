@@ -12,7 +12,7 @@
 
 @interface TimerEditViewController : NSViewController
 @property (weak) IBOutlet NSBoxClickable *manualBox;
-@property (weak) IBOutlet NSBoxClickable *mainBox;
+@property (weak) IBOutlet NSBox *mainBox;
 
 - (void)startButtonClicked;
 - (void)focusTimer;
