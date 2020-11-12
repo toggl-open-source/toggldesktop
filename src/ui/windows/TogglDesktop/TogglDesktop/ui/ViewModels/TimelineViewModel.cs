@@ -194,6 +194,8 @@ namespace TogglDesktop.ViewModels
                 allEntries = allEntries.Union(new List<Toggl.TogglTimeEntryView>(){runningEntry.Value});
             foreach (var entry in allEntries)
             {
+                if (blocks.ContainsKey(entry.GUID)) continue;
+
                 var startTime = Toggl.DateTimeFromUnix(entry.Started);
                 var ended = entry.GUID == runningEntry?.GUID 
                     ? TimelineUtils.ConvertOffsetToTime(currentTimeOffset, selectedDate, TimelineConstants.ScaleModes[selectedScaleMode])
