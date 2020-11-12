@@ -53,6 +53,7 @@
                            Cursor="SizeNS"
                            Name="ThumbTop"
                            Visibility="{Binding IsResizable, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           DragStarted="OnThumbDragStarted"
                            DragDelta="OnThumbTopDragDelta"
                            DragCompleted="OnThumbTopDragCompleted">
                         <Thumb.Template>
@@ -67,6 +68,7 @@
                            Cursor="SizeNS"
                            Name="ThumbBottom"
                            Visibility="{Binding IsResizable, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           DragStarted="OnThumbDragStarted"
                            DragDelta="OnThumbBottomDragDelta"
                            DragCompleted="OnThumbBottomDragCompleted">
                         <Thumb.Template>

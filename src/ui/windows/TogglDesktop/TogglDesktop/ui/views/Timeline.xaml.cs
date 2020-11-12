@@ -116,6 +116,7 @@ namespace TogglDesktop
                 Mouse.Capture(sender as UIElement);
                 _dragStartedPoint = e.GetPosition(TimeEntryBlocks).Y;
                 _timeEntryId = TimelineViewModel.AddNewTimeEntry(_dragStartedPoint.Value, 0, ViewModel.SelectedScaleMode, ViewModel.SelectedDate);
+                ViewModel.TimeEntryBlocks[_timeEntryId].IsDragged = true;
             }
         }
 
@@ -139,6 +140,7 @@ namespace TogglDesktop
                     ViewModel.TimeEntryBlocks[_timeEntryId].Height = TimelineConstants.ScaleModes[ViewModel.SelectedScaleMode];
                 }
                 ViewModel.TimeEntryBlocks[_timeEntryId].ChangeStartEndTime();
+                ViewModel.TimeEntryBlocks[_timeEntryId].IsDragged = false;
                 Toggl.Edit(_timeEntryId, false, Toggl.Description);
             }
             _dragStartedPoint = null;

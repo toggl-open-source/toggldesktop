@@ -64,6 +64,9 @@ namespace TogglDesktop.ViewModels
 
         public bool IsResizable { [ObservableAsProperty] get; }
 
+        [Reactive]
+        public bool IsDragged { get; set; }
+
         private readonly double _hourHeight;
 
         public TimeEntryBlock(string timeEntryId, int hourHeight)
