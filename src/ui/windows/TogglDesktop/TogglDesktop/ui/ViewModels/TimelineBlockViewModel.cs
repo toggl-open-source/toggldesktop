@@ -67,10 +67,10 @@ namespace TogglDesktop.ViewModels
             TimeEntryId = timeEntryId;
             OpenEditView = ReactiveCommand.Create(() => Toggl.Edit(TimeEntryId, false, Toggl.Description));
             this.WhenAnyValue(x => x.VerticalOffset)
-                .Select(h => TimelineConstants.ConvertOffsetToTime(h, Toggl.DateTimeFromUnix(Started).Date, _hourHeight))
+                .Select(h => TimelineUtils.ConvertOffsetToTime(h, Toggl.DateTimeFromUnix(Started).Date, _hourHeight))
                 .Subscribe(next => Started = next);
             this.WhenAnyValue(x => x.Height, x => x.VerticalOffset)
-                .Select(h => TimelineConstants.ConvertOffsetToTime(h.Item1 + h.Item2, Toggl.DateTimeFromUnix(Ended).Date, _hourHeight))
+                .Select(h => TimelineUtils.ConvertOffsetToTime(h.Item1 + h.Item2, Toggl.DateTimeFromUnix(Ended).Date, _hourHeight))
                 .Subscribe(next => Ended = next);
             this.WhenAnyValue(x => x.Started, x => x.Ended)
                 .Select(pair => $"{Toggl.DateTimeFromUnix(pair.Item1):HH:mm tt} - {Toggl.DateTimeFromUnix(pair.Item2):HH:mm tt}")
@@ -91,13 +91,13 @@ namespace TogglDesktop.ViewModels
         public void ChangeStartTime()
         {
             Toggl.SetTimeEntryStartTimeStamp(TimeEntryId,
-                (long)TimelineConstants.ConvertOffsetToTime(VerticalOffset, Toggl.DateTimeFromUnix(Started).Date, _hourHeight));
+                (long)TimelineUtils.ConvertOffsetToTime(VerticalOffset, Toggl.DateTimeFromUnix(Started).Date, _hourHeight));
         }
 
         public void ChangeEndTime()
         {
             Toggl.SetTimeEntryEndTimeStamp(TimeEntryId,
-                (long)TimelineConstants.ConvertOffsetToTime(VerticalOffset + Height, Toggl.DateTimeFromUnix(Ended).Date, _hourHeight));
+                (long)TimelineUtils.ConvertOffsetToTime(VerticalOffset + Height, Toggl.DateTimeFromUnix(Ended).Date, _hourHeight));
         }
 
         public void ChangeStartEndTime()

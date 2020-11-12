@@ -111,9 +111,12 @@ namespace TogglDesktop
         private string _timeEntryId;
         private void OnTimeEntryCanvasMouseDown(object sender, MouseButtonEventArgs e)
         {
-            Mouse.Capture(sender as UIElement);
-            _dragStartedPoint = e.GetPosition(TimeEntryBlocks).Y;
-            _timeEntryId = ViewModel.AddNewTimeEntry(_dragStartedPoint.Value, 0);
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Mouse.Capture(sender as UIElement);
+                _dragStartedPoint = e.GetPosition(TimeEntryBlocks).Y;
+                _timeEntryId = TimelineViewModel.AddNewTimeEntry(_dragStartedPoint.Value, 0, ViewModel.SelectedScaleMode, ViewModel.SelectedDate);
+            }
         }
 
         private void OnTimeEntryCanvasMouseMove(object sender, MouseEventArgs e)
