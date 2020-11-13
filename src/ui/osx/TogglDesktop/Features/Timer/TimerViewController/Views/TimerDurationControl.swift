@@ -56,7 +56,7 @@ class TimerDurationControl: NSView {
     var onPerformAction: (Action) -> Bool = { _ in return false }
 
     private enum Constants {
-        static let initialDropdownSize = NSSize(width: 256, height: 148)
+        static let initialDropdownSize = NSSize(width: 254, height: 148)
         static let dropdownOffset = NSPoint(x: 0, y: 4)
         static let minWindowPadding: CGFloat = 8
     }

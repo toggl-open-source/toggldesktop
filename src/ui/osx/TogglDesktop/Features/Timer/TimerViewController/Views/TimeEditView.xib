@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -10,23 +10,23 @@
         <customObject id="-2" userLabel="File's Owner"/>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView id="c22-O7-iKe" customClass="TimeEditView" customModule="Toggl_Track" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="256" height="148"/>
+        <customView misplaced="YES" id="c22-O7-iKe" customClass="TimeEditView" customModule="Toggl_Track" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="256" height="142"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box boxType="custom" cornerRadius="8" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="GfM-qi-LYd">
-                    <rect key="frame" x="0.0" y="0.0" width="256" height="148"/>
+                    <rect key="frame" x="0.0" y="0.0" width="256" height="142"/>
                     <view key="contentView" id="SIL-am-mKQ">
-                        <rect key="frame" x="1" y="1" width="254" height="146"/>
+                        <rect key="frame" x="1" y="1" width="254" height="140"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="sVF-vD-5lX" userLabel="Time Field Container">
-                                <rect key="frame" x="12" y="84" width="96" height="50"/>
+                                <rect key="frame" x="16" y="79" width="96" height="49"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Mk-Mx-TIX">
-                                        <rect key="frame" x="-2" y="34" width="46" height="16"/>
+                                        <rect key="frame" x="-2" y="35" width="40" height="14"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" title="START" id="UoV-Pi-y41">
-                                            <font key="font" metaFont="systemMedium" size="13"/>
+                                            <font key="font" metaFont="systemMedium" size="11"/>
                                             <color key="textColor" name="grey-text-color"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
@@ -71,7 +71,7 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="4Mk-Mx-TIX" firstAttribute="top" secondItem="sVF-vD-5lX" secondAttribute="top" id="3lv-Pa-1Gf"/>
-                                    <constraint firstItem="7f9-Da-ISN" firstAttribute="top" secondItem="4Mk-Mx-TIX" secondAttribute="bottom" constant="4" id="861-jA-Odg"/>
+                                    <constraint firstItem="7f9-Da-ISN" firstAttribute="top" secondItem="4Mk-Mx-TIX" secondAttribute="bottom" constant="5" id="861-jA-Odg"/>
                                     <constraint firstAttribute="bottom" secondItem="7f9-Da-ISN" secondAttribute="bottom" id="l7i-hI-5tO"/>
                                     <constraint firstItem="7f9-Da-ISN" firstAttribute="leading" secondItem="sVF-vD-5lX" secondAttribute="leading" id="v4s-d0-dmZ"/>
                                     <constraint firstItem="4Mk-Mx-TIX" firstAttribute="leading" secondItem="sVF-vD-5lX" secondAttribute="leading" id="vWF-76-y0O"/>
@@ -79,12 +79,12 @@
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="A6g-th-xyB" userLabel="Time Field Container">
-                                <rect key="frame" x="146" y="84" width="96" height="50"/>
+                                <rect key="frame" x="142" y="79" width="96" height="49"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WgJ-O7-ngF">
-                                        <rect key="frame" x="-2" y="34" width="31" height="16"/>
+                                        <rect key="frame" x="-2" y="35" width="28" height="14"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" title="END" id="Hvf-bJ-Rch">
-                                            <font key="font" metaFont="systemMedium" size="13"/>
+                                            <font key="font" metaFont="systemMedium" size="11"/>
                                             <color key="textColor" name="grey-text-color"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
@@ -130,27 +130,27 @@
                                     <constraint firstItem="WgJ-O7-ngF" firstAttribute="leading" secondItem="A6g-th-xyB" secondAttribute="leading" id="Sdt-oc-Lcn"/>
                                     <constraint firstItem="WgJ-O7-ngF" firstAttribute="top" secondItem="A6g-th-xyB" secondAttribute="top" id="VzJ-Bb-sbz"/>
                                     <constraint firstAttribute="bottom" secondItem="c1z-zr-wS9" secondAttribute="bottom" id="iw2-tI-b0J"/>
-                                    <constraint firstItem="c1z-zr-wS9" firstAttribute="top" secondItem="WgJ-O7-ngF" secondAttribute="bottom" constant="4" id="xYR-9c-3Qt"/>
+                                    <constraint firstItem="c1z-zr-wS9" firstAttribute="top" secondItem="WgJ-O7-ngF" secondAttribute="bottom" constant="5" id="xYR-9c-3Qt"/>
                                 </constraints>
                             </customView>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2oP-p3-wSn">
-                                <rect key="frame" x="108" y="96" width="38" height="7"/>
+                                <rect key="frame" x="112" y="91" width="30" height="7"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="duration-arrow" id="Qf1-j8-mKi"/>
                             </imageView>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="0wY-G9-sKx">
-                                <rect key="frame" x="12" y="16" width="230" height="30"/>
+                                <rect key="frame" x="16" y="16" width="222" height="30"/>
                                 <view key="contentView" id="JHb-Vf-cnk">
-                                    <rect key="frame" x="1" y="1" width="228" height="28"/>
+                                    <rect key="frame" x="1" y="1" width="220" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box boxType="custom" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="YSn-xx-d8B">
-                                            <rect key="frame" x="30" y="-1" width="168" height="30"/>
+                                            <rect key="frame" x="30" y="-1" width="160" height="30"/>
                                             <view key="contentView" id="t9F-eI-yHh">
-                                                <rect key="frame" x="1" y="1" width="166" height="28"/>
+                                                <rect key="frame" x="1" y="1" width="158" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vJ4-Ci-Cmv">
-                                                        <rect key="frame" x="10" y="3" width="146" height="25"/>
+                                                        <rect key="frame" x="6" y="3" width="146" height="25"/>
                                                         <subviews>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lIP-dg-XbA" customClass="CursorButton" customModule="Toggl_Track" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="4" width="61" height="17"/>
@@ -170,8 +170,8 @@
                                                                 </constraints>
                                                                 <datePickerCell key="cell" refusesFirstResponder="YES" alignment="left" drawsBackground="NO" datePickerStyle="textField" useCurrentDate="YES" id="ofN-Zc-xLU">
                                                                     <font key="font" metaFont="system" size="14"/>
-                                                                    <date key="date" timeIntervalSinceReferenceDate="626269538.47442997">
-                                                                        <!--2020-11-05 11:45:38 +0000-->
+                                                                    <date key="date" timeIntervalSinceReferenceDate="626958164.34696603">
+                                                                        <!--2020-11-13 11:02:44 +0000-->
                                                                     </date>
                                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="textColor" name="black-text-color"/>
@@ -200,7 +200,7 @@
                                             <color key="fillColor" name="editor-background-color"/>
                                         </box>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fu1-wD-m4F" userLabel="Next Day Button" customClass="CursorButton" customModule="Toggl_Track" customModuleProvider="target">
-                                            <rect key="frame" x="198" y="0.0" width="30" height="28"/>
+                                            <rect key="frame" x="190" y="0.0" width="30" height="28"/>
                                             <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="next_date_arrow" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="qXM-vH-7PF">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -242,9 +242,9 @@
                                 <color key="fillColor" name="editor-background-color"/>
                             </box>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fVo-LF-7n2">
-                                <rect key="frame" x="10" y="50" width="82" height="16"/>
+                                <rect key="frame" x="14" y="51" width="72" height="14"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="START DATE" id="Mor-IR-d0G">
-                                    <font key="font" metaFont="systemMedium" size="13"/>
+                                    <font key="font" metaFont="systemMedium" size="11"/>
                                     <color key="textColor" name="grey-text-color"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -255,15 +255,15 @@
                             <constraint firstItem="sVF-vD-5lX" firstAttribute="top" secondItem="SIL-am-mKQ" secondAttribute="top" constant="12" id="3y7-d3-e0A"/>
                             <constraint firstItem="2oP-p3-wSn" firstAttribute="centerY" secondItem="7f9-Da-ISN" secondAttribute="centerY" id="B1R-h3-Xap"/>
                             <constraint firstAttribute="bottom" secondItem="0wY-G9-sKx" secondAttribute="bottom" priority="750" constant="16" id="CHj-hN-VfY"/>
-                            <constraint firstItem="sVF-vD-5lX" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="12" id="DKb-63-DoX"/>
+                            <constraint firstItem="sVF-vD-5lX" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="16" id="DKb-63-DoX"/>
                             <constraint firstItem="A6g-th-xyB" firstAttribute="top" secondItem="SIL-am-mKQ" secondAttribute="top" constant="12" id="ESQ-gk-2TR"/>
-                            <constraint firstItem="0wY-G9-sKx" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="12" id="HaX-A8-yWI"/>
-                            <constraint firstAttribute="trailing" secondItem="A6g-th-xyB" secondAttribute="trailing" constant="12" id="M1m-V0-5xr"/>
-                            <constraint firstItem="0wY-G9-sKx" firstAttribute="top" secondItem="fVo-LF-7n2" secondAttribute="bottom" constant="4" id="X1k-HC-b28"/>
-                            <constraint firstAttribute="trailing" secondItem="0wY-G9-sKx" secondAttribute="trailing" constant="12" id="XlI-JU-mMb"/>
+                            <constraint firstItem="0wY-G9-sKx" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="16" id="HaX-A8-yWI"/>
+                            <constraint firstAttribute="trailing" secondItem="A6g-th-xyB" secondAttribute="trailing" constant="16" id="M1m-V0-5xr"/>
+                            <constraint firstItem="0wY-G9-sKx" firstAttribute="top" secondItem="fVo-LF-7n2" secondAttribute="bottom" constant="5" id="X1k-HC-b28"/>
+                            <constraint firstAttribute="trailing" secondItem="0wY-G9-sKx" secondAttribute="trailing" constant="16" id="XlI-JU-mMb"/>
                             <constraint firstItem="A6g-th-xyB" firstAttribute="leading" secondItem="2oP-p3-wSn" secondAttribute="trailing" id="c4h-lh-QRI"/>
-                            <constraint firstItem="fVo-LF-7n2" firstAttribute="top" secondItem="sVF-vD-5lX" secondAttribute="bottom" constant="18" id="d7O-aZ-MKT"/>
-                            <constraint firstItem="fVo-LF-7n2" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="12" id="fXR-2z-j2S"/>
+                            <constraint firstItem="fVo-LF-7n2" firstAttribute="top" secondItem="sVF-vD-5lX" secondAttribute="bottom" constant="14" id="d7O-aZ-MKT"/>
+                            <constraint firstItem="fVo-LF-7n2" firstAttribute="leading" secondItem="SIL-am-mKQ" secondAttribute="leading" constant="16" id="fXR-2z-j2S"/>
                         </constraints>
                     </view>
                     <color key="borderColor" name="color-project-btn-border-color"/>
