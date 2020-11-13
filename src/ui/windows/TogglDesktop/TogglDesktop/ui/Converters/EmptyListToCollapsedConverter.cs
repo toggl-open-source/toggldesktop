@@ -13,7 +13,7 @@ namespace TogglDesktop.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var visibility = Visibility.Collapsed;
-            if (value is IList list && list.Count > 0)
+            if (value is ICollection list && list.Count > 0)
                 visibility = Visibility.Visible;
             if (Inverse) visibility = visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
             return visibility;

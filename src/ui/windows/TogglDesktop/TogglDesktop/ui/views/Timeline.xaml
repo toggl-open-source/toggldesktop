@@ -146,23 +146,6 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <GridSplitter Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="1" Background="{DynamicResource Toggl.TimelineSeparatorBrush}"/>
-                    <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0" Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <togglDesktop:TimelineRunningTimeEntryBlock DataContext="{Binding RunningTimeEntryBlock}"
-                                                                Canvas.Top="{Binding VerticalOffset}"
-                                                                Canvas.Left="{Binding HorizontalOffset}"
-                                                                MouseEnter="OnTimeEntryBlockMouseEnter"
-                                                                MouseLeave="OnTimeEntyrBlockMouseLeave">
-                            <togglDesktop:TimelineRunningTimeEntryBlock.Style>
-                                <Style TargetType="FrameworkElement">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ShowDescription}" Value="True">
-                                            <Setter Property="Width" Value="{Binding ElementName=RunningTimeEntryCanvas, Path=ActualWidth}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </togglDesktop:TimelineRunningTimeEntryBlock.Style>
-                        </togglDesktop:TimelineRunningTimeEntryBlock>
-                    </Canvas>
                     <Canvas Grid.Row="1" Grid.ColumnSpan="5" Grid.Column="0"
                             Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanToVisibilityConverter}}"
                             x:Name="CurrentTimeCanvas">
@@ -186,12 +169,15 @@
                     <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=TimeEntryBlocks}" Margin="10 0 0 0" Name="TimeEntryBlocks">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <Canvas Name="TimeEntryCanvas" />
+                                <Canvas Name="TimeEntryCanvas" Background="Transparent" 
+                                        MouseDown="OnTimeEntryCanvasMouseDown"
+                                        MouseMove="OnTimeEntryCanvasMouseMove"
+                                        MouseUp="OnTimeEntryCanvasMouseUp"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <togglDesktop:TimelineTimeEntryBlock Panel.ZIndex="1" DataContext="{Binding Path=.}"
+                                <togglDesktop:TimelineTimeEntryBlock Panel.ZIndex="1" DataContext="{Binding Path=Value}"
                                                                      MouseEnter="OnTimeEntryBlockMouseEnter"
                                                                      MouseLeave="OnTimeEntyrBlockMouseLeave">
                                     <togglDesktop:TimelineTimeEntryBlock.Style>
@@ -208,11 +194,28 @@
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemContainerStyle>
                             <Style TargetType="ContentPresenter">
-                                <Setter Property="Canvas.Left" Value="{Binding HorizontalOffset}" />
-                                <Setter Property="Canvas.Top" Value="{Binding VerticalOffset}" />
+                                <Setter Property="Canvas.Left" Value="{Binding Value.HorizontalOffset}" />
+                                <Setter Property="Canvas.Top" Value="{Binding Value.VerticalOffset}" />
                             </Style>
                         </ItemsControl.ItemContainerStyle>
                     </ItemsControl>
+                    <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0" Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <togglDesktop:TimelineRunningTimeEntryBlock DataContext="{Binding RunningTimeEntryBlock}"
+                                                                    Canvas.Top="{Binding VerticalOffset}"
+                                                                    Canvas.Left="{Binding HorizontalOffset}"
+                                                                    MouseEnter="OnTimeEntryBlockMouseEnter"
+                                                                    MouseLeave="OnTimeEntyrBlockMouseLeave">
+                            <togglDesktop:TimelineRunningTimeEntryBlock.Style>
+                                <Style TargetType="FrameworkElement">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ShowDescription}" Value="True">
+                                            <Setter Property="Width" Value="{Binding ElementName=RunningTimeEntryCanvas, Path=ActualWidth}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </togglDesktop:TimelineRunningTimeEntryBlock.Style>
+                        </togglDesktop:TimelineRunningTimeEntryBlock>
+                    </Canvas>
                     <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=GapTimeEntryBlocks}" Margin="10 0 0 0">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>

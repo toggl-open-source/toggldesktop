@@ -107,5 +107,43 @@ namespace TogglDesktop
             }
         }
 
+        private double? _dragStartedPoint;
+        private string _timeEntryId;
+        private void OnTimeEntryCanvasMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Mouse.Capture(sender as UIElement);
+                _dragStartedPoint = e.GetPosition(TimeEntryBlocks).Y;
+                _timeEntryId = TimelineViewModel.AddNewTimeEntry(_dragStartedPoint.Value, 0, ViewModel.SelectedScaleMode, ViewModel.SelectedDate);
+            }
+        }
+
+        private void OnTimeEntryCanvasMouseMove(object sender, MouseEventArgs e)
+        {
+            if (_dragStartedPoint != null && _timeEntryId != null && e.LeftButton == MouseButtonState.Pressed)
+            {
+                var verticalChange = Math.Abs(e.GetPosition(TimeEntryBlocks).Y - _dragStartedPoint.Value);
+                ViewModel.TimeEntryBlocks[_timeEntryId].VerticalOffset =
+                    Math.Min(_dragStartedPoint.Value, e.GetPosition(TimeEntryBlocks).Y);
+                ViewModel.TimeEntryBlocks[_timeEntryId].Height = verticalChange;
+            }
+        }
+
+        private void OnTimeEntryCanvasMouseUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            if (_timeEntryId != null && _dragStartedPoint != null)
+            {
+                if (Math.Abs(mouseButtonEventArgs.GetPosition(TimeEntryBlocks).Y - _dragStartedPoint.Value) <= 2)
+                {
+                    ViewModel.TimeEntryBlocks[_timeEntryId].Height = TimelineConstants.ScaleModes[ViewModel.SelectedScaleMode];
+                }
+                ViewModel.TimeEntryBlocks[_timeEntryId].ChangeStartEndTime();
+                Toggl.Edit(_timeEntryId, false, Toggl.Description);
+            }
+            _dragStartedPoint = null;
+            _timeEntryId = null;
+            Mouse.Capture(null);
+        }
     }
 }
