@@ -193,4 +193,9 @@ extern void *ctx;
     }
 }
 
+-(void)mouseDown:(NSEvent *)event
+{
+    [self.timerViewController mouseDown:event];
+}
+
 @end

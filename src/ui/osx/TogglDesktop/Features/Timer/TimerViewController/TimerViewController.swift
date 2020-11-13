@@ -293,7 +293,6 @@ class TimerViewController: NSViewController {
     }
 
     override func mouseDown(with event: NSEvent) {
-        super.mouseDown(with: event)
         view.window?.makeFirstResponder(nil)
     }
 
