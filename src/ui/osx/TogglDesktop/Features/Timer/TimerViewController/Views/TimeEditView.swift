@@ -126,8 +126,14 @@ class TimeEditView: NSView {
     // MARK: - Private
 
     private func update(with date: Date) {
+        let day: String = {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "EEE"
+            return formatter.string(from: date)
+        }()
+
         todayButton.attributedTitle = NSAttributedString(
-            string: date.dayOfWeekString() ?? "Unknown",
+            string: day + ",",
             attributes: Constants.dayNameAttribute
         )
         calendarViewControler.prepareLayout(with: date)
