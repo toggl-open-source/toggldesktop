@@ -91,6 +91,14 @@ class TimeEditView: NSView {
                 self?.hideWindow()
             }
         }
+
+        datePicker.keyOnAction = { [weak self] key in
+            guard let self = self, !self.nextDayButton.isEnabled else { return }
+            let resignedFocus = self.window?.firstResponder != self.datePicker
+            if key == .tab && resignedFocus {
+                self.hideWindow()
+            }
+        }
     }
 
     override func becomeFirstResponder() -> Bool {
@@ -139,6 +147,7 @@ class TimeEditView: NSView {
         calendarViewControler.prepareLayout(with: date)
         datePicker.dateValue = date
         datePicker.maxDate = Date()
+        nextDayButton.isEnabled = Calendar.current.isDate(date, inSameDayAs: Date()) == false
     }
 
     private func hideWindow() {
