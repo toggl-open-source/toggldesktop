@@ -139,6 +139,7 @@ namespace TogglDesktop
                     ViewModel.TimeEntryBlocks[_timeEntryId].Height = TimelineConstants.ScaleModes[ViewModel.SelectedScaleMode];
                 }
                 ViewModel.TimeEntryBlocks[_timeEntryId].ChangeStartEndTime();
+                Toggl.Edit(_timeEntryId, false, Toggl.Description);
             }
             _dragStartedPoint = null;
             _timeEntryId = null;

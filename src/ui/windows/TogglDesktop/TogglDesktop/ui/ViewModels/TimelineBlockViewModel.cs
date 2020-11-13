@@ -23,7 +23,12 @@ namespace TogglDesktop.ViewModels
 
         public GapTimeEntryBlock(Func<double, double, string> addNewTimeEntry)
         {
-            CreateTimeEntryFromBlock = ReactiveCommand.Create(() => addNewTimeEntry(VerticalOffset, Height));
+            CreateTimeEntryFromBlock = ReactiveCommand.Create(() =>
+            {
+                var id = addNewTimeEntry(VerticalOffset, Height);
+                Toggl.Edit(id, false, Toggl.Description);
+                return id;
+            });
         }
     }
 

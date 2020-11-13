@@ -319,7 +319,6 @@ namespace TogglDesktop.ViewModels
             var ended = TimelineUtils.ConvertOffsetToTime(offset+height, date,
                 TimelineConstants.ScaleModes[scaleMode]);
             var timeEntryId = Toggl.CreateEmptyTimeEntry(started, ended);
-            Toggl.Edit(timeEntryId, false, Toggl.Description);
             return timeEntryId;
         }
 
