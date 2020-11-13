@@ -93,6 +93,7 @@ namespace TogglDesktop.ViewModels
                 .ToPropertyEx(this, x => x.Duration);
             this.WhenAnyValue(x => x.Height)
                 .Select(h => h >= TimelineConstants.MinResizableTimeEntryBlockHeight)
+                .Where(_ => !IsDragged)
                 .ToPropertyEx(this, x => x.IsResizable);
         }
 
