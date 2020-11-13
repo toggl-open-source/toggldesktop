@@ -515,6 +515,8 @@ class TimerViewController: NSViewController {
             }
 
             if from.makeWindowKey {
+                durationControl.closeDropdown()
+
                 window.makeKeyAndOrderFront(nil)
                 window.makeFirstResponder(contentView)
             }
