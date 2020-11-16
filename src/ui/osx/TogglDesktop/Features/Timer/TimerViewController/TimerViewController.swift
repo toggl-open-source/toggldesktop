@@ -293,7 +293,6 @@ class TimerViewController: NSViewController {
     }
 
     override func mouseDown(with event: NSEvent) {
-        super.mouseDown(with: event)
         view.window?.makeFirstResponder(nil)
     }
 
@@ -515,6 +514,8 @@ class TimerViewController: NSViewController {
             }
 
             if from.makeWindowKey {
+                durationControl.closeDropdown()
+
                 window.makeKeyAndOrderFront(nil)
                 window.makeFirstResponder(contentView)
             }

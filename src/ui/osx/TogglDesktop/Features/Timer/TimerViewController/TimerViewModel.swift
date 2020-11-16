@@ -220,7 +220,10 @@ final class TimerViewModel: NSObject {
         guard !startString.isEmpty else { return }
 
         var newTimestamp = DesktopLibraryBridge.shared().timestamp(from: startString)
-        guard newTimestamp > 0 else { return }
+        guard newTimestamp > 0 else {
+            reloadTimeStrings()
+            return
+        }
 
         if timeEntry.isRunning(), let startDate = timeEntry.started {
             // because start time string can have only hours and minutes,
@@ -396,9 +399,14 @@ final class TimerViewModel: NSObject {
 
     private func reloadTimeStrings() {
         startTimeString = timeString(fromDate: timeEntry.started)
-        durationString = DesktopLibraryBridge.shared().convertDuraton(
-            inSecond: Int64(Date().timeIntervalSince(timeEntry.started))
-        )
+
+        if let startTime = timeEntry.started {
+            durationString = DesktopLibraryBridge.shared().convertDuraton(
+                inSecond: Int64(Date().timeIntervalSince(startTime))
+            )
+        } else {
+            durationString = ""
+        }
     }
 
     private func startDate(fromDurationString durationString: String) -> Date {

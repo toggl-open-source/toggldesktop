@@ -43,6 +43,10 @@ class TimerDurationControl: NSView {
         durationTextField.currentEditor() != nil && window?.isKeyWindow == true
     }
 
+    var isDropdownVisible: Bool {
+        dropdownWindow.isVisible
+    }
+
     override var canBecomeKeyView: Bool { true }
     override var acceptsFirstResponder: Bool { true }
     override var needsPanelToBecomeKey: Bool { true }
@@ -56,7 +60,7 @@ class TimerDurationControl: NSView {
     var onPerformAction: (Action) -> Bool = { _ in return false }
 
     private enum Constants {
-        static let initialDropdownSize = NSSize(width: 256, height: 148)
+        static let initialDropdownSize = NSSize(width: 254, height: 148)
         static let dropdownOffset = NSPoint(x: 0, y: 4)
         static let minWindowPadding: CGFloat = 8
     }
@@ -122,6 +126,14 @@ class TimerDurationControl: NSView {
         closeDropdown()
     }
 
+    // MARK: - Public
+
+    func closeDropdown() {
+        if isDropdownVisible {
+            dropdownWindow.orderOut(nil)
+        }
+    }
+
     // MARK: - Private
 
     private func presentDropdown() {
@@ -132,10 +144,6 @@ class TimerDurationControl: NSView {
         if dropdownWindow != window {
             window?.addChildWindow(dropdownWindow, ordered: .above)
         }
-    }
-
-    private func closeDropdown() {
-        dropdownWindow.orderOut(nil)
     }
 
     private func dropdownWindowRect(fromView: NSView, offset: NSPoint = .zero) -> NSRect {
