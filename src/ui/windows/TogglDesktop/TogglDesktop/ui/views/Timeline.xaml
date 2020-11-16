@@ -202,9 +202,7 @@
                     <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0" Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <togglDesktop:TimelineRunningTimeEntryBlock DataContext="{Binding RunningTimeEntryBlock}"
                                                                     Canvas.Top="{Binding VerticalOffset}"
-                                                                    Canvas.Left="{Binding HorizontalOffset}"
-                                                                    MouseEnter="OnTimeEntryBlockMouseEnter"
-                                                                    MouseLeave="OnTimeEntyrBlockMouseLeave">
+                                                                    Canvas.Left="{Binding HorizontalOffset}">
                             <togglDesktop:TimelineRunningTimeEntryBlock.Style>
                                 <Style TargetType="FrameworkElement">
                                     <Style.Triggers>
@@ -330,60 +328,8 @@
                             </StackPanel>
                         </Border>
                     </Popup>
-                    <Popup Placement="Right"
-                           DataContext="{Binding SelectedTimeEntryBlock}"
-                           Name="TimeEntryPopup"
-                           HorizontalOffset="5"
-                           StaysOpen="True"
-                           Grid.Row="1" Grid.Column="2">
-                        <Border BorderBrush="{DynamicResource Toggl.PopupBorderBrush}" BorderThickness="1" Focusable="False"
-                                Background="{DynamicResource Toggl.CardBackground}">
-                            <Border.Effect>
-                                <DropShadowEffect ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.2" Color="Black" />
-                            </Border.Effect>
-                            <Grid Margin="8 8 8 8">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Margin="0 0 5 0" Grid.Row="0" Grid.Column="0" Text="{Binding StartEndCaption}" Style="{StaticResource Toggl.CaptionBlackText}"/>
-                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Duration}" Style="{StaticResource Toggl.CaptionBlackText}"/>
-                                <TextBlock Margin="0 10 0 0" Grid.Row="1" Grid.Column="0" Text="{Binding Description}" Style="{StaticResource Toggl.CaptionBlackText}"/>
-                                <DockPanel Grid.Row="2" Grid.Column="0" Margin="0 4 0 0">
-                                    <Ellipse Width="8" Height="8"
-                                           DockPanel.Dock="Left"
-                                           Margin="0 0 5 0"
-                                           VerticalAlignment="Center"
-                                           Fill="{Binding Color, Converter={StaticResource AdaptProjectTextColorConverter}}"
-                                           Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
-                                    <TextBlock Foreground="{Binding Color, Converter={StaticResource AdaptProjectTextColorConverter}}"
-                                             Text="{Binding ProjectName}" FontSize="12"
-                                             VerticalAlignment="Center"/>
-                                    <TextBlock Foreground="{Binding Color, Converter={StaticResource AdaptProjectTextColorConverter}}"
-                                               Padding="4 0 0 0"
-                                               Text="{Binding TaskName, Converter={StaticResource StringFormatIfNotEmptyConverter}, ConverterParameter='- {0}'}"
-                                               FontSize="12"
-                                               Visibility="{Binding TaskName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
-                                </DockPanel>
-                                <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding ClientName}" Style="{StaticResource Toggl.CaptionText}"/>
-                                <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0">
-                                    <Viewbox Visibility="{Binding HasTag, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                        <Path Style="{StaticResource Toggl.TagIcon}"/>
-                                    </Viewbox>
-                                    <Viewbox DockPanel.Dock="Left" Visibility="{Binding IsBillable, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                        <Path Style="{StaticResource Toggl.DollarIcon}"/>
-                                    </Viewbox>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                    </Popup>
+                    <togglDesktop:TimelineTimeEntryBlockPopup Grid.Row="1" Grid.Column="2"
+                                                              x:Name="TimeEntryPopup"/>
                 </Grid>
             </ScrollViewer>
             <TextBlock Grid.Row="3" Grid.Column="1" Text="No entries here... Go ahead and track some time!" Width="125" HorizontalAlignment="Center"

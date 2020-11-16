@@ -348,9 +348,6 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public ActivityBlock SelectedActivityBlock { get; set; }
 
-        [Reactive]
-        public TimeEntryBlock SelectedTimeEntryBlock { get; set; }
-        
         public Dictionary<string, TimeEntryBlock> TimeEntryBlocks { [ObservableAsProperty]get; }
 
         public TimeEntryBlock RunningTimeEntryBlock { [ObservableAsProperty]get; }

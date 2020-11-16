@@ -250,6 +250,9 @@
     <Compile Include="ui\controls\TimelineTimeEntryBlock.xaml.cs">
       <DependentUpon>TimelineTimeEntryBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\controls\TimelineTimeEntryBlockPopup.xaml.cs">
+      <DependentUpon>TimelineTimeEntryBlockPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\TimelineTimeEntryInfo.xaml.cs">
       <DependentUpon>TimelineTimeEntryInfo.xaml</DependentUpon>
     </Compile>
@@ -494,6 +497,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\controls\TimelineTimeEntryBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\TimelineTimeEntryBlockPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
