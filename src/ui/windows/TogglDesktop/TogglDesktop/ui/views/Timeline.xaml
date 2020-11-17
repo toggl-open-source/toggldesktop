@@ -272,7 +272,7 @@
                     <ItemsControl Grid.Row="1" Grid.Column="4" ItemsSource="{Binding Path=ActivityBlocks}" x:Name="ActivityBlocks">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <Canvas />
+                                <Canvas Name="ActivityBlocksCanvas" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
@@ -290,7 +290,8 @@
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemContainerStyle>
                             <Style TargetType="ContentPresenter">
-                                <Setter Property="Canvas.Left" Value="25" />
+                                <Setter Property="Canvas.Left" Value="{Binding ElementName=ActivityBlocksCanvas, Path=ActualWidth,
+                                    Converter={StaticResource CalculateCenterConverter}, ConverterParameter={x:Static res:TimelineConstants.TimeEntryBlockWidth}}" />
                                 <Setter Property="Canvas.Top" Value="{Binding Path=Offset}" />
                             </Style>
                         </ItemsControl.ItemContainerStyle>
