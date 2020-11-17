@@ -40,18 +40,18 @@ namespace TogglDesktop
             ViewModel.IsDragged = true;
         }
 
-        private TimelineTimeEntryBlockPopup _popup;
-        protected override void OnMouseEnter(MouseEventArgs e)
-        {
-            _popup ??= new TimelineTimeEntryBlockPopup();
-            _popup.DataContext = ViewModel;
-            _popup.Popup.PlacementTarget = this;
-            _popup.Popup.IsOpen = true;
-        }
+        //private TimelineTimeEntryBlockPopup _popup;
+        //protected override void OnMouseEnter(MouseEventArgs e)
+        //{
+        //    _popup ??= new TimelineTimeEntryBlockPopup();
+        //    _popup.DataContext = ViewModel;
+        //    _popup.Popup.PlacementTarget = this;
+        //    _popup.Popup.IsOpen = true;
+        //}
 
-        protected override void OnMouseLeave(MouseEventArgs e)
-        {
-            _popup.Popup.IsOpen = false;
-        }
+        //protected override void OnMouseLeave(MouseEventArgs e)
+        //{
+        //    _popup.Popup.IsOpen = false;
+        //}
     }
 }
