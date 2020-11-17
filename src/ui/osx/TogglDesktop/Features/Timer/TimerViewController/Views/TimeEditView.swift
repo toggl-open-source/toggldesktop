@@ -64,8 +64,19 @@ class TimeEditView: NSView {
     @IBOutlet private weak var startTextField: NSTextField!
     @IBOutlet private weak var todayButton: CursorButton!
     @IBOutlet private weak var datePicker: KeyboardDatePicker!
-    @IBOutlet private weak var prevDayButton: CursorButton!
-    @IBOutlet private weak var nextDayButton: CursorButton!
+
+    @IBOutlet private weak var prevDayButton: CursorButton! {
+        didSet {
+            prevDayButton.setCanBecomeKeyView(true)
+        }
+    }
+
+    @IBOutlet private weak var nextDayButton: CursorButton! {
+        didSet {
+            nextDayButton.setCanBecomeKeyView(true)
+        }
+    }
+
     @IBOutlet private weak var dateBox: NSBox!
 
     @IBOutlet private weak var dateBoxBottomConstraint: NSLayoutConstraint!
@@ -214,12 +225,6 @@ extension TimeEditView: NSTextFieldDelegate {
             || commandSelector == #selector(insertBacktab(_:)) {
 
             hideWindow()
-        }
-
-        if NSApplication.shared.isFullKeyboardAccessEnabled == false {
-            if commandSelector == #selector(insertTab(_:)) {
-                hideWindow()
-            }
         }
 
         return false
