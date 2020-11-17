@@ -81,9 +81,15 @@ class TimeEditView: NSView {
 
     // MARK: - Overrides
 
+    required init?(coder: NSCoder) {
+        dateValue = Date()
+        super.init(coder: coder)
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        dateValue = Date()
+
+        update(with: dateValue)
 
         // nextDayButton is the last control in key view loop
         nextDayButton.didPressKey = { [weak self] key, modifiers in
