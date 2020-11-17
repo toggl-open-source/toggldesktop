@@ -28,12 +28,12 @@ jobs:
         echo $installer_name
 
         # Export env to all future steps
-        echo "::set-env name=TAG_NAME::$TAG_NAME"
-        echo "::set-env name=version::$version"
-        echo "::set-env name=timestamp::$timestamp"
-        echo "::set-env name=escaped_version::$escaped_version"
-        echo "::set-env name=installer::$installer"
-        echo "::set-env name=installer_name::$installer_name"
+        echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+        echo "version=$version" >> $GITHUB_ENV
+        echo "timestamp=$timestamp" >> $GITHUB_ENV
+        echo "escaped_version=$escaped_version" >> $GITHUB_ENV
+        echo "installer=$installer" >> $GITHUB_ENV
+        echo "installer_name=$installer_name" >> $GITHUB_ENV
     - name: Setup Golang env
       if: github.event_name == 'release'
       uses: actions/setup-go@v1
@@ -132,12 +132,12 @@ jobs:
         echo $installer
         echo $installer_name
         # Export env to all future steps
-        echo "::set-env name=TAG_NAME::$TAG_NAME"
-        echo "::set-env name=version::$version"
-        echo "::set-env name=timestamp::$timestamp"
-        echo "::set-env name=escaped_version::$escaped_version"
-        echo "::set-env name=installer::$installer"
-        echo "::set-env name=installer_name::$installer_name"
+        echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+        echo "version=$version" >> $GITHUB_ENV
+        echo "timestamp=$timestamp" >> $GITHUB_ENV
+        echo "escaped_version=$escaped_version" >> $GITHUB_ENV
+        echo "installer=$installer" >> $GITHUB_ENV
+        echo "installer_name=$installer_name" >> $GITHUB_ENV
     - name: Setup Golang env
       if: github.event_name == 'release'
       uses: actions/setup-go@v1
