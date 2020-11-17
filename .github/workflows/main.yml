@@ -11,6 +11,9 @@ jobs:
   macos:
     runs-on: macos-11.0
     steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '12.2'
     - uses: actions/checkout@v2
       with:
         fetch-depth: 1
@@ -117,6 +120,9 @@ jobs:
   macos-cmake:
     runs-on: macos-11.0
     steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '12.2'
     - uses: actions/checkout@v2
       with:
         fetch-depth: 1
