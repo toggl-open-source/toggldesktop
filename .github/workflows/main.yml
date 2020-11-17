@@ -9,7 +9,7 @@ on:
 
 jobs:
   macos:
-    runs-on: macOS-latest
+    runs-on: macos-11.0
     steps:
     - uses: actions/checkout@v2
       with:
@@ -115,7 +115,7 @@ jobs:
         bash ./dist/osx/build.sh update_release
 
   macos-cmake:
-    runs-on: macOS-latest
+    runs-on: macos-11.0
     steps:
     - uses: actions/checkout@v2
       with:
