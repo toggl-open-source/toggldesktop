@@ -32,4 +32,11 @@ class CursorButton: NSButton {
             didPressKey?(key, event.modifierFlags)
         }
     }
+
+    private var _canBecomeKeyView = false
+    override var canBecomeKeyView: Bool { _canBecomeKeyView }
+
+    func setCanBecomeKeyView(_ canBecome: Bool) {
+        _canBecomeKeyView = canBecome
+    }
 }
