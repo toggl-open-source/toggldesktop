@@ -210,6 +210,7 @@
     <Compile Include="ui\Behaviors\NumericInputTextBoxBehavior.cs" />
     <Compile Include="ui\Behaviors\RepositionPopupWithParentWindowBehavior.cs" />
     <Compile Include="ui\Behaviors\TextBoxHelper.cs" />
+    <Compile Include="ui\Behaviors\TimelineTimeEntryPopupHelper.cs" />
     <Compile Include="ui\controls\DatePickerHelper.cs" />
     <Compile Include="ui\controls\DaysOfWeekSelector.xaml.cs">
       <DependentUpon>DaysOfWeekSelector.xaml</DependentUpon>
@@ -249,6 +250,9 @@
     </Compile>
     <Compile Include="ui\controls\TimelineTimeEntryBlock.xaml.cs">
       <DependentUpon>TimelineTimeEntryBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\TimelineTimeEntryBlockPopup.xaml.cs">
+      <DependentUpon>TimelineTimeEntryBlockPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\TimelineTimeEntryInfo.xaml.cs">
       <DependentUpon>TimelineTimeEntryInfo.xaml</DependentUpon>
@@ -494,6 +498,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\controls\TimelineTimeEntryBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\TimelineTimeEntryBlockPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

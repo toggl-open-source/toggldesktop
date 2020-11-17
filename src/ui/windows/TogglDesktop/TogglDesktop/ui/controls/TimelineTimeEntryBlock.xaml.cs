@@ -39,11 +39,18 @@ namespace TogglDesktop
         private void OnThumbTopDragCompleted(object sender, DragCompletedEventArgs e)
         {
             ViewModel.ChangeStartTime();
+            ViewModel.IsDragged = false;
         }
 
         private void OnThumbBottomDragCompleted(object sender, DragCompletedEventArgs e)
         {
             ViewModel.ChangeEndTime();
+            ViewModel.IsDragged = false;
+        }
+
+        private void OnThumbDragStarted(object sender, DragStartedEventArgs e)
+        {
+            ViewModel.IsDragged = true;
         }
     }
 }

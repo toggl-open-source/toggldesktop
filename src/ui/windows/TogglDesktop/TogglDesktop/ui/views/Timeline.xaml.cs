@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using DynamicData.Binding;
 using ReactiveUI;
+using TogglDesktop.Behaviors;
 using TogglDesktop.Resources;
 using TogglDesktop.ViewModels;
 
@@ -86,25 +87,15 @@ namespace TogglDesktop
 
         private void OnTimeEntryBlockMouseEnter(object sender, MouseEventArgs e)
         {
-            if (sender is FrameworkElement uiElement && uiElement.DataContext is TimeEntryBlock curBlock)
+            if (sender is FrameworkElement uiElement)
             {
-                ViewModel.SelectedTimeEntryBlock = curBlock;
-                TimeEntryPopup.PlacementTarget = uiElement;
-                TimeEntryPopup.IsOpen = true;
-                var visibleTopOffset = MainViewScroll.VerticalOffset+10;
-                var visibleBottomOffset = MainViewScroll.VerticalOffset + MainViewScroll.ActualHeight-10;
-                var offset = curBlock.VerticalOffset + uiElement.ActualHeight / 2;
-                TimeEntryPopup.VerticalOffset = Math.Min(Math.Max(visibleTopOffset, offset), visibleBottomOffset) -
-                                                curBlock.VerticalOffset;
+                TimeEntryPopupContainer.OpenPopup(uiElement, MainViewScroll);
             }
         }
 
         private void OnTimeEntyrBlockMouseLeave(object sender, MouseEventArgs e)
         {
-            if (sender is FrameworkElement uiElement && uiElement.DataContext is TimeEntryBlock curBlock)
-            {
-                TimeEntryPopup.IsOpen = false;
-            }
+            TimeEntryPopupContainer.ClosePopup();
         }
 
         private double? _dragStartedPoint;
@@ -116,6 +107,7 @@ namespace TogglDesktop
                 Mouse.Capture(sender as UIElement);
                 _dragStartedPoint = e.GetPosition(TimeEntryBlocks).Y;
                 _timeEntryId = TimelineViewModel.AddNewTimeEntry(_dragStartedPoint.Value, 0, ViewModel.SelectedScaleMode, ViewModel.SelectedDate);
+                ViewModel.TimeEntryBlocks[_timeEntryId].IsDragged = true;
             }
         }
 
@@ -139,6 +131,7 @@ namespace TogglDesktop
                     ViewModel.TimeEntryBlocks[_timeEntryId].Height = TimelineConstants.ScaleModes[ViewModel.SelectedScaleMode];
                 }
                 ViewModel.TimeEntryBlocks[_timeEntryId].ChangeStartEndTime();
+                ViewModel.TimeEntryBlocks[_timeEntryId].IsDragged = false;
                 Toggl.Edit(_timeEntryId, false, Toggl.Description);
             }
             _dragStartedPoint = null;

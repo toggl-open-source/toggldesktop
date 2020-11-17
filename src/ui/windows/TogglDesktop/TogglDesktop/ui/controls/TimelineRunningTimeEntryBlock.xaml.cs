@@ -1,5 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using TogglDesktop.Behaviors;
 using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
@@ -31,6 +33,25 @@ namespace TogglDesktop
         private void OnThumbTopDragCompleted(object sender, DragCompletedEventArgs e)
         {
             ViewModel.ChangeStartTime();
+            ViewModel.IsDragged = false;
+        }
+
+        private void OnThumbDragStarted(object sender, DragStartedEventArgs e)
+        {
+            ViewModel.IsDragged = true;
+        }
+
+        private readonly TimelineTimeEntryBlockPopup _popupContainer = new TimelineTimeEntryBlockPopup();
+        private ScrollViewer _scroll;
+        protected override void OnMouseEnter(MouseEventArgs e)
+        {
+            _scroll ??= this.FindParent<ScrollViewer>();
+            _popupContainer.OpenPopup(this, _scroll);
+        }
+
+        protected override void OnMouseLeave(MouseEventArgs e)
+        {
+            _popupContainer.ClosePopup();
         }
     }
 }

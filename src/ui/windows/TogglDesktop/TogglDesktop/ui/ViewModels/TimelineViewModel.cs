@@ -57,7 +57,10 @@ namespace TogglDesktop.ViewModels
             var blocksObservable = Toggl.TimelineTimeEntries
                 .CombineLatest(Toggl.RunningTimeEntry, scaleModeObservable,
                     (list, running, mode) => ConvertTimeEntriesToBlocks(list, running, mode, SelectedDate, CurrentTimeOffset));
-            var blocksWithRunningObservable = blocksObservable.CombineLatest(Toggl.RunningTimeEntry, (list, te) => (TimeEntries: list, Running: te));
+            var blocksWithRunningObservable = blocksObservable.CombineLatest(Toggl.RunningTimeEntry,
+                (list, te) => (TimeEntries: list, Running: te))
+                .Where(_ => (TimeEntryBlocks == null || !TimeEntryBlocks.Any(item => item.Value.IsDragged)) && 
+                            (RunningTimeEntryBlock == null || !RunningTimeEntryBlock.IsDragged));
             blocksWithRunningObservable.Select(tuple =>
                     tuple.Running.HasValue ? tuple.TimeEntries.GetValueOrDefault(tuple.Running.Value.GUID) : null)
                 .ToPropertyEx(this, x => x.RunningTimeEntryBlock);
@@ -345,9 +348,6 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public ActivityBlock SelectedActivityBlock { get; set; }
 
-        [Reactive]
-        public TimeEntryBlock SelectedTimeEntryBlock { get; set; }
-        
         public Dictionary<string, TimeEntryBlock> TimeEntryBlocks { [ObservableAsProperty]get; }
 
         public TimeEntryBlock RunningTimeEntryBlock { [ObservableAsProperty]get; }
