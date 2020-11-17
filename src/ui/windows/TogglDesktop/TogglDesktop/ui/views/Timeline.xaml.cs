@@ -88,15 +88,37 @@ namespace TogglDesktop
         {
             if (sender is FrameworkElement uiElement && uiElement.DataContext is TimeEntryBlock curBlock)
             {
-                TimeEntryPopup.DataContext = curBlock;
-                TimeEntryPopup.Popup.PlacementTarget = uiElement;
-                TimeEntryPopup.Popup.IsOpen = true;
-                var visibleTopOffset = MainViewScroll.VerticalOffset+10;
-                var visibleBottomOffset = MainViewScroll.VerticalOffset + MainViewScroll.ActualHeight-10;
-                var offset = curBlock.VerticalOffset + uiElement.ActualHeight / 2;
-                TimeEntryPopup.Popup.VerticalOffset = Math.Min(Math.Max(visibleTopOffset, offset), visibleBottomOffset) -
-                                                               curBlock.VerticalOffset;
+                PopupMouseEnter(TimeEntryPopup, MainViewScroll, curBlock, uiElement);
             }
+        }
+
+        private static void PopupMouseEnter(
+            TimelineTimeEntryBlockPopup popup,
+            ScrollViewer mainViewScroll,
+            TimeEntryBlock curBlock,
+            FrameworkElement uiElement)
+        {
+            popup.DataContext = curBlock;
+            popup.Popup.PlacementTarget = uiElement;
+            popup.Popup.IsOpen = true;
+            var visibleTopOffset = mainViewScroll.VerticalOffset+10;
+            var visibleBottomOffset = mainViewScroll.VerticalOffset + mainViewScroll.ActualHeight-10;
+            var offset = curBlock.VerticalOffset + uiElement.ActualHeight / 2;
+            popup.Popup.VerticalOffset = Math.Min(Math.Max(visibleTopOffset, offset), visibleBottomOffset) -
+                                         curBlock.VerticalOffset;
+        }
+
+        private void OnRunningTimeEntryBlockMouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is TimelineRunningTimeEntryBlock uiElement && uiElement.DataContext is TimeEntryBlock curBlock)
+            {
+                PopupMouseEnter(uiElement.PopupContainer, MainViewScroll, curBlock, uiElement);
+            }
+        }
+
+        private void OnRunningTimeEntryBlockMouseLeave(object sender, MouseEventArgs e)
+        {
+            RunningTimeEntryBlock.PopupContainer.Popup.IsOpen = false;
         }
 
         private void OnTimeEntyrBlockMouseLeave(object sender, MouseEventArgs e)

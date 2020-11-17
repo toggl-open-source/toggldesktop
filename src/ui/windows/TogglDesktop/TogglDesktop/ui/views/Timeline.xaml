@@ -200,9 +200,12 @@
                         </ItemsControl.ItemContainerStyle>
                     </ItemsControl>
                     <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0" Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <togglDesktop:TimelineRunningTimeEntryBlock DataContext="{Binding RunningTimeEntryBlock}"
+                        <togglDesktop:TimelineRunningTimeEntryBlock x:Name="RunningTimeEntryBlock"
+                                                                    DataContext="{Binding RunningTimeEntryBlock}"
                                                                     Canvas.Top="{Binding VerticalOffset}"
-                                                                    Canvas.Left="{Binding HorizontalOffset}">
+                                                                    Canvas.Left="{Binding HorizontalOffset}"
+                                                                    MouseEnter="OnRunningTimeEntryBlockMouseEnter"
+                                                                    MouseLeave="OnRunningTimeEntryBlockMouseLeave">
                             <togglDesktop:TimelineRunningTimeEntryBlock.Style>
                                 <Style TargetType="FrameworkElement">
                                     <Style.Triggers>
