@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using DynamicData.Binding;
 using ReactiveUI;
+using TogglDesktop.Behaviors;
 using TogglDesktop.Resources;
 using TogglDesktop.ViewModels;
 
@@ -86,22 +87,15 @@ namespace TogglDesktop
 
         private void OnTimeEntryBlockMouseEnter(object sender, MouseEventArgs e)
         {
-            if (sender is FrameworkElement uiElement && uiElement.DataContext is TimeEntryBlock curBlock)
+            if (sender is FrameworkElement uiElement)
             {
-                TimeEntryPopup.DataContext = curBlock;
-                TimeEntryPopup.Popup.PlacementTarget = uiElement;
-                TimeEntryPopup.Popup.IsOpen = true;
-                var visibleTopOffset = MainViewScroll.VerticalOffset+10;
-                var visibleBottomOffset = MainViewScroll.VerticalOffset + MainViewScroll.ActualHeight-10;
-                var offset = curBlock.VerticalOffset + uiElement.ActualHeight / 2;
-                TimeEntryPopup.Popup.VerticalOffset = Math.Min(Math.Max(visibleTopOffset, offset), visibleBottomOffset) -
-                                                               curBlock.VerticalOffset;
+                TimeEntryPopupContainer.OpenPopup(uiElement, MainViewScroll);
             }
         }
 
         private void OnTimeEntyrBlockMouseLeave(object sender, MouseEventArgs e)
         {
-            TimeEntryPopup.Popup.IsOpen = false;
+            TimeEntryPopupContainer.ClosePopup();
         }
 
         private double? _dragStartedPoint;

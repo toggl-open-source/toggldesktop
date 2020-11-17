@@ -210,6 +210,7 @@
     <Compile Include="ui\Behaviors\NumericInputTextBoxBehavior.cs" />
     <Compile Include="ui\Behaviors\RepositionPopupWithParentWindowBehavior.cs" />
     <Compile Include="ui\Behaviors\TextBoxHelper.cs" />
+    <Compile Include="ui\Behaviors\TimelineTimeEntryPopupHelper.cs" />
     <Compile Include="ui\controls\DatePickerHelper.cs" />
     <Compile Include="ui\controls\DaysOfWeekSelector.xaml.cs">
       <DependentUpon>DaysOfWeekSelector.xaml</DependentUpon>
