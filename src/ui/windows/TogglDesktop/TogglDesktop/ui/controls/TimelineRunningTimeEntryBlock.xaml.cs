@@ -46,7 +46,7 @@ namespace TogglDesktop
         protected override void OnMouseEnter(MouseEventArgs e)
         {
             _scroll ??= this.FindParent<ScrollViewer>();
-            _popupContainer.OpenPopup(this, _scroll);
+            _popupContainer.OpenPopupWithRightPlacement(this, _scroll);
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
