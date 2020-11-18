@@ -22,13 +22,7 @@ final class TimelineDividerView: NSView {
     }
 
     var mode: Mode = .line
-    private lazy var color: NSColor = {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("timeline-divider-color"))!
-        } else {
-            return ConvertHexColor.hexCode(toNSColor: "#e8e8e8")
-        }
-    }()
+    private let color: NSColor = Color.timelineDivider.color
 
     // MARK: Public
 

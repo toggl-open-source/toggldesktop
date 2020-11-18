@@ -24,7 +24,7 @@ extension NSView {
     }
 
     func applyBorder(width: CGFloat = 1,
-                     color: NSColor = NSColor(white: 0.0, alpha: 0.1),
+                     color: NSColor = Color.borderDefault.color,
                      cornerRadius: CGFloat = 8) {
         wantsLayer = true
         layer?.masksToBounds = false

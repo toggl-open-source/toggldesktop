@@ -26,13 +26,7 @@ final class DateCellViewItem: NSCollectionViewItem {
     // MARK: Variables
 
     private var isHightlight = false
-    private lazy var titleColor: NSColor = {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("grey-text-color"))!
-        } else {
-            return ConvertHexColor.hexCode(toNSColor: "#555555")
-        }
-    }()
+    private let titleColor = Color.greyText.color
 
     override var isSelected: Bool {
         didSet {

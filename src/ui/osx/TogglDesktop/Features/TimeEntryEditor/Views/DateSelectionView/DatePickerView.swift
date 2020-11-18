@@ -110,11 +110,7 @@ final class DatePickerView: NSView {
     }
 
     func setBackgroundForTimeline() {
-        if #available(OSX 10.13, *) {
-            backgroundBox.fillColor = NSColor(named: "timeline-date-picker-background-color")!
-        } else {
-            backgroundBox.fillColor = NSColor.white
-        }
+        backgroundBox.fillColor = Color.timelineDatePickerBackground.color
     }
 }
 

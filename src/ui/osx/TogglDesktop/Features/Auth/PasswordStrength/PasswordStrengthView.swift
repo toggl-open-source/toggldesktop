@@ -87,7 +87,7 @@ extension PasswordStrengthView {
         view.shadow = NSShadow()
         view.layer?.cornerRadius = 4.0
         view.layer?.shadowOpacity = 1.0
-        view.layer?.shadowColor = NSColor(calibratedWhite: 0, alpha: 0.1).cgColor
+        view.layer?.shadowColor = Color.shadow.cgColor
         view.layer?.shadowOffset = NSSize(width: 0, height: -2)
         view.layer?.shadowRadius = 4
     }

@@ -38,14 +38,7 @@ final class FloatingErrorView: NSView {
 
     override func updateLayer() {
         super.updateLayer()
-
-        if #available(OSX 10.13, *) {
-            layer?.backgroundColor = NSColor(named: NSColor.Name("error-background-color"))?.cgColor
-        } else {
-            // Fallback on earlier versions
-            layer?.backgroundColor = NSColor.white.cgColor
-        }
-
+        layer?.backgroundColor = Color.errorBackground.cgColor
     }
     // MARK: Func
 

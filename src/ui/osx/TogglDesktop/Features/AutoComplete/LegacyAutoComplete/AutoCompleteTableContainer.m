@@ -7,6 +7,7 @@
 //
 
 #import "AutoCompleteTableContainer.h"
+#import "Toggl_Track-Swift.h"
 
 @interface AutoCompleteTableContainer ()
 @property (strong, nonatomic) NSShadow *dropShadow;
@@ -22,8 +23,7 @@
 		[self setWantsLayer:YES];
 		self.layer.masksToBounds = NO;
 		self.dropShadow = [[NSShadow alloc] init];
-		[self.dropShadow setShadowColor:[[NSColor blackColor]
-										 colorWithAlphaComponent:0.5f]];
+		[self.dropShadow setShadowColor:[NSColor shadow]];
 		[self.dropShadow setShadowOffset:NSMakeSize(0, 5.0)];
 		[self.dropShadow setShadowBlurRadius:6.0];
 	}

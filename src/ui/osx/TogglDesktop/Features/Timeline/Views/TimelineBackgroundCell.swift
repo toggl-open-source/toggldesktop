@@ -27,13 +27,7 @@ final class TimelineBackgroundView: NSView {
         return nil
     }
 
-    private var highlightColor: NSColor {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("timeline-background-highlight-color"))!
-        } else {
-            return ConvertHexColor.hexCode(toNSColor: "#f7f7f7")
-        }
-    }
+    private var highlightColor = Color.timelineBackgroundHighlight.color
 
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)

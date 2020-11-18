@@ -27,6 +27,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Pods
   - TogglDesktopLibrary/Dependencies
   - Features/ColorWheel
+  - Resources/Colors.swift
 
 # configurable rules can be customized from this configuration file
 line_length:
@@ -46,4 +47,4 @@ object_literal:
 custom_rules:
   no_hardcoded_colors:
     regex: "(NSColor[(])+(named[:] (NSColor.Name|\"))"
-    # excluded: ".*NSColor[+]Theme[.]swift"
+    # excluded: ".*Colors[.]swift"

@@ -15,13 +15,7 @@ final class PanelSwitcherButton: FlatButton {
     // MARK: Variables
 
     private var trackingArea: NSTrackingArea?
-    private lazy var normalColor: NSColor = {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("tab-view-text-color"))!
-        } else {
-            return ConvertHexColor.hexCode(toNSColor: "#ACACAC")
-        }
-    }()
+    private let normalColor = Color.tabViewText.color
     private let selectedColor = NSColor.labelColor
 
     // MARK: View Cycle
