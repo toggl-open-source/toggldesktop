@@ -9,13 +9,13 @@
              d:DataContext="{d:DesignInstance viewModels:TimeEntryBlock, IsDesignTimeCreatable=False}">
     <StackPanel Height="{Binding Height}" Margin="20,0,0,0">
         <TextBlock Text="{Binding Description}" Style="{StaticResource Toggl.CaptionBlackText}"/>
-        <DockPanel>
+        <DockPanel Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}">
             <Ellipse Width="8" Height="8"
-                         DockPanel.Dock="Left"
-                         Margin="0 0 5 0"
-                         VerticalAlignment="Center"
-                         Fill="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
-                         Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                     DockPanel.Dock="Left"
+                     Margin="0 0 5 0"
+                     VerticalAlignment="Center"
+                     Fill="{Binding Color, Converter={StaticResource AdaptProjectColorConverter}}"
+                     Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
             <TextBlock Foreground="{Binding Color, Converter={StaticResource AdaptProjectTextColorConverter}}"
                            Text="{Binding ProjectName}" FontSize="12"
                            VerticalAlignment="Center"/>
@@ -25,7 +25,8 @@
                            FontSize="12"
                            Visibility="{Binding TaskName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
         </DockPanel>
-        <TextBlock Text="{Binding ClientName}" Style="{StaticResource Toggl.CaptionText}"/>
+        <TextBlock Text="{Binding ClientName}" Style="{StaticResource Toggl.CaptionText}"
+                   Visibility="{Binding ClientName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -39,7 +40,7 @@
                     <Path Style="{StaticResource Toggl.DollarIcon}"/>
                 </Viewbox>
             </StackPanel>
-            <TextBlock Margin="0 0 5 0" Grid.Column="1" DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding Duration}" Style="{StaticResource Toggl.CaptionBlackText}"/>
+            <TextBlock Margin="0 5 5 0" Grid.Column="1" DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding Duration}" Style="{StaticResource Toggl.CaptionBlackText}"/>
         </Grid>
     </StackPanel>
 </UserControl>

@@ -7,9 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:TimeEntryBlock, IsDesignTimeCreatable=False}">
-    <Popup Placement="Right"
-           HorizontalOffset="5"
-           StaysOpen="True"
+    <Popup StaysOpen="True"
            Name="Popup">
         <Border BorderBrush="{DynamicResource Toggl.PopupBorderBrush}" BorderThickness="1" Focusable="False"
             Background="{DynamicResource Toggl.CardBackground}">
@@ -31,7 +29,8 @@
                 <TextBlock Margin="0 0 5 0" Grid.Row="0" Grid.Column="0" Text="{Binding StartEndCaption}" Style="{StaticResource Toggl.CaptionBlackText}"/>
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Duration}" Style="{StaticResource Toggl.CaptionBlackText}"/>
                 <TextBlock Margin="0 10 0 0" Grid.Row="1" Grid.Column="0" Text="{Binding Description}" Style="{StaticResource Toggl.CaptionBlackText}"/>
-                <DockPanel Grid.Row="2" Grid.Column="0" Margin="0 4 0 0">
+                <DockPanel Grid.Row="2" Grid.Column="0" Margin="0 4 0 0"
+                           Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}">
                     <Ellipse Width="8" Height="8"
                          DockPanel.Dock="Left"
                          Margin="0 0 5 0"
@@ -47,7 +46,9 @@
                            FontSize="12"
                            Visibility="{Binding TaskName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
                 </DockPanel>
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding ClientName}" Style="{StaticResource Toggl.CaptionText}"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding ClientName}"
+                           Style="{StaticResource Toggl.CaptionText}"
+                           Visibility="{Binding ClientName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
                 <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0">
                     <Viewbox Visibility="{Binding HasTag, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Path Style="{StaticResource Toggl.TagIcon}"/>

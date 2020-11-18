@@ -3,6 +3,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -89,7 +90,7 @@ namespace TogglDesktop
         {
             if (sender is FrameworkElement uiElement)
             {
-                TimeEntryPopupContainer.OpenPopup(uiElement, MainViewScroll);
+                TimeEntryPopupContainer.OpenPopupWithRightPlacement(uiElement, MainViewScroll);
             }
         }
 
@@ -105,9 +106,9 @@ namespace TogglDesktop
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 Mouse.Capture(sender as UIElement);
-                _dragStartedPoint = e.GetPosition(TimeEntryBlocks).Y;
+                var point = e.GetPosition(TimeEntryBlocks);
+                _dragStartedPoint = point.Y;
                 _timeEntryId = TimelineViewModel.AddNewTimeEntry(_dragStartedPoint.Value, 0, ViewModel.SelectedScaleMode, ViewModel.SelectedDate);
-                ViewModel.TimeEntryBlocks[_timeEntryId].IsDragged = true;
             }
         }
 
@@ -115,10 +116,17 @@ namespace TogglDesktop
         {
             if (_dragStartedPoint != null && _timeEntryId != null && e.LeftButton == MouseButtonState.Pressed)
             {
-                var verticalChange = Math.Abs(e.GetPosition(TimeEntryBlocks).Y - _dragStartedPoint.Value);
+                ViewModel.TimeEntryBlocks[_timeEntryId].IsDragged = true;
+                var point = e.GetPosition(TimeEntryBlocks);
+                var verticalChange = Math.Abs(point.Y - _dragStartedPoint.Value);
                 ViewModel.TimeEntryBlocks[_timeEntryId].VerticalOffset =
-                    Math.Min(_dragStartedPoint.Value, e.GetPosition(TimeEntryBlocks).Y);
+                    Math.Min(_dragStartedPoint.Value, point.Y);
                 ViewModel.TimeEntryBlocks[_timeEntryId].Height = verticalChange;
+                if (!TimeEntryPopupContainer.Popup.IsOpen)
+                    TimeEntryPopupContainer.OpenPopup(PlacementMode.Relative, TimeEntryBlocks, ViewModel.TimeEntryBlocks[_timeEntryId],
+                        point.X + 15, point.Y);
+                else
+                    TimeEntryPopupContainer.PlacePopup(PlacementMode.Relative, TimeEntryBlocks, point.X + 15, point.Y);
             }
         }
 
@@ -134,6 +142,7 @@ namespace TogglDesktop
                 ViewModel.TimeEntryBlocks[_timeEntryId].IsDragged = false;
                 Toggl.Edit(_timeEntryId, false, Toggl.Description);
             }
+            TimeEntryPopupContainer.ClosePopup();
             _dragStartedPoint = null;
             _timeEntryId = null;
             Mouse.Capture(null);
