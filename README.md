@@ -70,7 +70,7 @@ _By default the app builds for testing server. To use the compiled app with live
 
 ## macOS
 ### Requirements
-- macOS 10.15+, Xcode 12.0+ and Swift 5+
+- macOS 11+, Xcode 12.2+ and Swift 5+
 - Install Bundler
 ```bash
 $ sudo gem install bundler
