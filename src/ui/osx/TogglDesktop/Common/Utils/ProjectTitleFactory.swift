@@ -30,8 +30,8 @@ class ProjectTitleFactory: NSObject {
 
     @objc
     func title(withProject project: String,
-               task: String?,
-               client: String?,
+               task: String? = nil,
+               client: String? = nil,
                projectColor: NSColor,
                clientColor: NSColor? = nil) -> NSAttributedString {
 

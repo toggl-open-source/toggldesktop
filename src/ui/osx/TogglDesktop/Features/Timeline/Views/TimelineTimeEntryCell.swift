@@ -53,8 +53,6 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     // MARK: OUTLET
 
     @IBOutlet weak var titleLbl: NSTextField!
-    @IBOutlet weak var projectStackView: NSStackView!
-    @IBOutlet weak var dotColorBox: DotImageView!
     @IBOutlet weak var projectLbl: ProjectTextField!
     @IBOutlet weak var clientNameLbl: NSTextField!
     @IBOutlet weak var billableImageView: NSImageView!
@@ -125,7 +123,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
         // Prepare controls need to check
         var components: [NSView] = [titleLbl]
-        if !projectStackView.isHidden { components.append(projectStackView) }
+        if !projectLbl.isHidden { components.append(projectLbl) }
         if !clientNameLbl.isHidden { components.append(clientNameLbl) }
         components.append(iconStackView)
 
@@ -163,19 +161,12 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
         // Projects
         if let project = item.projectLabel, !project.isEmpty {
-            projectStackView.isHidden = false
-            if let color = ConvertHexColor.hexCode(toNSColor: item.projectColor) {
-                dotColorBox.isHidden = false
-                dotColorBox.fill(with: color)
-                projectLbl.textColor = color
-            } else {
-                dotColorBox.isHidden = true
-                projectLbl.textColor = NSColor.labelColor
-            }
-            projectLbl.stringValue = project
+            projectLbl.isHidden = false
             projectLbl.toolTip = project
+            projectLbl.attributedStringValue = projectTitle(from: item)
+
         } else {
-            projectStackView.isHidden = true
+            projectLbl.isHidden = true
         }
 
         // Client
@@ -209,6 +200,18 @@ extension TimelineTimeEntryCell {
     private func hideBackgroundViews(isHidden: Bool) {
         backgroundBox?.isHidden = isHidden
         innerBackgroundBox.isHidden = isHidden
+    }
+
+    private func projectTitle(from timeEntry: TimeEntryViewItem) -> NSAttributedString {
+        let projectTitle = NSMutableAttributedString(
+            attributedString: ProjectTitleFactory().title(
+                withProject: timeEntry.projectLabel,
+                task: timeEntry.taskLabel,
+                projectColor: ConvertHexColor.hexCode(toNSColor: timeEntry.projectColor)
+            )
+        )
+        projectTitle.setAlignment(.left, range: NSRange(location: 0, length: projectTitle.length))
+        return projectTitle
     }
 }
 
