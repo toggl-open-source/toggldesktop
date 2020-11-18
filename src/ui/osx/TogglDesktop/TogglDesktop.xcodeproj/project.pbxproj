@@ -3775,6 +3775,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_CXX_LIBRARY = "compiler-default";
@@ -4033,6 +4034,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4BCB2D1F3BD02A806D947C18 /* Pods-TogglDesktop-AppStore.release.xcconfig */;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
