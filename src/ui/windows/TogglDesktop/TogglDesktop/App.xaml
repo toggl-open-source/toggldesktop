@@ -32,6 +32,7 @@
             <converters:BooleanInvertToVisibilityConverter x:Key="BooleanInvertToVisibilityConverter"/>
             <converters:HasAnyFlagToVisibilityConverter x:Key="HasAnyFlagToVisibilityConverter"/>
             <converters:EmptyListToCollapsedConverter x:Key="EmptyListToVisibleConverter" Inverse="True"/>
+            <converters:CalculateCenterConverter x:Key="CalculateCenterConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

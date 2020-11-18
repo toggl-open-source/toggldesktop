@@ -27,9 +27,9 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="55" Name="HoursColumn"></ColumnDefinition>
-                <ColumnDefinition Width="*" Name="TimeEntryColumn"></ColumnDefinition>
-                <ColumnDefinition Width="70" Name="ActivityColumn"></ColumnDefinition>
+                <ColumnDefinition Width="{Binding ElementName=HoursColumn, Path=Width}" MinWidth="40"/>
+                <ColumnDefinition Width="{Binding ElementName=TimeEntryColumn, Path=Width}"/>
+                <ColumnDefinition Width="{Binding ElementName=ActivityColumn, Path=Width}" MinWidth="45" MaxWidth="200"/>
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
                 <mah:ToggleSwitch Margin="10 14 0 0"
@@ -115,11 +115,11 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="{Binding ElementName=HoursColumn, Path=Width}"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="{Binding ElementName=TimeEntryColumn, Path=Width}"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="{Binding ElementName=ActivityColumn, Path=Width}"/>
+                        <ColumnDefinition Width="55" MinWidth="40" Name="HoursColumn"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="*" MinWidth="60" Name="TimeEntryColumn"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="70" MinWidth="45" MaxWidth="200" Name="ActivityColumn"/>
                     </Grid.ColumnDefinitions>
                     <ItemsControl ItemsSource="{Binding HourViews}" AlternationCount="2" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"
                                   x:Name="HoursItemsControl">
@@ -233,7 +233,7 @@
                             </Style>
                         </ItemsControl.ItemContainerStyle>
                     </ItemsControl>
-                    <GridSplitter Grid.Column="3" Grid.Row="1" Width="1">
+                    <GridSplitter Grid.Column="3" Grid.Row="1" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch">
                         <GridSplitter.Style>
                             <Style TargetType="{x:Type GridSplitter}">
                                 <Setter Property="Template">
@@ -272,7 +272,7 @@
                     <ItemsControl Grid.Row="1" Grid.Column="4" ItemsSource="{Binding Path=ActivityBlocks}" x:Name="ActivityBlocks">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <Canvas />
+                                <Canvas Name="ActivityBlocksCanvas" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
@@ -290,7 +290,8 @@
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemContainerStyle>
                             <Style TargetType="ContentPresenter">
-                                <Setter Property="Canvas.Left" Value="25" />
+                                <Setter Property="Canvas.Left" Value="{Binding ElementName=ActivityBlocksCanvas, Path=ActualWidth,
+                                    Converter={StaticResource CalculateCenterConverter}, ConverterParameter={x:Static res:TimelineConstants.TimeEntryBlockWidth}}" />
                                 <Setter Property="Canvas.Top" Value="{Binding Path=Offset}" />
                             </Style>
                         </ItemsControl.ItemContainerStyle>
