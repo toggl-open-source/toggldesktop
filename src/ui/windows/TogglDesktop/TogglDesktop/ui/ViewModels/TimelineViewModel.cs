@@ -69,7 +69,7 @@ namespace TogglDesktop.ViewModels
                         .ToDictionary(pair => pair.Key, pair => pair.Value))
                 .ToPropertyEx(this, x => x.TimeEntryBlocks);
             blocksObservable.Select(blocks => GenerateGapTimeEntryBlocks(blocks.Values
-                .Where(v => v.StartTime().Date <= SelectedDate && v.EndTime().Date >= SelectedDate).ToList(), SelectedScaleMode))
+                .Where(timeEntryBlock => timeEntryBlock.StartTime().Date <= SelectedDate && timeEntryBlock.EndTime().Date >= SelectedDate).ToList(), SelectedScaleMode))
                 .ToPropertyEx(this, x => x.GapTimeEntryBlocks);
 
             this.WhenAnyValue(x => x.TimeEntryBlocks)
