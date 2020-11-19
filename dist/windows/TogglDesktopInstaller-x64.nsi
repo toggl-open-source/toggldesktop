@@ -141,21 +141,8 @@ Section
   SetOutPath "$INSTDIR"
 
   ${If} $isNewUpdater == 0
-    ;Check if Old version of the app is still running and close it
-    DetailPrint "Closing all old TogglDesktop processes"
-    File "NSIS_plugins\KillProc.exe"
-    nsExec::Exec "$INSTDIR\KillProc.exe TogglDesktop"
-    Delete "$INSTDIR\KillProc.exe"
-    StrCmp $0 "-1" wooops
-
-    Goto completed
-
-    wooops:
-    DetailPrint "-> Error: Something went wrong :-("
-    Abort
-
-    completed:
-    DetailPrint "Everything went okay :-D"
+	;Check if Old version of the app is still running and close it
+	KillProcDLL::KillProc "TogglDesktop.exe"
     
     ; Delete the main executable to prevent it from being launched while an update is running
     Delete "$INSTDIR\TogglDesktop.exe"
