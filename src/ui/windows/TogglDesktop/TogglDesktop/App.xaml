@@ -33,6 +33,7 @@
             <converters:HasAnyFlagToVisibilityConverter x:Key="HasAnyFlagToVisibilityConverter"/>
             <converters:EmptyListToCollapsedConverter x:Key="EmptyListToVisibleConverter" Inverse="True"/>
             <converters:CalculateCenterConverter x:Key="CalculateCenterConverter"/>
+            <converters:NullToCollapsedConverter x:Key="NullToCollapsedConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
