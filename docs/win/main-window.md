@@ -17,7 +17,7 @@ Main views are UI controls implementing the `IMainView` interface, should be chi
 
 At any given time, one main view can be active in the main window. This constraint is preserved by the main window itself.
 
-Currently, there are two main views, the login view and the time entry list view.
+Currently, there are three main views, the login view, the time entry list view and the timeline view.
 
 ### Login view
 
@@ -36,6 +36,10 @@ The time entry list view is the central part of the UI. It includes both the tim
 The implementation can be found in `TimeEntryList.xaml`and `TimeEntryList.xaml.cs` in `ui/views`.
 
 The view handles the routing of some events and calls to the two components, and is responsible for filling the time entry list with entry cells.
+
+### Timeline view
+
+Information about Timeline view can be found [here](timeline-view.md).
 
 #### Timer
 
