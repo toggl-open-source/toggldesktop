@@ -35,6 +35,7 @@
 
   Name "Toggl Track"
   OutFile "TogglDesktopInstaller-x64.exe"
+  SetCompressor /SOLID lzma
 
   Icon "..\..\src\ui\windows\TogglDesktop\TogglDesktop\Resources\toggl.ico"
 
