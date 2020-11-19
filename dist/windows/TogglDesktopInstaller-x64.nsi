@@ -13,7 +13,7 @@
   !include nsDialogs.nsh
   
 ;Add a plugin directory
-  !addplugindir NSIS_plugins
+  ;!addplugindir NSIS_plugins
 
 ;--------------------------------
 ;Add Macros
@@ -118,7 +118,7 @@ Section
 
   ${If} $isNewUpdater == 0
 	;Check if Old version of the app is still running and close it
-	KillProcDLL::KillProc "TogglDesktop.exe"
+	;KillProcDLL::KillProc "TogglDesktop.exe"
     
     ; Delete the main executable to prevent it from being launched while an update is running
     Delete "$INSTDIR\TogglDesktop.exe"
@@ -285,7 +285,7 @@ FunctionEnd
 
 Function un.killAppProcess
   ;Check if Old version of the app is still running and close it
-	KillProcDLL::KillProc "TogglDesktop.exe"
+	;KillProcDLL::KillProc "TogglDesktop.exe"
 FunctionEnd
 
 Function un.OnCheckbox
