@@ -300,7 +300,7 @@ namespace TogglDesktop.ViewModels
             {
                 if (lastTimeEntry != null && entry.Started > lastTimeEntry.Ended)
                 {
-                    var start = lastTimeEntry.EndTime().AddSeconds(-1);
+                    var start = lastTimeEntry.EndTime().AddSeconds(1);
                     var block = new GapTimeEntryBlock((offset, height) => AddNewTimeEntry(offset, height, selectedScaleMode, start.Date))
                     {
                         Height = ConvertTimeIntervalToHeight(start, entry.StartTime().AddSeconds(-1), selectedScaleMode),
