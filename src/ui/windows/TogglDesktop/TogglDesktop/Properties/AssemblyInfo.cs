@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Toggl Track")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("The leading time tracking tool Toggl Track")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Toggl")]
 [assembly: AssemblyProduct("Toggl Track")]
