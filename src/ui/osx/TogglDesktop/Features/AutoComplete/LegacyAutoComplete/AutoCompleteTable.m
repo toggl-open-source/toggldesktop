@@ -27,6 +27,10 @@
 		[self setHeaderView:nil];
 		[self setSelectionHighlightStyle:NSTableViewSelectionHighlightStyleNone];
 		[self setIntercellSpacing:NSMakeSize(0, 0)];
+		if (@available(macOS 11.0, *))
+		{
+			[self setStyle:NSTableViewStylePlain];
+		}
 	}
 	return self;
 }
