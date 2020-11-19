@@ -3,34 +3,6 @@
 ;Include Modern UI
   !include "MUI2.nsh"
 
-!ifdef INNER
-  !echo "Inner invocation"                  ; just to see what's going on
-  OutFile "$%TEMP%\tempinstaller.exe"       ; not really important where this is
-  SetCompress off                           ; for speed
-!else
-  !echo "Outer invocation"
- 
-  ; Call makensis again against current file, defining INNER.  This writes an installer for us which, when
-  ; it is invoked, will just write the uninstaller to some location, and then exit.
- 
-  !execute 'makensis /DINNER "${__FILE__}"' = 0
- 
-  ; So now run that installer we just created as %TEMP%\tempinstaller.exe.  Since it
-  ; calls quit the return value isn't zero.
- 
-  !system "$%TEMP%\tempinstaller.exe" = 2
- 
-  ; That will have written an uninstaller binary for us.  Now we sign it with your
-  ; favorite code signing tool.
- 
-  !system '"C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe" sign -fd SHA256 -a -t "http://timestamp.verisign.com/scripts/timestamp.dll" -f "Certificate.pfx" -p ${CERT_PASSWORD} "$%TEMP%\Uninstall.exe"' = 0
- 
-  ; Good.  Now we can carry on writing the real installer.
- 
-  OutFile "TogglDesktopInstaller-x64.exe"
-  SetCompressor /SOLID lzma
-!endif
-
 ;Include FileFunc for GetParameters
   !include "FileFunc.nsh"
 
@@ -62,6 +34,7 @@
 ;General
 
   Name "Toggl Track"
+  OutFile "TogglDesktopInstaller-x64.exe"
 
   Icon "..\..\src\ui\windows\TogglDesktop\TogglDesktop\Resources\toggl.ico"
 
@@ -166,11 +139,7 @@ Section
   ${EndIf}
 
   ;Create uninstaller
-!ifndef INNER
-  SetOutPath $INSTDIR
-  ; this packages the signed uninstaller
-  File $%TEMP%\Uninstall.exe
-!endif
+  WriteUninstaller "$INSTDIR\Uninstall.exe"
 
   ;Create Desktop shortcut at first install
   ${If} $isOldUpdater == 0
@@ -210,7 +179,6 @@ SectionEnd
 
 ;--------------------------------
 ;Uninstaller Section
-!ifdef INNER
 Section "Uninstall"
 
   Call un.killAppProcess
@@ -245,18 +213,8 @@ Section "Uninstall"
   RMDir "$SMPROGRAMS\Toggl"
 
 SectionEnd
-!endif
 
 Function .onInit
-
-!ifdef INNER
-  ; If INNER is defined, then we aren't supposed to do anything except write out
-  ; the uninstaller.  This is better than processing a command line option as it means
-  ; this entire code path is not present in the final (real) installer.
-  SetSilent silent
-  WriteUninstaller "$%TEMP%\Uninstall.exe"
-  Quit  ; just bail out quickly when running the "inner" installer
-!endif
 
   ${GetParameters} $cmdLineParams
   Call checkUpdater
