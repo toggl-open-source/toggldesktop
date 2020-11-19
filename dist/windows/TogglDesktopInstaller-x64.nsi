@@ -39,6 +39,9 @@
 
 ;Include nsDialogs for custom Uninstaller page
   !include nsDialogs.nsh
+  
+;Add a plugin directory
+  !addplugindir NSIS_plugins
 
 ;--------------------------------
 ;Add Macros
