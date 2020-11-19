@@ -1,6 +1,18 @@
 {
     "versions": [
         {
+            "version": "7.5.394",
+            "rows": [
+                "Timeline UI - show currently running time entry",
+                "Timeline UI - click and drag to create a time entry",
+                "Add a setting for showing autotracker notification while a timer is running",
+                "Timeline UI - different small UI fixes"
+            ],
+            "date": "November 19th 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.348",
             "rows": [
                 "Use more secure hash algorithm for signing binaries",
