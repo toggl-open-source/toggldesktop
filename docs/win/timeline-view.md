@@ -12,11 +12,15 @@ Main view is a grid, which has 3 columns:
 2) Time entries - displays time entry block whose placement and height corresponds to the time entry start and end time.
 3) Activity - displays tracked activity as 15 minutes chunks. It's possible to see the list of activities hanging the mouse over the activity block.
 
+When a day is chosen in the date picker (today by default), the API call follows `SetViewTimelineDay`. API in its turn calls the delegate `toggl_on_timeline` passing the time entries and the timeline data for the selected day.
+
 ## Time entry block
 
 Time entry block corresponds to each time entry, includes a rectangle (whose height corresponds to time entry duration) and all time entry information: description, project name, client, tags. 
 
 The implementation can be found in `TimelineTimeEntryBlock.xaml`and `TimelineTimeEntryBlock.xaml.cs` in `ui/controls` and `TimelineBlockViewModel.cs` in `ui/ViewModels`.
+
+Clicking on time entry block triggers edit popup opening.
 
 ## Running time entry block
 
