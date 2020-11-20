@@ -241,7 +241,7 @@ FunctionEnd
 Function .onInstSuccess
 
   ${if} $isOldUpdater == 1
-    Exec "$INSTDIR\TogglDesktop.exe --updated"
+    ;Exec "$INSTDIR\TogglDesktop.exe --updated"
   ${Endif}
 
 FunctionEnd
