@@ -9,8 +9,8 @@ The implementation can be found in `Timeline.xaml`and `Timeline.xaml.cs` in `ui/
 
 Main view is a grid, which has 3 columns:
 1) Time - displays the time in hours. 
-2) Time entries - displays time entry block whose placement and height corresponds to the time entry start and end time.
-3) Activity - displays tracked activity as 15 minutes chunks. It's possible to see the list of activities hanging the mouse over the activity block.
+2) Time entries - displays time entry blocks whose placement and height corresponds to the time entries start and end time.
+3) Activity - displays tracked activity as 15-minutes chunks. It's possible to see the list of activities hovering the mouse over the activity block.
 
 When a day is chosen in the date picker (today by default), the API function `SetViewTimelineDay` is called. Timeline visualization happens as a reaction to API event `toggl_on_timeline` passing the time entries and the timeline data for the selected day.
 
@@ -24,6 +24,9 @@ The implementation can be found in `TimelineTimeEntryBlock.xaml`and `TimelineTim
 
 Clicking on time entry block triggers edit popup opening.
 
+Gaps between time entries are filled with buttons, that look like transparent rectangles with dashed borders. Clicking on it will create a new time entry covering the gap between the already existing two.
+Implementation can be found in `GapTimeEntryBlock` class (`TimelineBlockViewModel.cs` file in `ui/ViewModels`).
+
 ### Running time entry block
 
 Running time entry block is displayed using separate control `TimelineRunningTimeEntryBlock.xaml` and `TimelineRunningTimeEntryBlock.xaml.cs` in `ui/controls`.
@@ -36,13 +39,13 @@ The implementation can be found in `TimelineTimeEntryBlock.xaml`and `TimelineTim
 
 ### Create new time entry
 
-A new time entry can be created using click and drag functionality. Start time of the new time entry will match to the left mouse button down point, and end time - to the mouse up point. If user makes just a click or very little drag (less than 2 px) a time entry of one hour long will be created.
+A new time entry can be created using click and drag functionality. Start (or end) time and duration of the new time entry will match to the clicked point and drag distance. If user makes just a click or very little drag (less than 2 px) a time entry of one hour long will be created.
 
 The implementation can be found in `Timeline.xaml`and `Timeline.xaml.cs` in `ui/views`.
 
 ## Time entry blocks placing algorithm
 
-All the logic for calculating time entry blocks location on `Canvas` consists in `TimelineViewModel.ConvertTimeEntriesToBlocks`. The main complication is about resolving overlapping time entries, so that minimum number of columns is used. To solve this problem a greedy algorithm described [here](https://www.geeksforgeeks.org/minimum-halls-required-for-class-scheduling/) is used.
+All the logic for calculating time entry blocks location on `Canvas` is contained in `TimelineViewModel.ConvertTimeEntriesToBlocks`. The main complication is about resolving overlapping time entries, so that minimum number of columns is used. To solve this problem a greedy algorithm described [here](https://www.geeksforgeeks.org/minimum-halls-required-for-class-scheduling/) is used.
 
 ## Zooming
 
