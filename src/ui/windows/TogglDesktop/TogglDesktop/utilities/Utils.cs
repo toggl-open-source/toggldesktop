@@ -431,6 +431,9 @@ public static class Utils
 
         public static string Bitness() => Environment.Is64BitProcess ? "(64-bit)" : "(32-bit)";
 
+        public static bool IsWindows7() =>
+            Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 1;
+
         #endregion environment
 }
 }

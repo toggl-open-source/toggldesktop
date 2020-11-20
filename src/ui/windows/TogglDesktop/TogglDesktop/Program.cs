@@ -45,7 +45,13 @@ static class Program
     public static void Shutdown(int exitCode)
     {
         Toggl.Clear();
-        Environment.Exit(exitCode);
+        //For mysterious reason on Windows 7 Exit() doesn't always unload the process of TogglDesktop.exe from memory,
+        //and it makes impossible to start the app again next time.
+        //See https://github.com/toggl-open-source/toggldesktop/issues/4682 for more details.
+        if (Utils.IsWindows7())
+            Process.GetCurrentProcess().Kill();
+        else
+            Environment.Exit(exitCode);
     }
 
     public static string Version()
