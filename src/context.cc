@@ -5996,6 +5996,7 @@ error Context::pushEntries(
 
             if (kBadRequestError == resp.err) {
                 error_message = resp.body;
+                (*it)->SetValidationError(error_message);
             }
 
             continue;
@@ -6402,7 +6403,6 @@ void Context::syncCollectJSON(Json::Value &array, const std::vector<T*> &source)
         // That causes the whole syncing process to grind to a halt, so let's not sync those entities
         if (!found) {
             logger.error("Was not able to sync entity: ", i->String());
-            i->SetUnsynced();
             i->SetValidationError(kForeignEntityLostError);
         }
 
@@ -6530,7 +6530,6 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
                     model->MarkAsDeletedOnServer();
                     continue;
                 }
-                model->SetUnsynced();
                 model->SetValidationError(errorMessage);
                 logger.error("Sync: Error when syncing ", modelInfo, ": ", errorMessage);
                 displayError(errorMessage);
