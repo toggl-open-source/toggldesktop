@@ -48,6 +48,9 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public ulong GroupItemCount { get; set; }
 
+        [Reactive]
+        public string UnsyncedTimeEntryErrorMessage { get; set; }
+
         public long DurationInSeconds { get; set; }
 
         public bool TryExpand()
