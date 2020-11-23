@@ -15,6 +15,8 @@ namespace TogglDesktop.ViewModels
         public double Height { get; set; }
         [Reactive]
         public double VerticalOffset { get; set; }
+
+        public double Bottom => VerticalOffset + Height;
     }
 
     public class GapTimeEntryBlock : TimelineBlockViewModel
@@ -46,18 +48,13 @@ namespace TogglDesktop.ViewModels
         public string ClientName { get; set; }
         public string TaskName { get; set; }
         [Reactive]
-        public ulong Started { get; set; } = 0;
-
-        [Reactive]
-        public ulong Ended { get; set; } = 0;
-        [Reactive]
         public bool HasTag { get; set; }
         [Reactive]
         public bool IsBillable { get; set; }
         public string Duration { [ObservableAsProperty]get; }
         public string StartEndCaption { [ObservableAsProperty]get; }
         public ReactiveCommand<Unit, Unit> OpenEditView { get; }
-        public string TimeEntryId { get; private set; }
+        public string TimeEntryId { get; }
 
         [Reactive]
         public bool IsEditViewOpened { get; set; }
@@ -67,27 +64,24 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public bool IsDragged { get; set; }
 
+        public DateTime DateCreated { get; }
+
         private readonly double _hourHeight;
 
-        public TimeEntryBlock(string timeEntryId, int hourHeight)
+        public TimeEntryBlock(string timeEntryId, int hourHeight, DateTime date)
         {
             _hourHeight = hourHeight;
+            DateCreated = date;
             TimeEntryId = timeEntryId;
             OpenEditView = ReactiveCommand.Create(() => Toggl.Edit(TimeEntryId, false, Toggl.Description));
-            this.WhenAnyValue(x => x.VerticalOffset)
-                .Select(h => TimelineUtils.ConvertOffsetToTime(h, Toggl.DateTimeFromUnix(Started).Date, _hourHeight))
-                .Subscribe(next => Started = next);
-            this.WhenAnyValue(x => x.Height, x => x.VerticalOffset)
-                .Select(h => TimelineUtils.ConvertOffsetToTime(h.Item1 + h.Item2, Toggl.DateTimeFromUnix(Ended).Date, _hourHeight))
-                .Subscribe(next => Ended = next);
-            this.WhenAnyValue(x => x.Started, x => x.Ended)
-                .Select(pair => $"{Toggl.DateTimeFromUnix(pair.Item1):HH:mm tt} - {Toggl.DateTimeFromUnix(pair.Item2):HH:mm tt}")
+            this.WhenAnyValue(x => x.VerticalOffset, x => x.Height,
+                    (offset, height) => 
+                        $"{TimelineUtils.ConvertOffsetToDateTime(offset, date, _hourHeight):HH:mm tt} - {TimelineUtils.ConvertOffsetToDateTime(offset+height, date, _hourHeight):HH:mm tt}")
                 .ToPropertyEx(this, x => x.StartEndCaption);
-            this.WhenAnyValue(x => x.Started, x => x.Ended)
-                .Select(pair =>
+            this.WhenAnyValue(x => x.VerticalOffset, x => x.Height, (offset, height) =>
                 {
-                    var (start, end) = pair;
-                    var duration = Toggl.DateTimeFromUnix(end).Subtract(Toggl.DateTimeFromUnix(start));
+                    var duration = TimelineUtils.ConvertOffsetToDateTime(offset+height, date, _hourHeight)
+                        .Subtract(TimelineUtils.ConvertOffsetToDateTime(offset, date, _hourHeight));
                     return duration.Hours + " h " + duration.Minutes + " min";
                 })
                 .ToPropertyEx(this, x => x.Duration);
@@ -100,13 +94,13 @@ namespace TogglDesktop.ViewModels
         public void ChangeStartTime()
         {
             Toggl.SetTimeEntryStartTimeStamp(TimeEntryId,
-                (long)TimelineUtils.ConvertOffsetToTime(VerticalOffset, Toggl.DateTimeFromUnix(Started).Date, _hourHeight));
+                (long)TimelineUtils.ConvertOffsetToUnixTime(VerticalOffset, DateCreated, _hourHeight));
         }
 
         public void ChangeEndTime()
         {
             Toggl.SetTimeEntryEndTimeStamp(TimeEntryId,
-                (long)TimelineUtils.ConvertOffsetToTime(VerticalOffset + Height, Toggl.DateTimeFromUnix(Ended).Date, _hourHeight));
+                (long)TimelineUtils.ConvertOffsetToUnixTime(VerticalOffset + Height, DateCreated, _hourHeight));
         }
 
         public void ChangeStartEndTime()
