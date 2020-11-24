@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using MahApps.Metro.Controls;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using TogglDesktop.Resources;
@@ -70,6 +71,10 @@ namespace TogglDesktop.ViewModels
                 .ToPropertyEx(this, x => x.TimeEntryBlocks);
             blocksObservable.Select(blocks => GenerateGapTimeEntryBlocks(blocks.Values.ToList(), SelectedScaleMode, SelectedDate))
                 .ToPropertyEx(this, x => x.GapTimeEntryBlocks);
+            blocksWithRunningObservable.Where(tuple => tuple.Running == null && SelectedDate.Date == DateTime.Today)
+                .Select(tuple =>
+                    GenerateRunningGapBlock(tuple.TimeEntries.Values, CurrentTimeOffset, SelectedScaleMode, SelectedDate))
+                .ToPropertyEx(this, x => x.RunningGapTimeEntryBlock);
 
             this.WhenAnyValue(x => x.TimeEntryBlocks)
                 .Where(blocks => blocks != null && blocks.Any())
@@ -92,6 +97,9 @@ namespace TogglDesktop.ViewModels
                 .Select(off => Math.Max(TimelineConstants.MinTimeEntryBlockHeight,
                     CurrentTimeOffset - RunningTimeEntryBlock.VerticalOffset))
                 .Subscribe(h => RunningTimeEntryBlock.Height = h);
+            this.WhenAnyValue(x => x.CurrentTimeOffset).Where(_ => RunningGapTimeEntryBlock != null)
+                .Select(off => CurrentTimeOffset - RunningGapTimeEntryBlock.VerticalOffset)
+                .Subscribe(h => RunningGapTimeEntryBlock.Height = h);
             this.WhenAnyValue(x => x.TimeEntryBlocks, x => x.RunningTimeEntryBlock, x => x.IsTodaySelected,
                 (blocks, running, isToday) => blocks?.Any() == true || (running != null && isToday))
                 .ToPropertyEx(this, x => x.AnyTimeEntries);
@@ -303,15 +311,37 @@ namespace TogglDesktop.ViewModels
                         VerticalOffset = lastTimeEntry.Bottom,
                         HorizontalOffset = 0
                     };
-                    if (block.Height > 10) // Don't display to small gaps not to obstruct the view
+                    if (block.Height >= TimelineConstants.MinGapTimeEntryHeight) // Don't display too small gaps not to obstruct the view
                         gaps.Add(block);
                 }
                 lastTimeEntry = lastTimeEntry == null || entry.Bottom > lastTimeEntry.Bottom
                     ? entry 
                     : lastTimeEntry;
             }
-            
+
             return gaps;
+        }
+
+        private static GapTimeEntryBlock GenerateRunningGapBlock(IEnumerable<TimeEntryBlock> timeEntries, double curTimeOffset,
+            int selectedScaleMode, DateTime selectedDate)
+        {
+            var lastTimeEntryBottom = timeEntries.Any() ? timeEntries.Max(te => te.Bottom) : 0;
+            if (!lastTimeEntryBottom.IsCloseTo(0) && curTimeOffset >= lastTimeEntryBottom + TimelineConstants.MinGapTimeEntryHeight)
+                return new GapTimeEntryBlock(
+                    (offset, height) =>
+                    {
+                        var id = Toggl.Start("", "", 0, 0, "", "");
+                        var started = TimelineUtils.ConvertOffsetToUnixTime(offset, selectedDate,
+                            TimelineConstants.ScaleModes[selectedScaleMode]);
+                        Toggl.SetTimeEntryStartTimeStamp(id, (long)started);
+                        return id;
+                    })
+                {
+                    Height = curTimeOffset - lastTimeEntryBottom,
+                    VerticalOffset = lastTimeEntryBottom,
+                    HorizontalOffset = 0
+                };
+            return null;
         }
 
         public static string AddNewTimeEntry(double offset, double height, int scaleMode, DateTime date)
@@ -354,6 +384,8 @@ namespace TogglDesktop.ViewModels
         public bool AnyTimeEntries { [ObservableAsProperty] get; }
 
         public List<GapTimeEntryBlock> GapTimeEntryBlocks { [ObservableAsProperty] get; }
+
+        public GapTimeEntryBlock RunningGapTimeEntryBlock { [ObservableAsProperty] get; }
 
         [Reactive]
         public string SelectedForEditTEId { get; set; }
