@@ -3,14 +3,7 @@
         {
             "version": "7.5.386",
             "rows": [
-                "Bug fixes"
-            ],
-            "date": "November 17th 2020",
-            "beta": "true"
-        },
-        {
-            "version": "7.5.383",
-            "rows": [
+                "Bug fixes",
                 "Easily set start time or duration for the running time entry",
                 "In Preferences, you can now select to ignore SSL verification",
                 "Fixed displaying time entries past midnight",
@@ -18,8 +11,7 @@
                 "Fixed bug with switching focus from empty tags selection dropdown",
                 "Plus other bug fixed and small improvements"
             ],
-            "date": "November 16th 2020",
-            "beta": "true"
+            "date": "November 24th 2020"
         },
         {
             "version": "7.5.363",
