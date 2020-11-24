@@ -139,7 +139,6 @@ void BaseModel::SetUnsynced() {
 }
 
 void BaseModel::ClearUnsynced() {
-    Unsynced.Set(false);
     ClearValidationError();
 }
 
