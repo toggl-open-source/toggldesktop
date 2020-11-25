@@ -52,6 +52,8 @@ namespace TogglDesktop
             ViewModel.DurationInSeconds = item.DurationInSeconds;
             ResetTimeEntryLabelIfChanged(item);
 
+            ViewModel.UnsyncedTimeEntryErrorMessage = item.Error.IsNullOrEmpty() ? "Unsynced entry" : item.Error;
+
             this.durationLabel.Text = item.Duration;
             this.durationPanel.ToolTip = $"{item.StartTimeString} - {item.EndTimeString}";
 

@@ -55,6 +55,7 @@ void BaseModel::ClearValidationError() {
 }
 
 void BaseModel::SetValidationError(const std::string &value) {
+    Unsynced.Set(!value.empty());
     if (ValidationError.Set(value))
         SetDirty();
 }
@@ -138,7 +139,7 @@ void BaseModel::SetUnsynced() {
 }
 
 void BaseModel::ClearUnsynced() {
-    Unsynced.Set(false);
+    ClearValidationError();
 }
 
 void BaseModel::SetDeletedAt(Poco::Int64 value) {
