@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
+             xmlns:res="clr-namespace:TogglDesktop.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:TimeEntryBlock, IsDesignTimeCreatable=False}">
-    <StackPanel Height="{Binding Height}" Margin="20,0,0,0">
+    <StackPanel Height="{Binding Height}" MinHeight="{x:Static res:TimelineConstants.MinTimeEntryBlockHeight}" Margin="20,0,0,0">
         <TextBlock Text="{Binding Description}" Style="{StaticResource Toggl.CaptionBlackText}"/>
         <DockPanel Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}">
             <Ellipse Width="8" Height="8"

@@ -1,21 +1,22 @@
 ﻿using System;
-using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
 {
     public static class TimelineUtils
     {
-        public static ulong ConvertOffsetToTime(double height, DateTime date, double hourHeight)
+        public static ulong ConvertOffsetToUnixTime(double height, DateTime date, double hourHeight)
         {
-            var hours = 1.0 * height / hourHeight;
-            var dateTime = date.AddHours(hours);
+            var dateTime = ConvertOffsetToDateTime(height, date, hourHeight);
             var unixTime = Toggl.UnixFromDateTime(dateTime);
             return unixTime >= 0 ? (ulong)unixTime : 0;
         }
 
-        public static DateTime StartTime(this TimeEntryBlock block) => Toggl.DateTimeFromUnix(block.Started);
-
-        public static DateTime EndTime(this TimeEntryBlock block) => Toggl.DateTimeFromUnix(block.Ended);
+        public static DateTime ConvertOffsetToDateTime(double height, DateTime date, double hourHeight)
+        {
+            var hours = 1.0 * height / hourHeight;
+            var dateTime = date.AddHours(hours);
+            return dateTime;
+        }
 
         public static DateTime StartTime(this Toggl.TogglTimeEntryView te) => Toggl.DateTimeFromUnix(te.Started);
 
