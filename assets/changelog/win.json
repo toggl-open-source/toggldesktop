@@ -6,25 +6,9 @@
                 "Timeline UI - show currently running time entry",
                 "Timeline UI - click and drag to create a time entry",
                 "Add a setting for showing autotracker notification while a timer is running",
-                "Timeline UI - different small UI fixes"
-            ],
-            "date": "November 19th 2020",
-            "beta": "true",
-            "has64bit": "true"
-        },
-        {
-            "version": "7.5.348",
-            "rows": [
+                "Timeline UI - different small UI fixes",
                 "Use more secure hash algorithm for signing binaries",
-                "Timeline UI - update start/end and duration while resizing"
-            ],
-            "date": "October 22nd 2020",
-            "beta": "true",
-            "has64bit": "true"
-        },
-        {
-            "version": "7.5.343",
-            "rows": [
+                "Timeline UI - update start/end and duration while resizing",
                 "Timeline UI view (available only for part of all users now)",
                 "Autotracker - showing suggestion also when there is a running entry",
                 "Autotracker - possible to start tracking automatically without showing the suggestion",
@@ -32,8 +16,7 @@
                 "Fix icon colors",
                 "Fix SSO login for Microsoft Store users"
             ],
-            "date": "October 20th 2020",
-            "beta": "true",
+            "date": "November 25th 2020",
             "has64bit": "true"
         },
         {
