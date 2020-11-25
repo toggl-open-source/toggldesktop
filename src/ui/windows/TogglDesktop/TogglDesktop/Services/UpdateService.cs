@@ -5,9 +5,11 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
+using System.Reflection;
 using System.Threading.Tasks;
 using Onova;
 using Onova.Exceptions;
+using Onova.Models;
 using Onova.Services;
 
 namespace TogglDesktop.Services
@@ -21,6 +23,7 @@ namespace TogglDesktop.Services
         {
             IsUpdateCheckEnabled = !isUpdateCheckDisabled;
             _updateManager = new UpdateManager(
+                AssemblyMetadata.FromAssembly(Assembly.GetEntryAssembly() ?? Assembly.GetAssembly(typeof(UpdateService))),
                 new LocalPackageResolver(updatesPath, "TogglDesktopInstaller*.exe"),
                 new NsisPackageExtractor());
 
