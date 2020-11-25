@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -157,9 +157,13 @@ To get the focused application window name properly for the Timeline, Toggl Trac
                                 <customView toolTip="Zoom In (⌘+)" translatesAutoresizingMaskIntoConstraints="NO" id="xXU-Yr-nTf">
                                     <rect key="frame" x="0.0" y="0.0" width="54" height="30"/>
                                     <subviews>
-                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CK9-W6-FLX">
-                                            <rect key="frame" x="33" y="9" width="11" height="11"/>
-                                            <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSAddTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="as8-De-WrX">
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CK9-W6-FLX" userLabel="Zoom In">
+                                            <rect key="frame" x="30" y="9" width="14.5" height="14"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="14" id="CXZ-GE-5jv"/>
+                                                <constraint firstAttribute="width" constant="14" id="sL6-Vw-oDc"/>
+                                            </constraints>
+                                            <buttonCell key="cell" type="bevel" title=" " bezelStyle="rounded" image="NSAddTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="as8-De-WrX">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -167,9 +171,13 @@ To get the focused application window name properly for the Timeline, Toggl Trac
                                                 <action selector="zoomLevelIncreaseOnChange:" target="-2" id="QsV-0i-5La"/>
                                             </connections>
                                         </button>
-                                        <button toolTip="Zoom Out (⌘-)" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rZq-Fq-a8f">
-                                            <rect key="frame" x="10" y="9" width="11" height="11"/>
-                                            <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSRemoveTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="kr9-Ry-BUy">
+                                        <button toolTip="Zoom Out (⌘-)" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rZq-Fq-a8f" userLabel="Zoom Out">
+                                            <rect key="frame" x="10" y="9" width="14.5" height="14"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="14" id="6NW-yV-Dzh"/>
+                                                <constraint firstAttribute="width" constant="14" id="Rnl-9A-cSs"/>
+                                            </constraints>
+                                            <buttonCell key="cell" type="bevel" title=" " bezelStyle="rounded" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="kr9-Ry-BUy">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -181,16 +189,16 @@ To get the focused application window name properly for the Timeline, Toggl Trac
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="CK9-W6-FLX" secondAttribute="trailing" constant="10" id="02K-Jr-1dA"/>
                                         <constraint firstAttribute="width" constant="54" id="WBW-Ae-Lok"/>
-                                        <constraint firstItem="CK9-W6-FLX" firstAttribute="centerY" secondItem="xXU-Yr-nTf" secondAttribute="centerY" constant="1" id="Wml-Xb-4dM"/>
+                                        <constraint firstItem="CK9-W6-FLX" firstAttribute="centerY" secondItem="xXU-Yr-nTf" secondAttribute="centerY" constant="-1" id="Wml-Xb-4dM"/>
                                         <constraint firstItem="rZq-Fq-a8f" firstAttribute="leading" secondItem="xXU-Yr-nTf" secondAttribute="leading" constant="10" id="XnR-Ed-RGq"/>
-                                        <constraint firstItem="rZq-Fq-a8f" firstAttribute="centerY" secondItem="xXU-Yr-nTf" secondAttribute="centerY" constant="1" id="y7B-RX-ToG"/>
+                                        <constraint firstItem="rZq-Fq-a8f" firstAttribute="centerY" secondItem="xXU-Yr-nTf" secondAttribute="centerY" constant="-1" id="y7B-RX-ToG"/>
                                     </constraints>
                                 </customView>
                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="WO4-HV-33l">
                                     <rect key="frame" x="299" y="0.0" width="70" height="30"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UIS-R7-VXl">
-                                            <rect key="frame" x="6" y="8" width="59" height="14"/>
+                                            <rect key="frame" x="5" y="8" width="60" height="14"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="ACTIVITY" id="eib-Fj-syc">
                                                 <font key="font" metaFont="systemMedium" size="11"/>
                                                 <color key="textColor" name="timeline-label-color"/>
@@ -308,9 +316,9 @@ To get the focused application window name properly for the Timeline, Toggl Trac
         </customView>
     </objects>
     <resources>
-        <image name="NSAddTemplate" width="11" height="11"/>
+        <image name="NSAddTemplate" width="14" height="13"/>
         <image name="NSCaution" width="32" height="32"/>
-        <image name="NSRemoveTemplate" width="11" height="11"/>
+        <image name="NSRemoveTemplate" width="14" height="4"/>
         <image name="timeline-activity-recorder-info-icon" width="20" height="20"/>
         <image name="timeline-activity-recorder-info-icon-hover" width="20" height="20"/>
         <namedColor name="grey-text-color">
