@@ -74,14 +74,13 @@ namespace TogglDesktop.ViewModels
             DateCreated = date;
             TimeEntryId = timeEntryId;
             OpenEditView = ReactiveCommand.Create(() => Toggl.Edit(TimeEntryId, false, Toggl.Description));
-            this.WhenAnyValue(x => x.VerticalOffset, x => x.Height,
-                    (offset, height) => 
-                        $"{TimelineUtils.ConvertOffsetToDateTime(offset, date, _hourHeight):HH:mm tt} - {TimelineUtils.ConvertOffsetToDateTime(offset+height, date, _hourHeight):HH:mm tt}")
+            var startEndObservable = this.WhenAnyValue(x => x.VerticalOffset, x => x.Height, (offset, height) =>
+                (Started: TimelineUtils.ConvertOffsetToDateTime(offset, date, _hourHeight), Ended: TimelineUtils.ConvertOffsetToDateTime(offset + height, date, _hourHeight)));
+            startEndObservable.Select(tuple => $"{tuple.Started:HH:mm tt} - {tuple.Ended:HH:mm tt}")
                 .ToPropertyEx(this, x => x.StartEndCaption);
-            this.WhenAnyValue(x => x.VerticalOffset, x => x.Height, (offset, height) =>
+            startEndObservable.Select(tuple =>
                 {
-                    var duration = TimelineUtils.ConvertOffsetToDateTime(offset+height, date, _hourHeight)
-                        .Subtract(TimelineUtils.ConvertOffsetToDateTime(offset, date, _hourHeight));
+                    var duration = tuple.Ended.Subtract(tuple.Started);
                     return duration.Hours + " h " + duration.Minutes + " min";
                 })
                 .ToPropertyEx(this, x => x.Duration);

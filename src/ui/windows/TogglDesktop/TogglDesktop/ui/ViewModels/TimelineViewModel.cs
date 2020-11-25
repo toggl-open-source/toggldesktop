@@ -194,7 +194,7 @@ namespace TogglDesktop.ViewModels
             // - if it's a start time stamp, then pick up the minimum available offset, if none is available assign a new one.
             // - if it's an end time stamp, then release the offset which it occupied.
             IEnumerable<Toggl.TogglTimeEntryView> allEntries = timeEntries;
-            if (runningEntry != null && selectedDate.Date == DateTime.Today)
+            if (runningEntry != null && runningEntry.Value.StartTime().Date <= selectedDate.Date && DateTime.Now.Date >= selectedDate.Date)
                 allEntries = allEntries.Union(new List<Toggl.TogglTimeEntryView>(){runningEntry.Value});
             foreach (var entry in allEntries)
             {
@@ -300,7 +300,7 @@ namespace TogglDesktop.ViewModels
                     var block = new GapTimeEntryBlock((offset, height) => AddNewTimeEntry(offset, height, selectedScaleMode, selectedDate))
                     {
                         Height = entry.VerticalOffset - lastTimeEntry.Bottom,
-                        VerticalOffset = lastTimeEntry.VerticalOffset + lastTimeEntry.Height,
+                        VerticalOffset = lastTimeEntry.Bottom,
                         HorizontalOffset = 0
                     };
                     if (block.Height > 10) // Don't display to small gaps not to obstruct the view
