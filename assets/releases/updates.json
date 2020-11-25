@@ -11,9 +11,9 @@
             "windows64": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.394/TogglDesktopInstaller-x64-7.5.394.exe"
         },
         "stable": {
-            "version": "7.5.295",
-            "windows": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.295/TogglDesktopInstaller-7.5.295.exe",
-            "windows64": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.295/TogglDesktopInstaller-x64-7.5.295.exe"
+            "version": "7.5.394",
+            "windows": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.394/TogglDesktopInstaller-7.5.394.exe",
+            "windows64": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.394/TogglDesktopInstaller-x64-7.5.394.exe"
         }
     },
     "mac": {
