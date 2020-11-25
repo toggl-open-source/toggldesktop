@@ -10,7 +10,6 @@
 #import "ViewItem.h"
 #import "DesktopLibraryBridge.h"
 #import "UndoTextField.h"
-#import "NSHoverButton.h"
 #import "TimeEntryListViewController.h"
 #import "TimerEditViewController.h"
 #import "DisplayCommand.h"
