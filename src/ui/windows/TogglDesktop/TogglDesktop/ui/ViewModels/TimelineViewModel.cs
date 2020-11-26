@@ -71,9 +71,9 @@ namespace TogglDesktop.ViewModels
                 .ToPropertyEx(this, x => x.TimeEntryBlocks);
             blocksObservable.Select(blocks => GenerateGapTimeEntryBlocks(blocks.Values.ToList(), SelectedScaleMode, SelectedDate))
                 .ToPropertyEx(this, x => x.GapTimeEntryBlocks);
-            blocksWithRunningObservable.Where(tuple => tuple.Running == null && SelectedDate.Date == DateTime.Today)
+            blocksWithRunningObservable
                 .Select(tuple =>
-                    GenerateRunningGapBlock(tuple.TimeEntries.Values, CurrentTimeOffset, SelectedScaleMode, SelectedDate))
+                    GenerateRunningGapBlock(tuple.TimeEntries.Values, tuple.Running, CurrentTimeOffset, SelectedScaleMode, SelectedDate))
                 .ToPropertyEx(this, x => x.RunningGapTimeEntryBlock);
 
             this.WhenAnyValue(x => x.TimeEntryBlocks)
@@ -322,11 +322,11 @@ namespace TogglDesktop.ViewModels
             return gaps;
         }
 
-        private static GapTimeEntryBlock GenerateRunningGapBlock(IEnumerable<TimeEntryBlock> timeEntries, double curTimeOffset,
-            int selectedScaleMode, DateTime selectedDate)
+        private static GapTimeEntryBlock GenerateRunningGapBlock(IEnumerable<TimeEntryBlock> timeEntries, Toggl.TogglTimeEntryView? running,
+            double curTimeOffset, int selectedScaleMode, DateTime selectedDate)
         {
             var lastTimeEntryBottom = timeEntries.Any() ? timeEntries.Max(te => te.Bottom) : 0;
-            if (!lastTimeEntryBottom.IsCloseTo(0) && curTimeOffset >= lastTimeEntryBottom + TimelineConstants.MinGapTimeEntryHeight)
+            if (running == null && selectedDate.Date == DateTime.Today && !lastTimeEntryBottom.IsCloseTo(0) && curTimeOffset >= lastTimeEntryBottom + TimelineConstants.MinGapTimeEntryHeight)
                 return new GapTimeEntryBlock(
                     (offset, height) =>
                     {
