@@ -93,13 +93,12 @@ namespace TogglDesktop.ViewModels
             Observable.Timer(TimeSpan.Zero,TimeSpan.FromMinutes(1))
                 .Select(_ => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, SelectedScaleMode))
                 .Subscribe(h => CurrentTimeOffset = h);
-            this.WhenAnyValue(x => x.CurrentTimeOffset).Where(_ => RunningTimeEntryBlock != null)
-                .Select(off => Math.Max(TimelineConstants.MinTimeEntryBlockHeight,
-                    CurrentTimeOffset - RunningTimeEntryBlock.VerticalOffset))
-                .Subscribe(h => RunningTimeEntryBlock.Height = h);
-            this.WhenAnyValue(x => x.CurrentTimeOffset).Where(_ => RunningGapTimeEntryBlock != null)
-                .Select(off => CurrentTimeOffset - RunningGapTimeEntryBlock.VerticalOffset)
-                .Subscribe(h => RunningGapTimeEntryBlock.Height = h);
+            var setCurrentHeightObservable = this.WhenAnyValue(x => x.CurrentTimeOffset).Select<double,Action<TimelineBlockViewModel>>(offset =>
+                block => block.Height = offset - block.VerticalOffset);
+            setCurrentHeightObservable.Where(_ => RunningTimeEntryBlock != null).Subscribe(next => 
+                next(RunningTimeEntryBlock));
+            setCurrentHeightObservable.Where(_ => RunningGapTimeEntryBlock != null).Subscribe(next =>
+                next(RunningGapTimeEntryBlock));
             this.WhenAnyValue(x => x.TimeEntryBlocks, x => x.RunningTimeEntryBlock, x => x.IsTodaySelected,
                 (blocks, running, isToday) => blocks?.Any() == true || (running != null && isToday))
                 .ToPropertyEx(this, x => x.AnyTimeEntries);
