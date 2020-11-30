@@ -28,9 +28,6 @@
             icon = [NSImage imageNamed:@"AppIconNotRunning"];
 			break;
 	}
-
-	// Adapt well with black/white macOS appearance
-	icon.template = YES;
 	return icon;
 }
 
