@@ -111,6 +111,8 @@
 @property (nonatomic, assign) BOOL manualMode;
 @property (nonatomic, assign) BOOL onTop;
 
+@property (nonatomic) BOOL isAppIconInRunningState;
+
 @end
 
 @implementation AppDelegate
@@ -126,6 +128,7 @@ void *ctx;
 	self.showMenuBarTimer = NO;
 	self.manualMode = NO;
 	self.onTop = NO;
+    self.isAppIconInRunningState = YES;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -888,7 +891,11 @@ void *ctx;
 	{
 		if (!self.willTerminate)
 		{
-			[NSApp setApplicationIconImage:[AppIconFactory appIconWithType:AppIconTypeActive]];
+            if (!self.isAppIconInRunningState)
+            {
+                [NSApp setApplicationIconImage:[AppIconFactory appIconWithType:AppIconTypeActive]];
+                self.isAppIconInRunningState = YES;
+            }
 		}
 
 		[self updateStatusItem];
@@ -918,7 +925,11 @@ void *ctx;
 	{
 		// Change app dock icon to default
 		// See https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/dockconcepts.pdf
-		[NSApp setApplicationIconImage:[AppIconFactory appIconWithType:AppIconTypeDefault]];
+        if (self.isAppIconInRunningState)
+        {
+            [NSApp setApplicationIconImage:[AppIconFactory appIconWithType:AppIconTypeDefault]];
+            self.isAppIconInRunningState = NO;
+        }
 	}
 
 	[self updateStatusItem];
