@@ -218,7 +218,7 @@ namespace TogglDesktop.ViewModels
                     HasTag = !entry.Tags.IsNullOrEmpty(),
                     IsBillable = entry.Billable
                 };
-                if (entry.Started != entry.Ended)
+                if (entry.Started < ended)
                 {
                     timeStampsList.Add((TimeStampType.Start, block));
                     timeStampsList.Add((TimeStampType.End, block));
