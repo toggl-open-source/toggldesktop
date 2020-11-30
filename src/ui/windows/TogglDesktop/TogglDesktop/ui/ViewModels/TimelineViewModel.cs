@@ -284,8 +284,6 @@ namespace TogglDesktop.ViewModels
 
         public static double ConvertTimeIntervalToHeight(DateTime start, DateTime end, int scaleMode)
         {
-            if (end <= start) return 0;
-            
             var timeInterval = (end - start).TotalMinutes;
             return timeInterval * TimelineConstants.ScaleModes[scaleMode] / 60;
         }
