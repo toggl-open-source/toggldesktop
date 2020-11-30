@@ -59,7 +59,11 @@ class TimerViewController: NSViewController {
         }
     }
 
-    @IBOutlet weak var startButton: NSHoverButton!
+    @IBOutlet weak var startButton: HoverButton! {
+        didSet {
+            startButton.activateOnEnterKey = true
+        }
+    }
     @IBOutlet weak var descriptionContainerBox: TimerContainerBox!
     @IBOutlet weak var trailingStackView: NSStackView!
     @IBOutlet weak var projectButton: SelectableButton!
