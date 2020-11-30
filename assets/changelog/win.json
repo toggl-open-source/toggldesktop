@@ -1,6 +1,17 @@
 {
     "versions": [
         {
+            "version": "7.5.403",
+            "rows": [
+                "Timeline UI - fix time entries may be dispalyed as overlapped when they are actually not",
+                "Display time entry syncing error in UI",
+                "Fix application may not start bug on Windows 7"
+            ],
+            "date": "November 30th 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.394",
             "rows": [
                 "Timeline UI - show currently running time entry",
