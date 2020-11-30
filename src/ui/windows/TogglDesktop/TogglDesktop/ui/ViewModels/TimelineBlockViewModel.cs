@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using TogglDesktop.Resources;
@@ -48,6 +49,10 @@ namespace TogglDesktop.ViewModels
         public string Duration { [ObservableAsProperty]get; }
         public string StartEndCaption { [ObservableAsProperty]get; }
         public ReactiveCommand<Unit, Unit> OpenEditView { get; }
+        public ReactiveCommand<Unit, bool> ContinueEntry { get; }
+        public ReactiveCommand<Unit, Unit> CreateFromEnd { get; }
+        public ReactiveCommand<Unit, Unit> StartFromEnd { get; }
+        public ReactiveCommand<Unit, bool> Delete { get; }
         public string TimeEntryId => _timeEntry.GUID;
 
         [Reactive]
@@ -72,6 +77,10 @@ namespace TogglDesktop.ViewModels
             DateCreated = date;
             _timeEntry = te;
             OpenEditView = ReactiveCommand.Create(() => Toggl.Edit(TimeEntryId, false, Toggl.Description));
+            ContinueEntry = ReactiveCommand.Create(() => Toggl.Continue(TimeEntryId));
+            CreateFromEnd = ReactiveCommand.Create(() => TimelineUtils.CreateAndEditTimeEntry(Ended, Ended + 3600));
+            StartFromEnd = ReactiveCommand.Create(() => TimelineUtils.CreateAndEditRunningTimeEntryFrom(Ended));
+            Delete = ReactiveCommand.Create(() => Toggl.DeleteTimeEntry(TimeEntryId));
             var startEndObservable = this.WhenAnyValue(x => x.VerticalOffset, x => x.Height, (offset, height) =>
                 (Started: TimelineUtils.ConvertOffsetToDateTime(offset, date, _hourHeight), Ended: TimelineUtils.ConvertOffsetToDateTime(offset + height, date, _hourHeight)));
             startEndObservable.Select(tuple => $"{tuple.Started:HH:mm tt} - {tuple.Ended:HH:mm tt}")

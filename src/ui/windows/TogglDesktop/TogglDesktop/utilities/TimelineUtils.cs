@@ -18,6 +18,19 @@ namespace TogglDesktop
             return dateTime;
         }
 
+        public static void CreateAndEditRunningTimeEntryFrom(ulong started)
+        {
+            var teId = Toggl.Start("", "", 0, 0, "", "");
+            Toggl.SetTimeEntryStartTimeStamp(teId, (long)started);
+            Toggl.Edit(teId, true, Toggl.Description);
+        }
+
+        public static void CreateAndEditTimeEntry(ulong started, ulong ended)
+        {
+            var teId = Toggl.CreateEmptyTimeEntry(started, ended);
+            Toggl.Edit(teId, false, Toggl.Description);
+        }
+
         public static DateTime StartTime(this Toggl.TogglTimeEntryView te) => Toggl.DateTimeFromUnix(te.Started);
 
         public static DateTime EndTime(this Toggl.TogglTimeEntryView te) => Toggl.DateTimeFromUnix(te.Ended);

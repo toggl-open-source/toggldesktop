@@ -147,5 +147,13 @@ namespace TogglDesktop
             _timeEntryId = null;
             Mouse.Capture(null);
         }
+
+        private void OnTimeEntryBlockMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement uiElement)
+            {
+                ViewModel.ActiveTimeEntryBlock = uiElement.DataContext as TimeEntryBlock;
+            }
+        }
     }
 }

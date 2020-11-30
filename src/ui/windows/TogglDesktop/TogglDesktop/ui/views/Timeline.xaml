@@ -197,6 +197,16 @@
                         </Path>
                     </Canvas>
                     <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=TimeEntryBlocks}" Margin="10 0 0 0" Name="TimeEntryBlocks">
+                        <ItemsControl.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Continue this entry" Command="{Binding ActiveTimeEntryBlock.ContinueEntry}" Icon="{StaticResource Toggl.ContinueIcon}"/>
+                                <MenuItem Header="Start entry from end of this entry" Command="{Binding ActiveTimeEntryBlock.StartFromEnd}"
+                                          Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <MenuItem Header="Create entry from the end of this entry" Command="{Binding ActiveTimeEntryBlock.CreateFromEnd}"
+                                          Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanInvertToVisibilityConverter}}"/>
+                                <MenuItem Header="Delete" Command="{Binding ActiveTimeEntryBlock.Delete}"/>
+                            </ContextMenu>
+                        </ItemsControl.ContextMenu>
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <Canvas Name="TimeEntryCanvas"/>
@@ -205,6 +215,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <togglDesktop:TimelineTimeEntryBlock Panel.ZIndex="1" DataContext="{Binding Path=Value}"
+                                                                     MouseDown="OnTimeEntryBlockMouseDown"
                                                                      MouseEnter="OnTimeEntryBlockMouseEnter"
                                                                      MouseLeave="OnTimeEntyrBlockMouseLeave">
                                     <togglDesktop:TimelineTimeEntryBlock.Style>

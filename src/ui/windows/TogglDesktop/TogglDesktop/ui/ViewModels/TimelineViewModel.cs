@@ -379,6 +379,9 @@ namespace TogglDesktop.ViewModels
 
         [Reactive]
         public string SelectedForEditTEId { get; set; }
+
+        [Reactive]
+        public TimeEntryBlock ActiveTimeEntryBlock { get; set; }
         public ReactiveCommand<Unit, int> IncreaseScale { get; }
         public ReactiveCommand<Unit, int> DecreaseScale { get; }
 
