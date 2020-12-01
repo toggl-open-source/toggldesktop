@@ -358,13 +358,13 @@
                                    RadiusX="15"
                                    RadiusY="7">
                         </Rectangle>
-                        <ContentControl Content="{StaticResource Toggl.Timeline.AddNewEntry}"/>
+                        <ContentControl Content="{StaticResource Toggl.Timeline.AddNewEntryIcon}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="Button" x:Key="Toggl.Timeline.GapButtonOpen">
+    <Style TargetType="Button" x:Key="Toggl.Timeline.GapButton.Running">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -373,13 +373,13 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Path SnapsToDevicePixels="True" Stroke="{DynamicResource Toggl.LightGrayBrush}" StrokeThickness="2" StrokeDashArray="1 1" Grid.Row="0"
-                              Data="M 0,10 A 9,9 0 1 1 20,10">
+                        <Path SnapsToDevicePixels="True" Stroke="{DynamicResource Toggl.LightGrayBrush}" StrokeThickness="2" StrokeDashArray="0.94 0.94" Grid.Row="0"
+                              Data="M 1,10 A 9,8 0 1 1 19,10">
                         </Path>
                         <Path SnapsToDevicePixels="True" Stretch="Fill" Stroke="{DynamicResource Toggl.LightGrayBrush}" StrokeThickness="2" StrokeDashArray="1 1" Grid.Row="1"
                               Data="M 0,0 v20 M 20,0 v20">
                         </Path>
-                        <ContentControl Content="{StaticResource Toggl.Timeline.AddNewEntry}" Grid.Row="0" Grid.RowSpan="2"/>
+                        <ContentControl Content="{StaticResource Toggl.Timeline.AddNewEntryIcon}" Grid.Row="0" Grid.RowSpan="2"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

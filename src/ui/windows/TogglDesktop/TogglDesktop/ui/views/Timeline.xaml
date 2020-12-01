@@ -167,7 +167,7 @@
                             </togglDesktop:TimelineRunningTimeEntryBlock.Style>
                         </togglDesktop:TimelineRunningTimeEntryBlock>
                         <Button DataContext="{Binding RunningGapTimeEntryBlock}"
-                                Style="{StaticResource Toggl.Timeline.GapButtonOpen}"
+                                Style="{StaticResource Toggl.Timeline.GapButton.Running}"
                                 Canvas.Top="{Binding VerticalOffset}"
                                 Canvas.Left="{Binding HorizontalOffset}"
                                 Height="{Binding Height}" 
