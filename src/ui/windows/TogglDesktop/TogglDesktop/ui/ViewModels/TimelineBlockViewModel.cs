@@ -37,24 +37,18 @@ namespace TogglDesktop.ViewModels
     public class TimeEntryBlock : TimelineBlockViewModel
     {
         [Reactive]
-        public string Color { get; set; }
-        [Reactive]
         public bool ShowDescription { get; set; }
-        [Reactive]
-        public string Description { get; set; }
-        [Reactive]
-        public string ProjectName { get; set; }
-        [Reactive]
-        public string ClientName { get; set; }
-        public string TaskName { get; set; }
-        [Reactive]
-        public bool HasTag { get; set; }
-        [Reactive]
-        public bool IsBillable { get; set; }
+        public string Color => _timeEntry.Color;
+        public string Description => _timeEntry.Description.IsNullOrEmpty() ? "No Description" : _timeEntry.Description;
+        public string ProjectName => _timeEntry.ProjectLabel;
+        public string ClientName => _timeEntry.ClientLabel;
+        public string TaskName => _timeEntry.TaskLabel;
+        public bool HasTag => !_timeEntry.Tags.IsNullOrEmpty();
+        public bool IsBillable => _timeEntry.Billable;
         public string Duration { [ObservableAsProperty]get; }
         public string StartEndCaption { [ObservableAsProperty]get; }
         public ReactiveCommand<Unit, Unit> OpenEditView { get; }
-        public string TimeEntryId { get; }
+        public string TimeEntryId => _timeEntry.GUID;
 
         [Reactive]
         public bool IsEditViewOpened { get; set; }
@@ -64,15 +58,19 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public bool IsDragged { get; set; }
 
-        public DateTime DateCreated { get; }
+        public ulong Started => _timeEntry.Started;
+        public ulong Ended => _timeEntry.Ended;
+
+        private DateTime DateCreated { get; }
 
         private readonly double _hourHeight;
+        private readonly Toggl.TogglTimeEntryView _timeEntry;
 
-        public TimeEntryBlock(string timeEntryId, int hourHeight, DateTime date)
+        public TimeEntryBlock(Toggl.TogglTimeEntryView te, int hourHeight, DateTime date)
         {
             _hourHeight = hourHeight;
             DateCreated = date;
-            TimeEntryId = timeEntryId;
+            _timeEntry = te;
             OpenEditView = ReactiveCommand.Create(() => Toggl.Edit(TimeEntryId, false, Toggl.Description));
             var startEndObservable = this.WhenAnyValue(x => x.VerticalOffset, x => x.Height, (offset, height) =>
                 (Started: TimelineUtils.ConvertOffsetToDateTime(offset, date, _hourHeight), Ended: TimelineUtils.ConvertOffsetToDateTime(offset + height, date, _hourHeight)));
