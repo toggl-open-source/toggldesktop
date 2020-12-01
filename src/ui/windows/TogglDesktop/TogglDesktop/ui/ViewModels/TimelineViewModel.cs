@@ -90,7 +90,7 @@ namespace TogglDesktop.ViewModels
                 .Subscribe(h => CurrentTimeOffset = h);
             this.WhenAnyValue(x => x.CurrentTimeOffset).Where(_ => RunningTimeEntryBlock != null)
                 .Select(off => Math.Max(TimelineConstants.MinTimeEntryBlockHeight,
-                    CurrentTimeOffset - RunningTimeEntryBlock.VerticalOffset - 1))
+                    CurrentTimeOffset - RunningTimeEntryBlock.VerticalOffset))
                 .Subscribe(h => RunningTimeEntryBlock.Height = h);
             this.WhenAnyValue(x => x.TimeEntryBlocks, x => x.RunningTimeEntryBlock, x => x.IsTodaySelected,
                 (blocks, running, isToday) => blocks?.Any() == true || (running != null && isToday))
@@ -202,7 +202,7 @@ namespace TogglDesktop.ViewModels
 
                 var startTime = entry.StartTime();
                 var ended = entry.GUID == runningEntry?.GUID 
-                    ? TimelineUtils.ConvertOffsetToUnixTime(currentTimeOffset - 1, selectedDate, TimelineConstants.ScaleModes[selectedScaleMode])
+                    ? TimelineUtils.ConvertOffsetToUnixTime(currentTimeOffset, selectedDate, TimelineConstants.ScaleModes[selectedScaleMode])
                     : entry.Ended;
                 var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(ended), selectedScaleMode);
                 var block = new TimeEntryBlock(entry.GUID, TimelineConstants.ScaleModes[selectedScaleMode], selectedDate)
