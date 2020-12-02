@@ -28,21 +28,21 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </customView>
-                <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="IJ4-qg-XP7" customClass="CornerBoxView" customModule="Toggl_Track" customModuleProvider="target">
+                <customView verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="IJ4-qg-XP7" customClass="CornerBoxView" customModule="Toggl_Track" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
                     <subviews>
-                        <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="4" horizontalStackHuggingPriority="750" verticalStackHuggingPriority="249.99998474121094" horizontalClippingResistancePriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dpe-7G-baj">
+                        <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="4" horizontalStackHuggingPriority="750" verticalStackHuggingPriority="249.99998474121094" horizontalClippingResistancePriority="250" verticalHuggingPriority="750" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dpe-7G-baj">
                             <rect key="frame" x="30" y="22" width="167" height="81"/>
                             <subviews>
-                                <textField horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="xXs-or-rIk">
-                                    <rect key="frame" x="-2" y="66" width="77" height="15"/>
+                                <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="xXs-or-rIk">
+                                    <rect key="frame" x="-2" y="66" width="171" height="15"/>
                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" title="Copy Review" id="x7F-x0-ynb">
                                         <font key="font" metaFont="cellTitle"/>
                                         <color key="textColor" name="black-text-color"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="euI-fo-hqA" customClass="ProjectTextField">
+                                <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="euI-fo-hqA" customClass="ProjectTextField">
                                     <rect key="frame" x="-2" y="47" width="171" height="15"/>
                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL " placeholderString="+ Add project" id="liW-U4-bg3">
                                         <font key="font" metaFont="cellTitle"/>
@@ -50,8 +50,8 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ypi-B4-1IQ">
-                                    <rect key="frame" x="-2" y="28" width="72" height="15"/>
+                                <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ypi-B4-1IQ">
+                                    <rect key="frame" x="-2" y="28" width="171" height="15"/>
                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" title="Client name" id="tNO-GK-NSh">
                                         <font key="font" metaFont="cellTitle"/>
                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -126,7 +126,7 @@
                         </stackView>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="Dpe-7G-baj" secondAttribute="trailing" id="juF-oq-IqR"/>
+                        <constraint firstAttribute="trailing" secondItem="Dpe-7G-baj" secondAttribute="trailing" priority="999" id="juF-oq-IqR"/>
                         <constraint firstItem="Dpe-7G-baj" firstAttribute="leading" secondItem="IJ4-qg-XP7" secondAttribute="leading" constant="30" id="mCx-nk-Ise"/>
                         <constraint firstItem="Dpe-7G-baj" firstAttribute="top" secondItem="IJ4-qg-XP7" secondAttribute="top" constant="4" id="rZn-oT-5Ns"/>
                     </constraints>
@@ -173,8 +173,8 @@
                 <constraint firstItem="CHS-wV-aVu" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" priority="750" id="UmF-V8-X38"/>
                 <constraint firstItem="ZlO-hY-zkZ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="VAG-Yl-MTB"/>
                 <constraint firstAttribute="bottom" secondItem="IJ4-qg-XP7" secondAttribute="bottom" priority="750" id="Vu0-nc-Hg8"/>
-                <constraint firstItem="IJ4-qg-XP7" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" priority="750" id="ZgH-yY-IDO"/>
-                <constraint firstAttribute="trailing" secondItem="IJ4-qg-XP7" secondAttribute="trailing" priority="750" id="kIo-Bq-IJw"/>
+                <constraint firstItem="IJ4-qg-XP7" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="ZgH-yY-IDO"/>
+                <constraint firstAttribute="trailing" secondItem="IJ4-qg-XP7" secondAttribute="trailing" id="kIo-Bq-IJw"/>
             </constraints>
             <point key="canvasLocation" x="32.5" y="162.5"/>
         </customView>
