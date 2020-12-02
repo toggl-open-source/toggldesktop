@@ -13,6 +13,7 @@ namespace TogglDesktop.Resources
         public const double TimeEntryBlockWidth = 20;
         public const double GapBetweenOverlappingTEs = 5;
         public const double AcceptableBlocksOverlap = 1e-5;
+        public const double MinGapTimeEntryHeight = 10;
 
         public static IReadOnlyDictionary<int, int> ScaleModes { get; } = new Dictionary<int, int>()
         {

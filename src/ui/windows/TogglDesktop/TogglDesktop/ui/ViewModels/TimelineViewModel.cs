@@ -68,8 +68,12 @@ namespace TogglDesktop.ViewModels
                     tuple.TimeEntries.Where(b => b.Key != tuple.Running?.GUID)
                         .ToDictionary(pair => pair.Key, pair => pair.Value))
                 .ToPropertyEx(this, x => x.TimeEntryBlocks);
-            blocksObservable.Select(blocks => GenerateGapTimeEntryBlocks(blocks.Values.ToList(), SelectedScaleMode, SelectedDate))
+            blocksObservable.Select(blocks => GenerateGapTimeEntryBlocks(blocks.Values.ToList()))
                 .ToPropertyEx(this, x => x.GapTimeEntryBlocks);
+            blocksWithRunningObservable
+                .Select(tuple =>
+                    GenerateRunningGapBlock(tuple.TimeEntries.Values, tuple.Running, CurrentTimeOffset, SelectedDate))
+                .ToPropertyEx(this, x => x.RunningGapTimeEntryBlock);
 
             this.WhenAnyValue(x => x.TimeEntryBlocks)
                 .Where(blocks => blocks != null && blocks.Any())
@@ -88,10 +92,10 @@ namespace TogglDesktop.ViewModels
             Observable.Timer(TimeSpan.Zero,TimeSpan.FromMinutes(1))
                 .Select(_ => ConvertTimeIntervalToHeight(DateTime.Today, DateTime.Now, SelectedScaleMode))
                 .Subscribe(h => CurrentTimeOffset = h);
-            this.WhenAnyValue(x => x.CurrentTimeOffset).Where(_ => RunningTimeEntryBlock != null)
-                .Select(off => Math.Max(TimelineConstants.MinTimeEntryBlockHeight,
-                    CurrentTimeOffset - RunningTimeEntryBlock.VerticalOffset))
-                .Subscribe(h => RunningTimeEntryBlock.Height = h);
+            this.WhenAnyValue(x => x.CurrentTimeOffset).Select(offset => (Offset: offset,
+                    Block: RunningTimeEntryBlock as TimelineBlockViewModel ?? RunningGapTimeEntryBlock))
+                .Where(tuple => tuple.Block != null)
+                .Subscribe(tuple => tuple.Block.Height = tuple.Offset - tuple.Block.VerticalOffset);
             this.WhenAnyValue(x => x.TimeEntryBlocks, x => x.RunningTimeEntryBlock, x => x.IsTodaySelected,
                 (blocks, running, isToday) => blocks?.Any() == true || (running != null && isToday))
                 .ToPropertyEx(this, x => x.AnyTimeEntries);
@@ -205,18 +209,11 @@ namespace TogglDesktop.ViewModels
                     ? TimelineUtils.ConvertOffsetToUnixTime(currentTimeOffset, selectedDate, TimelineConstants.ScaleModes[selectedScaleMode])
                     : entry.Ended;
                 var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(ended), selectedScaleMode);
-                var block = new TimeEntryBlock(entry.GUID, TimelineConstants.ScaleModes[selectedScaleMode], selectedDate)
+                var block = new TimeEntryBlock(entry, TimelineConstants.ScaleModes[selectedScaleMode], selectedDate)
                 {
                     Height = height,
                     VerticalOffset = ConvertTimeIntervalToHeight(selectedDate, startTime, selectedScaleMode),
-                    Color = entry.Color,
-                    Description = entry.Description.IsNullOrEmpty() ? "No Description" : entry.Description,
-                    ProjectName = entry.ProjectLabel,
-                    ClientName = entry.ClientLabel,
-                    TaskName = entry.TaskLabel,
-                    ShowDescription = true,
-                    HasTag = !entry.Tags.IsNullOrEmpty(),
-                    IsBillable = entry.Billable
+                    ShowDescription = true
                 };
                 if (entry.Started < ended)
                 {
@@ -239,7 +236,7 @@ namespace TogglDesktop.ViewModels
                 var time1 = te1.Type == TimeStampType.End ? te1.Block.Bottom : te1.Block.VerticalOffset;
                 var time2 = te2.Type == TimeStampType.End ? te2.Block.Bottom : te2.Block.VerticalOffset;
                 var res = time1 - time2;
-                if (Math.Abs(res) < TimelineConstants.AcceptableBlocksOverlap)
+                if (res.IsNearEqual(0, TimelineConstants.AcceptableBlocksOverlap))
                 {
                     var getPriority = new Func<TimeStampType, int>(t =>
                         t == TimeStampType.End ? 0 : t == TimeStampType.Empty ? 1 : 2);
@@ -288,7 +285,7 @@ namespace TogglDesktop.ViewModels
             return timeInterval * TimelineConstants.ScaleModes[scaleMode] / 60;
         }
 
-        private static List<GapTimeEntryBlock> GenerateGapTimeEntryBlocks(List<TimeEntryBlock> timeEntries, int selectedScaleMode, DateTime selectedDate)
+        private static List<GapTimeEntryBlock> GenerateGapTimeEntryBlocks(List<TimeEntryBlock> timeEntries)
         {
             var gaps = new List<GapTimeEntryBlock>();
             timeEntries.Sort((te1,te2) => te1.VerticalOffset.CompareTo(te2.VerticalOffset));
@@ -297,21 +294,45 @@ namespace TogglDesktop.ViewModels
             {
                 if (lastTimeEntry != null && entry.VerticalOffset > lastTimeEntry.Bottom)
                 {
-                    var block = new GapTimeEntryBlock((offset, height) => AddNewTimeEntry(offset, height, selectedScaleMode, selectedDate))
+                    var gapStart = lastTimeEntry.Ended + 1;
+                    var block = new GapTimeEntryBlock((offset, height) => Toggl.CreateEmptyTimeEntry(gapStart, entry.Started))
                     {
                         Height = entry.VerticalOffset - lastTimeEntry.Bottom,
                         VerticalOffset = lastTimeEntry.Bottom,
                         HorizontalOffset = 0
                     };
-                    if (block.Height > 10) // Don't display to small gaps not to obstruct the view
+                    if (block.Height >= TimelineConstants.MinGapTimeEntryHeight) // Don't display too small gaps not to obstruct the view
                         gaps.Add(block);
                 }
                 lastTimeEntry = lastTimeEntry == null || entry.Bottom > lastTimeEntry.Bottom
                     ? entry 
                     : lastTimeEntry;
             }
-            
+
             return gaps;
+        }
+
+        private static GapTimeEntryBlock GenerateRunningGapBlock(IEnumerable<TimeEntryBlock> timeEntries, Toggl.TogglTimeEntryView? running,
+            double curTimeOffset, DateTime selectedDate)
+        {
+            if (running != null || selectedDate.Date != DateTime.Today) return null;
+
+            var lastTimeEntry = timeEntries.Aggregate(default(TimeEntryBlock),
+                (max, next) => max == null || next.Ended > max.Ended ? next : max);
+            if (lastTimeEntry != null && curTimeOffset >= lastTimeEntry.Bottom + TimelineConstants.MinGapTimeEntryHeight)
+                return new GapTimeEntryBlock(
+                    (offset, height) =>
+                    {
+                        var id = Toggl.Start("", "", 0, 0, "", "");
+                        Toggl.SetTimeEntryStartTimeStamp(id, (long)lastTimeEntry.Ended+1);
+                        return id;
+                    })
+                {
+                    Height = curTimeOffset - lastTimeEntry.Bottom,
+                    VerticalOffset = lastTimeEntry.Bottom,
+                    HorizontalOffset = 0
+                };
+            return null;
         }
 
         public static string AddNewTimeEntry(double offset, double height, int scaleMode, DateTime date)
@@ -354,6 +375,8 @@ namespace TogglDesktop.ViewModels
         public bool AnyTimeEntries { [ObservableAsProperty] get; }
 
         public List<GapTimeEntryBlock> GapTimeEntryBlocks { [ObservableAsProperty] get; }
+
+        public GapTimeEntryBlock RunningGapTimeEntryBlock { [ObservableAsProperty] get; }
 
         [Reactive]
         public string SelectedForEditTEId { get; set; }

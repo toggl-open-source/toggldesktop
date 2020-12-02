@@ -435,5 +435,14 @@ public static class Utils
             Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 1;
 
         #endregion environment
-}
+
+        #region working with numbers
+
+        public static bool IsNearEqual(this double first, double second, double precision = 1e-5)
+        {
+            return Math.Abs(first - second) <= precision;
+        }
+
+        #endregion
+    }
 }

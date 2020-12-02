@@ -151,10 +151,11 @@
                             MouseDown="OnTimeEntryCanvasMouseDown"
                             MouseMove="OnTimeEntryCanvasMouseMove"
                             MouseUp="OnTimeEntryCanvasMouseUp"/>
-                    <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0" Visibility="{Binding RunningTimeEntryBlock, Converter={StaticResource NullToCollapsedConverter}}">
+                    <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0">
                         <togglDesktop:TimelineRunningTimeEntryBlock DataContext="{Binding RunningTimeEntryBlock}"
                                                                     Canvas.Top="{Binding VerticalOffset}"
-                                                                    Canvas.Left="{Binding HorizontalOffset}">
+                                                                    Canvas.Left="{Binding HorizontalOffset}"
+                                                                    Visibility="{Binding Path=., Converter={StaticResource NullToCollapsedConverter}}">
                             <togglDesktop:TimelineRunningTimeEntryBlock.Style>
                                 <Style TargetType="FrameworkElement">
                                     <Style.Triggers>
@@ -165,6 +166,15 @@
                                 </Style>
                             </togglDesktop:TimelineRunningTimeEntryBlock.Style>
                         </togglDesktop:TimelineRunningTimeEntryBlock>
+                        <Button DataContext="{Binding RunningGapTimeEntryBlock}"
+                                Style="{StaticResource Toggl.Timeline.GapButton.Running}"
+                                Canvas.Top="{Binding VerticalOffset}"
+                                Canvas.Left="{Binding HorizontalOffset}"
+                                Height="{Binding Height}" 
+                                Width="{x:Static res:TimelineConstants.TimeEntryBlockWidth}"
+                                Command="{Binding CreateTimeEntryFromBlock}"
+                                Visibility="{Binding Path=., Converter={StaticResource NullToCollapsedConverter}}">
+                        </Button>
                     </Canvas>
                     <Canvas Grid.Row="1" Grid.ColumnSpan="5" Grid.Column="0"
                             Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanToVisibilityConverter}}"

@@ -358,9 +358,28 @@
                                    RadiusX="15"
                                    RadiusY="7">
                         </Rectangle>
-                        <Viewbox Stretch="None">
-                            <Path Opacity="0.348" Fill="{DynamicResource Toggl.DarkGrayBrush}" Data="M 0 5h4.25v4.25h1.5v-4.25h4.25v-1.5h-4.25v-4.25h-1.5v4.25h-4.25Z"/>
-                        </Viewbox>
+                        <ContentControl Content="{StaticResource Toggl.Timeline.AddNewEntryIcon}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Button" x:Key="Toggl.Timeline.GapButton.Running">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid UseLayoutRounding="False" Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Path SnapsToDevicePixels="True" Stroke="{DynamicResource Toggl.LightGrayBrush}" StrokeThickness="2" StrokeDashArray="0.94 0.94" Grid.Row="0"
+                              Data="M 1,10 A 9,8 0 1 1 19,10">
+                        </Path>
+                        <Path SnapsToDevicePixels="True" Stretch="Fill" Stroke="{DynamicResource Toggl.LightGrayBrush}" StrokeThickness="2" StrokeDashArray="1 1" Grid.Row="1"
+                              Data="M 0,0 v20 M 20,0 v20">
+                        </Path>
+                        <ContentControl Content="{StaticResource Toggl.Timeline.AddNewEntryIcon}" Grid.Row="0" Grid.RowSpan="2"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
