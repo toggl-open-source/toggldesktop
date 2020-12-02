@@ -77,9 +77,10 @@ namespace TogglDesktop.ViewModels
             DateCreated = date;
             _timeEntry = te;
             OpenEditView = ReactiveCommand.Create(() => Toggl.Edit(TimeEntryId, false, Toggl.Description));
-            ContinueEntry = ReactiveCommand.Create(() => Toggl.Continue(TimeEntryId));
-            CreateFromEnd = ReactiveCommand.Create(() => TimelineUtils.CreateAndEditTimeEntry(Ended, Ended + 3600));
-            StartFromEnd = ReactiveCommand.Create(() => TimelineUtils.CreateAndEditRunningTimeEntryFrom(Ended));
+            var isNotRunningObservable = Observable.Return(_timeEntry.DurationInSeconds >= 0);
+            ContinueEntry = ReactiveCommand.Create(() => Toggl.Continue(TimeEntryId), isNotRunningObservable);
+            CreateFromEnd = ReactiveCommand.Create(() => TimelineUtils.CreateAndEditTimeEntry(Ended, Ended + 3600), isNotRunningObservable);
+            StartFromEnd = ReactiveCommand.Create(() => TimelineUtils.CreateAndEditRunningTimeEntryFrom(Ended), isNotRunningObservable);
             Delete = ReactiveCommand.Create(() => Toggl.DeleteTimeEntry(TimeEntryId));
             var startEndObservable = this.WhenAnyValue(x => x.VerticalOffset, x => x.Height, (offset, height) =>
                 (Started: TimelineUtils.ConvertOffsetToDateTime(offset, date, _hourHeight), Ended: TimelineUtils.ConvertOffsetToDateTime(offset + height, date, _hourHeight)));
