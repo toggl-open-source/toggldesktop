@@ -15,6 +15,11 @@ namespace TogglDesktop
             return IsDurationLessThan15Seconds(timeEntry.DurationInSeconds);
         }
 
+        public static bool ConfirmlessDelete(this TimeEntryBlock block)
+        {
+            return IsDurationLessThan15Seconds(block.DurationInSeconds);
+        }
+
         public static void DeleteTimeEntry(this TimeEntryCellViewModel cell)
         {
             if (cell.ConfirmlessDelete())
@@ -23,6 +28,16 @@ namespace TogglDesktop
                 return;
             }
             Toggl.AskToDeleteEntry(cell.Guid);
+        }
+
+        public static void DeleteTimeEntry(this TimeEntryBlock block)
+        {
+            if (block.ConfirmlessDelete())
+            {
+                Toggl.DeleteTimeEntry(block.TimeEntryId);
+                return;
+            }
+            Toggl.AskToDeleteEntry(block.TimeEntryId);
         }
 
         private static bool IsDurationLessThan15Seconds(long durationInSeconds)
