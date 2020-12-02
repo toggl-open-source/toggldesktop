@@ -218,7 +218,7 @@ namespace TogglDesktop.ViewModels
                 {
                     Height = height,
                     VerticalOffset = ConvertTimeIntervalToHeight(selectedDate, startTime, selectedScaleMode),
-                    ShowDescription = true
+                    IsOverlapping = false
                 };
                 if (entry.Started < ended)
                 {
@@ -251,7 +251,6 @@ namespace TogglDesktop.ViewModels
             });
             var offsets = new HashSet<double>();
             var curOffset = 0d;
-            var usedNumOfOffsets = 0;
             TimeEntryBlock prevLayerBlock = null;
             foreach (var item in timeStampsList)
             {
@@ -262,21 +261,18 @@ namespace TogglDesktop.ViewModels
                         offsets.Add(curOffset);
                         curOffset += TimelineConstants.TimeEntryBlockWidth+TimelineConstants.GapBetweenOverlappingTEs;
                     }
-                    if (usedNumOfOffsets > 0 || item.Block.Height < TimelineConstants.MinShowTEDescriptionHeight)
+                    if (prevLayerBlock != null)
                     {
-                        item.Block.ShowDescription = false;
-                        if (prevLayerBlock != null)
-                            prevLayerBlock.ShowDescription = false;
+                        item.Block.IsOverlapping = true;
+                        prevLayerBlock.IsOverlapping = true;
                     }
                     item.Block.HorizontalOffset = offsets.Min();
                     offsets.Remove(offsets.Min());
-                    usedNumOfOffsets++;
                     prevLayerBlock = item.Block;
                 }
                 if (item.Type == TimeStampType.End || item.Type == TimeStampType.Empty)
                 {
                     offsets.Add(item.Block.HorizontalOffset);
-                    usedNumOfOffsets--;
                     prevLayerBlock = null;
                 }
             }
