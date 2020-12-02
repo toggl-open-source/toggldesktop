@@ -1,9 +1,9 @@
 {
     "win": {
         "dev": {
-            "version": "7.5.406",
-            "windows": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.406/TogglDesktopInstaller-7.5.406.exe",
-            "windows64": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.406/TogglDesktopInstaller-x64-7.5.406.exe"
+            "version": "7.5.407",
+            "windows": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.407/TogglDesktopInstaller-7.5.407.exe",
+            "windows64": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.407/TogglDesktopInstaller-x64-7.5.407.exe"
         },
         "beta": {
             "version": "7.5.403",
