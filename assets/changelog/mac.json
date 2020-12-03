@@ -1,6 +1,17 @@
 {
     "versions": [
         {
+            "version": "7.5.409",
+            "rows": [
+                "Ability to activate start button with Enter key when focused",
+                "Fixed bug when after closing error message it appeared again",
+                "Better appearance for long time entry description/project/client on the Timeline",
+                "Various bug fixes for macOS Big Sur"
+            ],
+            "date": "December 3rd 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.386",
             "rows": [
                 "Bug fixes",
