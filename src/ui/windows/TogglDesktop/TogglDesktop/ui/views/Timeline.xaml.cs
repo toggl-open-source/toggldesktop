@@ -136,7 +136,7 @@ namespace TogglDesktop
             {
                 if (Math.Abs(mouseButtonEventArgs.GetPosition(TimeEntryBlocks).Y - _dragStartedPoint.Value) <= 2)
                 {
-                    ViewModel.TimeEntryBlocks[_timeEntryId].Height = TimelineConstants.ScaleModes[ViewModel.SelectedScaleMode];
+                    ViewModel.TimeEntryBlocks[_timeEntryId].Height = TimelineConstants.DefaultTimeEntryLengthInHours*TimelineConstants.ScaleModes[ViewModel.SelectedScaleMode];
                 }
                 ViewModel.TimeEntryBlocks[_timeEntryId].ChangeStartEndTime();
                 ViewModel.TimeEntryBlocks[_timeEntryId].IsDragged = false;
@@ -146,6 +146,14 @@ namespace TogglDesktop
             _dragStartedPoint = null;
             _timeEntryId = null;
             Mouse.Capture(null);
+        }
+
+        private void OnTimeEntryContextMenuOpen(object sender, ContextMenuEventArgs contextMenuEventArgs)
+        {
+            if (sender is FrameworkElement uiElement)
+            {
+                ViewModel.ActiveTimeEntryBlock = uiElement.DataContext as TimeEntryBlock;
+            }
         }
     }
 }

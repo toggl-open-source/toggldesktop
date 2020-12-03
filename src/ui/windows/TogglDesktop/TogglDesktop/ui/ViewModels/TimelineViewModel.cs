@@ -45,6 +45,12 @@ namespace TogglDesktop.ViewModels
             SelectNextDay = ReactiveCommand.Create(Toggl.ViewTimelineNextDay);
             IncreaseScale = ReactiveCommand.Create(() => SelectedScaleMode = ChangeScaleMode(-1));
             DecreaseScale = ReactiveCommand.Create(() => SelectedScaleMode = ChangeScaleMode(1));
+            var activeBlockObservable = this.WhenAnyValue(x => x.ActiveTimeEntryBlock);
+            var isNotRunningObservable = activeBlockObservable.Select(next => next != null && next.DurationInSeconds >= 0);
+            ContinueEntry = ReactiveCommand.Create(() => Toggl.Continue(ActiveTimeEntryBlock.TimeEntryId), isNotRunningObservable);
+            CreateFromEnd = ReactiveCommand.Create(() => TimelineUtils.CreateAndEditTimeEntry(ActiveTimeEntryBlock.Ended, ActiveTimeEntryBlock.Ended + TimelineConstants.DefaultTimeEntryLengthInSeconds), isNotRunningObservable);
+            StartFromEnd = ReactiveCommand.Create(() => TimelineUtils.CreateAndEditRunningTimeEntryFrom(ActiveTimeEntryBlock.Ended), isNotRunningObservable);
+            Delete = ReactiveCommand.Create(() => ActiveTimeEntryBlock.DeleteTimeEntry(), activeBlockObservable.Select(next => next != null));
             var scaleModeObservable = this.WhenAnyValue(x => x.SelectedScaleMode);
             scaleModeObservable.Subscribe(_ =>
                 HourHeightView = TimelineConstants.ScaleModes[SelectedScaleMode] * GetHoursInLine(SelectedScaleMode));
@@ -379,6 +385,9 @@ namespace TogglDesktop.ViewModels
 
         [Reactive]
         public string SelectedForEditTEId { get; set; }
+
+        [Reactive]
+        public TimeEntryBlock ActiveTimeEntryBlock { get; set; }
         public ReactiveCommand<Unit, int> IncreaseScale { get; }
         public ReactiveCommand<Unit, int> DecreaseScale { get; }
 
@@ -388,6 +397,11 @@ namespace TogglDesktop.ViewModels
         public double CurrentTimeOffset { get; set; }
 
         public bool IsTodaySelected { [ObservableAsProperty] get; }
+
+        public ReactiveCommand<Unit, bool> ContinueEntry { get; }
+        public ReactiveCommand<Unit, Unit> CreateFromEnd { get; }
+        public ReactiveCommand<Unit, Unit> StartFromEnd { get; }
+        public ReactiveCommand<Unit, Unit> Delete { get; }
 
         public class ActivityBlock
         {

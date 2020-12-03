@@ -16,6 +16,14 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:TimelineHeightToCornerRadiusConverter x:Key="TimelineHeightToCornerRadiusConverter"/>
+            <ContextMenu x:Key="TimeEntryBlockMenu" Width="300">
+                <MenuItem Header="Continue this entry" Command="{Binding ContinueEntry}"/>
+                <MenuItem Header="Start entry from end of this entry" Command="{Binding StartFromEnd}"
+                          Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <MenuItem Header="Create entry from the end of this entry" Command="{Binding CreateFromEnd}"
+                          Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanInvertToVisibilityConverter}}"/>
+                <MenuItem Header="Delete" Command="{Binding Delete}"/>
+            </ContextMenu>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid MinHeight="100">
@@ -151,11 +159,12 @@
                             MouseDown="OnTimeEntryCanvasMouseDown"
                             MouseMove="OnTimeEntryCanvasMouseMove"
                             MouseUp="OnTimeEntryCanvasMouseUp"/>
-                    <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0">
+                    <Canvas Name="RunningTimeEntryCanvas" Grid.Row="1" Grid.Column="2" Margin="10 0 0 0" ContextMenu="{StaticResource TimeEntryBlockMenu}">
                         <togglDesktop:TimelineRunningTimeEntryBlock DataContext="{Binding RunningTimeEntryBlock}"
                                                                     Canvas.Top="{Binding VerticalOffset}"
                                                                     Canvas.Left="{Binding HorizontalOffset}"
-                                                                    Visibility="{Binding Path=., Converter={StaticResource NullToCollapsedConverter}}">
+                                                                    Visibility="{Binding Path=., Converter={StaticResource NullToCollapsedConverter}}"
+                                                                    ContextMenuOpening="OnTimeEntryContextMenuOpen">
                             <togglDesktop:TimelineRunningTimeEntryBlock.Style>
                                 <Style TargetType="FrameworkElement">
                                     <Style.Triggers>
@@ -166,6 +175,8 @@
                                 </Style>
                             </togglDesktop:TimelineRunningTimeEntryBlock.Style>
                         </togglDesktop:TimelineRunningTimeEntryBlock>
+                    </Canvas>
+                    <Canvas Grid.Row="1" Grid.Column="2" Margin="10 0 0 0">
                         <Button DataContext="{Binding RunningGapTimeEntryBlock}"
                                 Style="{StaticResource Toggl.Timeline.GapButton.Running}"
                                 Canvas.Top="{Binding VerticalOffset}"
@@ -196,7 +207,8 @@
                             </Path.Data>
                         </Path>
                     </Canvas>
-                    <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=TimeEntryBlocks}" Margin="10 0 0 0" Name="TimeEntryBlocks">
+                    <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=TimeEntryBlocks}" Margin="10 0 0 0" Name="TimeEntryBlocks"
+                                  ContextMenu="{StaticResource TimeEntryBlockMenu}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <Canvas Name="TimeEntryCanvas"/>
@@ -205,6 +217,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <togglDesktop:TimelineTimeEntryBlock Panel.ZIndex="1" DataContext="{Binding Path=Value}"
+                                                                     ContextMenuOpening="OnTimeEntryContextMenuOpen"
                                                                      MouseEnter="OnTimeEntryBlockMouseEnter"
                                                                      MouseLeave="OnTimeEntyrBlockMouseLeave">
                                     <togglDesktop:TimelineTimeEntryBlock.Style>

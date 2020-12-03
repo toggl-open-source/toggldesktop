@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using TogglDesktop.Resources;
@@ -45,6 +46,7 @@ namespace TogglDesktop.ViewModels
         public string TaskName => _timeEntry.TaskLabel;
         public bool HasTag => !_timeEntry.Tags.IsNullOrEmpty();
         public bool IsBillable => _timeEntry.Billable;
+        public long DurationInSeconds => _timeEntry.DurationInSeconds;
         public string Duration { [ObservableAsProperty]get; }
         public string StartEndCaption { [ObservableAsProperty]get; }
         public ReactiveCommand<Unit, Unit> OpenEditView { get; }
