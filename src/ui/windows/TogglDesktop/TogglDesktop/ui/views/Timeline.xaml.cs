@@ -148,7 +148,7 @@ namespace TogglDesktop
             Mouse.Capture(null);
         }
 
-        private void OnTimeEntryBlockMouseDown(object sender, MouseButtonEventArgs e)
+        private void OnTimeEntryContextMenuOpen(object sender, ContextMenuEventArgs contextMenuEventArgs)
         {
             if (sender is FrameworkElement uiElement)
             {

@@ -17,12 +17,12 @@
         <ResourceDictionary>
             <converters:TimelineHeightToCornerRadiusConverter x:Key="TimelineHeightToCornerRadiusConverter"/>
             <ContextMenu x:Key="TimeEntryBlockMenu" Width="300">
-                <MenuItem Header="Continue this entry" Command="{Binding ActiveTimeEntryBlock.ContinueEntry}"/>
-                <MenuItem Header="Start entry from end of this entry" Command="{Binding ActiveTimeEntryBlock.StartFromEnd}"
+                <MenuItem Header="Continue this entry" Command="{Binding ContinueEntry}"/>
+                <MenuItem Header="Start entry from end of this entry" Command="{Binding StartFromEnd}"
                           Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <MenuItem Header="Create entry from the end of this entry" Command="{Binding ActiveTimeEntryBlock.CreateFromEnd}"
+                <MenuItem Header="Create entry from the end of this entry" Command="{Binding CreateFromEnd}"
                           Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanInvertToVisibilityConverter}}"/>
-                <MenuItem Header="Delete" Command="{Binding ActiveTimeEntryBlock.Delete}"/>
+                <MenuItem Header="Delete" Command="{Binding Delete}"/>
             </ContextMenu>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -164,7 +164,7 @@
                                                                     Canvas.Top="{Binding VerticalOffset}"
                                                                     Canvas.Left="{Binding HorizontalOffset}"
                                                                     Visibility="{Binding Path=., Converter={StaticResource NullToCollapsedConverter}}"
-                                                                    MouseDown="OnTimeEntryBlockMouseDown">
+                                                                    ContextMenuOpening="OnTimeEntryContextMenuOpen">
                             <togglDesktop:TimelineRunningTimeEntryBlock.Style>
                                 <Style TargetType="FrameworkElement">
                                     <Style.Triggers>
@@ -217,7 +217,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <togglDesktop:TimelineTimeEntryBlock Panel.ZIndex="1" DataContext="{Binding Path=Value}"
-                                                                     MouseDown="OnTimeEntryBlockMouseDown"
+                                                                     ContextMenuOpening="OnTimeEntryContextMenuOpen"
                                                                      MouseEnter="OnTimeEntryBlockMouseEnter"
                                                                      MouseLeave="OnTimeEntyrBlockMouseLeave">
                                     <togglDesktop:TimelineTimeEntryBlock.Style>
