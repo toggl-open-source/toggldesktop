@@ -48,7 +48,7 @@ namespace TogglDesktop.ViewModels
             var activeBlockObservable = this.WhenAnyValue(x => x.ActiveTimeEntryBlock);
             var isNotRunningObservable = activeBlockObservable.Select(next => next != null && next.DurationInSeconds >= 0);
             ContinueEntry = ReactiveCommand.Create(() => Toggl.Continue(ActiveTimeEntryBlock.TimeEntryId), isNotRunningObservable);
-            CreateFromEnd = ReactiveCommand.Create(() => TimelineUtils.CreateAndEditTimeEntry(ActiveTimeEntryBlock.Ended, ActiveTimeEntryBlock.Ended + 3600), isNotRunningObservable);
+            CreateFromEnd = ReactiveCommand.Create(() => TimelineUtils.CreateAndEditTimeEntry(ActiveTimeEntryBlock.Ended, ActiveTimeEntryBlock.Ended + TimelineConstants.DefaultTimeEntryLengthInSeconds), isNotRunningObservable);
             StartFromEnd = ReactiveCommand.Create(() => TimelineUtils.CreateAndEditRunningTimeEntryFrom(ActiveTimeEntryBlock.Ended), isNotRunningObservable);
             Delete = ReactiveCommand.Create(() => ActiveTimeEntryBlock.DeleteTimeEntry(), activeBlockObservable.Select(next => next != null));
             var scaleModeObservable = this.WhenAnyValue(x => x.SelectedScaleMode);

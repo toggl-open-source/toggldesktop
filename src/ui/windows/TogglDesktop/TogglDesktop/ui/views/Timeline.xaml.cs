@@ -136,7 +136,7 @@ namespace TogglDesktop
             {
                 if (Math.Abs(mouseButtonEventArgs.GetPosition(TimeEntryBlocks).Y - _dragStartedPoint.Value) <= 2)
                 {
-                    ViewModel.TimeEntryBlocks[_timeEntryId].Height = TimelineConstants.ScaleModes[ViewModel.SelectedScaleMode];
+                    ViewModel.TimeEntryBlocks[_timeEntryId].Height = TimelineConstants.DefaultTimeEntryLengthInHours*TimelineConstants.ScaleModes[ViewModel.SelectedScaleMode];
                 }
                 ViewModel.TimeEntryBlocks[_timeEntryId].ChangeStartEndTime();
                 ViewModel.TimeEntryBlocks[_timeEntryId].IsDragged = false;
