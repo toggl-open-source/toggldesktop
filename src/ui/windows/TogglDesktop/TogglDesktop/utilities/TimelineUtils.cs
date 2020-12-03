@@ -1,4 +1,5 @@
 ﻿using System;
+using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
 {
@@ -38,5 +39,8 @@ namespace TogglDesktop
         public static DateTime StartTime(this Toggl.TimelineChunkView chunk) => Toggl.DateTimeFromUnix(chunk.Started);
 
         public static DateTime EndTime(this Toggl.TimelineChunkView chunk) => Toggl.DateTimeFromUnix(chunk.Ended);
+
+        public static bool IsOverlappingWith(this TimeEntryBlock first, TimeEntryBlock second) =>
+            first.Started < second.Ended && second.Started < first.Ended;
     }
 }
