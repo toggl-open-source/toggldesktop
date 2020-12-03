@@ -3194,6 +3194,16 @@
                         "name": "TogglDesktop-7_5_386.dmg"
                     }
                 ]
+            },
+            {
+                "version": "7.5.409",
+                "timestamp": "03-12-2020",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_5_409.dmg"
+                    }
+                ]
             }
         ],
         "stable": [
