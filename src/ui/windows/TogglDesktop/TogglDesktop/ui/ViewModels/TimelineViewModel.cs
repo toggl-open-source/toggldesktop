@@ -366,14 +366,14 @@ namespace TogglDesktop.ViewModels
         {
             var (first, last) = GetOverlappingPair(item, blocks);
             if (last == null) return;
-            Toggl.SetTimeEntryEndTimeStamp(first.TimeEntryId, (long)last.Started - 1);
+            Toggl.SetTimeEntryEndTimeStamp(first.TimeEntryId, (long)last.Started);
         }
 
         public static void ChangeLastEntryStart(TimeEntryBlock item, List<TimeEntryBlock> blocks)
         {
             var (first, last) = GetOverlappingPair(item, blocks);
             if (last == null) return;
-            Toggl.SetTimeEntryStartTimeStamp(last.TimeEntryId, (long)first.Ended + 1);
+            Toggl.SetTimeEntryStartTimeStamp(last.TimeEntryId, (long)first.Ended);
         }
 
         private static (TimeEntryBlock First, TimeEntryBlock Last) GetOverlappingPair(TimeEntryBlock item, IEnumerable<TimeEntryBlock> blocks)
