@@ -38,7 +38,8 @@ namespace TogglDesktop.ViewModels
     public class TimeEntryBlock : TimelineBlockViewModel
     {
         [Reactive]
-        public bool ShowDescription { get; set; }
+        public bool IsOverlapping { get; set; }
+        public bool ShowDescription { [ObservableAsProperty] get; }
         public string Color => _timeEntry.Color;
         public string Description => _timeEntry.Description.IsNullOrEmpty() ? "No Description" : _timeEntry.Description;
         public string ProjectName => _timeEntry.ProjectLabel;
@@ -88,6 +89,9 @@ namespace TogglDesktop.ViewModels
                 .Select(h => h >= TimelineConstants.MinResizableTimeEntryBlockHeight)
                 .Where(_ => !IsDragged)
                 .ToPropertyEx(this, x => x.IsResizable);
+            this.WhenAnyValue(x => x.IsOverlapping)
+                .Select(isOverlapping => !isOverlapping && Height >= TimelineConstants.MinShowTEDescriptionHeight)
+                .ToPropertyEx(this, x => x.ShowDescription);
         }
 
         public void ChangeStartTime()

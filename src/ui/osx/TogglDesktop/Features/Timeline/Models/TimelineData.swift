@@ -209,7 +209,7 @@ final class TimelineData {
             let started = entry.timeEntry.started else { return }
 
         // Set the end time as a start time of selected entry
-        DesktopLibraryBridge.shared().updateTimeEntryWithEnd(atTimestamp: started.timeIntervalSince1970 - 1,
+        DesktopLibraryBridge.shared().updateTimeEntryWithEnd(atTimestamp: started.timeIntervalSince1970,
                                                              guid: firstEntry.timeEntry.guid)
     }
 
@@ -222,7 +222,7 @@ final class TimelineData {
             let endAt = firstEntry.timeEntry.ended else { return }
 
         // Set the start time as a stop time of First entry
-        DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: endAt.timeIntervalSince1970 + 1,
+        DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: endAt.timeIntervalSince1970,
                                                                guid: entry.timeEntry.guid,
                                                                keepEndTimeFixed: true)
     }

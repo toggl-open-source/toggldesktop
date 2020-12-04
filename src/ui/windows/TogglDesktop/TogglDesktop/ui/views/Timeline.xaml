@@ -23,6 +23,9 @@
                 <MenuItem Header="Create entry from the end of this entry" Command="{Binding CreateFromEnd}"
                           Visibility="{Binding IsTodaySelected, Converter={StaticResource BooleanInvertToVisibilityConverter}}"/>
                 <MenuItem Header="Delete" Command="{Binding Delete}"/>
+                <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+                <MenuItem Header="Change first entry stop time" Command="{Binding ChangeFirstTimeEntryStopCommand}"/>
+                <MenuItem Header="Change last entry start time" Command="{Binding ChangeLastTimeEntryStartCommand}"/>
             </ContextMenu>
         </ResourceDictionary>
     </UserControl.Resources>
