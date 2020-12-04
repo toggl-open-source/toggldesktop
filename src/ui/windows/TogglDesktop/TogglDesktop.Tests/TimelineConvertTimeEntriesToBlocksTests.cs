@@ -17,18 +17,19 @@ namespace TogglDesktop.Tests
         [MemberData(nameof(GetData))]
         public void TestConvertTimeEntriesToBlocks_CorrectOffsets(List<Toggl.TogglTimeEntryView> timeEntries,
             Toggl.TogglTimeEntryView? runningEntry,
-            int selectedScaleMode, List<(string Guid, double VerticalOffset, double Height, double HorizontalOffset)> expectedValues)
+            int selectedScaleMode, List<(string Guid, double VerticalOffset, double Height, double HorizontalOffset, bool IsOverlapping)> expectedValues)
         {
             var blocks = TimelineViewModel.ConvertTimeEntriesToBlocks(timeEntries,
                 runningEntry, selectedScaleMode, _selectedDate);
 
             Assert.Equal(expectedValues.Count, blocks.Count);
-            foreach (var (guid, verticalOffset, height, horizontalOffset) in expectedValues)
+            foreach (var (guid, verticalOffset, height, horizontalOffset, isOverlapping) in expectedValues)
             {
                 Assert.True(blocks.ContainsKey(guid));
                 Assert.Equal(verticalOffset, blocks[guid].VerticalOffset, 5);
                 Assert.Equal(height, blocks[guid].Height, 5);
                 Assert.Equal(horizontalOffset, blocks[guid].HorizontalOffset, 5);
+                Assert.Equal(isOverlapping, blocks[guid].IsOverlapping);
             }
         }
 
@@ -60,14 +61,14 @@ namespace TogglDesktop.Tests
                 timeEntryList,
                 null,
                 scaleMode,
-                new List<(string Guid, double VerticalOffset, double Height, double HorizontalOffset)>()
+                new List<(string Guid, double VerticalOffset, double Height, double HorizontalOffset, bool IsOverlapping)>()
                 {
                     (timeEntryList[0].GUID, TimeToHeight(timeEntryList[0].Started - _selectedDateUnix, scaleMode),
-                        TimeToHeight(timeEntryList[0].Ended - timeEntryList[0].Started, scaleMode), 0),
+                        TimeToHeight(timeEntryList[0].Ended - timeEntryList[0].Started, scaleMode), 0, true),
                     (timeEntryList[1].GUID, TimeToHeight(timeEntryList[1].Started - _selectedDateUnix, scaleMode),
-                        TimeToHeight(timeEntryList[1].Ended - timeEntryList[1].Started, scaleMode), 0 + _timeEntryOffset),
+                        TimeToHeight(timeEntryList[1].Ended - timeEntryList[1].Started, scaleMode), 0 + _timeEntryOffset, true),
                     (timeEntryList[2].GUID, TimeToHeight(timeEntryList[2].Started - _selectedDateUnix, scaleMode),
-                        TimeToHeight(timeEntryList[2].Ended - timeEntryList[2].Started, scaleMode), 0)
+                        TimeToHeight(timeEntryList[2].Ended - timeEntryList[2].Started, scaleMode), 0, true)
                 }
             };
         }
