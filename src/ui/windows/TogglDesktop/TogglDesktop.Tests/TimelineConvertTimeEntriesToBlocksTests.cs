@@ -17,10 +17,12 @@ namespace TogglDesktop.Tests
         [MemberData(nameof(GetData))]
         public void TestConvertTimeEntriesToBlocks_CorrectOffsets(List<Toggl.TogglTimeEntryView> timeEntries,
             Toggl.TogglTimeEntryView? runningEntry,
-            int selectedScaleMode, List<(string Guid, double VerticalOffset, double Height, double HorizontalOffset, bool IsOverlapping)> expectedValues)
+            int selectedScaleMode,
+            DateTime now,
+            List<(string Guid, double VerticalOffset, double Height, double HorizontalOffset, bool IsOverlapping)> expectedValues)
         {
             var blocks = TimelineViewModel.ConvertTimeEntriesToBlocks(timeEntries,
-                runningEntry, selectedScaleMode, _selectedDate);
+                runningEntry, selectedScaleMode, _selectedDate, now);
 
             Assert.Equal(expectedValues.Count, blocks.Count);
             foreach (var (guid, verticalOffset, height, horizontalOffset, isOverlapping) in expectedValues)
@@ -36,6 +38,9 @@ namespace TogglDesktop.Tests
         public static IEnumerable<object[]> GetData()
         {
             yield return TestCase1();
+            yield return TestCase2();
+            yield return TestCase_MustIncludeRunningEntry();
+            yield return TestCase_MustNotIncludeRunningEntry();
         }
 
         //Time entries scheme:
@@ -61,6 +66,7 @@ namespace TogglDesktop.Tests
                 timeEntryList,
                 null,
                 scaleMode,
+                _selectedDate,
                 new List<(string Guid, double VerticalOffset, double Height, double HorizontalOffset, bool IsOverlapping)>()
                 {
                     (timeEntryList[0].GUID, TimeToHeight(timeEntryList[0].Started - _selectedDateUnix, scaleMode),
@@ -69,6 +75,91 @@ namespace TogglDesktop.Tests
                         TimeToHeight(timeEntryList[1].Ended - timeEntryList[1].Started, scaleMode), 0 + _timeEntryOffset, true),
                     (timeEntryList[2].GUID, TimeToHeight(timeEntryList[2].Started - _selectedDateUnix, scaleMode),
                         TimeToHeight(timeEntryList[2].Ended - timeEntryList[2].Started, scaleMode), 0, true)
+                }
+            };
+        }
+
+        //Time entries scheme:
+        //  |
+        //  ||
+        //  |||
+        //    |
+        private static object[] TestCase2()
+        {
+            var timeEntryList = new List<Toggl.TogglTimeEntryView>()
+            {
+                new Toggl.TogglTimeEntryView()
+                    {GUID = "1", Started = _selectedDateUnix + 0, Ended = _selectedDateUnix + 150},
+                new Toggl.TogglTimeEntryView()
+                    {GUID = "2", Started = _selectedDateUnix + 50, Ended = _selectedDateUnix + 150},
+                new Toggl.TogglTimeEntryView()
+                    {GUID = "3", Started = _selectedDateUnix + 100, Ended = _selectedDateUnix + 200}
+            };
+            var scaleMode = 1;
+            return new object[]
+            {
+                timeEntryList,
+                null,
+                scaleMode,
+                _selectedDate,
+                new List<(string Guid, double VerticalOffset, double Height, double HorizontalOffset, bool IsOverlapping)>()
+                {
+                    (timeEntryList[0].GUID, TimeToHeight(timeEntryList[0].Started - _selectedDateUnix, scaleMode),
+                        TimeToHeight(timeEntryList[0].Ended - timeEntryList[0].Started, scaleMode), 0, true),
+                    (timeEntryList[1].GUID, TimeToHeight(timeEntryList[1].Started - _selectedDateUnix, scaleMode),
+                        TimeToHeight(timeEntryList[1].Ended - timeEntryList[1].Started, scaleMode), 0 + _timeEntryOffset, true),
+                    (timeEntryList[2].GUID, TimeToHeight(timeEntryList[2].Started - _selectedDateUnix, scaleMode),
+                        TimeToHeight(timeEntryList[2].Ended - timeEntryList[2].Started, scaleMode), 0 + 2*_timeEntryOffset, true)
+                }
+            };
+        }
+
+        //Now >= selected date, and TE is running
+        private static object[] TestCase_MustIncludeRunningEntry()
+        {
+            var timeEntryList = new List<Toggl.TogglTimeEntryView>()
+            {
+                new Toggl.TogglTimeEntryView()
+                    {GUID = "1", Started = _selectedDateUnix + 0, Ended = _selectedDateUnix + 150},
+            };
+            var scaleMode = 1;
+            var runningEntry = new Toggl.TogglTimeEntryView() {GUID = "4", Started = _selectedDateUnix + 150};
+            return new object[]
+            {
+                timeEntryList,
+                new Toggl.TogglTimeEntryView() {GUID = "4", Started = _selectedDateUnix + 150}, 
+                scaleMode,
+                _selectedDate.AddSeconds(300),
+                new List<(string Guid, double VerticalOffset, double Height, double HorizontalOffset, bool IsOverlapping)>()
+                {
+                    (timeEntryList[0].GUID, TimeToHeight(timeEntryList[0].Started - _selectedDateUnix, scaleMode),
+                        TimeToHeight(timeEntryList[0].Ended - timeEntryList[0].Started, scaleMode), 0, false),
+                    (runningEntry.GUID, TimeToHeight(runningEntry.Started - _selectedDateUnix, scaleMode),
+                        TimeToHeight(_selectedDateUnix + 300 - runningEntry.Started, scaleMode), 0, false)
+                }
+            };
+        }
+
+        //Now < selected date, and TE is running
+        private static object[] TestCase_MustNotIncludeRunningEntry()
+        {
+            var timeEntryList = new List<Toggl.TogglTimeEntryView>()
+            {
+                new Toggl.TogglTimeEntryView()
+                    {GUID = "1", Started = _selectedDateUnix + 0, Ended = _selectedDateUnix + 150},
+            };
+            var scaleMode = 1;
+            var runningEntry = new Toggl.TogglTimeEntryView() { GUID = "4", Started = _selectedDateUnix - 600 };
+            return new object[]
+            {
+                timeEntryList,
+                new Toggl.TogglTimeEntryView() {GUID = "4", Started = _selectedDateUnix + 150},
+                scaleMode,
+                _selectedDate.Subtract(TimeSpan.FromSeconds(300)),
+                new List<(string Guid, double VerticalOffset, double Height, double HorizontalOffset, bool IsOverlapping)>()
+                {
+                    (timeEntryList[0].GUID, TimeToHeight(timeEntryList[0].Started - _selectedDateUnix, scaleMode),
+                        TimeToHeight(timeEntryList[0].Ended - timeEntryList[0].Started, scaleMode), 0, false)
                 }
             };
         }
