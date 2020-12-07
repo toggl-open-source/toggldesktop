@@ -240,8 +240,7 @@ namespace TogglDesktop
             Toggl.OnOnlineState += this.onOnlineState;
             Toggl.OnURL += this.onURL;
             Toggl.OnUserTimeEntryStart += this.onUserTimeEntryStart;
-            Toggl.RunningTimeEntry.Subscribe(this.onRunningTimerState);
-            Toggl.StoppedTimerState.Subscribe(_ => this.onStoppedTimerState());
+            Toggl.RunningTimeEntry.Subscribe(this.onRunningTimeEntry);
             Toggl.OnSettings += this.onSettings;
             Toggl.OnDisplayInAppNotification += this.onDisplayInAppNotification;
         }
@@ -301,17 +300,9 @@ namespace TogglDesktop
             }
         }
 
-        private void onStoppedTimerState()
+        private void onRunningTimeEntry(Toggl.TogglTimeEntryView? te)
         {
-            if (this.TryBeginInvoke(this.onStoppedTimerState))
-                return;
-
-            this.updateTracking(null);
-        }
-
-        private void onRunningTimerState(Toggl.TogglTimeEntryView? te)
-        {
-            if (this.TryBeginInvoke(this.onRunningTimerState, te))
+            if (this.TryBeginInvoke(this.onRunningTimeEntry, te))
                 return;
 
             this.updateTracking(te);
