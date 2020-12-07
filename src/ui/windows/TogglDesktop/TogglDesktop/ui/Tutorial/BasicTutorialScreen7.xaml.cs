@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Windows;
 
 namespace TogglDesktop.Tutorial
 {
@@ -14,7 +13,7 @@ namespace TogglDesktop.Tutorial
         private IDisposable _runningTimeEntryObservable;
         protected override void initialise()
         {
-            _runningTimeEntryObservable = Toggl.RunningTimeEntry.Subscribe(this.onRunningTimerState);
+            _runningTimeEntryObservable = Toggl.RunningTimerState.Subscribe(this.onRunningTimerState);
             Toggl.OnTimeEntryEditor += this.onTimerEntryEditor;
         }
 
@@ -24,7 +23,7 @@ namespace TogglDesktop.Tutorial
             Toggl.OnTimeEntryEditor -= this.onTimerEntryEditor;
         }
 
-        private void onRunningTimerState(Toggl.TogglTimeEntryView? te)
+        private void onRunningTimerState(Toggl.TogglTimeEntryView te)
         {
             this.quitTutorial();
         }

@@ -19,7 +19,7 @@ namespace TogglDesktop.Tutorial
 
         protected override void cleanup()
         {
-            _timerStateObservable.Dispose();
+            _timerStateObservable?.Dispose();
         }
 
         private void onStoppedTimerState()

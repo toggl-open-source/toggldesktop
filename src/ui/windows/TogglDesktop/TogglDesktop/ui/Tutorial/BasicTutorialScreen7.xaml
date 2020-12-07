@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:tutorial="clr-namespace:TogglDesktop.Tutorial"
              xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="559.069" d:DesignWidth="381.927"
              Style="{StaticResource TutorialScreen}">
@@ -13,16 +14,18 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
-        <FrameworkElement Grid.Row="1" Height="{StaticResource TimeEntryDayHeaderHeight}"/>
-        <FrameworkElement Grid.Row="2" Height="{StaticResource TimeEntryHeight}"/>
+        <FrameworkElement Grid.Row="1" Height="{StaticResource TabsHeight}"/>
+        <FrameworkElement Grid.Row="2" Height="{StaticResource TimeEntryDayHeaderHeight}"/>
+        <FrameworkElement Grid.Row="3" Height="{StaticResource TimeEntryHeight}"/>
 
-        <Grid Grid.Row="3" Background="{StaticResource ViewBackgroundLight}">
+        <Grid Grid.Row="4" Background="{StaticResource ViewBackgroundLight}">
             <StackPanel Background="{StaticResource TutorialDarkOverlay}">
                 <Grid Margin="0 0 0 40">
-                    <TextBlock Margin="20 10 10 10" TextAlignment="Center"
+                    <TextBlock Margin="30 10 10 10" TextAlignment="Center"
                         HorizontalAlignment="Left">
                         <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
                                Height="22" VerticalAlignment="Top" Margin="-20 -5 -10 5">
@@ -36,7 +39,7 @@
                         in the list.
                     </TextBlock>
 
-                    <TextBlock Margin="10" HorizontalAlignment="Right">
+                    <TextBlock Margin="10 10 20 10" HorizontalAlignment="Right">
                         Or <Bold>continue</Bold>
                         <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
                                Height="22" VerticalAlignment="Top" Margin="-15 -5 -10 5">
@@ -60,7 +63,7 @@
             </StackPanel>
         </Grid>
 
-        <toggl:ProgressBar Grid.Row="3" Margin="30 20"
+        <toggl:ProgressBar Grid.Row="4" Margin="30 20"
             VerticalAlignment="Bottom"
             MaxValue="6" Value="6"/>
     </Grid>
