@@ -7,8 +7,7 @@
                 "Display time entry syncing error in UI",
                 "Fix application may not start bug on Windows 7"
             ],
-            "date": "November 30th 2020",
-            "beta": "true",
+            "date": "December 7th 2020",
             "has64bit": "true"
         },
         {
