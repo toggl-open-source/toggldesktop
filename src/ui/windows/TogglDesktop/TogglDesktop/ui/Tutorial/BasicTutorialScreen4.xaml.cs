@@ -21,7 +21,7 @@ namespace TogglDesktop.Tutorial
         protected override void cleanup()
         {
             Toggl.OnTimeEntryEditor -= this.onTimeEntryEditor;
-            _timerStateObservable.Dispose();
+            _timerStateObservable?.Dispose();
         }
 
         private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)

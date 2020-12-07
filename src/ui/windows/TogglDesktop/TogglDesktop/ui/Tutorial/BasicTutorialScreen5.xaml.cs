@@ -22,7 +22,7 @@ namespace TogglDesktop.Tutorial
         protected override void cleanup()
         {
             Toggl.OnTimeEntryList -= this.onTimeEntryList;
-            _timerStateObservable.Dispose();
+            _timerStateObservable?.Dispose();
         }
 
         private void onTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list, bool showLoadMoreButton)
