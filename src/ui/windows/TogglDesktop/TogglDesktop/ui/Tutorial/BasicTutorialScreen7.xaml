@@ -9,9 +9,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="559.069" d:DesignWidth="381.927"
              Style="{StaticResource TutorialScreen}">
-    <UserControl.Resources>
-        <system:Double x:Key="TabsHeight">40</system:Double>
-    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
