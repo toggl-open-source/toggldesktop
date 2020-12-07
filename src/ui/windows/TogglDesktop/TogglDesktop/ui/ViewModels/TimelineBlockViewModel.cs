@@ -89,8 +89,8 @@ namespace TogglDesktop.ViewModels
                 .Select(h => h >= TimelineConstants.MinResizableTimeEntryBlockHeight)
                 .Where(_ => !IsDragged)
                 .ToPropertyEx(this, x => x.IsResizable);
-            this.WhenAnyValue(x => x.IsOverlapping)
-                .Select(isOverlapping => !isOverlapping && Height >= TimelineConstants.MinShowTEDescriptionHeight)
+            this.WhenAnyValue(x => x.IsOverlapping, x => x.Height,
+                (isOverlapping, height) => !isOverlapping && height >= TimelineConstants.MinShowTEDescriptionHeight)
                 .ToPropertyEx(this, x => x.ShowDescription);
         }
 
