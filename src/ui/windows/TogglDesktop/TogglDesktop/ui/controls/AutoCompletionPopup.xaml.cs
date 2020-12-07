@@ -356,7 +356,7 @@ namespace TogglDesktop
         {
             var item = this.controller.SelectedItem;
             this.select(item, withKeyboard);
-            return true;
+            return item != null;
         }
 
         private void select(IAutoCompleteItem item, bool withKeyboard)
