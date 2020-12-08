@@ -1200,16 +1200,12 @@ TEST(TimeEntry, ParseDurationLargerThan24Hours) {
                       toggl::Format::Improved));
 }
 
-TEST(TimeEntry, InterpretsCrazyStartAndStopAsMissingValues) {
+TEST(TimeEntry, InterpretsCrazyStartAsMissingValues) {
     TimeEntry te;
 
     ASSERT_EQ(Poco::UInt64(0), te.StartTime());
     te.SetStartString("0003-03-16T-7:-19:-24Z", false);
     ASSERT_EQ(Poco::UInt64(0), te.StartTime());
-
-    ASSERT_EQ(Poco::UInt64(0), te.StopTime());
-    te.SetStopString("0003-03-16T-5:-52:-51Z", false);
-    ASSERT_EQ(Poco::UInt64(0), te.StopTime());
 }
 
 TEST(User, Continue) {
