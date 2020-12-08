@@ -223,10 +223,6 @@ void TimeEntry::SetDescription(const std::string &value, bool userModified) {
         SetDirty();
 }
 
-void TimeEntry::SetStopString(const std::string &value, bool userModified) {
-    SetStopTime(Formatter::Parse8601(value), userModified);
-}
-
 void TimeEntry::SetCreatedWith(const std::string &value) {
     if (CreatedWith.Set(value, false))
         SetDirty();
@@ -243,20 +239,22 @@ void TimeEntry::SetWID(Poco::UInt64 value) {
 }
 
 void TimeEntry::SetStopUserInput(const std::string &value) {
-    SetStopString(value, true);
+    std::time_t stopTime = Formatter::Parse8601(value);
 
-    if (StopTime() < StartTime()) {
+    if (stopTime < StartTime()) {
         // Stop time cannot be before start time,
         // it'll get an error from backend.
         Poco::Timestamp ts =
-            Poco::Timestamp::fromEpochTime(StopTime()) + 1*Poco::Timespan::DAYS;
-        SetStopTime(ts.epochTime(), true);
+            Poco::Timestamp::fromEpochTime(stopTime) + 1*Poco::Timespan::DAYS;
+        stopTime = ts.epochTime();
     }
 
-    if (StopTime() < StartTime()) {
+    if (stopTime < StartTime()) {
         logger().error("Stop time must be after start time!");
         return;
     }
+
+    SetStopTime(stopTime, true);
 
     if (!IsTracking()) {
         SetDurationInSeconds(StopTime() - StartTime(), true);

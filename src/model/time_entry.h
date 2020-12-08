@@ -55,7 +55,6 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     void SetStartTime(Poco::Int64 value, bool userModified);
 
     std::string StopString() const;
-    void SetStopString(const std::string &value, bool userModified);
     void SetStopTime(Poco::Int64 value, bool userModified);
 
     void SetDurationInSeconds(const Poco::Int64 value, bool userModified);
