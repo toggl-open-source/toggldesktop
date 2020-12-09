@@ -13,12 +13,12 @@ namespace TogglDesktop.Tests
         private const double _horizontalTimeEntryOffset =
             TimelineConstants.GapBetweenOverlappingTEs + TimelineConstants.TimeEntryBlockWidth;
 
-        private static readonly ulong T1 = 0;
-        private static readonly ulong T2 = 50;
-        private static readonly ulong T3 = 100;
-        private static readonly ulong T4 = 150;
-        private static readonly ulong T5 = 200;
-        private static readonly ulong T6 = 300;
+        private const ulong T1 = 0;
+        private const ulong T2 = 50;
+        private const ulong T3 = 100;
+        private const ulong T4 = 150;
+        private const ulong T5 = 200;
+        private const ulong T6 = 300;
 
         [Theory]
         [MemberData(nameof(GetData))]
