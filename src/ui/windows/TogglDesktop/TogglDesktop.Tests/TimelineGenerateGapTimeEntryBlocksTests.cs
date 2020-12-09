@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TogglDesktop.Resources;
 using TogglDesktop.ViewModels;
 using Xunit;
 
@@ -28,6 +29,8 @@ namespace TogglDesktop.Tests
         {
             yield return TestCase1();
             yield return TestCase2();
+            yield return TestCase_NoSpaceForGap();
+            yield return TestCase_TooLittleSpaceForGap();
         }
 
         //Time entries scheme:
@@ -88,6 +91,47 @@ namespace TogglDesktop.Tests
                 {
                     (150, 50)
                 }
+            };
+        }
+
+        //Time entries scheme:
+        //  |
+        //  |
+        //  |
+        //  |
+        private static object[] TestCase_NoSpaceForGap()
+        {
+            var timeEntryList = new List<TimeEntryBlock>()
+            {
+                new TimeEntryBlock(new Toggl.TogglTimeEntryView(), 100, _selectedDate)
+                    {VerticalOffset = 0, Height = 100},
+                new TimeEntryBlock(new Toggl.TogglTimeEntryView(), 100, _selectedDate)
+                    {VerticalOffset = 100, Height = 100}
+            };
+
+            return new object[]
+            {
+                timeEntryList,
+                new List<(double VerticalOffset, double Height)>()
+            };
+        }
+
+        //No gap is generated for intervals less than 10 (TimelineConstants.MinGapTimeEntryHeight) now
+        private static object[] TestCase_TooLittleSpaceForGap()
+        {
+            var tooLittleHeight = TimelineConstants.MinGapTimeEntryHeight - 0.1;
+            var timeEntryList = new List<TimeEntryBlock>()
+            {
+                new TimeEntryBlock(new Toggl.TogglTimeEntryView(), 100, _selectedDate)
+                    {VerticalOffset = 0, Height = 100},
+                new TimeEntryBlock(new Toggl.TogglTimeEntryView(), 100, _selectedDate)
+                    {VerticalOffset = 100 + tooLittleHeight, Height = 100}
+            };
+
+            return new object[]
+            {
+                timeEntryList,
+                new List<(double VerticalOffset, double Height)>()
             };
         }
     }
