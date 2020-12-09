@@ -1,6 +1,19 @@
 {
     "versions": [
         {
+            "version": "7.5.418",
+            "rows": [
+                "Timeline UI - context menu for time entries: continue, start from end of this entry, delete, overlap resolving",
+                "Timeline UI - gap time entry between last time entry and current time line (if no running time entry)",
+                "Timeline UI - bug fixing",
+                "Fix crash that appeared while running tutorial",
+                "Start timer on first Enter key hit if autocomplete popup is opened but nothing is selected"
+            ],
+            "date": "December 9th 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.403",
             "rows": [
                 "Timeline UI - fix time entries may be dispalyed as overlapped when they are actually not",
