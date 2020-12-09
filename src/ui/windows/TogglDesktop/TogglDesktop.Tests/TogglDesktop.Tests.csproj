@@ -45,6 +45,8 @@
     <Compile Include="LibraryIntegrationTests.cs" />
     <Compile Include="LibraryUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimelineConvertTimeEntriesToBlocksTests.cs" />
+    <Compile Include="TimelineGenerateGapTimeEntryBlocksTests.cs" />
     <Compile Include="UIUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>

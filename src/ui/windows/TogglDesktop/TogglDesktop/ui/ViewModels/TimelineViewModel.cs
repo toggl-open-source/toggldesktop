@@ -68,7 +68,7 @@ namespace TogglDesktop.ViewModels
                 .ToPropertyEx(this, x => x.ActivityBlocks);
             var blocksObservable = Toggl.TimelineTimeEntries
                 .CombineLatest(Toggl.RunningTimeEntry, scaleModeObservable,
-                    (list, running, mode) => ConvertTimeEntriesToBlocks(list, running, mode, SelectedDate));
+                    (list, running, mode) => ConvertTimeEntriesToBlocks(list, running, mode, SelectedDate, DateTime.Now));
             var blocksWithRunningObservable = blocksObservable.CombineLatest(Toggl.RunningTimeEntry,
                 (list, te) => (TimeEntries: list, Running: te))
                 .Where(_ => (TimeEntryBlocks == null || !TimeEntryBlocks.Any(item => item.Value.IsDragged)) && 
@@ -205,10 +205,11 @@ namespace TogglDesktop.ViewModels
             End,
             Empty
         }
-        private static Dictionary<string, TimeEntryBlock> ConvertTimeEntriesToBlocks(List<Toggl.TogglTimeEntryView> timeEntries,
+        public static Dictionary<string, TimeEntryBlock> ConvertTimeEntriesToBlocks(List<Toggl.TogglTimeEntryView> timeEntries,
             Toggl.TogglTimeEntryView? runningEntry,
             int selectedScaleMode,
-            DateTime selectedDate)
+            DateTime selectedDate,
+            DateTime now)
         {
             var timeStampsList = new List<(TimeStampType Type, TimeEntryBlock Block)>();
             var blocks = new Dictionary<string, TimeEntryBlock>();
@@ -216,7 +217,7 @@ namespace TogglDesktop.ViewModels
             // - if it's a start time stamp, then pick up the minimum available offset, if none is available assign a new one.
             // - if it's an end time stamp, then release the offset which it occupied.
             IEnumerable<Toggl.TogglTimeEntryView> allEntries = timeEntries;
-            if (runningEntry != null && runningEntry.Value.StartTime().Date <= selectedDate.Date && DateTime.Now.Date >= selectedDate.Date)
+            if (runningEntry != null && runningEntry.Value.StartTime().Date <= selectedDate.Date && now.Date >= selectedDate.Date)
                 allEntries = allEntries.Union(new List<Toggl.TogglTimeEntryView>(){runningEntry.Value});
             foreach (var entry in allEntries)
             {
@@ -224,7 +225,7 @@ namespace TogglDesktop.ViewModels
 
                 var startTime = entry.StartTime();
                 var ended = entry.GUID == runningEntry?.GUID 
-                    ? (ulong)Toggl.UnixFromDateTime(DateTime.Now)
+                    ? (ulong)Toggl.UnixFromDateTime(now)
                     : entry.Ended;
                 var height = ConvertTimeIntervalToHeight(startTime, Toggl.DateTimeFromUnix(ended), selectedScaleMode);
                 var block = new TimeEntryBlock(entry, TimelineConstants.ScaleModes[selectedScaleMode], selectedDate)
@@ -303,7 +304,7 @@ namespace TogglDesktop.ViewModels
             return timeInterval * TimelineConstants.ScaleModes[scaleMode] / 60;
         }
 
-        private static List<GapTimeEntryBlock> GenerateGapTimeEntryBlocks(List<TimeEntryBlock> timeEntries)
+        public static List<GapTimeEntryBlock> GenerateGapTimeEntryBlocks(List<TimeEntryBlock> timeEntries)
         {
             var gaps = new List<GapTimeEntryBlock>();
             TimeEntryBlock lastTimeEntry = null;
