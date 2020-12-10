@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
@@ -15,6 +17,7 @@ using DynamicData.Binding;
 using Microsoft.Win32;
 using NHotkey;
 using NHotkey.Wpf;
+using ReactiveUI;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.Services;
 using TogglDesktop.Theming;
@@ -92,6 +95,8 @@ namespace TogglDesktop
 
         public bool CanBeHidden => this.IsVisible && this.WindowState != WindowState.Minimized;
 
+        public ReactiveCommand<Unit, Unit> ShowMainWindowCommand { get; private set; }
+
         #endregion
 
         #region setup
@@ -121,6 +126,9 @@ namespace TogglDesktop
                     asMenuItem.CommandTarget = this;
                 }
             }
+
+            ShowMainWindowCommand = ReactiveCommand.Create(this.ShowOnTop, mainContextMenu.WhenAnyValue(x => x.PlacementTarget)
+                .Select(target => target is MiniTimerWindow));
         }
 
         private void initializeSessionNotification()

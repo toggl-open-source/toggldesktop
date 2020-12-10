@@ -12,7 +12,8 @@
              d:DesignWidth="400"
              Title="Toggl Track"
              Style="{StaticResource Toggl.MainWindow}"
-             KeyDown="OnMainWindowKeyDown">
+             KeyDown="OnMainWindowKeyDown"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -88,6 +89,10 @@
                                   Name="togglMiniTimerVisibilityMenuItem" x:FieldModifier="private"
                                   Command="{x:Static toggl:KeyboardShortcuts.ToggleMiniTimerVisibility}"
                                   IsCheckable="True"/>
+                        <MenuItem Header="Show Toggl Track"
+                                  Command="{Binding ShowMainWindowCommand}"
+                                  Style="{StaticResource ContextMenu.Item.ShowIfEnabledStyle}">
+                        </MenuItem>
                         <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
                         <MenuItem Header="Toggl Track Tutorial"
                                   Command="{x:Static toggl:KeyboardShortcuts.BasicTutorial}"
