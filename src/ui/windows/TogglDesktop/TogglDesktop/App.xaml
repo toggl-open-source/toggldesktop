@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="ui/Resources/EditViewStyles.xaml" />
                 <ResourceDictionary Source="ui/Resources/AutotrackerStyles.xaml"/>
                 <ResourceDictionary Source="ui/Resources/TutorialStyles.xaml" />
+                <ResourceDictionary Source="ui/Resources/DesignUpdate/MahApps.Overrides.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />

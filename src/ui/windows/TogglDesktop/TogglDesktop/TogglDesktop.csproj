@@ -211,6 +211,7 @@
     <Compile Include="ui\Behaviors\RepositionPopupWithParentWindowBehavior.cs" />
     <Compile Include="ui\Behaviors\TextBoxHelper.cs" />
     <Compile Include="ui\Behaviors\TimelineTimeEntryPopupHelper.cs" />
+    <Compile Include="ui\controls\CogwheelMenuHelper.cs" />
     <Compile Include="ui\controls\DatePickerHelper.cs" />
     <Compile Include="ui\controls\DaysOfWeekSelector.xaml.cs">
       <DependentUpon>DaysOfWeekSelector.xaml</DependentUpon>
@@ -326,6 +327,7 @@
     <Compile Include="ui\Tutorial\TutorialManager.cs" />
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
     <Compile Include="ui\ViewModels\AboutWindowViewModel.cs" />
+    <Compile Include="ui\ViewModels\CogwheelMenuViewModel.cs" />
     <Compile Include="ui\ViewModels\DayHeaderViewModel.cs" />
     <Compile Include="ui\ViewModels\FeedbackWindowViewModel.cs" />
     <Compile Include="ui\ViewModels\LoginViewModel.cs" />

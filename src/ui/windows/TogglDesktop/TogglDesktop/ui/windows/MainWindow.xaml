@@ -13,16 +13,7 @@
              Title="Toggl Track"
              Style="{StaticResource Toggl.MainWindow}"
              KeyDown="OnMainWindowKeyDown"
-             DataContext="{Binding RelativeSource={RelativeSource Self}}">
-
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/DesignUpdate/MahApps.Overrides.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
-
+             d:DataContext="{d:DesignInstance toggl:MainWindow, IsDesignTimeCreatable=False}">
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
     </i:Interaction.Behaviors>
@@ -84,15 +75,13 @@
                         <MenuItem Header="Use manual mode" InputGestureText="Ctrl + D"
                                   Name="togglManualModeMenuItem" x:FieldModifier="private"
                                   Command="{x:Static toggl:KeyboardShortcuts.ToggleManualMode}"
-                                  IsCheckable="True"/>
+                                  IsCheckable="True"
+                                  IsChecked="{Binding IsInManualMode}"/>
                         <MenuItem Header="Use mini timer"
                                   Name="togglMiniTimerVisibilityMenuItem" x:FieldModifier="private"
                                   Command="{x:Static toggl:KeyboardShortcuts.ToggleMiniTimerVisibility}"
-                                  IsCheckable="True"/>
-                        <MenuItem Header="Show Toggl Track"
-                                  Command="{Binding ShowMainWindowCommand}"
-                                  Style="{StaticResource ContextMenu.Item.ShowIfEnabledStyle}">
-                        </MenuItem>
+                                  IsCheckable="True"
+                                  IsChecked="{Binding IsMiniTimerUsed}"/>
                         <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
                         <MenuItem Header="Toggl Track Tutorial"
                                   Command="{x:Static toggl:KeyboardShortcuts.BasicTutorial}"
@@ -105,7 +94,8 @@
                                   Icon="{StaticResource Toggl.AboutIcon}"/>
                         <MenuItem x:Name="logoutMenuItem" Header="Log out"
                                   Command="{x:Static toggl:KeyboardShortcuts.Logout}"
-                                  Icon="{StaticResource Toggl.LogoutIcon}"/>
+                                  Icon="{StaticResource Toggl.LogoutIcon}"
+                                  InputGestureText="{Binding Email}"/>
                         <MenuItem Header="Quit" InputGestureText="Ctrl + Q"
                                   Command="{x:Static toggl:KeyboardShortcuts.Quit}"
                                   Icon="{StaticResource Toggl.QuitIcon}"/>
