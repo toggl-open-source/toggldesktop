@@ -54,9 +54,9 @@ extension NSColor {
 
     static var timelineBackgroundColor: NSColor {
         if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("timeline-background-color"))!
+            return NSColor(named: "timeline-background-color")!
         } else {
-            return NSColor.clear
+            return NSColor.white
         }
     }
 

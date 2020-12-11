@@ -70,4 +70,9 @@ final class CornerBoxView: NSView {
             layer?.mask = mask
         }
     }
+
+    override func updateLayer() {
+        super.updateLayer()
+        layer?.backgroundColor = backgroundColor.cgColor
+    }
 }
