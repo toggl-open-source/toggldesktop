@@ -46,6 +46,8 @@ namespace TogglDesktop
 
         private IMainView activeView;
         private bool closing;
+        private bool _isLocked;
+        private int _lastInput;
 
         #endregion
 
@@ -73,6 +75,7 @@ namespace TogglDesktop
             this.initializeSessionNotification();
 
             this.idleDetectionTimer.Tick += this.onIdleDetectionTimerTick;
+            SystemEvents.SessionSwitch += HandleSessionStateChanged;
 
             this.finalInitialisation();
             this.trackingWindowSize();
@@ -558,18 +561,27 @@ namespace TogglDesktop
         {
             this.ShowOnTop();
         }
+        private void HandleSessionStateChanged(object sender, SessionSwitchEventArgs e)
+        {
+            _isLocked = e.Reason == SessionSwitchReason.SessionLock;
+        }
 
         private void onIdleDetectionTimerTick(object sender, EventArgs e)
         {
-            Win32.LASTINPUTINFO lastInputInfo;
-            lastInputInfo.cbSize = Win32.LASTINPUTINFO.SizeOf;
-            lastInputInfo.dwTime = 0;
-            if (!Win32.GetLastInputInfo(out lastInputInfo))
+            if (!_isLocked)
             {
-                return;
+                Win32.LASTINPUTINFO lastInputInfo;
+                lastInputInfo.cbSize = Win32.LASTINPUTINFO.SizeOf;
+                lastInputInfo.dwTime = 0;
+                if (!Win32.GetLastInputInfo(out lastInputInfo))
+                {
+                    return;
+                }
+                _lastInput = lastInputInfo.dwTime;
             }
-            var idleSeconds = (Environment.TickCount - lastInputInfo.dwTime) / 1000;
-            if (idleSeconds < 1)
+
+            var idleSeconds = 1.0*(Environment.TickCount - _lastInput) / 1000;
+            if (idleSeconds < 60)
             {
                 return;
             }
