@@ -70,7 +70,7 @@
                                   IsCheckable="True"
                                   IsChecked="{Binding IsMiniTimerUsed}"/>
             <MenuItem Header="Show Toggl Track"
-                                  Command="{x:Static toggl:KeyboardShortcuts.Show}"/>
+                                  Command="{x:Static toggl:KeyboardShortcuts.ShowMainWindowFromMiniTimer}"/>
             <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
             <MenuItem Header="Toggl Track Tutorial"
                                   Command="{x:Static toggl:KeyboardShortcuts.BasicTutorial}"
