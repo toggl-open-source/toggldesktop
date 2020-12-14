@@ -39,7 +39,8 @@ namespace TogglDesktop
                 new CommandBinding(Quit, onQuit),
                 new CommandBinding(EditRunning, onEditRunning, canExecuteEditRunning),
                 new CommandBinding(BasicTutorial, onBasicTutorial, canExecuteBasicTutorial),
-                new CommandBinding(ToggleMiniTimerVisibility, onToggleMiniTimerVisibility, canExecuteToggleMiniTimerVisibility), 
+                new CommandBinding(ToggleMiniTimerVisibility, onToggleMiniTimerVisibility, canExecuteToggleMiniTimerVisibility),
+                new CommandBinding(ShowMainWindowFromMiniTimer, onShow),
             };
 
             foreach(var binding in bindings)
@@ -136,6 +137,9 @@ namespace TogglDesktop
         {
             mainWindow.ShowOnTop();
         }
+
+        public static readonly RoutedUICommand ShowMainWindowFromMiniTimer =
+            new RoutedUICommand("", "ShowMainWindowFromMiniTimer", typeof(Window));
 
         #endregion
         #region Hide

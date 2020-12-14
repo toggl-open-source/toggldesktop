@@ -11,15 +11,14 @@ namespace TogglDesktop
 {
     public partial class MiniTimerWindow
     {
-        private readonly ContextMenu contextMenu;
-
         private bool leftMouseDown;
         private Point mouseDownPosition;
 
         public MiniTimerWindow(MainWindow mainWindow)
         {
-            this.contextMenu = mainWindow.cogButton.ContextMenu;
             this.InitializeComponent();
+            MainContextMenu.DataContext = mainWindow.CogwheelMenuViewModel;
+            MainContextMenu.Initialize(mainWindow);
             this.Closing += OnClosing;
             var sizeChangedObservable = Observable.FromEventPattern<SizeChangedEventHandler, SizeChangedEventArgs>(
                 handler => this.SizeChanged += handler,
@@ -39,18 +38,6 @@ namespace TogglDesktop
         {
             // disallow closing via Alt+F4
             e.Cancel = true;
-        }
-
-        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
-        {
-            this.contextMenu.PlacementTarget = this;
-            this.contextMenu.Placement = PlacementMode.Bottom;
-            this.contextMenu.HorizontalOffset = 0;
-            this.contextMenu.VerticalOffset = 0;
-
-            this.contextMenu.IsOpen = true;
-
-            e.Handled = true;
         }
 
         protected override void OnLocationChanged(EventArgs e)

@@ -41,12 +41,23 @@
         <Setter Property="Padding" Value="0 4" />
     </Style>
 
-    <Style TargetType="MenuItem" BasedOn="{StaticResource MahApps.Styles.MenuItem}">
+    <Style TargetType="MenuItem" x:Key="Toggl.ContextMenu.Item" BasedOn="{StaticResource MahApps.Styles.MenuItem}">
         <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
         <Setter Property="Height" Value="32" />
         <Style.Triggers>
             <Trigger Property="Role" Value="SubmenuItem">
                 <Setter Property="Padding" Value="4 2" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource Toggl.ContextMenu.Item}"/>
+
+    <Style TargetType="{x:Type MenuItem}" x:Key="Toggl.ContextMenu.Item.ShowIfEnabledStyle" BasedOn="{StaticResource Toggl.ContextMenu.Item}">
+        <Setter Property="Visibility" Value="Collapsed"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
             </Trigger>
         </Style.Triggers>
     </Style>

@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
@@ -15,6 +17,7 @@ using DynamicData.Binding;
 using Microsoft.Win32;
 using NHotkey;
 using NHotkey.Wpf;
+using ReactiveUI;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.Services;
 using TogglDesktop.Theming;
@@ -92,6 +95,8 @@ namespace TogglDesktop
 
         public bool CanBeHidden => this.IsVisible && this.WindowState != WindowState.Minimized;
 
+        public CogwheelMenuViewModel CogwheelMenuViewModel { get; private set; }
+
         #endregion
 
         #region setup
@@ -112,15 +117,11 @@ namespace TogglDesktop
 
         private void initializeContextMenu()
         {
+            CogwheelMenuViewModel = new CogwheelMenuViewModel();
+            mainContextMenu.DataContext = CogwheelMenuViewModel;
+            mainContextMenu.Initialize(this);
+
             ContextMenu = mainContextMenu;
-            foreach (var item in mainContextMenu.Items)
-            {
-                var asMenuItem = item as MenuItem;
-                if (asMenuItem != null)
-                {
-                    asMenuItem.CommandTarget = this;
-                }
-            }
         }
 
         private void initializeSessionNotification()
@@ -370,14 +371,14 @@ namespace TogglDesktop
 
             if (open || userID == 0)
             {
-                this.logoutMenuItem.InputGestureText = "Logged out";
+                CogwheelMenuViewModel.Email = "Logged out";
                 this.taskbarIcon.TrayToolTip = null;
                 this.taskbarIcon.ToolTipText = "Toggl - Logged out";
                 this.SetMiniTimerVisible(false);
             }
             else
             {
-                this.logoutMenuItem.InputGestureText = Toggl.UserEmail();
+                CogwheelMenuViewModel.Email = Toggl.UserEmail();
                 this.taskbarIcon.TrayToolTip = trayToolTip;
                 this.taskbarIcon.ToolTipText = $"Toggl - Logged in as {Toggl.UserEmail()}";
             }
@@ -604,7 +605,7 @@ namespace TogglDesktop
         {
             this.IsMiniTimerVisible = visible;
 
-            this.togglMiniTimerVisibilityMenuItem.IsChecked = visible;
+            CogwheelMenuViewModel.IsMiniTimerUsed = visible;
 
             this.miniTimer.SetVisible(visible);
 
@@ -624,7 +625,7 @@ namespace TogglDesktop
         {
             this.IsInManualMode = manualMode;
 
-            this.togglManualModeMenuItem.IsChecked = manualMode;
+            CogwheelMenuViewModel.IsInManualMode = manualMode;
 
             this.timerEntryListView.SetManualMode(this.IsInManualMode);
             this.miniTimer.SetManualMode(this.IsInManualMode);
