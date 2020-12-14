@@ -17,7 +17,7 @@ namespace toggl {
 Idle::Idle(GUI *ui)
     : last_idle_seconds_reading_(0)
 , last_idle_started_(0)
-, last_sleep_started_(0)
+, last_locked_started_(0)
 , ui_(ui) {
 }
 
