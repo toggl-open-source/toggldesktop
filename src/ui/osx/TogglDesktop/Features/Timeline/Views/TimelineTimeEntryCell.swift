@@ -75,6 +75,12 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         isHighlight = false
     }
 
+    override func viewDidLayout() {
+        super.viewDidLayout()
+        renderColor(with: timeEntry.color)
+        updateLabels(timeEntry.timeEntry)
+    }
+
     override func mouseEntered(with event: NSEvent) {
         let eventLocation = view.convert(event.locationInWindow, from: nil)
         let isInForegroundBox = eventLocation.x <= foregroundBox.frame.width
