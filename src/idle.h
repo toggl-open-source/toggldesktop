@@ -28,19 +28,20 @@ class TOGGL_INTERNAL_EXPORT Idle {
         settings_ = settings;
     }
 
-    void SetSleep() {
-        last_sleep_started_ = time(nullptr);
+    void SetSystemLocked() {
+        if (!last_locked_started_)
+            last_locked_started_ = time(nullptr);
     }
 
-    void SetWake(User *current_user) {
-        if (last_sleep_started_) {
-            Poco::Int64 slept_seconds = time(nullptr) - last_sleep_started_;
+    void SetSystemUnlocked(User *current_user) {
+        if (last_locked_started_) {
+            Poco::Int64 slept_seconds = time(nullptr) - last_locked_started_;
             if (slept_seconds > 0) {
                 SetIdleSeconds(slept_seconds, current_user);
             }
         }
 
-        last_sleep_started_ = 0;
+        last_locked_started_ = 0;
     }
 
  private:
@@ -52,7 +53,7 @@ class TOGGL_INTERNAL_EXPORT Idle {
     // Idle detection related values
     Poco::Int64 last_idle_seconds_reading_;
     Poco::Int64 last_idle_started_;
-    time_t last_sleep_started_;
+    time_t last_locked_started_;
 
     Settings settings_;
     GUI *ui_;
