@@ -40,15 +40,6 @@ namespace TogglDesktop
             e.Cancel = true;
         }
 
-        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
-        {
-            MainContextMenu.PlacementTarget = this;
-            MainContextMenu.Placement = PlacementMode.Bottom;
-            MainContextMenu.IsOpen = true;
-
-            e.Handled = true;
-        }
-
         protected override void OnLocationChanged(EventArgs e)
         {
             var screenRect = this.GetCurrentScreenRectangle();
