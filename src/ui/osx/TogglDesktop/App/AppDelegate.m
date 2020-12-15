@@ -119,6 +119,7 @@
 
 void *ctx;
 
+static NSString *statusItemDefaultTooltip = @"Total today: 0h 0min";
 
 - (void)applicationWillFinishLaunching:(NSNotification *)not
 {
@@ -819,8 +820,10 @@ void *ctx;
 			free(str);
 		}
 
-		// Update tooltip
-		[self.statusItem setToolTip:[NSString stringWithFormat:@"Total today: %@", self.lastKnownRunningTimeEntry.dateDuration]];
+		// Update tooltip if was not set before
+		if ([self.statusItem.toolTip isEqualToString:statusItemDefaultTooltip]) {
+			[self.statusItem setToolTip:[NSString stringWithFormat:@"Total today: %@", self.lastKnownRunningTimeEntry.dateDuration]];
+		}
 	}
 
 	NSString *key = nil;
@@ -1554,7 +1557,7 @@ void on_time_entry_list(const bool_t open,
 						TogglTimeEntryView *first,
 						const bool_t show_load_more)
 {
-	NSString *todayTotal = @"Total today: 0h 0min";
+	NSString *todayTotal = statusItemDefaultTooltip;
 	NSMutableArray *viewitems = [[NSMutableArray alloc] init];
 	TogglTimeEntryView *it = first;
 
