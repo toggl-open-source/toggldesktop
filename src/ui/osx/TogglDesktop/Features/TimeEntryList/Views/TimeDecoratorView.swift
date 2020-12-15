@@ -20,8 +20,8 @@ final class TimeDecoratorView: NSView {
         backgroundBox.wantsLayer = true
         backgroundBox.layer?.masksToBounds = false
         backgroundBox.shadow = NSShadow()
-        backgroundBox.layer?.shadowColor = NSColor.init(white: 0, alpha: 0.2).cgColor
-        backgroundBox.layer?.shadowOpacity = 0.5
+        backgroundBox.layer?.shadowColor = Color.shadow.cgColor
+        backgroundBox.layer?.shadowOpacity = 1.0
         backgroundBox.layer?.shadowOffset = CGSize(width: 0, height: -2)
         backgroundBox.layer?.shadowRadius = 8
         backgroundBox.layer?.cornerRadius = 4
@@ -29,10 +29,6 @@ final class TimeDecoratorView: NSView {
 
     override func updateLayer() {
         super.updateLayer()
-        if #available(OSX 10.13, *) {
-            backgroundBox.layer?.backgroundColor = NSColor(named: NSColor.Name("white-background-color"))?.cgColor
-        } else {
-            backgroundBox.layer?.backgroundColor = NSColor.white.cgColor
-        }
+        backgroundBox.layer?.backgroundColor = Color.whiteBackgroundColor.cgColor
     }
 }

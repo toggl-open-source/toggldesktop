@@ -12,6 +12,7 @@ disabled_rules: # rule identifiers to exclude from running
   - cyclomatic_complexity
 
 opt_in_rules: # some rules are only opt-in
+  - object_literal
 
 # TODO: Consider enabling those
 #  - toggle_bool
@@ -26,6 +27,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Pods
   - TogglDesktopLibrary/Dependencies
   - Features/ColorWheel
+  - Resources/Colors.swift
 
 # configurable rules can be customized from this configuration file
 line_length:
@@ -38,3 +40,11 @@ line_length:
 identifier_name:
   min_length: 1
   max_length: 60
+
+object_literal:
+  image_literal: false
+
+custom_rules:
+  no_hardcoded_colors:
+    regex: "(NSColor[(])+(named[:] (NSColor.Name|\"))"
+    # excluded: ".*Colors[.]swift"

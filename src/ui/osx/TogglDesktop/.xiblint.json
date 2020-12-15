@@ -1,0 +1,18 @@
+{
+  "rules": [
+    "named_colors",
+    "unavailable_custom_classes"
+  ],
+  "paths": {
+    "Pods": {
+      "rules": []
+    },
+    "Features": {
+      "rules_config": {
+        "named_colors": {
+          "ignore_alpha": false
+        }
+      }
+    }
+  }
+}

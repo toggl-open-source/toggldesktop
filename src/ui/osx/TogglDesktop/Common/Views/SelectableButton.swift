@@ -10,25 +10,25 @@ import Cocoa
 
 class SelectableButton: NSButton {
 
-    @IBInspectable var tintColor: NSColor = .togglLighterGrey {
+    @IBInspectable var tintColor: NSColor = Color.lighterGrey.color {
         didSet {
            updateAppearance()
         }
     }
 
-    @IBInspectable var hoverTintColor: NSColor = .togglGreyText {
+    @IBInspectable var hoverTintColor: NSColor = Color.greyText.color {
         didSet {
            updateAppearance()
         }
     }
 
-    @IBInspectable var activeTintColor: NSColor = .togglGreen {
+    @IBInspectable var activeTintColor: NSColor = Color.green.color {
         didSet {
            updateAppearance()
         }
     }
 
-    @IBInspectable var selectedBackgroundColor: NSColor = NSColor.togglGreen.withAlphaComponent(0.3) {
+    @IBInspectable var selectedBackgroundColor: NSColor = Color.green.color.withAlphaComponent(0.3) {
         didSet {
            updateAppearance()
         }

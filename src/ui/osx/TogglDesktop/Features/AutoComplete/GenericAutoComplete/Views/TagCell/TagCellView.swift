@@ -28,14 +28,7 @@ final class TagCellView: HoverTableCellView {
     private var tagItem: Tag?
     private var isSelected = false
     private var style: Style = .checkbox
-
-    private lazy var backgroundColor: NSColor = {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("tag-selection-background-color"))!
-        } else {
-            return ConvertHexColor.hexCode(toNSColor: "#e5f9e8")
-        }
-    }()
+    private let backgroundColor = Color.tagSelectionBackground.color
 
     // MARK: OUTLET
 
@@ -78,8 +71,8 @@ final class TagCellView: HoverTableCellView {
         checkButton.toolTip = tag.name
         nameLabel.toolTip = tag.name
 
-        checkButton.setTextColor(isSelected ? NSColor.togglGreen : NSColor.textColor)
-        nameLabel.textColor = isSelected ? NSColor.togglGreen : NSColor.textColor
+        checkButton.setTextColor(isSelected ? Color.green.color : NSColor.textColor)
+        nameLabel.textColor = isSelected ? Color.green.color : NSColor.textColor
     }
 
     func selectCheckBox() {

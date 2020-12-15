@@ -14,7 +14,7 @@ extension NSColor {
         if #available(OSX 10.14, *) {
             return NSColor.unemphasizedSelectedContentBackgroundColor
         } else {
-            return NSColor(white: 0.21, alpha: 1.0)
+            return NSColor(white: 0.21, alpha: 1.0) // swiftlint:disable:this object_literal
         }
     }
 }

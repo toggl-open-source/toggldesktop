@@ -30,7 +30,7 @@ import QuartzCore
         }
     }
 
-    @IBInspectable public var tintColor: NSColor = .togglGreen {
+    @IBInspectable public var tintColor: NSColor = Color.green.color {
         didSet {
             reloadLayer()
         }
@@ -40,7 +40,7 @@ import QuartzCore
             reloadLayer()
         }
     }
-    @IBInspectable public var disabledBorderColor: NSColor = .togglLighterGrey {
+    @IBInspectable public var disabledBorderColor: NSColor = Color.lighterGrey.color {
         didSet {
             reloadLayer()
         }

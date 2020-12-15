@@ -281,11 +281,7 @@ extension ProjectCreationView {
     }
 
     fileprivate var colorBtnBorderColor: NSColor {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: "color-project-btn-border-color")!
-        } else {
-            return NSColor(white: 0, alpha: 0.1)
-        }
+        return Color.projectColorButtonBorder.color
     }
 
     fileprivate func createNewClient(with name: String) {

@@ -20,7 +20,7 @@ final class TimerContainerBox: NSBox {
             case .active, .inactive:
                 return .clear
             case .hover:
-                return .togglTextFieldHoverBackground
+                return Color.textFieldHoverBackground.color
             }
         }
 
@@ -29,7 +29,7 @@ final class TimerContainerBox: NSBox {
             case .inactive, .hover:
                 return .clear
             case .active:
-                return .togglLighterGrey
+                return Color.lighterGrey.color
             }
         }
 

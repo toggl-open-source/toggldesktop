@@ -17,8 +17,8 @@ final class FloatingErrorView: NSView {
 
     // MARK: Variables
     var onClose: (() -> Void)?
-    fileprivate lazy var errorColor = NSColor.togglErrorTitle
-    fileprivate lazy var informativeColor = NSColor.togglGreen
+    fileprivate lazy var errorColor = Color.errorTitle.color
+    fileprivate lazy var informativeColor = Color.green.color
 
     // MARK: Init
 
@@ -38,14 +38,7 @@ final class FloatingErrorView: NSView {
 
     override func updateLayer() {
         super.updateLayer()
-
-        if #available(OSX 10.13, *) {
-            layer?.backgroundColor = NSColor(named: NSColor.Name("error-background-color"))?.cgColor
-        } else {
-            // Fallback on earlier versions
-            layer?.backgroundColor = NSColor.white.cgColor
-        }
-
+        layer?.backgroundColor = Color.errorBackground.cgColor
     }
     // MARK: Func
 

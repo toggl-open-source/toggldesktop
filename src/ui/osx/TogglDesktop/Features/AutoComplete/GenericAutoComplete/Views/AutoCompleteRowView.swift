@@ -10,13 +10,7 @@ import Cocoa
 
 final class AutoCompleteRowView: NSTableRowView {
 
-    private lazy var selectionColor: NSColor = {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("auto-complete-cell-hover"))!
-        } else {
-            return NSColor(white: 0.7, alpha: 0.2)
-        }
-    }()
+    private let selectionColor = Color.autoCompleteCellHover.color
 
     override func drawSelection(in dirtyRect: NSRect) {
         let selectionRect = bounds.insetBy(dx: 5, dy: 2)

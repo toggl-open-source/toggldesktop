@@ -266,7 +266,7 @@ extension TimeEntryDatasource {
 
         // Background
         collectionView.wantsLayer = true
-        collectionView.backgroundColors = [NSColor.collectionViewBackgroundColor]
+        collectionView.backgroundColors = [Color.collectionViewBackgroundColor.color]
 
         // Flow
         let flowLayout = VertificalTimeEntryFlowLayout()

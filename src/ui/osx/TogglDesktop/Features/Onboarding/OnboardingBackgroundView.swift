@@ -20,11 +20,7 @@ final class OnboardingBackgroundView: NSView {
     weak var delegate: OnboardingBackgroundViewDelegate?
     private lazy var maskLayer = CAShapeLayer()
     private lazy var backgroundColor: NSColor = {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("onboarding-background-color"))!
-        } else {
-            return NSColor(calibratedWhite: 0, alpha: 0.5)
-        }
+        return Color.onboardingBackground.color
     }()
     private var maskFrame: CGRect?
 

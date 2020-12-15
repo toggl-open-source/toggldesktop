@@ -52,7 +52,7 @@ final class DatePickerView: NSView {
     }()
     private lazy var dayNameAttribute: [NSAttributedString.Key: Any] = {
         return [NSAttributedString.Key.font: NSFont.systemFont(ofSize: 14),
-                NSAttributedString.Key.foregroundColor: NSColor.togglBlackText]
+                NSAttributedString.Key.foregroundColor: Color.blackText.color]
     }()
     var isEnabled: Bool = true {
         didSet {
@@ -110,11 +110,7 @@ final class DatePickerView: NSView {
     }
 
     func setBackgroundForTimeline() {
-        if #available(OSX 10.13, *) {
-            backgroundBox.fillColor = NSColor(named: "timeline-date-picker-background-color")!
-        } else {
-            backgroundBox.fillColor = NSColor.white
-        }
+        backgroundBox.fillColor = Color.timelineDatePickerBackground.color
     }
 }
 

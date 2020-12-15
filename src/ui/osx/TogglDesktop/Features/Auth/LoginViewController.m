@@ -163,7 +163,7 @@ extern void *ctx;
     self.boxView.wantsLayer = YES;
     self.boxView.layer.masksToBounds = NO;
     self.boxView.shadow = [[NSShadow alloc] init];
-    self.boxView.layer.shadowColor = [NSColor colorWithWhite:0 alpha:0.1].CGColor;
+    self.boxView.layer.shadowColor = [NSColor shadow].CGColor;
     self.boxView.layer.shadowOpacity = 1.0;
     self.boxView.layer.shadowOffset = CGSizeMake(0, -2);
     self.boxView.layer.shadowRadius = 6;
