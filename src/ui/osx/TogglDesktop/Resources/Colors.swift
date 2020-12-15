@@ -8,6 +8,7 @@
 
 import Foundation
 
+// swiftlint:disable object_literal
 enum Color: String, CaseIterable {
     case green = "green-color"
     case errorTitle = "error-title-color"
