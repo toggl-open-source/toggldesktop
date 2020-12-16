@@ -1112,9 +1112,9 @@
 		BAFBFCC721CD1D3C004B443F /* SystemService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SystemService.m; sourceTree = "<group>"; };
 		C2060EB7252766FB00959A98 /* TimerDescriptionFieldHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDescriptionFieldHandlerTests.swift; sourceTree = "<group>"; };
 		C238D7DE251B7215004EC739 /* TimerDescriptionFieldHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDescriptionFieldHandler.swift; sourceTree = "<group>"; };
+		C23A5965255C393E00A56A54 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		C27B27E5256E82A600E88A20 /* KeyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyButton.swift; sourceTree = "<group>"; };
 		C27B27FA256E854700E88A20 /* HoverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverButton.swift; sourceTree = "<group>"; };
-		C23A5965255C393E00A56A54 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		C27E044E254AFFB0009871D0 /* TimerDurationControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDurationControl.swift; sourceTree = "<group>"; };
 		C27E0453254B0008009871D0 /* TimerDurationControl.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimerDurationControl.xib; sourceTree = "<group>"; };
 		C27E0469254B2772009871D0 /* DropdownWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownWindow.swift; sourceTree = "<group>"; };
@@ -2802,7 +2802,6 @@
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
 				"${PODS_ROOT}/Sparkle/Sparkle.framework",
-				"${PODS_ROOT}/Sparkle/Sparkle.framework.dSYM",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -2812,7 +2811,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sparkle.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/Sparkle.framework.dSYM",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2832,7 +2830,6 @@
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
 				"${PODS_ROOT}/Sparkle/Sparkle.framework",
-				"${PODS_ROOT}/Sparkle/Sparkle.framework.dSYM",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -2842,7 +2839,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sparkle.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/Sparkle.framework.dSYM",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
