@@ -90,6 +90,7 @@ final class VerticallyCenteredButtonCell: NSButtonCell {
 
     @IBInspectable var focusRingCornerRadius: CGFloat = 0
     @IBInspectable var leftPadding: CGFloat = 0
+    @IBInspectable var verticalTitleOffset: CGFloat = 0
 
     override func drawingRect(forBounds theRect: NSRect) -> NSRect {
         var newRect = super.drawingRect(forBounds: theRect)
@@ -99,6 +100,12 @@ final class VerticallyCenteredButtonCell: NSButtonCell {
         newRect.size.width -= leftPadding
 
         return newRect
+    }
+
+    override func titleRect(forBounds rect: NSRect) -> NSRect {
+        var titleFrame = super.titleRect(forBounds: rect)
+        titleFrame.origin.y += verticalTitleOffset
+        return titleFrame
     }
 
     override func drawFocusRingMask(withFrame cellFrame: NSRect, in controlView: NSView) {
