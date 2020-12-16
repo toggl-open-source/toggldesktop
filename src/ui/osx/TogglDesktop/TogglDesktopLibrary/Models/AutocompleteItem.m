@@ -77,7 +77,7 @@
 	}
 	if (data->WorkspaceName)
 	{
-		self.WorkspaceName = [[NSString stringWithUTF8String:data->WorkspaceName] capitalizedString];
+		self.WorkspaceName = [NSString stringWithUTF8String:data->WorkspaceName];
 	}
 	else
 	{
