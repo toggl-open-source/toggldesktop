@@ -45,7 +45,7 @@ namespace TogglDesktop
         public static bool IsOverlappingWith(this TimeEntryBlock first, TimeEntryBlock second) =>
             first.Started < second.Ended && second.Started < first.Ended;
 
-        public static double? MinOrDefaultTimeEntryBlock(this IDictionary<string, TimeEntryBlock> blocks) =>
+        public static double? FirstTimeEntryVerticalOffset(this IDictionary<string, TimeEntryBlock> blocks) =>
             blocks == null || !blocks.Any()
                 ? (double?) null
                 : blocks.Min(te => te.Value.VerticalOffset);

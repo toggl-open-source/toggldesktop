@@ -94,11 +94,10 @@ namespace TogglDesktop.ViewModels
                     GenerateRunningGapBlock(tuple.TimeEntries.Values, tuple.Running, CurrentTimeOffset, SelectedDate))
                 .ToPropertyEx(this, x => x.RunningGapTimeEntryBlock);
 
-            this.WhenAnyValue(x => x.TimeEntryBlocks)
+            FistTimeEntryOffsetForSelectedDate = this.WhenAnyValue(x => x.TimeEntryBlocks)
                 .Select(_ => SelectedDate).Buffer(2, 1)
                 .Where(b => b[1] != b[0]) // if there is new first TE offset for the same date, skip
-                .Select(blocks => TimeEntryBlocks.MinOrDefaultTimeEntryBlock())
-                .ToPropertyEx(this, x => x.FirstTimeEntryOffset);
+                .Select(blocks => TimeEntryBlocks.FirstTimeEntryVerticalOffset());
 
             Toggl.OnTimeEntryList += HandleTimeEntryListChanged;
             Toggl.OnTimeEntryEditor += (open, te, field) =>
@@ -429,7 +428,7 @@ namespace TogglDesktop.ViewModels
         public ReactiveCommand<Unit, int> IncreaseScale { get; }
         public ReactiveCommand<Unit, int> DecreaseScale { get; }
 
-        public double? FirstTimeEntryOffset { [ObservableAsProperty] get; }
+        public IObservable<double?> FistTimeEntryOffsetForSelectedDate { get; }
 
         [Reactive]
         public double CurrentTimeOffset { get; set; }

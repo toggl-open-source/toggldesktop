@@ -48,7 +48,7 @@ namespace TogglDesktop
                     .ObserveOn(RxApp.MainThreadScheduler)
                     .Subscribe(_ => MainViewScroll.ScrollToVerticalOffset(ViewModel.CurrentTimeOffset - MainViewScroll.ActualHeight / 2))
                     .DisposeWith(_disposable);
-                ViewModel?.WhenAnyValue(x => x.FirstTimeEntryOffset)
+                ViewModel?.FistTimeEntryOffsetForSelectedDate
                     .ObserveOn(RxApp.MainThreadScheduler)
                     .Where(offset => !ViewModel.IsTodaySelected && offset.HasValue)
                     .Subscribe(offset => SetMainViewScrollOffset(offset.Value))
