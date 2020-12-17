@@ -95,8 +95,9 @@ namespace TogglDesktop.ViewModels
                 .ToPropertyEx(this, x => x.RunningGapTimeEntryBlock);
 
             this.WhenAnyValue(x => x.TimeEntryBlocks)
-                .Select(blocks => blocks == null || !blocks.Any() ? (double?)null 
-                    : blocks.Min(te => te.Value.VerticalOffset))
+                .Select(_ => SelectedDate).Buffer(2, 1)
+                .Where(b => b[1] != b[0]) // if there is new first TE offset for the same date, skip
+                .Select(blocks => TimeEntryBlocks.MinOrDefaultTimeEntryBlock())
                 .ToPropertyEx(this, x => x.FirstTimeEntryOffset);
 
             Toggl.OnTimeEntryList += HandleTimeEntryListChanged;
