@@ -50,8 +50,10 @@ namespace TogglDesktop
                     .DisposeWith(_disposable);
                 ViewModel?.WhenAnyValue(x => x.FirstTimeEntryOffset)
                     .ObserveOn(RxApp.MainThreadScheduler)
-                    .Where(_ => !ViewModel.IsTodaySelected)
-                    .Subscribe(SetMainViewScrollOffset)
+                    .Select(_ => ViewModel.SelectedDate).Buffer(2, 1)
+                    .Where(b => !ViewModel.IsTodaySelected && ViewModel.FirstTimeEntryOffset.HasValue &&
+                                b[1] != b[0]) // if there is new first TE offset for the same date, skip
+                    .Subscribe(value => SetMainViewScrollOffset(ViewModel.FirstTimeEntryOffset.Value))
                     .DisposeWith(_disposable);
             }
         }

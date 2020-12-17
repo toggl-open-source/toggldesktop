@@ -95,8 +95,8 @@ namespace TogglDesktop.ViewModels
                 .ToPropertyEx(this, x => x.RunningGapTimeEntryBlock);
 
             this.WhenAnyValue(x => x.TimeEntryBlocks)
-                .Where(blocks => blocks != null && blocks.Any())
-                .Select(blocks => blocks.Min(te => te.Value.VerticalOffset))
+                .Select(blocks => blocks == null || !blocks.Any() ? (double?)null 
+                    : blocks.Min(te => te.Value.VerticalOffset))
                 .ToPropertyEx(this, x => x.FirstTimeEntryOffset);
 
             Toggl.OnTimeEntryList += HandleTimeEntryListChanged;
@@ -428,7 +428,7 @@ namespace TogglDesktop.ViewModels
         public ReactiveCommand<Unit, int> IncreaseScale { get; }
         public ReactiveCommand<Unit, int> DecreaseScale { get; }
 
-        public double FirstTimeEntryOffset { [ObservableAsProperty] get; }
+        public double? FirstTimeEntryOffset { [ObservableAsProperty] get; }
 
         [Reactive]
         public double CurrentTimeOffset { get; set; }
