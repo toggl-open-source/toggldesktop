@@ -534,17 +534,8 @@ extern void *ctx;
 			 NSRect contentFrame = NSMakeRect(0, imageOffset, contentSize.width, contentSize.height);
 			 [theContext restoreGraphicsState];
 
-			 NSColor *backgroundColor;
-			 if (@available(macOS 10.13, *))
-			 {
-				 backgroundColor = [NSColor colorNamed:@"white-background-hover-color"];
-			 }
-			 else
-			 {
-				 backgroundColor = [ConvertHexColor hexCodeToNSColor:@"#F4F5F6"];
-			 }
-
-		     // fill content
+			 // fill content
+			 NSColor *backgroundColor = [NSColor whiteBackgroundHover];
 			 [backgroundColor set];
 			 NSBezierPath *contentPath = [NSBezierPath bezierPathWithRect:NSInsetRect(contentFrame, 1, 1)];
 			 [contentPath fill];

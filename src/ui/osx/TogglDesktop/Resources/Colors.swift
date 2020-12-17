@@ -20,6 +20,7 @@ enum Color: String, CaseIterable {
     case timelineDatePickerBackground = "timeline-date-picker-background-color"
     case timelineBackgroundHighlight = "timeline-background-highlight-color"
     case timelineDivider = "timeline-divider-color"
+    case timelineDashedBoxBorder = "timeline-dashed-box-border"
     case collectionViewBackgroundColor = "collectionview-background-color"
     case blackText = "black-text-color"
     case borderDefault = "border-default"
@@ -31,7 +32,13 @@ enum Color: String, CaseIterable {
     case autoCompleteCellHover = "auto-complete-cell-hover"
     case tagSelectionBackground = "tag-selection-background-color"
     case uploadBorder = "upload-border-color"
+    case uploadBackground = "upload-background-color"
     case tabViewText = "tab-view-text-color"
+    case disabledRestartButtonBackground = "disabled-restart-button-background"
+    case whiteBackgroundHover = "white-background-hover-color"
+    case subItemBackgroundSelected = "subitem-background-selected-color"
+    case groupBoxBackground = "group-box-background-color"
+    case autoCompleteBackground = "auto-complete-background"
 
     var color: NSColor {
         if #available(OSX 10.13, *) {
@@ -67,6 +74,8 @@ enum Color: String, CaseIterable {
             return ConvertHexColor.hexCode(toNSColor: "#f7f7f7")
         case .timelineDivider:
             return ConvertHexColor.hexCode(toNSColor: "#e8e8e8")
+        case .timelineDashedBoxBorder:
+            return ConvertHexColor.hexCode(toNSColor: "#d9d9d9")
         case .collectionViewBackgroundColor:
             return ConvertHexColor.hexCode(toNSColor: "#FEF9F8")
         case .blackText:
@@ -87,8 +96,20 @@ enum Color: String, CaseIterable {
             return ConvertHexColor.hexCode(toNSColor: "#e5f9e8")
         case .uploadBorder:
             return ConvertHexColor.hexCode(toNSColor: "#ACACAC")
+        case .uploadBackground:
+            return NSColor.white
         case .tabViewText:
             return ConvertHexColor.hexCode(toNSColor: "#ACACAC")
+        case .disabledRestartButtonBackground:
+            return NSColor(red: 177 / 255.0, green: 177 / 255.0, blue: 177 / 255.0, alpha: 0.1)
+        case .whiteBackgroundHover:
+            return ConvertHexColor.hexCode(toNSColor: "#F4F5F6")
+        case .subItemBackgroundSelected:
+            return ConvertHexColor.hexCode(toNSColor: "#e8e8e8")
+        case .groupBoxBackground:
+            return Self.green.color.withAlphaComponent(0.12)
+        case .autoCompleteBackground:
+            return NSColor.white
         }
     }
 }
@@ -98,6 +119,14 @@ extension NSColor {
     static var togglGreen: NSColor { Color.green.color }
     static var collectionViewBackgroundColor: NSColor { Color.collectionViewBackgroundColor.color }
     static var shadow: NSColor { Color.shadow.color }
+    static var greyText: NSColor { Color.greyText.color }
+    static var disabledRestartButtonBackground: NSColor { Color.disabledRestartButtonBackground.color }
+    static var uploadBorder: NSColor { Color.uploadBorder.color }
+    static var uploadBackground: NSColor { Color.uploadBackground.color }
+    static var whiteBackgroundHover: NSColor { Color.whiteBackgroundHover.color }
+    static var subItemBackgroundSelected: NSColor { Color.subItemBackgroundSelected.color }
+    static var groupBoxBackground: NSColor { Color.groupBoxBackground.color }
+    static var autoCompleteBackground: NSColor { Color.autoCompleteBackground.color }
 }
 
 @objc enum ColorObjc: Int {

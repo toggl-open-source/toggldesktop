@@ -86,37 +86,20 @@ extern void *ctx;
 {
 	button.wantsLayer = YES;
 	button.layer.borderWidth = 1;
-	if (@available(macOS 10.13, *))
-	{
-		button.layer.borderColor = [NSColor colorNamed:@"upload-border-color"].CGColor;
-		button.bgColor = [NSColor colorNamed:@"upload-background-color"];
-	}
-	else
-	{
-		button.layer.borderColor = [ConvertHexColor hexCodeToNSColor:@"#acacac"].CGColor;
-		button.bgColor = NSColor.whiteColor;
-	}
+    button.layer.borderColor = [NSColor uploadBorder].CGColor;
+    button.bgColor = [NSColor uploadBackground];
 }
 
 - (void)styleCancelButton
 {
-	// Font
 	NSFont *font = self.cancelButton.font;
-
 	if (font == nil)
 	{
 		font = [NSFont systemFontOfSize:12 weight:NSFontWeightMedium];
 	}
 
-	// Color
-	NSColor *color = [ConvertHexColor hexCodeToNSColor:@"#555555"];
-	if (@available(macOS 10.13, *))
-	{
-		color = [NSColor colorNamed:@"grey-text-color"];
-	}
-
 	NSDictionary<NSAttributedStringKey, id> *attributes = @{ NSFontAttributeName: font,
-															 NSForegroundColorAttributeName: color,
+															 NSForegroundColorAttributeName: [NSColor greyText],
 															 NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), };
 	NSAttributedString *underlineString = [[NSAttributedString alloc] initWithString:@"Cancel" attributes:attributes];
 	self.cancelButton.attributedTitle = underlineString;

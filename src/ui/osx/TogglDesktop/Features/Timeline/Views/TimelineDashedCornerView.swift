@@ -15,7 +15,7 @@ final class TimelineDashedCornerView: NSView {
     // MARK: Variables
 
     var cornerRadius: CGFloat = 10.0
-    private lazy var color: NSColor = ConvertHexColor.hexCode(toNSColor: "#d9d9d9")
+    private lazy var color: NSColor = Color.timelineDashedBoxBorder.color
 
     // MARK: Overriden
 

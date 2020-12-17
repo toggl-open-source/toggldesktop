@@ -67,12 +67,7 @@ static CGFloat dropdownHorizontalPadding = 11;
 	self.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
 	self.backgroundView.wantsLayer = YES;
 	self.backgroundView.layer.backgroundColor = [NSColor colorWithWhite:0 alpha:0.5f].CGColor;
-
-    if (@available(macOS 10.13, *)) {
-        self.autocompleteTableView.backgroundColor = [NSColor colorNamed:@"auto-complete-background"];
-    } else {
-        self.autocompleteTableContainer.backgroundColor = [NSColor whiteColor];
-    }
+	self.autocompleteTableView.backgroundColor = [NSColor autoCompleteBackground];
 }
 
 - (void)layout

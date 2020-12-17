@@ -56,18 +56,9 @@ extern void *ctx;
 
 	self.uploadImageButton.wantsLayer = YES;
 	self.uploadImageButton.layer.borderWidth = 1;
-	if (@available(macOS 10.13, *))
-	{
-		self.uploadImageButton.layer.borderColor = [NSColor colorNamed:@"upload-border-color"].CGColor;
-		self.uploadImageButton.bgColor = [NSColor colorNamed:@"upload-background-color"];
-		self.contentTextView.backgroundColor = [NSColor colorNamed:@"upload-background-color"];
-	}
-	else
-	{
-		self.uploadImageButton.layer.borderColor = [ConvertHexColor hexCodeToNSColor:@"#acacac"].CGColor;
-		self.uploadImageButton.bgColor = NSColor.whiteColor;
-		self.contentTextView.backgroundColor = NSColor.whiteColor;
-	}
+    self.uploadImageButton.layer.borderColor = [NSColor uploadBorder].CGColor;
+    self.uploadImageButton.bgColor = [NSColor uploadBackground];
+    self.contentTextView.backgroundColor = [NSColor uploadBackground];
 }
 
 - (IBAction)uploadImageClick:(id)sender

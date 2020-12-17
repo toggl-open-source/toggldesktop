@@ -139,15 +139,7 @@
 	{
 		return self.customClientTextColor;
 	}
-
-	if (@available(macOS 10.13, *))
-	{
-		return [NSColor colorNamed:@"grey-text-color"];
-	}
-	else
-	{
-		return [ConvertHexColor hexCodeToNSColor:@"#555555"];
-	}
+    return [NSColor greyText];
 }
 
 - (void)setTextColor:(NSColor *)textColor
