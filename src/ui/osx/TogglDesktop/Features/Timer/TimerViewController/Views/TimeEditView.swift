@@ -49,6 +49,9 @@ class TimeEditView: NSView {
         calendarView.superview != nil && !calendarView.isHidden
     }
 
+    private var notificationObserverToken: Any?
+    private var isEscTriggeredClose = false
+
     private enum Constants {
         static let dayNameAttribute: [NSAttributedString.Key: Any] = {
             return [NSAttributedString.Key.font: NSFont.systemFont(ofSize: 14),
@@ -116,6 +119,19 @@ class TimeEditView: NSView {
                 self.hideWindow()
             }
         }
+
+        notificationObserverToken = NotificationCenter.default.addObserver(
+            forName: NSWindow.didResignKeyNotification,
+            object: window,
+            queue: .main
+        ) { [unowned self] notification in
+            let isCurrentWindow = (notification.object as? NSWindow) == self.window
+            if isCurrentWindow && !self.isEscTriggeredClose {
+                self.onStartTextChange?(self.startTextField.stringValue)
+            }
+            self.isEscTriggeredClose = false
+            self.isStartFieldChanged = false
+        }
     }
 
     override func becomeFirstResponder() -> Bool {
@@ -124,6 +140,7 @@ class TimeEditView: NSView {
 
     override func keyDown(with event: NSEvent) {
         if let key = Key(rawValue: Int(event.keyCode)), key == .escape {
+            isEscTriggeredClose = true
             hideWindow()
             return
         }
@@ -220,10 +237,13 @@ extension TimeEditView: NSTextFieldDelegate {
     }
 
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        if commandSelector == #selector(cancelOperation(_:))
-            || commandSelector == #selector(insertNewline(_:))
+        if commandSelector == #selector(insertNewline(_:))
             || commandSelector == #selector(insertBacktab(_:)) {
+            hideWindow()
+        }
 
+        if commandSelector == #selector(cancelOperation(_:)) {
+            isEscTriggeredClose = true
             hideWindow()
         }
 
