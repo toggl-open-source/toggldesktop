@@ -1,7 +1,7 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2017 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include "internal/cryptlib.h"
-#include "bn_lcl.h"
+#include "bn_local.h"
 
 #define TABLE_SIZE      32
 
@@ -34,7 +34,7 @@ int BN_mod_exp2_mont(BIGNUM *rr, const BIGNUM *a1, const BIGNUM *p1,
 
     if (!(m->d[0] & 1)) {
         BNerr(BN_F_BN_MOD_EXP2_MONT, BN_R_CALLED_WITH_EVEN_MODULUS);
-        return (0);
+        return 0;
     }
     bits1 = BN_num_bits(p1);
     bits2 = BN_num_bits(p2);
@@ -50,7 +50,7 @@ int BN_mod_exp2_mont(BIGNUM *rr, const BIGNUM *a1, const BIGNUM *p1,
     r = BN_CTX_get(ctx);
     val1[0] = BN_CTX_get(ctx);
     val2[0] = BN_CTX_get(ctx);
-    if (!d || !r || !val1[0] || !val2[0])
+    if (val2[0] == NULL)
         goto err;
 
     if (in_mont != NULL)
@@ -197,5 +197,5 @@ int BN_mod_exp2_mont(BIGNUM *rr, const BIGNUM *a1, const BIGNUM *p1,
         BN_MONT_CTX_free(mont);
     BN_CTX_end(ctx);
     bn_check_top(rr);
-    return (ret);
+    return ret;
 }

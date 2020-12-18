@@ -1,7 +1,7 @@
 /*
- * Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2016-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -17,7 +17,7 @@
 #include <openssl/tls1.h>
 #include <openssl/x509.h>
 
-#include "ct_locl.h"
+#include "ct_local.h"
 
 SCT *SCT_new(void)
 {
@@ -70,10 +70,11 @@ int SCT_set_log_entry_type(SCT *sct, ct_log_entry_type_t entry_type)
     case CT_LOG_ENTRY_TYPE_PRECERT:
         sct->entry_type = entry_type;
         return 1;
-    default:
-        CTerr(CT_F_SCT_SET_LOG_ENTRY_TYPE, CT_R_UNSUPPORTED_ENTRY_TYPE);
-        return 0;
+    case CT_LOG_ENTRY_TYPE_NOT_SET:
+        break;
     }
+    CTerr(CT_F_SCT_SET_LOG_ENTRY_TYPE, CT_R_UNSUPPORTED_ENTRY_TYPE);
+    return 0;
 }
 
 int SCT_set0_log_id(SCT *sct, unsigned char *log_id, size_t log_id_len)
@@ -274,9 +275,11 @@ int SCT_set_source(SCT *sct, sct_source_t source)
         return SCT_set_log_entry_type(sct, CT_LOG_ENTRY_TYPE_X509);
     case SCT_SOURCE_X509V3_EXTENSION:
         return SCT_set_log_entry_type(sct, CT_LOG_ENTRY_TYPE_PRECERT);
-    default: /* if we aren't sure, leave the log entry type alone */
-        return 1;
+    case SCT_SOURCE_UNKNOWN:
+        break;
     }
+    /* if we aren't sure, leave the log entry type alone */
+    return 1;
 }
 
 sct_validation_status_t SCT_get_validation_status(const SCT *sct)
@@ -309,7 +312,7 @@ int SCT_validate(SCT *sct, const CT_POLICY_EVAL_CTX *ctx)
         return 0;
     }
 
-    sctx = SCT_CTX_new();
+    sctx = SCT_CTX_new(ctx->libctx, ctx->propq);
     if (sctx == NULL)
         goto err;
 

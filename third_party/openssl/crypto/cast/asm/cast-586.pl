@@ -1,13 +1,13 @@
 #! /usr/bin/env perl
-# Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
 
 
-# This flag makes the inner loop one cycle longer, but generates 
+# This flag makes the inner loop one cycle longer, but generates
 # code that runs %30 faster on the pentium pro/II, 44% faster
 # of PIII, while only %7 slower on the pentium.
 # By default, this flag is on.
@@ -18,10 +18,9 @@ push(@INC,"${dir}","${dir}../../perlasm");
 require "x86asm.pl";
 require "cbc.pl";
 
-$output=pop;
-open STDOUT,">$output";
+$output=pop and open STDOUT,">$output";
 
-&asm_init($ARGV[0],"cast-586.pl",$ARGV[$#ARGV] eq "386");
+&asm_init($ARGV[0],$ARGV[$#ARGV] eq "386");
 
 $CAST_ROUNDS=16;
 $L="edi";
@@ -46,7 +45,7 @@ $S4="CAST_S_table3";
 
 &asm_finish();
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";
 
 sub CAST_encrypt {
     local($name,$enc)=@_;
@@ -157,7 +156,7 @@ sub E_CAST {
     if ($ppro) {
 	&xor(	$tmp1,		$tmp1);
 	&mov(	$tmp2,		0xff);
-	
+
 	&movb(	&LB($tmp1),	&HB($tmp4));	# A
 	&and(	$tmp2,		$tmp4);
 
@@ -166,7 +165,7 @@ sub E_CAST {
     } else {
 	&mov(	$tmp2,		$tmp4);		# B
 	&movb(	&LB($tmp1),	&HB($tmp4));	# A	# BAD BAD BAD
-	
+
 	&shr(	$tmp4,		16); 		#
 	&and(	$tmp2,		0xff);
     }

@@ -1,7 +1,7 @@
 /*
- * Copyright 2000-2018 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2000-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -15,7 +15,7 @@
 #include <openssl/buffer.h>
 #include <openssl/err.h>
 #include "internal/numbers.h"
-#include "asn1_locl.h"
+#include "asn1_local.h"
 
 /*
  * Constructed types with a recursive definition (such as can be found in PKCS7)
@@ -107,7 +107,8 @@ ASN1_VALUE *ASN1_item_d2i(ASN1_VALUE **pval,
 {
     ASN1_TLC c;
     ASN1_VALUE *ptmpval = NULL;
-    if (!pval)
+
+    if (pval == NULL)
         pval = &ptmpval;
     asn1_tlc_clear_nc(&c);
     if (ASN1_item_ex_d2i(pval, in, len, it, -1, 0, 0, &c) > 0)
@@ -148,7 +149,8 @@ static int asn1_item_embed_d2i(ASN1_VALUE **pval, const unsigned char **in,
     int otag;
     int ret = 0;
     ASN1_VALUE **pchptr;
-    if (!pval)
+
+    if (pval == NULL)
         return 0;
     if (aux && aux->asn1_cb)
         asn1_cb = aux->asn1_cb;
@@ -302,7 +304,7 @@ static int asn1_item_embed_d2i(ASN1_VALUE **pval, const unsigned char **in,
             goto err;
         }
 
-        if (!*pval && !ASN1_item_ex_new(pval, it)) {
+        if (*pval == NULL && !ASN1_item_ex_new(pval, it)) {
             ASN1err(ASN1_F_ASN1_ITEM_EMBED_D2I, ERR_R_NESTED_ASN1_ERROR);
             goto err;
         }
@@ -315,7 +317,7 @@ static int asn1_item_embed_d2i(ASN1_VALUE **pval, const unsigned char **in,
             if (tt->flags & ASN1_TFLG_ADB_MASK) {
                 const ASN1_TEMPLATE *seqtt;
                 ASN1_VALUE **pseqval;
-                seqtt = asn1_do_adb(pval, tt, 0);
+                seqtt = asn1_do_adb(*pval, tt, 0);
                 if (seqtt == NULL)
                     continue;
                 pseqval = asn1_get_field_ptr(pval, seqtt);
@@ -327,7 +329,7 @@ static int asn1_item_embed_d2i(ASN1_VALUE **pval, const unsigned char **in,
         for (i = 0, tt = it->templates; i < it->tcount; i++, tt++) {
             const ASN1_TEMPLATE *seqtt;
             ASN1_VALUE **pseqval;
-            seqtt = asn1_do_adb(pval, tt, 1);
+            seqtt = asn1_do_adb(*pval, tt, 1);
             if (seqtt == NULL)
                 goto err;
             pseqval = asn1_get_field_ptr(pval, seqtt);
@@ -393,7 +395,7 @@ static int asn1_item_embed_d2i(ASN1_VALUE **pval, const unsigned char **in,
          */
         for (; i < it->tcount; tt++, i++) {
             const ASN1_TEMPLATE *seqtt;
-            seqtt = asn1_do_adb(pval, tt, 1);
+            seqtt = asn1_do_adb(*pval, tt, 1);
             if (seqtt == NULL)
                 goto err;
             if (seqtt->flags & ASN1_TFLG_OPTIONAL) {
@@ -553,8 +555,8 @@ static int asn1_template_noexp_d2i(ASN1_VALUE **val,
             return 0;
         } else if (ret == -1)
             return -1;
-        if (!*val)
-            *val = (ASN1_VALUE *)OPENSSL_sk_new_null();
+        if (*val == NULL)
+            *val = (ASN1_VALUE *)sk_ASN1_VALUE_new_null();
         else {
             /*
              * We've got a valid STACK: free up any items present
@@ -567,7 +569,7 @@ static int asn1_template_noexp_d2i(ASN1_VALUE **val,
             }
         }
 
-        if (!*val) {
+        if (*val == NULL) {
             ASN1err(ASN1_F_ASN1_TEMPLATE_NOEXP_D2I, ERR_R_MALLOC_FAILURE);
             goto err;
         }
@@ -648,7 +650,8 @@ static int asn1_d2i_ex_primitive(ASN1_VALUE **pval,
     BUF_MEM buf = { 0, NULL, 0, 0 };
     const unsigned char *cont = NULL;
     long len;
-    if (!pval) {
+
+    if (pval == NULL) {
         ASN1err(ASN1_F_ASN1_D2I_EX_PRIMITIVE, ASN1_R_ILLEGAL_NULL);
         return 0;               /* Should never happen */
     }
@@ -785,7 +788,7 @@ static int asn1_ex_c2i(ASN1_VALUE **pval, const unsigned char *cont, int len,
         return pf->prim_c2i(pval, cont, len, utype, free_cont, it);
     /* If ANY type clear type and set pointer to internal value */
     if (it->utype == V_ASN1_ANY) {
-        if (!*pval) {
+        if (*pval == NULL) {
             typ = ASN1_TYPE_new();
             if (typ == NULL)
                 goto err;
@@ -865,7 +868,7 @@ static int asn1_ex_c2i(ASN1_VALUE **pval, const unsigned char *cont, int len,
             goto err;
         }
         /* All based on ASN1_STRING and handled the same */
-        if (!*pval) {
+        if (*pval == NULL) {
             stmp = ASN1_STRING_type_new(utype);
             if (stmp == NULL) {
                 ASN1err(ASN1_F_ASN1_EX_C2I, ERR_R_MALLOC_FAILURE);
@@ -1057,10 +1060,11 @@ static int collect_data(BUF_MEM *buf, const unsigned char **p, long plen)
 static int asn1_check_eoc(const unsigned char **in, long len)
 {
     const unsigned char *p;
+
     if (len < 2)
         return 0;
     p = *in;
-    if (!p[0] && !p[1]) {
+    if (p[0] == '\0' && p[1] == '\0') {
         *in += 2;
         return 1;
     }

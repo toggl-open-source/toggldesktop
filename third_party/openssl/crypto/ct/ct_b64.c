@@ -1,7 +1,7 @@
 /*
- * Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2016-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -14,7 +14,7 @@
 #include <openssl/err.h>
 #include <openssl/evp.h>
 
-#include "ct_locl.h"
+#include "ct_local.h"
 
 /*
  * Decodes the base64 string |in| into |out|.
@@ -24,7 +24,7 @@
 static int ct_base64_decode(const char *in, unsigned char **out)
 {
     size_t inlen = strlen(in);
-    int outlen;
+    int outlen, i;
     unsigned char *outbuf = NULL;
 
     if (inlen == 0) {
@@ -45,9 +45,12 @@ static int ct_base64_decode(const char *in, unsigned char **out)
         goto err;
     }
 
-    /* Subtract padding bytes from |outlen| */
+    /* Subtract padding bytes from |outlen|.  Any more than 2 is malformed. */
+    i = 0;
     while (in[--inlen] == '=') {
         --outlen;
+        if (++i > 2)
+            goto err;
     }
 
     *out = outbuf;
@@ -129,20 +132,23 @@ SCT *SCT_new_from_base64(unsigned char version, const char *logid_base64,
  * 0 on decoding failure, or invalid parameter if any
  * -1 on internal (malloc) failure
  */
-int CTLOG_new_from_base64(CTLOG **ct_log, const char *pkey_base64, const char *name)
+int CTLOG_new_from_base64_with_libctx(CTLOG **ct_log, const char *pkey_base64,
+                                      const char *name, OPENSSL_CTX *libctx,
+                                      const char *propq)
 {
     unsigned char *pkey_der = NULL;
-    int pkey_der_len = ct_base64_decode(pkey_base64, &pkey_der);
+    int pkey_der_len;
     const unsigned char *p;
     EVP_PKEY *pkey = NULL;
 
     if (ct_log == NULL) {
-        CTerr(CT_F_CTLOG_NEW_FROM_BASE64, ERR_R_PASSED_INVALID_ARGUMENT);
+        CTerr(0, ERR_R_PASSED_INVALID_ARGUMENT);
         return 0;
     }
 
-    if (pkey_der_len <= 0) {
-        CTerr(CT_F_CTLOG_NEW_FROM_BASE64, CT_R_LOG_CONF_INVALID_KEY);
+    pkey_der_len = ct_base64_decode(pkey_base64, &pkey_der);
+    if (pkey_der_len < 0) {
+        CTerr(0, CT_R_LOG_CONF_INVALID_KEY);
         return 0;
     }
 
@@ -150,15 +156,22 @@ int CTLOG_new_from_base64(CTLOG **ct_log, const char *pkey_base64, const char *n
     pkey = d2i_PUBKEY(NULL, &p, pkey_der_len);
     OPENSSL_free(pkey_der);
     if (pkey == NULL) {
-        CTerr(CT_F_CTLOG_NEW_FROM_BASE64, CT_R_LOG_CONF_INVALID_KEY);
+        CTerr(0, CT_R_LOG_CONF_INVALID_KEY);
         return 0;
     }
 
-    *ct_log = CTLOG_new(pkey, name);
+    *ct_log = CTLOG_new_with_libctx(pkey, name, libctx, propq);
     if (*ct_log == NULL) {
         EVP_PKEY_free(pkey);
         return 0;
     }
 
     return 1;
+}
+
+int CTLOG_new_from_base64(CTLOG **ct_log, const char *pkey_base64,
+                          const char *name)
+{
+    return CTLOG_new_from_base64_with_libctx(ct_log, pkey_base64, name, NULL,
+                                             NULL);
 }

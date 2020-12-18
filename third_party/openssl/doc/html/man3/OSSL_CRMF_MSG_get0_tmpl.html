@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>OSSL_CRMF_MSG_get0_tmpl</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>OSSL_CRMF_MSG_get0_tmpl, OSSL_CRMF_CERTTEMPLATE_get0_serialNumber, OSSL_CRMF_CERTTEMPLATE_get0_issuer, OSSL_CRMF_CERTID_get0_serialNumber, OSSL_CRMF_CERTID_get0_issuer, OSSL_CRMF_ENCRYPTEDVALUE_get1_encCert, OSSL_CRMF_MSG_get_certReqId - functions reading from CRMF CertReqMsg structures</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/crmf.h&gt;
+
+ OSSL_CRMF_CERTTEMPLATE *OSSL_CRMF_MSG_get0_tmpl(const OSSL_CRMF_MSG *crm);
+ ASN1_INTEGER
+ *OSSL_CRMF_CERTTEMPLATE_get0_serialNumber(const OSSL_CRMF_CERTTEMPLATE *tmpl);
+ X509_NAME
+ *OSSL_CRMF_CERTTEMPLATE_get0_issuer(const OSSL_CRMF_CERTTEMPLATE *tmpl);
+
+ ASN1_INTEGER *OSSL_CRMF_CERTID_get0_serialNumber(const OSSL_CRMF_CERTID *cid);
+ const X509_NAME *OSSL_CRMF_CERTID_get0_issuer(const OSSL_CRMF_CERTID *cid);
+
+ X509
+ *OSSL_CRMF_ENCRYPTEDVALUE_get1_encCert(const OSSL_CRMF_ENCRYPTEDVALUE *ecert,
+                                        OPENSSL_CTX *libctx, const char *propq,
+                                        EVP_PKEY *pkey);
+
+ int OSSL_CRMF_MSG_get_certReqId(const OSSL_CRMF_MSG *crm);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>OSSL_CRMF_MSG_get0_tmpl() retrieves the certificate template of <i>crm</i>.</p>
+
+<p>OSSL_CRMF_CERTTEMPLATE_get0_serialNumber() retrieves the serialNumber of the given certificate template <i>tmpl</i>.</p>
+
+<p>OSSL_CRMF_CERTTEMPLATE_get0_issuer() retrieves the issuer name of the given certificate template <i>tmpl</i>.</p>
+
+<p>OSSL_CRMF_CERTID_get0_serialNumber retrieves the serialNumber of the given CertId <i>cid</i>.</p>
+
+<p>OSSL_CRMF_CERTID_get0_issuer retrieves the issuer name of the given CertId <i>cid</i>, which must be of ASN.1 type GEN_DIRNAME.</p>
+
+<p>OSSL_CRMF_ENCRYPTEDVALUE_get1_encCert() decrypts the certificate in the given encryptedValue <i>ecert</i>, using the private key <i>pkey</i>, library context <i>libctx</i> and property query string <i>propq</i> (see <a href="../man3/OPENSSL_CTX.html">OPENSSL_CTX(3)</a>). This is needed for the indirect POPO method as in RFC 4210 section 5.2.8.2. The function returns the decrypted certificate as a copy, leaving its ownership with the caller, who is responsible for freeing it.</p>
+
+<p>OSSL_CRMF_MSG_get_certReqId() retrieves the certReqId of <i>crm</i>.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>OSSL_CRMF_MSG_get_certReqId() returns the certificate request ID as a nonnegative integer or -1 on error.</p>
+
+<p>All other functions return a pointer with the intended result or NULL on error.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p>RFC 4211</p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The OpenSSL CRMF support was added in OpenSSL 3.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2007-2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

@@ -1,11 +1,17 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
+
+/*
+ * DSA low level APIs are deprecated for public use, but still ok for
+ * internal use.
+ */
+#include "internal/deprecated.h"
 
 #include <stdio.h>
 #include "internal/cryptlib.h"
@@ -17,7 +23,7 @@
 #include <openssl/dsa.h>
 #include <openssl/ec.h>
 
-#include "internal/evp_int.h"
+#include "crypto/evp.h"
 
 EVP_PKEY *d2i_PublicKey(int type, EVP_PKEY **a, const unsigned char **pp,
                         long length)
@@ -27,12 +33,12 @@ EVP_PKEY *d2i_PublicKey(int type, EVP_PKEY **a, const unsigned char **pp,
     if ((a == NULL) || (*a == NULL)) {
         if ((ret = EVP_PKEY_new()) == NULL) {
             ASN1err(ASN1_F_D2I_PUBLICKEY, ERR_R_EVP_LIB);
-            return (NULL);
+            return NULL;
         }
     } else
         ret = *a;
 
-    if (!EVP_PKEY_set_type(ret, type)) {
+    if (type != EVP_PKEY_id(ret) && !EVP_PKEY_set_type(ret, type)) {
         ASN1err(ASN1_F_D2I_PUBLICKEY, ERR_R_EVP_LIB);
         goto err;
     }
@@ -66,13 +72,12 @@ EVP_PKEY *d2i_PublicKey(int type, EVP_PKEY **a, const unsigned char **pp,
     default:
         ASN1err(ASN1_F_D2I_PUBLICKEY, ASN1_R_UNKNOWN_PUBLIC_KEY_TYPE);
         goto err;
-        /* break; */
     }
     if (a != NULL)
         (*a) = ret;
-    return (ret);
+    return ret;
  err:
     if (a == NULL || *a != ret)
         EVP_PKEY_free(ret);
-    return (NULL);
+    return NULL;
 }

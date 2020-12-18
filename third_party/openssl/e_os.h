@@ -1,81 +1,35 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
-#ifndef HEADER_E_OS_H
-# define HEADER_E_OS_H
+#ifndef OSSL_E_OS_H
+# define OSSL_E_OS_H
 
+# include <limits.h>
 # include <openssl/opensslconf.h>
 
 # include <openssl/e_os2.h>
+# include <openssl/crypto.h>
+# include "internal/nelem.h"
+
 /*
  * <openssl/e_os2.h> contains what we can justify to make visible to the
  * outside; this file e_os.h is not part of the exported interface.
  */
 
-#ifdef  __cplusplus
-extern "C" {
-#endif
-
-/* Used to checking reference counts, most while doing perl5 stuff :-) */
-# if defined(OPENSSL_NO_STDIO)
-#  if defined(REF_PRINT)
-#   error "REF_PRINT requires stdio"
-#  endif
-# endif
-
-/*
- * BIO_printf format modifier for [u]int64_t.
- */
-# if defined(__LP64__) || (defined(__SIZEOF_LONG__) && __SIZEOF_LONG__==8)
-#  define BIO_PRI64 "l"     /* 'll' does work "universally", but 'l' is
-                             * here to shut -Wformat warnings in LP64... */
-# else
-#  define BIO_PRI64 "ll"
-# endif
-
-# if !defined(NDEBUG) && !defined(OPENSSL_NO_STDIO)
-#  define REF_ASSERT_ISNT(test) \
-    (void)((test) ? (OPENSSL_die("refcount error", __FILE__, __LINE__), 1) : 0)
-# else
-#  define REF_ASSERT_ISNT(i)
-# endif
-# ifdef REF_PRINT
-#  define REF_PRINT_COUNT(a, b) \
-        fprintf(stderr, "%p:%4d:%s\n", b, b->references, a)
-# else
-#  define REF_PRINT_COUNT(a, b)
-# endif
-
-# define osslargused(x)      (void)x
-# define OPENSSL_CONF        "openssl.cnf"
-
-# ifndef DEVRANDOM
-/*
- * set this to a comma-separated list of 'random' device files to try out. My
- * default, we will try to read at least one of these files
- */
-#  define DEVRANDOM "/dev/urandom","/dev/random","/dev/srandom"
-# endif
-# if !defined(OPENSSL_NO_EGD) && !defined(DEVRANDOM_EGD)
-/*
- * set this to a comma-separated list of 'egd' sockets to try out. These
- * sockets will be tried in the order listed in case accessing the device
- * files listed in DEVRANDOM did not return enough entropy.
- */
-#  define DEVRANDOM_EGD "/var/run/egd-pool","/dev/egd-pool","/etc/egd-pool","/etc/entropy"
-# endif
-
-# if defined(OPENSSL_SYS_VXWORKS)
-#  define NO_SYS_PARAM_H
+# if defined(OPENSSL_SYS_VXWORKS) || defined(OPENSSL_SYS_UEFI)
 #  define NO_CHMOD
 #  define NO_SYSLOG
 # endif
+
+# define get_last_sys_error()    errno
+# define clear_sys_error()       errno=0
+# define set_sys_error(e)        errno=(e)
 
 /********************************************************************
  The Microsoft section
@@ -90,56 +44,17 @@ extern "C" {
 #  define MSDOS
 # endif
 
-# if (defined(MSDOS) || defined(OPENSSL_SYS_UEFI)) && !defined(GETPID_IS_MEANINGLESS)
-#  define GETPID_IS_MEANINGLESS
-# endif
-
 # ifdef WIN32
-#  define NO_SYS_UN_H
+#  undef get_last_sys_error
+#  undef clear_sys_error
+#  undef set_sys_error
 #  define get_last_sys_error()    GetLastError()
 #  define clear_sys_error()       SetLastError(0)
+#  define set_sys_error(e)        SetLastError(e)
 #  if !defined(WINNT)
 #   define WIN_CONSOLE_BUG
 #  endif
 # else
-#  define get_last_sys_error()    errno
-#  define clear_sys_error()       errno=0
-# endif
-
-# if defined(WINDOWS)
-#  define get_last_socket_error() WSAGetLastError()
-#  define clear_socket_error()    WSASetLastError(0)
-#  define readsocket(s,b,n)       recv((s),(b),(n),0)
-#  define writesocket(s,b,n)      send((s),(b),(n),0)
-# elif defined(__DJGPP__)
-#  define WATT32
-#  define WATT32_NO_OLDIES
-#  define get_last_socket_error() errno
-#  define clear_socket_error()    errno=0
-#  define closesocket(s)          close_s(s)
-#  define readsocket(s,b,n)       read_s(s,b,n)
-#  define writesocket(s,b,n)      send(s,b,n,0)
-# elif defined(OPENSSL_SYS_VMS)
-#  define get_last_socket_error() errno
-#  define clear_socket_error()    errno=0
-#  define ioctlsocket(a,b,c)      ioctl(a,b,c)
-#  define closesocket(s)          close(s)
-#  define readsocket(s,b,n)       recv((s),(b),(n),0)
-#  define writesocket(s,b,n)      send((s),(b),(n),0)
-# elif defined(OPENSSL_SYS_VXWORKS)
-#  define get_last_socket_error() errno
-#  define clear_socket_error()    errno=0
-#  define ioctlsocket(a,b,c)          ioctl((a),(b),(int)(c))
-#  define closesocket(s)              close(s)
-#  define readsocket(s,b,n)           read((s),(b),(n))
-#  define writesocket(s,b,n)          write((s),(char *)(b),(n))
-# else
-#  define get_last_socket_error() errno
-#  define clear_socket_error()    errno=0
-#  define ioctlsocket(a,b,c)      ioctl(a,b,c)
-#  define closesocket(s)          close(s)
-#  define readsocket(s,b,n)       read((s),(b),(n))
-#  define writesocket(s,b,n)      write((s),(b),(n))
 # endif
 
 # if (defined(WINDOWS) || defined(MSDOS))
@@ -147,14 +62,9 @@ extern "C" {
 #  ifdef __DJGPP__
 #   include <unistd.h>
 #   include <sys/stat.h>
-#   include <sys/socket.h>
-#   include <sys/un.h>
-#   include <tcp.h>
-#   include <netdb.h>
 #   define _setmode setmode
 #   define _O_TEXT O_TEXT
 #   define _O_BINARY O_BINARY
-#   define HAS_LFN_SUPPORT(name)  (pathconf((name), _PC_NAME_MAX) > 12)
 #   undef DEVRANDOM_EGD  /*  Neither MS-DOS nor FreeDOS provide 'egd' sockets.  */
 #   undef DEVRANDOM
 #   define DEVRANDOM "/dev/urandom\x24"
@@ -220,14 +130,6 @@ static __inline unsigned int _strlen31(const char *str)
 }
 #   endif
 #   include <malloc.h>
-#   if defined(_MSC_VER) && _MSC_VER<=1200 && defined(_MT) && defined(isspace)
-       /* compensate for bug in VC6 ctype.h */
-#    undef isspace
-#    undef isdigit
-#    undef isalnum
-#    undef isupper
-#    undef isxdigit
-#   endif
 #   if defined(_MSC_VER) && !defined(_WIN32_WCE) && !defined(_DLL) && defined(stdin)
 #    if _MSC_VER>=1300 && _MSC_VER<1600
 #     undef stdin
@@ -264,9 +166,6 @@ extern FILE *_imp___iob;
 
 #  define EXIT(n) exit(n)
 #  define LIST_SEPARATOR_CHAR ';'
-#  ifndef X_OK
-#   define X_OK        0
-#  endif
 #  ifndef W_OK
 #   define W_OK        2
 #  endif
@@ -289,6 +188,12 @@ extern FILE *_imp___iob;
 #  endif
 
 # else                          /* The non-microsoft world */
+
+#  if defined(OPENSSL_SYS_VXWORKS)
+#   include <time.h>
+#  else
+#   include <sys/time.h>
+#  endif
 
 #  ifdef OPENSSL_SYS_VMS
 #   define VMS 1
@@ -322,7 +227,7 @@ extern FILE *_imp___iob;
 
      Finally, we add the VMS C facility code 0x35a000, because there are some
      programs, such as Perl, that will reinterpret the code back to something
-     POSIXly.  'man perlvms' explains it further.
+     POSIX.  'man perlvms' explains it further.
 
      NOTE: the perlvms manual wants to turn all codes 2 to 255 into success
      codes (status type = 1).  I couldn't disagree more.  Fortunately, the
@@ -331,18 +236,11 @@ extern FILE *_imp___iob;
   */
 #   define EXIT(n)  exit((n) ? (((n) << 3) | 2 | 0x10000000 | 0x35a000) : 1)
 
-#   define NO_SYS_PARAM_H
-#   define NO_SYS_UN_H
-
 #   define DEFAULT_HOME "SYS$LOGIN:"
 
 #  else
      /* !defined VMS */
-#   ifdef OPENSSL_UNISTD
-#    include OPENSSL_UNISTD
-#   else
-#    include <unistd.h>
-#   endif
+#   include <unistd.h>
 #   include <sys/types.h>
 #   ifdef OPENSSL_SYS_WIN32_CYGWIN
 #    include <io.h>
@@ -355,130 +253,12 @@ extern FILE *_imp___iob;
 
 # endif
 
-/*************/
-
-# ifdef USE_SOCKETS
-#  ifdef OPENSSL_NO_SOCK
-#  elif defined(WINDOWS) || defined(MSDOS)
-      /* windows world */
-#   if !defined(__DJGPP__)
-#    if defined(_WIN32_WCE) && _WIN32_WCE<410
-#     define getservbyname _masked_declaration_getservbyname
-#    endif
-#    if !defined(IPPROTO_IP)
-         /* winsock[2].h was included already? */
-#     include <winsock.h>
-#    endif
-#    ifdef getservbyname
-#     undef getservbyname
-         /* this is used to be wcecompat/include/winsock_extras.h */
-struct servent *PASCAL getservbyname(const char *, const char *);
-#    endif
-
-#    ifdef _WIN64
-/*
- * Even though sizeof(SOCKET) is 8, it's safe to cast it to int, because
- * the value constitutes an index in per-process table of limited size
- * and not a real pointer. And we also depend on fact that all processors
- * Windows run on happen to be two's-complement, which allows to
- * interchange INVALID_SOCKET and -1.
- */
-#     define socket(d,t,p)   ((int)socket(d,t,p))
-#     define accept(s,f,l)   ((int)accept(s,f,l))
-#    endif
-#   else
-#   endif
-
-#  else
-
-#   ifndef NO_SYS_PARAM_H
-#    include <sys/param.h>
-#   endif
-#   ifdef OPENSSL_SYS_VXWORKS
-#    include <time.h>
-#   endif
-
-#   include <netdb.h>
-#   if defined(OPENSSL_SYS_VMS_NODECC)
-#    include <socket.h>
-#    include <in.h>
-#    include <inet.h>
-#   else
-#    include <sys/socket.h>
-#    ifndef NO_SYS_UN_H
-#     ifdef OPENSSL_SYS_VXWORKS
-#      include <streams/un.h>
-#     else
-#      include <sys/un.h>
-#     endif
-#     ifndef UNIX_PATH_MAX
-#      define UNIX_PATH_MAX sizeof(((struct sockaddr_un *)NULL)->sun_path)
-#     endif
-#    endif
-#    ifdef FILIO_H
-#     include <sys/filio.h> /* FIONBIO in some SVR4, e.g. unixware, solaris */
-#    endif
-#    include <netinet/in.h>
-#    include <arpa/inet.h>
-#    include <netinet/tcp.h>
-#   endif
-
-#   ifdef OPENSSL_SYS_AIX
-#    include <sys/select.h>
-#   endif
-
-#   ifdef __QNX__
-#    include <sys/select.h>
-#   endif
-
-#   ifndef VMS
-#    include <sys/ioctl.h>
-#   else
-        /* ioctl is only in VMS > 7.0 and when socketshr is not used */
-#    if !defined(TCPIP_TYPE_SOCKETSHR) && defined(__VMS_VER) && (__VMS_VER > 70000000)
-#     include <sys/ioctl.h>
-#    endif
-#   endif
-
-#   ifdef VMS
-#    include <unixio.h>
-#    if defined(TCPIP_TYPE_SOCKETSHR)
-#     include <socketshr.h>
-#    endif
-#   endif
-
-#   ifndef INVALID_SOCKET
-#    define INVALID_SOCKET      (-1)
-#   endif                       /* INVALID_SOCKET */
-#  endif
-
-/*
- * Some IPv6 implementations are broken, disable them in known bad versions.
- */
-#  if !defined(OPENSSL_USE_IPV6)
-#   if defined(AF_INET6) && !defined(NETWARE_CLIB)
-#    define OPENSSL_USE_IPV6 1
-#   else
-#    define OPENSSL_USE_IPV6 0
-#   endif
-#  endif
-
-# endif
-
-# ifndef OPENSSL_EXIT
-#  if defined(MONOLITH) && !defined(OPENSSL_C)
-#   define OPENSSL_EXIT(n) return(n)
-#  else
-#   define OPENSSL_EXIT(n) do { EXIT(n); return(n); } while(0)
-#  endif
-# endif
-
 /***********************************************/
 
 # if defined(OPENSSL_SYS_WINDOWS)
 #  define strcasecmp _stricmp
 #  define strncasecmp _strnicmp
-#  if (_MSC_VER >= 1310)
+#  if (_MSC_VER >= 1310) && !defined(_WIN32_WCE)
 #   define open _open
 #   define fdopen _fdopen
 #   define close _close
@@ -486,6 +266,7 @@ struct servent *PASCAL getservbyname(const char *, const char *);
 #    define strdup _strdup
 #   endif
 #   define unlink _unlink
+#   define fileno _fileno
 #  endif
 # else
 #  include <strings.h>
@@ -496,20 +277,16 @@ struct servent *PASCAL getservbyname(const char *, const char *);
 #  include <ioLib.h>
 #  include <tickLib.h>
 #  include <sysLib.h>
-
-#  define TTY_STRUCT int
-
-#  define sleep(a) taskDelay((a) * sysClkRateGet())
-
 #  include <vxWorks.h>
 #  include <sockLib.h>
 #  include <taskLib.h>
 
-#  define getpid taskIdSelf
+#  define TTY_STRUCT int
+#  define sleep(a) taskDelay((a) * sysClkRateGet())
 
 /*
  * NOTE: these are implemented by helpers in database app! if the database is
- * not linked, we need to implement them elswhere
+ * not linked, we need to implement them elsewhere
  */
 struct hostent *gethostbyname(const char *name);
 struct hostent *gethostbyaddr(const char *addr, int length, int type);
@@ -518,10 +295,78 @@ struct servent *getservbyname(const char *name, const char *proto);
 # endif
 /* end vxworks */
 
-#define OSSL_NELEM(x)    (sizeof(x)/sizeof((x)[0]))
+/* ----------------------------- HP NonStop -------------------------------- */
+/* Required to support platform variant without getpid() and pid_t. */
+# ifdef __TANDEM
+#  include <strings.h>
+#  include <netdb.h>
+#  define getservbyname(name,proto)          getservbyname((char*)name,proto)
+#  define gethostbyname(name)                gethostbyname((char*)name)
+#  define ioctlsocket(a,b,c)	ioctl(a,b,c)
+#  ifdef NO_GETPID
+inline int nssgetpid();
+#   ifndef NSSGETPID_MACRO
+#    define NSSGETPID_MACRO
+#    include <cextdecs.h(PROCESSHANDLE_GETMINE_)>
+#    include <cextdecs.h(PROCESSHANDLE_DECOMPOSE_)>
+       inline int nssgetpid()
+       {
+         short phandle[10]={0};
+         union pseudo_pid {
+          struct {
+           short cpu;
+           short pin;
+         } cpu_pin ;
+         int ppid;
+        } ppid = { 0 };
+        PROCESSHANDLE_GETMINE_(phandle);
+        PROCESSHANDLE_DECOMPOSE_(phandle, &ppid.cpu_pin.cpu, &ppid.cpu_pin.pin);
+        return ppid.ppid;
+       }
+#    define getpid(a) nssgetpid(a)
+#   endif /* NSSGETPID_MACRO */
+#  endif /* NO_GETPID */
+/*#  define setsockopt(a,b,c,d,f) setsockopt(a,b,c,(char*)d,f)*/
+/*#  define getsockopt(a,b,c,d,f) getsockopt(a,b,c,(char*)d,f)*/
+/*#  define connect(a,b,c) connect(a,(struct sockaddr *)b,c)*/
+/*#  define bind(a,b,c) bind(a,(struct sockaddr *)b,c)*/
+/*#  define sendto(a,b,c,d,e,f) sendto(a,(char*)b,c,d,(struct sockaddr *)e,f)*/
+#  if defined(OPENSSL_THREADS) && !defined(_PUT_MODEL_)
+  /*
+   * HPNS SPT threads
+   */
+#   define  SPT_THREAD_SIGNAL 1
+#   define  SPT_THREAD_AWARE 1
+#   include <spthread.h>
+#   undef close
+#   define close spt_close
+/*
+#   define get_last_socket_error()	errno
+#   define clear_socket_error()	errno=0
+#   define ioctlsocket(a,b,c)	ioctl(a,b,c)
+#   define closesocket(s)		close(s)
+#   define readsocket(s,b,n)	read((s),(char*)(b),(n))
+#   define writesocket(s,b,n)	write((s),(char*)(b),(n)
+*/
+#   define accept(a,b,c)        accept(a,(struct sockaddr *)b,c)
+#   define recvfrom(a,b,c,d,e,f) recvfrom(a,b,(socklen_t)c,d,e,f)
+#  endif
+# endif
 
-#ifdef  __cplusplus
-}
-#endif
+# ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+#  define CRYPTO_memcmp memcmp
+# endif
+
+# ifndef OPENSSL_NO_SECURE_MEMORY
+   /* unistd.h defines _POSIX_VERSION */
+#  if defined(OPENSSL_SYS_UNIX) \
+      && ( (defined(_POSIX_VERSION) && _POSIX_VERSION >= 200112L)      \
+           || defined(__sun) || defined(__hpux) || defined(__sgi)      \
+           || defined(__osf__) )
+      /* secure memory is implemented */
+#   else
+#     define OPENSSL_NO_SECURE_MEMORY
+#   endif
+# endif
 
 #endif

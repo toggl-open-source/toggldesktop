@@ -1,7 +1,7 @@
 /*
- * Copyright 1995-2019 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -25,12 +25,12 @@ int X509_REQ_print_fp(FILE *fp, X509_REQ *x)
 
     if ((b = BIO_new(BIO_s_file())) == NULL) {
         X509err(X509_F_X509_REQ_PRINT_FP, ERR_R_BUF_LIB);
-        return (0);
+        return 0;
     }
     BIO_set_fp(b, fp, BIO_NOCLOSE);
     ret = X509_REQ_print(b, x);
     BIO_free(b);
-    return (ret);
+    return ret;
 }
 #endif
 
@@ -93,10 +93,12 @@ int X509_REQ_print_ex(BIO *bp, X509_REQ *x, unsigned long nmflags,
 
         pkey = X509_REQ_get0_pubkey(x);
         if (pkey == NULL) {
-            BIO_printf(bp, "%12sUnable to load Public Key\n", "");
+            if (BIO_printf(bp, "%12sUnable to load Public Key\n", "") <= 0)
+                goto err;
             ERR_print_errors(bp);
         } else {
-            EVP_PKEY_print_public(bp, pkey, 16, NULL);
+            if (EVP_PKEY_print_public(bp, pkey, 16, NULL) <= 0)
+                goto err;
         }
     }
 
@@ -126,8 +128,8 @@ int X509_REQ_print_ex(BIO *bp, X509_REQ *x, unsigned long nmflags,
                     ii = 0;
                     count = X509_ATTRIBUTE_count(a);
                     if (count == 0) {
-                        X509err(X509_F_X509_REQ_PRINT_EX, X509_R_INVALID_ATTRIBUTES);
-                        return 0;
+                      X509err(X509_F_X509_REQ_PRINT_EX, X509_R_INVALID_ATTRIBUTES);
+                      return 0;
                     }
  get_next:
                     at = X509_ATTRIBUTE_get0_type(a, ii);
@@ -139,16 +141,22 @@ int X509_REQ_print_ex(BIO *bp, X509_REQ *x, unsigned long nmflags,
                         goto err;
                 if (BIO_puts(bp, ":") <= 0)
                     goto err;
-                if ((type == V_ASN1_PRINTABLESTRING) ||
-                    (type == V_ASN1_T61STRING) ||
-                    (type == V_ASN1_UTF8STRING) ||
-                    (type == V_ASN1_IA5STRING)) {
+                switch (type) {
+                case V_ASN1_PRINTABLESTRING:
+                case V_ASN1_T61STRING:
+                case V_ASN1_NUMERICSTRING:
+                case V_ASN1_UTF8STRING:
+                case V_ASN1_IA5STRING:
                     if (BIO_write(bp, (char *)bs->data, bs->length)
-                        != bs->length)
+                            != bs->length)
                         goto err;
-                    BIO_puts(bp, "\n");
-                } else {
-                    BIO_puts(bp, "unable to print attribute\n");
+                    if (BIO_puts(bp, "\n") <= 0)
+                        goto err;
+                    break;
+                default:
+                    if (BIO_puts(bp, "unable to print attribute\n") <= 0)
+                        goto err;
+                    break;
                 }
                 if (++ii < count)
                     goto get_next;
@@ -158,7 +166,8 @@ int X509_REQ_print_ex(BIO *bp, X509_REQ *x, unsigned long nmflags,
     if (!(cflag & X509_FLAG_NO_EXTENSIONS)) {
         exts = X509_REQ_get_extensions(x);
         if (exts) {
-            BIO_printf(bp, "%8sRequested Extensions:\n", "");
+            if (BIO_printf(bp, "%8sRequested Extensions:\n", "") <= 0)
+                goto err;
             for (i = 0; i < sk_X509_EXTENSION_num(exts); i++) {
                 ASN1_OBJECT *obj;
                 X509_EXTENSION *ex;
@@ -167,13 +176,16 @@ int X509_REQ_print_ex(BIO *bp, X509_REQ *x, unsigned long nmflags,
                 if (BIO_printf(bp, "%12s", "") <= 0)
                     goto err;
                 obj = X509_EXTENSION_get_object(ex);
-                i2a_ASN1_OBJECT(bp, obj);
+                if (i2a_ASN1_OBJECT(bp, obj) <= 0)
+                    goto err;
                 critical = X509_EXTENSION_get_critical(ex);
                 if (BIO_printf(bp, ": %s\n", critical ? "critical" : "") <= 0)
                     goto err;
                 if (!X509V3_EXT_print(bp, ex, cflag, 16)) {
-                    BIO_printf(bp, "%16s", "");
-                    ASN1_STRING_print(bp, X509_EXTENSION_get_data(ex));
+                    if (BIO_printf(bp, "%16s", "") <= 0
+                        || ASN1_STRING_print(bp,
+                                             X509_EXTENSION_get_data(ex)) <= 0)
+                        goto err;
                 }
                 if (BIO_write(bp, "\n", 1) <= 0)
                     goto err;
@@ -190,10 +202,10 @@ int X509_REQ_print_ex(BIO *bp, X509_REQ *x, unsigned long nmflags,
             goto err;
     }
 
-    return (1);
+    return 1;
  err:
     X509err(X509_F_X509_REQ_PRINT_EX, ERR_R_BUF_LIB);
-    return (0);
+    return 0;
 }
 
 int X509_REQ_print(BIO *bp, X509_REQ *x)

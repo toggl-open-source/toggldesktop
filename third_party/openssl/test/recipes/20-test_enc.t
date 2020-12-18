@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2015-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2015-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -14,7 +14,7 @@ use File::Spec::Functions qw/catfile/;
 use File::Copy;
 use File::Compare qw/compare_text/;
 use File::Basename;
-use OpenSSL::Test qw/:DEFAULT srctop_file/;
+use OpenSSL::Test qw/:DEFAULT srctop_file bldtop_dir/;
 
 setup("test_enc");
 
@@ -26,21 +26,24 @@ my $testsrc = srctop_file("test","recipes",basename($0));
 my $test = catfile(".", "p");
 
 my $cmd = "openssl";
+my $provpath = bldtop_dir("providers");
+my @prov = ("-provider-path", $provpath, "-provider", "default", "-provider", "legacy");
 
+my $ciphersstatus = undef;
 my @ciphers =
     map { s/^\s+//; s/\s+$//; split /\s+/ }
-    run(app([$cmd, "list", "-cipher-commands"]), capture => 1);
+    run(app([$cmd, "list", "-cipher-commands"]),
+        capture => 1, statusvar => \$ciphersstatus);
 
-plan tests => 1 + (scalar @ciphers)*2;
-
-my $init = ok(copy($testsrc,$test));
-
-if (!$init) {
-    diag("Trying to copy $testsrc to $test : $!");
-}
+plan tests => 2 + (scalar @ciphers)*2;
 
  SKIP: {
-     skip "Not initialized, skipping...", 11 unless $init;
+     skip "Problems getting ciphers...", 1 + scalar(@ciphers)
+         unless ok($ciphersstatus, "Running 'openssl list -cipher-commands'");
+     unless (ok(copy($testsrc, $test), "Copying $testsrc to $test")) {
+         diag($!);
+         skip "Not initialized, skipping...", scalar(@ciphers);
+     }
 
      foreach my $c (@ciphers) {
 	 my %variant = ("$c" => [],
@@ -58,12 +61,9 @@ if (!$init) {
 		 @d = ( "enc", @{$variant{$t}}, "-d" );
 	     }
 
-	     ok(run(app([$cmd, @e, "-in", $test, "-out", $cipherfile]))
-		&& run(app([$cmd, @d, "-in", $cipherfile, "-out", $clearfile]))
+	     ok(run(app([$cmd, @e, @prov, "-in", $test, "-out", $cipherfile]))
+		&& run(app([$cmd, @d, @prov, "-in", $cipherfile, "-out", $clearfile]))
 		&& compare_text($test,$clearfile) == 0, $t);
-	     unlink $cipherfile, $clearfile;
 	 }
      }
 }
-
-unlink $test;

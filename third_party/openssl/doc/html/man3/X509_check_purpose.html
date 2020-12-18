@@ -1,0 +1,111 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>X509_check_purpose</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>X509_check_purpose - Check the purpose of a certificate</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/x509v3.h&gt;
+
+ int X509_check_purpose(X509 *x, int id, int ca);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>This function checks if certificate <i>x</i> was created with the purpose represented by <i>id</i>. If <i>ca</i> is nonzero, then certificate <i>x</i> is checked to determine if it&#39;s a possible CA with various levels of certainty possibly returned.</p>
+
+<p>Below are the potential ID&#39;s that can be checked:</p>
+
+<pre><code> # define X509_PURPOSE_SSL_CLIENT        1
+ # define X509_PURPOSE_SSL_SERVER        2
+ # define X509_PURPOSE_NS_SSL_SERVER     3
+ # define X509_PURPOSE_SMIME_SIGN        4
+ # define X509_PURPOSE_SMIME_ENCRYPT     5
+ # define X509_PURPOSE_CRL_SIGN          6
+ # define X509_PURPOSE_ANY               7
+ # define X509_PURPOSE_OCSP_HELPER       8
+ # define X509_PURPOSE_TIMESTAMP_SIGN    9</code></pre>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>For non-CA checks</p>
+
+<dl>
+
+<dt id="an-error-condition-has-occurred">-1 an error condition has occurred</dt>
+<dd>
+
+</dd>
+<dt id="if-the-certificate-was-created-to-perform-the-purpose-represented-by-id"> 1 if the certificate was created to perform the purpose represented by <i>id</i></dt>
+<dd>
+
+</dd>
+<dt id="if-the-certificate-was-not-created-to-perform-the-purpose-represented-by-id"> 0 if the certificate was not created to perform the purpose represented by <i>id</i></dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>For CA checks the below integers could be returned with the following meanings:</p>
+
+<dl>
+
+<dt id="an-error-condition-has-occurred1">-1 an error condition has occurred</dt>
+<dd>
+
+</dd>
+<dt id="not-a-CA-or-does-not-have-the-purpose-represented-by-id"> 0 not a CA or does not have the purpose represented by <i>id</i></dt>
+<dd>
+
+</dd>
+<dt id="is-a-CA"> 1 is a CA.</dt>
+<dd>
+
+</dd>
+<dt id="Only-possible-in-old-versions-of-openSSL-when-basicConstraints-are-absent.-New-versions-will-not-return-this-value.-May-be-a-CA"> 2 Only possible in old versions of openSSL when basicConstraints are absent. New versions will not return this value. May be a CA</dt>
+<dd>
+
+</dd>
+<dt id="basicConstraints-absent-but-self-signed-V1"> 3 basicConstraints absent but self signed V1.</dt>
+<dd>
+
+</dd>
+<dt id="basicConstraints-absent-but-keyUsage-present-and-keyCertSign-asserted"> 4 basicConstraints absent but keyUsage present and keyCertSign asserted.</dt>
+<dd>
+
+</dd>
+<dt id="legacy-Netscape-specific-CA-Flags-present"> 5 legacy Netscape specific CA Flags present</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2019-2020 The OpenSSL Project Authors. All Rights Reserved. Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

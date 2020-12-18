@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>PEM_X509_INFO_read_bio_with_libctx</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>PEM_X509_INFO_read_bio_with_libctx, PEM_X509_INFO_read_with_libctx - read a PEM-encoded data structure from a bio into one or more <b>X509_INFO</b> object&#39;s</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/pem.h&gt;
+
+ STACK_OF(X509_INFO) *PEM_X509_INFO_read_with_libctx(FILE *fp,
+                                                     STACK_OF(X509_INFO) *sk,
+                                                     pem_password_cb *cb,
+                                                     void *u,
+                                                     OPENSSL_CTX *libctx,
+                                                     const char *propq);
+
+ STACK_OF(X509_INFO) *PEM_X509_INFO_read_bio_with_libctx(BIO *bio,
+                                                         STACK_OF(X509_INFO) *sk,
+                                                         pem_password_cb *cb,
+                                                         void *u,
+                                                         OPENSSL_CTX *libctx,
+                                                         const char *propq);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The loaded <b>X509_INFO</b> object&#39;s can contain a CRL, a certificate and a corresponding private key.</p>
+
+<p>PEM_X509_INFO_read_with_libctx() loads the <b>X509_INFO</b> objects from a file <i>fp</i>. The library context <i>libctx</i> and property query &lt;propq&gt; are used for fetching algorithms from providers.</p>
+
+<p>PEM_X509_INFO_read_bio_with_libctx loads the <b>X509_INFO</b> objects using a bio <i>bp</i>. The library context <i>libctx</i> and property query &lt;propq&gt; are used for fetching algorithms from providers.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>PEM_X509_INFO_read_with_libctx() and PEM_X509_INFO_read_bio_with_libctx() return a stack of <b>X509_INFO</b> objects or NULL on failure.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man3/PEM_read_bio_ex.html">PEM_read_bio_ex(3)</a>, <a href="../man7/passphrase-encoding.html">passphrase-encoding(7)</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The functions PEM_X509_INFO_read_with_libctx() and PEM_X509_INFO_read_bio_with_libctx() were added in OpenSSL 3.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

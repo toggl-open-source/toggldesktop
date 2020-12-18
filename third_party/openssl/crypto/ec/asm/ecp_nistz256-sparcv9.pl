@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2015-2018 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2015-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -31,8 +31,7 @@
 # on benchmark. Lower coefficients are for ECDSA sign, server-side
 # operation. Keep in mind that +200% means 3x improvement.
 
-$output = pop;
-open STDOUT,">$output";
+$output = pop and open STDOUT,">$output";
 
 $code.=<<___;
 #include "sparc_arch.h"
@@ -413,7 +412,7 @@ __ecp_nistz256_add:
 	! if a+b >= modulus, subtract modulus.
 	!
 	! But since comparison implies subtraction, we subtract
-	! modulus and then add it back if subraction borrowed.
+	! modulus and then add it back if subtraction borrowed.
 
 	subcc	@acc[0],-1,@acc[0]
 	subccc	@acc[1],-1,@acc[1]
@@ -1592,7 +1591,7 @@ ___
 ########################################################################
 # Following subroutines are VIS3 counterparts of those above that
 # implement ones found in ecp_nistz256.c. Key difference is that they
-# use 128-bit muliplication and addition with 64-bit carry, and in order
+# use 128-bit multiplication and addition with 64-bit carry, and in order
 # to do that they perform conversion from uin32_t[8] to uint64_t[4] upon
 # entry and vice versa on return.
 #
@@ -1874,7 +1873,7 @@ $code.=<<___	if ($i<3);
 	ldx	[$bp+8*($i+1)],$bi	! bp[$i+1]
 ___
 $code.=<<___;
-	addcc	$acc1,$t0,$acc1		! accumulate high parts of multiplication 
+	addcc	$acc1,$t0,$acc1		! accumulate high parts of multiplication
 	 sllx	$acc0,32,$t0
 	addxccc	$acc2,$t1,$acc2
 	 srlx	$acc0,32,$t1
@@ -1977,7 +1976,7 @@ $code.=<<___;
 	 srlx	$acc0,32,$t1
 	addxccc	$acc3,$t2,$acc2		! +=acc[0]*0xFFFFFFFF00000001
 	 sub	$acc0,$t0,$t2		! acc0*0xFFFFFFFF00000001, low part
-	addxc	%g0,$t3,$acc3		! cant't overflow
+	addxc	%g0,$t3,$acc3		! can't overflow
 ___
 }
 $code.=<<___;
@@ -2301,7 +2300,6 @@ my ($Z1sqr, $Z2sqr) = ($Hsqr, $Rsqr);
 # !in1infty, !in2infty and result of check for zero.
 
 $code.=<<___;
-.globl	ecp_nistz256_point_add_vis3
 .align	32
 ecp_nistz256_point_add_vis3:
 	save	%sp,-STACK64_FRAME-32*18-32,%sp
@@ -3058,4 +3056,4 @@ foreach (split("\n",$code)) {
 	print $_,"\n";
 }
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

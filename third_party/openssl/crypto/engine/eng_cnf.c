@@ -1,16 +1,18 @@
 /*
- * Copyright 2002-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2002-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
-#include "eng_int.h"
-#include <openssl/conf.h>
+/* We need to use some engine deprecated APIs */
+#define OPENSSL_SUPPRESS_DEPRECATED
 
-/* #define ENGINE_CONF_DEBUG */
+#include "eng_local.h"
+#include <openssl/conf.h>
+#include <openssl/trace.h>
 
 /* ENGINE config module */
 
@@ -50,9 +52,7 @@ static int int_engine_configure(const char *name, const char *value, const CONF 
     int soft = 0;
 
     name = skip_dot(name);
-#ifdef ENGINE_CONF_DEBUG
-    fprintf(stderr, "Configuring engine %s\n", name);
-#endif
+    OSSL_TRACE1(CONF, "Configuring engine %s\n", name);
     /* Value is a section containing ENGINE commands */
     ecmds = NCONF_get_section(cnf, value);
 
@@ -66,10 +66,8 @@ static int int_engine_configure(const char *name, const char *value, const CONF 
         ecmd = sk_CONF_VALUE_value(ecmds, i);
         ctrlname = skip_dot(ecmd->name);
         ctrlvalue = ecmd->value;
-#ifdef ENGINE_CONF_DEBUG
-        fprintf(stderr, "ENGINE conf: doing ctrl(%s,%s)\n", ctrlname,
-                ctrlvalue);
-#endif
+        OSSL_TRACE2(CONF, "ENGINE: doing ctrl(%s,%s)\n",
+                    ctrlname, ctrlvalue);
 
         /* First handle some special pseudo ctrls */
 
@@ -153,10 +151,8 @@ static int int_engine_module_init(CONF_IMODULE *md, const CONF *cnf)
     STACK_OF(CONF_VALUE) *elist;
     CONF_VALUE *cval;
     int i;
-#ifdef ENGINE_CONF_DEBUG
-    fprintf(stderr, "Called engine module: name %s, value %s\n",
-            CONF_imodule_get_name(md), CONF_imodule_get_value(md));
-#endif
+    OSSL_TRACE2(CONF, "Called engine module: name %s, value %s\n",
+                CONF_imodule_get_name(md), CONF_imodule_get_value(md));
     /* Value is a section containing ENGINEs to configure */
     elist = NCONF_get_section(cnf, CONF_imodule_get_value(md));
 

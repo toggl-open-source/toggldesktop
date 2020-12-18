@@ -1,7 +1,7 @@
 /*
  * Copyright 2001-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -10,7 +10,8 @@
 #include "internal/cryptlib.h"
 #include <openssl/evp.h>
 #include <openssl/lhash.h>
-#include "eng_int.h"
+#include <openssl/trace.h>
+#include "eng_local.h"
 
 /* The type of the items in the table */
 struct st_engine_pile {
@@ -26,7 +27,7 @@ struct st_engine_pile {
     int uptodate;
 };
 
-/* The type exposed in eng_int.h */
+/* The type exposed in eng_local.h */
 struct st_engine_table {
     LHASH_OF(ENGINE_PILE) piles;
 };                              /* ENGINE_TABLE */
@@ -76,7 +77,7 @@ static int int_table_check(ENGINE_TABLE **t, int create)
 }
 
 /*
- * Privately exposed (via eng_int.h) functions for adding and/or removing
+ * Privately exposed (via eng_local.h) functions for adding and/or removing
  * ENGINEs from the implementation table
  */
 int engine_table_register(ENGINE_TABLE **table, ENGINE_CLEANUP_CB *cleanup,
@@ -169,7 +170,7 @@ void engine_table_unregister(ENGINE_TABLE **table, ENGINE *e)
 
 static void int_cleanup_cb_doall(ENGINE_PILE *p)
 {
-    if (!p)
+    if (p == NULL)
         return;
     sk_ENGINE_free(p->sk);
     if (p->funct)
@@ -189,29 +190,27 @@ void engine_table_cleanup(ENGINE_TABLE **table)
 }
 
 /* return a functional reference for a given 'nid' */
-#ifndef ENGINE_TABLE_DEBUG
-ENGINE *engine_table_select(ENGINE_TABLE **table, int nid)
-#else
-ENGINE *engine_table_select_tmp(ENGINE_TABLE **table, int nid, const char *f,
+ENGINE *engine_table_select_int(ENGINE_TABLE **table, int nid, const char *f,
                                 int l)
-#endif
 {
     ENGINE *ret = NULL;
     ENGINE_PILE tmplate, *fnd = NULL;
     int initres, loop = 0;
 
+    /* Load the config before trying to check if engines are available */
+    OPENSSL_init_crypto(OPENSSL_INIT_LOAD_CONFIG, NULL);
+
     if (!(*table)) {
-#ifdef ENGINE_TABLE_DEBUG
-        fprintf(stderr, "engine_table_dbg: %s:%d, nid=%d, nothing "
-                "registered!\n", f, l, nid);
-#endif
+        OSSL_TRACE3(ENGINE_TABLE,
+                   "%s:%d, nid=%d, nothing registered!\n",
+                   f, l, nid);
         return NULL;
     }
     ERR_set_mark();
     CRYPTO_THREAD_write_lock(global_engine_lock);
     /*
      * Check again inside the lock otherwise we could race against cleanup
-     * operations. But don't worry about a fprintf(stderr).
+     * operations. But don't worry about a debug printout
      */
     if (!int_table_check(table, 0))
         goto end;
@@ -220,10 +219,9 @@ ENGINE *engine_table_select_tmp(ENGINE_TABLE **table, int nid, const char *f,
     if (!fnd)
         goto end;
     if (fnd->funct && engine_unlocked_init(fnd->funct)) {
-#ifdef ENGINE_TABLE_DEBUG
-        fprintf(stderr, "engine_table_dbg: %s:%d, nid=%d, using "
-                "ENGINE '%s' cached\n", f, l, nid, fnd->funct->id);
-#endif
+        OSSL_TRACE4(ENGINE_TABLE,
+                   "%s:%d, nid=%d, using ENGINE '%s' cached\n",
+                   f, l, nid, fnd->funct->id);
         ret = fnd->funct;
         goto end;
     }
@@ -234,10 +232,10 @@ ENGINE *engine_table_select_tmp(ENGINE_TABLE **table, int nid, const char *f,
  trynext:
     ret = sk_ENGINE_value(fnd->sk, loop++);
     if (!ret) {
-#ifdef ENGINE_TABLE_DEBUG
-        fprintf(stderr, "engine_table_dbg: %s:%d, nid=%d, no "
-                "registered implementations would initialise\n", f, l, nid);
-#endif
+        OSSL_TRACE3(ENGINE_TABLE,
+                    "%s:%d, nid=%d, "
+                    "no registered implementations would initialise\n",
+                    f, l, nid);
         goto end;
     }
     /* Try to initialise the ENGINE? */
@@ -252,15 +250,13 @@ ENGINE *engine_table_select_tmp(ENGINE_TABLE **table, int nid, const char *f,
             if (fnd->funct)
                 engine_unlocked_finish(fnd->funct, 0);
             fnd->funct = ret;
-#ifdef ENGINE_TABLE_DEBUG
-            fprintf(stderr, "engine_table_dbg: %s:%d, nid=%d, "
-                    "setting default to '%s'\n", f, l, nid, ret->id);
-#endif
+            OSSL_TRACE4(ENGINE_TABLE,
+                        "%s:%d, nid=%d, setting default to '%s'\n",
+                        f, l, nid, ret->id);
         }
-#ifdef ENGINE_TABLE_DEBUG
-        fprintf(stderr, "engine_table_dbg: %s:%d, nid=%d, using "
-                "newly initialised '%s'\n", f, l, nid, ret->id);
-#endif
+        OSSL_TRACE4(ENGINE_TABLE,
+                    "%s:%d, nid=%d, using newly initialised '%s'\n",
+                    f, l, nid, ret->id);
         goto end;
     }
     goto trynext;
@@ -271,14 +267,14 @@ ENGINE *engine_table_select_tmp(ENGINE_TABLE **table, int nid, const char *f,
      */
     if (fnd)
         fnd->uptodate = 1;
-#ifdef ENGINE_TABLE_DEBUG
     if (ret)
-        fprintf(stderr, "engine_table_dbg: %s:%d, nid=%d, caching "
-                "ENGINE '%s'\n", f, l, nid, ret->id);
+        OSSL_TRACE4(ENGINE_TABLE,
+                   "%s:%d, nid=%d, caching ENGINE '%s'\n",
+                   f, l, nid, ret->id);
     else
-        fprintf(stderr, "engine_table_dbg: %s:%d, nid=%d, caching "
-                "'no matching ENGINE'\n", f, l, nid);
-#endif
+        OSSL_TRACE3(ENGINE_TABLE,
+                    "%s:%d, nid=%d, caching 'no matching ENGINE'\n",
+                    f, l, nid);
     CRYPTO_THREAD_unlock(global_engine_lock);
     /*
      * Whatever happened, any failed init()s are not failures in this

@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2008-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2008-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -49,10 +49,9 @@ require "x86asm.pl";
 
 $OPENSSL=1;
 
-$output = pop;
-open STDOUT,">$output";
+$output = pop and open STDOUT,">$output";
 
-&asm_init($ARGV[0],"cmll-586.pl",$ARGV[$#ARGV] eq "386");
+&asm_init($ARGV[0],$ARGV[$#ARGV] eq "386");
 
 @T=("eax","ebx","ecx","edx");
 $idx="esi";
@@ -792,9 +791,9 @@ if ($OPENSSL) {
  64, 40,211,123,187,201, 67,193, 21,227,173,244,119,199,128,158);
 
 sub S1110 { my $i=shift; $i=@SBOX[$i]; return $i<<24|$i<<16|$i<<8; }
-sub S4404 { my $i=shift; $i=($i<<1|$i>>7)&0xff; $i=@SBOX[$i]; return $i<<24|$i<<16|$i; }	
-sub S0222 { my $i=shift; $i=@SBOX[$i]; $i=($i<<1|$i>>7)&0xff; return $i<<16|$i<<8|$i; }	
-sub S3033 { my $i=shift; $i=@SBOX[$i]; $i=($i>>1|$i<<7)&0xff; return $i<<24|$i<<8|$i; }	
+sub S4404 { my $i=shift; $i=($i<<1|$i>>7)&0xff; $i=@SBOX[$i]; return $i<<24|$i<<16|$i; }
+sub S0222 { my $i=shift; $i=@SBOX[$i]; $i=($i<<1|$i>>7)&0xff; return $i<<16|$i<<8|$i; }
+sub S3033 { my $i=shift; $i=@SBOX[$i]; $i=($i>>1|$i<<7)&0xff; return $i<<24|$i<<8|$i; }
 
 &set_label("Camellia_SIGMA",64);
 &data_word(
@@ -1147,4 +1146,4 @@ my ($s0,$s1,$s2,$s3) = @T;
 
 &asm_finish();
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

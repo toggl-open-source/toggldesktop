@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2012-2018 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2012-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -14,8 +14,7 @@
 # details see http://www.openssl.org/~appro/cryptogams/.
 #
 # Specific modes and adaptation for Linux kernel by Ard Biesheuvel
-# <ard.biesheuvel@linaro.org>. Permission to use under GPL terms is
-# granted.
+# of Linaro. Permission to use under GPL terms is granted.
 # ====================================================================
 
 # Bit-sliced AES for ARM NEON
@@ -49,14 +48,12 @@
 #						<appro@openssl.org>
 
 # April-August 2013
-#
-# Add CBC, CTR and XTS subroutines, adapt for kernel use.
-#
-#					<ard.biesheuvel@linaro.org>
+# Add CBC, CTR and XTS subroutines and adapt for kernel use; courtesy of Ard.
 
-$flavour = shift;
-if ($flavour=~/\w[\w\-]*\.\w+$/) { $output=$flavour; undef $flavour; }
-else { while (($output=shift) && ($output!~/\w[\w\-]*\.\w+$/)) {} }
+# $output is the last argument if it looks like a file (it has an extension)
+# $flavour is the first argument if it doesn't look like a file
+$output = $#ARGV >= 0 && $ARGV[$#ARGV] =~ m|\.\w+$| ? pop : undef;
+$flavour = $#ARGV >= 0 && $ARGV[0] !~ m|\.| ? shift : undef;
 
 if ($flavour && $flavour ne "void") {
     $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
@@ -64,9 +61,10 @@ if ($flavour && $flavour ne "void") {
     ( $xlate="${dir}../../perlasm/arm-xlate.pl" and -f $xlate) or
     die "can't locate arm-xlate.pl";
 
-    open STDOUT,"| \"$^X\" $xlate $flavour $output";
+    open STDOUT,"| \"$^X\" $xlate $flavour \"$output\""
+        or die "can't call $xlate: $!";
 } else {
-    open STDOUT,">$output";
+    $output and open STDOUT,">$output";
 }
 
 my ($inp,$out,$len,$key)=("r0","r1","r2","r3");
@@ -91,7 +89,7 @@ my @s=@_[12..15];
 
 sub InBasisChange {
 # input in  lsb > [b0, b1, b2, b3, b4, b5, b6, b7] < msb
-# output in lsb > [b6, b5, b0, b3, b7, b1, b4, b2] < msb 
+# output in lsb > [b6, b5, b0, b3, b7, b1, b4, b2] < msb
 my @b=@_[0..7];
 $code.=<<___;
 	veor	@b[2], @b[2], @b[1]
@@ -732,7 +730,6 @@ $code.=<<___;
 .arch	armv7-a
 .fpu	neon
 
-.text
 .syntax	unified 	@ ARMv7-capable assembler is expected to handle this
 #if defined(__thumb2__) && !defined(__APPLE__)
 .thumb
@@ -740,6 +737,8 @@ $code.=<<___;
 .code   32
 # undef __thumb2__
 #endif
+
+.text
 
 .type	_bsaes_decrypt8,%function
 .align	4
@@ -1129,9 +1128,9 @@ bsaes_cbc_encrypt:
 #ifndef	__thumb__
 	blo	AES_cbc_encrypt
 #else
-	bhs	1f
+	bhs	.Lcbc_do_bsaes
 	b	AES_cbc_encrypt
-1:
+.Lcbc_do_bsaes:
 #endif
 #endif
 
@@ -2492,4 +2491,4 @@ close SELF;
 
 print $code;
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

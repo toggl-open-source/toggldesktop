@@ -1,27 +1,36 @@
 /*
- * Copyright 1995-2019 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
+/* TODO: When ERR_STATE becomes opaque, this musts be removed */
+#define OSSL_FORCE_ERR_STATE
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
-#include <internal/cryptlib_int.h>
-#include <internal/err.h>
-#include <internal/err_int.h>
-#include <openssl/lhash.h>
+#include "crypto/cryptlib.h"
+#include "internal/err.h"
+#include "crypto/err.h"
+#include <openssl/err.h>
 #include <openssl/crypto.h>
 #include <openssl/buffer.h>
 #include <openssl/bio.h>
 #include <openssl/opensslconf.h>
-#include <internal/thread_once.h>
-#include "internal/constant_time_locl.h"
+#include "internal/thread_once.h"
+#include "crypto/ctype.h"
+#include "internal/constant_time.h"
+#include "e_os.h"
+#include "err_local.h"
 
-static void err_load_strings(int lib, ERR_STRING_DATA *str);
+/* Forward declaration in case it's not published because of configuration */
+ERR_STATE *ERR_get_state(void);
+
+static int err_load_strings(const ERR_STRING_DATA *str);
 
 static void ERR_STATE_free(ERR_STATE *s);
 #ifndef OPENSSL_NO_ERR
@@ -56,34 +65,19 @@ static ERR_STRING_DATA ERR_str_libraries[] = {
     {ERR_PACK(ERR_LIB_UI, 0, 0), "UI routines"},
     {ERR_PACK(ERR_LIB_FIPS, 0, 0), "FIPS routines"},
     {ERR_PACK(ERR_LIB_CMS, 0, 0), "CMS routines"},
+    {ERR_PACK(ERR_LIB_CRMF, 0, 0), "CRMF routines"},
+    {ERR_PACK(ERR_LIB_CMP, 0, 0), "CMP routines"},
     {ERR_PACK(ERR_LIB_HMAC, 0, 0), "HMAC routines"},
     {ERR_PACK(ERR_LIB_CT, 0, 0), "CT routines"},
     {ERR_PACK(ERR_LIB_ASYNC, 0, 0), "ASYNC routines"},
     {ERR_PACK(ERR_LIB_KDF, 0, 0), "KDF routines"},
-    {0, NULL},
-};
-
-static ERR_STRING_DATA ERR_str_functs[] = {
-    {ERR_PACK(0, SYS_F_FOPEN, 0), "fopen"},
-    {ERR_PACK(0, SYS_F_CONNECT, 0), "connect"},
-    {ERR_PACK(0, SYS_F_GETSERVBYNAME, 0), "getservbyname"},
-    {ERR_PACK(0, SYS_F_SOCKET, 0), "socket"},
-    {ERR_PACK(0, SYS_F_IOCTLSOCKET, 0), "ioctlsocket"},
-    {ERR_PACK(0, SYS_F_BIND, 0), "bind"},
-    {ERR_PACK(0, SYS_F_LISTEN, 0), "listen"},
-    {ERR_PACK(0, SYS_F_ACCEPT, 0), "accept"},
-# ifdef OPENSSL_SYS_WINDOWS
-    {ERR_PACK(0, SYS_F_WSASTARTUP, 0), "WSAstartup"},
-# endif
-    {ERR_PACK(0, SYS_F_OPENDIR, 0), "opendir"},
-    {ERR_PACK(0, SYS_F_FREAD, 0), "fread"},
-    {ERR_PACK(0, SYS_F_GETADDRINFO, 0), "getaddrinfo"},
-    {ERR_PACK(0, SYS_F_GETNAMEINFO, 0), "getnameinfo"},
-    {ERR_PACK(0, SYS_F_SETSOCKOPT, 0), "setsockopt"},
-    {ERR_PACK(0, SYS_F_GETSOCKOPT, 0), "getsockopt"},
-    {ERR_PACK(0, SYS_F_GETSOCKNAME, 0), "getsockname"},
-    {ERR_PACK(0, SYS_F_GETHOSTBYNAME, 0), "gethostbyname"},
-    {ERR_PACK(0, SYS_F_FFLUSH, 0), "fflush"},
+    {ERR_PACK(ERR_LIB_OSSL_STORE, 0, 0), "STORE routines"},
+    {ERR_PACK(ERR_LIB_SM2, 0, 0), "SM2 routines"},
+    {ERR_PACK(ERR_LIB_ESS, 0, 0), "ESS routines"},
+    {ERR_PACK(ERR_LIB_PROV, 0, 0), "Provider routines"},
+    {ERR_PACK(ERR_LIB_OSSL_ENCODER, 0, 0), "ENCODER routines"},
+    {ERR_PACK(ERR_LIB_OSSL_DECODER, 0, 0), "DECODER routines"},
+    {ERR_PACK(ERR_LIB_HTTP, 0, 0), "HTTP routines"},
     {0, NULL},
 };
 
@@ -104,6 +98,8 @@ static ERR_STRING_DATA ERR_str_reasons[] = {
     {ERR_R_PKCS7_LIB, "PKCS7 lib"},
     {ERR_R_X509V3_LIB, "X509V3 lib"},
     {ERR_R_ENGINE_LIB, "ENGINE lib"},
+    {ERR_R_UI_LIB, "UI lib"},
+    {ERR_R_OSSL_STORE_LIB, "STORE lib"},
     {ERR_R_ECDSA_LIB, "ECDSA lib"},
 
     {ERR_R_NESTED_ASN1_ERROR, "nested asn1 error"},
@@ -117,6 +113,9 @@ static ERR_STRING_DATA ERR_str_reasons[] = {
     {ERR_R_INTERNAL_ERROR, "internal error"},
     {ERR_R_DISABLED, "called a function that was disabled at compile-time"},
     {ERR_R_INIT_FAIL, "init fail"},
+    {ERR_R_OPERATION_FAIL, "operation fail"},
+    {ERR_R_INVALID_PROVIDER_FUNCTIONS, "invalid provider functions"},
+    {ERR_R_INTERRUPTED_OR_CANCELLED, "interrupted or cancelled"},
 
     {0, NULL},
 };
@@ -138,8 +137,13 @@ static ERR_STRING_DATA *int_err_get_item(const ERR_STRING_DATA *);
 static LHASH_OF(ERR_STRING_DATA) *int_error_hash = NULL;
 static int int_err_library_number = ERR_LIB_USER;
 
-static unsigned long get_error_values(int inc, int top, const char **file,
-                                      int *line, const char **data,
+typedef enum ERR_GET_ACTION_e {
+    EV_POP, EV_PEEK, EV_PEEK_LAST
+} ERR_GET_ACTION;
+
+static unsigned long get_error_values(ERR_GET_ACTION g,
+                                      const char **file, int *line,
+                                      const char **func, const char **data,
                                       int *flags);
 
 static unsigned long err_string_data_hash(const ERR_STRING_DATA *a)
@@ -147,14 +151,16 @@ static unsigned long err_string_data_hash(const ERR_STRING_DATA *a)
     unsigned long ret, l;
 
     l = a->error;
-    ret = l ^ ERR_GET_LIB(l) ^ ERR_GET_FUNC(l);
+    ret = l ^ ERR_GET_LIB(l);
     return (ret ^ ret % 19 * 13);
 }
 
 static int err_string_data_cmp(const ERR_STRING_DATA *a,
                                const ERR_STRING_DATA *b)
 {
-    return (int)(a->error - b->error);
+    if (a->error == b->error)
+        return 0;
+    return a->error > b->error ? 1 : -1;
 }
 
 static ERR_STRING_DATA *int_err_get_item(const ERR_STRING_DATA *d)
@@ -162,83 +168,11 @@ static ERR_STRING_DATA *int_err_get_item(const ERR_STRING_DATA *d)
     ERR_STRING_DATA *p = NULL;
 
     CRYPTO_THREAD_read_lock(err_string_lock);
-    if (int_error_hash != NULL)
-        p = lh_ERR_STRING_DATA_retrieve(int_error_hash, d);
+    p = lh_ERR_STRING_DATA_retrieve(int_error_hash, d);
     CRYPTO_THREAD_unlock(err_string_lock);
 
     return p;
 }
-
-#ifndef OPENSSL_NO_ERR
-# define NUM_SYS_STR_REASONS 127
-# define LEN_SYS_STR_REASON 32
-
-static ERR_STRING_DATA SYS_str_reasons[NUM_SYS_STR_REASONS + 1];
-/*
- * SYS_str_reasons is filled with copies of strerror() results at
- * initialization. 'errno' values up to 127 should cover all usual errors,
- * others will be displayed numerically by ERR_error_string. It is crucial
- * that we have something for each reason code that occurs in
- * ERR_str_reasons, or bogus reason strings will be returned for SYSerr(),
- * which always gets an errno value and never one of those 'standard' reason
- * codes.
- */
-
-static void build_SYS_str_reasons(void)
-{
-    /* OPENSSL_malloc cannot be used here, use static storage instead */
-    static char strerror_tab[NUM_SYS_STR_REASONS][LEN_SYS_STR_REASON];
-    static int init = 1;
-    int i;
-
-    CRYPTO_THREAD_write_lock(err_string_lock);
-    if (!init) {
-        CRYPTO_THREAD_unlock(err_string_lock);
-        return;
-    }
-
-    for (i = 1; i <= NUM_SYS_STR_REASONS; i++) {
-        ERR_STRING_DATA *str = &SYS_str_reasons[i - 1];
-
-        str->error = (unsigned long)i;
-        if (str->string == NULL) {
-            char (*dest)[LEN_SYS_STR_REASON] = &(strerror_tab[i - 1]);
-            if (openssl_strerror_r(i, *dest, sizeof(*dest)))
-                str->string = *dest;
-        }
-        if (str->string == NULL)
-            str->string = "unknown";
-    }
-
-    /*
-     * Now we still have SYS_str_reasons[NUM_SYS_STR_REASONS] = {0, NULL}, as
-     * required by ERR_load_strings.
-     */
-
-    init = 0;
-
-    CRYPTO_THREAD_unlock(err_string_lock);
-}
-#endif
-
-#define err_clear_data(p,i) \
-        do { \
-        if ((p)->err_data_flags[i] & ERR_TXT_MALLOCED) \
-                {  \
-                OPENSSL_free((p)->err_data[i]); \
-                (p)->err_data[i]=NULL; \
-                } \
-        (p)->err_data_flags[i]=0; \
-        } while(0)
-
-#define err_clear(p,i) \
-        do { \
-        (p)->err_flags[i]=0; \
-        (p)->err_buffer[i]=0; \
-        err_clear_data(p,i); \
-        (p)->err_file[i]=NULL; \
-        (p)->err_line[i]= -1; \
-        } while(0)
 
 static void ERR_STATE_free(ERR_STATE *s)
 {
@@ -246,9 +180,8 @@ static void ERR_STATE_free(ERR_STATE *s)
 
     if (s == NULL)
         return;
-
     for (i = 0; i < ERR_NUM_ERRORS; i++) {
-        err_clear_data(s, i);
+        err_clear_data(s, i, 1);
     }
     OPENSSL_free(s);
 }
@@ -258,7 +191,16 @@ DEFINE_RUN_ONCE_STATIC(do_err_strings_init)
     if (!OPENSSL_init_crypto(0, NULL))
         return 0;
     err_string_lock = CRYPTO_THREAD_lock_new();
-    return err_string_lock != NULL;
+    if (err_string_lock == NULL)
+        return 0;
+    int_error_hash = lh_ERR_STRING_DATA_new(err_string_data_hash,
+                                            err_string_data_cmp);
+    if (int_error_hash == NULL) {
+        CRYPTO_THREAD_lock_free(err_string_lock);
+        err_string_lock = NULL;
+        return 0;
+    }
+    return 1;
 }
 
 void err_cleanup(void)
@@ -267,6 +209,32 @@ void err_cleanup(void)
         CRYPTO_THREAD_cleanup_local(&err_thread_local);
     CRYPTO_THREAD_lock_free(err_string_lock);
     err_string_lock = NULL;
+    lh_ERR_STRING_DATA_free(int_error_hash);
+    int_error_hash = NULL;
+}
+
+/*
+ * Legacy; pack in the library.
+ */
+static void err_patch(int lib, ERR_STRING_DATA *str)
+{
+    unsigned long plib = ERR_PACK(lib, 0, 0);
+
+    for (; str->error != 0; str++)
+        str->error |= plib;
+}
+
+/*
+ * Hash in |str| error strings. Assumes the URN_ONCE was done.
+ */
+static int err_load_strings(const ERR_STRING_DATA *str)
+{
+    CRYPTO_THREAD_write_lock(err_string_lock);
+    for (; str->error; str++)
+        (void)lh_ERR_STRING_DATA_insert(int_error_hash,
+                                       (ERR_STRING_DATA *)str);
+    CRYPTO_THREAD_unlock(err_string_lock);
+    return 1;
 }
 
 int ERR_load_ERR_strings(void)
@@ -275,36 +243,27 @@ int ERR_load_ERR_strings(void)
     if (!RUN_ONCE(&err_string_init, do_err_strings_init))
         return 0;
 
-    err_load_strings(0, ERR_str_libraries);
-    err_load_strings(0, ERR_str_reasons);
-    err_load_strings(ERR_LIB_SYS, ERR_str_functs);
-    build_SYS_str_reasons();
-    err_load_strings(ERR_LIB_SYS, SYS_str_reasons);
+    err_load_strings(ERR_str_libraries);
+    err_load_strings(ERR_str_reasons);
 #endif
     return 1;
-}
-
-static void err_load_strings(int lib, ERR_STRING_DATA *str)
-{
-    CRYPTO_THREAD_write_lock(err_string_lock);
-    if (int_error_hash == NULL)
-        int_error_hash = lh_ERR_STRING_DATA_new(err_string_data_hash,
-                                                err_string_data_cmp);
-    if (int_error_hash != NULL) {
-        for (; str->error; str++) {
-            if (lib)
-                str->error |= ERR_PACK(lib, 0, 0);
-            (void)lh_ERR_STRING_DATA_insert(int_error_hash, str);
-        }
-    }
-    CRYPTO_THREAD_unlock(err_string_lock);
 }
 
 int ERR_load_strings(int lib, ERR_STRING_DATA *str)
 {
     if (ERR_load_ERR_strings() == 0)
         return 0;
-    err_load_strings(lib, str);
+
+    err_patch(lib, str);
+    err_load_strings(str);
+    return 1;
+}
+
+int ERR_load_strings_const(const ERR_STRING_DATA *str)
+{
+    if (ERR_load_ERR_strings() == 0)
+        return 0;
+    err_load_strings(str);
     return 1;
 }
 
@@ -314,13 +273,12 @@ int ERR_unload_strings(int lib, ERR_STRING_DATA *str)
         return 0;
 
     CRYPTO_THREAD_write_lock(err_string_lock);
-    if (int_error_hash != NULL) {
-        for (; str->error; str++) {
-            if (lib)
-                str->error |= ERR_PACK(lib, 0, 0);
-            (void)lh_ERR_STRING_DATA_delete(int_error_hash, str);
-        }
-    }
+    /*
+     * We don't need to ERR_PACK the lib, since that was done (to
+     * the table) when it was loaded.
+     */
+    for (; str->error; str++)
+        (void)lh_ERR_STRING_DATA_delete(int_error_hash, str);
     CRYPTO_THREAD_unlock(err_string_lock);
 
     return 1;
@@ -330,194 +288,202 @@ void err_free_strings_int(void)
 {
     if (!RUN_ONCE(&err_string_init, do_err_strings_init))
         return;
-
-    CRYPTO_THREAD_write_lock(err_string_lock);
-    lh_ERR_STRING_DATA_free(int_error_hash);
-    int_error_hash = NULL;
-    CRYPTO_THREAD_unlock(err_string_lock);
 }
 
 /********************************************************/
-
-void ERR_put_error(int lib, int func, int reason, const char *file, int line)
-{
-    ERR_STATE *es;
-
-#ifdef _OSD_POSIX
-    /*
-     * In the BS2000-OSD POSIX subsystem, the compiler generates path names
-     * in the form "*POSIX(/etc/passwd)". This dirty hack strips them to
-     * something sensible. @@@ We shouldn't modify a const string, though.
-     */
-    if (strncmp(file, "*POSIX(", sizeof("*POSIX(") - 1) == 0) {
-        char *end;
-
-        /* Skip the "*POSIX(" prefix */
-        file += sizeof("*POSIX(") - 1;
-        end = &file[strlen(file) - 1];
-        if (*end == ')')
-            *end = '\0';
-        /* Optional: use the basename of the path only. */
-        if ((end = strrchr(file, '/')) != NULL)
-            file = &end[1];
-    }
-#endif
-    es = ERR_get_state();
-    if (es == NULL)
-        return;
-
-    es->top = (es->top + 1) % ERR_NUM_ERRORS;
-    if (es->top == es->bottom)
-        es->bottom = (es->bottom + 1) % ERR_NUM_ERRORS;
-    es->err_flags[es->top] = 0;
-    es->err_buffer[es->top] = ERR_PACK(lib, func, reason);
-    es->err_file[es->top] = file;
-    es->err_line[es->top] = line;
-    err_clear_data(es, es->top);
-}
 
 void ERR_clear_error(void)
 {
     int i;
     ERR_STATE *es;
 
-    es = ERR_get_state();
+    es = err_get_state_int();
     if (es == NULL)
         return;
 
     for (i = 0; i < ERR_NUM_ERRORS; i++) {
-        err_clear(es, i);
+        err_clear(es, i, 0);
     }
     es->top = es->bottom = 0;
 }
 
 unsigned long ERR_get_error(void)
 {
-    return (get_error_values(1, 0, NULL, NULL, NULL, NULL));
+    return get_error_values(EV_POP, NULL, NULL, NULL, NULL, NULL);
 }
 
 unsigned long ERR_get_error_line(const char **file, int *line)
 {
-    return (get_error_values(1, 0, file, line, NULL, NULL));
+    return get_error_values(EV_POP, file, line, NULL, NULL, NULL);
 }
 
+unsigned long ERR_get_error_func(const char **func)
+{
+    return get_error_values(EV_POP, NULL, NULL, func, NULL, NULL);
+}
+
+unsigned long ERR_get_error_data(const char **data, int *flags)
+{
+    return get_error_values(EV_POP, NULL, NULL, NULL, data, flags);
+}
+
+unsigned long ERR_get_error_all(const char **file, int *line,
+                                const char **func,
+                                const char **data, int *flags)
+{
+    return get_error_values(EV_POP, file, line, func, data, flags);
+}
+
+#ifndef OPENSSL_NO_DEPRECATED_3_0
 unsigned long ERR_get_error_line_data(const char **file, int *line,
                                       const char **data, int *flags)
 {
-    return (get_error_values(1, 0, file, line, data, flags));
+    return get_error_values(EV_POP, file, line, NULL, data, flags);
 }
+#endif
 
 unsigned long ERR_peek_error(void)
 {
-    return (get_error_values(0, 0, NULL, NULL, NULL, NULL));
+    return get_error_values(EV_PEEK, NULL, NULL, NULL, NULL, NULL);
 }
 
 unsigned long ERR_peek_error_line(const char **file, int *line)
 {
-    return (get_error_values(0, 0, file, line, NULL, NULL));
+    return get_error_values(EV_PEEK, file, line, NULL, NULL, NULL);
 }
 
+unsigned long ERR_peek_error_func(const char **func)
+{
+    return get_error_values(EV_PEEK, NULL, NULL, func, NULL, NULL);
+}
+
+unsigned long ERR_peek_error_data(const char **data, int *flags)
+{
+    return get_error_values(EV_PEEK, NULL, NULL, NULL, data, flags);
+}
+
+unsigned long ERR_peek_error_all(const char **file, int *line,
+                                 const char **func,
+                                 const char **data, int *flags)
+{
+    return get_error_values(EV_PEEK, file, line, func, data, flags);
+}
+
+#ifndef OPENSSL_NO_DEPRECATED_3_0
 unsigned long ERR_peek_error_line_data(const char **file, int *line,
                                        const char **data, int *flags)
 {
-    return (get_error_values(0, 0, file, line, data, flags));
+    return get_error_values(EV_PEEK, file, line, NULL, data, flags);
 }
+#endif
 
 unsigned long ERR_peek_last_error(void)
 {
-    return (get_error_values(0, 1, NULL, NULL, NULL, NULL));
+    return get_error_values(EV_PEEK_LAST, NULL, NULL, NULL, NULL, NULL);
 }
 
 unsigned long ERR_peek_last_error_line(const char **file, int *line)
 {
-    return (get_error_values(0, 1, file, line, NULL, NULL));
+    return get_error_values(EV_PEEK_LAST, file, line, NULL, NULL, NULL);
 }
 
+unsigned long ERR_peek_last_error_func(const char **func)
+{
+    return get_error_values(EV_PEEK_LAST, NULL, NULL, func, NULL, NULL);
+}
+
+unsigned long ERR_peek_last_error_data(const char **data, int *flags)
+{
+    return get_error_values(EV_PEEK_LAST, NULL, NULL, NULL, data, flags);
+}
+
+unsigned long ERR_peek_last_error_all(const char **file, int *line,
+                                      const char **func,
+                                      const char **data, int *flags)
+{
+    return get_error_values(EV_PEEK_LAST, file, line, func, data, flags);
+}
+
+#ifndef OPENSSL_NO_DEPRECATED_3_0
 unsigned long ERR_peek_last_error_line_data(const char **file, int *line,
                                             const char **data, int *flags)
 {
-    return (get_error_values(0, 1, file, line, data, flags));
+    return get_error_values(EV_PEEK_LAST, file, line, NULL, data, flags);
 }
+#endif
 
-static unsigned long get_error_values(int inc, int top, const char **file,
-                                      int *line, const char **data,
-                                      int *flags)
+static unsigned long get_error_values(ERR_GET_ACTION g,
+                                      const char **file, int *line,
+                                      const char **func,
+                                      const char **data, int *flags)
 {
     int i = 0;
     ERR_STATE *es;
     unsigned long ret;
 
-    es = ERR_get_state();
+    es = err_get_state_int();
     if (es == NULL)
         return 0;
 
-    if (inc && top) {
-        if (file)
-            *file = "";
-        if (line)
-            *line = 0;
-        if (data)
-            *data = "";
-        if (flags)
-            *flags = 0;
-
-        return ERR_R_INTERNAL_ERROR;
-    }
-
+    /*
+     * Clear anything that should have been cleared earlier. We do this
+     * here because this doesn't have constant-time issues.
+     */
     while (es->bottom != es->top) {
         if (es->err_flags[es->top] & ERR_FLAG_CLEAR) {
-            err_clear(es, es->top);
+            err_clear(es, es->top, 0);
             es->top = es->top > 0 ? es->top - 1 : ERR_NUM_ERRORS - 1;
             continue;
         }
         i = (es->bottom + 1) % ERR_NUM_ERRORS;
         if (es->err_flags[i] & ERR_FLAG_CLEAR) {
             es->bottom = i;
-            err_clear(es, es->bottom);
+            err_clear(es, es->bottom, 0);
             continue;
         }
         break;
     }
 
+    /* If everything has been cleared, the stack is empty. */
     if (es->bottom == es->top)
         return 0;
 
-    if (top)
-        i = es->top;            /* last error */
+    /* Which error, the top of stack (latest one) or the first one? */
+    if (g == EV_PEEK_LAST)
+        i = es->top;
     else
-        i = (es->bottom + 1) % ERR_NUM_ERRORS; /* first error */
+        i = (es->bottom + 1) % ERR_NUM_ERRORS;
 
     ret = es->err_buffer[i];
-    if (inc) {
+    if (g == EV_POP) {
         es->bottom = i;
         es->err_buffer[i] = 0;
     }
 
-    if ((file != NULL) && (line != NULL)) {
-        if (es->err_file[i] == NULL) {
-            *file = "NA";
-            if (line != NULL)
-                *line = 0;
-        } else {
-            *file = es->err_file[i];
-            if (line != NULL)
-                *line = es->err_line[i];
-        }
+    if (file != NULL) {
+        *file = es->err_file[i];
+        if (*file == NULL)
+            *file = "";
     }
-
+    if (line != NULL)
+        *line = es->err_line[i];
+    if (func != NULL) {
+        *func = es->err_func[i];
+        if (*func == NULL)
+            *func = "";
+    }
+    if (flags != NULL)
+        *flags = es->err_data_flags[i];
     if (data == NULL) {
-        if (inc) {
-            err_clear_data(es, i);
+        if (g == EV_POP) {
+            err_clear_data(es, i, 0);
         }
     } else {
-        if (es->err_data[i] == NULL) {
+        *data = es->err_data[i];
+        if (*data == NULL) {
             *data = "";
             if (flags != NULL)
                 *flags = 0;
-        } else {
-            *data = es->err_data[i];
-            if (flags != NULL)
-                *flags = es->err_data_flags[i];
         }
     }
     return ret;
@@ -525,53 +491,42 @@ static unsigned long get_error_values(int inc, int top, const char **file,
 
 void ERR_error_string_n(unsigned long e, char *buf, size_t len)
 {
-    char lsbuf[64], fsbuf[64], rsbuf[64];
-    const char *ls, *fs, *rs;
-    unsigned long l, f, r;
+    char lsbuf[64], rsbuf[256];
+    const char *ls, *rs = NULL;
+    unsigned long f = 0, l, r;
 
     if (len == 0)
         return;
 
     l = ERR_GET_LIB(e);
-    f = ERR_GET_FUNC(e);
-    r = ERR_GET_REASON(e);
-
     ls = ERR_lib_error_string(e);
-    fs = ERR_func_error_string(e);
-    rs = ERR_reason_error_string(e);
-
-    if (ls == NULL)
+    if (ls == NULL) {
         BIO_snprintf(lsbuf, sizeof(lsbuf), "lib(%lu)", l);
-    if (fs == NULL)
-        BIO_snprintf(fsbuf, sizeof(fsbuf), "func(%lu)", f);
-    if (rs == NULL)
+        ls = lsbuf;
+    }
+
+    /*
+     * ERR_reason_error_string() can't safely return system error strings,
+     * since it would call openssl_strerror_r(), which needs a buffer for
+     * thread safety.  So for system errors, we call openssl_strerror_r()
+     * directly instead.
+     */
+    r = ERR_GET_REASON(e);
+    if (ERR_SYSTEM_ERROR(e)) {
+        if (openssl_strerror_r(r, rsbuf, sizeof(rsbuf)))
+            rs = rsbuf;
+    } else {
+        rs = ERR_reason_error_string(e);
+    }
+    if (rs == NULL) {
         BIO_snprintf(rsbuf, sizeof(rsbuf), "reason(%lu)", r);
+        rs = rsbuf;
+    }
 
-    BIO_snprintf(buf, len, "error:%08lX:%s:%s:%s", e, ls ? ls : lsbuf,
-                 fs ? fs : fsbuf, rs ? rs : rsbuf);
+    BIO_snprintf(buf, len, "error:%08lX:%s:%s:%s", e, ls, "", rs);
     if (strlen(buf) == len - 1) {
-        /*
-         * output may be truncated; make sure we always have 5
-         * colon-separated fields, i.e. 4 colons ...
-         */
-#define NUM_COLONS 4
-        if (len > NUM_COLONS) { /* ... if possible */
-            int i;
-            char *s = buf;
-
-            for (i = 0; i < NUM_COLONS; i++) {
-                char *colon = strchr(s, ':');
-                if (colon == NULL || colon > &buf[len - 1] - NUM_COLONS + i) {
-                    /*
-                     * set colon no. i at last possible position (buf[len-1]
-                     * is the terminating 0)
-                     */
-                    colon = &buf[len - 1] - NUM_COLONS + i;
-                    *colon = ':';
-                }
-                s = colon + 1;
-            }
-        }
+        /* Didn't fit; use a minimal format. */
+        BIO_snprintf(buf, len, "err:%lx:%lx:%lx:%lx", e, l, f, r);
     }
 }
 
@@ -585,8 +540,7 @@ char *ERR_error_string(unsigned long e, char *ret)
 
     if (ret == NULL)
         ret = buf;
-    ERR_error_string_n(e, ret, 256);
-
+    ERR_error_string_n(e, ret, (int)sizeof(buf));
     return ret;
 }
 
@@ -605,21 +559,12 @@ const char *ERR_lib_error_string(unsigned long e)
     return ((p == NULL) ? NULL : p->string);
 }
 
+#ifndef OPENSSL_NO_DEPRECATED_3_0
 const char *ERR_func_error_string(unsigned long e)
 {
-    ERR_STRING_DATA d, *p;
-    unsigned long l, f;
-
-    if (!RUN_ONCE(&err_string_init, do_err_strings_init)) {
-        return NULL;
-    }
-
-    l = ERR_GET_LIB(e);
-    f = ERR_GET_FUNC(e);
-    d.error = ERR_PACK(l, f, 0);
-    p = int_err_get_item(&d);
-    return ((p == NULL) ? NULL : p->string);
+    return NULL;
 }
+#endif
 
 const char *ERR_reason_error_string(unsigned long e)
 {
@@ -630,18 +575,27 @@ const char *ERR_reason_error_string(unsigned long e)
         return NULL;
     }
 
+    /*
+     * ERR_reason_error_string() can't safely return system error strings,
+     * since openssl_strerror_r() needs a buffer for thread safety, and we
+     * haven't got one that would serve any sensible purpose.
+     */
+    if (ERR_SYSTEM_ERROR(e))
+        return NULL;
+
     l = ERR_GET_LIB(e);
     r = ERR_GET_REASON(e);
     d.error = ERR_PACK(l, 0, r);
     p = int_err_get_item(&d);
-    if (!p) {
+    if (p == NULL) {
         d.error = ERR_PACK(0, 0, r);
         p = int_err_get_item(&d);
     }
     return ((p == NULL) ? NULL : p->string);
 }
 
-void err_delete_thread_state(void)
+/* TODO(3.0): arg ignored for now */
+static void err_delete_thread_state(void *arg)
 {
     ERR_STATE *state = CRYPTO_THREAD_get_local(&err_thread_local);
     if (state == NULL)
@@ -651,13 +605,13 @@ void err_delete_thread_state(void)
     ERR_STATE_free(state);
 }
 
-#if OPENSSL_API_COMPAT < 0x10100000L
+#ifndef OPENSSL_NO_DEPRECATED_1_1_0
 void ERR_remove_thread_state(void *dummy)
 {
 }
 #endif
 
-#if OPENSSL_API_COMPAT < 0x10000000L
+#ifndef OPENSSL_NO_DEPRECATED_1_0_0
 void ERR_remove_state(unsigned long pid)
 {
 }
@@ -669,9 +623,10 @@ DEFINE_RUN_ONCE_STATIC(err_do_init)
     return CRYPTO_THREAD_init_local(&err_thread_local, NULL);
 }
 
-ERR_STATE *ERR_get_state(void)
+ERR_STATE *err_get_state_int(void)
 {
     ERR_STATE *state;
+    int saveerrno = get_last_sys_error();
 
     if (!OPENSSL_init_crypto(OPENSSL_INIT_BASE_ONLY, NULL))
         return NULL;
@@ -692,7 +647,7 @@ ERR_STATE *ERR_get_state(void)
             return NULL;
         }
 
-        if (!ossl_init_thread_start(OPENSSL_INIT_THREAD_ERR_STATE)
+        if (!ossl_init_thread_start(NULL, NULL, err_delete_thread_state)
                 || !CRYPTO_THREAD_set_local(&err_thread_local, state)) {
             ERR_STATE_free(state);
             CRYPTO_THREAD_set_local(&err_thread_local, NULL);
@@ -703,8 +658,17 @@ ERR_STATE *ERR_get_state(void)
         OPENSSL_init_crypto(OPENSSL_INIT_LOAD_CRYPTO_STRINGS, NULL);
     }
 
+    set_sys_error(saveerrno);
     return state;
 }
+
+#ifndef OPENSSL_NO_DEPRECATED_3_0
+ERR_STATE *ERR_get_state(void)
+{
+    return err_get_state_int();
+}
+#endif
+
 
 /*
  * err_shelve_state returns the current thread local error state
@@ -712,6 +676,20 @@ ERR_STATE *ERR_get_state(void)
  */
 int err_shelve_state(void **state)
 {
+    int saveerrno = get_last_sys_error();
+
+    /*
+     * Note, at present our only caller is OPENSSL_init_crypto(), indirectly
+     * via ossl_init_load_crypto_nodelete(), by which point the requested
+     * "base" initialization has already been performed, so the below call is a
+     * NOOP, that re-enters OPENSSL_init_crypto() only to quickly return.
+     *
+     * If are no other valid callers of this function, the call below can be
+     * removed, avoiding the re-entry into OPENSSL_init_crypto().  If there are
+     * potential uses that are not from inside OPENSSL_init_crypto(), then this
+     * call is needed, but some care is required to make sure that the re-entry
+     * remains a NOOP.
+     */
     if (!OPENSSL_init_crypto(OPENSSL_INIT_BASE_ONLY, NULL))
         return 0;
 
@@ -722,6 +700,7 @@ int err_shelve_state(void **state)
     if (!CRYPTO_THREAD_set_local(&err_thread_local, (ERR_STATE*)-1))
         return 0;
 
+    set_sys_error(saveerrno);
     return 1;
 }
 
@@ -748,20 +727,38 @@ int ERR_get_next_error_library(void)
     return ret;
 }
 
-void ERR_set_error_data(char *data, int flags)
+static int err_set_error_data_int(char *data, size_t size, int flags,
+                                  int deallocate)
 {
     ERR_STATE *es;
-    int i;
 
-    es = ERR_get_state();
+    es = err_get_state_int();
     if (es == NULL)
-        return;
+        return 0;
 
-    i = es->top;
+    err_clear_data(es, es->top, deallocate);
+    err_set_data(es, es->top, data, size, flags);
 
-    err_clear_data(es, i);
-    es->err_data[i] = data;
-    es->err_data_flags[i] = flags;
+    return 1;
+}
+
+void ERR_set_error_data(char *data, int flags)
+{
+    /*
+     * This function is void so we cannot propagate the error return. Since it
+     * is also in the public API we can't change the return type.
+     *
+     * We estimate the size of the data.  If it's not flagged as allocated,
+     * then this is safe, and if it is flagged as allocated, then our size
+     * may be smaller than the actual allocation, but that doesn't matter
+     * too much, the buffer will remain untouched or will eventually be
+     * reallocated to a new size.
+     *
+     * callers should be advised that this function takes over ownership of
+     * the allocated memory, i.e. they can't count on the pointer to remain
+     * valid.
+     */
+    err_set_error_data_int(data, strlen(data) + 1, flags, 1);
 }
 
 void ERR_add_error_data(int num, ...)
@@ -774,41 +771,68 @@ void ERR_add_error_data(int num, ...)
 
 void ERR_add_error_vdata(int num, va_list args)
 {
-    int i, n, s;
-    char *str, *p, *a;
+    int i, len, size;
+    int flags = ERR_TXT_MALLOCED | ERR_TXT_STRING;
+    char *str, *arg;
+    ERR_STATE *es;
 
-    s = 80;
-    str = OPENSSL_malloc(s + 1);
-    if (str == NULL)
+    /* Get the current error data; if an allocated string get it. */
+    es = err_get_state_int();
+    if (es == NULL)
         return;
-    str[0] = '\0';
+    i = es->top;
 
-    n = 0;
-    for (i = 0; i < num; i++) {
-        a = va_arg(args, char *);
-        /* ignore NULLs, thanks to Bob Beck <beck@obtuse.com> */
-        if (a != NULL) {
-            n += strlen(a);
-            if (n > s) {
-                s = n + 20;
-                p = OPENSSL_realloc(str, s + 1);
-                if (p == NULL) {
-                    OPENSSL_free(str);
-                    return;
-                }
-                str = p;
-            }
-            OPENSSL_strlcat(str, a, (size_t)s + 1);
-        }
+    /*
+     * If err_data is allocated already, re-use the space.
+     * Otherwise, allocate a small new buffer.
+     */
+    if ((es->err_data_flags[i] & flags) == flags) {
+        str = es->err_data[i];
+        size = es->err_data_size[i];
+
+        /*
+         * To protect the string we just grabbed from tampering by other
+         * functions we may call, or to protect them from freeing a pointer
+         * that may no longer be valid at that point, we clear away the
+         * data pointer and the flags.  We will set them again at the end
+         * of this function.
+         */
+        es->err_data[i] = NULL;
+        es->err_data_flags[i] = 0;
+    } else if ((str = OPENSSL_malloc(size = 81)) == NULL) {
+        return;
+    } else {
+        str[0] = '\0';
     }
-    ERR_set_error_data(str, ERR_TXT_MALLOCED | ERR_TXT_STRING);
+    len = strlen(str);
+
+    while (--num >= 0) {
+        arg = va_arg(args, char *);
+        if (arg == NULL)
+            arg = "<NULL>";
+        len += strlen(arg);
+        if (len >= size) {
+            char *p;
+
+            size = len + 20;
+            p = OPENSSL_realloc(str, size);
+            if (p == NULL) {
+                OPENSSL_free(str);
+                return;
+            }
+            str = p;
+        }
+        OPENSSL_strlcat(str, arg, (size_t)size);
+    }
+    if (!err_set_error_data_int(str, size, flags, 0))
+        OPENSSL_free(str);
 }
 
 int ERR_set_mark(void)
 {
     ERR_STATE *es;
 
-    es = ERR_get_state();
+    es = err_get_state_int();
     if (es == NULL)
         return 0;
 
@@ -822,16 +846,14 @@ int ERR_pop_to_mark(void)
 {
     ERR_STATE *es;
 
-    es = ERR_get_state();
+    es = err_get_state_int();
     if (es == NULL)
         return 0;
 
     while (es->bottom != es->top
            && (es->err_flags[es->top] & ERR_FLAG_MARK) == 0) {
-        err_clear(es, es->top);
-        es->top -= 1;
-        if (es->top == -1)
-            es->top = ERR_NUM_ERRORS - 1;
+        err_clear(es, es->top, 0);
+        es->top = es->top > 0 ? es->top - 1 : ERR_NUM_ERRORS - 1;
     }
 
     if (es->bottom == es->top)
@@ -840,12 +862,33 @@ int ERR_pop_to_mark(void)
     return 1;
 }
 
+int ERR_clear_last_mark(void)
+{
+    ERR_STATE *es;
+    int top;
+
+    es = err_get_state_int();
+    if (es == NULL)
+        return 0;
+
+    top = es->top;
+    while (es->bottom != top
+           && (es->err_flags[top] & ERR_FLAG_MARK) == 0) {
+        top = top > 0 ? top - 1 : ERR_NUM_ERRORS - 1;
+    }
+
+    if (es->bottom == top)
+        return 0;
+    es->err_flags[top] &= ~ERR_FLAG_MARK;
+    return 1;
+}
+
 void err_clear_last_constant_time(int clear)
 {
     ERR_STATE *es;
     int top;
 
-    es = ERR_get_state();
+    es = err_get_state_int();
     if (es == NULL)
         return;
 

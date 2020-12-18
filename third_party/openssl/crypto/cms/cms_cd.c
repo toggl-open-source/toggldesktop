@@ -1,7 +1,7 @@
 /*
  * Copyright 2008-2016 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -15,16 +15,18 @@
 #include <openssl/cms.h>
 #include <openssl/bio.h>
 #include <openssl/comp.h>
-#include "cms_lcl.h"
+#include "cms_local.h"
 
 #ifdef ZLIB
 
 /* CMS CompressedData Utilities */
 
-CMS_ContentInfo *cms_CompressedData_create(int comp_nid)
+CMS_ContentInfo *cms_CompressedData_create(int comp_nid, OPENSSL_CTX *libctx,
+                                           const char *propq)
 {
     CMS_ContentInfo *cms;
     CMS_CompressedData *cd;
+
     /*
      * Will need something cleverer if there is ever more than one
      * compression algorithm or parameters have some meaning...
@@ -34,7 +36,7 @@ CMS_ContentInfo *cms_CompressedData_create(int comp_nid)
                CMS_R_UNSUPPORTED_COMPRESSION_ALGORITHM);
         return NULL;
     }
-    cms = CMS_ContentInfo_new();
+    cms = CMS_ContentInfo_new_with_libctx(libctx, propq);
     if (cms == NULL)
         return NULL;
 
@@ -60,10 +62,11 @@ CMS_ContentInfo *cms_CompressedData_create(int comp_nid)
     return NULL;
 }
 
-BIO *cms_CompressedData_init_bio(CMS_ContentInfo *cms)
+BIO *cms_CompressedData_init_bio(const CMS_ContentInfo *cms)
 {
     CMS_CompressedData *cd;
     const ASN1_OBJECT *compoid;
+
     if (OBJ_obj2nid(cms->contentType) != NID_id_smime_ct_compressedData) {
         CMSerr(CMS_F_CMS_COMPRESSEDDATA_INIT_BIO,
                CMS_R_CONTENT_TYPE_NOT_COMPRESSED_DATA);

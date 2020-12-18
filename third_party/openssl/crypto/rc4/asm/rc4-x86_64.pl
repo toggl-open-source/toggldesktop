@@ -1,14 +1,14 @@
 #! /usr/bin/env perl
-# Copyright 2005-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2005-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
 
 #
 # ====================================================================
-# Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
+# Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
 # project. The module is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
@@ -48,7 +48,7 @@
 
 # April 2005
 #
-# P4 EM64T core appears to be "allergic" to 64-bit inc/dec. Replacing 
+# P4 EM64T core appears to be "allergic" to 64-bit inc/dec. Replacing
 # those with add/sub results in 50% performance improvement of folded
 # loop...
 
@@ -88,7 +88,7 @@
 # The only code path that was not modified is P4-specific one. Non-P4
 # Intel code path optimization is heavily based on submission by Maxim
 # Perminov, Maxim Locktyukhin and Jim Guilford of Intel. I've used
-# some of the ideas even in attempt to optmize the original RC4_INT
+# some of the ideas even in attempt to optimize the original RC4_INT
 # code path... Current performance in cycles per processed byte (less
 # is better) and improvement coefficients relative to previous
 # version of this module are:
@@ -111,9 +111,10 @@
 #	but more than likely at the cost of the others (see rc4-586.pl
 #	to get the idea)...
 
-$flavour = shift;
-$output  = shift;
-if ($flavour =~ /\./) { $output = $flavour; undef $flavour; }
+# $output is the last argument if it looks like a file (it has an extension)
+# $flavour is the first argument if it doesn't look like a file
+$output = $#ARGV >= 0 && $ARGV[$#ARGV] =~ m|\.\w+$| ? pop : undef;
+$flavour = $#ARGV >= 0 && $ARGV[0] !~ m|\.| ? shift : undef;
 
 $win64=0; $win64=1 if ($flavour =~ /[nm]asm|mingw64/ || $output =~ /\.asm$/);
 
@@ -122,7 +123,8 @@ $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
 ( $xlate="${dir}../../perlasm/x86_64-xlate.pl" and -f $xlate) or
 die "can't locate x86_64-xlate.pl";
 
-open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\"";
+open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\""
+    or die "can't call $xlate: $!";
 *STDOUT=*OUT;
 
 $dat="%rdi";	    # arg1
@@ -138,13 +140,19 @@ $code=<<___;
 .globl	RC4
 .type	RC4,\@function,4
 .align	16
-RC4:	or	$len,$len
+RC4:
+.cfi_startproc
+	endbranch
+	or	$len,$len
 	jne	.Lentry
 	ret
 .Lentry:
 	push	%rbx
+.cfi_push	%rbx
 	push	%r12
+.cfi_push	%r12
 	push	%r13
+.cfi_push	%r13
 .Lprologue:
 	mov	$len,%r11
 	mov	$inp,%r12
@@ -427,11 +435,16 @@ $code.=<<___;
 	movl	$YY#d,-4($dat)
 
 	mov	(%rsp),%r13
+.cfi_restore	%r13
 	mov	8(%rsp),%r12
+.cfi_restore	%r12
 	mov	16(%rsp),%rbx
+.cfi_restore	%rbx
 	add	\$24,%rsp
+.cfi_adjust_cfa_offset	-24
 .Lepilogue:
 	ret
+.cfi_endproc
 .size	RC4,.-RC4
 ___
 }
@@ -444,6 +457,8 @@ $code.=<<___;
 .type	RC4_set_key,\@function,3
 .align	16
 RC4_set_key:
+.cfi_startproc
+	endbranch
 	lea	8($dat),$dat
 	lea	($inp,$len),$inp
 	neg	$len
@@ -510,12 +525,15 @@ RC4_set_key:
 	mov	%eax,-8($dat)
 	mov	%eax,-4($dat)
 	ret
+.cfi_endproc
 .size	RC4_set_key,.-RC4_set_key
 
 .globl	RC4_options
 .type	RC4_options,\@abi-omnipotent
 .align	16
 RC4_options:
+.cfi_startproc
+	endbranch
 	lea	.Lopts(%rip),%rax
 	mov	OPENSSL_ia32cap_P(%rip),%edx
 	bt	\$20,%edx
@@ -528,6 +546,7 @@ RC4_options:
 	add	\$12,%rax
 .Ldone:
 	ret
+.cfi_endproc
 .align	64
 .Lopts:
 .asciz	"rc4(8x,int)"
@@ -684,4 +703,4 @@ $code =~ s/\`([^\`]*)\`/eval $1/gem;
 
 print $code;
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

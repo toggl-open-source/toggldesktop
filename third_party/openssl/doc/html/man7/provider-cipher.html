@@ -1,0 +1,403 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>provider-cipher</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a>
+    <ul>
+      <li><a href="#Context-Management-Functions">Context Management Functions</a></li>
+      <li><a href="#Encryption-Decryption-Functions">Encryption/Decryption Functions</a></li>
+      <li><a href="#Cipher-Parameters">Cipher Parameters</a></li>
+    </ul>
+  </li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>provider-cipher - The cipher library &lt;-&gt; provider functions</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/core_dispatch.h&gt;
+ #include &lt;openssl/core_names.h&gt;
+
+ /*
+  * None of these are actual functions, but are displayed like this for
+  * the function signatures for functions that are offered as function
+  * pointers in OSSL_DISPATCH arrays.
+  */
+
+ /* Context management */
+ void *OSSL_FUNC_cipher_newctx(void *provctx);
+ void OSSL_FUNC_cipher_freectx(void *cctx);
+ void *OSSL_FUNC_cipher_dupctx(void *cctx);
+
+ /* Encryption/decryption */
+ int OSSL_FUNC_cipher_encrypt_init(void *cctx, const unsigned char *key,
+                                   size_t keylen, const unsigned char *iv,
+                                   size_t ivlen);
+ int OSSL_FUNC_cipher_decrypt_init(void *cctx, const unsigned char *key,
+                                   size_t keylen, const unsigned char *iv,
+                                   size_t ivlen);
+ int OSSL_FUNC_cipher_update(void *cctx, unsigned char *out, size_t *outl,
+                             size_t outsize, const unsigned char *in, size_t inl);
+ int OSSL_FUNC_cipher_final(void *cctx, unsigned char *out, size_t *outl,
+                            size_t outsize);
+ int OSSL_FUNC_cipher_cipher(void *cctx, unsigned char *out, size_t *outl,
+                             size_t outsize, const unsigned char *in, size_t inl);
+
+ /* Cipher parameter descriptors */
+ const OSSL_PARAM *OSSL_FUNC_cipher_gettable_params(void *provctx);
+
+ /* Cipher operation parameter descriptors */
+ const OSSL_PARAM *OSSL_FUNC_cipher_gettable_ctx_params(void *provctx);
+ const OSSL_PARAM *OSSL_FUNC_cipher_settable_ctx_params(void *provctx);
+
+ /* Cipher parameters */
+ int OSSL_FUNC_cipher_get_params(OSSL_PARAM params[]);
+
+ /* Cipher operation parameters */
+ int OSSL_FUNC_cipher_get_ctx_params(void *cctx, OSSL_PARAM params[]);
+ int OSSL_FUNC_cipher_set_ctx_params(void *cctx, const OSSL_PARAM params[]);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>This documentation is primarily aimed at provider authors. See <a href="../man7/provider.html">provider(7)</a> for further information.</p>
+
+<p>The CIPHER operation enables providers to implement cipher algorithms and make them available to applications via the API functions <a href="../man3/EVP_EncryptInit_ex.html">EVP_EncryptInit_ex(3)</a>, <a href="../man3/EVP_EncryptUpdate.html">EVP_EncryptUpdate(3)</a> and <a href="../man3/EVP_EncryptFinal.html">EVP_EncryptFinal(3)</a> (as well as the decrypt equivalents and other related functions).</p>
+
+<p>All &quot;functions&quot; mentioned here are passed as function pointers between <i>libcrypto</i> and the provider in <b>OSSL_DISPATCH</b> arrays via <b>OSSL_ALGORITHM</b> arrays that are returned by the provider&#39;s provider_query_operation() function (see <a href="../man7/provider-base.html">&quot;Provider Functions&quot; in provider-base(7)</a>).</p>
+
+<p>All these &quot;functions&quot; have a corresponding function type definition named <b>OSSL_{name}_fn</b>, and a helper function to retrieve the function pointer from an <b>OSSL_DISPATCH</b> element named <b>OSSL_FUNC_{name}</b>. For example, the &quot;function&quot; OSSL_FUNC_cipher_newctx() has these:</p>
+
+<pre><code> typedef void *(OSSL_OSSL_FUNC_cipher_newctx_fn)(void *provctx);
+ static ossl_inline OSSL_OSSL_FUNC_cipher_newctx_fn
+     OSSL_FUNC_cipher_newctx(const OSSL_DISPATCH *opf);</code></pre>
+
+<p><b>OSSL_DISPATCH</b> arrays are indexed by numbers that are provided as macros in <a href="../man7/openssl-core_dispatch.h.html">openssl-core_dispatch.h(7)</a>, as follows:</p>
+
+<pre><code> OSSL_FUNC_cipher_newctx               OSSL_FUNC_CIPHER_NEWCTX
+ OSSL_FUNC_cipher_freectx              OSSL_FUNC_CIPHER_FREECTX
+ OSSL_FUNC_cipher_dupctx               OSSL_FUNC_CIPHER_DUPCTX
+
+ OSSL_FUNC_cipher_encrypt_init         OSSL_FUNC_CIPHER_ENCRYPT_INIT
+ OSSL_FUNC_cipher_decrypt_init         OSSL_FUNC_CIPHER_DECRYPT_INIT
+ OSSL_FUNC_cipher_update               OSSL_FUNC_CIPHER_UPDATE
+ OSSL_FUNC_cipher_final                OSSL_FUNC_CIPHER_FINAL
+ OSSL_FUNC_cipher_cipher               OSSL_FUNC_CIPHER_CIPHER
+
+ OSSL_FUNC_cipher_get_params           OSSL_FUNC_CIPHER_GET_PARAMS
+ OSSL_FUNC_cipher_get_ctx_params       OSSL_FUNC_CIPHER_GET_CTX_PARAMS
+ OSSL_FUNC_cipher_set_ctx_params       OSSL_FUNC_CIPHER_SET_CTX_PARAMS
+
+ OSSL_FUNC_cipher_gettable_params      OSSL_FUNC_CIPHER_GETTABLE_PARAMS
+ OSSL_FUNC_cipher_gettable_ctx_params  OSSL_FUNC_CIPHER_GETTABLE_CTX_PARAMS
+ OSSL_FUNC_cipher_settable_ctx_params  OSSL_FUNC_CIPHER_SETTABLE_CTX_PARAMS</code></pre>
+
+<p>A cipher algorithm implementation may not implement all of these functions. In order to be a consistent set of functions there must at least be a complete set of &quot;encrypt&quot; functions, or a complete set of &quot;decrypt&quot; functions, or a single &quot;cipher&quot; function. In all cases both the OSSL_FUNC_cipher_newctx and OSSL_FUNC_cipher_freectx functions must be present. All other functions are optional.</p>
+
+<h2 id="Context-Management-Functions">Context Management Functions</h2>
+
+<p>OSSL_FUNC_cipher_newctx() should create and return a pointer to a provider side structure for holding context information during a cipher operation. A pointer to this context will be passed back in a number of the other cipher operation function calls. The parameter <i>provctx</i> is the provider context generated during provider initialisation (see <a href="../man7/provider.html">provider(7)</a>).</p>
+
+<p>OSSL_FUNC_cipher_freectx() is passed a pointer to the provider side cipher context in the <i>cctx</i> parameter. This function should free any resources associated with that context.</p>
+
+<p>OSSL_FUNC_cipher_dupctx() should duplicate the provider side cipher context in the <i>cctx</i> parameter and return the duplicate copy.</p>
+
+<h2 id="Encryption-Decryption-Functions">Encryption/Decryption Functions</h2>
+
+<p>OSSL_FUNC_cipher_encrypt_init() initialises a cipher operation for encryption given a newly created provider side cipher context in the <i>cctx</i> parameter. The key to be used is given in <i>key</i> which is <i>keylen</i> bytes long. The IV to be used is given in <i>iv</i> which is <i>ivlen</i> bytes long.</p>
+
+<p>OSSL_FUNC_cipher_decrypt_init() is the same as OSSL_FUNC_cipher_encrypt_init() except that it initialises the context for a decryption operation.</p>
+
+<p>OSSL_FUNC_cipher_update() is called to supply data to be encrypted/decrypted as part of a previously initialised cipher operation. The <i>cctx</i> parameter contains a pointer to a previously initialised provider side context. OSSL_FUNC_cipher_update() should encrypt/decrypt <i>inl</i> bytes of data at the location pointed to by <i>in</i>. The encrypted data should be stored in <i>out</i> and the amount of data written to <i>*outl</i> which should not exceed <i>outsize</i> bytes. OSSL_FUNC_cipher_update() may be called multiple times for a single cipher operation. It is the responsibility of the cipher implementation to handle input lengths that are not multiples of the block length. In such cases a cipher implementation will typically cache partial blocks of input data until a complete block is obtained. <i>out</i> may be the same location as <i>in</i> but it should not partially overlap. The same expectations apply to <i>outsize</i> as documented for <a href="../man3/EVP_EncryptUpdate.html">EVP_EncryptUpdate(3)</a> and <a href="../man3/EVP_DecryptUpdate.html">EVP_DecryptUpdate(3)</a>.</p>
+
+<p>OSSL_FUNC_cipher_final() completes an encryption or decryption started through previous OSSL_FUNC_cipher_encrypt_init() or OSSL_FUNC_cipher_decrypt_init(), and OSSL_FUNC_cipher_update() calls. The <i>cctx</i> parameter contains a pointer to the provider side context. Any final encryption/decryption output should be written to <i>out</i> and the amount of data written to <i>*outl</i> which should not exceed <i>outsize</i> bytes. The same expectations apply to <i>outsize</i> as documented for <a href="../man3/EVP_EncryptFinal.html">EVP_EncryptFinal(3)</a> and <a href="../man3/EVP_DecryptFinal.html">EVP_DecryptFinal(3)</a>.</p>
+
+<p>OSSL_FUNC_cipher_cipher() performs encryption/decryption using the provider side cipher context in the <i>cctx</i> parameter that should have been previously initialised via a call to OSSL_FUNC_cipher_encrypt_init() or OSSL_FUNC_cipher_decrypt_init(). This should call the raw underlying cipher function without any padding. This will be invoked in the provider as a result of the application calling <a href="../man3/EVP_Cipher.html">EVP_Cipher(3)</a>. The application is responsible for ensuring that the input is a multiple of the block length. The data to be encrypted/decrypted will be in <i>in</i>, and it will be <i>inl</i> bytes in length. The output from the encryption/decryption should be stored in <i>out</i> and the amount of data stored should be put in <i>*outl</i> which should be no more than <i>outsize</i> bytes.</p>
+
+<h2 id="Cipher-Parameters">Cipher Parameters</h2>
+
+<p>See <a href="../man3/OSSL_PARAM.html">OSSL_PARAM(3)</a> for further details on the parameters structure used by these functions.</p>
+
+<p>OSSL_FUNC_cipher_get_params() gets details of the algorithm implementation and stores them in <i>params</i>.</p>
+
+<p>OSSL_FUNC_cipher_set_ctx_params() sets cipher operation parameters for the provider side cipher context <i>cctx</i> to <i>params</i>. Any parameter settings are additional to any that were previously set.</p>
+
+<p>OSSL_FUNC_cipher_get_ctx_params() gets cipher operation details details from the given provider side cipher context <i>cctx</i> and stores them in <i>params</i>.</p>
+
+<p>OSSL_FUNC_cipher_gettable_params(), OSSL_FUNC_cipher_gettable_ctx_params(), and OSSL_FUNC_cipher_settable_ctx_params() all return constant <b>OSSL_PARAM</b> arrays as descriptors of the parameters that OSSL_FUNC_cipher_get_params(), OSSL_FUNC_cipher_get_ctx_params(), and OSSL_FUNC_cipher_set_ctx_params() can handle, respectively.</p>
+
+<p>Parameters currently recognised by built-in ciphers are as follows. Not all parameters are relevant to, or are understood by all ciphers:</p>
+
+<dl>
+
+<dt id="padding-OSSL_CIPHER_PARAM_PADDING-unsigned-integer">&quot;padding&quot; (<b>OSSL_CIPHER_PARAM_PADDING</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Sets the padding mode for the associated cipher ctx. Setting a value of 1 will turn padding on. Setting a value of 0 will turn padding off.</p>
+
+</dd>
+<dt id="mode-OSSL_CIPHER_PARAM_MODE-unsigned-integer">&quot;mode&quot; (<b>OSSL_CIPHER_PARAM_MODE</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Gets the mode for the associated cipher algorithm. See <a href="../man3/EVP_CIPHER_mode.html">EVP_CIPHER_mode(3)</a> for a list of valid modes.</p>
+
+</dd>
+<dt id="blocksize-OSSL_CIPHER_PARAM_BLOCK_SIZE-unsigned-integer">&quot;blocksize&quot; (<b>OSSL_CIPHER_PARAM_BLOCK_SIZE</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Gets the block size for the associated cipher algorithm. The block size should be 1 for stream ciphers. Note that the block size for a cipher may be different to the block size for the underlying encryption/decryption primitive. For example AES in CTR mode has a block size of 1 (because it operates like a stream cipher), even though AES has a block size of 16. The length of the &quot;blocksize&quot; parameter should not exceed that of a <b>size_t</b>.</p>
+
+</dd>
+<dt id="flags-OSSL_CIPHER_PARAM_FLAGS-unsigned-integer">&quot;flags&quot; (<b>OSSL_CIPHER_PARAM_FLAGS</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Gets any flags for the associated cipher algorithm. See <a href="../man3/EVP_CIPHER_meth_set_flags.html">EVP_CIPHER_meth_set_flags(3)</a> for a list of currently defined cipher flags. The length of the &quot;flags&quot; parameter should equal that of an <b>unsigned long int</b>.</p>
+
+</dd>
+<dt id="keylen-OSSL_CIPHER_PARAM_KEYLEN-unsigned-integer">&quot;keylen&quot; (<b>OSSL_CIPHER_PARAM_KEYLEN</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Gets the key length for the associated cipher algorithm. This can also be used to get or set the key length for the associated cipher ctx. The length of the &quot;keylen&quot; parameter should not exceed that of a <b>size_t</b>.</p>
+
+</dd>
+<dt id="ivlen-OSSL_CIPHER_PARAM_IVLEN-unsigned-integer">&quot;ivlen&quot; (<b>OSSL_CIPHER_PARAM_IVLEN</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Gets the IV length for the associated cipher algorithm. The length of the &quot;ivlen&quot; parameter should not exceed that of a <b>size_t</b>.</p>
+
+</dd>
+<dt id="iv-OSSL_CIPHER_PARAM_IV-octet-string-OR-octet-ptr">&quot;iv&quot; (<b>OSSL_CIPHER_PARAM_IV</b>) &lt;octet string OR octet ptr&gt;</dt>
+<dd>
+
+<p>Gets the IV used to initialize the associated cipher ctx.</p>
+
+</dd>
+<dt id="iv-state-OSSL_CIPHER_PARAM_IV_STATE-octet-string-OR-octet-ptr">&quot;iv-state&quot; (<b>OSSL_CIPHER_PARAM_IV_STATE</b>) &lt;octet string OR octet ptr&gt;</dt>
+<dd>
+
+<p>Gets the current pseudo-IV state for the associated cipher ctx, e.g., the previous ciphertext block for CBC mode or the iteratively encrypted IV value for OFB mode. Note that octet pointer access is deprecated and is provided only for backwards compatibility with historical libcrypto APIs.</p>
+
+</dd>
+<dt id="num-OSSL_CIPHER_PARAM_NUM-unsigned-integer">&quot;num&quot; (<b>OSSL_CIPHER_PARAM_NUM</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Gets or sets the cipher specific &quot;num&quot; parameter for the associated cipher ctx. Built-in ciphers typically use this to track how much of the current underlying block has been &quot;used&quot; already.</p>
+
+</dd>
+<dt id="tag-OSSL_CIPHER_PARAM_AEAD_TAG-octet-string">&quot;tag&quot; (<b>OSSL_CIPHER_PARAM_AEAD_TAG</b>) &lt;octet string&gt;</dt>
+<dd>
+
+<p>Gets or sets the AEAD tag for the associated cipher ctx. See <a href="../man3/EVP_EncryptInit.html">&quot;AEAD Interface&quot; in EVP_EncryptInit(3)</a>.</p>
+
+</dd>
+<dt id="taglen-OSSL_CIPHER_PARAM_AEAD_TAGLEN-unsigned-integer">&quot;taglen&quot; (<b>OSSL_CIPHER_PARAM_AEAD_TAGLEN</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Gets the tag length to be used for an AEAD cipher for the associated cipher ctx. It returns a default value if it has not been set. The length of the &quot;taglen&quot; parameter should not exceed that of a <b>size_t</b>.</p>
+
+</dd>
+<dt id="tlsaad-OSSL_CIPHER_PARAM_AEAD_TLS1_AAD-octet-string">&quot;tlsaad&quot; (<b>OSSL_CIPHER_PARAM_AEAD_TLS1_AAD</b>) &lt;octet string&gt;</dt>
+<dd>
+
+<p>Sets TLSv1.2 AAD information for the associated cipher ctx. TLSv1.2 AAD information is always 13 bytes in length and is as defined for the &quot;additional_data&quot; field described in section 6.2.3.3 of RFC5246.</p>
+
+</dd>
+<dt id="tlsaadpad-OSSL_CIPHER_PARAM_AEAD_TLS1_AAD_PAD-unsigned-integer">&quot;tlsaadpad&quot; (<b>OSSL_CIPHER_PARAM_AEAD_TLS1_AAD_PAD</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Gets the length of the tag that will be added to a TLS record for the AEAD tag for the associated cipher ctx. The length of the &quot;tlsaadpad&quot; parameter should not exceed that of a <b>size_t</b>.</p>
+
+</dd>
+<dt id="tlsivfixed-OSSL_CIPHER_PARAM_AEAD_TLS1_IV_FIXED-octet-string">&quot;tlsivfixed&quot; (<b>OSSL_CIPHER_PARAM_AEAD_TLS1_IV_FIXED</b>) &lt;octet string&gt;</dt>
+<dd>
+
+<p>Sets the fixed portion of an IV for an AEAD cipher used in a TLS record encryption/ decryption for the associated cipher ctx. TLS record encryption/decryption always occurs &quot;in place&quot; so that the input and output buffers are always the same memory location. AEAD IVs in TLSv1.2 consist of an implicit &quot;fixed&quot; part and an explicit part that varies with every record. Setting a TLS fixed IV changes a cipher to encrypt/decrypt TLS records. TLS records are encrypted/decrypted using a single OSSL_FUNC_cipher_cipher call per record. For a record decryption the first bytes of the input buffer will be the explicit part of the IV and the final bytes of the input buffer will be the AEAD tag. The length of the explicit part of the IV and the tag length will depend on the cipher in use and will be defined in the RFC for the relevant ciphersuite. In order to allow for &quot;in place&quot; decryption the plaintext output should be written to the same location in the output buffer that the ciphertext payload was read from, i.e. immediately after the explicit IV.</p>
+
+<p>When encrypting a record the first bytes of the input buffer will be empty to allow space for the explicit IV, as will the final bytes where the tag will be written. The length of the input buffer will include the length of the explicit IV, the payload, and the tag bytes. The cipher implementation should generate the explicit IV and write it to the beginning of the output buffer, do &quot;in place&quot; encryption of the payload and write that to the output buffer, and finally add the tag onto the end of the output buffer.</p>
+
+<p>Whether encrypting or decrypting the value written to <i>*outl</i> in the OSSL_FUNC_cipher_cipher call should be the length of the payload excluding the explicit IV length and the tag length.</p>
+
+</dd>
+<dt id="ivlen-OSSL_CIPHER_PARAM_AEAD_IVLEN-unsigned-integer">&quot;ivlen&quot; (<b>OSSL_CIPHER_PARAM_AEAD_IVLEN</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Sets the IV length to be used for an AEAD cipher for the associated cipher ctx. The length of the &quot;ivlen&quot; parameter should not exceed that of a <b>size_t</b>.</p>
+
+</dd>
+<dt id="mackey-OSSL_CIPHER_PARAM_AEAD_MAC_KEY-octet-string">&quot;mackey&quot; (<b>OSSL_CIPHER_PARAM_AEAD_MAC_KEY</b>) &lt;octet string&gt;</dt>
+<dd>
+
+<p>Sets the MAC key used by composite AEAD ciphers such as AES-CBC-HMAC-SHA256.</p>
+
+</dd>
+<dt id="randkey-OSSL_CIPHER_PARAM_RANDOM_KEY-octet-string">&quot;randkey&quot; (<b>OSSL_CIPHER_PARAM_RANDOM_KEY</b>) &lt;octet string&gt;</dt>
+<dd>
+
+<p>Gets a implementation specific randomly generated key for the associated cipher ctx. This is currently only supported by 3DES (which sets the key to odd parity).</p>
+
+</dd>
+<dt id="alg_id_param-OSSL_CIPHER_PARAM_ALG_ID-octet-string">&quot;alg_id_param&quot; (<b>OSSL_CIPHER_PARAM_ALG_ID</b>) &lt;octet string&gt;</dt>
+<dd>
+
+<p>Used to pass the DER encoded AlgorithmIdentifier parameter to or from the cipher implementation. Functions like <a href="../man3/EVP_CIPHER_param_to_asn1.html">EVP_CIPHER_param_to_asn1(3)</a> and <a href="../man3/EVP_CIPHER_asn1_to_param.html">EVP_CIPHER_asn1_to_param(3)</a> use this parameter for any implementation that has the flag <b>EVP_CIPH_FLAG_CUSTOM_ASN1</b> set.</p>
+
+</dd>
+<dt id="rounds-OSSL_CIPHER_PARAM_ROUNDS-unsigned-integer">&quot;rounds&quot; (<b>OSSL_CIPHER_PARAM_ROUNDS</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Sets or gets the number of rounds to be used for a cipher. This is used by the RC5 cipher.</p>
+
+</dd>
+<dt id="keybits-OSSL_CIPHER_PARAM_RC2_KEYBITS-unsigned-integer">&quot;keybits&quot; (<b>OSSL_CIPHER_PARAM_RC2_KEYBITS</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Gets or sets the effective keybits used for a RC2 cipher. The length of the &quot;keybits&quot; parameter should not exceed that of a <b>size_t</b>.</p>
+
+</dd>
+<dt id="speed-OSSL_CIPHER_PARAM_SPEED-unsigned-integer">&quot;speed&quot; (<b>OSSL_CIPHER_PARAM_SPEED</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Sets the speed option for the associated cipher ctx. This is only supported by AES SIV ciphers which disallow multiple operations by default. Setting &quot;speed&quot; to 1 allows another encrypt or decrypt operation to be performed. This is used for performance testing.</p>
+
+</dd>
+<dt id="tlsivgen-OSSL_CIPHER_PARAM_AEAD_TLS1_GET_IV_GEN-octet-string">&quot;tlsivgen&quot; (<b>OSSL_CIPHER_PARAM_AEAD_TLS1_GET_IV_GEN</b>) &lt;octet string&gt;</dt>
+<dd>
+
+<p>Gets the invocation field generated for encryption. Can only be called after &quot;tlsivfixed&quot; is set. This is only used for GCM mode.</p>
+
+</dd>
+<dt id="tlsivinv-OSSL_CIPHER_PARAM_AEAD_TLS1_SET_IV_INV-octet-string">&quot;tlsivinv&quot; (<b>OSSL_CIPHER_PARAM_AEAD_TLS1_SET_IV_INV</b>) &lt;octet string&gt;</dt>
+<dd>
+
+<p>Sets the invocation field used for decryption. Can only be called after &quot;tlsivfixed&quot; is set. This is only used for GCM mode.</p>
+
+</dd>
+<dt id="tls1multi_enc-OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_ENC-octet-string">&quot;tls1multi_enc&quot; (<b>OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_ENC</b>) &lt;octet string&gt;</dt>
+<dd>
+
+<p>Triggers a multiblock tls1 encrypt operation for a tls1 aware cipher that supports sending 4 or 8 records in one go. The cipher performs both the MAC and encrypt stages and constructs the record headers itself. &quot;tls1multi_enc&quot; supplies the output buffer for the encrypt operation, &quot;tls1multi_encin&quot; &amp; &quot;tls1multi_interleave&quot; must also be set in order to supply values to the encrypt operation.</p>
+
+</dd>
+<dt id="tls1multi_enclen-OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_ENC_LEN-unsigned-integer">&quot;tls1multi_enclen&quot; (<b>OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_ENC_LEN</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Get the total length of the record returned from the &quot;tls1multi_enc&quot; operation.</p>
+
+</dd>
+<dt id="tls1multi_interleave-OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_INTERLEAVE-unsigned-integer">&quot;tls1multi_interleave&quot; (<b>OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_INTERLEAVE</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Sets or gets the number of records being sent in one go for a tls1 multiblock cipher operation (either 4 or 8 records).</p>
+
+</dd>
+<dt id="tls1multi_encin-OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_ENC_IN-octet-string">&quot;tls1multi_encin&quot; (<b>OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_ENC_IN</b>) &lt;octet string&gt;</dt>
+<dd>
+
+<p>Supplies the data to encrypt for a tls1 multiblock cipher operation.</p>
+
+</dd>
+<dt id="tls1multi_maxsndfrag-OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_MAX_SEND_FRAGMENT-unsigned-integer">&quot;tls1multi_maxsndfrag&quot; (<b>OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_MAX_SEND_FRAGMENT</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Sets the maximum send fragment size for a tls1 multiblock cipher operation. It must be set before using &quot;tls1multi_maxbufsz&quot;. The length of the &quot;tls1multi_maxsndfrag&quot; parameter should not exceed that of a <b>size_t</b>.</p>
+
+</dd>
+<dt id="tls1multi_maxbufsz-OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_MAX_BUFSIZE-unsigned-integer">&quot;tls1multi_maxbufsz&quot; (<b>OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_MAX_BUFSIZE</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Gets the maximum record length for a tls1 multiblock cipher operation. The length of the &quot;tls1multi_maxbufsz&quot; parameter should not exceed that of a <b>size_t</b>.</p>
+
+</dd>
+<dt id="tls1multi_aad-OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_AAD-octet-string">&quot;tls1multi_aad&quot; (<b>OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_AAD</b>) &lt;octet string&gt;</dt>
+<dd>
+
+<p>Sets the authenticated additional data used by a tls1 multiblock cipher operation. The supplied data consists of 13 bytes of record data containing: Bytes 0-7: The sequence number of the first record Byte 8: The record type Byte 9-10: The protocol version Byte 11-12: Input length (Always 0)</p>
+
+<p>&quot;tls1multi_interleave&quot; must also be set for this operation.</p>
+
+</dd>
+<dt id="tls1multi_aadpacklen-OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_AAD_PACKLEN-unsigned-integer">&quot;tls1multi_aadpacklen&quot; (<b>OSSL_CIPHER_PARAM_TLS1_MULTIBLOCK_AAD_PACKLEN</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>Gets the result of running the &quot;tls1multi_aad&quot; operation.</p>
+
+</dd>
+<dt id="cts_mode-OSSL_CIPHER_PARAM_CTS_MODE-utf8-string">&quot;cts_mode&quot; (<b>OSSL_CIPHER_PARAM_CTS_MODE</b>) &lt;utf8 string&gt;</dt>
+<dd>
+
+<p>Sets the cipher text stealing mode. For all modes the output size is the same as the input size.</p>
+
+<p>Valid values for the mode are:</p>
+
+<dl>
+
+<dt id="CS1">&quot;CS1&quot;</dt>
+<dd>
+
+<p>The NIST variant of cipher text stealing. For message lengths that are multiples of the block size it is equivalent to using a &quot;AES-CBC&quot; cipher otherwise the second last cipher text block is a partial block.</p>
+
+</dd>
+<dt id="CS2">&quot;CS2&quot;</dt>
+<dd>
+
+<p>For message lengths that are multiples of the block size it is equivalent to using a &quot;AES-CBC&quot; cipher, otherwise it is the same as &quot;CS3&quot;.</p>
+
+</dd>
+<dt id="CS3">&quot;CS3&quot;</dt>
+<dd>
+
+<p>The Kerberos5 variant of cipher text stealing which always swaps the last cipher text block with the previous block (which may be a partial or full block depending on the input length).</p>
+
+</dd>
+</dl>
+
+<p>The default is &quot;CS1&quot;. This is only supported for &quot;AES-128-CBC-CTS&quot;, &quot;AES-192-CBC-CTS&quot; and &quot;AES-256-CBC-CTS&quot;.</p>
+
+</dd>
+</dl>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>OSSL_FUNC_cipher_newctx() and OSSL_FUNC_cipher_dupctx() should return the newly created provider side cipher context, or NULL on failure.</p>
+
+<p>OSSL_FUNC_cipher_encrypt_init(), OSSL_FUNC_cipher_decrypt_init(), OSSL_FUNC_cipher_update(), OSSL_FUNC_cipher_final(), OSSL_FUNC_cipher_cipher(), OSSL_FUNC_cipher_get_params(), OSSL_FUNC_cipher_get_ctx_params() and OSSL_FUNC_cipher_set_ctx_params() should return 1 for success or 0 on error.</p>
+
+<p>OSSL_FUNC_cipher_gettable_params(), OSSL_FUNC_cipher_gettable_ctx_params() and OSSL_FUNC_cipher_settable_ctx_params() should return a constant <b>OSSL_PARAM</b> array, or NULL if none is offered.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man7/provider.html">provider(7)</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The provider CIPHER interface was introduced in OpenSSL 3.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2019-2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

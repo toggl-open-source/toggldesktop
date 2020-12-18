@@ -1,7 +1,7 @@
 /*
- * Copyright 2001-2018 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2001-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -10,12 +10,13 @@
 #include <stdio.h>
 #include <time.h>
 #include "internal/cryptlib.h"
+#include <openssl/asn1.h>
 #include <openssl/objects.h>
 #include <openssl/x509.h>
 #include <openssl/pem.h>
 #include <openssl/x509v3.h>
 #include <openssl/ocsp.h>
-#include "ocsp_lcl.h"
+#include "ocsp_local.h"
 
 /*
  * Utility functions related to sending OCSP requests and extracting relevant
@@ -47,7 +48,7 @@ OCSP_ONEREQ *OCSP_request_add0_id(OCSP_REQUEST *req, OCSP_CERTID *cid)
 
 /* Set requestorName from an X509_NAME structure */
 
-int OCSP_request_set1_name(OCSP_REQUEST *req, X509_NAME *nm)
+int OCSP_request_set1_name(OCSP_REQUEST *req, const X509_NAME *nm)
 {
     GENERAL_NAME *gen;
 
@@ -76,14 +77,7 @@ int OCSP_request_add1_cert(OCSP_REQUEST *req, X509 *cert)
         return 0;
     if (cert == NULL)
         return 1;
-    if (sig->certs == NULL
-        && (sig->certs = sk_X509_new_null()) == NULL)
-        return 0;
-
-    if (!sk_X509_push(sig->certs, cert))
-        return 0;
-    X509_up_ref(cert);
-    return 1;
+    return X509_add_cert_new(&sig->certs, cert, X509_ADD_FLAG_UP_REF);
 }
 
 /*
@@ -209,9 +203,9 @@ const STACK_OF(X509) *OCSP_resp_get0_certs(const OCSP_BASICRESP *bs)
 int OCSP_resp_get0_id(const OCSP_BASICRESP *bs,
                       const ASN1_OCTET_STRING **pid,
                       const X509_NAME **pname)
-
 {
     const OCSP_RESPID *rid = &bs->tbsResponseData.responderId;
+
     if (rid->type == V_OCSP_RESPID_NAME) {
         *pname = rid->value.byName;
         *pid = NULL;
@@ -221,6 +215,26 @@ int OCSP_resp_get0_id(const OCSP_BASICRESP *bs,
     } else {
         return 0;
     }
+    return 1;
+}
+
+int OCSP_resp_get1_id(const OCSP_BASICRESP *bs,
+                      ASN1_OCTET_STRING **pid,
+                      X509_NAME **pname)
+{
+    const OCSP_RESPID *rid = &bs->tbsResponseData.responderId;
+
+    if (rid->type == V_OCSP_RESPID_NAME) {
+        *pname = X509_NAME_dup(rid->value.byName);
+        *pid = NULL;
+    } else if (rid->type == V_OCSP_RESPID_KEY) {
+        *pid = ASN1_OCTET_STRING_dup(rid->value.byKey);
+        *pname = NULL;
+    } else {
+        return 0;
+    }
+    if (*pname == NULL && *pid == NULL)
+        return 0;
     return 1;
 }
 

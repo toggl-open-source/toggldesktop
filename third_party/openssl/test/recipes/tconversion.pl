@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2015-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2015-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -23,7 +23,7 @@ my %conversionforms = (
 sub tconversion {
     my $testtype = shift;
     my $t = shift;
-    my @conversionforms = 
+    my @conversionforms =
 	defined($conversionforms{$testtype}) ?
 	@{$conversionforms{$testtype}} :
 	@{$conversionforms{"*"}};
@@ -36,7 +36,7 @@ sub tconversion {
 	+ $n			# initial conversions from p to all forms (A)
 	+ $n*$n			# conversion from result of A to all forms (B)
 	+ 1			# comparing original test file to p form of A
-	+ $n*($n-1);		# comparing first conversion to each form in A with B
+	+ $n*($n-1);		# comparing first conversion to each fom in A with B
     $totaltests-- if ($testtype eq "p7d"); # no comparison of original test file
     plan tests => $totaltests;
 
@@ -89,9 +89,6 @@ sub tconversion {
 	  }
       }
     }
-    unlink glob "$testtype-f.*";
-    unlink glob "$testtype-ff.*";
-    unlink glob "$testtype-fff.*";
 }
 
 sub cmp_text {

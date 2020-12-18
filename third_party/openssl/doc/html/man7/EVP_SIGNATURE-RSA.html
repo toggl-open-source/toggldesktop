@@ -1,0 +1,162 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>EVP_SIGNATURE-RSA</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a>
+    <ul>
+      <li><a href="#Signature-Parameters">Signature Parameters</a></li>
+    </ul>
+  </li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>EVP_SIGNATURE-RSA - The EVP_PKEY RSA signature implementation</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>Support for computing RSA signatures. See <a href="../man7/EVP_PKEY-RSA.html">EVP_PKEY-RSA(7)</a> for information related to RSA keys.</p>
+
+<h2 id="Signature-Parameters">Signature Parameters</h2>
+
+<p>The following signature parameters can be set using EVP_PKEY_CTX_set_params(). This may be called after EVP_PKEY_sign_init() or EVP_PKEY_verify_init(), and before calling EVP_PKEY_sign() or EVP_PKEY_verify().</p>
+
+<dl>
+
+<dt id="digest-OSSL_SIGNATURE_PARAM_DIGEST-UTF8-string">&quot;digest&quot; (<b>OSSL_SIGNATURE_PARAM_DIGEST</b>) &lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+<dt id="properties-OSSL_SIGNATURE_PARAM_PROPERTIES-UTF8-string">&quot;properties&quot; (<b>OSSL_SIGNATURE_PARAM_PROPERTIES</b>) &lt;UTF8 string&gt;</dt>
+<dd>
+
+<p>These common parameters are described in <a href="../man7/provider-signature.html">provider-signature(7)</a>.</p>
+
+</dd>
+<dt id="pad-mode-OSSL_SIGNATURE_PARAM_PAD_MODE-UTF8-string">&quot;pad-mode&quot; (<b>OSSL_SIGNATURE_PARAM_PAD_MODE</b>) &lt;UTF8 string&gt;</dt>
+<dd>
+
+<p>The type of padding to be used. Its value can be one of the following:</p>
+
+<dl>
+
+<dt id="none-OSSL_PKEY_RSA_PAD_MODE_NONE">&quot;none&quot; (<b>OSSL_PKEY_RSA_PAD_MODE_NONE</b>)</dt>
+<dd>
+
+</dd>
+<dt id="pkcs1-OSSL_PKEY_RSA_PAD_MODE_PKCSV15">&quot;pkcs1&quot; (<b>OSSL_PKEY_RSA_PAD_MODE_PKCSV15</b>)</dt>
+<dd>
+
+</dd>
+<dt id="sslv23-OSSL_PKEY_RSA_PAD_MODE_SSLV23">&quot;sslv23&quot; (<b>OSSL_PKEY_RSA_PAD_MODE_SSLV23</b>)</dt>
+<dd>
+
+</dd>
+<dt id="x931-OSSL_PKEY_RSA_PAD_MODE_X931">&quot;x931&quot; (<b>OSSL_PKEY_RSA_PAD_MODE_X931</b>)</dt>
+<dd>
+
+</dd>
+<dt id="pss-OSSL_PKEY_RSA_PAD_MODE_PSS">&quot;pss&quot; (<b>OSSL_PKEY_RSA_PAD_MODE_PSS</b>)</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt id="mgf1-digest-OSSL_SIGNATURE_PARAM_MGF1_DIGEST-UTF8-string">&quot;mgf1-digest&quot; (<b>OSSL_SIGNATURE_PARAM_MGF1_DIGEST</b>) &lt;UTF8 string&gt;</dt>
+<dd>
+
+<p>The digest algorithm name to use for the maskGenAlgorithm used by &quot;pss&quot; mode.</p>
+
+</dd>
+<dt id="mgf1-properties-OSSL_SIGNATURE_PARAM_MGF1_PROPERTIES-UTF8-string">&quot;mgf1-properties&quot; (<b>OSSL_SIGNATURE_PARAM_MGF1_PROPERTIES</b>) &lt;UTF8 string&gt;</dt>
+<dd>
+
+<p>Sets the name of the property query associated with the &quot;mgf1-digest&quot; algorithm. NULL is used if this optional value is not set.</p>
+
+</dd>
+<dt id="pss-saltlen-OSSL_SIGNATURE_PARAM_PSS_SALTLEN-UTF8-string">&quot;pss-saltlen&quot; (<b>OSSL_SIGNATURE_PARAM_PSS_SALTLEN</b>) &lt;UTF8 string&gt;</dt>
+<dd>
+
+<p>Set or get the &quot;pss&quot; mode minimum salt length. The value can either be a string value representing a number or one of the following:</p>
+
+<dl>
+
+<dt id="digest-OSSL_PKEY_RSA_PSS_SALT_LEN_DIGEST">&quot;digest&quot; (<b>OSSL_PKEY_RSA_PSS_SALT_LEN_DIGEST</b>)</dt>
+<dd>
+
+<p>Use the same length as the digest size.</p>
+
+</dd>
+<dt id="max-OSSL_PKEY_RSA_PSS_SALT_LEN_MAX">&quot;max&quot; (<b>OSSL_PKEY_RSA_PSS_SALT_LEN_MAX</b>)</dt>
+<dd>
+
+<p>Use the maximum salt length.</p>
+
+</dd>
+<dt id="auto-OSSL_PKEY_RSA_PSS_SALT_LEN_AUTO">&quot;auto&quot; (<b>OSSL_PKEY_RSA_PSS_SALT_LEN_AUTO</b>)</dt>
+<dd>
+
+<p>Auto detect the salt length.</p>
+
+</dd>
+</dl>
+
+</dd>
+</dl>
+
+<p>The following signature parameters can be retrieved using EVP_PKEY_CTX_get_params().</p>
+
+<dl>
+
+<dt id="algorithm-id-OSSL_SIGNATURE_PARAM_ALGORITHM_ID-octet-string">&quot;algorithm-id&quot; (<b>OSSL_SIGNATURE_PARAM_ALGORITHM_ID</b>) &lt;octet string&gt;</dt>
+<dd>
+
+<p>This common parameter is described in <a href="../man7/provider-signature.html">provider-signature(7)</a>.</p>
+
+</dd>
+<dt id="digest-OSSL_SIGNATURE_PARAM_DIGEST-UTF8-string1">&quot;digest&quot; (<b>OSSL_SIGNATURE_PARAM_DIGEST</b>) &lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+<dt id="pad-mode-OSSL_SIGNATURE_PARAM_PAD_MODE-UTF8-string1">&quot;pad-mode&quot; (<b>OSSL_SIGNATURE_PARAM_PAD_MODE</b>) &lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+<dt id="mgf1-digest-OSSL_SIGNATURE_PARAM_MGF1_DIGEST-UTF8-string1">&quot;mgf1-digest&quot; (<b>OSSL_SIGNATURE_PARAM_MGF1_DIGEST</b>) &lt;UTF8 string&gt;</dt>
+<dd>
+
+<p>These parameters are as described above.</p>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man3/EVP_PKEY_CTX_set_params.html">EVP_PKEY_CTX_set_params(3)</a>, <a href="../man3/EVP_PKEY_sign.html">EVP_PKEY_sign(3)</a>, <a href="../man3/EVP_PKEY_verify.html">EVP_PKEY_verify(3)</a>, <a href="../man7/provider-signature.html">provider-signature(7)</a>,</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

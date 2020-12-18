@@ -1,14 +1,20 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
+/*
+ * BF low level APIs are deprecated for public use, but still ok for internal
+ * use.
+ */
+#include "internal/deprecated.h"
+
 #include <openssl/blowfish.h>
-#include "bf_locl.h"
+#include "bf_local.h"
 
 /*
  * Blowfish as implemented from 'Blowfish: Springer-Verlag paper' (From
@@ -59,8 +65,6 @@ void BF_encrypt(BF_LONG *data, const BF_KEY *key)
     data[1] = l & 0xffffffffU;
     data[0] = r & 0xffffffffU;
 }
-
-#ifndef BF_DEFAULT_OPTIONS
 
 void BF_decrypt(BF_LONG *data, const BF_KEY *key)
 {
@@ -175,5 +179,3 @@ void BF_cbc_encrypt(const unsigned char *in, unsigned char *out, long length,
     tin0 = tin1 = tout0 = tout1 = xor0 = xor1 = 0;
     tin[0] = tin[1] = 0;
 }
-
-#endif

@@ -1,7 +1,7 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "apps.h"
+#include "progs.h"
 #include <openssl/bio.h>
 #include <openssl/err.h>
 #include <openssl/x509.h>
@@ -21,19 +22,34 @@ typedef enum OPTION_choice {
     OPT_ERR = -1, OPT_EOF = 0, OPT_HELP,
     OPT_INFORM, OPT_IN, OPT_OUTFORM, OPT_OUT, OPT_KEYFORM, OPT_KEY,
     OPT_ISSUER, OPT_LASTUPDATE, OPT_NEXTUPDATE, OPT_FINGERPRINT,
-    OPT_CRLNUMBER, OPT_BADSIG, OPT_GENDELTA, OPT_CAPATH, OPT_CAFILE,
-    OPT_NOCAPATH, OPT_NOCAFILE, OPT_VERIFY, OPT_TEXT, OPT_HASH, OPT_HASH_OLD,
-    OPT_NOOUT, OPT_NAMEOPT, OPT_MD
+    OPT_CRLNUMBER, OPT_BADSIG, OPT_GENDELTA, OPT_CAPATH, OPT_CAFILE, OPT_CASTORE,
+    OPT_NOCAPATH, OPT_NOCAFILE, OPT_NOCASTORE, OPT_VERIFY, OPT_TEXT, OPT_HASH,
+    OPT_HASH_OLD, OPT_NOOUT, OPT_NAMEOPT, OPT_MD, OPT_PROV_ENUM
 } OPTION_CHOICE;
 
-OPTIONS crl_options[] = {
+const OPTIONS crl_options[] = {
+    OPT_SECTION("General"),
     {"help", OPT_HELP, '-', "Display this summary"},
-    {"inform", OPT_INFORM, 'F', "Input format; default PEM"},
+    {"verify", OPT_VERIFY, '-', "Verify CRL signature"},
+
+    OPT_SECTION("Input"),
     {"in", OPT_IN, '<', "Input file - default stdin"},
-    {"outform", OPT_OUTFORM, 'F', "Output format - default PEM"},
-    {"out", OPT_OUT, '>', "output file - default stdout"},
-    {"keyform", OPT_KEYFORM, 'F', "Private key file format (PEM or ENGINE)"},
+    {"inform", OPT_INFORM, 'F', "CRL input format (DER or PEM); has no effect"},
     {"key", OPT_KEY, '<', "CRL signing Private key to use"},
+    {"keyform", OPT_KEYFORM, 'F', "Private key file format (DER/PEM/P12); has no effect"},
+
+    OPT_SECTION("Output"),
+    {"out", OPT_OUT, '>', "output file - default stdout"},
+    {"outform", OPT_OUTFORM, 'F', "Output format - default PEM"},
+    {"text", OPT_TEXT, '-', "Print out a text format version"},
+    {"hash", OPT_HASH, '-', "Print hash value"},
+#ifndef OPENSSL_NO_MD5
+    {"hash_old", OPT_HASH_OLD, '-', "Print old-style (MD5) hash value"},
+#endif
+    {"nameopt", OPT_NAMEOPT, 's', "Certificate subject/issuer name printing options"},
+    {"", OPT_MD, '-', "Any supported digest"},
+
+    OPT_SECTION("CRL"),
     {"issuer", OPT_ISSUER, '-', "Print issuer DN"},
     {"lastupdate", OPT_LASTUPDATE, '-', "Set lastUpdate field"},
     {"nextupdate", OPT_NEXTUPDATE, '-', "Set nextUpdate field"},
@@ -42,20 +58,18 @@ OPTIONS crl_options[] = {
     {"crlnumber", OPT_CRLNUMBER, '-', "Print CRL number"},
     {"badsig", OPT_BADSIG, '-', "Corrupt last byte of loaded CRL signature (for test)" },
     {"gendelta", OPT_GENDELTA, '<', "Other CRL to compare/diff to the Input one"},
+
+    OPT_SECTION("Certificate"),
     {"CApath", OPT_CAPATH, '/', "Verify CRL using certificates in dir"},
     {"CAfile", OPT_CAFILE, '<', "Verify CRL using certificates in file name"},
+    {"CAstore", OPT_CASTORE, ':', "Verify CRL using certificates in store URI"},
     {"no-CAfile", OPT_NOCAFILE, '-',
      "Do not load the default certificates file"},
     {"no-CApath", OPT_NOCAPATH, '-',
      "Do not load certificates from the default certificates directory"},
-    {"verify", OPT_VERIFY, '-', "Verify CRL signature"},
-    {"text", OPT_TEXT, '-', "Print out a text format version"},
-    {"hash", OPT_HASH, '-', "Print hash value"},
-    {"nameopt", OPT_NAMEOPT, 's', "Various certificate name options"},
-    {"", OPT_MD, '-', "Any supported digest"},
-#ifndef OPENSSL_NO_MD5
-    {"hash_old", OPT_HASH_OLD, '-', "Print old-style (MD5) hash value"},
-#endif
+    {"no-CAstore", OPT_NOCASTORE, '-',
+     "Do not load certificates from the default certificates store"},
+    OPT_PROV_OPTIONS,
     {NULL}
 };
 
@@ -69,15 +83,13 @@ int crl_main(int argc, char **argv)
     X509_OBJECT *xobj = NULL;
     EVP_PKEY *pkey;
     const EVP_MD *digest = EVP_sha1();
-    unsigned long nmflag = 0;
-    char nmflag_set = 0;
     char *infile = NULL, *outfile = NULL, *crldiff = NULL, *keyfile = NULL;
-    const char *CAfile = NULL, *CApath = NULL, *prog;
+    const char *CAfile = NULL, *CApath = NULL, *CAstore = NULL, *prog;
     OPTION_CHOICE o;
     int hash = 0, issuer = 0, lastupdate = 0, nextupdate = 0, noout = 0;
     int informat = FORMAT_PEM, outformat = FORMAT_PEM, keyformat = FORMAT_PEM;
     int ret = 1, num = 0, badsig = 0, fingerprint = 0, crlnumber = 0;
-    int text = 0, do_ver = 0, noCAfile = 0, noCApath = 0;
+    int text = 0, do_ver = 0, noCAfile = 0, noCApath = 0, noCAstore = 0;
     int i;
 #ifndef OPENSSL_NO_MD5
     int hash_old = 0;
@@ -110,7 +122,7 @@ int crl_main(int argc, char **argv)
             outfile = opt_arg();
             break;
         case OPT_KEYFORM:
-            if (!opt_format(opt_arg(), OPT_FMT_PEMDER, &keyformat))
+            if (!opt_format(opt_arg(), OPT_FMT_ANY, &keyformat))
                 goto opthelp;
             break;
         case OPT_KEY:
@@ -127,11 +139,18 @@ int crl_main(int argc, char **argv)
             CAfile = opt_arg();
             do_ver = 1;
             break;
+        case OPT_CASTORE:
+            CAstore = opt_arg();
+            do_ver = 1;
+            break;
         case OPT_NOCAPATH:
             noCApath =  1;
             break;
         case OPT_NOCAFILE:
             noCAfile =  1;
+            break;
+        case OPT_NOCASTORE:
+            noCAstore =  1;
             break;
         case OPT_HASH_OLD:
 #ifndef OPENSSL_NO_MD5
@@ -169,28 +188,30 @@ int crl_main(int argc, char **argv)
             badsig = 1;
             break;
         case OPT_NAMEOPT:
-            nmflag_set = 1;
-            if (!set_name_ex(&nmflag, opt_arg()))
+            if (!set_nameopt(opt_arg()))
                 goto opthelp;
             break;
         case OPT_MD:
             if (!opt_md(opt_unknown(), &digest))
                 goto opthelp;
+            break;
+        case OPT_PROV_CASES:
+            if (!opt_provider(o))
+                goto end;
+            break;
         }
     }
     argc = opt_num_rest();
     if (argc != 0)
         goto opthelp;
 
-    if (!nmflag_set)
-        nmflag = XN_FLAG_ONELINE;
-
-    x = load_crl(infile, informat);
+    x = load_crl(infile, informat, "CRL");
     if (x == NULL)
         goto end;
 
     if (do_ver) {
-        if ((store = setup_verify(CAfile, CApath, noCAfile, noCApath)) == NULL)
+        if ((store = setup_verify(CAfile, noCAfile, CApath, noCApath,
+                                  CAstore, noCAstore)) == NULL)
             goto end;
         lookup = X509_STORE_add_lookup(store, X509_LOOKUP_file());
         if (lookup == NULL)
@@ -209,7 +230,7 @@ int crl_main(int argc, char **argv)
         }
         pkey = X509_get_pubkey(X509_OBJECT_get0_X509(xobj));
         X509_OBJECT_free(xobj);
-        if (!pkey) {
+        if (pkey == NULL) {
             BIO_printf(bio_err, "Error getting CRL issuer public key\n");
             goto end;
         }
@@ -229,11 +250,11 @@ int crl_main(int argc, char **argv)
             BIO_puts(bio_err, "Missing CRL signing key\n");
             goto end;
         }
-        newcrl = load_crl(crldiff, informat);
+        newcrl = load_crl(crldiff, informat, "other CRL");
         if (!newcrl)
             goto end;
         pkey = load_key(keyfile, keyformat, 0, NULL, NULL, "CRL signing key");
-        if (!pkey) {
+        if (pkey == NULL) {
             X509_CRL_free(newcrl);
             goto end;
         }
@@ -260,7 +281,7 @@ int crl_main(int argc, char **argv)
         for (i = 1; i <= num; i++) {
             if (issuer == i) {
                 print_name(bio_out, "issuer=", X509_CRL_get_issuer(x),
-                           nmflag);
+                           get_nameopt());
             }
             if (crlnumber == i) {
                 ASN1_INTEGER *crlnum;
@@ -319,7 +340,7 @@ int crl_main(int argc, char **argv)
         goto end;
 
     if (text)
-        X509_CRL_print(out, x);
+        X509_CRL_print_ex(out, x, get_nameopt());
 
     if (noout) {
         ret = 0;
@@ -343,5 +364,5 @@ int crl_main(int argc, char **argv)
     X509_CRL_free(x);
     X509_STORE_CTX_free(ctx);
     X509_STORE_free(store);
-    return (ret);
+    return ret;
 }

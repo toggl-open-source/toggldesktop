@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2011-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2011-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -54,9 +54,10 @@
 #
 #						<appro@openssl.org>
 
-$flavour = shift;
-$output  = shift;
-if ($flavour =~ /\./) { $output = $flavour; undef $flavour; }
+# $output is the last argument if it looks like a file (it has an extension)
+# $flavour is the first argument if it doesn't look like a file
+$output = $#ARGV >= 0 && $ARGV[$#ARGV] =~ m|\.\w+$| ? pop : undef;
+$flavour = $#ARGV >= 0 && $ARGV[0] !~ m|\.| ? shift : undef;
 
 $win64=0; $win64=1 if ($flavour =~ /[nm]asm|mingw64/ || $output =~ /\.asm$/);
 
@@ -65,7 +66,8 @@ $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
 ( $xlate="${dir}../../perlasm/x86_64-xlate.pl" and -f $xlate) or
 die "can't locate x86_64-xlate.pl";
 
-open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\"";
+open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\""
+    or die "can't call $xlate: $!";
 *STDOUT=*OUT;
 
 $PREFIX="vpaes";
@@ -91,6 +93,7 @@ $code.=<<___;
 .type	_vpaes_encrypt_core,\@abi-omnipotent
 .align 16
 _vpaes_encrypt_core:
+.cfi_startproc
 	mov	%rdx,	%r9
 	mov	\$16,	%r11
 	mov	240(%rdx),%eax
@@ -171,8 +174,9 @@ _vpaes_encrypt_core:
 	pxor	%xmm4,	%xmm0	# 0 = A
 	pshufb	%xmm1,	%xmm0
 	ret
+.cfi_endproc
 .size	_vpaes_encrypt_core,.-_vpaes_encrypt_core
-	
+
 ##
 ##  Decryption core
 ##
@@ -181,6 +185,7 @@ _vpaes_encrypt_core:
 .type	_vpaes_decrypt_core,\@abi-omnipotent
 .align	16
 _vpaes_decrypt_core:
+.cfi_startproc
 	mov	%rdx,	%r9		# load key
 	mov	240(%rdx),%eax
 	movdqa	%xmm9,	%xmm1
@@ -277,6 +282,7 @@ _vpaes_decrypt_core:
 	pxor	%xmm4,	%xmm0	# 0 = A
 	pshufb	%xmm2,	%xmm0
 	ret
+.cfi_endproc
 .size	_vpaes_decrypt_core,.-_vpaes_decrypt_core
 
 ########################################################
@@ -287,6 +293,7 @@ _vpaes_decrypt_core:
 .type	_vpaes_schedule_core,\@abi-omnipotent
 .align	16
 _vpaes_schedule_core:
+.cfi_startproc
 	# rdi = key
 	# rsi = size in bits
 	# rdx = buffer
@@ -333,7 +340,7 @@ _vpaes_schedule_core:
 ##
 .Lschedule_128:
 	mov	\$10, %esi
-	
+
 .Loop_schedule_128:
 	call 	_vpaes_schedule_round
 	dec	%rsi
@@ -367,7 +374,7 @@ _vpaes_schedule_core:
 
 .Loop_schedule_192:
 	call	_vpaes_schedule_round
-	palignr	\$8,%xmm6,%xmm0	
+	palignr	\$8,%xmm6,%xmm0
 	call	_vpaes_schedule_mangle	# save key n
 	call	_vpaes_schedule_192_smear
 	call	_vpaes_schedule_mangle	# save key n+1
@@ -393,7 +400,7 @@ _vpaes_schedule_core:
 	movdqu	16(%rdi),%xmm0		# load key part 2 (unaligned)
 	call	_vpaes_schedule_transform	# input transform
 	mov	\$7, %esi
-	
+
 .Loop_schedule_256:
 	call	_vpaes_schedule_mangle	# output low result
 	movdqa	%xmm0,	%xmm6		# save cur_lo in xmm6
@@ -402,7 +409,7 @@ _vpaes_schedule_core:
 	call	_vpaes_schedule_round
 	dec	%rsi
 	jz 	.Lschedule_mangle_last
-	call	_vpaes_schedule_mangle	
+	call	_vpaes_schedule_mangle
 
 	# low round. swap xmm7 and xmm6
 	pshufd	\$0xFF,	%xmm0,	%xmm0
@@ -410,10 +417,10 @@ _vpaes_schedule_core:
 	movdqa	%xmm6,	%xmm7
 	call	_vpaes_schedule_low_round
 	movdqa	%xmm5,	%xmm7
-	
+
 	jmp	.Loop_schedule_256
 
-	
+
 ##
 ##  .aes_schedule_mangle_last
 ##
@@ -453,6 +460,7 @@ _vpaes_schedule_core:
 	pxor	%xmm6,  %xmm6
 	pxor	%xmm7,  %xmm7
 	ret
+.cfi_endproc
 .size	_vpaes_schedule_core,.-_vpaes_schedule_core
 
 ##
@@ -472,6 +480,7 @@ _vpaes_schedule_core:
 .type	_vpaes_schedule_192_smear,\@abi-omnipotent
 .align	16
 _vpaes_schedule_192_smear:
+.cfi_startproc
 	pshufd	\$0x80,	%xmm6,	%xmm1	# d c 0 0 -> c 0 0 0
 	pshufd	\$0xFE,	%xmm7,	%xmm0	# b a _ _ -> b b b a
 	pxor	%xmm1,	%xmm6		# -> c+d c 0 0
@@ -480,6 +489,7 @@ _vpaes_schedule_192_smear:
 	movdqa	%xmm6,	%xmm0
 	movhlps	%xmm1,	%xmm6		# clobber low side with zeros
 	ret
+.cfi_endproc
 .size	_vpaes_schedule_192_smear,.-_vpaes_schedule_192_smear
 
 ##
@@ -503,6 +513,7 @@ _vpaes_schedule_192_smear:
 .type	_vpaes_schedule_round,\@abi-omnipotent
 .align	16
 _vpaes_schedule_round:
+.cfi_startproc
 	# extract rcon from xmm8
 	pxor	%xmm1,	%xmm1
 	palignr	\$15,	%xmm8,	%xmm1
@@ -512,9 +523,9 @@ _vpaes_schedule_round:
 	# rotate
 	pshufd	\$0xFF,	%xmm0,	%xmm0
 	palignr	\$1,	%xmm0,	%xmm0
-	
+
 	# fall through...
-	
+
 	# low round: same as high round, but no rotation and no rcon.
 _vpaes_schedule_low_round:
 	# smear xmm7
@@ -553,9 +564,10 @@ _vpaes_schedule_low_round:
 	pxor	%xmm4, 	%xmm0		# 0 = sbox output
 
 	# add in smeared stuff
-	pxor	%xmm7,	%xmm0	
+	pxor	%xmm7,	%xmm0
 	movdqa	%xmm0,	%xmm7
 	ret
+.cfi_endproc
 .size	_vpaes_schedule_round,.-_vpaes_schedule_round
 
 ##
@@ -570,6 +582,7 @@ _vpaes_schedule_low_round:
 .type	_vpaes_schedule_transform,\@abi-omnipotent
 .align	16
 _vpaes_schedule_transform:
+.cfi_startproc
 	movdqa	%xmm9,	%xmm1
 	pandn	%xmm0,	%xmm1
 	psrld	\$4,	%xmm1
@@ -580,6 +593,7 @@ _vpaes_schedule_transform:
 	pshufb	%xmm1,	%xmm0
 	pxor	%xmm2,	%xmm0
 	ret
+.cfi_endproc
 .size	_vpaes_schedule_transform,.-_vpaes_schedule_transform
 
 ##
@@ -608,6 +622,7 @@ _vpaes_schedule_transform:
 .type	_vpaes_schedule_mangle,\@abi-omnipotent
 .align	16
 _vpaes_schedule_mangle:
+.cfi_startproc
 	movdqa	%xmm0,	%xmm4	# save xmm0 for later
 	movdqa	.Lk_mc_forward(%rip),%xmm5
 	test	%rcx, 	%rcx
@@ -672,6 +687,7 @@ _vpaes_schedule_mangle:
 	and	\$0x30,	%r8
 	movdqu	%xmm3,	(%rdx)
 	ret
+.cfi_endproc
 .size	_vpaes_schedule_mangle,.-_vpaes_schedule_mangle
 
 #
@@ -681,6 +697,8 @@ _vpaes_schedule_mangle:
 .type	${PREFIX}_set_encrypt_key,\@function,3
 .align	16
 ${PREFIX}_set_encrypt_key:
+.cfi_startproc
+	endbranch
 ___
 $code.=<<___ if ($win64);
 	lea	-0xb8(%rsp),%rsp
@@ -723,12 +741,15 @@ ___
 $code.=<<___;
 	xor	%eax,%eax
 	ret
+.cfi_endproc
 .size	${PREFIX}_set_encrypt_key,.-${PREFIX}_set_encrypt_key
 
 .globl	${PREFIX}_set_decrypt_key
 .type	${PREFIX}_set_decrypt_key,\@function,3
 .align	16
 ${PREFIX}_set_decrypt_key:
+.cfi_startproc
+	endbranch
 ___
 $code.=<<___ if ($win64);
 	lea	-0xb8(%rsp),%rsp
@@ -776,12 +797,15 @@ ___
 $code.=<<___;
 	xor	%eax,%eax
 	ret
+.cfi_endproc
 .size	${PREFIX}_set_decrypt_key,.-${PREFIX}_set_decrypt_key
 
 .globl	${PREFIX}_encrypt
 .type	${PREFIX}_encrypt,\@function,3
 .align	16
 ${PREFIX}_encrypt:
+.cfi_startproc
+	endbranch
 ___
 $code.=<<___ if ($win64);
 	lea	-0xb8(%rsp),%rsp
@@ -819,12 +843,15 @@ $code.=<<___ if ($win64);
 ___
 $code.=<<___;
 	ret
+.cfi_endproc
 .size	${PREFIX}_encrypt,.-${PREFIX}_encrypt
 
 .globl	${PREFIX}_decrypt
 .type	${PREFIX}_decrypt,\@function,3
 .align	16
 ${PREFIX}_decrypt:
+.cfi_startproc
+	endbranch
 ___
 $code.=<<___ if ($win64);
 	lea	-0xb8(%rsp),%rsp
@@ -862,6 +889,7 @@ $code.=<<___ if ($win64);
 ___
 $code.=<<___;
 	ret
+.cfi_endproc
 .size	${PREFIX}_decrypt,.-${PREFIX}_decrypt
 ___
 {
@@ -874,6 +902,8 @@ $code.=<<___;
 .type	${PREFIX}_cbc_encrypt,\@function,6
 .align	16
 ${PREFIX}_cbc_encrypt:
+.cfi_startproc
+	endbranch
 	xchg	$key,$len
 ___
 ($len,$key)=($key,$len);
@@ -944,6 +974,7 @@ ___
 $code.=<<___;
 .Lcbc_abort:
 	ret
+.cfi_endproc
 .size	${PREFIX}_cbc_encrypt,.-${PREFIX}_cbc_encrypt
 ___
 }
@@ -957,6 +988,7 @@ $code.=<<___;
 .type	_vpaes_preheat,\@abi-omnipotent
 .align	16
 _vpaes_preheat:
+.cfi_startproc
 	lea	.Lk_s0F(%rip), %r10
 	movdqa	-0x20(%r10), %xmm10	# .Lk_inv
 	movdqa	-0x10(%r10), %xmm11	# .Lk_inv+16
@@ -966,6 +998,7 @@ _vpaes_preheat:
 	movdqa	0x50(%r10), %xmm15	# .Lk_sb2
 	movdqa	0x60(%r10), %xmm14	# .Lk_sb2+16
 	ret
+.cfi_endproc
 .size	_vpaes_preheat,.-_vpaes_preheat
 ########################################################
 ##                                                    ##
@@ -1212,4 +1245,4 @@ $code =~ s/\`([^\`]*)\`/eval($1)/gem;
 
 print $code;
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

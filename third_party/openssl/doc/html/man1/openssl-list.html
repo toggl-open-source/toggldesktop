@@ -1,0 +1,204 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>openssl-list</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#OPTIONS">OPTIONS</a>
+    <ul>
+      <li><a href="#Display-of-algorithm-names">Display of algorithm names</a></li>
+    </ul>
+  </li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>openssl-list - list algorithms and features</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<p><b>openssl list</b> [<b>-help</b>] [<b>-verbose</b>] [<b>-1</b>] [<b>-commands</b>] [<b>-digest-commands</b>] [<b>-digest-algorithms</b>] [<b>-kdf-algorithms</b>] [<b>-mac-algorithms</b>] [<b>-random-generators</b>] [<b>-cipher-commands</b>] [<b>-cipher-algorithms</b>] [<b>-encoders</b>] [<b>-decoders</b>] [<b>-public-key-algorithms</b>] [<b>-public-key-methods</b>] [<b>-engines</b>] [<b>-disabled</b>] [<b>-objects</b>] [<b>-options</b> <i>command</i>] [<b>-provider</b> <i>name</i>] [<b>-provider-path</b> <i>path</i>]</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>This command is used to generate list of algorithms or disabled features.</p>
+
+<h1 id="OPTIONS">OPTIONS</h1>
+
+<dl>
+
+<dt id="help"><b>-help</b></dt>
+<dd>
+
+<p>Display a usage message.</p>
+
+</dd>
+<dt id="verbose"><b>-verbose</b></dt>
+<dd>
+
+<p>Displays extra information. The options below where verbosity applies say a bit more about what that means.</p>
+
+</dd>
+<dt id="pod-1"><b>-1</b></dt>
+<dd>
+
+<p>List the commands, digest-commands, or cipher-commands in a single column. If used, this option must be given first.</p>
+
+</dd>
+<dt id="commands"><b>-commands</b></dt>
+<dd>
+
+<p>Display a list of standard commands.</p>
+
+</dd>
+<dt id="digest-commands"><b>-digest-commands</b></dt>
+<dd>
+
+<p>Display a list of message digest commands, which are typically used as input to the <a href="../man1/openssl-dgst.html">openssl-dgst(1)</a> or <a href="../man1/openssl-speed.html">openssl-speed(1)</a> commands.</p>
+
+</dd>
+<dt id="cipher-commands"><b>-cipher-commands</b></dt>
+<dd>
+
+<p>Display a list of cipher commands, which are typically used as input to the <a href="../man1/openssl-dgst.html">openssl-dgst(1)</a> or <a href="../man1/openssl-speed.html">openssl-speed(1)</a> commands.</p>
+
+</dd>
+<dt id="digest-algorithms--kdf-algorithms--mac-algorithms--cipher-algorithms"><b>-digest-algorithms</b>, <b>-kdf-algorithms</b>, <b>-mac-algorithms</b>, <b>-cipher-algorithms</b></dt>
+<dd>
+
+<p>Display a list of cipher, digest, kdf and mac algorithms. See <a href="#Display-of-algorithm-names">&quot;Display of algorithm names&quot;</a> for a description of how names are displayed.</p>
+
+<p>In verbose mode, the algorithms provided by a provider will get additional information on what parameters each implementation supports.</p>
+
+</dd>
+<dt id="random-generators"><b>-random-generators</b></dt>
+<dd>
+
+<p>Display a list of random number generators. See <a href="#Display-of-algorithm-names">&quot;Display of algorithm names&quot;</a> for a description of how names are displayed.</p>
+
+</dd>
+<dt id="encoders"><b>-encoders</b></dt>
+<dd>
+
+<p>Display a list of encoders. See <a href="#Display-of-algorithm-names">&quot;Display of algorithm names&quot;</a> for a description of how names are displayed.</p>
+
+<p>In verbose mode, the algorithms provided by a provider will get additional information on what parameters each implementation supports.</p>
+
+</dd>
+<dt id="decoders"><b>-decoders</b></dt>
+<dd>
+
+<p>Display a list of decoders. See <a href="#Display-of-algorithm-names">&quot;Display of algorithm names&quot;</a> for a description of how names are displayed.</p>
+
+<p>In verbose mode, the algorithms provided by a provider will get additional information on what parameters each implementation supports.</p>
+
+</dd>
+<dt id="public-key-algorithms"><b>-public-key-algorithms</b></dt>
+<dd>
+
+<p>Display a list of public key algorithms, with each algorithm as a block of multiple lines, all but the first are indented.</p>
+
+</dd>
+<dt id="public-key-methods"><b>-public-key-methods</b></dt>
+<dd>
+
+<p>This option is deprecated.</p>
+
+<p>Display a list of public key method OIDs.</p>
+
+</dd>
+<dt id="engines"><b>-engines</b></dt>
+<dd>
+
+<p>This option is deprecated.</p>
+
+<p>Display a list of loaded engines.</p>
+
+</dd>
+<dt id="disabled"><b>-disabled</b></dt>
+<dd>
+
+<p>Display a list of disabled features, those that were compiled out of the installation.</p>
+
+</dd>
+<dt id="objects"><b>-objects</b></dt>
+<dd>
+
+<p>Display a list of built in objects, i.e. OIDs with names. They&#39;re listed in the format described in <a href="../man5/config.html">&quot;ASN1 Object Configuration Module&quot; in config(5)</a>.</p>
+
+</dd>
+<dt id="options-command"><b>-options</b> <i>command</i></dt>
+<dd>
+
+<p>Output a two-column list of the options accepted by the specified <i>command</i>. The first is the option name, and the second is a one-character indication of what type of parameter it takes, if any. This is an internal option, used for checking that the documentation is complete.</p>
+
+</dd>
+<dt id="provider-name"><b>-provider</b> <i>name</i></dt>
+<dd>
+
+</dd>
+<dt id="provider-path-path"><b>-provider-path</b> <i>path</i></dt>
+<dd>
+
+<p>See <a href="../man1/openssl.html">&quot;Provider Options&quot; in openssl(1)</a>.</p>
+
+</dd>
+</dl>
+
+<h2 id="Display-of-algorithm-names">Display of algorithm names</h2>
+
+<p>Algorithm names may be displayed in one of two manners:</p>
+
+<dl>
+
+<dt id="Legacy-implementations">Legacy implementations</dt>
+<dd>
+
+<p>Legacy implementations will simply display the main name of the algorithm on a line of its own, or in the form <code>&lt;foo </code> bar&gt;&gt; to show that <code>foo</code> is an alias for the main name, <code>bar</code></p>
+
+</dd>
+<dt id="Provided-implementations">Provided implementations</dt>
+<dd>
+
+<p>Implementations from a provider are displayed like this if the implementation is labeled with a single name:</p>
+
+<pre><code> foo @ bar</code></pre>
+
+<p>or like this if it&#39;s labeled with multiple names:</p>
+
+<pre><code> { foo1, foo2 } @bar</code></pre>
+
+<p>In both cases, <code>bar</code> is the name of the provider.</p>
+
+</dd>
+</dl>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The <b>-engines</b> and <b>-public-key-methods</b> options were deprecated in OpenSSL 3.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2016-2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

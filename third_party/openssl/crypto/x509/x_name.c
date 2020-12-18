@@ -1,20 +1,20 @@
 /*
- * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
 #include <stdio.h>
-#include <ctype.h>
+#include "crypto/ctype.h"
 #include "internal/cryptlib.h"
 #include <openssl/asn1t.h>
 #include <openssl/x509.h>
-#include "internal/x509_int.h"
-#include "internal/asn1_int.h"
-#include "x509_lcl.h"
+#include "crypto/x509.h"
+#include "crypto/asn1.h"
+#include "x509_local.h"
 
 /*
  * Maximum length of X509_NAME: much larger than anything we should
@@ -28,7 +28,7 @@ static int x509_name_ex_d2i(ASN1_VALUE **val,
                             const ASN1_ITEM *it,
                             int tag, int aclass, char opt, ASN1_TLC *ctx);
 
-static int x509_name_ex_i2d(ASN1_VALUE **val, unsigned char **out,
+static int x509_name_ex_i2d(const ASN1_VALUE **val, unsigned char **out,
                             const ASN1_ITEM *it, int tag, int aclass);
 static int x509_name_ex_new(ASN1_VALUE **val, const ASN1_ITEM *it);
 static void x509_name_ex_free(ASN1_VALUE **val, const ASN1_ITEM *it);
@@ -36,10 +36,10 @@ static void x509_name_ex_free(ASN1_VALUE **val, const ASN1_ITEM *it);
 static int x509_name_encode(X509_NAME *a);
 static int x509_name_canon(X509_NAME *a);
 static int asn1_string_canon(ASN1_STRING *out, const ASN1_STRING *in);
-static int i2d_name_canon(STACK_OF(STACK_OF_X509_NAME_ENTRY) * intname,
+static int i2d_name_canon(const STACK_OF(STACK_OF_X509_NAME_ENTRY) * intname,
                           unsigned char **in);
 
-static int x509_name_ex_print(BIO *out, ASN1_VALUE **pval,
+static int x509_name_ex_print(BIO *out, const ASN1_VALUE **pval,
                               int indent,
                               const char *fname, const ASN1_PCTX *pctx);
 
@@ -114,7 +114,7 @@ static void x509_name_ex_free(ASN1_VALUE **pval, const ASN1_ITEM *it)
 {
     X509_NAME *a;
 
-    if (!pval || !*pval)
+    if (pval == NULL || *pval == NULL)
         return;
     a = (X509_NAME *)*pval;
 
@@ -156,6 +156,7 @@ static int x509_name_ex_d2i(ASN1_VALUE **val,
     int i, j, ret;
     STACK_OF(X509_NAME_ENTRY) *entries;
     X509_NAME_ENTRY *entry;
+
     if (len > X509_NAME_MAX)
         len = X509_NAME_MAX;
     q = p;
@@ -185,7 +186,7 @@ static int x509_name_ex_d2i(ASN1_VALUE **val,
             entry->set = i;
             if (!sk_X509_NAME_ENTRY_push(nm.x->entries, entry))
                 goto err;
-            sk_X509_NAME_ENTRY_set(entries, j, NULL);
+            (void)sk_X509_NAME_ENTRY_set(entries, j, NULL);
         }
     }
     ret = x509_name_canon(nm.x);
@@ -207,11 +208,12 @@ static int x509_name_ex_d2i(ASN1_VALUE **val,
     return 0;
 }
 
-static int x509_name_ex_i2d(ASN1_VALUE **val, unsigned char **out,
+static int x509_name_ex_i2d(const ASN1_VALUE **val, unsigned char **out,
                             const ASN1_ITEM *it, int tag, int aclass)
 {
     int ret;
     X509_NAME *a = (X509_NAME *)*val;
+
     if (a->modified) {
         ret = x509_name_encode(a);
         if (ret < 0)
@@ -232,7 +234,7 @@ static int x509_name_encode(X509_NAME *a)
 {
     union {
         STACK_OF(STACK_OF_X509_NAME_ENTRY) *s;
-        ASN1_VALUE *a;
+        const ASN1_VALUE *a;
     } intname = {
         NULL
     };
@@ -241,6 +243,7 @@ static int x509_name_encode(X509_NAME *a)
     STACK_OF(X509_NAME_ENTRY) *entries = NULL;
     X509_NAME_ENTRY *entry;
     int i, set = -1;
+
     intname.s = sk_STACK_OF_X509_NAME_ENTRY_new_null();
     if (!intname.s)
         goto memerr;
@@ -277,7 +280,7 @@ static int x509_name_encode(X509_NAME *a)
     return -1;
 }
 
-static int x509_name_ex_print(BIO *out, ASN1_VALUE **pval,
+static int x509_name_ex_print(BIO *out, const ASN1_VALUE **pval,
                               int indent,
                               const char *fname, const ASN1_PCTX *pctx)
 {
@@ -300,7 +303,7 @@ static int x509_name_ex_print(BIO *out, ASN1_VALUE **pval,
 static int x509_name_canon(X509_NAME *a)
 {
     unsigned char *p;
-    STACK_OF(STACK_OF_X509_NAME_ENTRY) *intname = NULL;
+    STACK_OF(STACK_OF_X509_NAME_ENTRY) *intname;
     STACK_OF(X509_NAME_ENTRY) *entries = NULL;
     X509_NAME_ENTRY *entry, *tmpentry = NULL;
     int i, set = -1, ret = 0, len;
@@ -313,44 +316,53 @@ static int x509_name_canon(X509_NAME *a)
         return 1;
     }
     intname = sk_STACK_OF_X509_NAME_ENTRY_new_null();
-    if (!intname)
+    if (intname == NULL) {
+        X509err(X509_F_X509_NAME_CANON, ERR_R_MALLOC_FAILURE);
         goto err;
+    }
     for (i = 0; i < sk_X509_NAME_ENTRY_num(a->entries); i++) {
         entry = sk_X509_NAME_ENTRY_value(a->entries, i);
         if (entry->set != set) {
             entries = sk_X509_NAME_ENTRY_new_null();
-            if (!entries)
+            if (entries == NULL)
                 goto err;
             if (!sk_STACK_OF_X509_NAME_ENTRY_push(intname, entries)) {
                 sk_X509_NAME_ENTRY_free(entries);
+                X509err(X509_F_X509_NAME_CANON, ERR_R_MALLOC_FAILURE);
                 goto err;
             }
             set = entry->set;
         }
         tmpentry = X509_NAME_ENTRY_new();
-        if (tmpentry == NULL)
+        if (tmpentry == NULL) {
+            X509err(X509_F_X509_NAME_CANON, ERR_R_MALLOC_FAILURE);
             goto err;
+        }
         tmpentry->object = OBJ_dup(entry->object);
-        if (tmpentry->object == NULL)
+        if (tmpentry->object == NULL) {
+            X509err(X509_F_X509_NAME_CANON, ERR_R_MALLOC_FAILURE);
             goto err;
+        }
         if (!asn1_string_canon(tmpentry->value, entry->value))
             goto err;
-        if (!sk_X509_NAME_ENTRY_push(entries, tmpentry))
+        if (!sk_X509_NAME_ENTRY_push(entries, tmpentry)) {
+            X509err(X509_F_X509_NAME_CANON, ERR_R_MALLOC_FAILURE);
             goto err;
+        }
         tmpentry = NULL;
     }
 
     /* Finally generate encoding */
-
     len = i2d_name_canon(intname, NULL);
     if (len < 0)
         goto err;
     a->canon_enclen = len;
 
     p = OPENSSL_malloc(a->canon_enclen);
-
-    if (p == NULL)
+    if (p == NULL) {
+        X509err(X509_F_X509_NAME_CANON, ERR_R_MALLOC_FAILURE);
         goto err;
+    }
 
     a->canon_enc = p;
 
@@ -359,7 +371,6 @@ static int x509_name_canon(X509_NAME *a)
     ret = 1;
 
  err:
-
     X509_NAME_ENTRY_free(tmpentry);
     sk_STACK_OF_X509_NAME_ENTRY_pop_free(intname,
                                          local_sk_X509_NAME_ENTRY_pop_free);
@@ -398,11 +409,12 @@ static int asn1_string_canon(ASN1_STRING *out, const ASN1_STRING *in)
     /*
      * Convert string in place to canonical form. Ultimately we may need to
      * handle a wider range of characters but for now ignore anything with
-     * MSB set and rely on the isspace() and tolower() functions.
+     * MSB set and rely on the ossl_isspace() to fail on bad characters without
+     * needing isascii or range checks as well.
      */
 
     /* Ignore leading spaces */
-    while ((len > 0) && !(*from & 0x80) && isspace(*from)) {
+    while (len > 0 && ossl_isspace(*from)) {
         from++;
         len--;
     }
@@ -410,7 +422,7 @@ static int asn1_string_canon(ASN1_STRING *out, const ASN1_STRING *in)
     to = from + len;
 
     /* Ignore trailing spaces */
-    while ((len > 0) && !(to[-1] & 0x80) && isspace(to[-1])) {
+    while (len > 0 && ossl_isspace(to[-1])) {
         to--;
         len--;
     }
@@ -419,13 +431,13 @@ static int asn1_string_canon(ASN1_STRING *out, const ASN1_STRING *in)
 
     i = 0;
     while (i < len) {
-        /* If MSB set just copy across */
-        if (*from & 0x80) {
+        /* If not ASCII set just copy across */
+        if (!ossl_isascii(*from)) {
             *to++ = *from++;
             i++;
         }
         /* Collapse multiple spaces */
-        else if (isspace(*from)) {
+        else if (ossl_isspace(*from)) {
             /* Copy one space across */
             *to++ = ' ';
             /*
@@ -437,9 +449,9 @@ static int asn1_string_canon(ASN1_STRING *out, const ASN1_STRING *in)
                 from++;
                 i++;
             }
-            while (!(*from & 0x80) && isspace(*from));
+            while (ossl_isspace(*from));
         } else {
-            *to++ = tolower(*from);
+            *to++ = ossl_tolower(*from);
             from++;
             i++;
         }
@@ -451,11 +463,11 @@ static int asn1_string_canon(ASN1_STRING *out, const ASN1_STRING *in)
 
 }
 
-static int i2d_name_canon(STACK_OF(STACK_OF_X509_NAME_ENTRY) * _intname,
+static int i2d_name_canon(const STACK_OF(STACK_OF_X509_NAME_ENTRY) * _intname,
                           unsigned char **in)
 {
     int i, len, ltmp;
-    ASN1_VALUE *v;
+    const ASN1_VALUE *v;
     STACK_OF(ASN1_VALUE) *intname = (STACK_OF(ASN1_VALUE) *)_intname;
 
     len = 0;
@@ -470,14 +482,16 @@ static int i2d_name_canon(STACK_OF(STACK_OF_X509_NAME_ENTRY) * _intname,
     return len;
 }
 
-int X509_NAME_set(X509_NAME **xn, X509_NAME *name)
+int X509_NAME_set(X509_NAME **xn, const X509_NAME *name)
 {
+    X509_NAME *name_copy;
+
     if (*xn == name)
         return *xn != NULL;
-    if ((name = X509_NAME_dup(name)) == NULL)
+    if ((name_copy = X509_NAME_dup(name)) == NULL)
         return 0;
     X509_NAME_free(*xn);
-    *xn = name;
+    *xn = name_copy;
     return 1;
 }
 
@@ -489,9 +503,9 @@ int X509_NAME_print(BIO *bp, const X509_NAME *name, int obase)
     l = 80 - 2 - obase;
 
     b = X509_NAME_oneline(name, NULL, 0);
-    if (!b)
+    if (b == NULL)
         return 0;
-    if (!*b) {
+    if (*b == '\0') {
         OPENSSL_free(b);
         return 1;
     }
@@ -499,19 +513,10 @@ int X509_NAME_print(BIO *bp, const X509_NAME *name, int obase)
 
     c = s;
     for (;;) {
-#ifndef CHARSET_EBCDIC
         if (((*s == '/') &&
-             ((s[1] >= 'A') && (s[1] <= 'Z') && ((s[2] == '=') ||
-                                                 ((s[2] >= 'A')
-                                                  && (s[2] <= 'Z')
-                                                  && (s[3] == '='))
+             (ossl_isupper(s[1]) && ((s[2] == '=') ||
+                                (ossl_isupper(s[2]) && (s[3] == '='))
               ))) || (*s == '\0'))
-#else
-        if (((*s == '/') &&
-             (isupper(s[1]) && ((s[2] == '=') ||
-                                (isupper(s[2]) && (s[3] == '='))
-              ))) || (*s == '\0'))
-#endif
         {
             i = s - c;
             if (BIO_write(bp, c, i) != i)
@@ -537,7 +542,7 @@ int X509_NAME_print(BIO *bp, const X509_NAME *name, int obase)
     return 0;
 }
 
-int X509_NAME_get0_der(X509_NAME *nm, const unsigned char **pder,
+int X509_NAME_get0_der(const X509_NAME *nm, const unsigned char **pder,
                        size_t *pderlen)
 {
     /* Make sure encoding is valid */

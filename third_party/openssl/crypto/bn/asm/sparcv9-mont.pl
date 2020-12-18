@@ -1,14 +1,14 @@
 #! /usr/bin/env perl
-# Copyright 2005-2018 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2005-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
 
 
 # ====================================================================
-# Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
+# Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
 # project. The module is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
@@ -49,8 +49,7 @@
 # module still have hidden potential [see TODO list there], which is
 # estimated to be larger than 20%...
 
-$output = pop;
-open STDOUT,">$output";
+$output = pop and open STDOUT,">$output";
 
 # int bn_mul_mont(
 $rp="%i0";	# BN_ULONG *rp,
@@ -612,9 +611,9 @@ $code.=<<___;
 	add	$tp,8,$tp
 .type	$fname,#function
 .size	$fname,(.-$fname)
-.asciz	"Montgomery Multipltication for SPARCv9, CRYPTOGAMS by <appro\@openssl.org>"
+.asciz	"Montgomery Multiplication for SPARCv9, CRYPTOGAMS by <appro\@openssl.org>"
 .align	32
 ___
 $code =~ s/\`([^\`]*)\`/eval($1)/gem;
 print $code;
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

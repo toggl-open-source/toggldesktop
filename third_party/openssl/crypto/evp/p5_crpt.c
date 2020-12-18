@@ -1,7 +1,7 @@
 /*
- * Copyright 1999-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1999-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -28,7 +28,7 @@ int PKCS5_PBE_keyivgen(EVP_CIPHER_CTX *cctx, const char *pass, int passlen,
     EVP_MD_CTX *ctx;
     unsigned char md_tmp[EVP_MAX_MD_SIZE];
     unsigned char key[EVP_MAX_KEY_LENGTH], iv[EVP_MAX_IV_LENGTH];
-    int i;
+    int i, ivl, kl;
     PBEPARAM *pbe;
     int saltlen, iter;
     unsigned char *salt;
@@ -48,14 +48,27 @@ int PKCS5_PBE_keyivgen(EVP_CIPHER_CTX *cctx, const char *pass, int passlen,
         return 0;
     }
 
-    if (!pbe->iter)
+    ivl = EVP_CIPHER_iv_length(cipher);
+    if (ivl < 0 || ivl > 16) {
+        EVPerr(EVP_F_PKCS5_PBE_KEYIVGEN, EVP_R_INVALID_IV_LENGTH);
+        PBEPARAM_free(pbe);
+        return 0;
+    }
+    kl = EVP_CIPHER_key_length(cipher);
+    if (kl < 0 || kl > (int)sizeof(md_tmp)) {
+        EVPerr(EVP_F_PKCS5_PBE_KEYIVGEN, EVP_R_INVALID_KEY_LENGTH);
+        PBEPARAM_free(pbe);
+        return 0;
+    }
+
+    if (pbe->iter == NULL)
         iter = 1;
     else
         iter = ASN1_INTEGER_get(pbe->iter);
     salt = pbe->salt->data;
     saltlen = pbe->salt->length;
 
-    if (!pass)
+    if (pass == NULL)
         passlen = 0;
     else if (passlen == -1)
         passlen = strlen(pass);
@@ -73,11 +86,12 @@ int PKCS5_PBE_keyivgen(EVP_CIPHER_CTX *cctx, const char *pass, int passlen,
     if (!EVP_DigestUpdate(ctx, salt, saltlen))
         goto err;
     PBEPARAM_free(pbe);
+    pbe = NULL;
     if (!EVP_DigestFinal_ex(ctx, md_tmp, NULL))
         goto err;
     mdsize = EVP_MD_size(md);
     if (mdsize < 0)
-        return 0;
+        goto err;
     for (i = 1; i < iter; i++) {
         if (!EVP_DigestInit_ex(ctx, md, NULL))
             goto err;
@@ -86,11 +100,8 @@ int PKCS5_PBE_keyivgen(EVP_CIPHER_CTX *cctx, const char *pass, int passlen,
         if (!EVP_DigestFinal_ex(ctx, md_tmp, NULL))
             goto err;
     }
-    OPENSSL_assert(EVP_CIPHER_key_length(cipher) <= (int)sizeof(md_tmp));
-    memcpy(key, md_tmp, EVP_CIPHER_key_length(cipher));
-    OPENSSL_assert(EVP_CIPHER_iv_length(cipher) <= 16);
-    memcpy(iv, md_tmp + (16 - EVP_CIPHER_iv_length(cipher)),
-           EVP_CIPHER_iv_length(cipher));
+    memcpy(key, md_tmp, kl);
+    memcpy(iv, md_tmp + (16 - ivl), ivl);
     if (!EVP_CipherInit_ex(cctx, cipher, NULL, key, iv, en_de))
         goto err;
     OPENSSL_cleanse(md_tmp, EVP_MAX_MD_SIZE);
@@ -98,6 +109,7 @@ int PKCS5_PBE_keyivgen(EVP_CIPHER_CTX *cctx, const char *pass, int passlen,
     OPENSSL_cleanse(iv, EVP_MAX_IV_LENGTH);
     rv = 1;
  err:
+    PBEPARAM_free(pbe);
     EVP_MD_CTX_free(ctx);
     return rv;
 }

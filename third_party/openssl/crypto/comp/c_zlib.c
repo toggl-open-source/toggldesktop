@@ -1,7 +1,7 @@
 /*
  * Copyright 1998-2016 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -13,9 +13,9 @@
 #include <openssl/objects.h>
 #include "internal/comp.h"
 #include <openssl/err.h>
-#include "internal/cryptlib_int.h"
+#include "crypto/cryptlib.h"
 #include "internal/bio.h"
-#include "comp_lcl.h"
+#include "comp_local.h"
 
 COMP_METHOD *COMP_zlib(void);
 
@@ -256,14 +256,13 @@ COMP_METHOD *COMP_zlib(void)
     meth = &zlib_stateful_method;
 #endif
 
-    return (meth);
+    return meth;
 }
 
 void comp_zlib_cleanup_int(void)
 {
 #ifdef ZLIB_SHARED
-    if (zlib_dso != NULL)
-        DSO_free(zlib_dso);
+    DSO_free(zlib_dso);
     zlib_dso = NULL;
 #endif
 }
@@ -297,7 +296,11 @@ static long bio_zlib_callback_ctrl(BIO *b, int cmd, BIO_info_cb *fp);
 static const BIO_METHOD bio_meth_zlib = {
     BIO_TYPE_COMP,
     "zlib",
+    /* TODO: Convert to new style write function */
+    bwrite_conv,
     bio_zlib_write,
+    /* TODO: Convert to new style read function */
+    bread_conv,
     bio_zlib_read,
     NULL,                      /* bio_zlib_puts, */
     NULL,                      /* bio_zlib_gets, */
@@ -593,6 +596,28 @@ static long bio_zlib_ctrl(BIO *b, int cmd, long num, void *ptr)
         BIO_clear_retry_flags(b);
         ret = BIO_ctrl(next, cmd, num, ptr);
         BIO_copy_next_retry(b);
+        break;
+
+    case BIO_CTRL_WPENDING:
+        if (ctx->obuf == NULL)
+            return 0;
+
+        if (ctx->odone) {
+            ret = ctx->ocount;
+        } else {
+            ret = ctx->ocount;
+            if (ret == 0)
+                /* Unknown amount pending but we are not finished */
+                ret = 1;
+        }
+        if (ret == 0)
+            ret = BIO_ctrl(next, cmd, num, ptr);
+        break;
+
+    case BIO_CTRL_PENDING:
+        ret = ctx->zin.avail_in;
+        if (ret == 0)
+            ret = BIO_ctrl(next, cmd, num, ptr);
         break;
 
     default:

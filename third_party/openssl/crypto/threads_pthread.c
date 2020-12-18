@@ -1,15 +1,25 @@
 /*
- * Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2016-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
 #include <openssl/crypto.h>
+#include "internal/cryptlib.h"
+
+#if defined(__sun)
+# include <atomic.h>
+#endif
 
 #if defined(OPENSSL_THREADS) && !defined(CRYPTO_TDEBUG) && !defined(OPENSSL_SYS_WINDOWS)
+
+# if defined(OPENSSL_SYS_UNIX)
+#  include <sys/types.h>
+#  include <unistd.h>
+#endif
 
 # ifdef PTHREAD_RWLOCK_INITIALIZER
 #  define USE_RWLOCK
@@ -18,9 +28,12 @@
 CRYPTO_RWLOCK *CRYPTO_THREAD_lock_new(void)
 {
 # ifdef USE_RWLOCK
-    CRYPTO_RWLOCK *lock = OPENSSL_zalloc(sizeof(pthread_rwlock_t));
-    if (lock == NULL)
+    CRYPTO_RWLOCK *lock;
+
+    if ((lock = OPENSSL_zalloc(sizeof(pthread_rwlock_t))) == NULL) {
+        /* Don't set error, to avoid recursion blowup. */
         return NULL;
+    }
 
     if (pthread_rwlock_init(lock, NULL) != 0) {
         OPENSSL_free(lock);
@@ -28,12 +41,19 @@ CRYPTO_RWLOCK *CRYPTO_THREAD_lock_new(void)
     }
 # else
     pthread_mutexattr_t attr;
-    CRYPTO_RWLOCK *lock = OPENSSL_zalloc(sizeof(pthread_mutex_t));
-    if (lock == NULL)
+    CRYPTO_RWLOCK *lock;
+
+    if ((lock = OPENSSL_zalloc(sizeof(pthread_mutex_t))) == NULL) {
+        /* Don't set error, to avoid recursion blowup. */
         return NULL;
+    }
 
     pthread_mutexattr_init(&attr);
-    pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+    #if defined(__TANDEM) && defined(_SPT_MODEL_)
+      pthread_mutexattr_setkind_np(&attr,MUTEX_RECURSIVE_NP);
+    #else
+      pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+    #endif
 
     if (pthread_mutex_init(lock, &attr) != 0) {
         pthread_mutexattr_destroy(&attr);
@@ -155,6 +175,12 @@ int CRYPTO_atomic_add(int *val, int amount, int *ret, CRYPTO_RWLOCK *lock)
         *ret = __atomic_add_fetch(val, amount, __ATOMIC_ACQ_REL);
         return 1;
     }
+# elif defined(__sun) && (defined(__SunOS_5_10) || defined(__SunOS_5_11))
+    /* This will work for all future Solaris versions. */
+    if (ret != NULL) {
+        *ret = atomic_add_int_nv((volatile unsigned int *)val, amount);
+        return 1;
+    }
 # endif
     if (!CRYPTO_THREAD_write_lock(lock))
         return 0;
@@ -168,4 +194,31 @@ int CRYPTO_atomic_add(int *val, int amount, int *ret, CRYPTO_RWLOCK *lock)
     return 1;
 }
 
+# ifndef FIPS_MODULE
+/* TODO(3.0): No fork protection in FIPS module yet! */
+
+#  ifdef OPENSSL_SYS_UNIX
+static pthread_once_t fork_once_control = PTHREAD_ONCE_INIT;
+
+static void fork_once_func(void)
+{
+    pthread_atfork(OPENSSL_fork_prepare,
+                   OPENSSL_fork_parent, OPENSSL_fork_child);
+}
+#  endif
+
+int openssl_init_fork_handlers(void)
+{
+#  ifdef OPENSSL_SYS_UNIX
+    if (pthread_once(&fork_once_control, fork_once_func) == 0)
+        return 1;
+#  endif
+    return 0;
+}
+# endif /* FIPS_MODULE */
+
+int openssl_get_fork_id(void)
+{
+    return getpid();
+}
 #endif

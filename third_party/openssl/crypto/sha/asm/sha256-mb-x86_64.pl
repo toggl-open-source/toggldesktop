@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2013-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2013-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -36,12 +36,13 @@
 # (iii)	"this" is for n=8, when we gather twice as much data, result
 #	for n=4 is 20.3+4.44=24.7;
 # (iv)	presented improvement coefficients are asymptotic limits and
-#	in real-life application are somewhat lower, e.g. for 2KB 
+#	in real-life application are somewhat lower, e.g. for 2KB
 #	fragments they range from 75% to 130% (on Haswell);
 
-$flavour = shift;
-$output  = shift;
-if ($flavour =~ /\./) { $output = $flavour; undef $flavour; }
+# $output is the last argument if it looks like a file (it has an extension)
+# $flavour is the first argument if it doesn't look like a file
+$output = $#ARGV >= 0 && $ARGV[$#ARGV] =~ m|\.\w+$| ? pop : undef;
+$flavour = $#ARGV >= 0 && $ARGV[0] !~ m|\.| ? shift : undef;
 
 $win64=0; $win64=1 if ($flavour =~ /[nm]asm|mingw64/ || $output =~ /\.asm$/);
 
@@ -49,6 +50,11 @@ $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
 ( $xlate="${dir}x86_64-xlate.pl" and -f $xlate ) or
 ( $xlate="${dir}../../perlasm/x86_64-xlate.pl" and -f $xlate) or
 die "can't locate x86_64-xlate.pl";
+
+push(@INC,"${dir}","${dir}../../perlasm");
+require "x86_64-support.pl";
+
+$ptr_size=&pointer_size($flavour);
 
 $avx=0;
 
@@ -67,11 +73,12 @@ if (!$avx && $win64 && ($flavour =~ /masm/ || $ENV{ASM} =~ /ml64/) &&
 	$avx = ($1>=10) + ($1>=11);
 }
 
-if (!$avx && `$ENV{CC} -v 2>&1` =~ /((?:^clang|LLVM) version|.*based on LLVM) ([3-9]\.[0-9]+)/) {
+if (!$avx && `$ENV{CC} -v 2>&1` =~ /((?:clang|LLVM) version|.*based on LLVM) ([0-9]+\.[0-9]+)/) {
 	$avx = ($2>=3.0) + ($2>3.0);
 }
 
-open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\"";
+open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\""
+    or die "can't call $xlate: $!";
 *STDOUT=*OUT;
 
 # void sha256_multi_block (
@@ -91,6 +98,7 @@ $inp="%rsi";	# 2nd arg
 $num="%edx";	# 3rd arg
 @ptr=map("%r$_",(8..11));
 $Tbl="%rbp";
+$inp_elm_size=2*$ptr_size;
 
 @V=($A,$B,$C,$D,$E,$F,$G,$H)=map("%xmm$_",(8..15));
 ($t1,$t2,$t3,$axb,$bxc,$Xi,$Xn,$sigma)=map("%xmm$_",(0..7));
@@ -244,6 +252,7 @@ $code.=<<___;
 .type	sha256_multi_block,\@function,3
 .align	32
 sha256_multi_block:
+.cfi_startproc
 	mov	OPENSSL_ia32cap_P+4(%rip),%rcx
 	bt	\$61,%rcx			# check SHA bit
 	jc	_shaext_shortcut
@@ -254,8 +263,11 @@ $code.=<<___ if ($avx);
 ___
 $code.=<<___;
 	mov	%rsp,%rax
+.cfi_def_cfa_register	%rax
 	push	%rbx
+.cfi_push	%rbx
 	push	%rbp
+.cfi_push	%rbp
 ___
 $code.=<<___ if ($win64);
 	lea	-0xa8(%rsp),%rsp
@@ -274,6 +286,7 @@ $code.=<<___;
 	sub	\$`$REG_SZ*18`, %rsp
 	and	\$-256,%rsp
 	mov	%rax,`$REG_SZ*17`(%rsp)		# original %rsp
+.cfi_cfa_expression	%rsp+`$REG_SZ*17`,deref,+8
 .Lbody:
 	lea	K256+128(%rip),$Tbl
 	lea	`$REG_SZ*16`(%rsp),%rbx
@@ -284,9 +297,12 @@ $code.=<<___;
 	xor	$num,$num
 ___
 for($i=0;$i<4;$i++) {
+    $ptr_reg=&pointer_register($flavour,@ptr[$i]);
     $code.=<<___;
-	mov	`16*$i+0`($inp),@ptr[$i]	# input pointer
-	mov	`16*$i+8`($inp),%ecx		# number of blocks
+	# input pointer
+	mov	`$inp_elm_size*$i+0`($inp),$ptr_reg
+	# number of blocks
+	mov	`$inp_elm_size*$i+$ptr_size`($inp),%ecx
 	cmp	$num,%ecx
 	cmovg	%ecx,$num			# find maximum
 	test	%ecx,%ecx
@@ -385,12 +401,13 @@ $code.=<<___;
 
 	mov	`$REG_SZ*17+8`(%rsp),$num
 	lea	$REG_SZ($ctx),$ctx
-	lea	`16*$REG_SZ/4`($inp),$inp
+	lea	`$inp_elm_size*$REG_SZ/4`($inp),$inp
 	dec	$num
 	jnz	.Loop_grande
 
 .Ldone:
 	mov	`$REG_SZ*17`(%rsp),%rax		# original %rsp
+.cfi_def_cfa	%rax,8
 ___
 $code.=<<___ if ($win64);
 	movaps	-0xb8(%rax),%xmm6
@@ -406,10 +423,14 @@ $code.=<<___ if ($win64);
 ___
 $code.=<<___;
 	mov	-16(%rax),%rbp
+.cfi_restore	%rbp
 	mov	-8(%rax),%rbx
+.cfi_restore	%rbx
 	lea	(%rax),%rsp
+.cfi_def_cfa_register	%rsp
 .Lepilogue:
 	ret
+.cfi_endproc
 .size	sha256_multi_block,.-sha256_multi_block
 ___
 						{{{
@@ -421,10 +442,14 @@ $code.=<<___;
 .type	sha256_multi_block_shaext,\@function,3
 .align	32
 sha256_multi_block_shaext:
+.cfi_startproc
 _shaext_shortcut:
 	mov	%rsp,%rax
+.cfi_def_cfa_register	%rax
 	push	%rbx
+.cfi_push	%rbx
 	push	%rbp
+.cfi_push	%rbp
 ___
 $code.=<<___ if ($win64);
 	lea	-0xa8(%rsp),%rsp
@@ -454,9 +479,12 @@ $code.=<<___;
 	xor	$num,$num
 ___
 for($i=0;$i<2;$i++) {
+    $ptr_reg=&pointer_register($flavour,@ptr[$i]);
     $code.=<<___;
-	mov	`16*$i+0`($inp),@ptr[$i]	# input pointer
-	mov	`16*$i+8`($inp),%ecx		# number of blocks
+	# input pointer
+	mov	`$inp_elm_size*$i+0`($inp),$ptr_reg
+	# number of blocks
+	mov	`$inp_elm_size*$i+$ptr_size`($inp),%ecx
 	cmp	$num,%ecx
 	cmovg	%ecx,$num			# find maximum
 	test	%ecx,%ecx
@@ -737,7 +765,7 @@ $code.=<<___;
 	movq		@MSG0[1],0xe0-0x80($ctx)	# H1.H0
 
 	lea	`$REG_SZ/2`($ctx),$ctx
-	lea	`16*2`($inp),$inp
+	lea	`$inp_elm_size*2`($inp),$inp
 	dec	$num
 	jnz	.Loop_grande_shaext
 
@@ -758,10 +786,14 @@ $code.=<<___ if ($win64);
 ___
 $code.=<<___;
 	mov	-16(%rax),%rbp
+.cfi_restore	%rbp
 	mov	-8(%rax),%rbx
+.cfi_restore	%rbx
 	lea	(%rax),%rsp
+.cfi_def_cfa_register	%rsp
 .Lepilogue_shaext:
 	ret
+.cfi_endproc
 .size	sha256_multi_block_shaext,.-sha256_multi_block_shaext
 ___
 						}}}
@@ -921,6 +953,7 @@ $code.=<<___;
 .type	sha256_multi_block_avx,\@function,3
 .align	32
 sha256_multi_block_avx:
+.cfi_startproc
 _avx_shortcut:
 ___
 $code.=<<___ if ($avx>1);
@@ -935,8 +968,11 @@ $code.=<<___ if ($avx>1);
 ___
 $code.=<<___;
 	mov	%rsp,%rax
+.cfi_def_cfa_register	%rax
 	push	%rbx
+.cfi_push	%rbx
 	push	%rbp
+.cfi_push	%rbp
 ___
 $code.=<<___ if ($win64);
 	lea	-0xa8(%rsp),%rsp
@@ -955,6 +991,7 @@ $code.=<<___;
 	sub	\$`$REG_SZ*18`, %rsp
 	and	\$-256,%rsp
 	mov	%rax,`$REG_SZ*17`(%rsp)		# original %rsp
+.cfi_cfa_expression	%rsp+`$REG_SZ*17`,deref,+8
 .Lbody_avx:
 	lea	K256+128(%rip),$Tbl
 	lea	`$REG_SZ*16`(%rsp),%rbx
@@ -965,9 +1002,12 @@ $code.=<<___;
 	xor	$num,$num
 ___
 for($i=0;$i<4;$i++) {
+    $ptr_reg=&pointer_register($flavour,@ptr[$i]);
     $code.=<<___;
-	mov	`16*$i+0`($inp),@ptr[$i]	# input pointer
-	mov	`16*$i+8`($inp),%ecx		# number of blocks
+	# input pointer
+	mov	`$inp_elm_size*$i+0`($inp),$ptr_reg
+	# number of blocks
+	mov	`$inp_elm_size*$i+$ptr_size`($inp),%ecx
 	cmp	$num,%ecx
 	cmovg	%ecx,$num			# find maximum
 	test	%ecx,%ecx
@@ -1064,12 +1104,13 @@ $code.=<<___;
 
 	mov	`$REG_SZ*17+8`(%rsp),$num
 	lea	$REG_SZ($ctx),$ctx
-	lea	`16*$REG_SZ/4`($inp),$inp
+	lea	`$inp_elm_size*$REG_SZ/4`($inp),$inp
 	dec	$num
 	jnz	.Loop_grande_avx
 
 .Ldone_avx:
 	mov	`$REG_SZ*17`(%rsp),%rax		# original %rsp
+.cfi_def_cfa	%rax,8
 	vzeroupper
 ___
 $code.=<<___ if ($win64);
@@ -1086,10 +1127,14 @@ $code.=<<___ if ($win64);
 ___
 $code.=<<___;
 	mov	-16(%rax),%rbp
+.cfi_restore	%rbp
 	mov	-8(%rax),%rbx
+.cfi_restore	%rbx
 	lea	(%rax),%rsp
+.cfi_def_cfa_register	%rsp
 .Lepilogue_avx:
 	ret
+.cfi_endproc
 .size	sha256_multi_block_avx,.-sha256_multi_block_avx
 ___
 						if ($avx>1) {
@@ -1105,14 +1150,22 @@ $code.=<<___;
 .type	sha256_multi_block_avx2,\@function,3
 .align	32
 sha256_multi_block_avx2:
+.cfi_startproc
 _avx2_shortcut:
 	mov	%rsp,%rax
+.cfi_def_cfa_register	%rax
 	push	%rbx
+.cfi_push	%rbx
 	push	%rbp
+.cfi_push	%rbp
 	push	%r12
+.cfi_push	%r12
 	push	%r13
+.cfi_push	%r13
 	push	%r14
+.cfi_push	%r14
 	push	%r15
+.cfi_push	%r15
 ___
 $code.=<<___ if ($win64);
 	lea	-0xa8(%rsp),%rsp
@@ -1131,6 +1184,7 @@ $code.=<<___;
 	sub	\$`$REG_SZ*18`, %rsp
 	and	\$-256,%rsp
 	mov	%rax,`$REG_SZ*17`(%rsp)		# original %rsp
+.cfi_cfa_expression	%rsp+`$REG_SZ*17`,deref,+8
 .Lbody_avx2:
 	lea	K256+128(%rip),$Tbl
 	lea	0x80($ctx),$ctx			# size optimization
@@ -1141,9 +1195,12 @@ $code.=<<___;
 	lea	`$REG_SZ*16`(%rsp),%rbx
 ___
 for($i=0;$i<8;$i++) {
+    $ptr_reg=&pointer_register($flavour,@ptr[$i]);
     $code.=<<___;
-	mov	`16*$i+0`($inp),@ptr[$i]	# input pointer
-	mov	`16*$i+8`($inp),%ecx		# number of blocks
+	# input pointer
+	mov	`$inp_elm_size*$i+0`($inp),$ptr_reg
+	# number of blocks
+	mov	`$inp_elm_size*$i+$ptr_size`($inp),%ecx
 	cmp	$num,%ecx
 	cmovg	%ecx,$num			# find maximum
 	test	%ecx,%ecx
@@ -1240,12 +1297,13 @@ $code.=<<___;
 
 	#mov	`$REG_SZ*17+8`(%rsp),$num
 	#lea	$REG_SZ($ctx),$ctx
-	#lea	`16*$REG_SZ/4`($inp),$inp
+	#lea	`$inp_elm_size*$REG_SZ/4`($inp),$inp
 	#dec	$num
 	#jnz	.Loop_grande_avx2
 
 .Ldone_avx2:
 	mov	`$REG_SZ*17`(%rsp),%rax		# original %rsp
+.cfi_def_cfa	%rax,8
 	vzeroupper
 ___
 $code.=<<___ if ($win64);
@@ -1262,14 +1320,22 @@ $code.=<<___ if ($win64);
 ___
 $code.=<<___;
 	mov	-48(%rax),%r15
+.cfi_restore	%r15
 	mov	-40(%rax),%r14
+.cfi_restore	%r14
 	mov	-32(%rax),%r13
+.cfi_restore	%r13
 	mov	-24(%rax),%r12
+.cfi_restore	%r12
 	mov	-16(%rax),%rbp
+.cfi_restore	%rbp
 	mov	-8(%rax),%rbx
+.cfi_restore	%rbx
 	lea	(%rax),%rsp
+.cfi_def_cfa_register	%rsp
 .Lepilogue_avx2:
 	ret
+.cfi_endproc
 .size	sha256_multi_block_avx2,.-sha256_multi_block_avx2
 ___
 					}	}}}
@@ -1462,10 +1528,10 @@ avx2_handler:
 	mov	-48(%rax),%r15
 	mov	%rbx,144($context)	# restore context->Rbx
 	mov	%rbp,160($context)	# restore context->Rbp
-	mov	%r12,216($context)	# restore cotnext->R12
-	mov	%r13,224($context)	# restore cotnext->R13
-	mov	%r14,232($context)	# restore cotnext->R14
-	mov	%r15,240($context)	# restore cotnext->R15
+	mov	%r12,216($context)	# restore context->R12
+	mov	%r13,224($context)	# restore context->R13
+	mov	%r14,232($context)	# restore context->R14
+	mov	%r15,240($context)	# restore context->R15
 
 	lea	-56-10*16(%rax),%rsi
 	lea	512($context),%rdi	# &context.Xmm6
@@ -1565,4 +1631,4 @@ foreach (split("\n",$code)) {
 	print $_,"\n";
 }
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

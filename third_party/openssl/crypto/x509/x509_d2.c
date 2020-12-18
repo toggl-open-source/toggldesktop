@@ -1,7 +1,7 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -12,46 +12,103 @@
 #include <openssl/crypto.h>
 #include <openssl/x509.h>
 
-int X509_STORE_set_default_paths(X509_STORE *ctx)
+int X509_STORE_set_default_paths_with_libctx(X509_STORE *ctx,
+                                             OPENSSL_CTX *libctx,
+                                             const char *propq)
 {
     X509_LOOKUP *lookup;
 
     lookup = X509_STORE_add_lookup(ctx, X509_LOOKUP_file());
     if (lookup == NULL)
-        return (0);
-    X509_LOOKUP_load_file(lookup, NULL, X509_FILETYPE_DEFAULT);
+        return 0;
+    X509_LOOKUP_load_file_with_libctx(lookup, NULL, X509_FILETYPE_DEFAULT,
+                                      libctx, propq);
 
     lookup = X509_STORE_add_lookup(ctx, X509_LOOKUP_hash_dir());
     if (lookup == NULL)
-        return (0);
+        return 0;
     X509_LOOKUP_add_dir(lookup, NULL, X509_FILETYPE_DEFAULT);
+
+    lookup = X509_STORE_add_lookup(ctx, X509_LOOKUP_store());
+    if (lookup == NULL)
+        return 0;
+    X509_LOOKUP_add_store_with_libctx(lookup, NULL, libctx, propq);
 
     /* clear any errors */
     ERR_clear_error();
 
-    return (1);
+    return 1;
+}
+int X509_STORE_set_default_paths(X509_STORE *ctx)
+{
+    return X509_STORE_set_default_paths_with_libctx(ctx, NULL, NULL);
+}
+
+int X509_STORE_load_file_with_libctx(X509_STORE *ctx, const char *file,
+                                     OPENSSL_CTX *libctx, const char *propq)
+{
+    X509_LOOKUP *lookup;
+
+    if (file == NULL
+        || (lookup = X509_STORE_add_lookup(ctx, X509_LOOKUP_file())) == NULL
+        || X509_LOOKUP_load_file_with_libctx(lookup, file, X509_FILETYPE_PEM,
+                                             libctx, propq) == 0)
+        return 0;
+
+    return 1;
+}
+
+int X509_STORE_load_file(X509_STORE *ctx, const char *file)
+{
+    return X509_STORE_load_file_with_libctx(ctx, file, NULL, NULL);
+}
+
+int X509_STORE_load_path(X509_STORE *ctx, const char *path)
+{
+    X509_LOOKUP *lookup;
+
+    if (path == NULL
+        || (lookup = X509_STORE_add_lookup(ctx, X509_LOOKUP_hash_dir())) == NULL
+        || X509_LOOKUP_add_dir(lookup, path, X509_FILETYPE_PEM) == 0)
+        return 0;
+
+    return 1;
+}
+
+int X509_STORE_load_store_with_libctx(X509_STORE *ctx, const char *uri,
+                                      OPENSSL_CTX *libctx, const char *propq)
+{
+    X509_LOOKUP *lookup;
+
+    if (uri == NULL
+        || (lookup = X509_STORE_add_lookup(ctx, X509_LOOKUP_store())) == NULL
+        || X509_LOOKUP_add_store_with_libctx(lookup, uri, libctx, propq) == 0)
+        return 0;
+
+    return 1;
+}
+
+int X509_STORE_load_store(X509_STORE *ctx, const char *uri)
+{
+    return X509_STORE_load_store_with_libctx(ctx, uri, NULL, NULL);
+}
+
+int X509_STORE_load_locations_with_libctx(X509_STORE *ctx, const char *file,
+                                          const char *path,
+                                          OPENSSL_CTX *libctx, const char *propq)
+{
+    if (file == NULL && path == NULL)
+        return 0;
+    if (file != NULL && !X509_STORE_load_file_with_libctx(ctx, file,
+                                                          libctx, propq))
+        return 0;
+    if (path != NULL && !X509_STORE_load_path(ctx, path))
+        return 0;
+    return 1;
 }
 
 int X509_STORE_load_locations(X509_STORE *ctx, const char *file,
                               const char *path)
 {
-    X509_LOOKUP *lookup;
-
-    if (file != NULL) {
-        lookup = X509_STORE_add_lookup(ctx, X509_LOOKUP_file());
-        if (lookup == NULL)
-            return (0);
-        if (X509_LOOKUP_load_file(lookup, file, X509_FILETYPE_PEM) != 1)
-            return (0);
-    }
-    if (path != NULL) {
-        lookup = X509_STORE_add_lookup(ctx, X509_LOOKUP_hash_dir());
-        if (lookup == NULL)
-            return (0);
-        if (X509_LOOKUP_add_dir(lookup, path, X509_FILETYPE_PEM) != 1)
-            return (0);
-    }
-    if ((path == NULL) && (file == NULL))
-        return (0);
-    return (1);
+    return X509_STORE_load_locations_with_libctx(ctx, file, path, NULL, NULL);
 }

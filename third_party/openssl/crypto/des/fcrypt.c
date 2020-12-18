@@ -1,11 +1,17 @@
 /*
- * Copyright 1998-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1998-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
+
+/*
+ * DES low level APIs are deprecated for public use, but still ok for internal
+ * use.
+ */
+#include "internal/deprecated.h"
 
 /* NOCW */
 #include <stdio.h>
@@ -19,11 +25,11 @@
 #endif
 
 #include <openssl/crypto.h>
-#include "des_locl.h"
+#include "des_local.h"
 
 /*
  * Added more values to handle illegal salt values the way normal crypt()
- * implementations do.  The patch was sent by Bjorn Gronvall <bg@sics.se>
+ * implementations do.
  */
 static unsigned const char con_salt[128] = {
     0xD2, 0xD3, 0xD4, 0xD5, 0xD6, 0xD7, 0xD8, 0xD9,
@@ -60,7 +66,7 @@ char *DES_crypt(const char *buf, const char *salt)
     static char buff[14];
 
 #ifndef CHARSET_EBCDIC
-    return (DES_fcrypt(buf, salt, buff));
+    return DES_fcrypt(buf, salt, buff);
 #else
     char e_salt[2 + 1];
     char e_buf[32 + 1];         /* replace 32 by 8 ? */
@@ -145,5 +151,5 @@ char *DES_fcrypt(const char *buf, const char *salt, char *ret)
         ret[i] = cov_2char[c];
     }
     ret[13] = '\0';
-    return (ret);
+    return ret;
 }

@@ -1,7 +1,7 @@
 /*
- * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -30,6 +30,7 @@ int EVP_SealInit(EVP_CIPHER_CTX *ctx, const EVP_CIPHER *type,
     }
     if ((npubk <= 0) || !pubk)
         return 1;
+
     if (EVP_CIPHER_CTX_rand_key(ctx, key) <= 0)
         return 0;
 
@@ -41,31 +42,25 @@ int EVP_SealInit(EVP_CIPHER_CTX *ctx, const EVP_CIPHER *type,
         goto err;
 
     for (i = 0; i < npubk; i++) {
-        ekl[i] =
-            EVP_PKEY_encrypt_old(ek[i], key, EVP_CIPHER_CTX_key_length(ctx),
-                                 pubk[i]);
-        if (ekl[i] <= 0) {
-            rv = -1;
+        size_t keylen = EVP_CIPHER_CTX_key_length(ctx);
+        EVP_PKEY_CTX *pctx = NULL;
+
+        if ((pctx = EVP_PKEY_CTX_new(pubk[i], NULL)) == NULL) {
+            ERR_raise(ERR_LIB_EVP, ERR_R_MALLOC_FAILURE);
             goto err;
         }
+
+        if (EVP_PKEY_encrypt_init(pctx) <= 0
+            || EVP_PKEY_encrypt(pctx, ek[i], &keylen, key, keylen) <= 0)
+            goto err;
+        ekl[i] = (int)keylen;
+        EVP_PKEY_CTX_free(pctx);
     }
     rv = npubk;
 err:
     OPENSSL_cleanse(key, sizeof(key));
     return rv;
 }
-
-/*- MACRO
-void EVP_SealUpdate(ctx,out,outl,in,inl)
-EVP_CIPHER_CTX *ctx;
-unsigned char *out;
-int *outl;
-unsigned char *in;
-int inl;
-        {
-        EVP_EncryptUpdate(ctx,out,outl,in,inl);
-        }
-*/
 
 int EVP_SealFinal(EVP_CIPHER_CTX *ctx, unsigned char *out, int *outl)
 {

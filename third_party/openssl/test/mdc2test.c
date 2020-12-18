@@ -1,29 +1,31 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+/*
+ * MDC2 low level APIs are deprecated for public use, but still ok for
+ * internal use.
+ */
+#include "internal/deprecated.h"
 
-#include "../e_os.h"
+#include <string.h>
+#include <openssl/provider.h>
+#include <openssl/params.h>
+#include <openssl/types.h>
+#include <openssl/core_names.h>
+#include "internal/nelem.h"
+#include "testutil.h"
 
 #if defined(OPENSSL_NO_DES) && !defined(OPENSSL_NO_MDC2)
 # define OPENSSL_NO_MDC2
 #endif
 
-#ifdef OPENSSL_NO_MDC2
-int main(int argc, char *argv[])
-{
-    printf("No MDC2 support\n");
-    return (0);
-}
-#else
+#ifndef OPENSSL_NO_MDC2
 # include <openssl/evp.h>
 # include <openssl/mdc2.h>
 
@@ -41,59 +43,53 @@ static unsigned char pad2[16] = {
     0x35, 0xD8, 0x7A, 0xFE, 0xAB, 0x33, 0xBE, 0xE2
 };
 
-int main(int argc, char *argv[])
+static int test_mdc2(void)
 {
-    int ret = 1;
+    int testresult = 0;
+    unsigned int pad_type = 2;
     unsigned char md[MDC2_DIGEST_LENGTH];
-    int i;
     EVP_MD_CTX *c;
     static char text[] = "Now is the time for all ";
+    size_t tlen = strlen(text), i = 0;
+    OSSL_PROVIDER *prov = NULL;
+    OSSL_PARAM params[2];
 
+    params[i++] = OSSL_PARAM_construct_uint(OSSL_DIGEST_PARAM_PAD_TYPE,
+                                            &pad_type),
+    params[i++] = OSSL_PARAM_construct_end();
+
+    prov = OSSL_PROVIDER_load(NULL, "legacy");
 # ifdef CHARSET_EBCDIC
-    ebcdic2ascii(text, text, strlen(text));
+    ebcdic2ascii(text, text, tlen);
 # endif
 
     c = EVP_MD_CTX_new();
-    if (c == NULL
-        || !EVP_DigestInit_ex(c, EVP_mdc2(), NULL)
-        || !EVP_DigestUpdate(c, (unsigned char *)text, strlen(text))
-        || !EVP_DigestFinal_ex(c, &(md[0]), NULL))
-        goto err;
+    if (!TEST_ptr(c)
+        || !TEST_true(EVP_DigestInit_ex(c, EVP_mdc2(), NULL))
+        || !TEST_true(EVP_DigestUpdate(c, (unsigned char *)text, tlen))
+        || !TEST_true(EVP_DigestFinal_ex(c, &(md[0]), NULL))
+        || !TEST_mem_eq(md, MDC2_DIGEST_LENGTH, pad1, MDC2_DIGEST_LENGTH)
+        || !TEST_true(EVP_DigestInit_ex(c, EVP_mdc2(), NULL)))
+        goto end;
 
-    if (memcmp(md, pad1, MDC2_DIGEST_LENGTH) != 0) {
-        for (i = 0; i < MDC2_DIGEST_LENGTH; i++)
-            printf("%02X", md[i]);
-        printf(" <- generated\n");
-        for (i = 0; i < MDC2_DIGEST_LENGTH; i++)
-            printf("%02X", pad1[i]);
-        printf(" <- correct\n");
-        goto err;
-    } else {
-        printf("pad1 - ok\n");
-    }
+    if (!TEST_int_gt(EVP_MD_CTX_set_params(c, params), 0)
+        || !TEST_true(EVP_DigestUpdate(c, (unsigned char *)text, tlen))
+        || !TEST_true(EVP_DigestFinal_ex(c, &(md[0]), NULL))
+        || !TEST_mem_eq(md, MDC2_DIGEST_LENGTH, pad2, MDC2_DIGEST_LENGTH))
+        goto end;
 
-    if (!EVP_DigestInit_ex(c, EVP_mdc2(), NULL))
-        goto err;
-    /* FIXME: use a ctl function? */
-    ((MDC2_CTX *)EVP_MD_CTX_md_data(c))->pad_type = 2;
-    if (!EVP_DigestUpdate(c, (unsigned char *)text, strlen(text))
-        || !EVP_DigestFinal_ex(c, &(md[0]), NULL))
-        goto err;
-
-    if (memcmp(md, pad2, MDC2_DIGEST_LENGTH) != 0) {
-        for (i = 0; i < MDC2_DIGEST_LENGTH; i++)
-            printf("%02X", md[i]);
-        printf(" <- generated\n");
-        for (i = 0; i < MDC2_DIGEST_LENGTH; i++)
-            printf("%02X", pad2[i]);
-        printf(" <- correct\n");
-    } else {
-        printf("pad2 - ok\n");
-        ret = 0;
-    }
-
- err:
+    testresult = 1;
+ end:
     EVP_MD_CTX_free(c);
-    EXIT(ret);
+    OSSL_PROVIDER_unload(prov);
+    return testresult;
 }
 #endif
+
+int setup_tests(void)
+{
+#ifndef OPENSSL_NO_MDC2
+    ADD_TEST(test_mdc2);
+#endif
+    return 1;
+}

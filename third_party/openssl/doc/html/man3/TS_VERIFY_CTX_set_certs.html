@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>TS_VERIFY_CTX_set_certs</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>TS_VERIFY_CTX_set_certs, TS_VERIFY_CTS_set_certs - set certificates for TS response verification</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/ts.h&gt;
+
+ STACK_OF(X509) *TS_VERIFY_CTX_set_certs(TS_VERIFY_CTX *ctx,
+                                         STACK_OF(X509) *certs);
+ STACK_OF(X509) *TS_VERIFY_CTS_set_certs(TS_VERIFY_CTX *ctx,
+                                         STACK_OF(X509) *certs);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The Time-Stamp Protocol (TSP) is defined by RFC 3161. TSP is a protocol used to provide long term proof of the existence of a certain datum before a particular time. TSP defines a Time Stamping Authority (TSA) and an entity who shall make requests to the TSA. Usually the TSA is denoted as the server side and the requesting entity is denoted as the client.</p>
+
+<p>In TSP, when a server is sending a response to a client, the server normally needs to sign the response data - the TimeStampToken (TST) - with its private key. Then the client shall verify the received TST by the server&#39;s certificate chain.</p>
+
+<p>TS_VERIFY_CTX_set_certs() is used to set the server&#39;s certificate chain when verifying a TST. <b>ctx</b> is the verification context created in advance and <b>certs</b> is a stack of <b>X509</b> certificates.</p>
+
+<p>TS_VERIFY_CTS_set_certs() is a misspelled version of TS_VERIFY_CTX_set_certs() which takes the same parameters and returns the same result.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>TS_VERIFY_CTX_set_certs() returns the stack of <b>X509</b> certificates the user passes in via parameter <b>certs</b>.</p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The spelling of TS_VERIFY_CTX_set_certs() was corrected in OpenSSL 3.0.0. The misspelled version TS_VERIFY_CTS_set_certs() has been retained for compatibility reasons, but it is deprecated in OpenSSL 3.0.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2019-2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

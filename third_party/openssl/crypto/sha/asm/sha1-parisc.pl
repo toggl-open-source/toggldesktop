@@ -1,14 +1,14 @@
 #! /usr/bin/env perl
-# Copyright 2009-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2009-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
 
 
 # ====================================================================
-# Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
+# Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
 # project. The module is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
@@ -26,9 +26,12 @@
 #
 # Special thanks to polarhome.com for providing HP-UX account.
 
-$flavour = shift;
-$output = shift;
-open STDOUT,">$output";
+# $output is the last argument if it looks like a file (it has an extension)
+# $flavour is the first argument if it doesn't look like a file
+$output = $#ARGV >= 0 && $ARGV[$#ARGV] =~ m|\.\w+$| ? pop : undef;
+$flavour = $#ARGV >= 0 && $ARGV[0] !~ m|\.| ? shift : undef;
+
+$output and open STDOUT,">$output";
 
 if ($flavour =~ /64/) {
 	$LEVEL		="2.0W";
@@ -260,8 +263,20 @@ $code.=<<___;
 	.STRINGZ "SHA1 block transform for PA-RISC, CRYPTOGAMS by <appro\@openssl.org>"
 ___
 
-$code =~ s/\`([^\`]*)\`/eval $1/gem;
-$code =~ s/,\*/,/gm		if ($SIZE_T==4);
-$code =~ s/\bbv\b/bve/gm	if ($SIZE_T==8);
-print $code;
-close STDOUT;
+if (`$ENV{CC} -Wa,-v -c -o /dev/null -x assembler /dev/null 2>&1`
+	=~ /GNU assembler/) {
+    $gnuas = 1;
+}
+
+foreach(split("\n",$code)) {
+	s/\`([^\`]*)\`/eval $1/ge;
+
+	s/(\.LEVEL\s+2\.0)W/$1w/	if ($gnuas && $SIZE_T==8);
+	s/\.SPACE\s+\$TEXT\$/.text/	if ($gnuas && $SIZE_T==8);
+	s/\.SUBSPA.*//			if ($gnuas && $SIZE_T==8);
+	s/,\*/,/			if ($SIZE_T==4);
+	s/\bbv\b/bve/			if ($SIZE_T==8);
+
+	print $_,"\n";
+}
+close STDOUT or die "error closing STDOUT: $!";

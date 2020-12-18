@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2009-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2009-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -62,7 +62,9 @@
 # Westmere	3.77/1.37	1.37	1.52	1.27
 # * Bridge	5.07/0.98	0.99	1.09	0.91	1.10
 # Haswell	4.44/0.80	0.97	1.03	0.72	0.76
+# Skylake	2.68/0.65	0.65	0.66	0.64	0.66
 # Silvermont	5.77/3.56	3.67	4.03	3.46	4.03
+# Goldmont	3.84/1.39	1.39	1.63	1.31	1.70
 # Bulldozer	5.80/0.98	1.05	1.24	0.93	1.23
 
 $PREFIX="aesni";	# if $PREFIX is set to "AES", the script
@@ -74,11 +76,9 @@ $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
 push(@INC,"${dir}","${dir}../../perlasm");
 require "x86asm.pl";
 
-$output = pop;
-open OUT,">$output";
-*STDOUT=*OUT;
+$output = pop and open STDOUT,">$output";
 
-&asm_init($ARGV[0],$0);
+&asm_init($ARGV[0]);
 
 &external_label("OPENSSL_ia32cap_P");
 &static_label("key_const");
@@ -237,7 +237,7 @@ sub aesni_generate1	# fully unrolled loop
 # can schedule aes[enc|dec] every cycle optimal interleave factor
 # equals to corresponding instructions latency. 8x is optimal for
 # * Bridge, but it's unfeasible to accommodate such implementation
-# in XMM registers addreassable in 32-bit mode and therefore maximum
+# in XMM registers addressable in 32-bit mode and therefore maximum
 # of 6x is used instead...
 
 sub aesni_generate2
@@ -1051,7 +1051,7 @@ if ($PREFIX eq "aesni") {
 &set_label("ctr32_one_shortcut",16);
 	&movups	($inout0,&QWP(0,$rounds_));	# load ivec
 	&mov	($rounds,&DWP(240,$key));
-	
+
 &set_label("ctr32_one");
 	if ($inline)
 	{   &aesni_inline_generate1("enc");	}
@@ -3410,4 +3410,4 @@ my ($l_,$block,$i1,$i3,$i5) = ($rounds_,$key_,$rounds,$len,$out);
 
 &asm_finish();
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

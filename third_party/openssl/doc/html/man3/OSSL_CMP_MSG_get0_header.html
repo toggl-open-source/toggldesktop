@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>OSSL_CMP_MSG_get0_header</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>OSSL_CMP_MSG_get0_header, OSSL_CMP_MSG_update_transactionID, OSSL_CMP_CTX_setup_CRM, OSSL_CMP_MSG_read, OSSL_CMP_MSG_write, d2i_OSSL_CMP_MSG_bio, i2d_OSSL_CMP_MSG_bio - function(s) manipulating CMP messages</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>  #include &lt;openssl/cmp.h&gt;
+
+  OSSL_CMP_PKIHEADER *OSSL_CMP_MSG_get0_header(const OSSL_CMP_MSG *msg);
+  int OSSL_CMP_MSG_update_transactionID(OSSL_CMP_CTX *ctx, OSSL_CMP_MSG *msg);
+  OSSL_CRMF_MSG *OSSL_CMP_CTX_setup_CRM(OSSL_CMP_CTX *ctx, int for_KUR, int rid);
+  OSSL_CMP_MSG *OSSL_CMP_MSG_read(const char *file);
+  int OSSL_CMP_MSG_write(const char *file, const OSSL_CMP_MSG *msg);
+  OSSL_CMP_MSG *d2i_OSSL_CMP_MSG_bio(BIO *bio, OSSL_CMP_MSG **msg);
+  int i2d_OSSL_CMP_MSG_bio(BIO *bio, const OSSL_CMP_MSG *msg);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>OSSL_CMP_MSG_get0_header() returns the header of the given CMP message.</p>
+
+<p>OSSL_CMP_MSG_update_transactionID() updates the transactionID field in the header of the given message according to the CMP_CTX. This requires re-protecting the message (if it was protected).</p>
+
+<p>OSSL_CMP_CTX_setup_CRM() creates a CRMF certificate request message for inclusion in a CMP request message based on details contained in <i>ctx</i>. If the CMP context does not include a subject name set via <a href="../man3/OSSL_CMP_CTX_set1_subjectName.html">OSSL_CMP_CTX_set1_subjectName(3)</a> but includes a reference certificate then it copies the subject DN from there if <i>for_KUR</i> is set or the <i>ctx</i> does not include a subjectAltName. The <i>rid</i> defines the request identifier to use, which typically is 0.</p>
+
+<p>OSSL_CMP_MSG_read() loads a DER-encoded OSSL_CMP_MSG from <b>file</b>.</p>
+
+<p>OSSL_CMP_MSG_write() stores the given OSSL_CMP_MSG to <b>file</b> in DER encoding.</p>
+
+<p>d2i_OSSL_CMP_MSG_bio() parses an ASN.1-encoded OSSL_CMP_MSG from the BIO <i>bio</i>. It assigns a pointer to the new structure to <i>*msg</i> if <i>msg</i> is not NULL.</p>
+
+<p>i2d_OSSL_CMP_MSG_bio() writes the OSSL_CMP_MSG <i>msg</i> in ASN.1 encoding to BIO <i>bio</i>.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>CMP is defined in RFC 4210.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>OSSL_CMP_MSG_get0_header() returns the intended pointer value as described above or NULL if the respective entry does not exist and on error.</p>
+
+<p>OSSL_CMP_CTX_setup_CRM() returns a pointer to a OSSL_CRMF_MSG on success, NULL on error.</p>
+
+<p>d2i_OSSL_CMP_MSG_bio() returns the parsed message or NULL on error.</p>
+
+<p>OSSL_CMP_MSG_read() and d2i_OSSL_CMP_MSG_bio() return the parsed CMP message or NULL on error.</p>
+
+<p>OSSL_CMP_MSG_write() and i2d_OSSL_CMP_MSG_bio() return the number of bytes successfully encoded or a negative value if an error occurs.</p>
+
+<p>OSSL_CMP_MSG_update_transactionID() returns 1 on success, 0 on error.</p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The OpenSSL CMP support was added in OpenSSL 3.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2007-2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

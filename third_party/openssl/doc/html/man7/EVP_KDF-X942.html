@@ -1,0 +1,147 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>EVP_KDF-X942</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a>
+    <ul>
+      <li><a href="#Identity">Identity</a></li>
+      <li><a href="#Supported-parameters">Supported parameters</a></li>
+    </ul>
+  </li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#EXAMPLES">EXAMPLES</a></li>
+  <li><a href="#CONFORMING-TO">CONFORMING TO</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>EVP_KDF-X942 - The X9.42-2001 asn1 EVP_KDF implementation</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The EVP_KDF-X942 algorithm implements the key derivation function (X942KDF). X942KDF is used by Cryptographic Message Syntax (CMS) for DH KeyAgreement, to derive a key using input such as a shared secret key and other info. The other info is DER encoded data that contains a 32 bit counter.</p>
+
+<h2 id="Identity">Identity</h2>
+
+<p>&quot;X942KDF&quot; is the name for this implementation; it can be used with the EVP_KDF_fetch() function.</p>
+
+<h2 id="Supported-parameters">Supported parameters</h2>
+
+<p>The supported parameters are:</p>
+
+<dl>
+
+<dt id="properties-OSSL_KDF_PARAM_PROPERTIES-UTF8-string">&quot;properties&quot; (<b>OSSL_KDF_PARAM_PROPERTIES</b>) &lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+<dt id="digest-OSSL_KDF_PARAM_DIGEST-UTF8-string">&quot;digest&quot; (<b>OSSL_KDF_PARAM_DIGEST</b>) &lt;UTF8 string&gt;</dt>
+<dd>
+
+<p>These parameters work as described in <a href="../man3/EVP_KDF.html">&quot;PARAMETERS&quot; in EVP_KDF(3)</a>.</p>
+
+</dd>
+<dt id="key-OSSL_KDF_PARAM_KEY-octet-string">&quot;key&quot; (<b>OSSL_KDF_PARAM_KEY</b>) &lt;octet string&gt;</dt>
+<dd>
+
+<p>The shared secret used for key derivation. This parameter sets the secret.</p>
+
+</dd>
+<dt id="ukm-OSSL_KDF_PARAM_UKM-octet-string">&quot;ukm&quot; (<b>OSSL_KDF_PARAM_UKM</b>) &lt;octet string&gt;</dt>
+<dd>
+
+<p>This parameter is an optional random string that is provided by the sender called &quot;partyAInfo&quot;. In CMS this is the user keying material.</p>
+
+</dd>
+<dt id="cekalg-OSSL_KDF_PARAM_CEK_ALG-UTF8-string">&quot;cekalg&quot; (<b>OSSL_KDF_PARAM_CEK_ALG</b>) &lt;UTF8 string&gt;</dt>
+<dd>
+
+<p>This parameter sets the CEK wrapping algorithm name.</p>
+
+</dd>
+</dl>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>A context for X942KDF can be obtained by calling:</p>
+
+<pre><code> EVP_KDF *kdf = EVP_KDF_fetch(NULL, &quot;X942KDF&quot;, NULL);
+ EVP_KDF_CTX *kctx = EVP_KDF_CTX_new(kdf);</code></pre>
+
+<p>The output length of an X942KDF is specified via the <i>keylen</i> parameter to the <a href="../man3/EVP_KDF_derive.html">EVP_KDF_derive(3)</a> function.</p>
+
+<h1 id="EXAMPLES">EXAMPLES</h1>
+
+<p>This example derives 24 bytes, with the secret key &quot;secret&quot; and a random user keying material:</p>
+
+<pre><code>  EVP_KDF_CTX *kctx;
+  EVP_KDF_CTX *kctx;
+  unsigned char out[192/8];
+  unsignred char ukm[64];
+ OSSL_PARAM params[5], *p = params;
+
+  if (RAND_bytes(ukm, sizeof(ukm)) &lt;= 0)
+      error(&quot;RAND_bytes&quot;);
+
+ kdf = EVP_KDF_fetch(NULL, &quot;X942KDF&quot;, NULL);
+ if (kctx == NULL)
+     error(&quot;EVP_KDF_fetch&quot;);
+ kctx = EVP_KDF_CTX_new(kdf);
+ if (kctx == NULL)
+     error(&quot;EVP_KDF_CTX_new&quot;);
+ EVP_KDF_free(kdf);
+
+ *p++ = OSSL_PARAM_construct_utf8_string(OSSL_KDF_PARAM_DIGEST,
+                                         SN_sha256, strlen(SN_sha256));
+ *p++ = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_SECRET,
+                                          &quot;secret&quot;, (size_t)6);
+ *p++ = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_UKM, ukm, sizeof(ukm));
+ *p++ = OSSL_PARAM_construct_utf8_string(OSSL_KDF_PARAM_CEK_ALG,
+                                         SN_id_smime_alg_CMS3DESwrap,
+                                         strlen(SN_id_smime_alg_CMS3DESwrap));
+ *p = OSSL_PARAM_construct_end();
+ if (EVP_KDF_CTX_set_params(kctx, params) &lt;= 0)
+     error(&quot;EVP_KDF_CTX_set_params&quot;);
+ if (EVP_KDF_derive(kctx, out, sizeof(out)) &lt;= 0)
+     error(&quot;EVP_KDF_derive&quot;);
+
+ EVP_KDF_CTX_free(kctx);</code></pre>
+
+<h1 id="CONFORMING-TO">CONFORMING TO</h1>
+
+<p>RFC 2631</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man3/EVP_KDF.html">EVP_KDF(3)</a>, <a href="../man3/EVP_KDF_CTX_new.html">EVP_KDF_CTX_new(3)</a>, <a href="../man3/EVP_KDF_CTX_free.html">EVP_KDF_CTX_free(3)</a>, <a href="../man3/EVP_KDF_CTX_set_params.html">EVP_KDF_CTX_set_params(3)</a>, <a href="../man3/EVP_KDF_size.html">EVP_KDF_size(3)</a>, <a href="../man3/EVP_KDF_derive.html">EVP_KDF_derive(3)</a>, <a href="../man3/EVP_KDF.html">&quot;PARAMETERS&quot; in EVP_KDF(3)</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>This functionality was added to OpenSSL 3.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2019-2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

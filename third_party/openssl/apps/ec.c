@@ -1,25 +1,23 @@
 /*
- * Copyright 2002-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2002-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
 #include <openssl/opensslconf.h>
-#ifdef OPENSSL_NO_EC
-NON_EMPTY_TRANSLATION_UNIT
-#else
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include "apps.h"
-# include <openssl/bio.h>
-# include <openssl/err.h>
-# include <openssl/evp.h>
-# include <openssl/pem.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "apps.h"
+#include "progs.h"
+#include <openssl/bio.h>
+#include <openssl/err.h>
+#include <openssl/evp.h>
+#include <openssl/pem.h>
 
 static OPT_PAIR conv_forms[] = {
     {"compressed", POINT_CONVERSION_COMPRESSED},
@@ -39,31 +37,38 @@ typedef enum OPTION_choice {
     OPT_INFORM, OPT_OUTFORM, OPT_ENGINE, OPT_IN, OPT_OUT,
     OPT_NOOUT, OPT_TEXT, OPT_PARAM_OUT, OPT_PUBIN, OPT_PUBOUT,
     OPT_PASSIN, OPT_PASSOUT, OPT_PARAM_ENC, OPT_CONV_FORM, OPT_CIPHER,
-    OPT_NO_PUBLIC, OPT_CHECK
+    OPT_NO_PUBLIC, OPT_CHECK, OPT_PROV_ENUM
 } OPTION_CHOICE;
 
-OPTIONS ec_options[] = {
+const OPTIONS ec_options[] = {
+    OPT_SECTION("General"),
     {"help", OPT_HELP, '-', "Display this summary"},
+#ifndef OPENSSL_NO_ENGINE
+    {"engine", OPT_ENGINE, 's', "Use engine, possibly a hardware device"},
+#endif
+
+    OPT_SECTION("Input"),
     {"in", OPT_IN, 's', "Input file"},
-    {"inform", OPT_INFORM, 'f', "Input format - DER or PEM"},
+    {"inform", OPT_INFORM, 'f', "Input format (DER/PEM/P12/ENGINE)"},
+    {"pubin", OPT_PUBIN, '-', "Expect a public key in input file"},
+    {"passin", OPT_PASSIN, 's', "Input file pass phrase source"},
+    {"check", OPT_CHECK, '-', "check key consistency"},
+    {"", OPT_CIPHER, '-', "Any supported cipher"},
+    {"param_enc", OPT_PARAM_ENC, 's',
+     "Specifies the way the ec parameters are encoded"},
+    {"conv_form", OPT_CONV_FORM, 's', "Specifies the point conversion form "},
+
+    OPT_SECTION("Output"),
     {"out", OPT_OUT, '>', "Output file"},
     {"outform", OPT_OUTFORM, 'F', "Output format - DER or PEM"},
     {"noout", OPT_NOOUT, '-', "Don't print key out"},
     {"text", OPT_TEXT, '-', "Print the key"},
     {"param_out", OPT_PARAM_OUT, '-', "Print the elliptic curve parameters"},
-    {"pubin", OPT_PUBIN, '-', "Expect a public key in input file"},
     {"pubout", OPT_PUBOUT, '-', "Output public key, not private"},
     {"no_public", OPT_NO_PUBLIC, '-', "exclude public key from private key"},
-    {"check", OPT_CHECK, '-', "check key consistency"},
-    {"passin", OPT_PASSIN, 's', "Input file pass phrase source"},
     {"passout", OPT_PASSOUT, 's', "Output file pass phrase source"},
-    {"param_enc", OPT_PARAM_ENC, 's',
-     "Specifies the way the ec parameters are encoded"},
-    {"conv_form", OPT_CONV_FORM, 's', "Specifies the point conversion form "},
-    {"", OPT_CIPHER, '-', "Any supported cipher"},
-# ifndef OPENSSL_NO_ENGINE
-    {"engine", OPT_ENGINE, 's', "Use engine, possibly a hardware device"},
-# endif
+
+    OPT_PROV_OPTIONS,
     {NULL}
 };
 
@@ -155,6 +160,10 @@ int ec_main(int argc, char **argv)
         case OPT_CHECK:
             check = 1;
             break;
+        case OPT_PROV_CASES:
+            if (!opt_provider(o))
+                goto end;
+            break;
         }
     }
     argc = opt_num_rest();
@@ -185,7 +194,7 @@ int ec_main(int argc, char **argv)
     } else if (informat == FORMAT_ENGINE) {
         EVP_PKEY *pkey;
         if (pubin)
-            pkey = load_pubkey(infile, informat , 1, passin, e, "Public Key");
+            pkey = load_pubkey(infile, informat, 1, passin, e, "Public Key");
         else
             pkey = load_key(infile, informat, 1, passin, e, "Private Key");
         if (pkey != NULL) {
@@ -244,20 +253,20 @@ int ec_main(int argc, char **argv)
 
     BIO_printf(bio_err, "writing EC key\n");
     if (outformat == FORMAT_ASN1) {
-        if (param_out)
+        if (param_out) {
             i = i2d_ECPKParameters_bio(out, group);
-        else if (pubin || pubout)
+        } else if (pubin || pubout) {
             i = i2d_EC_PUBKEY_bio(out, eckey);
-        else {
+        } else {
             assert(private);
             i = i2d_ECPrivateKey_bio(out, eckey);
         }
     } else {
-        if (param_out)
+        if (param_out) {
             i = PEM_write_bio_ECPKParameters(out, group);
-        else if (pubin || pubout)
+        } else if (pubin || pubout) {
             i = PEM_write_bio_EC_PUBKEY(out, eckey);
-        else {
+        } else {
             assert(private);
             i = PEM_write_bio_ECPrivateKey(out, eckey, enc,
                                            NULL, 0, NULL, passout);
@@ -267,8 +276,9 @@ int ec_main(int argc, char **argv)
     if (!i) {
         BIO_printf(bio_err, "unable to write private key\n");
         ERR_print_errors(bio_err);
-    } else
+    } else {
         ret = 0;
+    }
  end:
     BIO_free(in);
     BIO_free_all(out);
@@ -276,6 +286,5 @@ int ec_main(int argc, char **argv)
     release_engine(e);
     OPENSSL_free(passin);
     OPENSSL_free(passout);
-    return (ret);
+    return ret;
 }
-#endif

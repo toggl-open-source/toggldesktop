@@ -1,7 +1,7 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -13,7 +13,7 @@
 #include <openssl/asn1t.h>
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
-#include "internal/x509_int.h"
+#include "crypto/x509.h"
 
 ASN1_SEQUENCE_enc(X509_CINF, enc, 0) = {
         ASN1_EXP_OPT(X509_CINF, version, ASN1_INTEGER, 0),
@@ -40,16 +40,41 @@ static int x509_cb(int operation, ASN1_VALUE **pval, const ASN1_ITEM *it,
 
     switch (operation) {
 
+    case ASN1_OP_D2I_PRE:
+        CRYPTO_free_ex_data(CRYPTO_EX_INDEX_X509, ret, &ret->ex_data);
+        X509_CERT_AUX_free(ret->aux);
+        ASN1_OCTET_STRING_free(ret->skid);
+        AUTHORITY_KEYID_free(ret->akid);
+        CRL_DIST_POINTS_free(ret->crldp);
+        policy_cache_free(ret->policy_cache);
+        GENERAL_NAMES_free(ret->altname);
+        NAME_CONSTRAINTS_free(ret->nc);
+#ifndef OPENSSL_NO_RFC3779
+        sk_IPAddressFamily_pop_free(ret->rfc3779_addr, IPAddressFamily_free);
+        ASIdentifiers_free(ret->rfc3779_asid);
+#endif
+        ASN1_OCTET_STRING_free(ret->distinguishing_id);
+
+        /* fall thru */
+
     case ASN1_OP_NEW_POST:
+        ret->ex_cached = 0;
+        ret->ex_kusage = 0;
+        ret->ex_xkusage = 0;
+        ret->ex_nscert = 0;
         ret->ex_flags = 0;
         ret->ex_pathlen = -1;
         ret->ex_pcpathlen = -1;
         ret->skid = NULL;
         ret->akid = NULL;
+        ret->policy_cache = NULL;
+        ret->altname = NULL;
+        ret->nc = NULL;
 #ifndef OPENSSL_NO_RFC3779
         ret->rfc3779_addr = NULL;
         ret->rfc3779_asid = NULL;
 #endif
+        ret->distinguishing_id = NULL;
         ret->aux = NULL;
         ret->crldp = NULL;
         if (!CRYPTO_new_ex_data(CRYPTO_EX_INDEX_X509, ret, &ret->ex_data))
@@ -69,6 +94,7 @@ static int x509_cb(int operation, ASN1_VALUE **pval, const ASN1_ITEM *it,
         sk_IPAddressFamily_pop_free(ret->rfc3779_addr, IPAddressFamily_free);
         ASIdentifiers_free(ret->rfc3779_asid);
 #endif
+        ASN1_OCTET_STRING_free(ret->distinguishing_id);
         break;
 
     }
@@ -83,18 +109,57 @@ ASN1_SEQUENCE_ref(X509, x509_cb) = {
         ASN1_EMBED(X509, signature, ASN1_BIT_STRING)
 } ASN1_SEQUENCE_END_ref(X509, X509)
 
-IMPLEMENT_ASN1_FUNCTIONS(X509)
-
+IMPLEMENT_ASN1_ALLOC_FUNCTIONS_fname(X509, X509, X509)
 IMPLEMENT_ASN1_DUP_FUNCTION(X509)
+
+X509 *d2i_X509(X509 **a, const unsigned char **in, long len)
+{
+    X509 *cert = NULL;
+
+    cert = (X509 *)ASN1_item_d2i((ASN1_VALUE **)a, in, len, (X509_it()));
+    /* Only cache the extensions if the cert object was passed in */
+    if (cert != NULL && a != NULL) {
+        if (!x509v3_cache_extensions(cert))
+            cert = NULL;
+    }
+    return cert;
+}
+int i2d_X509(const X509 *a, unsigned char **out)
+{
+    return ASN1_item_i2d((const ASN1_VALUE *)a, out, (X509_it()));
+}
+
+/*
+ * This should only be used if the X509 object was embedded inside another
+ * asn1 object and it needs a libctx to operate.
+ * Use X509_new_with_libctx() instead if possible.
+ */
+int x509_set0_libctx(X509 *x, OPENSSL_CTX *libctx, const char *propq)
+{
+    if (x != NULL) {
+        x->libctx = libctx;
+        x->propq = propq;
+    }
+    return 1;
+}
+
+X509 *X509_new_with_libctx(OPENSSL_CTX *libctx, const char *propq)
+{
+    X509 *cert = NULL;
+
+    cert = (X509 *)ASN1_item_new((X509_it()));
+    (void)x509_set0_libctx(cert, libctx, propq);
+    return cert;
+}
 
 int X509_set_ex_data(X509 *r, int idx, void *arg)
 {
-    return (CRYPTO_set_ex_data(&r->ex_data, idx, arg));
+    return CRYPTO_set_ex_data(&r->ex_data, idx, arg);
 }
 
-void *X509_get_ex_data(X509 *r, int idx)
+void *X509_get_ex_data(const X509 *r, int idx)
 {
-    return (CRYPTO_get_ex_data(&r->ex_data, idx));
+    return CRYPTO_get_ex_data(&r->ex_data, idx);
 }
 
 /*
@@ -140,12 +205,10 @@ X509 *d2i_X509_AUX(X509 **a, const unsigned char **pp, long length)
  * error path, but that depends on similar hygiene in lower-level functions.
  * Here we avoid compounding the problem.
  */
-static int i2d_x509_aux_internal(X509 *a, unsigned char **pp)
+static int i2d_x509_aux_internal(const X509 *a, unsigned char **pp)
 {
     int length, tmplen;
     unsigned char *start = pp != NULL ? *pp : NULL;
-
-    OPENSSL_assert(pp == NULL || *pp != NULL);
 
     /*
      * This might perturb *pp on error, but fixing that belongs in i2d_X509()
@@ -176,7 +239,7 @@ static int i2d_x509_aux_internal(X509 *a, unsigned char **pp)
  * the allocation, nor can we allow i2d_X509_CERT_AUX() to increment the
  * allocated buffer.
  */
-int i2d_X509_AUX(X509 *a, unsigned char **pp)
+int i2d_X509_AUX(const X509 *a, unsigned char **pp)
 {
     int length;
     unsigned char *tmp;
@@ -191,8 +254,10 @@ int i2d_X509_AUX(X509 *a, unsigned char **pp)
 
     /* Allocate requisite combined storage */
     *pp = tmp = OPENSSL_malloc(length);
-    if (tmp == NULL)
-        return -1; /* Push error onto error stack? */
+    if (tmp == NULL) {
+        X509err(X509_F_I2D_X509_AUX, ERR_R_MALLOC_FAILURE);
+        return -1;
+    }
 
     /* Encode, but keep *pp at the originally malloced pointer */
     length = i2d_x509_aux_internal(a, &tmp);
@@ -221,4 +286,15 @@ void X509_get0_signature(const ASN1_BIT_STRING **psig,
 int X509_get_signature_nid(const X509 *x)
 {
     return OBJ_obj2nid(x->sig_alg.algorithm);
+}
+
+void X509_set0_distinguishing_id(X509 *x, ASN1_OCTET_STRING *d_id)
+{
+    ASN1_OCTET_STRING_free(x->distinguishing_id);
+    x->distinguishing_id = d_id;
+}
+
+ASN1_OCTET_STRING *X509_get0_distinguishing_id(X509 *x)
+{
+    return x->distinguishing_id;
 }

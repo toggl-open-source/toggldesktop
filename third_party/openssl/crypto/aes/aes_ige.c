@@ -1,27 +1,37 @@
 /*
- * Copyright 2006-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2006-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
+/*
+ * AES_encrypt/AES_decrypt are deprecated - but we need to use them to implement
+ * these functions
+ */
+#include "internal/deprecated.h"
+
 #include "internal/cryptlib.h"
 
 #include <openssl/aes.h>
-#include "aes_locl.h"
-
-#define N_WORDS (AES_BLOCK_SIZE / sizeof(unsigned long))
-typedef struct {
-    unsigned long data[N_WORDS];
-} aes_block_t;
+#include "aes_local.h"
 
 /* XXX: probably some better way to do this */
 #if defined(__i386__) || defined(__x86_64__)
 # define UNALIGNED_MEMOPS_ARE_FAST 1
 #else
 # define UNALIGNED_MEMOPS_ARE_FAST 0
+#endif
+
+#define N_WORDS (AES_BLOCK_SIZE / sizeof(unsigned long))
+typedef struct {
+    unsigned long data[N_WORDS];
+#if defined(__GNUC__) && UNALIGNED_MEMOPS_ARE_FAST
+} aes_block_t __attribute((__aligned__(1)));
+#else
+} aes_block_t;
 #endif
 
 #if UNALIGNED_MEMOPS_ARE_FAST
@@ -34,6 +44,7 @@ typedef struct {
 
 /* N.B. The IV for this mode is _twice_ the block size */
 
+/*  Use of this function is deprecated. */
 void AES_ige_encrypt(const unsigned char *in, unsigned char *out,
                      size_t length, const AES_KEY *key,
                      unsigned char *ivec, const int enc)
@@ -162,6 +173,14 @@ void AES_ige_encrypt(const unsigned char *in, unsigned char *out,
 /*
  * Note that its effectively impossible to do biIGE in anything other
  * than a single pass, so no provision is made for chaining.
+ *
+ * NB: The implementation of AES_bi_ige_encrypt has a bug. It is supposed to use
+ * 2 AES keys, but in fact only one is ever used. This bug has been present
+ * since this code was first implemented. It is believed to have minimal
+ * security impact in practice and has therefore not been fixed for backwards
+ * compatibility reasons.
+ *
+ * Use of this function is deprecated.
  */
 
 /* N.B. The IV for this mode is _four times_ the block size */

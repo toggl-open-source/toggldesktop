@@ -1,16 +1,16 @@
 #! /usr/bin/env perl
-# Copyright 2012-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2012-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
 
 
 # ====================================================================
-# Written by David S. Miller <davem@devemloft.net> and Andy Polyakov
-# <appro@openssl.org>. The module is licensed under 2-clause BSD
-# license. October 2012. All rights reserved.
+# Written by David S. Miller and Andy Polyakov.
+# The module is licensed under 2-clause BSD license. October 2012.
+# All rights reserved.
 # ====================================================================
 
 ######################################################################
@@ -44,7 +44,7 @@
 # instructions with those on critical path. Amazing!
 #
 # As with Intel AES-NI, question is if it's possible to improve
-# performance of parallelizeable modes by interleaving round
+# performance of parallelizable modes by interleaving round
 # instructions. Provided round instruction latency and throughput
 # optimal interleave factor is 2. But can we expect 2x performance
 # improvement? Well, as round instructions can be issued one per
@@ -75,8 +75,7 @@ $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
 push(@INC,"${dir}","${dir}../../perlasm");
 require "sparcv9_modes.pl";
 
-$output = pop;
-open STDOUT,">$output";
+$output = pop and open STDOUT,">$output";
 
 $::evp=1;	# if $evp is set to 0, script generates module with
 # AES_[en|de]crypt, AES_set_[en|de]crypt_key and AES_cbc_encrypt entry
@@ -926,4 +925,4 @@ ___
 
 &emit_assembler();
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

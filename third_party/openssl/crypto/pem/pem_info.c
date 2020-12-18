@@ -1,11 +1,17 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
+
+/*
+ * DSA low level APIs are deprecated for public use, but still ok for
+ * internal use.
+ */
+#include "internal/deprecated.h"
 
 #include <stdio.h>
 #include "internal/cryptlib.h"
@@ -18,25 +24,35 @@
 #include <openssl/dsa.h>
 
 #ifndef OPENSSL_NO_STDIO
-STACK_OF(X509_INFO) *PEM_X509_INFO_read(FILE *fp, STACK_OF(X509_INFO) *sk,
-                                        pem_password_cb *cb, void *u)
+STACK_OF(X509_INFO)
+*PEM_X509_INFO_read_with_libctx(FILE *fp, STACK_OF(X509_INFO) *sk,
+                                pem_password_cb *cb, void *u,
+                                OPENSSL_CTX *libctx, const char *propq)
 {
     BIO *b;
     STACK_OF(X509_INFO) *ret;
 
     if ((b = BIO_new(BIO_s_file())) == NULL) {
-        PEMerr(PEM_F_PEM_X509_INFO_READ, ERR_R_BUF_LIB);
-        return (0);
+        PEMerr(0, ERR_R_BUF_LIB);
+        return 0;
     }
     BIO_set_fp(b, fp, BIO_NOCLOSE);
-    ret = PEM_X509_INFO_read_bio(b, sk, cb, u);
+    ret = PEM_X509_INFO_read_bio_with_libctx(b, sk, cb, u, libctx, propq);
     BIO_free(b);
-    return (ret);
+    return ret;
+}
+
+STACK_OF(X509_INFO) *PEM_X509_INFO_read(FILE *fp, STACK_OF(X509_INFO) *sk,
+                                        pem_password_cb *cb, void *u)
+{
+    return PEM_X509_INFO_read_with_libctx(fp, sk, cb, u, NULL, NULL);
 }
 #endif
 
-STACK_OF(X509_INFO) *PEM_X509_INFO_read_bio(BIO *bp, STACK_OF(X509_INFO) *sk,
-                                            pem_password_cb *cb, void *u)
+STACK_OF(X509_INFO)
+*PEM_X509_INFO_read_bio_with_libctx(BIO *bp, STACK_OF(X509_INFO) *sk,
+                                    pem_password_cb *cb, void *u,
+                                    OPENSSL_CTX *libctx, const char *propq)
 {
     X509_INFO *xi = NULL;
     char *name = NULL, *header = NULL;
@@ -51,7 +67,7 @@ STACK_OF(X509_INFO) *PEM_X509_INFO_read_bio(BIO *bp, STACK_OF(X509_INFO) *sk,
 
     if (sk == NULL) {
         if ((ret = sk_X509_INFO_new_null()) == NULL) {
-            PEMerr(PEM_F_PEM_X509_INFO_READ_BIO, ERR_R_MALLOC_FAILURE);
+            PEMerr(0, ERR_R_MALLOC_FAILURE);
             goto err;
         }
     } else
@@ -82,6 +98,9 @@ STACK_OF(X509_INFO) *PEM_X509_INFO_read_bio(BIO *bp, STACK_OF(X509_INFO) *sk,
                     goto err;
                 goto start;
             }
+            xi->x509 = X509_new_with_libctx(libctx, propq);
+            if (xi->x509 == NULL)
+                goto err;
             pp = &(xi->x509);
         } else if ((strcmp(name, PEM_STRING_X509_TRUSTED) == 0)) {
             d2i = (D2I_OF(void)) d2i_X509_AUX;
@@ -92,6 +111,9 @@ STACK_OF(X509_INFO) *PEM_X509_INFO_read_bio(BIO *bp, STACK_OF(X509_INFO) *sk,
                     goto err;
                 goto start;
             }
+            xi->x509 = X509_new_with_libctx(libctx, propq);
+            if (xi->x509 == NULL)
+                goto err;
             pp = &(xi->x509);
         } else if (strcmp(name, PEM_STRING_X509_CRL) == 0) {
             d2i = (D2I_OF(void)) d2i_X509_CRL;
@@ -189,11 +211,11 @@ STACK_OF(X509_INFO) *PEM_X509_INFO_read_bio(BIO *bp, STACK_OF(X509_INFO) *sk,
                 p = data;
                 if (ptype) {
                     if (!d2i_PrivateKey(ptype, pp, &p, len)) {
-                        PEMerr(PEM_F_PEM_X509_INFO_READ_BIO, ERR_R_ASN1_LIB);
+                        PEMerr(0, ERR_R_ASN1_LIB);
                         goto err;
                     }
                 } else if (d2i(pp, &p, len) == NULL) {
-                    PEMerr(PEM_F_PEM_X509_INFO_READ_BIO, ERR_R_ASN1_LIB);
+                    PEMerr(0, ERR_R_ASN1_LIB);
                     goto err;
                 }
             } else {            /* encrypted RSA data */
@@ -240,23 +262,35 @@ STACK_OF(X509_INFO) *PEM_X509_INFO_read_bio(BIO *bp, STACK_OF(X509_INFO) *sk,
     OPENSSL_free(name);
     OPENSSL_free(header);
     OPENSSL_free(data);
-    return (ret);
+    return ret;
+}
+
+STACK_OF(X509_INFO) *PEM_X509_INFO_read_bio(BIO *bp, STACK_OF(X509_INFO) *sk,
+                                            pem_password_cb *cb, void *u)
+{
+    return PEM_X509_INFO_read_bio_with_libctx(bp, sk, cb, u, NULL, NULL);
 }
 
 /* A TJH addition */
-int PEM_X509_INFO_write_bio(BIO *bp, X509_INFO *xi, EVP_CIPHER *enc,
-                            unsigned char *kstr, int klen,
+int PEM_X509_INFO_write_bio(BIO *bp, const X509_INFO *xi, EVP_CIPHER *enc,
+                            const unsigned char *kstr, int klen,
                             pem_password_cb *cb, void *u)
 {
     int i, ret = 0;
     unsigned char *data = NULL;
     const char *objstr = NULL;
     char buf[PEM_BUFSIZE];
-    unsigned char *iv = NULL;
+    const unsigned char *iv = NULL;
 
     if (enc != NULL) {
         objstr = OBJ_nid2sn(EVP_CIPHER_nid(enc));
-        if (objstr == NULL) {
+        if (objstr == NULL
+                   /*
+                    * Check "Proc-Type: 4,Encrypted\nDEK-Info: objstr,hex-iv\n"
+                    * fits into buf
+                    */
+                || (strlen(objstr) + 23 + 2 * EVP_CIPHER_iv_length(enc) + 13)
+                   > sizeof(buf)) {
             PEMerr(PEM_F_PEM_X509_INFO_WRITE_BIO, PEM_R_UNSUPPORTED_CIPHER);
             goto err;
         }
@@ -291,14 +325,11 @@ int PEM_X509_INFO_write_bio(BIO *bp, X509_INFO *xi, EVP_CIPHER *enc,
                 goto err;
             }
 
-            /* create the right magic header stuff */
-            OPENSSL_assert(strlen(objstr) + 23
-                           + 2 * EVP_CIPHER_iv_length(enc) + 13 <=
-                           sizeof(buf));
+            /* Create the right magic header stuff */
             buf[0] = '\0';
             PEM_proc_type(buf, PEM_TYPE_ENCRYPTED);
             PEM_dek_info(buf, objstr, EVP_CIPHER_iv_length(enc),
-                         (char *)iv);
+                         (const char *)iv);
 
             /* use the normal code to write things out */
             i = PEM_write_bio(bp, PEM_STRING_RSA, buf, data, i);
@@ -330,5 +361,5 @@ int PEM_X509_INFO_write_bio(BIO *bp, X509_INFO *xi, EVP_CIPHER *enc,
 
  err:
     OPENSSL_cleanse(buf, PEM_BUFSIZE);
-    return (ret);
+    return ret;
 }

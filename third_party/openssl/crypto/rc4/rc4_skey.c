@@ -1,28 +1,33 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
+/*
+ * RC4 low level APIs are deprecated for public use, but still ok for internal
+ * use.
+ */
+#include "internal/deprecated.h"
+
 #include <openssl/rc4.h>
-#include "rc4_locl.h"
+#include "rc4_local.h"
 #include <openssl/opensslv.h>
 
 const char *RC4_options(void)
 {
     if (sizeof(RC4_INT) == 1)
-        return ("rc4(char)");
+        return "rc4(char)";
     else
-        return ("rc4(int)");
+        return "rc4(int)";
 }
 
 /*-
  * RC4 as implemented from a posting from
  * Newsgroups: sci.crypt
- * From: sterndark@netcom.com (David Sterndark)
  * Subject: RC4 Algorithm revealed.
  * Message-ID: <sternCvKL4B.Hyy@netcom.com>
  * Date: Wed, 14 Sep 1994 06:35:31 GMT

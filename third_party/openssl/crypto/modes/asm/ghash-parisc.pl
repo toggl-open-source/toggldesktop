@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2010-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2010-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -27,9 +27,12 @@
 #
 # Special thanks to polarhome.com for providing HP-UX account.
 
-$flavour = shift;
-$output = shift;
-open STDOUT,">$output";
+# $output is the last argument if it looks like a file (it has an extension)
+# $flavour is the first argument if it doesn't look like a file
+$output = $#ARGV >= 0 && $ARGV[$#ARGV] =~ m|\.\w+$| ? pop : undef;
+$flavour = $#ARGV >= 0 && $ARGV[0] !~ m|\.| ? shift : undef;
+
+$output and open STDOUT,">$output";
 
 if ($flavour =~ /64/) {
 	$LEVEL		="2.0W";
@@ -705,7 +708,7 @@ my $depd = sub {
   my ($mod,$args) = @_;
   my $orig = "depd$mod\t$args";
 
-    # I only have ",z" completer, it's impicitly encoded...
+    # I only have ",z" completer, it's implicitly encoded...
     if ($args =~ /%r([0-9]+),([0-9]+),([0-9]+),%r([0-9]+)/)	# format 16
     {	my $opcode=(0x3c<<26)|($4<<21)|($1<<16);
     	my $cpos=63-$2;
@@ -724,6 +727,11 @@ sub assemble {
     ref($opcode) eq 'CODE' ? &$opcode($mod,$args) : "\t$mnemonic$mod\t$args";
 }
 
+if (`$ENV{CC} -Wa,-v -c -o /dev/null -x assembler /dev/null 2>&1`
+	=~ /GNU assembler/) {
+    $gnuas = 1;
+}
+
 foreach (split("\n",$code)) {
 	s/\`([^\`]*)\`/eval $1/ge;
 	if ($SIZE_T==4) {
@@ -731,8 +739,13 @@ foreach (split("\n",$code)) {
 		s/cmpb,\*/comb,/;
 		s/,\*/,/;
 	}
-	s/\bbv\b/bve/	if ($SIZE_T==8);
+
+	s/(\.LEVEL\s+2\.0)W/$1w/	if ($gnuas && $SIZE_T==8);
+	s/\.SPACE\s+\$TEXT\$/.text/	if ($gnuas && $SIZE_T==8);
+	s/\.SUBSPA.*//			if ($gnuas && $SIZE_T==8);
+	s/\bbv\b/bve/			if ($SIZE_T==8);
+
 	print $_,"\n";
 }
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

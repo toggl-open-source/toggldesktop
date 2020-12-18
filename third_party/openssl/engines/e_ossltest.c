@@ -1,7 +1,7 @@
 /*
- * Copyright 2015-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2015-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -13,6 +13,18 @@
  * used for any purpose except testing
  */
 
+/* We need to use some engine deprecated APIs */
+#define OPENSSL_SUPPRESS_DEPRECATED
+
+/*
+ * SHA low level APIs are deprecated for public use, but still ok for
+ * internal use.  Note, that due to symbols not being exported, only the
+ * #defines and type definitions can be accessed, function calls are not
+ * available.  The digest lengths, block sizes and sizeof(CTX) are used herein
+ * for several different digests.
+ */
+#include "internal/deprecated.h"
+
 #include <stdio.h>
 #include <string.h>
 
@@ -23,9 +35,9 @@
 #include <openssl/evp.h>
 #include <openssl/modes.h>
 #include <openssl/aes.h>
+#include <openssl/rand.h>
 #include <openssl/crypto.h>
 
-#define OSSLTEST_LIB_NAME "OSSLTEST"
 #include "e_ossltest_err.c"
 
 /* Engine Id and Name */
@@ -43,6 +55,7 @@ void ENGINE_load_ossltest(void);
 /* Set up digests */
 static int ossltest_digests(ENGINE *e, const EVP_MD **digest,
                           const int **nids, int nid);
+static const RAND_METHOD *ossltest_rand_method(void);
 
 /* MD5 */
 static int digest_md5_init(EVP_MD_CTX *ctx);
@@ -133,10 +146,13 @@ static const EVP_MD *digest_sha256(void)
 
 /* SHA384/SHA512 */
 static int digest_sha384_init(EVP_MD_CTX *ctx);
+static int digest_sha384_update(EVP_MD_CTX *ctx, const void *data,
+                                size_t count);
+static int digest_sha384_final(EVP_MD_CTX *ctx, unsigned char *md);
+
 static int digest_sha512_init(EVP_MD_CTX *ctx);
 static int digest_sha512_update(EVP_MD_CTX *ctx, const void *data,
                                 size_t count);
-static int digest_sha384_final(EVP_MD_CTX *ctx, unsigned char *md);
 static int digest_sha512_final(EVP_MD_CTX *ctx, unsigned char *md);
 
 static EVP_MD *_hidden_sha384_md = NULL;
@@ -152,7 +168,7 @@ static const EVP_MD *digest_sha384(void)
                                              sizeof(EVP_MD *) + sizeof(SHA512_CTX))
             || !EVP_MD_meth_set_flags(md, EVP_MD_FLAG_DIGALGID_ABSENT)
             || !EVP_MD_meth_set_init(md, digest_sha384_init)
-            || !EVP_MD_meth_set_update(md, digest_sha512_update)
+            || !EVP_MD_meth_set_update(md, digest_sha384_update)
             || !EVP_MD_meth_set_final(md, digest_sha384_final)) {
             EVP_MD_meth_free(md);
             md = NULL;
@@ -226,7 +242,7 @@ static int ossltest_ciphers(ENGINE *, const EVP_CIPHER **,
                             const int **, int);
 
 static int ossltest_cipher_nids[] = {
-    NID_aes_128_cbc, 0
+    NID_aes_128_cbc, NID_aes_128_gcm, 0
 };
 
 /* AES128 */
@@ -235,6 +251,12 @@ int ossltest_aes128_init_key(EVP_CIPHER_CTX *ctx, const unsigned char *key,
                              const unsigned char *iv, int enc);
 int ossltest_aes128_cbc_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
                                const unsigned char *in, size_t inl);
+int ossltest_aes128_gcm_init_key(EVP_CIPHER_CTX *ctx, const unsigned char *key,
+                             const unsigned char *iv, int enc);
+int ossltest_aes128_gcm_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
+                               const unsigned char *in, size_t inl);
+static int ossltest_aes128_gcm_ctrl(EVP_CIPHER_CTX *ctx, int type, int arg,
+                                    void *ptr);
 
 static EVP_CIPHER *_hidden_aes_128_cbc = NULL;
 static const EVP_CIPHER *ossltest_aes_128_cbc(void)
@@ -258,9 +280,40 @@ static const EVP_CIPHER *ossltest_aes_128_cbc(void)
     }
     return _hidden_aes_128_cbc;
 }
+static EVP_CIPHER *_hidden_aes_128_gcm = NULL;
+
+#define AES_GCM_FLAGS   (EVP_CIPH_FLAG_DEFAULT_ASN1 \
+                | EVP_CIPH_CUSTOM_IV | EVP_CIPH_FLAG_CUSTOM_CIPHER \
+                | EVP_CIPH_ALWAYS_CALL_INIT | EVP_CIPH_CTRL_INIT \
+                | EVP_CIPH_CUSTOM_COPY |EVP_CIPH_FLAG_AEAD_CIPHER \
+                | EVP_CIPH_GCM_MODE)
+
+static const EVP_CIPHER *ossltest_aes_128_gcm(void)
+{
+    if (_hidden_aes_128_gcm == NULL
+        && ((_hidden_aes_128_gcm = EVP_CIPHER_meth_new(NID_aes_128_gcm,
+                                                       1 /* block size */,
+                                                       16 /* key len */)) == NULL
+            || !EVP_CIPHER_meth_set_iv_length(_hidden_aes_128_gcm,12)
+            || !EVP_CIPHER_meth_set_flags(_hidden_aes_128_gcm, AES_GCM_FLAGS)
+            || !EVP_CIPHER_meth_set_init(_hidden_aes_128_gcm,
+                                         ossltest_aes128_gcm_init_key)
+            || !EVP_CIPHER_meth_set_do_cipher(_hidden_aes_128_gcm,
+                                              ossltest_aes128_gcm_cipher)
+            || !EVP_CIPHER_meth_set_ctrl(_hidden_aes_128_gcm,
+                                              ossltest_aes128_gcm_ctrl)
+            || !EVP_CIPHER_meth_set_impl_ctx_size(_hidden_aes_128_gcm,
+                              EVP_CIPHER_impl_ctx_size(EVP_aes_128_gcm())))) {
+        EVP_CIPHER_meth_free(_hidden_aes_128_gcm);
+        _hidden_aes_128_gcm = NULL;
+    }
+    return _hidden_aes_128_gcm;
+}
+
 static void destroy_ciphers(void)
 {
     EVP_CIPHER_meth_free(_hidden_aes_128_cbc);
+    EVP_CIPHER_meth_free(_hidden_aes_128_gcm);
     _hidden_aes_128_cbc = NULL;
 }
 
@@ -273,6 +326,7 @@ static int bind_ossltest(ENGINE *e)
         || !ENGINE_set_name(e, engine_ossltest_name)
         || !ENGINE_set_digests(e, ossltest_digests)
         || !ENGINE_set_ciphers(e, ossltest_ciphers)
+        || !ENGINE_set_RAND(e, ossltest_rand_method())
         || !ENGINE_set_destroy_function(e, ossltest_destroy)
         || !ENGINE_set_init_function(e, ossltest_init)
         || !ENGINE_set_finish_function(e, ossltest_finish)) {
@@ -389,6 +443,9 @@ static int ossltest_ciphers(ENGINE *e, const EVP_CIPHER **cipher,
     case NID_aes_128_cbc:
         *cipher = ossltest_aes_128_cbc();
         break;
+    case NID_aes_128_gcm:
+        *cipher = ossltest_aes_128_gcm();
+        break;
     default:
         ok = 0;
         *cipher = NULL;
@@ -412,23 +469,20 @@ static void fill_known_data(unsigned char *md, unsigned int len)
  * value, so that all "MD5" digests using the test engine always end up with
  * the same value.
  */
-#undef data
-#define data(ctx) ((MD5_CTX *)EVP_MD_CTX_md_data(ctx))
 static int digest_md5_init(EVP_MD_CTX *ctx)
 {
-    return MD5_Init(data(ctx));
+   return EVP_MD_meth_get_init(EVP_md5())(ctx);
 }
 
 static int digest_md5_update(EVP_MD_CTX *ctx, const void *data,
                              size_t count)
 {
-    return MD5_Update(data(ctx), data, (size_t)count);
+    return EVP_MD_meth_get_update(EVP_md5())(ctx, data, count);
 }
 
 static int digest_md5_final(EVP_MD_CTX *ctx, unsigned char *md)
 {
-    int ret;
-    ret = MD5_Final(md, data(ctx));
+    int ret = EVP_MD_meth_get_final(EVP_md5())(ctx, md);
 
     if (ret > 0) {
         fill_known_data(md, MD5_DIGEST_LENGTH);
@@ -439,23 +493,20 @@ static int digest_md5_final(EVP_MD_CTX *ctx, unsigned char *md)
 /*
  * SHA1 implementation.
  */
-#undef data
-#define data(ctx) ((SHA_CTX *)EVP_MD_CTX_md_data(ctx))
 static int digest_sha1_init(EVP_MD_CTX *ctx)
 {
-    return SHA1_Init(data(ctx));
+    return EVP_MD_meth_get_init(EVP_sha1())(ctx);
 }
 
 static int digest_sha1_update(EVP_MD_CTX *ctx, const void *data,
                               size_t count)
 {
-    return SHA1_Update(data(ctx), data, (size_t)count);
+    return EVP_MD_meth_get_update(EVP_sha1())(ctx, data, count);
 }
 
 static int digest_sha1_final(EVP_MD_CTX *ctx, unsigned char *md)
 {
-    int ret;
-    ret = SHA1_Final(md, data(ctx));
+    int ret = EVP_MD_meth_get_final(EVP_sha1())(ctx, md);
 
     if (ret > 0) {
         fill_known_data(md, SHA_DIGEST_LENGTH);
@@ -466,23 +517,20 @@ static int digest_sha1_final(EVP_MD_CTX *ctx, unsigned char *md)
 /*
  * SHA256 implementation.
  */
-#undef data
-#define data(ctx) ((SHA256_CTX *)EVP_MD_CTX_md_data(ctx))
 static int digest_sha256_init(EVP_MD_CTX *ctx)
 {
-    return SHA256_Init(data(ctx));
+    return EVP_MD_meth_get_init(EVP_sha256())(ctx);
 }
 
 static int digest_sha256_update(EVP_MD_CTX *ctx, const void *data,
                                 size_t count)
 {
-    return SHA256_Update(data(ctx), data, (size_t)count);
+    return EVP_MD_meth_get_update(EVP_sha256())(ctx, data, count);
 }
 
 static int digest_sha256_final(EVP_MD_CTX *ctx, unsigned char *md)
 {
-    int ret;
-    ret = SHA256_Final(md, data(ctx));
+    int ret = EVP_MD_meth_get_final(EVP_sha256())(ctx, md);
 
     if (ret > 0) {
         fill_known_data(md, SHA256_DIGEST_LENGTH);
@@ -491,31 +539,22 @@ static int digest_sha256_final(EVP_MD_CTX *ctx, unsigned char *md)
 }
 
 /*
- * SHA384/512 implementation.
+ * SHA384 implementation.
  */
-#undef data
-#define data(ctx) ((SHA512_CTX *)EVP_MD_CTX_md_data(ctx))
 static int digest_sha384_init(EVP_MD_CTX *ctx)
 {
-    return SHA384_Init(data(ctx));
+    return EVP_MD_meth_get_init(EVP_sha384())(ctx);
 }
 
-static int digest_sha512_init(EVP_MD_CTX *ctx)
-{
-    return SHA512_Init(data(ctx));
-}
-
-static int digest_sha512_update(EVP_MD_CTX *ctx, const void *data,
+static int digest_sha384_update(EVP_MD_CTX *ctx, const void *data,
                                 size_t count)
 {
-    return SHA512_Update(data(ctx), data, (size_t)count);
+    return EVP_MD_meth_get_update(EVP_sha384())(ctx, data, count);
 }
 
 static int digest_sha384_final(EVP_MD_CTX *ctx, unsigned char *md)
 {
-    int ret;
-    /* Actually uses SHA512_Final! */
-    ret = SHA512_Final(md, data(ctx));
+    int ret = EVP_MD_meth_get_final(EVP_sha384())(ctx, md);
 
     if (ret > 0) {
         fill_known_data(md, SHA384_DIGEST_LENGTH);
@@ -523,10 +562,23 @@ static int digest_sha384_final(EVP_MD_CTX *ctx, unsigned char *md)
     return ret;
 }
 
+/*
+ * SHA512 implementation.
+ */
+static int digest_sha512_init(EVP_MD_CTX *ctx)
+{
+    return EVP_MD_meth_get_init(EVP_sha512())(ctx);
+}
+
+static int digest_sha512_update(EVP_MD_CTX *ctx, const void *data,
+                                size_t count)
+{
+    return EVP_MD_meth_get_update(EVP_sha512())(ctx, data, count);
+}
+
 static int digest_sha512_final(EVP_MD_CTX *ctx, unsigned char *md)
 {
-    int ret;
-    ret = SHA512_Final(md, data(ctx));
+    int ret = EVP_MD_meth_get_final(EVP_sha512())(ctx, md);
 
     if (ret > 0) {
         fill_known_data(md, SHA512_DIGEST_LENGTH);
@@ -551,18 +603,104 @@ int ossltest_aes128_cbc_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
     int ret;
 
     tmpbuf = OPENSSL_malloc(inl);
-    if (tmpbuf == NULL)
+
+    /* OPENSSL_malloc will return NULL if inl == 0 */
+    if (tmpbuf == NULL && inl > 0)
         return -1;
 
     /* Remember what we were asked to encrypt */
-    memcpy(tmpbuf, in, inl);
+    if (tmpbuf != NULL)
+        memcpy(tmpbuf, in, inl);
 
     /* Go through the motions of encrypting it */
     ret = EVP_CIPHER_meth_get_do_cipher(EVP_aes_128_cbc())(ctx, out, in, inl);
 
     /* Throw it all away and just use the plaintext as the output */
-    memcpy(out, tmpbuf, inl);
+    if (tmpbuf != NULL)
+        memcpy(out, tmpbuf, inl);
     OPENSSL_free(tmpbuf);
 
     return ret;
+}
+
+int ossltest_aes128_gcm_init_key(EVP_CIPHER_CTX *ctx, const unsigned char *key,
+                             const unsigned char *iv, int enc)
+{
+    return EVP_CIPHER_meth_get_init(EVP_aes_128_gcm()) (ctx, key, iv, enc);
+}
+
+
+int ossltest_aes128_gcm_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
+                               const unsigned char *in, size_t inl)
+{
+    unsigned char *tmpbuf = OPENSSL_malloc(inl);
+
+    /* OPENSSL_malloc will return NULL if inl == 0 */
+    if (tmpbuf == NULL && inl > 0)
+        return -1;
+
+    /* Remember what we were asked to encrypt */
+    if (tmpbuf != NULL)
+        memcpy(tmpbuf, in, inl);
+
+    /* Go through the motions of encrypting it */
+    EVP_CIPHER_meth_get_do_cipher(EVP_aes_128_gcm())(ctx, out, in, inl);
+
+    /* Throw it all away and just use the plaintext as the output */
+    if (tmpbuf != NULL && out != NULL)
+        memcpy(out, tmpbuf, inl);
+    OPENSSL_free(tmpbuf);
+
+    return inl;
+}
+
+static int ossltest_aes128_gcm_ctrl(EVP_CIPHER_CTX *ctx, int type, int arg,
+                                    void *ptr)
+{
+    /* Pass the ctrl down */
+    int ret = EVP_CIPHER_meth_get_ctrl(EVP_aes_128_gcm())(ctx, type, arg, ptr);
+
+    if (ret <= 0)
+        return ret;
+
+    switch(type) {
+    case EVP_CTRL_AEAD_GET_TAG:
+        /* Always give the same tag */
+        memset(ptr, 0, EVP_GCM_TLS_TAG_LEN);
+        break;
+
+    default:
+        break;
+    }
+
+    return 1;
+}
+
+static int ossltest_rand_bytes(unsigned char *buf, int num)
+{
+    unsigned char val = 1;
+
+    while (--num >= 0)
+        *buf++ = val++;
+    return 1;
+}
+
+static int ossltest_rand_status(void)
+{
+    return 1;
+}
+
+static const RAND_METHOD *ossltest_rand_method(void)
+{
+
+    static RAND_METHOD osslt_rand_meth = {
+        NULL,
+        ossltest_rand_bytes,
+        NULL,
+        NULL,
+        ossltest_rand_bytes,
+        ossltest_rand_status
+    };
+
+    return &osslt_rand_meth;
 }

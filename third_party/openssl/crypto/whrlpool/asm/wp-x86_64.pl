@@ -1,16 +1,16 @@
 #! /usr/bin/env perl
-# Copyright 2005-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2005-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
 
 #
 # ====================================================================
-# Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
+# Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
 # project. Rights for redistribution and usage in source and binary
-# forms are granted according to the OpenSSL license.
+# forms are granted according to the License.
 # ====================================================================
 #
 # whirlpool_block for x86_64.
@@ -37,9 +37,10 @@
 # 3 on Opteron] and which is *unacceptably* slow with 64-bit
 # operand.
 
-$flavour = shift;
-$output  = shift;
-if ($flavour =~ /\./) { $output = $flavour; undef $flavour; }
+# $output is the last argument if it looks like a file (it has an extension)
+# $flavour is the first argument if it doesn't look like a file
+$output = $#ARGV >= 0 && $ARGV[$#ARGV] =~ m|\.\w+$| ? pop : undef;
+$flavour = $#ARGV >= 0 && $ARGV[0] !~ m|\.| ? shift : undef;
 
 $win64=0; $win64=1 if ($flavour =~ /[nm]asm|mingw64/ || $output =~ /\.asm$/);
 
@@ -48,7 +49,8 @@ $0 =~ m/(.*[\/\\])[^\/\\]+$/; my $dir=$1; my $xlate;
 ( $xlate="${dir}../../perlasm/x86_64-xlate.pl" and -f $xlate) or
 die "can't locate x86_64-xlate.pl";
 
-open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\"";
+open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\""
+    or die "can't call $xlate: $!";
 *STDOUT=*OUT;
 
 sub L() { $code.=".byte	".join(',',@_)."\n"; }
@@ -66,14 +68,22 @@ $code=<<___;
 .type	$func,\@function,3
 .align	16
 $func:
+.cfi_startproc
+	mov	%rsp,%rax
+.cfi_def_cfa_register	%rax
 	push	%rbx
+.cfi_push	%rbx
 	push	%rbp
+.cfi_push	%rbp
 	push	%r12
+.cfi_push	%r12
 	push	%r13
+.cfi_push	%r13
 	push	%r14
+.cfi_push	%r14
 	push	%r15
+.cfi_push	%r15
 
-	mov	%rsp,%r11
 	sub	\$128+40,%rsp
 	and	\$-64,%rsp
 
@@ -81,7 +91,8 @@ $func:
 	mov	%rdi,0(%r10)		# save parameter block
 	mov	%rsi,8(%r10)
 	mov	%rdx,16(%r10)
-	mov	%r11,32(%r10)		# saved stack pointer
+	mov	%rax,32(%r10)		# saved stack pointer
+.cfi_cfa_expression	%rsp+`128+32`,deref,+8
 .Lprologue:
 
 	mov	%r10,%rbx
@@ -205,15 +216,24 @@ $code.=<<___;
 	jmp	.Louterloop
 .Lalldone:
 	mov	32(%rbx),%rsi		# restore saved pointer
-	mov	(%rsi),%r15
-	mov	8(%rsi),%r14
-	mov	16(%rsi),%r13
-	mov	24(%rsi),%r12
-	mov	32(%rsi),%rbp
-	mov	40(%rsi),%rbx
-	lea	48(%rsi),%rsp
+.cfi_def_cfa	%rsi,8
+	mov	-48(%rsi),%r15
+.cfi_restore	%r15
+	mov	-40(%rsi),%r14
+.cfi_restore	%r14
+	mov	-32(%rsi),%r13
+.cfi_restore	%r13
+	mov	-24(%rsi),%r12
+.cfi_restore	%r12
+	mov	-16(%rsi),%rbp
+.cfi_restore	%rbp
+	mov	-8(%rsi),%rbx
+.cfi_restore	%rbx
+	lea	(%rsi),%rsp
+.cfi_def_cfa_register	%rsp
 .Lepilogue:
 	ret
+.cfi_endproc
 .size	$func,.-$func
 
 .align	64
@@ -526,7 +546,6 @@ se_handler:
 	jae	.Lin_prologue
 
 	mov	128+32(%rax),%rax	# pull saved stack pointer
-	lea	48(%rax),%rax
 
 	mov	-8(%rax),%rbx
 	mov	-16(%rax),%rbp
@@ -597,4 +616,4 @@ ___
 
 $code =~ s/\`([^\`]*)\`/eval $1/gem;
 print $code;
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

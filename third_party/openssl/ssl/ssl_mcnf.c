@@ -1,7 +1,7 @@
 /*
- * Copyright 2015-2018 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2015-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -10,18 +10,17 @@
 #include <stdio.h>
 #include <openssl/conf.h>
 #include <openssl/ssl.h>
-#include "ssl_locl.h"
+#include "ssl_local.h"
 #include "internal/sslconf.h"
 
 /* SSL library configuration module. */
 
 void SSL_add_ssl_module(void)
 {
-    /* Just load all of the crypto builtin modules. This includes the SSL one */
-    OPENSSL_load_builtin_modules();
+    /* Do nothing. This will be added automatically by libcrypto */
 }
 
-static int ssl_do_config(SSL *s, SSL_CTX *ctx, const char *name)
+static int ssl_do_config(SSL *s, SSL_CTX *ctx, const char *name, int system)
 {
     SSL_CONF_CTX *cctx = NULL;
     size_t i, idx, cmd_count;
@@ -29,14 +28,21 @@ static int ssl_do_config(SSL *s, SSL_CTX *ctx, const char *name)
     unsigned int flags;
     const SSL_METHOD *meth;
     const SSL_CONF_CMD *cmds;
+    OPENSSL_CTX *prev_libctx = NULL;
+    OPENSSL_CTX *libctx = NULL;
 
     if (s == NULL && ctx == NULL) {
         SSLerr(SSL_F_SSL_DO_CONFIG, ERR_R_PASSED_NULL_PARAMETER);
         goto err;
     }
+
+    if (name == NULL && system)
+        name = "system_default";
     if (!conf_ssl_name_find(name, &idx)) {
-        SSLerr(SSL_F_SSL_DO_CONFIG, SSL_R_INVALID_CONFIGURATION_NAME);
-        ERR_add_error_data(2, "name=", name);
+        if (!system) {
+            SSLerr(SSL_F_SSL_DO_CONFIG, SSL_R_INVALID_CONFIGURATION_NAME);
+            ERR_add_error_data(2, "name=", name);
+        }
         goto err;
     }
     cmds = conf_ssl_get(idx, &name, &cmd_count);
@@ -44,19 +50,23 @@ static int ssl_do_config(SSL *s, SSL_CTX *ctx, const char *name)
     if (cctx == NULL)
         goto err;
     flags = SSL_CONF_FLAG_FILE;
-    flags |= SSL_CONF_FLAG_CERTIFICATE | SSL_CONF_FLAG_REQUIRE_PRIVATE;
+    if (!system)
+        flags |= SSL_CONF_FLAG_CERTIFICATE | SSL_CONF_FLAG_REQUIRE_PRIVATE;
     if (s != NULL) {
         meth = s->method;
         SSL_CONF_CTX_set_ssl(cctx, s);
+        libctx = s->ctx->libctx;
     } else {
         meth = ctx->method;
         SSL_CONF_CTX_set_ssl_ctx(cctx, ctx);
+        libctx = ctx->libctx;
     }
     if (meth->ssl_accept != ssl_undefined_function)
         flags |= SSL_CONF_FLAG_SERVER;
     if (meth->ssl_connect != ssl_undefined_function)
         flags |= SSL_CONF_FLAG_CLIENT;
     SSL_CONF_CTX_set_flags(cctx, flags);
+    prev_libctx = OPENSSL_CTX_set0_default(libctx);
     for (i = 0; i < cmd_count; i++) {
         char *cmdstr, *arg;
 
@@ -74,16 +84,22 @@ static int ssl_do_config(SSL *s, SSL_CTX *ctx, const char *name)
     }
     rv = SSL_CONF_CTX_finish(cctx);
  err:
+    OPENSSL_CTX_set0_default(prev_libctx);
     SSL_CONF_CTX_free(cctx);
     return rv <= 0 ? 0 : 1;
 }
 
 int SSL_config(SSL *s, const char *name)
 {
-    return ssl_do_config(s, NULL, name);
+    return ssl_do_config(s, NULL, name, 0);
 }
 
 int SSL_CTX_config(SSL_CTX *ctx, const char *name)
 {
-    return ssl_do_config(NULL, ctx, name);
+    return ssl_do_config(NULL, ctx, name, 0);
+}
+
+void ssl_ctx_system_config(SSL_CTX *ctx)
+{
+    ssl_do_config(NULL, ctx, NULL, 1);
 }

@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>OSSL_CMP_MSG_http_perform</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>OSSL_CMP_MSG_http_perform - client-side HTTP(S) transfer of a CMP request-response pair</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/cmp.h&gt;
+
+ OSSL_CMP_MSG *OSSL_CMP_MSG_http_perform(OSSL_CMP_CTX *ctx,
+                                         const OSSL_CMP_MSG *req);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>OSSL_CMP_MSG_http_perform() sends the given PKIMessage <b>req</b> to the CMP server specified in <b>ctx</b> via <a href="../man3/OSSL_CMP_CTX_set1_server.html">OSSL_CMP_CTX_set1_server(3)</a> and optionally <a href="../man3/OSSL_CMP_CTX_set_serverPort.html">OSSL_CMP_CTX_set_serverPort(3)</a>, using any &quot;CMP alias&quot; optionally specified via <a href="../man3/OSSL_CMP_CTX_set1_serverPath.html">OSSL_CMP_CTX_set1_serverPath(3)</a>. The default port is 80 for HTTP and 443 for HTTPS; the default path is &quot;/&quot;. On success the function returns the server&#39;s response PKIMessage.</p>
+
+<p>The function makes use of any HTTP callback function set via <a href="../man3/OSSL_CMP_CTX_set_http_cb.html">OSSL_CMP_CTX_set_http_cb(3)</a>. It respects any timeout value set via <a href="../man3/OSSL_CMP_CTX_set_option.html">OSSL_CMP_CTX_set_option(3)</a> with an <b>OSSL_CMP_OPT_MSG_TIMEOUT</b> argument. It also respects any HTTP(S) proxy options set via <a href="../man3/OSSL_CMP_CTX_set1_proxy.html">OSSL_CMP_CTX_set1_proxy(3)</a> and <a href="../man3/OSSL_CMP_CTX_set1_no_proxy.html">OSSL_CMP_CTX_set1_no_proxy(3)</a> and the respective environment variables. Proxying plain HTTP is supported directly, while using a proxy for HTTPS connections requires a suitable callback function such as <a href="../man3/OSSL_HTTP_proxy_connect.html">OSSL_HTTP_proxy_connect(3)</a>.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>CMP is defined in RFC 4210. HTTP transfer for CMP is defined in RFC 6712.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>OSSL_CMP_MSG_http_perform() returns a CMP message on success, else NULL.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man3/OSSL_CMP_CTX_new.html">OSSL_CMP_CTX_new(3)</a>, <a href="../man3/OSSL_HTTP_proxy_connect.html">OSSL_HTTP_proxy_connect(3)</a>.</p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The OpenSSL CMP support was added in OpenSSL 3.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2007-2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

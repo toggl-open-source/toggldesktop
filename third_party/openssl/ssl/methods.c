@@ -1,15 +1,16 @@
 /*
  * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
 #include <stdio.h>
+#include <openssl/macros.h>
 #include <openssl/objects.h>
-#include "ssl_locl.h"
+#include "ssl_local.h"
 
 /*-
  * TLS/SSLv3 methods
@@ -19,6 +20,10 @@ IMPLEMENT_tls_meth_func(TLS_ANY_VERSION, 0, 0,
                         TLS_method,
                         ossl_statem_accept,
                         ossl_statem_connect, TLSv1_2_enc_data)
+IMPLEMENT_tls_meth_func(TLS1_3_VERSION, 0, SSL_OP_NO_TLSv1_3,
+                        tlsv1_3_method,
+                        ossl_statem_accept,
+                        ossl_statem_connect, TLSv1_3_enc_data)
 #ifndef OPENSSL_NO_TLS1_2_METHOD
 IMPLEMENT_tls_meth_func(TLS1_2_VERSION, 0, SSL_OP_NO_TLSv1_2,
                         tlsv1_2_method,
@@ -46,6 +51,10 @@ IMPLEMENT_tls_meth_func(TLS_ANY_VERSION, 0, 0,
                         TLS_server_method,
                         ossl_statem_accept,
                         ssl_undefined_function, TLSv1_2_enc_data)
+IMPLEMENT_tls_meth_func(TLS1_3_VERSION, 0, SSL_OP_NO_TLSv1_3,
+                        tlsv1_3_server_method,
+                        ossl_statem_accept,
+                        ssl_undefined_function, TLSv1_3_enc_data)
 #ifndef OPENSSL_NO_TLS1_2_METHOD
 IMPLEMENT_tls_meth_func(TLS1_2_VERSION, 0, SSL_OP_NO_TLSv1_2,
                         tlsv1_2_server_method,
@@ -75,6 +84,10 @@ IMPLEMENT_tls_meth_func(TLS_ANY_VERSION, 0, 0,
                         TLS_client_method,
                         ssl_undefined_function,
                         ossl_statem_connect, TLSv1_2_enc_data)
+IMPLEMENT_tls_meth_func(TLS1_3_VERSION, 0, SSL_OP_NO_TLSv1_3,
+                        tlsv1_3_client_method,
+                        ssl_undefined_function,
+                        ossl_statem_connect, TLSv1_3_enc_data)
 #ifndef OPENSSL_NO_TLS1_2_METHOD
 IMPLEMENT_tls_meth_func(TLS1_2_VERSION, 0, SSL_OP_NO_TLSv1_2,
                         tlsv1_2_client_method,
@@ -160,7 +173,7 @@ IMPLEMENT_dtls1_meth_func(DTLS_ANY_VERSION, 0, 0,
                           DTLS_client_method,
                           ssl_undefined_function,
                           ossl_statem_connect, DTLSv1_2_enc_data)
-#if OPENSSL_API_COMPAT < 0x10100000L
+#ifndef OPENSSL_NO_DEPRECATED_1_1_0
 # ifndef OPENSSL_NO_TLS1_2_METHOD
 const SSL_METHOD *TLSv1_2_method(void)
 {

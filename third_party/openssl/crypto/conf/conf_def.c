@@ -1,7 +1,7 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -11,14 +11,28 @@
 
 #include <stdio.h>
 #include <string.h>
+#ifdef __TANDEM
+# include <strings.h> /* strcasecmp */
+#endif
 #include "internal/cryptlib.h"
-#include <openssl/stack.h>
+#include "internal/o_dir.h"
 #include <openssl/lhash.h>
 #include <openssl/conf.h>
 #include <openssl/conf_api.h>
 #include "conf_def.h"
 #include <openssl/buffer.h>
 #include <openssl/err.h>
+#ifndef OPENSSL_NO_POSIX_IO
+# include <sys/stat.h>
+# ifdef _WIN32
+#  define stat    _stat
+#  define strcasecmp _stricmp
+# endif
+#endif
+
+#ifndef S_ISDIR
+# define S_ISDIR(a) (((a) & S_IFMT) == S_IFDIR)
+#endif
 
 /*
  * The maximum length we can grow a value to after variable expansion. 64k
@@ -26,17 +40,26 @@
  */
 #define MAX_CONF_VALUE_LENGTH       65536
 
+static int is_keytype(const CONF *conf, char c, unsigned short type);
 static char *eat_ws(CONF *conf, char *p);
+static void trim_ws(CONF *conf, char *start);
 static char *eat_alpha_numeric(CONF *conf, char *p);
 static void clear_comments(CONF *conf, char *p);
 static int str_copy(CONF *conf, char *section, char **to, char *from);
 static char *scan_quote(CONF *conf, char *p);
 static char *scan_dquote(CONF *conf, char *p);
 #define scan_esc(conf,p)        (((IS_EOF((conf),(p)[1]))?((p)+1):((p)+2)))
+#ifndef OPENSSL_NO_POSIX_IO
+static BIO *process_include(char *include, OPENSSL_DIR_CTX **dirctx,
+                            char **dirpath);
+static BIO *get_next_file(const char *path, OPENSSL_DIR_CTX **dirctx);
+#endif
 
 static CONF *def_create(CONF_METHOD *meth);
 static int def_init_default(CONF *conf);
+#ifndef OPENSSL_NO_DEPRECATED_3_0
 static int def_init_WIN32(CONF *conf);
+#endif
 static int def_destroy(CONF *conf);
 static int def_destroy_data(CONF *conf);
 static int def_load(CONF *conf, const char *name, long *eline);
@@ -58,6 +81,12 @@ static CONF_METHOD default_method = {
     def_load
 };
 
+CONF_METHOD *NCONF_default(void)
+{
+    return &default_method;
+}
+
+#ifndef OPENSSL_NO_DEPRECATED_3_0
 static CONF_METHOD WIN32_method = {
     "WIN32",
     def_create,
@@ -71,15 +100,11 @@ static CONF_METHOD WIN32_method = {
     def_load
 };
 
-CONF_METHOD *NCONF_default()
-{
-    return &default_method;
-}
-
-CONF_METHOD *NCONF_WIN32()
+CONF_METHOD *NCONF_WIN32(void)
 {
     return &WIN32_method;
 }
+#endif
 
 static CONF *def_create(CONF_METHOD *meth)
 {
@@ -99,24 +124,26 @@ static int def_init_default(CONF *conf)
     if (conf == NULL)
         return 0;
 
+    memset(conf, 0, sizeof(*conf));
     conf->meth = &default_method;
     conf->meth_data = (void *)CONF_type_default;
-    conf->data = NULL;
 
     return 1;
 }
 
+#ifndef OPENSSL_NO_DEPRECATED_3_0
 static int def_init_WIN32(CONF *conf)
 {
     if (conf == NULL)
         return 0;
 
+    memset(conf, 0, sizeof(*conf));
     conf->meth = &WIN32_method;
     conf->meth_data = (void *)CONF_type_win32;
-    conf->data = NULL;
 
     return 1;
 }
+#endif
 
 static int def_destroy(CONF *conf)
 {
@@ -174,6 +201,11 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
     char *section = NULL, *buf;
     char *start, *psection, *pname;
     void *h = (void *)(conf->data);
+    STACK_OF(BIO) *biosk = NULL;
+#ifndef OPENSSL_NO_POSIX_IO
+    char *dirpath = NULL;
+    OPENSSL_DIR_CTX *dirctx = NULL;
+#endif
 
     if ((buff = BUF_MEM_new()) == NULL) {
         CONFerr(CONF_F_DEF_LOAD_BIO, ERR_R_BUF_LIB);
@@ -206,11 +238,39 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
         }
         p = &(buff->data[bufnum]);
         *p = '\0';
+ read_retry:
         BIO_gets(in, p, CONFBUFSIZE - 1);
         p[CONFBUFSIZE - 1] = '\0';
         ii = i = strlen(p);
-        if (i == 0 && !again)
-            break;
+        if (i == 0 && !again) {
+            /* the currently processed BIO is at EOF */
+            BIO *parent;
+
+#ifndef OPENSSL_NO_POSIX_IO
+            /* continue processing with the next file from directory */
+            if (dirctx != NULL) {
+                BIO *next;
+
+                if ((next = get_next_file(dirpath, &dirctx)) != NULL) {
+                    BIO_vfree(in);
+                    in = next;
+                    goto read_retry;
+                } else {
+                    OPENSSL_free(dirpath);
+                    dirpath = NULL;
+                }
+            }
+#endif
+            /* no more files in directory, continue with processing parent */
+            if ((parent = sk_BIO_pop(biosk)) == NULL) {
+                /* everything processed get out of the loop */
+                break;
+            } else {
+                BIO_vfree(in);
+                in = parent;
+                goto read_retry;
+            }
+        }
         again = 0;
         while (i > 0) {
             if ((p[i - 1] != '\r') && (p[i - 1] != '\n'))
@@ -286,7 +346,6 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
             continue;
         } else {
             pname = s;
-            psection = NULL;
             end = eat_alpha_numeric(conf, s);
             if ((end[0] == ':') && (end[1] == ':')) {
                 *end = '\0';
@@ -294,36 +353,129 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
                 psection = pname;
                 pname = end;
                 end = eat_alpha_numeric(conf, end);
+            } else {
+                psection = section;
             }
             p = eat_ws(conf, end);
-            if (*p != '=') {
+            if (strncmp(pname, ".pragma", 7) == 0
+                && (p != pname + 7 || *p == '=')) {
+                char *pval;
+
+                if (*p == '=') {
+                    p++;
+                    p = eat_ws(conf, p);
+                }
+                trim_ws(conf, p);
+
+                /* Pragma values take the form keyword:value */
+                pval = strchr(p, ':');
+                if (pval == NULL || pval == p || pval[1] == '\0') {
+                    CONFerr(CONF_F_DEF_LOAD_BIO, CONF_R_INVALID_PRAGMA);
+                    goto err;
+                }
+
+                *pval++ = '\0';
+                trim_ws(conf, p);
+                pval = eat_ws(conf, pval);
+
+                /*
+                 * Known pragmas:
+                 *
+                 * dollarid     takes "on", "true or "off", "false"
+                 */
+                if (strcmp(p, "dollarid") == 0) {
+                    if (strcmp(pval, "on") == 0
+                        || strcmp(pval, "true") == 0) {
+                        conf->flag_dollarid = 1;
+                    } else if (strcmp(pval, "off") == 0
+                               || strcmp(pval, "false") == 0) {
+                        conf->flag_dollarid = 0;
+                    } else {
+                        CONFerr(CONF_F_DEF_LOAD_BIO, CONF_R_INVALID_PRAGMA);
+                        goto err;
+                    }
+                }
+                /*
+                 * We *ignore* any unknown pragma.
+                 */
+                continue;
+            } else if (strncmp(pname, ".include", 8) == 0
+                && (p != pname + 8 || *p == '=')) {
+                char *include = NULL;
+                BIO *next;
+                const char *include_dir = ossl_safe_getenv("OPENSSL_CONF_INCLUDE");
+                char *include_path = NULL;
+
+                if (*p == '=') {
+                    p++;
+                    p = eat_ws(conf, p);
+                }
+                trim_ws(conf, p);
+                if (!str_copy(conf, psection, &include, p))
+                    goto err;
+
+                if (include_dir != NULL) {
+                    size_t newlen = strlen(include_dir) + strlen(include) + 2;
+
+                    include_path = OPENSSL_malloc(newlen);
+                    OPENSSL_strlcpy(include_path, include_dir, newlen);
+                    OPENSSL_strlcat(include_path, "/", newlen);
+                    OPENSSL_strlcat(include_path, include, newlen);
+                    OPENSSL_free(include);
+                } else {
+                    include_path = include;
+                }
+
+                /* get the BIO of the included file */
+#ifndef OPENSSL_NO_POSIX_IO
+                next = process_include(include_path, &dirctx, &dirpath);
+                if (include_path != dirpath) {
+                    /* dirpath will contain include in case of a directory */
+                    OPENSSL_free(include_path);
+                }
+#else
+                next = BIO_new_file(include_path, "r");
+                OPENSSL_free(include_path);
+#endif
+
+                if (next != NULL) {
+                    /* push the currently processing BIO onto stack */
+                    if (biosk == NULL) {
+                        if ((biosk = sk_BIO_new_null()) == NULL) {
+                            CONFerr(CONF_F_DEF_LOAD_BIO, ERR_R_MALLOC_FAILURE);
+                            BIO_free(next);
+                            goto err;
+                        }
+                    }
+                    if (!sk_BIO_push(biosk, in)) {
+                        CONFerr(CONF_F_DEF_LOAD_BIO, ERR_R_MALLOC_FAILURE);
+                        BIO_free(next);
+                        goto err;
+                    }
+                    /* continue with reading from the included BIO */
+                    in = next;
+                }
+                continue;
+            } else if (*p != '=') {
                 CONFerr(CONF_F_DEF_LOAD_BIO, CONF_R_MISSING_EQUAL_SIGN);
+                ERR_add_error_data(2, "HERE-->", p);
                 goto err;
             }
             *end = '\0';
             p++;
             start = eat_ws(conf, p);
-            while (!IS_EOF(conf, *p))
-                p++;
-            p--;
-            while ((p != start) && (IS_WS(conf, *p)))
-                p--;
-            p++;
-            *p = '\0';
+            trim_ws(conf, start);
 
             if ((v = OPENSSL_malloc(sizeof(*v))) == NULL) {
                 CONFerr(CONF_F_DEF_LOAD_BIO, ERR_R_MALLOC_FAILURE);
                 goto err;
             }
-            if (psection == NULL)
-                psection = section;
-            v->name = OPENSSL_malloc(strlen(pname) + 1);
+            v->name = OPENSSL_strdup(pname);
             v->value = NULL;
             if (v->name == NULL) {
                 CONFerr(CONF_F_DEF_LOAD_BIO, ERR_R_MALLOC_FAILURE);
                 goto err;
             }
-            OPENSSL_strlcpy(v->name, pname, strlen(pname) + 1);
             if (!str_copy(conf, psection, &(v->value), start))
                 goto err;
 
@@ -347,10 +499,31 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
     }
     BUF_MEM_free(buff);
     OPENSSL_free(section);
-    return (1);
+    /*
+     * No need to pop, since we only get here if the stack is empty.
+     * If this causes a BIO leak, THE ISSUE IS SOMEWHERE ELSE!
+     */
+    sk_BIO_free(biosk);
+    return 1;
  err:
     BUF_MEM_free(buff);
     OPENSSL_free(section);
+    /*
+     * Since |in| is the first element of the stack and should NOT be freed
+     * here, we cannot use sk_BIO_pop_free().  Instead, we pop and free one
+     * BIO at a time, making sure that the last one popped isn't.
+     */
+    while (sk_BIO_num(biosk) > 0) {
+        BIO *popped = sk_BIO_pop(biosk);
+        BIO_vfree(in);
+        in = popped;
+    }
+    sk_BIO_free(biosk);
+#ifndef OPENSSL_NO_POSIX_IO
+    OPENSSL_free(dirpath);
+    if (dirctx != NULL)
+        OPENSSL_DIR_end(&dirctx);
+#endif
     if (line != NULL)
         *line = eline;
     BIO_snprintf(btmp, sizeof(btmp), "%ld", eline);
@@ -364,7 +537,7 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
         OPENSSL_free(v->value);
         OPENSSL_free(v);
     }
-    return (0);
+    return 0;
 }
 
 static void clear_comments(CONF *conf, char *p)
@@ -411,7 +584,7 @@ static int str_copy(CONF *conf, char *section, char **pto, char *from)
     BUF_MEM *buf;
 
     if ((buf = BUF_MEM_new()) == NULL)
-        return (0);
+        return 0;
 
     len = strlen(from) + 1;
     if (!BUF_MEM_grow(buf, len))
@@ -462,7 +635,10 @@ static int str_copy(CONF *conf, char *section, char **pto, char *from)
             buf->data[to++] = v;
         } else if (IS_EOF(conf, *from))
             break;
-        else if (*from == '$') {
+        else if (*from == '$'
+                 && (!conf->flag_dollarid
+                     || from[1] == '{'
+                     || from[1] == '(')) {
             size_t newsize;
 
             /* try to expand it */
@@ -479,7 +655,8 @@ static int str_copy(CONF *conf, char *section, char **pto, char *from)
                 s++;
             cp = section;
             e = np = s;
-            while (IS_ALPHA_NUMERIC(conf, *e))
+            while (IS_ALNUM(conf, *e)
+                   || (conf->flag_dollarid && IS_DOLLAR(conf, *e)))
                 e++;
             if ((e[0] == ':') && (e[1] == ':')) {
                 cp = np;
@@ -488,7 +665,8 @@ static int str_copy(CONF *conf, char *section, char **pto, char *from)
                 *rrp = '\0';
                 e += 2;
                 np = e;
-                while (IS_ALPHA_NUMERIC(conf, *e))
+                while (IS_ALNUM(conf, *e)
+                       || (conf->flag_dollarid && IS_DOLLAR(conf, *e)))
                     e++;
             }
             r = *e;
@@ -551,17 +729,150 @@ static int str_copy(CONF *conf, char *section, char **pto, char *from)
     OPENSSL_free(*pto);
     *pto = buf->data;
     OPENSSL_free(buf);
-    return (1);
+    return 1;
  err:
     BUF_MEM_free(buf);
-    return (0);
+    return 0;
+}
+
+#ifndef OPENSSL_NO_POSIX_IO
+/*
+ * Check whether included path is a directory.
+ * Returns next BIO to process and in case of a directory
+ * also an opened directory context and the include path.
+ */
+static BIO *process_include(char *include, OPENSSL_DIR_CTX **dirctx,
+                            char **dirpath)
+{
+    struct stat st;
+    BIO *next;
+
+    if (stat(include, &st) < 0) {
+        ERR_raise_data(ERR_LIB_SYS, errno,
+                       "calling stat(%s)",
+                       include);
+        /* missing include file is not fatal error */
+        return NULL;
+    }
+
+    if (S_ISDIR(st.st_mode)) {
+        if (*dirctx != NULL) {
+            CONFerr(CONF_F_PROCESS_INCLUDE,
+                    CONF_R_RECURSIVE_DIRECTORY_INCLUDE);
+            ERR_add_error_data(1, include);
+            return NULL;
+        }
+        /* a directory, load its contents */
+        if ((next = get_next_file(include, dirctx)) != NULL)
+            *dirpath = include;
+        return next;
+    }
+
+    next = BIO_new_file(include, "r");
+    return next;
+}
+
+/*
+ * Get next file from the directory path.
+ * Returns BIO of the next file to read and updates dirctx.
+ */
+static BIO *get_next_file(const char *path, OPENSSL_DIR_CTX **dirctx)
+{
+    const char *filename;
+    size_t pathlen;
+
+    pathlen = strlen(path);
+    while ((filename = OPENSSL_DIR_read(dirctx, path)) != NULL) {
+        size_t namelen;
+
+        namelen = strlen(filename);
+
+
+        if ((namelen > 5 && strcasecmp(filename + namelen - 5, ".conf") == 0)
+            || (namelen > 4 && strcasecmp(filename + namelen - 4, ".cnf") == 0)) {
+            size_t newlen;
+            char *newpath;
+            BIO *bio;
+
+            newlen = pathlen + namelen + 2;
+            newpath = OPENSSL_zalloc(newlen);
+            if (newpath == NULL) {
+                CONFerr(CONF_F_GET_NEXT_FILE, ERR_R_MALLOC_FAILURE);
+                break;
+            }
+#ifdef OPENSSL_SYS_VMS
+            /*
+             * If the given path isn't clear VMS syntax,
+             * we treat it as on Unix.
+             */
+            if (path[pathlen - 1] == ']'
+                || path[pathlen - 1] == '>'
+                || path[pathlen - 1] == ':') {
+                /* Clear VMS directory syntax, just copy as is */
+                OPENSSL_strlcpy(newpath, path, newlen);
+            }
+#endif
+            if (newpath[0] == '\0') {
+                OPENSSL_strlcpy(newpath, path, newlen);
+                OPENSSL_strlcat(newpath, "/", newlen);
+            }
+            OPENSSL_strlcat(newpath, filename, newlen);
+
+            bio = BIO_new_file(newpath, "r");
+            OPENSSL_free(newpath);
+            /* Errors when opening files are non-fatal. */
+            if (bio != NULL)
+                return bio;
+        }
+    }
+    OPENSSL_DIR_end(dirctx);
+    *dirctx = NULL;
+    return NULL;
+}
+#endif
+
+static int is_keytype(const CONF *conf, char c, unsigned short type)
+{
+    const unsigned short * keytypes = (const unsigned short *) conf->meth_data;
+    unsigned char key = (unsigned char)c;
+
+#ifdef CHARSET_EBCDIC
+# if CHAR_BIT > 8
+    if (key > 255) {
+        /* key is out of range for os_toascii table */
+        return 0;
+    }
+# endif
+    /* convert key from ebcdic to ascii */
+    key = os_toascii[key];
+#endif
+
+    if (key > 127) {
+        /* key is not a seven bit ascii character */
+        return 0;
+    }
+
+    return (keytypes[key] & type) ? 1 : 0;
 }
 
 static char *eat_ws(CONF *conf, char *p)
 {
     while (IS_WS(conf, *p) && (!IS_EOF(conf, *p)))
         p++;
-    return (p);
+    return p;
+}
+
+static void trim_ws(CONF *conf, char *start)
+{
+    char *p = start;
+
+    while (!IS_EOF(conf, *p))
+        p++;
+    p--;
+    while ((p >= start) && IS_WS(conf, *p))
+        p--;
+    p++;
+    *p = '\0';
 }
 
 static char *eat_alpha_numeric(CONF *conf, char *p)
@@ -571,8 +882,9 @@ static char *eat_alpha_numeric(CONF *conf, char *p)
             p = scan_esc(conf, p);
             continue;
         }
-        if (!IS_ALPHA_NUMERIC_PUNCT(conf, *p))
-            return (p);
+        if (!(IS_ALNUM_PUNCT(conf, *p)
+              || (conf->flag_dollarid && IS_DOLLAR(conf, *p))))
+            return p;
         p++;
     }
 }
@@ -586,13 +898,13 @@ static char *scan_quote(CONF *conf, char *p)
         if (IS_ESC(conf, *p)) {
             p++;
             if (IS_EOF(conf, *p))
-                return (p);
+                return p;
         }
         p++;
     }
     if (*p == q)
         p++;
-    return (p);
+    return p;
 }
 
 static char *scan_dquote(CONF *conf, char *p)
@@ -612,7 +924,7 @@ static char *scan_dquote(CONF *conf, char *p)
     }
     if (*p == q)
         p++;
-    return (p);
+    return p;
 }
 
 static void dump_value_doall_arg(const CONF_VALUE *a, BIO *out)

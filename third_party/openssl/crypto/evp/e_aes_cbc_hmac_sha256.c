@@ -1,26 +1,32 @@
 /*
- * Copyright 2013-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2013-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
 
-#include <openssl/opensslconf.h>
+/*
+ * AES low level APIs are deprecated for public use, but still ok for internal
+ * use where we're using them to implement the higher level EVP interface, as is
+ * the case here.
+ */
+#include "internal/deprecated.h"
 
 #include <stdio.h>
 #include <string.h>
-
-
+#include <openssl/opensslconf.h>
 #include <openssl/evp.h>
 #include <openssl/objects.h>
 #include <openssl/aes.h>
 #include <openssl/sha.h>
 #include <openssl/rand.h>
-#include "modes_lcl.h"
-#include "internal/constant_time_locl.h"
-#include "internal/evp_int.h"
+#include "internal/cryptlib.h"
+#include "crypto/modes.h"
+#include "internal/constant_time.h"
+#include "crypto/evp.h"
+#include "evp_local.h"
 
 typedef struct {
     AES_KEY ks;
@@ -38,7 +44,6 @@ typedef struct {
         defined(__x86_64)       || defined(__x86_64__)  || \
         defined(_M_AMD64)       || defined(_M_X64)      )
 
-extern unsigned int OPENSSL_ia32cap_P[];
 # define AESNI_CAPABLE   (1<<(57-32))
 
 int aesni_set_encrypt_key(const unsigned char *userKey, int bits,
@@ -464,8 +469,7 @@ static int aesni_cbc_hmac_sha256_cipher(EVP_CIPHER_CTX *ctx,
             SHA256_Update(&key->md, in + iv, sha_off);
 
             (void)aesni_cbc_sha256_enc(in, out, blocks, &key->ks,
-                                       EVP_CIPHER_CTX_iv_noconst(ctx),
-                                       &key->md, in + iv + sha_off);
+                                       ctx->iv, &key->md, in + iv + sha_off);
             blocks *= SHA256_CBLOCK;
             aes_off += blocks;
             sha_off += blocks;
@@ -496,10 +500,10 @@ static int aesni_cbc_hmac_sha256_cipher(EVP_CIPHER_CTX *ctx,
                 out[plen] = l;
             /* encrypt HMAC|padding at once */
             aesni_cbc_encrypt(out + aes_off, out + aes_off, len - aes_off,
-                              &key->ks, EVP_CIPHER_CTX_iv_noconst(ctx), 1);
+                              &key->ks, ctx->iv, 1);
         } else {
             aesni_cbc_encrypt(in + aes_off, out + aes_off, len - aes_off,
-                              &key->ks, EVP_CIPHER_CTX_iv_noconst(ctx), 1);
+                              &key->ks, ctx->iv, 1);
         }
     } else {
         union {
@@ -512,7 +516,7 @@ static int aesni_cbc_hmac_sha256_cipher(EVP_CIPHER_CTX *ctx,
 
         /* decrypt HMAC|padding at once */
         aesni_cbc_encrypt(in, out, len, &key->ks,
-                          EVP_CIPHER_CTX_iv_noconst(ctx), 0);
+                          ctx->iv, 0);
 
         if (plen != NO_PAYLOAD_LENGTH) { /* "TLS" mode of operation */
             size_t inp_len, mask, j, i;
@@ -559,7 +563,7 @@ static int aesni_cbc_hmac_sha256_cipher(EVP_CIPHER_CTX *ctx,
             key->md = key->head;
             SHA256_Update(&key->md, key->aux.tls_aad, plen);
 
-# if 1
+# if 1      /* see original reference version in #else */
             len -= SHA256_DIGEST_LENGTH; /* amend mac */
             if (len >= (256 + SHA256_CBLOCK)) {
                 j = (len - (256 + SHA256_CBLOCK)) & (0 - SHA256_CBLOCK);
@@ -687,7 +691,7 @@ static int aesni_cbc_hmac_sha256_cipher(EVP_CIPHER_CTX *ctx,
                 for (; inp_blocks < pad_blocks; inp_blocks++)
                     sha1_block_data_order(&key->md, data, 1);
             }
-# endif
+# endif      /* pre-lucky-13 reference version of above */
             key->md = key->tail;
             SHA256_Update(&key->md, pmac->c, SHA256_DIGEST_LENGTH);
             SHA256_Final(pmac->c, &key->md);
@@ -695,7 +699,7 @@ static int aesni_cbc_hmac_sha256_cipher(EVP_CIPHER_CTX *ctx,
             /* verify HMAC */
             out += inp_len;
             len -= inp_len;
-# if 1
+# if 1      /* see original reference version in #else */
             {
                 unsigned char *p =
                     out + len - 1 - maxpad - SHA256_DIGEST_LENGTH;
@@ -718,7 +722,7 @@ static int aesni_cbc_hmac_sha256_cipher(EVP_CIPHER_CTX *ctx,
                 res = 0 - ((0 - res) >> (sizeof(res) * 8 - 1));
                 ret &= (int)~res;
             }
-# else
+# else      /* pre-lucky-13 reference version of above */
             for (res = 0, i = 0; i < SHA256_DIGEST_LENGTH; i++)
                 res |= out[i] ^ pmac->c[i];
             res = 0 - ((0 - res) >> (sizeof(res) * 8 - 1));

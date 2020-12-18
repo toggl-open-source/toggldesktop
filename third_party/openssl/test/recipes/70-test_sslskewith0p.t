@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
 # Copyright 2015-2018 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -41,6 +41,7 @@ my $proxy = TLSProxy::Proxy->new(
 $proxy->cipherc('ADH-AES128-SHA:@SECLEVEL=0');
 $proxy->ciphers('ADH-AES128-SHA:@SECLEVEL=0');
 
+$proxy->clientflags("-no_tls1_3");
 $proxy->start() or plan skip_all => "Unable to start up Proxy for tests";
 plan tests => 1;
 ok(TLSProxy::Message->fail, "ServerKeyExchange with 0 p");

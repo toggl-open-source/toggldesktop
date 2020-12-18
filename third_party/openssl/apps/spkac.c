@@ -1,7 +1,7 @@
 /*
- * Copyright 1999-2017 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1999-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -12,11 +12,11 @@
 #include <string.h>
 #include <time.h>
 #include "apps.h"
+#include "progs.h"
 #include <openssl/bio.h>
 #include <openssl/conf.h>
 #include <openssl/err.h>
 #include <openssl/evp.h>
-#include <openssl/lhash.h>
 #include <openssl/x509.h>
 #include <openssl/pem.h>
 
@@ -24,25 +24,34 @@ typedef enum OPTION_choice {
     OPT_ERR = -1, OPT_EOF = 0, OPT_HELP,
     OPT_NOOUT, OPT_PUBKEY, OPT_VERIFY, OPT_IN, OPT_OUT,
     OPT_ENGINE, OPT_KEY, OPT_CHALLENGE, OPT_PASSIN, OPT_SPKAC,
-    OPT_SPKSECT
+    OPT_SPKSECT, OPT_KEYFORM,
+    OPT_PROV_ENUM
 } OPTION_CHOICE;
 
-OPTIONS spkac_options[] = {
+const OPTIONS spkac_options[] = {
+    OPT_SECTION("General"),
     {"help", OPT_HELP, '-', "Display this summary"},
-    {"in", OPT_IN, '<', "Input file"},
-    {"out", OPT_OUT, '>', "Output file"},
-    {"key", OPT_KEY, '<', "Create SPKAC using private key"},
-    {"passin", OPT_PASSIN, 's', "Input file pass phrase source"},
-    {"challenge", OPT_CHALLENGE, 's', "Challenge string"},
-    {"spkac", OPT_SPKAC, 's', "Alternative SPKAC name"},
-    {"noout", OPT_NOOUT, '-', "Don't print SPKAC"},
-    {"pubkey", OPT_PUBKEY, '-', "Output public key"},
-    {"verify", OPT_VERIFY, '-', "Verify SPKAC signature"},
     {"spksect", OPT_SPKSECT, 's',
      "Specify the name of an SPKAC-dedicated section of configuration"},
 #ifndef OPENSSL_NO_ENGINE
     {"engine", OPT_ENGINE, 's', "Use engine, possibly a hardware device"},
 #endif
+
+    OPT_SECTION("Input"),
+    {"in", OPT_IN, '<', "Input file"},
+    {"key", OPT_KEY, '<', "Create SPKAC using private key"},
+    {"keyform", OPT_KEYFORM, 'f', "Private key file format (ENGINE, other values ignored)"},
+    {"passin", OPT_PASSIN, 's', "Input file pass phrase source"},
+    {"challenge", OPT_CHALLENGE, 's', "Challenge string"},
+    {"spkac", OPT_SPKAC, 's', "Alternative SPKAC name"},
+
+    OPT_SECTION("Output"),
+    {"out", OPT_OUT, '>', "Output file"},
+    {"noout", OPT_NOOUT, '-', "Don't print SPKAC"},
+    {"pubkey", OPT_PUBKEY, '-', "Output public key"},
+    {"verify", OPT_VERIFY, '-', "Verify SPKAC signature"},
+
+    OPT_PROV_OPTIONS,
     {NULL}
 };
 
@@ -58,6 +67,7 @@ int spkac_main(int argc, char **argv)
     char *spkstr = NULL, *prog;
     const char *spkac = "SPKAC", *spksect = "default";
     int i, ret = 1, verify = 0, noout = 0, pubkey = 0;
+    int keyformat = FORMAT_PEM;
     OPTION_CHOICE o;
 
     prog = opt_init(argc, argv, spkac_options);
@@ -93,6 +103,10 @@ int spkac_main(int argc, char **argv)
         case OPT_KEY:
             keyfile = opt_arg();
             break;
+        case OPT_KEYFORM:
+            if (!opt_format(opt_arg(), OPT_FMT_ANY, &keyformat))
+                goto opthelp;
+            break;
         case OPT_CHALLENGE:
             challenge = opt_arg();
             break;
@@ -104,6 +118,10 @@ int spkac_main(int argc, char **argv)
             break;
         case OPT_ENGINE:
             e = setup_engine(opt_arg(), 0);
+            break;
+        case OPT_PROV_CASES:
+            if (!opt_provider(o))
+                goto end;
             break;
         }
     }
@@ -118,7 +136,7 @@ int spkac_main(int argc, char **argv)
 
     if (keyfile != NULL) {
         pkey = load_key(strcmp(keyfile, "-") ? keyfile : NULL,
-                        FORMAT_PEM, 1, passin, e, "private key");
+                        keyformat, 1, passin, e, "private key");
         if (pkey == NULL)
             goto end;
         spki = NETSCAPE_SPKI_new();
@@ -127,8 +145,15 @@ int spkac_main(int argc, char **argv)
         if (challenge != NULL)
             ASN1_STRING_set(spki->spkac->challenge,
                             challenge, (int)strlen(challenge));
-        NETSCAPE_SPKI_set_pubkey(spki, pkey);
-        NETSCAPE_SPKI_sign(spki, pkey, EVP_md5());
+        if (!NETSCAPE_SPKI_set_pubkey(spki, pkey)) {
+            BIO_printf(bio_err, "Error setting public key\n");
+            goto end;
+        }
+        i = NETSCAPE_SPKI_sign(spki, pkey, EVP_md5());
+        if (i <= 0) {
+            BIO_printf(bio_err, "Error signing SPKAC\n");
+            goto end;
+        }
         spkstr = NETSCAPE_SPKI_b64_encode(spki);
         if (spkstr == NULL)
             goto end;
@@ -192,5 +217,5 @@ int spkac_main(int argc, char **argv)
     EVP_PKEY_free(pkey);
     release_engine(e);
     OPENSSL_free(passin);
-    return (ret);
+    return ret;
 }

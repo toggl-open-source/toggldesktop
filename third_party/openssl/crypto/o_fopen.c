@@ -1,7 +1,7 @@
 /*
  * Copyright 2016-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -25,11 +25,15 @@
 #  endif
 # endif
 
+#include "e_os.h"
 #include "internal/cryptlib.h"
 
 #if !defined(OPENSSL_NO_STDIO)
 
 # include <stdio.h>
+# ifdef __DJGPP__
+#  include <unistd.h>
+# endif
 
 FILE *openssl_fopen(const char *filename, const char *mode)
 {
@@ -79,13 +83,14 @@ FILE *openssl_fopen(const char *filename, const char *mode)
     {
         char *newname = NULL;
 
-        if (!HAS_LFN_SUPPORT(filename)) {
+        if (pathconf(filename, _PC_NAME_MAX) <= 12) {  /* 8.3 file system? */
             char *iterator;
             char lastchar;
 
-            newname = OPENSSL_malloc(strlen(filename) + 1);
-            if (newname == NULL)
+            if ((newname = OPENSSL_malloc(strlen(filename) + 1)) == NULL) {
+                CRYPTOerr(CRYPTO_F_OPENSSL_FOPEN, ERR_R_MALLOC_FAILURE);
                 return NULL;
+            }
 
             for (iterator = newname, lastchar = '\0';
                 *filename; filename++, iterator++) {

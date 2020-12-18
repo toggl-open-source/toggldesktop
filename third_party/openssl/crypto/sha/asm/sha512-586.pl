@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2007-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2007-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -32,6 +32,7 @@
 # Sandy Bridge	58	-	35	11.9	11.2
 # Ivy Bridge	50	-	33	11.5	8.17
 # Haswell	46	-	29	11.3	7.66
+# Skylake	40	-	26	13.3	7.25
 # Bulldozer	121	-	50	14.0	13.5
 # VIA Nano	91	-	52	33	14.7
 # Atom		126	-	68	48(***)	14.7
@@ -41,7 +42,7 @@
 # (*)	whichever best applicable.
 # (**)	x86_64 assembler performance is presented for reference
 #	purposes, the results are for integer-only code.
-# (***)	paddq is increadibly slow on Atom.
+# (***)	paddq is incredibly slow on Atom.
 #
 # IALU code-path is optimized for elder Pentiums. On vanilla Pentium
 # performance improvement over compiler generated code reaches ~60%,
@@ -58,10 +59,9 @@ $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
 push(@INC,"${dir}","${dir}../../perlasm");
 require "x86asm.pl";
 
-$output=pop;
-open STDOUT,">$output";
+$output=pop and open STDOUT,">$output";
 
-&asm_init($ARGV[0],"sha512-586.pl",$ARGV[$#ARGV] eq "386");
+&asm_init($ARGV[0],$ARGV[$#ARGV] eq "386");
 
 $sse2=0;
 for (@ARGV) { $sse2=1 if (/-DOPENSSL_IA32_SSE2/); }
@@ -384,7 +384,7 @@ if ($sse2) {
 
 &set_label("16_79_sse2",16);
     for ($j=0;$j<2;$j++) {			# 2x unroll
-	#&movq	("mm7",&QWP(8*(9+16-1),"esp"));	# prefetched in BODY_00_15 
+	#&movq	("mm7",&QWP(8*(9+16-1),"esp"));	# prefetched in BODY_00_15
 	&movq	("mm5",&QWP(8*(9+16-14),"esp"));
 	&movq	("mm1","mm7");
 	&psrlq	("mm7",1);
@@ -921,4 +921,4 @@ sub BODY_00_15_ssse3 {		# "phase-less" copy of BODY_00_15_sse2
 
 &asm_finish();
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

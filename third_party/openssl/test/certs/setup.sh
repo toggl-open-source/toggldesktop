@@ -154,7 +154,7 @@ openssl x509 -in sca-cert.pem -trustout \
     -addtrust anyExtendedKeyUsage -out sca+anyEKU.pem
 
 # Primary leaf cert: ee-cert
-# ee variants: expired, issuer-key2, issuer-name2
+# ee variants: expired, issuer-key2, issuer-name2, bad-pathlen
 # trust variants: +serverAuth, -serverAuth, +clientAuth, -clientAuth
 # purpose variants: client
 #
@@ -163,6 +163,8 @@ openssl x509 -in sca-cert.pem -trustout \
 ./mkcert.sh genee server.example ee-key ee-cert2 ca-key2 ca-cert2
 ./mkcert.sh genee server.example ee-key ee-name2 ca-key ca-name2
 ./mkcert.sh genee -p clientAuth server.example ee-key ee-client ca-key ca-cert
+./mkcert.sh genee server.example ee-key ee-pathlen ca-key ca-cert \
+    -extfile <(echo "basicConstraints=CA:FALSE,pathlen:0")
 #
 openssl x509 -in ee-cert.pem -trustout \
     -addtrust serverAuth -out ee+serverAuth.pem
@@ -182,6 +184,9 @@ OPENSSL_SIGALG=md5 \
 # 768-bit leaf key
 OPENSSL_KEYBITS=768 \
 ./mkcert.sh genee server.example ee-key-768 ee-cert-768 ca-key ca-cert
+
+# self-signed end-entity cert with explicit keyUsage not including KeyCertSign
+openssl req -new -x509 -key ee-key.pem -subj /CN=ee-self-signed -out ee-self-signed.pem -addext keyUsage=digitalSignature -days 36500
 
 # Proxy certificates, off of ee-client
 # Start with some good ones
@@ -357,3 +362,29 @@ REQMASK=MASK:0x800 ./mkcert.sh req badalt7-key "O = Bad NC Test Certificate 7" \
     "DNS.1 = www.ok.good.com" "DNS.2 = bad.ok.good.com" \
     "email.1 = good@good.org" "email.2 = any@good.com" \
     "IP = 127.0.0.1" "IP = 192.168.0.1"
+
+# RSA-PSS signatures
+# SHA1
+./mkcert.sh genee PSS-SHA1 ee-key ee-pss-sha1-cert ca-key ca-cert \
+    -sha1 -sigopt rsa_padding_mode:pss -sigopt rsa_pss_saltlen:digest
+# SHA256
+./mkcert.sh genee PSS-SHA256 ee-key ee-pss-sha256-cert ca-key ca-cert \
+    -sha256 -sigopt rsa_padding_mode:pss -sigopt rsa_pss_saltlen:digest
+
+OPENSSL_KEYALG=ec OPENSSL_KEYBITS=brainpoolP256r1 ./mkcert.sh genee \
+    "Server ECDSA brainpoolP256r1 cert" server-ecdsa-brainpoolP256r1-key \
+    server-ecdsa-brainpoolP256r1-cert rootkey rootcert
+
+openssl req -new -noenc -subj "/CN=localhost" \
+    -newkey rsa-pss -keyout server-pss-restrict-key.pem \
+    -pkeyopt rsa_pss_keygen_md:sha256 -pkeyopt rsa_pss_keygen_saltlen:32 | \
+    ./mkcert.sh geneenocsr "Server RSA-PSS restricted cert" \
+    server-pss-restrict-cert rootkey rootcert
+
+# CT entry
+./mkcert.sh genct server.example embeddedSCTs1-key embeddedSCTs1 embeddedSCTs1_issuer-key embeddedSCTs1_issuer ct-server-key
+
+OPENSSL_SIGALG=ED448 OPENSSL_KEYALG=ed448 ./mkcert.sh genroot "Root Ed448" \
+    root-ed448-key root-ed448-cert
+OPENSSL_SIGALG=ED448 OPENSSL_KEYALG=ed448 ./mkcert.sh genee ed448 \
+    server-ed448-key server-ed448-cert root-ed448-key root-ed448-cert

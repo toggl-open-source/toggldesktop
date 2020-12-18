@@ -1,7 +1,7 @@
 /*
- * Copyright 2000-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2000-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
@@ -13,7 +13,7 @@
 #include <openssl/err.h>
 #include <openssl/asn1t.h>
 #include <string.h>
-#include "asn1_locl.h"
+#include "asn1_local.h"
 
 static int asn1_item_embed_new(ASN1_VALUE **pval, const ASN1_ITEM *it,
                                int embed);
@@ -52,10 +52,6 @@ int asn1_item_embed_new(ASN1_VALUE **pval, const ASN1_ITEM *it, int embed)
     else
         asn1_cb = 0;
 
-#ifndef OPENSSL_NO_CRYPTO_MDEBUG
-    OPENSSL_mem_debug_push(it->sname ? it->sname : "asn1_item_embed_new");
-#endif
-
     switch (it->itype) {
 
     case ASN1_ITYPE_EXTERN:
@@ -85,9 +81,6 @@ int asn1_item_embed_new(ASN1_VALUE **pval, const ASN1_ITEM *it, int embed)
             if (!i)
                 goto auxerr;
             if (i == 2) {
-#ifndef OPENSSL_NO_CRYPTO_MDEBUG
-                OPENSSL_mem_debug_pop();
-#endif
                 return 1;
             }
         }
@@ -110,9 +103,6 @@ int asn1_item_embed_new(ASN1_VALUE **pval, const ASN1_ITEM *it, int embed)
             if (!i)
                 goto auxerr;
             if (i == 2) {
-#ifndef OPENSSL_NO_CRYPTO_MDEBUG
-                OPENSSL_mem_debug_pop();
-#endif
                 return 1;
             }
         }
@@ -141,27 +131,18 @@ int asn1_item_embed_new(ASN1_VALUE **pval, const ASN1_ITEM *it, int embed)
             goto auxerr2;
         break;
     }
-#ifndef OPENSSL_NO_CRYPTO_MDEBUG
-    OPENSSL_mem_debug_pop();
-#endif
     return 1;
 
  memerr2:
     asn1_item_embed_free(pval, it, embed);
  memerr:
     ASN1err(ASN1_F_ASN1_ITEM_EMBED_NEW, ERR_R_MALLOC_FAILURE);
-#ifndef OPENSSL_NO_CRYPTO_MDEBUG
-    OPENSSL_mem_debug_pop();
-#endif
     return 0;
 
  auxerr2:
     asn1_item_embed_free(pval, it, embed);
  auxerr:
     ASN1err(ASN1_F_ASN1_ITEM_EMBED_NEW, ASN1_R_AUX_ERROR);
-#ifndef OPENSSL_NO_CRYPTO_MDEBUG
-    OPENSSL_mem_debug_pop();
-#endif
     return 0;
 
 }
@@ -219,10 +200,6 @@ static int asn1_template_new(ASN1_VALUE **pval, const ASN1_TEMPLATE *tt)
         *pval = NULL;
         return 1;
     }
-#ifndef OPENSSL_NO_CRYPTO_MDEBUG
-    OPENSSL_mem_debug_push(tt->field_name
-            ? tt->field_name : "asn1_template_new");
-#endif
     /* If SET OF or SEQUENCE OF, its a STACK */
     if (tt->flags & ASN1_TFLG_SK_MASK) {
         STACK_OF(ASN1_VALUE) *skval;
@@ -239,9 +216,6 @@ static int asn1_template_new(ASN1_VALUE **pval, const ASN1_TEMPLATE *tt)
     /* Otherwise pass it back to the item routine */
     ret = asn1_item_embed_new(pval, it, embed);
  done:
-#ifndef OPENSSL_NO_CRYPTO_MDEBUG
-    OPENSSL_mem_debug_pop();
-#endif
     return ret;
 }
 
@@ -299,9 +273,10 @@ static int asn1_primitive_new(ASN1_VALUE **pval, const ASN1_ITEM *it,
         return 1;
 
     case V_ASN1_ANY:
-        typ = OPENSSL_malloc(sizeof(*typ));
-        if (typ == NULL)
+        if ((typ = OPENSSL_malloc(sizeof(*typ))) == NULL) {
+            ASN1err(ASN1_F_ASN1_PRIMITIVE_NEW, ERR_R_MALLOC_FAILURE);
             return 0;
+        }
         typ->value.ptr = NULL;
         typ->type = -1;
         *pval = (ASN1_VALUE *)typ;

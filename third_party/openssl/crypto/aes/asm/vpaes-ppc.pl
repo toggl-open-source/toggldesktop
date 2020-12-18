@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2013-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2013-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -35,7 +35,10 @@
 # (**)	Inadequate POWER6 performance is due to astronomic AltiVec
 #	latency, 9 cycles per simple logical operation.
 
-$flavour = shift;
+# $output is the last argument if it looks like a file (it has an extension)
+# $flavour is the first argument if it doesn't look like a file
+$output = $#ARGV >= 0 && $ARGV[$#ARGV] =~ m|\.\w+$| ? pop : undef;
+$flavour = $#ARGV >= 0 && $ARGV[0] !~ m|\.| ? shift : undef;
 
 if ($flavour =~ /64/) {
 	$SIZE_T	=8;
@@ -61,7 +64,8 @@ $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
 ( $xlate="${dir}../../perlasm/ppc-xlate.pl" and -f $xlate) or
 die "can't locate ppc-xlate.pl";
 
-open STDOUT,"| $^X $xlate $flavour ".shift || die "can't call $xlate: $!";
+open STDOUT,"| $^X $xlate $flavour \"$output\""
+    || die "can't call $xlate: $!";
 
 $code.=<<___;
 .machine	"any"
@@ -1075,7 +1079,7 @@ Loop_schedule_256:
 	# high round
 	bl	_vpaes_schedule_round
 	bdz 	Lschedule_mangle_last	# dec	%esi
-	bl	_vpaes_schedule_mangle	
+	bl	_vpaes_schedule_mangle
 
 	# low round. swap xmm7 and xmm6
 	?vspltw	v0, v0, 3		# vpshufd	\$0xFF,	%xmm0,	%xmm0
@@ -1083,7 +1087,7 @@ Loop_schedule_256:
 	vmr	v7, v6			# vmovdqa	%xmm6,	%xmm7
 	bl	_vpaes_schedule_low_round
 	vmr	v7, v5			# vmovdqa	%xmm5,	%xmm7
-	
+
 	b	Loop_schedule_256
 ##
 ##  .aes_schedule_mangle_last
@@ -1131,7 +1135,7 @@ Lschedule_mangle_last:
 Lschedule_mangle_last_dec:
 	lvx	$iptlo, r11, r12	# reload $ipt
 	lvx	$ipthi, r9,  r12
-	addi	$out, $out, -16		# add	\$-16,	%rdx 
+	addi	$out, $out, -16		# add	\$-16,	%rdx
 	vxor	v0, v0, v26		# vpxor	.Lk_s63(%rip),	%xmm0,	%xmm0
 	bl	_vpaes_schedule_transform	# output transform
 
@@ -1566,7 +1570,7 @@ foreach  (split("\n",$code)) {
 	    if ($flavour =~ /le$/o) {
 		SWITCH: for($conv)  {
 		    /\?inv/ && do   { @bytes=map($_^0xf,@bytes); last; };
-		    /\?rev/ && do   { @bytes=reverse(@bytes);    last; }; 
+		    /\?rev/ && do   { @bytes=reverse(@bytes);    last; };
 		}
 	    }
 
@@ -1591,4 +1595,4 @@ foreach  (split("\n",$code)) {
 	print $_,"\n";
 }
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

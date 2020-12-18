@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2010-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2010-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -156,7 +156,7 @@ $code.=<<___;
 ___
 
 ######################################################################
-# "528B" (well, "512B" actualy) streamed GHASH
+# "528B" (well, "512B" actually) streamed GHASH
 #
 $Xip="in0";
 $Htbl="in1";
@@ -467,4 +467,4 @@ $code =~ s/mux1(\s+)\S+\@rev/nop.i$1 0x0/gm      if ($big_endian);
 $code =~ s/\`([^\`]*)\`/eval $1/gem;
 
 print $code;
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

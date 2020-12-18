@@ -1,11 +1,14 @@
 /*
- * Copyright 2008-2018 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2008-2020 The OpenSSL Project Authors. All Rights Reserved.
  *
- * Licensed under the OpenSSL license (the "License").  You may not use
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
+
+/* We need to use some deprecated APIs */
+#define OPENSSL_SUPPRESS_DEPRECATED
 
 #ifdef _WIN32
 # ifndef _WIN32_WINNT
@@ -577,7 +580,7 @@ static int bind_helper(ENGINE *e, const char *id)
 }
 
 IMPLEMENT_DYNAMIC_CHECK_FN()
-    IMPLEMENT_DYNAMIC_BIND_FN(bind_helper)
+IMPLEMENT_DYNAMIC_BIND_FN(bind_helper)
 # else
 static ENGINE *engine_capi(void)
 {
@@ -835,7 +838,7 @@ int capi_rsa_sign(int dtype, const unsigned char *m, unsigned int m_len,
         CAPIerr(CAPI_F_CAPI_RSA_SIGN, CAPI_R_CANT_GET_KEY);
         return -1;
     }
-/* Convert the signature type to a CryptoAPI algorithm ID */
+    /* Convert the signature type to a CryptoAPI algorithm ID */
     switch (dtype) {
     case NID_sha256:
         alg = CALG_SHA_256;
@@ -870,13 +873,13 @@ int capi_rsa_sign(int dtype, const unsigned char *m, unsigned int m_len,
         }
     }
 
-/* Create the hash object */
+    /* Create the hash object */
     if (!CryptCreateHash(capi_key->hprov, alg, 0, 0, &hash)) {
         CAPIerr(CAPI_F_CAPI_RSA_SIGN, CAPI_R_CANT_CREATE_HASH_OBJECT);
         capi_addlasterror();
         return -1;
     }
-/* Set the hash value to the value passed */
+    /* Set the hash value to the value passed */
 
     if (!CryptSetHashParam(hash, HP_HASHVAL, (unsigned char *)m, 0)) {
         CAPIerr(CAPI_F_CAPI_RSA_SIGN, CAPI_R_CANT_SET_HASH_VALUE);
@@ -884,7 +887,7 @@ int capi_rsa_sign(int dtype, const unsigned char *m, unsigned int m_len,
         goto err;
     }
 
-/* Finally sign it */
+    /* Finally sign it */
     slen = RSA_size(rsa);
     if (!CryptSignHash(hash, capi_key->keyspec, NULL, 0, sigret, &slen)) {
         CAPIerr(CAPI_F_CAPI_RSA_SIGN, CAPI_R_ERROR_SIGNING_HASH);
@@ -1301,13 +1304,14 @@ static void capi_dump_prov_info(CAPI_CTX *ctx, BIO *out,
                                 CRYPT_KEY_PROV_INFO *pinfo)
 {
     char *provname = NULL, *contname = NULL;
-    if (!pinfo) {
+
+    if (pinfo == NULL) {
         BIO_printf(out, "  No Private Key\n");
         return;
     }
     provname = wide_to_asc(pinfo->pwszProvName);
     contname = wide_to_asc(pinfo->pwszContainerName);
-    if (!provname || !contname)
+    if (provname == NULL || contname == NULL)
         goto err;
 
     BIO_printf(out, "  Private Key Info:\n");
@@ -1491,8 +1495,10 @@ static CAPI_KEY *capi_get_key(CAPI_CTX *ctx, const WCHAR *contname,
         ptype = PROV_RSA_AES;
     }
     if (ctx && ctx->debug_level >= CAPI_DBG_TRACE && ctx->debug_file) {
-        /* above 'if' is [complementary] copy from CAPI_trace and serves
-	 * as optimization to minimize [below] malloc-ations */
+        /*
+         * above 'if' is [complementary] copy from CAPI_trace and serves
+         * as optimization to minimize [below] malloc-ations
+         */
         char *_contname = wide_to_asc(contname);
         char *_provname = wide_to_asc(provname);
 
@@ -1775,7 +1781,7 @@ static int capi_load_ssl_client_cert(ENGINE *e, SSL *ssl,
 
     sk_X509_free(certs);
 
-    if (!*pcert)
+    if (*pcert == NULL)
         return 0;
 
     /* Setup key for selected certificate */

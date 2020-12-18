@@ -1,0 +1,118 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>OSSL_CMP_ITAV_set0</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#EXAMPLES">EXAMPLES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>OSSL_CMP_ITAV_create, OSSL_CMP_ITAV_set0, OSSL_CMP_ITAV_get0_type, OSSL_CMP_ITAV_get0_value, OSSL_CMP_ITAV_push0_stack_item - OSSL_CMP_ITAV utility functions</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>  #include &lt;openssl/cmp.h&gt;
+  OSSL_CMP_ITAV *OSSL_CMP_ITAV_create(ASN1_OBJECT *type, ASN1_TYPE *value);
+  void OSSL_CMP_ITAV_set0(OSSL_CMP_ITAV *itav, ASN1_OBJECT *type,
+                          ASN1_TYPE *value);
+  ASN1_OBJECT *OSSL_CMP_ITAV_get0_type(const OSSL_CMP_ITAV *itav);
+  ASN1_TYPE *OSSL_CMP_ITAV_get0_value(const OSSL_CMP_ITAV *itav);
+
+  int OSSL_CMP_ITAV_push0_stack_item(STACK_OF(OSSL_CMP_ITAV) **itav_sk_p,
+                                     OSSL_CMP_ITAV *itav);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>Certificate Management Protocol (CMP, RFC 4210) extension to OpenSSL</p>
+
+<p>ITAV is short for InfoTypeAndValue. This type is defined in RFC 4210 section 5.3.19 and Appendix F. It is used at various places in CMP messages, e.g., in the generalInfo PKIHeader field, to hold a key-value pair.</p>
+
+<p>OSSL_CMP_ITAV_create() creates a new OSSL_CMP_ITAV structure and fills it in. It combines <b>OSSL_CMP_ITAV_new()</b> and <b>OSSL_CMP_ITAV_set0</b>.</p>
+
+<p>OSSL_CMP_ITAV_set0() sets the <b>itav</b> with an infoType of <b>type</b> and an infoValue of <b>value</b>. This function uses the pointers <b>type</b> and <b>value</b> internally, so they must <b>not</b> be freed up after the call.</p>
+
+<p>OSSL_CMP_ITAV_get0_type() returns a direct pointer to the infoType in the <b>itav</b>.</p>
+
+<p>OSSL_CMP_ITAV_get0_value() returns a direct pointer to the infoValue in the <b>itav</b> as generic ASN1_TYPE*.</p>
+
+<p>OSSL_CMP_ITAV_push0_stack_item() pushes <b>itav</b> to the stack pointed to by <b>*itav_sk_p</b>. It creates a new stack if <b>*itav_sk_p</b> points to NULL.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>CMP is defined in RFC 4210 (and CRMF in RFC 4211).</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>OSSL_CMP_ITAV_create() returns a pointer to the ITAV structure on success, or NULL on error.</p>
+
+<p>OSSL_CMP_ITAV_set0() does not return a value.</p>
+
+<p>OSSL_CMP_ITAV_get0_type() and OSSL_CMP_ITAV_get0_value() return the respective pointer or NULL if their input is NULL.</p>
+
+<p>OSSL_CMP_ITAV_push0_stack_item() returns 1 on success, 0 on error.</p>
+
+<h1 id="EXAMPLES">EXAMPLES</h1>
+
+<p>The following code creates and sets a structure representing a generic InfoTypeAndValue sequence, using an OID created from text as type, and an integer as value. Afterwards, it is pushed to the OSSL_CMP_CTX to be later included in the requests&#39; PKIHeader&#39;s genInfo field.</p>
+
+<pre><code>    ASN1_OBJECT *type = OBJ_txt2obj(&quot;1.2.3.4.5&quot;, 1);
+    if (type == NULL) ...
+
+    ASN1_INTEGER *asn1int = ASN1_INTEGER_new();
+    if (asn1int == NULL || !ASN1_INTEGER_set(asn1int, 12345)) ...
+
+    ASN1_TYPE *val = ASN1_TYPE_new();
+    if (val == NULL) ...
+    ASN1_TYPE_set(val, V_ASN1_INTEGER, asn1int);
+
+    OSSL_CMP_ITAV *itav = OSSL_CMP_ITAV_create(type, val);
+    if (itav == NULL) ...
+
+    OSSL_CMP_CTX *ctx = OSSL_CMP_CTX_new();
+    if (ctx == NULL || !OSSL_CMP_CTX_geninfo_push0_ITAV(ctx, itav)) {
+        OSSL_CMP_ITAV_free(itav); /* also frees type and val */
+        goto err;
+    }
+
+    ...
+
+    OSSL_CMP_CTX_free(ctx); /* also frees itav */</code></pre>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man3/OSSL_CMP_CTX_new.html">OSSL_CMP_CTX_new(3)</a>, <a href="../man3/OSSL_CMP_CTX_free.html">OSSL_CMP_CTX_free(3)</a>, <a href="../man3/ASN1_TYPE_set.html">ASN1_TYPE_set(3)</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The OpenSSL CMP support was added in OpenSSL 3.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2007-2019 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

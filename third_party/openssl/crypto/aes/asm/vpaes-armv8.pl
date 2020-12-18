@@ -1,7 +1,7 @@
 #! /usr/bin/env perl
-# Copyright 2015-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2015-2020 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
+# Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
 # in the file LICENSE in the source distribution or at
 # https://www.openssl.org/source/license.html
@@ -30,22 +30,26 @@
 # Denver(***)       16.6(**)    15.1/17.8(**)    [8.80/9.93         ]
 # Apple A7(***)     22.7(**)    10.9/14.3        [8.45/10.0         ]
 # Mongoose(***)     26.3(**)    21.0/25.0(**)    [13.3/16.8         ]
+# ThunderX2(***)    39.4(**)    33.8/48.6(**)
 #
-# (*)	ECB denotes approximate result for parallelizeable modes
+# (*)	ECB denotes approximate result for parallelizable modes
 #	such as CBC decrypt, CTR, etc.;
 # (**)	these results are worse than scalar compiler-generated
 #	code, but it's constant-time and therefore preferred;
 # (***)	presented for reference/comparison purposes;
 
-$flavour = shift;
-while (($output=shift) && ($output!~/\w[\w\-]*\.\w+$/)) {}
+# $output is the last argument if it looks like a file (it has an extension)
+# $flavour is the first argument if it doesn't look like a file
+$output = $#ARGV >= 0 && $ARGV[$#ARGV] =~ m|\.\w+$| ? pop : undef;
+$flavour = $#ARGV >= 0 && $ARGV[0] !~ m|\.| ? shift : undef;
 
 $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
 ( $xlate="${dir}arm-xlate.pl" and -f $xlate ) or
 ( $xlate="${dir}../../perlasm/arm-xlate.pl" and -f $xlate) or
 die "can't locate arm-xlate.pl";
 
-open OUT,"| \"$^X\" $xlate $flavour $output";
+open OUT,"| \"$^X\" $xlate $flavour \"$output\""
+    or die "can't call $xlate: $!";
 *STDOUT=*OUT;
 
 $code.=<<___;
@@ -137,7 +141,7 @@ _vpaes_consts:
 	.quad	0x07E4A34047A4E300, 0x1DFEB95A5DBEF91A
 	.quad	0x5F36B5DC83EA6900, 0x2841C2ABF49D1E77
 
-.asciz  "Vector Permutaion AES for ARMv8, Mike Hamburg (Stanford University)"
+.asciz  "Vector Permutation AES for ARMv8, Mike Hamburg (Stanford University)"
 .size	_vpaes_consts,.-_vpaes_consts
 .align	6
 ___
@@ -150,12 +154,12 @@ my ($sb1u,$sb1t,$sb2u,$sb2t) = map("v$_.16b",(24..27));
 my ($sb9u,$sb9t,$sbdu,$sbdt,$sbbu,$sbbt,$sbeu,$sbet)=map("v$_.16b",(24..31));
 
 $code.=<<___;
-##
-##  _aes_preheat
-##
-##  Fills register %r10 -> .aes_consts (so you can -fPIC)
-##  and %xmm9-%xmm15 as specified below.
-##
+//
+//  _aes_preheat
+//
+//  Fills register %r10 -> .aes_consts (so you can -fPIC)
+//  and %xmm9-%xmm15 as specified below.
+//
 .type	_vpaes_encrypt_preheat,%function
 .align	4
 _vpaes_encrypt_preheat:
@@ -167,21 +171,21 @@ _vpaes_encrypt_preheat:
 	ret
 .size	_vpaes_encrypt_preheat,.-_vpaes_encrypt_preheat
 
-##
-##  _aes_encrypt_core
-##
-##  AES-encrypt %xmm0.
-##
-##  Inputs:
-##     %xmm0 = input
-##     %xmm9-%xmm15 as in _vpaes_preheat
-##    (%rdx) = scheduled keys
-##
-##  Output in %xmm0
-##  Clobbers  %xmm1-%xmm5, %r9, %r10, %r11, %rax
-##  Preserves %xmm6 - %xmm8 so you get some local vectors
-##
-##
+//
+//  _aes_encrypt_core
+//
+//  AES-encrypt %xmm0.
+//
+//  Inputs:
+//     %xmm0 = input
+//     %xmm9-%xmm15 as in _vpaes_preheat
+//    (%rdx) = scheduled keys
+//
+//  Output in %xmm0
+//  Clobbers  %xmm1-%xmm5, %r9, %r10, %r11, %rax
+//  Preserves %xmm6 - %xmm8 so you get some local vectors
+//
+//
 .type	_vpaes_encrypt_core,%function
 .align 4
 _vpaes_encrypt_core:
@@ -255,6 +259,7 @@ _vpaes_encrypt_core:
 .type	vpaes_encrypt,%function
 .align	4
 vpaes_encrypt:
+	.inst	0xd503233f			// paciasp
 	stp	x29,x30,[sp,#-16]!
 	add	x29,sp,#0
 
@@ -264,6 +269,7 @@ vpaes_encrypt:
 	st1	{v0.16b}, [$out]
 
 	ldp	x29,x30,[sp],#16
+	.inst	0xd50323bf			// autiasp
 	ret
 .size	vpaes_encrypt,.-vpaes_encrypt
 
@@ -385,11 +391,11 @@ _vpaes_decrypt_preheat:
 	ret
 .size	_vpaes_decrypt_preheat,.-_vpaes_decrypt_preheat
 
-##
-##  Decryption core
-##
-##  Same API as encryption core.
-##
+//
+//  Decryption core
+//
+//  Same API as encryption core.
+//
 .type	_vpaes_decrypt_core,%function
 .align	4
 _vpaes_decrypt_core:
@@ -486,6 +492,7 @@ _vpaes_decrypt_core:
 .type	vpaes_decrypt,%function
 .align	4
 vpaes_decrypt:
+	.inst	0xd503233f			// paciasp
 	stp	x29,x30,[sp,#-16]!
 	add	x29,sp,#0
 
@@ -495,6 +502,7 @@ vpaes_decrypt:
 	st1	{v0.16b}, [$out]
 
 	ldp	x29,x30,[sp],#16
+	.inst	0xd50323bf			// autiasp
 	ret
 .size	vpaes_decrypt,.-vpaes_decrypt
 
@@ -639,11 +647,11 @@ my ($inp,$bits,$out,$dir)=("x0","w1","x2","w3");
 my ($invlo,$invhi,$iptlo,$ipthi,$rcon) = map("v$_.16b",(18..21,8));
 
 $code.=<<___;
-########################################################
-##                                                    ##
-##                  AES key schedule                  ##
-##                                                    ##
-########################################################
+////////////////////////////////////////////////////////
+//                                                    //
+//                  AES key schedule                  //
+//                                                    //
+////////////////////////////////////////////////////////
 .type	_vpaes_key_preheat,%function
 .align	4
 _vpaes_key_preheat:
@@ -665,6 +673,7 @@ _vpaes_key_preheat:
 .type	_vpaes_schedule_core,%function
 .align	4
 _vpaes_schedule_core:
+	.inst	0xd503233f			// paciasp
 	stp	x29, x30, [sp,#-16]!
 	add	x29,sp,#0
 
@@ -698,14 +707,14 @@ _vpaes_schedule_core:
 	b.eq	.Lschedule_192
 	// 128: fall though
 
-##
-##  .schedule_128
-##
-##  128-bit specific part of key schedule.
-##
-##  This schedule is really simple, because all its parts
-##  are accomplished by the subroutines.
-##
+//
+//  .schedule_128
+//
+//  128-bit specific part of key schedule.
+//
+//  This schedule is really simple, because all its parts
+//  are accomplished by the subroutines.
+//
 .Lschedule_128:
 	mov	$inp, #10			// mov	\$10, %esi
 
@@ -716,21 +725,21 @@ _vpaes_schedule_core:
 	bl	_vpaes_schedule_mangle		// write output
 	b 	.Loop_schedule_128
 
-##
-##  .aes_schedule_192
-##
-##  192-bit specific part of key schedule.
-##
-##  The main body of this schedule is the same as the 128-bit
-##  schedule, but with more smearing.  The long, high side is
-##  stored in %xmm7 as before, and the short, low side is in
-##  the high bits of %xmm6.
-##
-##  This schedule is somewhat nastier, however, because each
-##  round produces 192 bits of key material, or 1.5 round keys.
-##  Therefore, on each cycle we do 2 rounds and produce 3 round
-##  keys.
-##
+//
+//  .aes_schedule_192
+//
+//  192-bit specific part of key schedule.
+//
+//  The main body of this schedule is the same as the 128-bit
+//  schedule, but with more smearing.  The long, high side is
+//  stored in %xmm7 as before, and the short, low side is in
+//  the high bits of %xmm6.
+//
+//  This schedule is somewhat nastier, however, because each
+//  round produces 192 bits of key material, or 1.5 round keys.
+//  Therefore, on each cycle we do 2 rounds and produce 3 round
+//  keys.
+//
 .align	4
 .Lschedule_192:
 	sub	$inp, $inp, #8
@@ -754,22 +763,22 @@ _vpaes_schedule_core:
 	bl	_vpaes_schedule_192_smear
 	b	.Loop_schedule_192
 
-##
-##  .aes_schedule_256
-##
-##  256-bit specific part of key schedule.
-##
-##  The structure here is very similar to the 128-bit
-##  schedule, but with an additional "low side" in
-##  %xmm6.  The low side's rounds are the same as the
-##  high side's, except no rcon and no rotation.
-##
+//
+//  .aes_schedule_256
+//
+//  256-bit specific part of key schedule.
+//
+//  The structure here is very similar to the 128-bit
+//  schedule, but with an additional "low side" in
+//  %xmm6.  The low side's rounds are the same as the
+//  high side's, except no rcon and no rotation.
+//
 .align	4
 .Lschedule_256:
 	ld1	{v0.16b}, [$inp]		// vmovdqu	16(%rdi),%xmm0		# load key part 2 (unaligned)
 	bl	_vpaes_schedule_transform	// input transform
 	mov	$inp, #7			// mov	\$7, %esi
-	
+
 .Loop_schedule_256:
 	sub	$inp, $inp, #1			// dec	%esi
 	bl	_vpaes_schedule_mangle		// output low result
@@ -778,7 +787,7 @@ _vpaes_schedule_core:
 	// high round
 	bl	_vpaes_schedule_round
 	cbz 	$inp, .Lschedule_mangle_last
-	bl	_vpaes_schedule_mangle	
+	bl	_vpaes_schedule_mangle
 
 	// low round. swap xmm7 and xmm6
 	dup	v0.4s, v0.s[3]			// vpshufd	\$0xFF,	%xmm0,	%xmm0
@@ -787,19 +796,19 @@ _vpaes_schedule_core:
 	mov	v7.16b, v6.16b			// vmovdqa	%xmm6,	%xmm7
 	bl	_vpaes_schedule_low_round
 	mov	v7.16b, v5.16b			// vmovdqa	%xmm5,	%xmm7
-	
+
 	b	.Loop_schedule_256
 
-##
-##  .aes_schedule_mangle_last
-##
-##  Mangler for last round of key schedule
-##  Mangles %xmm0
-##    when encrypting, outputs out(%xmm0) ^ 63
-##    when decrypting, outputs unskew(%xmm0)
-##
-##  Always called right before return... jumps to cleanup and exits
-##
+//
+//  .aes_schedule_mangle_last
+//
+//  Mangler for last round of key schedule
+//  Mangles %xmm0
+//    when encrypting, outputs out(%xmm0) ^ 63
+//    when decrypting, outputs unskew(%xmm0)
+//
+//  Always called right before return... jumps to cleanup and exits
+//
 .align	4
 .Lschedule_mangle_last:
 	// schedule last round key from xmm0
@@ -814,7 +823,7 @@ _vpaes_schedule_core:
 
 .Lschedule_mangle_last_dec:
 	ld1	{v20.2d-v21.2d}, [x11]		// reload constants
-	sub	$out, $out, #16			// add	\$-16,	%rdx 
+	sub	$out, $out, #16			// add	\$-16,	%rdx
 	eor	v0.16b, v0.16b, v16.16b		// vpxor	.Lk_s63(%rip),	%xmm0,	%xmm0
 	bl	_vpaes_schedule_transform	// output transform
 	st1	{v0.2d}, [$out]			// vmovdqu	%xmm0,	(%rdx)		# save last key
@@ -829,23 +838,24 @@ _vpaes_schedule_core:
 	eor	v6.16b, v6.16b, v6.16b		// vpxor	%xmm6,	%xmm6,	%xmm6
 	eor	v7.16b, v7.16b, v7.16b		// vpxor	%xmm7,	%xmm7,	%xmm7
 	ldp	x29, x30, [sp],#16
+	.inst	0xd50323bf			// autiasp
 	ret
 .size	_vpaes_schedule_core,.-_vpaes_schedule_core
 
-##
-##  .aes_schedule_192_smear
-##
-##  Smear the short, low side in the 192-bit key schedule.
-##
-##  Inputs:
-##    %xmm7: high side, b  a  x  y
-##    %xmm6:  low side, d  c  0  0
-##    %xmm13: 0
-##
-##  Outputs:
-##    %xmm6: b+c+d  b+c  0  0
-##    %xmm0: b+c+d  b+c  b  a
-##
+//
+//  .aes_schedule_192_smear
+//
+//  Smear the short, low side in the 192-bit key schedule.
+//
+//  Inputs:
+//    %xmm7: high side, b  a  x  y
+//    %xmm6:  low side, d  c  0  0
+//    %xmm13: 0
+//
+//  Outputs:
+//    %xmm6: b+c+d  b+c  0  0
+//    %xmm0: b+c+d  b+c  b  a
+//
 .type	_vpaes_schedule_192_smear,%function
 .align	4
 _vpaes_schedule_192_smear:
@@ -861,24 +871,24 @@ _vpaes_schedule_192_smear:
 	ret
 .size	_vpaes_schedule_192_smear,.-_vpaes_schedule_192_smear
 
-##
-##  .aes_schedule_round
-##
-##  Runs one main round of the key schedule on %xmm0, %xmm7
-##
-##  Specifically, runs subbytes on the high dword of %xmm0
-##  then rotates it by one byte and xors into the low dword of
-##  %xmm7.
-##
-##  Adds rcon from low byte of %xmm8, then rotates %xmm8 for
-##  next rcon.
-##
-##  Smears the dwords of %xmm7 by xoring the low into the
-##  second low, result into third, result into highest.
-##
-##  Returns results in %xmm7 = %xmm0.
-##  Clobbers %xmm1-%xmm4, %r11.
-##
+//
+//  .aes_schedule_round
+//
+//  Runs one main round of the key schedule on %xmm0, %xmm7
+//
+//  Specifically, runs subbytes on the high dword of %xmm0
+//  then rotates it by one byte and xors into the low dword of
+//  %xmm7.
+//
+//  Adds rcon from low byte of %xmm8, then rotates %xmm8 for
+//  next rcon.
+//
+//  Smears the dwords of %xmm7 by xoring the low into the
+//  second low, result into third, result into highest.
+//
+//  Returns results in %xmm7 = %xmm0.
+//  Clobbers %xmm1-%xmm4, %r11.
+//
 .type	_vpaes_schedule_round,%function
 .align	4
 _vpaes_schedule_round:
@@ -926,15 +936,15 @@ _vpaes_schedule_low_round:
 	ret
 .size	_vpaes_schedule_round,.-_vpaes_schedule_round
 
-##
-##  .aes_schedule_transform
-##
-##  Linear-transform %xmm0 according to tables at (%r11)
-##
-##  Requires that %xmm9 = 0x0F0F... as in preheat
-##  Output in %xmm0
-##  Clobbers %xmm1, %xmm2
-##
+//
+//  .aes_schedule_transform
+//
+//  Linear-transform %xmm0 according to tables at (%r11)
+//
+//  Requires that %xmm9 = 0x0F0F... as in preheat
+//  Output in %xmm0
+//  Clobbers %xmm1, %xmm2
+//
 .type	_vpaes_schedule_transform,%function
 .align	4
 _vpaes_schedule_transform:
@@ -948,29 +958,29 @@ _vpaes_schedule_transform:
 	ret
 .size	_vpaes_schedule_transform,.-_vpaes_schedule_transform
 
-##
-##  .aes_schedule_mangle
-##
-##  Mangle xmm0 from (basis-transformed) standard version
-##  to our version.
-##
-##  On encrypt,
-##    xor with 0x63
-##    multiply by circulant 0,1,1,1
-##    apply shiftrows transform
-##
-##  On decrypt,
-##    xor with 0x63
-##    multiply by "inverse mixcolumns" circulant E,B,D,9
-##    deskew
-##    apply shiftrows transform
-##
-##
-##  Writes out to (%rdx), and increments or decrements it
-##  Keeps track of round number mod 4 in %r8
-##  Preserves xmm0
-##  Clobbers xmm1-xmm5
-##
+//
+//  .aes_schedule_mangle
+//
+//  Mangle xmm0 from (basis-transformed) standard version
+//  to our version.
+//
+//  On encrypt,
+//    xor with 0x63
+//    multiply by circulant 0,1,1,1
+//    apply shiftrows transform
+//
+//  On decrypt,
+//    xor with 0x63
+//    multiply by "inverse mixcolumns" circulant E,B,D,9
+//    deskew
+//    apply shiftrows transform
+//
+//
+//  Writes out to (%rdx), and increments or decrements it
+//  Keeps track of round number mod 4 in %r8
+//  Preserves xmm0
+//  Clobbers xmm1-xmm5
+//
 .type	_vpaes_schedule_mangle,%function
 .align	4
 _vpaes_schedule_mangle:
@@ -1041,6 +1051,7 @@ _vpaes_schedule_mangle:
 .type	vpaes_set_encrypt_key,%function
 .align	4
 vpaes_set_encrypt_key:
+	.inst	0xd503233f		// paciasp
 	stp	x29,x30,[sp,#-16]!
 	add	x29,sp,#0
 	stp	d8,d9,[sp,#-16]!	// ABI spec says so
@@ -1056,6 +1067,7 @@ vpaes_set_encrypt_key:
 
 	ldp	d8,d9,[sp],#16
 	ldp	x29,x30,[sp],#16
+	.inst	0xd50323bf		// autiasp
 	ret
 .size	vpaes_set_encrypt_key,.-vpaes_set_encrypt_key
 
@@ -1063,6 +1075,7 @@ vpaes_set_encrypt_key:
 .type	vpaes_set_decrypt_key,%function
 .align	4
 vpaes_set_decrypt_key:
+	.inst	0xd503233f		// paciasp
 	stp	x29,x30,[sp,#-16]!
 	add	x29,sp,#0
 	stp	d8,d9,[sp,#-16]!	// ABI spec says so
@@ -1082,6 +1095,7 @@ vpaes_set_decrypt_key:
 
 	ldp	d8,d9,[sp],#16
 	ldp	x29,x30,[sp],#16
+	.inst	0xd50323bf		// autiasp
 	ret
 .size	vpaes_set_decrypt_key,.-vpaes_set_decrypt_key
 ___
@@ -1098,6 +1112,7 @@ vpaes_cbc_encrypt:
 	cmp	w5, #0			// check direction
 	b.eq	vpaes_cbc_decrypt
 
+	.inst	0xd503233f		// paciasp
 	stp	x29,x30,[sp,#-16]!
 	add	x29,sp,#0
 
@@ -1120,6 +1135,7 @@ vpaes_cbc_encrypt:
 	st1	{v0.16b}, [$ivec]	// write ivec
 
 	ldp	x29,x30,[sp],#16
+	.inst	0xd50323bf		// autiasp
 .Lcbc_abort:
 	ret
 .size	vpaes_cbc_encrypt,.-vpaes_cbc_encrypt
@@ -1127,6 +1143,7 @@ vpaes_cbc_encrypt:
 .type	vpaes_cbc_decrypt,%function
 .align	4
 vpaes_cbc_decrypt:
+	.inst	0xd503233f		// paciasp
 	stp	x29,x30,[sp,#-16]!
 	add	x29,sp,#0
 	stp	d8,d9,[sp,#-16]!	// ABI spec says so
@@ -1168,6 +1185,7 @@ vpaes_cbc_decrypt:
 	ldp	d10,d11,[sp],#16
 	ldp	d8,d9,[sp],#16
 	ldp	x29,x30,[sp],#16
+	.inst	0xd50323bf		// autiasp
 	ret
 .size	vpaes_cbc_decrypt,.-vpaes_cbc_decrypt
 ___
@@ -1177,6 +1195,7 @@ $code.=<<___;
 .type	vpaes_ecb_encrypt,%function
 .align	4
 vpaes_ecb_encrypt:
+	.inst	0xd503233f		// paciasp
 	stp	x29,x30,[sp,#-16]!
 	add	x29,sp,#0
 	stp	d8,d9,[sp,#-16]!	// ABI spec says so
@@ -1210,6 +1229,7 @@ vpaes_ecb_encrypt:
 	ldp	d10,d11,[sp],#16
 	ldp	d8,d9,[sp],#16
 	ldp	x29,x30,[sp],#16
+	.inst	0xd50323bf		// autiasp
 	ret
 .size	vpaes_ecb_encrypt,.-vpaes_ecb_encrypt
 
@@ -1217,6 +1237,7 @@ vpaes_ecb_encrypt:
 .type	vpaes_ecb_decrypt,%function
 .align	4
 vpaes_ecb_decrypt:
+	.inst	0xd503233f		// paciasp
 	stp	x29,x30,[sp,#-16]!
 	add	x29,sp,#0
 	stp	d8,d9,[sp,#-16]!	// ABI spec says so
@@ -1250,10 +1271,11 @@ vpaes_ecb_decrypt:
 	ldp	d10,d11,[sp],#16
 	ldp	d8,d9,[sp],#16
 	ldp	x29,x30,[sp],#16
+	.inst	0xd50323bf		// autiasp
 	ret
 .size	vpaes_ecb_decrypt,.-vpaes_ecb_decrypt
 ___
 }	}
 print $code;
 
-close STDOUT;
+close STDOUT or die "error closing STDOUT: $!";

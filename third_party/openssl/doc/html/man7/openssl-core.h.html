@@ -1,0 +1,121 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>openssl-core.h</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>openssl/core.h - OpenSSL Core types</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/core.h&gt;</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The <i>&lt;openssl/core.h&gt;</i> header defines a number of public types that are used to communicate between the OpenSSL libraries and implementation providers. These types are designed to minimise the need for intimate knowledge of internal structures between the OpenSSL libraries and the providers.</p>
+
+<p>The types are:</p>
+
+<dl>
+
+<dt id="OSSL_DISPATCH"><b>OSSL_DISPATCH</b></dt>
+<dd>
+
+<p>This type is a tuple of function identity and function pointer. Arrays of this type are passed between the OpenSSL libraries and the providers to describe what functionality one side provides to the other. Arrays of this type must be terminated with a tuple having function identity zero and function pointer NULL.</p>
+
+<p>The available function identities and corresponding function signatures are defined in <a href="../man7/openssl-core_dispatch.h.html">openssl-core_dispatch.h(7)</a>.</p>
+
+<p>Any function identity not recognised by the recipient of this type will be ignored. This ensures that providers built with one OpenSSL version in mind will work together with any other OpenSSL version that supports this mechanism.</p>
+
+</dd>
+<dt id="OSSL_ITEM"><b>OSSL_ITEM</b></dt>
+<dd>
+
+<p>This type is a tuple of integer and pointer. It&#39;s a generic type used as a generic descriptor, its exact meaning being defined by how it&#39;s used. Arrays of this type are passed between the OpenSSL libraries and the providers, and must be terminated with a tuple where the integer is zero and the pointer NULL.</p>
+
+</dd>
+<dt id="OSSL_ALGORITHM"><b>OSSL_ALGORITHM</b></dt>
+<dd>
+
+<p>This type is a tuple of an algorithm name (string), a property definition (string) and a dispatch table (array of <b>OSSL_DISPATCH</b>). Arrays of this type are passed on demand from the providers to the OpenSSL libraries to describe what algorithms the providers provide implementations of, and with what properties. Arrays of this type must be terminated with a tuple having function identity zero and function pointer NULL.</p>
+
+<p>The algorithm names and property definitions are defined by the providers.</p>
+
+</dd>
+<dt id="OSSL_PARAM"><b>OSSL_PARAM</b></dt>
+<dd>
+
+<p>This type is a structure that allows passing arbitrary object data between two parties that have no or very little shared knowledge about their respective internal structures for that object. It&#39;s normally passed in arrays, where the array is terminated with an element where all fields are zero (for non-pointers) or NULL (for pointers).</p>
+
+<p>These arrays can be used to set parameters for some object, to request parameters, and to describe parameters.</p>
+
+<p><b>OSSL_PARAM</b> is further described in <a href="../man3/OSSL_PARAM.html">OSSL_PARAM(3)</a></p>
+
+</dd>
+<dt id="OSSL_CALLBACK"><b>OSSL_CALLBACK</b></dt>
+<dd>
+
+<p>This is a function type for a generic feedback callback function:</p>
+
+<pre><code>    typedef int (OSSL_CALLBACK)(const OSSL_PARAM params[], void *arg);</code></pre>
+
+<p>A function that takes a pointer of this type should also take a pointer to caller data. When calling this callback, the function is expected to build an <b>OSSL_PARAM</b> array of data it wants or is expected to pass back, and pass that as <i>params</i>, as well as the caller data pointer it received, as <i>arg</i>.</p>
+
+</dd>
+<dt id="OSSL_PASSPHRASE_CALLBACK"><b>OSSL_PASSPHRASE_CALLBACK</b></dt>
+<dd>
+
+<p>This is a function type for a generic pass phrase callback function:</p>
+
+<pre><code>    typedef int (OSSL_PASSPHRASE_CALLBACK)(char *pass, size_t pass_size,
+                                           size_t *pass_len,
+                                           const OSSL_PARAM params[],
+                                           void *arg);</code></pre>
+
+<p>This callback can be used to prompt the user for a passphrase. When calling it, a buffer to store the pass phrase needs to be given with <i>pass</i>, and its size with <i>pass_size</i>. The length of the prompted pass phrase will be given back in <i>*pass_len</i>.</p>
+
+<p>Additional parameters can be passed with the <b>OSSL_PARAM</b> array <i>params</i>.</p>
+
+<p>A function that takes a pointer of this type should also take a pointer to caller data, which should be passed as <i>arg</i> to this callback.</p>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man7/openssl-core_dispatch.h.html">openssl-core_dispatch.h(7)</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The types described here were added in OpenSSL 3.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2019-2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

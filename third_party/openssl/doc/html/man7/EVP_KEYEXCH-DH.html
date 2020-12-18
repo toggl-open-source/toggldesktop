@@ -1,0 +1,105 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>EVP_KEYEXCH-DH</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a>
+    <ul>
+      <li><a href="#DH-key-exchange-parameters">DH key exchange parameters</a></li>
+    </ul>
+  </li>
+  <li><a href="#EXAMPLES">EXAMPLES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>EVP_KEYEXCH-DH - DH Key Exchange algorithm support</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>Key exchange support for the <b>DH</b> key type.</p>
+
+<h2 id="DH-key-exchange-parameters">DH key exchange parameters</h2>
+
+<dl>
+
+<dt id="pad-OSSL_EXCHANGE_PARAM_PAD-unsigned-integer">&quot;pad&quot; (<b>OSSL_EXCHANGE_PARAM_PAD</b>) &lt;unsigned integer&gt;</dt>
+<dd>
+
+<p>See <a href="../man7/provider-keyexch.html">&quot;Common Key Exchange parameters&quot; in provider-keyexch(7)</a>.</p>
+
+</dd>
+</dl>
+
+<h1 id="EXAMPLES">EXAMPLES</h1>
+
+<p>The examples assume a host and peer both generate keys using the same named group (or domain parameters). See <a href="../man7/EVP_PKEY-DH.html">&quot;Examples&quot; in EVP_PKEY-DH(7)</a>. Both the host and peer transfer their public key to each other.</p>
+
+<p>To convert the peer&#39;s generated key pair to a public key in DER format in order to transfer to the host:</p>
+
+<pre><code>    EVP_PKEY *peer_key; /* It is assumed this contains the peers generated key */
+    unsigned char *peer_pub_der = NULL;
+    int peer_pub_der_len;
+
+    peer_pub_der_len = i2d_PUBKEY(peer_key, &amp;peer_pub_der);
+    ...
+    OPENSSL_free(peer_pub_der);</code></pre>
+
+<p>To convert the received peer&#39;s public key from DER format on the host:</p>
+
+<pre><code>    const unsigned char *pd = peer_pub_der;
+    EVP_PKEY *peer_pub_key = d2i_PUBKEY(NULL, &amp;pd, peer_pub_der_len);
+    ...
+    EVP_PKEY_free(peer_pub_key);</code></pre>
+
+<p>To derive a shared secret on the host using the host&#39;s key and the peer&#39;s public key: /* It is assumed that the host_key and peer_pub_key are set up */ void derive_secret(EVP_KEY *host_key, EVP_PKEY *peer_pub_key) { unsigned int pad = 1; OSSL_PARAM params[2]; unsigned char *secret = NULL; size_t secret_len = 0; EVP_PKEY_CTX *dctx = EVP_PKEY_CTX_new_from_pkey(NULL, host_key, NULL);</p>
+
+<pre><code>        EVP_PKEY_derive_init(dctx);
+
+        /* Optionally set the padding */
+        params[0] = OSSL_PARAM_construct_uint(OSSL_EXCHANGE_PARAM_PAD, &amp;pad);
+        params[1] = OSSL_PARAM_construct_end();
+        EVP_PKEY_CTX_set_params(dctx, params);
+
+        EVP_PKEY_derive_set_peer(dctx, peer_pub_key);
+
+        /* Get the size by passing NULL as the buffer */
+        EVP_PKEY_derive(dctx, NULL, &amp;secret_len);
+        secret = OPENSSL_zalloc(secret_len);
+
+        EVP_PKEY_derive(dctx, secret, &amp;secret_len);
+        ...
+        OPENSSL_clear_free(secret, secret_len);
+        EVP_PKEY_CTX_free(dctx);
+    }</code></pre>
+
+<p>Very similar code can be used by the peer to derive the same shared secret using the host&#39;s public key and the peer&#39;s generated key pair.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man7/EVP_PKEY-DH.html">EVP_PKEY-DH(7)</a>, <a href="../man7/EVP_PKEY-FFC.html">EVP_PKEY-FFC(7)</a>, <a href="../man3/EVP_PKEY.html">EVP_PKEY(3)</a>, <a href="../man7/provider-keyexch.html">provider-keyexch(7)</a>, <a href="../man7/provider-keymgmt.html">provider-keymgmt(7)</a>, <a href="../man7/OSSL_PROVIDER-default.html">OSSL_PROVIDER-default(7)</a>, <a href="../man7/OSSL_PROVIDER-FIPS.html">OSSL_PROVIDER-FIPS(7)</a>,</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

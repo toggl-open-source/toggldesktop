@@ -1,0 +1,141 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>OSSL_PROVIDER-base</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@manhattan72.ta10.sd.apple.com" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a>
+    <ul>
+      <li><a href="#Properties">Properties</a></li>
+    </ul>
+  </li>
+  <li><a href="#OPERATIONS-AND-ALGORITHMS">OPERATIONS AND ALGORITHMS</a>
+    <ul>
+      <li><a href="#Asymmetric-Key-Encoder">Asymmetric Key Encoder</a></li>
+    </ul>
+  </li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>OSSL_PROVIDER-base - OpenSSL base provider</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The OpenSSL base provider supplies the encoding for OpenSSL&#39;s asymmetric cryptography.</p>
+
+<h2 id="Properties">Properties</h2>
+
+<p>The implementations in this provider specifically have this property defined:</p>
+
+<dl>
+
+<dt id="provider-base">&quot;provider=base&quot;</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>It may be used in a property query string with fetching functions.</p>
+
+<p>It isn&#39;t mandatory to query for this property, except to make sure to get implementations of this provider and none other.</p>
+
+<dl>
+
+<dt id="type-parameters">&quot;type=parameters&quot;</dt>
+<dd>
+
+</dd>
+<dt id="type-private">&quot;type=private&quot;</dt>
+<dd>
+
+</dd>
+<dt id="type-public">&quot;type=public&quot;</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>These may be used in a property query string with fetching functions to select which data are to be encoded. Either the private key material, the public key material or the domain parameters can be selected.</p>
+
+<dl>
+
+<dt id="format-der">&quot;format=der&quot;</dt>
+<dd>
+
+</dd>
+<dt id="format-pem">&quot;format=pem&quot;</dt>
+<dd>
+
+</dd>
+<dt id="format-text">&quot;format=text&quot;</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>These may be used in a property query string with fetching functions to select the encoding output format. Either the DER, PEM and plaintext are currently permitted.</p>
+
+<h1 id="OPERATIONS-AND-ALGORITHMS">OPERATIONS AND ALGORITHMS</h1>
+
+<p>The OpenSSL base provider supports these operations and algorithms:</p>
+
+<h2 id="Asymmetric-Key-Encoder">Asymmetric Key Encoder</h2>
+
+<p>In addition to &quot;provider=base&quot;, some of these encoders define the property &quot;fips=yes&quot;, to allow them to be used together with the FIPS provider.</p>
+
+<dl>
+
+<dt id="RSA-see-OSSL_ENCODER-RSA-7">RSA, see <a href="../man7/OSSL_ENCODER-RSA.html">OSSL_ENCODER-RSA(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="DH-see-OSSL_ENCODER-DH-7">DH, see <a href="../man7/OSSL_ENCODER-DH.html">OSSL_ENCODER-DH(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="DSA-see-OSSL_ENCODER-DSA-7">DSA, see <a href="../man7/OSSL_ENCODER-DSA.html">OSSL_ENCODER-DSA(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="EC-see-OSSL_ENCODER-EC-7">EC, see <a href="../man7/OSSL_ENCODER-EC.html">OSSL_ENCODER-EC(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="X25519-see-OSSL_ENCODER-X25519-7">X25519, see <a href="../man7/OSSL_ENCODER-X25519.html">OSSL_ENCODER-X25519(7)</a></dt>
+<dd>
+
+</dd>
+<dt id="X448-see-OSSL_ENCODER-X448-7">X448, see <a href="../man7/OSSL_ENCODER-X448.html">OSSL_ENCODER-X448(7)</a></dt>
+<dd>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man7/OSSL_PROVIDER-default.html">OSSL_PROVIDER-default(7)</a>, <a href="../man7/openssl-core.h.html">openssl-core.h(7)</a>, <a href="../man7/openssl-core_dispatch.h.html">openssl-core_dispatch.h(7)</a>, <a href="../man7/provider.html">provider(7)</a></p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the Apache License 2.0 (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+
