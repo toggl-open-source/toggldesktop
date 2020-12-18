@@ -127,13 +127,6 @@ final class TimelineDashboardViewController: NSViewController {
         DesktopLibraryBridge.shared().timelineSetDate(proposedDate)
     }
 
-    private lazy var trackingArea: NSTrackingArea = {
-        return NSTrackingArea(rect: view.bounds,
-                              options: [.mouseEnteredAndExited, .activeAlways],
-                              owner: self,
-                              userInfo: nil)
-    }()
-
     // MARK: View
 
     override func viewDidLoad() {
@@ -201,22 +194,6 @@ final class TimelineDashboardViewController: NSViewController {
         SystemPermissionManager.shared.grant(.screenRecording)
     }
 
-    override func mouseEntered(with event: NSEvent) {
-        super.mouseEntered(with: event)
-        if event.trackingArea === trackingArea {
-            zoomContainerView.isHidden = false
-        }
-    }
-
-    override func mouseExited(with event: NSEvent) {
-        super.mouseExited(with: event)
-
-        // Only hide the button if the event is triggered from the Zoom button tracking area
-        if event.trackingArea === trackingArea {
-            zoomContainerView.isHidden = true
-        }
-    }
-
     func nextDay() {
         datePickerView.nextDateBtnOnTap(self)
     }
@@ -276,9 +253,6 @@ extension TimelineDashboardViewController {
 
         // Forect Render the view
         _ = activityHoverController.view
-
-        // Tracking for Zoom buttons
-        view.addTrackingArea(trackingArea)
     }
 
     fileprivate func initNotifications() {
