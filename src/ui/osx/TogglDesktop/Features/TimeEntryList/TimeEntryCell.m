@@ -81,16 +81,8 @@ extern void *ctx;
 														  userInfo:nil];
 	[self.view addTrackingArea:tracking];
 
-	if (@available(macOS 10.13, *))
-	{
-		self.backgroundColor = [NSColor colorNamed:@"white-background-hover-color"];
-		self.selectedSubItemBackgroundColor = [NSColor colorNamed:@"subitem-background-selected-color"];
-	}
-	else
-	{
-		self.backgroundColor = [ConvertHexColor hexCodeToNSColor:@"#F4F5F6"];
-		self.selectedSubItemBackgroundColor = [ConvertHexColor hexCodeToNSColor:@"#e8e8e8"];
-	}
+	self.backgroundColor = [NSColor whiteBackgroundHover];
+	self.selectedSubItemBackgroundColor = [NSColor subItemBackgroundSelected];
 }
 
 - (void)prepareForReuse {
@@ -288,30 +280,14 @@ extern void *ctx;
 	if (self.Group && self.GroupOpen)
 	{
 		[self.groupButton setTextColor:[NSColor togglGreen]];
-		if (@available(macOS 10.13, *))
-		{
-			self.groupBox.fillColor = [NSColor colorNamed:@"group-box-background-color"];
-		}
-		else
-		{
-			self.groupBox.fillColor = [NSColor colorWithRed:223.0 / 255.0 green:104.0 / 255.0 blue:208.0 / 255.0 alpha:0.12];
-		}
+		self.groupBox.fillColor = [NSColor groupBoxBackground];
 		self.groupBox.borderColor = [NSColor clearColor];
 	}
 	else
 	{
-		if (@available(macOS 10.13, *))
-		{
-			[self.groupButton setTextColor:[NSColor colorNamed:@"grey-text-color"]];
-			self.groupBox.fillColor = [NSColor colorNamed:@"upload-background-color"];
-			self.groupBox.borderColor = [NSColor colorNamed:@"upload-border-color"];
-		}
-		else
-		{
-			[self.groupButton setTextColor:[ConvertHexColor hexCodeToNSColor:@"#564360"]];
-			self.groupBox.fillColor = [NSColor whiteColor];
-			self.groupBox.borderColor = [ConvertHexColor hexCodeToNSColor:@"ACACAC"];
-		}
+		[self.groupButton setTextColor:[NSColor greyText]];
+		self.groupBox.fillColor = [NSColor uploadBackground];
+		self.groupBox.borderColor = [NSColor uploadBorder];
 	}
 
 	if (self.cellType == CellTypeSubItemInGroup)

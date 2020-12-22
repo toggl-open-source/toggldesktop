@@ -255,16 +255,8 @@ extern void *ctx;
 			self.restartButton.enabled = NO;
 			self.restartButton.hidden = NO;
 			self.restartButton.title = @"Downloading...";
-			if (@available(macOS 10.13, *))
-			{
-				self.restartButton.textColor = [NSColor colorNamed:@"grey-text-color"];
-				self.restartButton.bgColor = [NSColor colorWithRed:177.0 / 255.0 green:177.0 / 255.0 blue:177.0 / 255.0 alpha:0.1];
-			}
-			else
-			{
-				self.restartButton.textColor = [ConvertHexColor hexCodeToNSColor:@"#d9d9d9"];
-				self.restartButton.bgColor = [NSColor colorWithRed:177.0 / 255.0 green:177.0 / 255.0 blue:177.0 / 255.0 alpha:0.1];
-			}
+			self.restartButton.textColor = [NSColor greyText];
+			self.restartButton.bgColor = [NSColor disabledRestartButtonBackground];
 			break;
 		case DownloadStateRestart :
 			self.restartButton.enabled = YES;
