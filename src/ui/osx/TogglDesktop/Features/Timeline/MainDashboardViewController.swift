@@ -60,10 +60,18 @@ final class MainDashboardViewController: NSViewController {
     }
 
     @IBAction func listBtnOnTap(_ sender: Any) {
+        guard currentTab != .timeEntryList else {
+            view.window?.makeFirstResponder(nil)
+            return
+        }
         currentTab = .timeEntryList
     }
 
     @IBAction func timelineBtnOnTap(_ sender: Any) {
+        guard currentTab != .timeline else {
+            view.window?.makeFirstResponder(nil)
+            return
+        }
         currentTab = .timeline
         timelineController.scrollToVisibleItem()
         // Onboarding states
