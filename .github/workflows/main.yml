@@ -427,6 +427,9 @@ jobs:
       with:
         path: third_party/poco/lib
         key: ${{ runner.os }}-poco-lib-1.9.0
+    - name: Clean
+      shell: cmd
+      run: dotnet nuget locals all --clear
     - name: Build on Windows x86 without POCO
       if: steps.cache-poco-bin.outputs.cache-hit == 'true'
       shell: cmd
