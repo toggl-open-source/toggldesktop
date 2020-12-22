@@ -1586,8 +1586,8 @@ void on_timeline(const bool_t open,
 				 const char_t *date,
 				 TogglTimelineChunkView *first,
 				 TogglTimeEntryView *first_entry,
-				 long start_day,
-				 long end_day)
+				 const uint64_t start_day,
+				 const uint64_t end_day)
 {
 	TimelineDisplayCommand *cmd =
 		[[TimelineDisplayCommand alloc] initWithOpen:open

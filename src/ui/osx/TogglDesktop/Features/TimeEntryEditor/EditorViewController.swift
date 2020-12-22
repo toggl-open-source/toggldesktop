@@ -311,7 +311,7 @@ extension EditorViewController {
         tagInputContainerView.borderColor = borderColor
 
         // Add tag token if need
-        if let tagNames = timeEntry.tags as? [String] {
+        if let tagNames = timeEntry.tags {
             let tags = tagNames.map { Tag(name: $0) }
 
             // Update selected tags
@@ -630,7 +630,7 @@ extension EditorViewController: TagTokenViewDelegate {
     func tagTokenShouldDelete(with tag: Tag, sender: TagTokenView) {
         guard !tag.isMoreTag && !tag.isEmptyTag else { return }
         sender.removeFromSuperview()
-        if let tags = timeEntry.tags as? [String] {
+        if let tags = timeEntry.tags {
             let remainingTags = tags.compactMap { (tagName) -> String? in
                 if tagName == tag.name {
                     return nil
