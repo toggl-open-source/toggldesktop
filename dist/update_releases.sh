@@ -16,6 +16,7 @@ if [[ ! $channel =~ ^(dev|beta|stable)$ ]]; then
 fi
 
 prepare() {
+  git clean -xdf
   # Copy to tmp folder before checkout to gh-pages
   mkdir -p tmp
   cp dist/update_updates.sh tmp/update_updates.sh
