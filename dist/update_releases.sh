@@ -16,7 +16,6 @@ if [[ ! $channel =~ ^(dev|beta|stable)$ ]]; then
 fi
 
 prepare() {
-  git clean -xdf
   # Copy to tmp folder before checkout to gh-pages
   mkdir -p tmp
   cp dist/update_updates.sh tmp/update_updates.sh
@@ -36,7 +35,7 @@ fetch_releases () {
   git remote set-url origin https://github.com/toggl-open-source/toggldesktop.git
   git remote -v
   git fetch 
-  git checkout --track origin/gh-pages
+  git checkout --track --force origin/gh-pages
   
   cp assets/releases/releases.json tmp/releases.json
 }
