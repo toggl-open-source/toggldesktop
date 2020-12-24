@@ -24,7 +24,7 @@ namespace TogglDesktop
         public static void CreateAndEditRunningTimeEntryFrom(ulong started)
         {
             var teId = Toggl.Start("", "", 0, 0, "", "");
-            Toggl.SetTimeEntryStartTimeStamp(teId, (long)started);
+            Toggl.SetTimeEntryStartTimeStampWithOption(teId, (long)started, true);
             Toggl.Edit(teId, true, Toggl.Description);
         }
 

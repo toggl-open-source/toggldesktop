@@ -342,7 +342,7 @@ namespace TogglDesktop.ViewModels
                     (offset, height) =>
                     {
                         var id = Toggl.Start("", "", 0, 0, "", "");
-                        Toggl.SetTimeEntryStartTimeStamp(id, (long)lastTimeEntry.Ended+1);
+                        Toggl.SetTimeEntryStartTimeStampWithOption(id, (long)lastTimeEntry.Ended+1, true);
                         return id;
                     })
                 {
@@ -374,7 +374,7 @@ namespace TogglDesktop.ViewModels
         {
             var (first, last) = GetOverlappingPair(item, blocks);
             if (last == null) return;
-            Toggl.SetTimeEntryStartTimeStamp(last.TimeEntryId, (long)first.Ended);
+            Toggl.SetTimeEntryStartTimeStampWithOption(last.TimeEntryId, (long)first.Ended, true);
         }
 
         private static (TimeEntryBlock First, TimeEntryBlock Last) GetOverlappingPair(TimeEntryBlock item, IEnumerable<TimeEntryBlock> blocks)

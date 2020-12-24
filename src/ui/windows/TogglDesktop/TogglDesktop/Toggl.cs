@@ -460,6 +460,14 @@ public static partial class Toggl
         }
     }
 
+    public static bool SetTimeEntryStartTimeStampWithOption(string guid, long timeStamp, bool keepEndTimeFixed)
+    {
+        using (Performance.Measure("changing time entry start time stamp"))
+        {
+            return toggl_set_time_entry_start_timestamp_with_option(ctx, guid, timeStamp, keepEndTimeFixed);
+        }
+    }
+
     public static bool SetTimeEntryEndTimeStamp(string guid, long timeStamp)
     {
         using (Performance.Measure("changing time entry end time stamp"))
