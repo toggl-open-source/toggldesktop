@@ -96,8 +96,8 @@ namespace TogglDesktop.ViewModels
 
         public void ChangeStartTime()
         {
-            Toggl.SetTimeEntryStartTimeStamp(TimeEntryId,
-                (long)TimelineUtils.ConvertOffsetToUnixTime(VerticalOffset, DateCreated, _hourHeight));
+            Toggl.SetTimeEntryStartTimeStampWithOption(TimeEntryId,
+                (long)TimelineUtils.ConvertOffsetToUnixTime(VerticalOffset, DateCreated, _hourHeight), true);
         }
 
         public void ChangeEndTime()
