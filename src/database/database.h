@@ -121,6 +121,8 @@ class TOGGL_INTERNAL_EXPORT Database {
     error SetSettingsPomodoroBreakMinutes(
         const Poco::UInt64 pomodoro_break_minutes);
 
+    error SetSettingsAnalyticsOptedOut(const bool analytics_opted_out);
+
     error SetSettingsManualMode(const bool &manual_mode);
 
     error SetSettingsAutodetectProxy(const bool &autodetect_proxy);

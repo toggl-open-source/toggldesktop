@@ -71,6 +71,12 @@
                         </Grid>
 
                         <TextBlock Style="{DynamicResource Toggl.TitleText}" Margin="0 32 0 0"
+                                   Text="Analytics" />
+
+                        <CheckBox Name="AnalyticsOptOut" Content="Opt Out" Margin="0 3" />
+
+
+                        <TextBlock Style="{DynamicResource Toggl.TitleText}" Margin="0 32 0 0"
                                    Text="Set default project" />
 
                         <TextBlock Style="{DynamicResource Toggl.CaptionText}" Margin="0 4 0 0"

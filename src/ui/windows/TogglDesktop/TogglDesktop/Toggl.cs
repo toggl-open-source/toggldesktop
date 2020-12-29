@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reactive;
@@ -609,6 +609,11 @@ public static partial class Toggl
         }
 
         if (!toggl_set_settings_start_autotracker_while_timer_is_running(ctx, settings.StartAutotrackerWhileTimerIsRunning))
+        {
+            return false;
+        }
+
+        if (!toggl_set_settings_analytics_opted_out(ctx, settings.AnalyticsOptOut))
         {
             return false;
         }

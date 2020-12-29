@@ -321,6 +321,8 @@ public         byte ActiveTab;
 public         byte ColorTheme;
 [MarshalAs(UnmanagedType.I1)]
 public         bool ForceIgnoreCert;
+[MarshalAs(UnmanagedType.I1)]
+public bool AnalyticsOptOut;
 
 public override string ToString()
 {
@@ -1426,6 +1428,13 @@ private static extern bool toggl_set_settings_manual_mode(
         IntPtr context,
 [MarshalAs(UnmanagedType.I1)]
         bool manual_mode);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
+[return: MarshalAs(UnmanagedType.I1)]
+private static extern bool toggl_set_settings_analytics_opted_out(
+        IntPtr context,
+[MarshalAs(UnmanagedType.I1)]
+        bool analytics_opted_out);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
 [return:MarshalAs(UnmanagedType.I1)]

@@ -241,6 +241,13 @@ bool_t toggl_set_settings_pomodoro_break_minutes(
            SetSettingsPomodoroBreakMinutes(pomodoro_break_minutes);
 }
 
+bool_t toggl_set_settings_analytics_opted_out(
+    void* context,
+    const bool analytics_opted_out) {
+    return toggl::noError == app(context)->
+        SetSettingsAnalyticsOptedOut(analytics_opted_out);
+}
+
 bool_t toggl_set_window_settings(
     void *context,
     const int64_t window_x,

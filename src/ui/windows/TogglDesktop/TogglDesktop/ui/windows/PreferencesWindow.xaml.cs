@@ -267,7 +267,7 @@ namespace TogglDesktop
 
                 UseIdleDetection = isChecked(this.idleDetectionCheckBox),
                 IdleMinutes = toLong(this.idleDetectionDurationTextBox.Text),
-
+                AnalyticsOptOut = isChecked(this.AnalyticsOptOut),
                 RecordTimeline = isChecked(this.recordTimelineCheckBox),
                 OnTop = isChecked(this.onTopCheckBox),
 

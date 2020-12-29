@@ -50,7 +50,10 @@ class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
     , start_autotracker_while_timer_is_running(false)
     , active_tab(0)
     , color_theme(0)
-    , force_ignore_cert(false) {}
+    , force_ignore_cert(false)
+    , analytics_opted_out(false)
+    {}
+    
 
     virtual ~Settings() {}
 
@@ -88,6 +91,7 @@ class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
     Poco::UInt8 active_tab;
     Poco::UInt8 color_theme;
     bool force_ignore_cert;
+    bool analytics_opted_out;
 
     bool IsSame(const Settings &other) const;
 

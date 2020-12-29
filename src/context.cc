@@ -2124,6 +2124,12 @@ error Context::SetSettingsPomodoroBreakMinutes(
         db()->SetSettingsPomodoroBreakMinutes(pomodoro_break_minutes));
 }
 
+error Context::SetSettingsAnalyticsOptedOut(
+    const bool analytics_opted_out) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsAnalyticsOptedOut(analytics_opted_out));
+}
+
 error Context::LoadWindowSettings(
     int64_t *window_x,
     int64_t *window_y,

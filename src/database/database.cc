@@ -424,7 +424,8 @@ error Database::LoadSettings(Settings *settings) {
                   "open_editor_on_shortcut, has_seen_beta_offering, "
                   "pomodoro, pomodoro_minutes, "
                   "pomodoro_break, pomodoro_break_minutes, stop_entry_on_shutdown_sleep, show_touch_bar, active_tab, color_theme, "
-                  "force_ignore_cert, start_autotracker_without_suggestions, start_autotracker_while_timer_is_running "
+                  "force_ignore_cert, start_autotracker_without_suggestions, start_autotracker_while_timer_is_running, "
+                  "analytics_opted_out"
                   "from settings "
                   "limit 1",
                   into(settings->use_idle_detection),
@@ -461,6 +462,7 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->force_ignore_cert),
                   into(settings->start_autotracker_without_suggestions),
                   into(settings->start_autotracker_while_timer_is_running),
+                  into(settings->analytics_opted_out),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -951,6 +953,11 @@ error Database::SetSettingsPomodoroBreakMinutes(
         new_value = 1;
     }
     return setSettingsValue("pomodoro_break_minutes", new_value);
+}
+
+error Database::SetSettingsAnalyticsOptedOut(
+    const bool analytics_opted_out) {
+    return setSettingsValue("analytics_opted_out", analytics_opted_out);
 }
 
 error Database::SaveProxySettings(

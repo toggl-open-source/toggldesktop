@@ -1025,6 +1025,14 @@ error Migrations::migrateSettings() {
     }
 
     err = db_->Migrate(
+        "settings.analytics_opted_out",
+        "ALTER TABLE settings "
+        "ADD COLUMN analytics_opted_out INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
         "focus on shortcut by default #1",
         "ALTER TABLE settings RENAME TO tmp_settings");
     if (err != noError) {
@@ -1051,7 +1059,8 @@ error Migrations::migrateSettings() {
         "   idle_minutes INTEGER NOT NULL DEFAULT 5, "
         "   focus_on_shortcut INTEGER NOT NULL DEFAULT 1, "
         "   reminder_minutes INTEGER NOT NULL DEFAULT 10, "
-        "   manual_mode INTEGER NOT NULL DEFAULT 0 "
+        "   manual_mode INTEGER NOT NULL DEFAULT 0, "
+        "   analytics_opted_out INTEGER NOT NULL DEFAULT 0 "
         ")");
     if (err != noError) {
         return err;
@@ -1064,7 +1073,8 @@ error Migrations::migrateSettings() {
         " proxy_host, proxy_port, proxy_username, proxy_password, "
         " use_idle_detection, update_channel, menubar_timer, menubar_project, "
         " dock_icon, on_top, reminder, ignore_cert, idle_minutes, "
-        " focus_on_shortcut, reminder_minutes, manual_mode "
+        " focus_on_shortcut, reminder_minutes, manual_mode, "
+        " analytics_opted_out "
         " from tmp_settings");
     if (err != noError) {
         return err;

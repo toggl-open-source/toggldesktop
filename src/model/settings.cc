@@ -42,6 +42,7 @@ Json::Value Settings::SaveToJSON(int) const {
     json["active_tab"] = active_tab;
     json["color_theme"] = color_theme;
     json["force_ignore_cert"] = force_ignore_cert;
+    json["analytics_opted_out"] = analytics_opted_out;
     return json;
 }
 

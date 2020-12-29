@@ -940,6 +940,11 @@ extern "C" {
         void *context,
         const bool_t manual_mode);
 
+    TOGGL_EXPORT bool_t toggl_set_settings_analytics_opted_out(
+        void* context,
+        const bool_t analytics_opted_out);
+
+
     TOGGL_EXPORT bool_t toggl_set_proxy_settings(
         void *context,
         const bool_t use_proxy,
