@@ -114,6 +114,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     // Check for logged in user etc, start up the app
     error StartEvents();
 
+    bool ShouldTrackAnalytics();
+
     // Close connections and wait for tasks to finish
     void Shutdown();
 

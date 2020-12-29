@@ -293,7 +293,7 @@ error Context::StartEvents() {
 
         updateUI(UIElements::Reset());
 
-        if ("production" == environment_) {
+        if (ShouldTrackAnalytics()) {
             std::string update_channel("");
             UpdateChannel(&update_channel);
 
@@ -316,6 +316,13 @@ error Context::StartEvents() {
         return displayError(ex);
     }
     return noError;
+}
+
+bool Context::ShouldTrackAnalytics() {
+    if ("production" == environment_ && !settings_.analytics_opted_out) {
+        return true;
+    }
+    return false;
 }
 
 error Context::save(const bool push_changes) {
@@ -986,7 +993,7 @@ void Context::updateUI(const UIElements &what) {
                               use_proxy,
                               proxy);
         // Tracking Settings
-        if ("production" == environment_) {
+        if (ShouldTrackAnalytics()) {
             analytics_.TrackSettings(db_->AnalyticsClientID(),
                                      record_timeline,
                                      settings_,
@@ -2707,7 +2714,7 @@ error Context::Login(
             sync_state_ = STARTUP;
         }
 
-        if ("production" == environment_) {
+        if (ShouldTrackAnalytics()) {
             if (password.compare(kGoogleAccessToken) == 0) {
                 analytics_.TrackLoginWithGoogle(db_->AnalyticsClientID());
             } else if (password.compare(kAppleAccessToken) == 0) {
@@ -3065,7 +3072,7 @@ TimeEntry *Context::Start(
         return nullptr;
     }
 
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.TrackAutocompleteUsage(db_->AnalyticsClientID(),
                                           task_id || project_id);
         analytics_.TrackStartTimeEntry(db_->AnalyticsClientID(), shortOSName(), GetActiveTab());
@@ -3142,7 +3149,7 @@ void Context::OpenTimeEntryEditor(
         render.display_time_entries = true;
     }
 
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.TrackEditTimeEntry(db_->AnalyticsClientID(), shortOSName(), GetActiveTab());
     }
 
@@ -3315,7 +3322,7 @@ error Context::DeleteTimeEntryByGUID(const std::string &GUID) {
     te->ClearValidationError();
     te->Delete();
 
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.TrackDeleteTimeEntry(db_->AnalyticsClientID(), shortOSName(), GetActiveTab());
     }
 
@@ -3511,7 +3518,7 @@ error Context::SetTimeEntryDate(
 
 error Context::SetTimeEntryStart(const std::string &GUID,
                                  const Poco::Int64 startAt) {
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.TrackTimelineResizing(db_->AnalyticsClientID(), shortOSName());
     }
     return SetTimeEntryStartWithOption(GUID, startAt, GetKeepEndTimeFixed());
@@ -3612,7 +3619,7 @@ error Context::SetTimeEntryStart(
 
 error Context::SetTimeEntryStop(const std::string &GUID,
                                 const Poco::Int64 endAt) {
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.TrackTimelineResizing(db_->AnalyticsClientID(), shortOSName());
     }
 
@@ -3872,7 +3879,7 @@ error Context::DiscardTimeAt(
     resetLastTrackingReminderTime();
 
     // Tracking action
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         std::string method;
         if (split_into_new_entry) {
             method = "idle-as-new-entry";
@@ -3921,7 +3928,7 @@ TimeEntry *Context::DiscardTimeAndContinue(
     last_tracking_reminder_time_ = time(nullptr);
 
     // Tracking action
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.TrackIdleDetectionClick(db_->AnalyticsClientID(),
                                            "discard-and-continue");
     }
@@ -6610,7 +6617,7 @@ error Context::signUpWithProvider(
 
         *user_data_json = resp.body;
 
-        if ("production" == environment_) {
+        if (ShouldTrackAnalytics()) {
             if (provider == kAppleProvider) {
                 analytics_.TrackSignupWithApple(db_->AnalyticsClientID());
             } else if (provider == kGoogleProvider) {
@@ -6674,7 +6681,7 @@ error Context::signup(
 
         *user_data_json = resp.body;
 
-        if ("production" == environment_) {
+        if (ShouldTrackAnalytics()) {
             analytics_.TrackSignupWithUsernamePassword(db_->AnalyticsClientID());
         }
     } catch(const Poco::Exception& exc) {
@@ -6858,7 +6865,7 @@ void on_websocket_message(
 
 void Context::TrackWindowSize(const Poco::UInt64 width,
                               const Poco::UInt64 height) {
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.TrackWindowSize(db_->AnalyticsClientID(),
                                    shortOSName(),
                                    toggl::Rectangle(width, height));
@@ -6867,7 +6874,7 @@ void Context::TrackWindowSize(const Poco::UInt64 width,
 
 void Context::TrackEditSize(const Poco::Int64 width,
                             const Poco::Int64 height) {
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.TrackEditSize(db_->AnalyticsClientID(),
                                  shortOSName(),
                                  toggl::Rectangle(width, height));
@@ -6875,7 +6882,7 @@ void Context::TrackEditSize(const Poco::Int64 width,
 }
 
 void Context::TrackInAppMessage(const Poco::Int64 type) {
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.TrackInAppMessage(db_->AnalyticsClientID(),
                                      last_message_id_,
                                      type);
@@ -6883,7 +6890,7 @@ void Context::TrackInAppMessage(const Poco::Int64 type) {
 }
 
 void Context::TrackCollapseDay() {
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.Track(db_->AnalyticsClientID(),
                          "time_entry_list",
                          "collapse_day");
@@ -6891,7 +6898,7 @@ void Context::TrackCollapseDay() {
 }
 
 void Context::TrackExpandDay() {
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.Track(db_->AnalyticsClientID(),
                          "time_entry_list",
                          "expand_day");
@@ -6899,7 +6906,7 @@ void Context::TrackExpandDay() {
 }
 
 void Context::TrackCollapseAllDays() {
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.Track(db_->AnalyticsClientID(),
                          "time_entry_list",
                          "collapse_all_days");
@@ -6907,7 +6914,7 @@ void Context::TrackCollapseAllDays() {
 }
 
 void Context::TrackExpandAllDays() {
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.Track(db_->AnalyticsClientID(),
                          "time_entry_list",
                          "expand_all_days");
@@ -6915,25 +6922,25 @@ void Context::TrackExpandAllDays() {
 }
 
 void Context::TrackTimerEdit(TimerEditActionType action) {
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.TrackTimerEdit(db_->AnalyticsClientID(), action);
     }
 }
 
 void Context::TrackTimerStart(TimerEditActionType actions) {
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.TrackTimerStart(db_->AnalyticsClientID(), actions);
     }
 }
 
 void Context::TrackTimerShortcut(TimerShortcutActionType action) {
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.TrackTimerShortcut(db_->AnalyticsClientID(), action);
     }
 }
 
 void Context::TrackDurationDropdown(DurationDropdownActionType action) {
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.TrackDurationDropdown(db_->AnalyticsClientID(), action);
     }
 }
@@ -7019,7 +7026,7 @@ bool Context::isUsingSyncServer() const {
 }
 
 void Context::TrackTimelineMenuContext(const TimelineMenuContextType type) {
-    if ("production" == environment_) {
+    if (ShouldTrackAnalytics()) {
         analytics_.TrackTimelineMenuContext(db_->AnalyticsClientID(), type);
     }
 }
