@@ -59,6 +59,7 @@ std::string Settings::String() const {
        << " focus_on_shortcut=" << focus_on_shortcut
        << " reminder_minutes=" << reminder_minutes
        << " manual_mode=" << manual_mode
+       << " analytics_opted_out=" << analytics_opted_out
        << " autodetect_proxy=" << autodetect_proxy
        << " remind_mon=" << remind_mon
        << " remind_tue=" << remind_tue
@@ -98,6 +99,7 @@ bool Settings::IsSame(const Settings &other) const {
             && (focus_on_shortcut == other.focus_on_shortcut)
             && (reminder_minutes == other.reminder_minutes)
             && (manual_mode == other.manual_mode)
+            && (analytics_opted_out == other.analytics_opted_out)
             && (autodetect_proxy == other.autodetect_proxy)
             && (remind_mon == other.remind_mon)
             && (remind_tue == other.remind_tue)
