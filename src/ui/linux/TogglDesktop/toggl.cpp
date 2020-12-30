@@ -509,6 +509,10 @@ bool TogglApi::setSettingsStopEntryOnShutdown(const bool stop_entry) {
     return toggl_set_settings_stop_entry_on_shutdown_sleep(ctx, stop_entry);
 }
 
+bool TogglApi::setSettingsAnalyticsOptedOut(const bool analytics_opted_out) {
+    return toggl_set_settings_analytics_opted_out(ctx, analytics_opted_out);
+}
+
 bool TogglApi::setSettingsIgnoreCert(bool ignore) {
     return toggl_set_settings_ignore_cert(ctx, ignore);
 }

@@ -220,6 +220,13 @@ bool_t toggl_set_settings_manual_mode(
     return toggl::noError == app(context)->SetSettingsManualMode(manual_mode);
 }
 
+bool_t toggl_set_settings_analytics_opted_out(
+    void* context,
+    const bool_t analytics_opted_out) {
+    return toggl::noError == app(context)->
+           SetSettingsAnalyticsOptedOut(analytics_opted_out);
+}
+
 bool_t toggl_set_settings_reminder_minutes(
     void *context,
     const uint64_t reminder_minutes) {
@@ -239,13 +246,6 @@ bool_t toggl_set_settings_pomodoro_break_minutes(
     const uint64_t pomodoro_break_minutes) {
     return toggl::noError == app(context)->
            SetSettingsPomodoroBreakMinutes(pomodoro_break_minutes);
-}
-
-bool_t toggl_set_settings_analytics_opted_out(
-    void* context,
-    const bool analytics_opted_out) {
-    return toggl::noError == app(context)->
-        SetSettingsAnalyticsOptedOut(analytics_opted_out);
 }
 
 bool_t toggl_set_window_settings(

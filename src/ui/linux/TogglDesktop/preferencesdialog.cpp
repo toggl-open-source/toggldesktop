@@ -382,3 +382,7 @@ void PreferencesDialog::on_focusAppOnShortcut_clicked(bool checked) {
 void PreferencesDialog::onStopEntryCheckboxClicked(bool checked) {
     TogglApi::instance->setSettingsStopEntryOnShutdown(checked);
 }
+
+void PreferencesDialog::onAnalyticsOptedOutCheckboxClicked(bool checked) {
+    TogglApi::instance->setSettingsAnalyticsOptedOut(checked);
+}

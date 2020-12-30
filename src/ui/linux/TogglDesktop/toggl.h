@@ -209,7 +209,7 @@ class TogglApi : public QObject {
 
     void stopEntryOnShutdown();
     bool setSettingsStopEntryOnShutdown(const bool stop_entry);
-
+    bool setSettingsAnalyticsOptedOut(const bool analytics_opted_out);
     bool setSettingsIgnoreCert(bool ignore);
 
     void toggleTimelineRecording(

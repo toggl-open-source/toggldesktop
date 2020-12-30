@@ -46,6 +46,7 @@ class SettingsView : public QObject {
         result->RemindStartTime = QTime::fromString(toQString(view->RemindStarts), "HH:mm");
         result->RemindEndTime = QTime::fromString(toQString(view->RemindEnds), "HH:mm");
         result->StopEntryOnShutdownSleep = view->StopEntryOnShutdownSleep;
+        result->AnalyticsOptedOut = view->AnalyticsOptedOut;
         result->ForceIgnoreCert = view->ForceIgnoreCert;
         return result;
     }
@@ -80,6 +81,7 @@ class SettingsView : public QObject {
     QTime RemindStartTime;
     QTime RemindEndTime;
     bool StopEntryOnShutdownSleep;
+    bool AnalyticsOptedOut;
     bool ForceIgnoreCert;
 };
 

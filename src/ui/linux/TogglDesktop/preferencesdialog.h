@@ -67,6 +67,7 @@ class PreferencesDialog : public QDialog {
     void keyReleaseEvent(QKeyEvent *event);
     void saveCurrentShortcut();
     void onStopEntryCheckboxClicked(bool checked);
+    void onAnalyticsOptedOutCheckboxClicked(bool checked);
 
     void updateShowHideShortcut();
     void updateContinueStopShortcut();

@@ -224,7 +224,7 @@
          </layout>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="6" column="1">
         <spacer name="verticalSpacer_3">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -241,6 +241,13 @@
         <widget class="QCheckBox" name="stopEntry">
          <property name="text">
           <string>Stop running entry on computer sleep/shutdown</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
+        <widget class="QCheckBox" name="analyticsOptedOut">
+         <property name="text">
+          <string>Opt-out of analytics</string>
          </property>
         </widget>
        </item>

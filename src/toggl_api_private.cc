@@ -489,6 +489,8 @@ TogglSettingsView *settings_view_item_init(
     view->PomodoroBreak = settings.pomodoro_break;
     view->PomodoroBreakMinutes = settings.pomodoro_break_minutes;
     view->StopEntryOnShutdownSleep = settings.stop_entry_on_shutdown_sleep;
+    view->AnalyticsOptedOut = settings.analytics_opted_out;
+
     view->ShowTouchBar = settings.show_touch_bar;
     view->StartAutotrackerWithoutSuggestions = settings.start_autotracker_without_suggestions;
     view->StartAutotrackerWhileTimerIsRunning = settings.start_autotracker_while_timer_is_running;
