@@ -108,6 +108,8 @@ namespace TogglDesktop
             this.recordTimelineCheckBox.IsChecked = settings.RecordTimeline;
             this.onTopCheckBox.IsChecked = settings.OnTop;
 
+            this.AnalyticsOptOutCheckBox.IsChecked = settings.AnalyticsOptedOut;
+
             this.keepEndTimeFixedCheckbox.IsChecked = Toggl.GetKeepEndTimeFixed();
             this.keepDurationFixedCheckbox.IsChecked = !this.keepEndTimeFixedCheckbox.IsChecked;
 
@@ -267,7 +269,7 @@ namespace TogglDesktop
 
                 UseIdleDetection = isChecked(this.idleDetectionCheckBox),
                 IdleMinutes = toLong(this.idleDetectionDurationTextBox.Text),
-                AnalyticsOptOut = isChecked(this.AnalyticsOptOut),
+                AnalyticsOptedOut = isChecked(this.AnalyticsOptOutCheckBox),
                 RecordTimeline = isChecked(this.recordTimelineCheckBox),
                 OnTop = isChecked(this.onTopCheckBox),
 

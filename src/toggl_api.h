@@ -191,13 +191,13 @@ extern "C" {
         int64_t PomodoroMinutes;
         int64_t PomodoroBreakMinutes;
         bool_t StopEntryOnShutdownSleep;
-        bool_t AnalyticsOptedOut;
         bool_t ShowTouchBar;
         bool_t StartAutotrackerWithoutSuggestions;
         bool_t StartAutotrackerWhileTimerIsRunning;
         uint8_t ActiveTab;
         uint8_t ColorTheme;
         bool_t ForceIgnoreCert;
+        bool_t AnalyticsOptedOut;
     } TogglSettingsView;
 
     typedef struct {

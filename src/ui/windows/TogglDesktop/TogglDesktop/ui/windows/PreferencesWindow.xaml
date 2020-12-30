@@ -75,7 +75,7 @@
 
                         <mah:ToggleSwitch Margin="0 14 0 0"
                                               VerticalAlignment="Center"
-                                              Name="AnalyticsOptOut" x:FieldModifier="private" />
+                                              Name="AnalyticsOptOutCheckBox" x:FieldModifier="private" />
 
                         <TextBlock Style="{DynamicResource Toggl.TitleText}" Margin="0 32 0 0"
                                    Text="Set default project" />

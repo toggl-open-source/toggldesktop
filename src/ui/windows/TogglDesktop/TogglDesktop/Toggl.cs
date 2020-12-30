@@ -613,7 +613,7 @@ public static partial class Toggl
             return false;
         }
 
-        if (!toggl_set_settings_analytics_opted_out(ctx, settings.AnalyticsOptOut))
+        if (!toggl_set_settings_analytics_opted_out(ctx, settings.AnalyticsOptedOut))
         {
             return false;
         }

@@ -438,7 +438,6 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->focus_on_shortcut),
                   into(settings->reminder_minutes),
                   into(settings->manual_mode),
-                  into(settings->analytics_opted_out),
                   into(settings->autodetect_proxy),
                   into(settings->remind_starts),
                   into(settings->remind_ends),
@@ -463,6 +462,7 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->force_ignore_cert),
                   into(settings->start_autotracker_without_suggestions),
                   into(settings->start_autotracker_while_timer_is_running),
+                  into(settings->analytics_opted_out),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {

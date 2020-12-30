@@ -59,7 +59,6 @@ std::string Settings::String() const {
        << " focus_on_shortcut=" << focus_on_shortcut
        << " reminder_minutes=" << reminder_minutes
        << " manual_mode=" << manual_mode
-       << " analytics_opted_out=" << analytics_opted_out
        << " autodetect_proxy=" << autodetect_proxy
        << " remind_mon=" << remind_mon
        << " remind_tue=" << remind_tue
@@ -83,7 +82,9 @@ std::string Settings::String() const {
        << " start_autotracker_while_timer_is_running=" << start_autotracker_while_timer_is_running
        << " active_tab=" << active_tab
        << " color_theme=" << color_theme
-       << " force_ignore_cert=" << force_ignore_cert;
+       << " force_ignore_cert=" << force_ignore_cert
+       << " analytics_opted_out=" << analytics_opted_out;
+
 
     return ss.str();
 }
@@ -99,7 +100,6 @@ bool Settings::IsSame(const Settings &other) const {
             && (focus_on_shortcut == other.focus_on_shortcut)
             && (reminder_minutes == other.reminder_minutes)
             && (manual_mode == other.manual_mode)
-            && (analytics_opted_out == other.analytics_opted_out)
             && (autodetect_proxy == other.autodetect_proxy)
             && (remind_mon == other.remind_mon)
             && (remind_tue == other.remind_tue)
@@ -123,7 +123,8 @@ bool Settings::IsSame(const Settings &other) const {
             && (start_autotracker_while_timer_is_running == other.start_autotracker_while_timer_is_running)
             && (active_tab == other.active_tab)
             && (color_theme == other.color_theme)
-            && (force_ignore_cert == other.force_ignore_cert));
+            && (force_ignore_cert == other.force_ignore_cert)
+            && (analytics_opted_out == other.analytics_opted_out));
 }
 
 std::string Settings::ModelName() const {
