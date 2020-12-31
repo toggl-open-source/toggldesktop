@@ -327,6 +327,12 @@ bool App::settings_manualMode(bool manual_mode) {
     return ret;
 }
 
+bool App::settings_analyticsOptedOut(bool analytics_opted_out) {
+    auto ret = toggl_set_settings_analytics_opted_out(context_, analytics_opted_out);
+    Dispatcher::dispatch(ret);
+    return ret;
+}
+
 bool App::settings_proxy(bool use_proxy, const std::string &proxy_host, uint64_t proxy_port, const std::string &proxy_username, const std::string &proxy_password) {
     auto ret = toggl_set_proxy_settings(context_, use_proxy, proxy_host.c_str(), proxy_port, proxy_username.c_str(), proxy_password.c_str());
     Dispatcher::dispatch(ret);

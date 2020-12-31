@@ -332,6 +332,7 @@ TEST(Settings, SetData) {
     ASSERT_TRUE(testData.app->settings_pomodoroMinutes(3));
     ASSERT_TRUE(testData.app->settings_pomodoroBreakMinutes(4));
     ASSERT_TRUE(testData.app->settings_manualMode(true));
+    ASSERT_TRUE(testData.app->settings_analyticsOptedOut(true));
 
     // need to think this through
     //ASSERT_TRUE(testData.app->settings_proxy(true, "a", 123456, "b", "c"));
@@ -384,6 +385,8 @@ TEST(Settings, ReadData) {
     ASSERT_EQ(testData.app->settings().pomodoroBreakMinutes_, 4);
 
     ASSERT_EQ(testData.app->settings().manualMode_, true);
+
+    ASSERT_EQ(testData.app->settings().analyticsOptedOut_, true);
 
     /*
     ASSERT_EQ(testData.app->settings().useProxy_, true);

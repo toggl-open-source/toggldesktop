@@ -70,6 +70,7 @@ public:
     bool settings_pomodoroMinutes(uint64_t pomodoro_minutes);
     bool settings_pomodoroBreakMinutes(uint64_t pomodoro_break_minutes);
     bool settings_manualMode(bool manual_mode);
+    bool settings_analyticsOptedOut(bool analytics_opted_out);
     bool settings_proxy(bool use_proxy, const std::string &proxy_host, uint64_t proxy_port, const std::string &proxy_username, const std::string &proxy_password);
 
     const std::set<Country> &countries() const;

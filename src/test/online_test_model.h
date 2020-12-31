@@ -107,6 +107,7 @@ struct Settings : public Model {
     bool focusOnShortcut_ { false };
     uint64_t reminderMinutes_ { 0 };
     bool manualMode_ { false };
+    bool analyticsOptedOut_ { false };
     bool autodetectProxy_ { false };
     bool remindMon_ { false };
     bool remindTue_ { false };
