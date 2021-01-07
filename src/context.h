@@ -469,6 +469,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         return user_ && user_->RecordTimeline();
     }
 
+    std::string GetTimeOfDayFormat() const {
+        return user_ ? user_->TimeOfDayFormat() : "";
+    }
+
     error SetDefaultProject(
         const Poco::UInt64 pid,
         const Poco::UInt64 tid);

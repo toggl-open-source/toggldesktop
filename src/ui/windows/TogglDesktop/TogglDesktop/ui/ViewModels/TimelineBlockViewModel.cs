@@ -77,7 +77,7 @@ namespace TogglDesktop.ViewModels
             OpenEditView = ReactiveCommand.Create(() => Toggl.Edit(TimeEntryId, false, Toggl.Description));
             var startEndObservable = this.WhenAnyValue(x => x.VerticalOffset, x => x.Height, (offset, height) =>
                 (Started: TimelineUtils.ConvertOffsetToDateTime(offset, date, _hourHeight), Ended: TimelineUtils.ConvertOffsetToDateTime(offset + height, date, _hourHeight)));
-            startEndObservable.Select(tuple => $"{tuple.Started:HH:mm tt} - {tuple.Ended:HH:mm tt}")
+            startEndObservable.Select(tuple => $"{tuple.Started.ToString(TimelineViewModel.TimeOfDayFormat)} - {tuple.Ended.ToString(TimelineViewModel.TimeOfDayFormat)}")
                 .ToPropertyEx(this, x => x.StartEndCaption);
             startEndObservable.Select(tuple =>
                 {

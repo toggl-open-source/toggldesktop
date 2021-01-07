@@ -1708,6 +1708,10 @@ private static extern bool toggl_timeline_is_recording_enabled(
         IntPtr context);
 
 [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+private static extern string toggl_time_of_day_format(
+        IntPtr context);
+
+[DllImport(dll, CharSet = charset, CallingConvention = convention)]
 private static extern void toggl_set_sleep(
         IntPtr context);
 

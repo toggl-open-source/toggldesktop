@@ -1017,6 +1017,11 @@ bool_t toggl_timeline_is_recording_enabled(
     return app(context)->IsTimelineRecordingEnabled();
 }
 
+char_t* toggl_time_of_day_format(
+    void* context) {
+    return copy_string(app(context)->GetTimeOfDayFormat());
+}
+
 bool_t toggl_can_see_billable(
     void *context,
     const int64_t workspaceID) {

@@ -442,6 +442,8 @@ namespace TogglDesktop.ViewModels
         public ReactiveCommand<Unit, Unit> ChangeFirstTimeEntryStopCommand { get; }
         public ReactiveCommand<Unit, Unit> ChangeLastTimeEntryStartCommand { get; }
 
+        public static string TimeOfDayFormat => TimelineUtils.ToDateTimeFormat(Toggl.GetTimeOfDayFormat());
+
         public class ActivityBlock
         {
             public double Offset { get; set; }

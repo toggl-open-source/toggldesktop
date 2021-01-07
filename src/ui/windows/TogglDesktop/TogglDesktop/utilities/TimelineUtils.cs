@@ -49,5 +49,12 @@ namespace TogglDesktop
             blocks == null || !blocks.Any()
                 ? (double?) null
                 : blocks.Min(te => te.Value.VerticalOffset);
+
+        public static string ToDateTimeFormat(string format) =>
+            format switch
+            {
+                "h:mm A" => "h:mm tt",
+                _ => "h:mm"
+            };
     }
 }
