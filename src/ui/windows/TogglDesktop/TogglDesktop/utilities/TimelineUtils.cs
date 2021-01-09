@@ -54,7 +54,7 @@ namespace TogglDesktop
             format switch
             {
                 "h:mm A" => "h:mm tt",
-                _ => "h:mm"
+                _ => "H:mm"
             };
     }
 }
