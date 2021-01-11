@@ -1137,8 +1137,8 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_timeline_is_recording_enabled(
         void *context);
 
-    TOGGL_EXPORT char_t* toggl_time_of_day_format(
-        void* context);
+    TOGGL_EXPORT char_t *toggl_time_of_day_format(
+        void *context);
 
     TOGGL_EXPORT void toggl_set_sleep(
         void *context);
