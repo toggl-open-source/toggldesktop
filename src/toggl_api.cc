@@ -1017,8 +1017,8 @@ bool_t toggl_timeline_is_recording_enabled(
     return app(context)->IsTimelineRecordingEnabled();
 }
 
-char_t* toggl_time_of_day_format(
-    void* context) {
+char_t *toggl_time_of_day_format(
+    void *context) {
     return copy_string(app(context)->GetTimeOfDayFormat());
 }
 
