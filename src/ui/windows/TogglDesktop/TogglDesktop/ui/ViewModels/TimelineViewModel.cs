@@ -125,13 +125,13 @@ namespace TogglDesktop.ViewModels
                 ? SelectedScaleMode
                 : SelectedScaleMode + value;
 
-        private static List<DateTime> GetHoursListFromScale(int scale)
+        private static List<string> GetHoursListFromScale(int scale)
         {
             int inc = GetHoursInLine(scale);
-            var hourViews = new List<DateTime>();
+            var hourViews = new List<string>();
             for (int i = 0; i < 24; i+=inc)
             {
-                hourViews.Add(new DateTime(1, 1, 1, i, 0, 0));
+                hourViews.Add(new DateTime(1, 1, 1, i, 0, 0).ToString(TimeOfDayFormat));
             }
 
             return hourViews;
@@ -403,7 +403,7 @@ namespace TogglDesktop.ViewModels
 
         public ReactiveCommand<Unit, Unit> SelectNextDay { get; }
 
-        public List<DateTime> HourViews { [ObservableAsProperty] get;  }
+        public List<string> HourViews { [ObservableAsProperty] get;  }
         
         public List<ActivityBlock> ActivityBlocks { [ObservableAsProperty] get; }
 
@@ -441,6 +441,8 @@ namespace TogglDesktop.ViewModels
         public ReactiveCommand<Unit, Unit> Delete { get; }
         public ReactiveCommand<Unit, Unit> ChangeFirstTimeEntryStopCommand { get; }
         public ReactiveCommand<Unit, Unit> ChangeLastTimeEntryStartCommand { get; }
+
+        public static string TimeOfDayFormat => TimelineUtils.ToDateTimeFormat(Toggl.GetTimeOfDayFormat());
 
         public class ActivityBlock
         {

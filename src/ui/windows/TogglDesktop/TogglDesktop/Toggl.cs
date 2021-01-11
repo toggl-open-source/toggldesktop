@@ -621,6 +621,8 @@ public static partial class Toggl
         return toggl_timeline_is_recording_enabled(ctx);
     }
 
+    public static string GetTimeOfDayFormat() => toggl_time_of_day_format(ctx);
+
     public static bool Logout()
     {
         return toggl_logout(ctx);
