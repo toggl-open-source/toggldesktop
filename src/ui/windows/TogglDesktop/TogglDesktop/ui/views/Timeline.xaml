@@ -137,7 +137,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Height="{Binding ElementName=HoursItemsControl, Path=DataContext.HourHeightView}" x:Name="TimeRow" ZIndex="0">
-                                    <TextBlock Text="{Binding Path=., StringFormat='hh:mm tt'}"
+                                    <TextBlock Text="{Binding Path=.}"
                                            Width="29"
                                            TextWrapping="Wrap"
                                            FontSize="12"
