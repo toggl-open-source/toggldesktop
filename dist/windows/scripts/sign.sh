@@ -23,6 +23,6 @@ arguments=$(sed 's/\</\*./g' <<< $EXTENSIONS | sed 's/\s/ -or -name /g' | sed 's
 
 for i in $(find $PATHS $arguments 2>/dev/null); do
     echo "Signing $i"
-    "$SIGNTOOL" sign -fd SHA256 -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f "Certificate.pfx" -p $cert_password $i
+    "$SIGNTOOL" sign -fd SHA256 -a -t http://timestamp.digicert.com -f "Certificate.pfx" -p $cert_password $i
 done
 
