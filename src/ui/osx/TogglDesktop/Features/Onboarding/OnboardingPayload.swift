@@ -127,7 +127,7 @@ struct OnboardingPayload {
         ]
 
         let string = NSMutableAttributedString(
-            string: "You can now add projects or tags even easier!\n",
+            string: "We’ve made it even simpler to add projects and tags!\n",
             attributes: titleAttributes
         )
         string.append(
