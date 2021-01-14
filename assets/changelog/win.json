@@ -1,6 +1,18 @@
 {
     "versions": [
         {
+            "version": "7.5.442",
+            "rows": [
+                "Timeline UI - Fix autoscrolling to the first time entry",
+                "Timeline UI - Fix click&drag time entry creation for 'end time' time ending setting",
+                "Idle detection - set idle state while PC is locked",
+                "Mini Timer - add 'Show Toggl Track' menu option to show main window "
+            ],
+            "date": "January 14th 2021",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.418",
             "rows": [
                 "Timeline UI - context menu for time entries: continue, start from end of this entry, delete, overlap resolving",
