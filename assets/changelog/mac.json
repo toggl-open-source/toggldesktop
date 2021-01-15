@@ -1,6 +1,14 @@
 {
     "versions": [
         {
+            "version": "7.5.441",
+            "rows": [
+                "Small bug fixes and improvements"
+            ],
+            "date": "January 15th 2021",
+            "beta": "true"
+        },
+        {
             "version": "7.5.409",
             "rows": [
                 "Ability to activate start button with Enter key when focused",
