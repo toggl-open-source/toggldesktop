@@ -8,8 +8,7 @@
                 "Idle detection - set idle state while PC is locked",
                 "Mini Timer - add 'Show Toggl Track' menu option to show main window "
             ],
-            "date": "January 14th 2021",
-            "beta": "true",
+            "date": "January 21st 2021",
             "has64bit": "true"
         },
         {
