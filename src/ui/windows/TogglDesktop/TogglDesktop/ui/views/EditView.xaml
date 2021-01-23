@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="TogglDesktop.EditView"
+<UserControl x:Class="TogglDesktop.EditView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -205,16 +205,16 @@
 
                     <!-- Row 0: Start -->
                     <TextBlock Style="{DynamicResource Toggl.BodyText}"
-							   Grid.Row="0" Grid.Column="0"
-							   VerticalAlignment="Center"
-							   Margin="0 0 10 8"
-							   Text="Start" />
+                               Grid.Row="0" Grid.Column="0"
+                               VerticalAlignment="Center"
+                               Margin="0 0 10 8"
+                               Text="Start" />
 
                     <DatePicker Name="startDatePicker" x:FieldModifier="private"
-								Style="{StaticResource EditViewDatePickerStyle}"
-								Grid.Row="0" Grid.Column="1"
-								Margin="0 0 0 8"
-								Height="32"
+                                Style="{StaticResource EditViewDatePickerStyle}"
+                                Grid.Row="0" Grid.Column="1"
+                                Margin="0 0 0 8"
+                                Height="32"
                                 LostKeyboardFocus="startDatePicker_LostKeyboardFocus">
                         <i:Interaction.Behaviors>
                             <behaviors:DatePickerKeyboardHandlingBehavior />
@@ -223,24 +223,24 @@
 
                     <toggl:ExtendedTextBox x:Name="startTimeTextBox" x:FieldModifier="private"
                                            Grid.Row="0" Grid.Column="2"
-										   Margin="8 0 0 8"
-										   Height="32"
+                                           Margin="8 0 0 8"
+                                           Height="32"
                                            Style="{StaticResource {x:Type TextBox}}"
                                            LostKeyboardFocus="startTimeTextBox_OnLostKeyboardFocus"
                                            KeyDown="startTimeTextBox_OnKeyDown">12:45</toggl:ExtendedTextBox>
 
                     <!-- Row 1: End -->
                     <TextBlock Style="{DynamicResource Toggl.BodyText}"
-							   Grid.Row="1" Grid.Column="0"
-							   VerticalAlignment="Center"
-							   Margin="0 0 10 8"
-							   Text="End"/>
+                               Grid.Row="1" Grid.Column="0"
+                               VerticalAlignment="Center"
+                               Margin="0 0 10 8"
+                               Text="End"/>
 
                     <DatePicker Name="endDatePicker" x:FieldModifier="private"
-								Style="{StaticResource EditViewDatePickerStyle}"
-								Grid.Row="1" Grid.Column="1"
+                                Style="{StaticResource EditViewDatePickerStyle}"
+                                Grid.Row="1" Grid.Column="1"
                                 Margin="0 0 0 8"
-								Height="32"
+                                Height="32"
                                 LostKeyboardFocus="endDatePicker_LostKeyboardFocus">
                         <i:Interaction.Behaviors>
                             <behaviors:DatePickerKeyboardHandlingBehavior />
@@ -249,22 +249,22 @@
 
                     <toggl:ExtendedTextBox x:Name="endTimeTextBox" x:FieldModifier="private"
                                            Grid.Row="1" Grid.Column="2"
-										   Margin="8 0 0 8"
-										   Height="32"
+                                           Margin="8 0 0 8"
+                                           Height="32"
                                            Style="{StaticResource {x:Type TextBox}}"
                                            LostKeyboardFocus="endTimeTextBox_OnLostKeyboardFocus"
                                            KeyDown="endTimeTextBox_OnKeyDown">12:55</toggl:ExtendedTextBox>
 
                     <!-- Row 2: Duration -->
                     <TextBlock Style="{DynamicResource Toggl.BodyText}"
-							   Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-							   VerticalAlignment="Center"
-							   Margin="0 0 10 10"
-							   Text="Duration" />
+                               Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                               VerticalAlignment="Center"
+                               Margin="0 0 10 10"
+                               Text="Duration" />
                     
                     <toggl:ExtendedTextBox x:Name="durationTextBox" x:FieldModifier="private" Grid.Row="2" Grid.Column="2"
                                            Margin="8 0 0 8"
-										   Height="32"
+                                           Height="32"
                                            Style="{StaticResource {x:Type TextBox}}"
                                            LostKeyboardFocus="durationTextBox_OnLostKeyboardFocus"
                                            KeyDown="durationTextBox_OnKeyDown">10:12 min</toggl:ExtendedTextBox>
