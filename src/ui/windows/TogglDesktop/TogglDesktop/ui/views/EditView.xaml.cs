@@ -202,9 +202,6 @@ namespace TogglDesktop
         /// When <paramref name="textBox"/> is not focused, or has an empty <see cref="FrameworkElement.Tag"/> property value, or when <paramref name="evenIfFocused"/> is <see langword="true"/>, this method stores <paramref name="time"/> into <paramref name="textBox"/>'s <see cref="FrameworkElement.Tag"/> property.<br/>
         /// Otherwise, this method does nothing.
         /// </summary>
-        /// <param name="textBox"></param>
-        /// <param name="time"></param>
-        /// <param name="evenIfFocused"></param>
         private static void setTime(ExtendedTextBox textBox, string time, bool evenIfFocused)
         {
             if (evenIfFocused
@@ -369,14 +366,12 @@ namespace TogglDesktop
         }
         private void saveEndTimeIfChanged()
         {
-//          this.setTimeEntryTimeIfChanged(this.endTimeTextBox, Toggl.SetTimeEntryEnd, "end time");
             this.setTimeEntryEndTimestampIfChanged();
         }
         private void saveDurationIfChanged()
         {
             this.setTimeEntryTimeIfChanged(this.durationTextBox, Toggl.SetTimeEntryDuration, "duration");
         }
-
 
         private void setTimeEntryTimeIfChanged(TextBox textBox, Func<string, string, bool> apiCall, string timeType)
         {
@@ -394,7 +389,6 @@ namespace TogglDesktop
             textBox.Tag = null;
 
             apiCall(this.timeEntry.GUID, now);
-
         }
 
         private void setTimeEntryEndTimestampIfChanged()
@@ -406,46 +400,46 @@ namespace TogglDesktop
             }
 
             if (!this.endDatePicker.SelectedDate.HasValue)
-			{
+            {
                Console.WriteLine("Cannot apply change: No end date value.");
                return;
-			}
+            }
 
             DateTime nowEnd;
             DateTime previousEnd;
-			{
+            {
                 DateTime nowEndDate      = this.endDatePicker.SelectedDate.Value.Date;
                 DateTime previousEndDate = ( this.endDatePicker.Tag as DateTime? ?? DateTime.MinValue ).Date;
             
                 TimeSpan nowEndTimeOfDay;
                 TimeSpan previousEndTimeOfDay;
-			    {
+                {
                     if (!DateTime.TryParseExact(this.endTimeTextBox.Text, format: "t", CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault | DateTimeStyles.AssumeLocal, out DateTime nowEndTimeOfDayAsDate))
-			        {
+                    {
                         Console.WriteLine("Cannot apply change: Invalid end time textbox value.");
                         return;
-			        }
+                    }
 
                     if (!DateTime.TryParseExact(this.endTimeTextBox.Tag as string, format: "t", CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault | DateTimeStyles.AssumeLocal, out DateTime previousEndTimeOfDayAsDate))
-			        {
+                    {
                         previousEndTimeOfDayAsDate = DateTime.MinValue;
-			        }
+                    }
 
                     nowEndTimeOfDay      = nowEndTimeOfDayAsDate.TimeOfDay;
                     previousEndTimeOfDay = previousEndTimeOfDayAsDate.TimeOfDay;
-			    }
+                }
 
                 nowEnd      = nowEndDate     .Add(nowEndTimeOfDay);
                 previousEnd = previousEndDate.Add(previousEndTimeOfDay);
-			}
+            }
 
             long nowEndUnix      = Toggl.UnixFromDateTime(nowEnd);
             long previousEndUnix = Toggl.UnixFromDateTime(previousEnd);
             if( nowEndUnix == previousEndUnix )
-			{
+            {
                 Console.WriteLine("Cannot apply change: No change detected.");
                 return;
-			}
+            }
 
             this.endTimeTextBox.Tag = null;
 
@@ -475,44 +469,6 @@ namespace TogglDesktop
                 Toggl.SetTimeEntryDate(this.timeEntry.GUID, currentDate); 
             } 
         } 
-
-        /*
-        private void saveDate()
-        {
-            if (!this.hasTimeEntry())
-            {
-                Console.WriteLine("Cannot apply date change: No time entry.");
-                return;
-            }
-
-            if (!this.startDatePicker.SelectedDate.HasValue)
-            {
-                this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(this.timeEntry.Started);
-                return;
-            }
-
-            if (!this.endDatePicker.SelectedDate.HasValue)
-            {
-                this.endDatePicker.SelectedDate = Toggl.DateTimeFromUnix(this.timeEntry.Ended);
-            }
-
-            DateTime currentStartedDt = Toggl.DateTimeFromUnix(timeEntry.Started);
-            DateTime currentEndedDt = Toggl.DateTimeFromUnix(timeEntry.Ended);
-
-            if (this.startDatePicker.SelectedDate.Value != currentStartedDt)
-            {
-                currentStartedDt = this.startDatePicker.SelectedDate.Value;
-                Toggl.SetTimeEntryDate(this.timeEntry.GUID, currentStartedDt);
-            }
-
-            if (this.endDatePicker.SelectedDate.Value != currentEndedDt)
-            {
-                currentEndedDt = this.endDatePicker.SelectedDate.Value;
-                long endUnix = Toggl.UnixFromDateTime(currentEndedDt);
-                Toggl.SetTimeEntryEndTimeStamp(this.timeEntry.GUID, endUnix);
-            }
-        }
-        */
 
         private void startDatePicker_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
