@@ -1,4 +1,4 @@
-<UserControl x:Class="TogglDesktop.EditView"
+﻿<UserControl x:Class="TogglDesktop.EditView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -193,9 +193,9 @@
                 <!-- times, duration -->
                 <Grid Margin="0 22 0 0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="42"/>
-                        <RowDefinition Height="42"/>
-                        <RowDefinition Height="42"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -262,10 +262,11 @@
                                Margin="0 0 10 10"
                                Text="Duration" />
                     
-                    <toggl:ExtendedTextBox x:Name="durationTextBox" x:FieldModifier="private" Grid.Row="2" Grid.Column="2"
+                    <toggl:ExtendedTextBox x:Name="durationTextBox" x:FieldModifier="private" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
                                            Margin="8 0 0 8"
                                            Height="32"
                                            Style="{StaticResource {x:Type TextBox}}"
+                                           HorizontalAlignment="Right"
                                            LostKeyboardFocus="durationTextBox_OnLostKeyboardFocus"
                                            KeyDown="durationTextBox_OnKeyDown">10:12 min</toggl:ExtendedTextBox>
                 </Grid>
