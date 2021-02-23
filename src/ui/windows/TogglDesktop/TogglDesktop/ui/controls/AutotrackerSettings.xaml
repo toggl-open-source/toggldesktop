@@ -88,15 +88,13 @@
             <TextBlock Text="Keyword" Grid.Column="0" Grid.Row="2" Style="{StaticResource Toggl.CaptionText}" Margin="12 19 0 0"/>
             <TextBlock Text="Project name" Grid.Column="1" Grid.Row="2" Style="{StaticResource Toggl.CaptionText}" Margin="12 19 0 0"/>
         </Grid>
-        <ScrollViewer Grid.Row="2"
-            Margin="0 10 0 0" Focusable="True" IsTabStop="True"
-            GotKeyboardFocus="onListGotKeyboardFocus"
-            LostKeyboardFocus="onListLostKeyboardFocus"
-            PreviewKeyDown="onListPreviewKeyDown"
-            VerticalScrollBarVisibility="Auto">
-            <StackPanel Name="rulesPanel" x:FieldModifier="private">
-                <!-- filled programmatically -->
-            </StackPanel>
-        </ScrollViewer>
+        <StackPanel Name="rulesPanel" x:FieldModifier="private"
+                    Grid.Row="2"
+                    Margin="0 10 0 0" Focusable="True"
+                    GotKeyboardFocus="onListGotKeyboardFocus"
+                    LostKeyboardFocus="onListLostKeyboardFocus"
+                    PreviewKeyDown="onListPreviewKeyDown">
+            <!-- filled programmatically -->
+        </StackPanel>
     </Grid>
 </UserControl>
