@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -56,6 +57,10 @@ namespace TogglDesktop.Services
                     when (e is UpdaterAlreadyLaunchedException || e is LockFileNotAcquiredException)
                 {
                     // Ignore race conditions
+                }
+                catch (Win32Exception e)
+                {
+                    BugsnagService.NotifyBugsnag(e);
                 }
             }
 
