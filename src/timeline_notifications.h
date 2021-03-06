@@ -18,8 +18,8 @@ class TOGGL_INTERNAL_EXPORT TimelineBatch {
  public:
     TimelineBatch()
         : user_id_(0)
-    , api_token_("")
-    , desktop_id_("") {}
+    , api_token_()
+    , desktop_id_() {}
 
     ~TimelineBatch() {}
 

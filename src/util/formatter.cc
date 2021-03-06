@@ -193,7 +193,7 @@ bool Formatter::ParseTimeInput(const std::string &input,
     }
 
     // Handle formats: HH:mm, H:mm etc
-    if (value.find(":") != std::string::npos) {
+    if (value.find(':') != std::string::npos) {
         Poco::StringTokenizer tokenizer(value, ":");
         if (2 != tokenizer.count()) {
             return false;
@@ -348,7 +348,7 @@ int Formatter::ParseDurationString(const std::string &value) {
     std::string input = Poco::replace(value, " ", "");
     input = Poco::replace(input, ",", ".");
 
-    if (input.find(":") != std::string::npos) {
+    if (input.find(':') != std::string::npos) {
         int parsed_seconds = 0;
 
         // Parse duration in seconds HH:MM:SS
@@ -374,7 +374,7 @@ int Formatter::ParseDurationString(const std::string &value) {
     int seconds = parseDurationStringHoursMinutesSeconds(&input);
 
     // 15
-    if (input.find(".") == std::string::npos) {
+    if (input.find('.') == std::string::npos) {
         Poco::Int64 minutes = 0;
         if (Poco::NumberParser::tryParse64(input, minutes)) {
             if ((minutes * 60) > kMaxDurationSeconds) {
@@ -607,8 +607,8 @@ bool CompareAutotrackerTitles(const std::string &a, const std::string &b) {
 }
 
 bool CompareAutocompleteItems(
-    view::Autocomplete a,
-    view::Autocomplete b) {
+    const view::Autocomplete& a,
+    const view::Autocomplete& b) {
 
     // Time entries first
     if (a.IsTimeEntry() && !b.IsTimeEntry()) {
@@ -638,8 +638,8 @@ bool CompareAutocompleteItems(
 }
 
 bool CompareStructuredAutocompleteItems(
-    view::Autocomplete a,
-    view::Autocomplete b) {
+    const view::Autocomplete& a,
+    const view::Autocomplete& b) {
 
     if (a.WorkspaceName == b.WorkspaceName) {
         if (a.IsWorkspace() && !b.IsWorkspace()) {

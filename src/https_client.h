@@ -66,13 +66,13 @@ class TOGGL_INTERNAL_EXPORT ServerStatus {
 class TOGGL_INTERNAL_EXPORT HTTPClientConfig {
  public:
     HTTPClientConfig()
-        : AppName("")
-    , AppVersion("")
+        : AppName()
+    , AppVersion()
     , UseProxy(false)
     , ProxySettings(Proxy())
     , AutodetectProxy(true)
     , ignoreCert(false)
-    , caCertPath("") {}
+    , caCertPath() {}
     ~HTTPClientConfig() {}
 
     std::string AppName;
@@ -93,7 +93,7 @@ class TOGGL_INTERNAL_EXPORT HTTPClientConfig {
     std::string CACertPath() {
         return caCertPath;
     };
-    void SetCACertPath(std::string path) {
+    void SetCACertPath(const std::string& path) {
         caCertPath = path;
     }
     void SetIgnoreCert(bool ignore) {
@@ -108,12 +108,12 @@ class TOGGL_INTERNAL_EXPORT HTTPClientConfig {
 class TOGGL_INTERNAL_EXPORT HTTPRequest {
  public:
     HTTPRequest()
-        : method("")
-    , host("")
-    , relative_url("")
-    , payload("")
-    , basic_auth_username("")
-    , basic_auth_password("")
+        : method()
+    , host()
+    , relative_url()
+    , payload()
+    , basic_auth_username()
+    , basic_auth_password()
     , form(nullptr)
     , query(nullptr)
     , timeout_seconds(kHTTPClientTimeoutSeconds) {}
@@ -133,7 +133,7 @@ class TOGGL_INTERNAL_EXPORT HTTPRequest {
 class TOGGL_INTERNAL_EXPORT HTTPResponse {
  public:
     HTTPResponse()
-        : body("")
+        : body()
     , err(noError)
     , status_code(0) {}
     virtual ~HTTPResponse() {}
@@ -162,7 +162,7 @@ class TOGGL_INTERNAL_EXPORT HTTPClient {
 
     static HTTPClientConfig Config;
 
-    void SetCACertPath(std::string path);
+    void SetCACertPath(const std::string& path);
     void SetIgnoreCert(bool ignore);
 
     static error StatusCodeToError(const Poco::Int64 status_code);

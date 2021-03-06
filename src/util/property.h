@@ -17,10 +17,8 @@ class Property {
 public:
     typedef T value_type;
 
-    Property(const T& value) {
-        current_ = value;
-        previous_ = value;
-    }
+    Property(const T& value) : current_(value), previous_(value) { }
+
     Property(T&& value = T {}) {
         current_ = std::move(value);
         previous_ = current_;

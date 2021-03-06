@@ -70,11 +70,11 @@ error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
 
 error RelatedData::UpdateAutotrackerRule(
     const Poco::Int64 local_id,
-    std::string terms,
+    const std::string terms,
     const Poco::UInt64 tid,
     const Poco::UInt64 pid,
-    std::string start_time,
-    std::string end_time,
+    const std::string start_time,
+    const std::string end_time,
     const Poco::UInt8 days_of_week) {
 
     if (!local_id) {
@@ -284,9 +284,9 @@ void RelatedData::timeEntryAutocompleteItems(
         unique_names->insert(text);
 
         view::Autocomplete autocomplete_item;
-        autocomplete_item.Text = text;
-        autocomplete_item.Description = description;
-        autocomplete_item.ProjectAndTaskLabel = project_task_label;
+        autocomplete_item.Text = std::move(text);
+        autocomplete_item.Description = std::move(description);
+        autocomplete_item.ProjectAndTaskLabel = std::move(project_task_label);
         if (p) {
             autocomplete_item.ProjectColor = p->ColorCode();
             autocomplete_item.ProjectID = p->ID();
@@ -366,7 +366,7 @@ void RelatedData::taskAutocompleteItems(
 
         view::Autocomplete autocomplete_item;
         autocomplete_item.Text = t->Name();
-        autocomplete_item.ProjectAndTaskLabel = text;
+        autocomplete_item.ProjectAndTaskLabel = std::move(text);
         autocomplete_item.TaskLabel = t->Name();
         autocomplete_item.TaskID = t->ID();
 
@@ -434,7 +434,7 @@ void RelatedData::projectAutocompleteItems(
 
         view::Autocomplete autocomplete_item;
         autocomplete_item.Text = text;
-        autocomplete_item.ProjectAndTaskLabel = text;
+        autocomplete_item.ProjectAndTaskLabel = std::move(text);
         autocomplete_item.ProjectLabel = p->Name();
         if (c) {
             autocomplete_item.ClientLabel = c->Name();

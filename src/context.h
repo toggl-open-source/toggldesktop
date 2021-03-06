@@ -65,8 +65,8 @@ class TOGGL_INTERNAL_EXPORT UIElements {
     , open_time_entry_editor(false)
     , display_autotracker_rules(false)
     , display_settings(false)
-    , time_entry_editor_guid("")
-    , time_entry_editor_field("")
+    , time_entry_editor_guid()
+    , time_entry_editor_field()
     , display_unsynced_items(false)
     , display_timeline(false)
     , open_timeline(false) {}
@@ -568,7 +568,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const int64_t promotion_response);
 
     error ToggleEntriesGroup(
-        std::string name);
+        const std::string& name);
 
     error AsyncPullCountries();
     error PullCountries();
@@ -903,7 +903,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 };
 void on_websocket_message(
     void *context,
-    std::string json);
+    const std::string json);
 
 }  // namespace toggl
 

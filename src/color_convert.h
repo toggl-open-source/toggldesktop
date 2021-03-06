@@ -26,11 +26,10 @@ class TOGGL_INTERNAL_EXPORT ColorConverter {
     static TogglRgbColor GetRgbAdaptiveColor(const std::string &hexColor, TogglAdaptiveColor type);
 
  private:
-    static TogglHsvColor adjustColor(TogglHsvColor hsvColor, TogglAdaptiveColor type);
-    static TogglHsvColor rgbToHsv(TogglRgbColor rgbColor);
+    static TogglHsvColor adjustColor(const TogglHsvColor &hsvColor, TogglAdaptiveColor type);
+    static TogglHsvColor rgbToHsv(const TogglRgbColor &rgbColor);
     static TogglRgbColor hexToRgb(std::string hex);
-    static std::string rgbToHex(TogglRgbColor rbg);
-    static TogglRgbColor hsvToRgb(TogglHsvColor hsvColor);
+    static TogglRgbColor hsvToRgb(const TogglHsvColor &hsvColor);
 };
 
 }

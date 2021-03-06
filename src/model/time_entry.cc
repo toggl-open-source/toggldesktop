@@ -323,7 +323,7 @@ void TimeEntry::SetStartString(const std::string &value, bool userModified) {
 }
 
 void TimeEntry::SetDurationUserInput(const std::string &value) {
-    int seconds = Formatter::ParseDurationString(value);
+    time_t seconds = Formatter::ParseDurationString(value);
     if (IsTracking()) {
         time_t now = time(nullptr);
         time_t start = now - seconds;

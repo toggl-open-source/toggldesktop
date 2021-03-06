@@ -94,7 +94,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
     bool idleChanged = hasIdlenessChanged(idle);
 
     if (idleChanged) {
-        last_autotracker_title_ = "";
+        last_autotracker_title_.clear();
     }
 
     bool windowHasChanged = hasWindowChanged(title, filename);
@@ -128,8 +128,8 @@ void WindowChangeRecorder::inspectFocusedWindow() {
         }
     }
 
-    last_title_ = title;
-    last_filename_ = filename;
+    last_title_ = std::move(title);
+    last_filename_ = std::move(filename);
     last_idle_ = idle;
     last_event_started_at_ = now;
 }
@@ -146,12 +146,6 @@ void WindowChangeRecorder::recordLoop() {
         }
 
         inspectFocusedWindow();
-
-        if (recording_.isStopped()) {
-            break;
-        }
-
-        Poco::Thread::sleep(kWindowRecorderSleepMillis);
 
         if (recording_.isStopped()) {
             break;

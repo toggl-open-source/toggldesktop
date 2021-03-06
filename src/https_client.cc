@@ -40,7 +40,7 @@
 
 namespace toggl {
 
-void HTTPClient::SetCACertPath(std::string path) {
+void HTTPClient::SetCACertPath(const std::string& path) {
     if (path.compare(Config.CACertPath()) == 0) {
         return;
     }
@@ -72,7 +72,7 @@ void HTTPClient::resetPocoContext() {
         verification_mode, 9, true, "ALL");
     Poco::Net::SSLManager::instance().initializeClient(
         nullptr, acceptCertHandler, _context);
-    context = _context;
+    context = std::move(_context);
 }
 
 void ServerStatus::startStatusCheck() {
@@ -377,10 +377,10 @@ HTTPResponse HTTPClient::makeHttpRequest(
         }
         poco_req.set("User-Agent", HTTPClient::Config.UserAgent());
 
-        Poco::Net::HTTPBasicCredentials cred(
-            req.basic_auth_username, req.basic_auth_password);
         if (!req.basic_auth_username.empty()
                 && !req.basic_auth_password.empty()) {
+            Poco::Net::HTTPBasicCredentials cred(
+                req.basic_auth_username, req.basic_auth_password);
             cred.authenticate(poco_req);
         }
 
@@ -462,7 +462,7 @@ HTTPResponse HTTPClient::makeHttpRequest(
         if (isRedirect(resp.status_code) && response.has("Location")) {
             std::string decoded_url("");
             Poco::URI::decode(response.get("Location"), decoded_url);
-            resp.body = decoded_url;
+            resp.body = std::move(decoded_url);
 
             // Inflate, if gzip was sent
         } else if (response.has("Content-Encoding") &&
@@ -546,7 +546,7 @@ HTTPResponse TogglClient::request(
     if (err != noError) {
         logger().error("Will not connect, because of known bad Toggl status: ", err);
         HTTPResponse resp;
-        resp.err = err;
+        resp.err = std::move(err);
         return resp;
     }
 

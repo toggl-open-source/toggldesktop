@@ -666,7 +666,7 @@ void Context::updateUI(const UIElements &what) {
 
         if (what.display_time_entries && user_) {
             if (what.open_time_entry_list) {
-                time_entry_editor_guid_ = "";
+                time_entry_editor_guid_.clear();
             }
 
             // Get a sorted list of time entries
@@ -683,7 +683,7 @@ void Context::updateUI(const UIElements &what) {
             std::map<std::string, Poco::UInt64> group_header_id;
             std::map<std::string, std::vector<Poco::UInt64> > group_items;
 
-            for (unsigned int i = 0; i < time_entries.size(); i++) {
+            for (size_t i = 0; i < time_entries.size(); i++) {
                 TimeEntry *te = time_entries[i];
 
                 std::string date_header =
@@ -715,7 +715,7 @@ void Context::updateUI(const UIElements &what) {
             }
 
             // Assign the date durations we calculated previously
-            for (unsigned int i = 0; i < time_entries.size(); i++) {
+            for (size_t i = 0; i < time_entries.size(); i++) {
                 TimeEntry *te = time_entries[i];
 
                 // Dont render running entry in list,
@@ -734,7 +734,7 @@ void Context::updateUI(const UIElements &what) {
                         if (group_header_id[view.GroupName] == i) {
                             // If Group open add all entries in group
                             if (entry_groups[view.GroupName]) {
-                                for (unsigned int j = 0; j < group_items[view.GroupName].size(); j++) {
+                                for (size_t j = 0; j < group_items[view.GroupName].size(); j++) {
                                     TimeEntry *group_entry =
                                         time_entries[group_items[view.GroupName][j]];
 
@@ -872,18 +872,19 @@ void Context::updateUI(const UIElements &what) {
             std::sort(time_entries.begin(), time_entries.end(),
                       CompareByStart);
 
+            Poco::LocalDateTime tl = UI()->TimelineDateAt();
             Poco::LocalDateTime datetime(
-                UI()->TimelineDateAt().year(),
-                UI()->TimelineDateAt().month(),
-                UI()->TimelineDateAt().day());
-            int tzd = datetime.tzd();
+                tl.year(),
+                tl.month(),
+                tl.day());
+            time_t tzd = datetime.tzd();
 
             // Get all entires in this day (no chunk, no overlap)
             time_t start_day = datetime.timestamp().epochTime() - tzd;
             time_t end_day = start_day + 86400; // one day
 
             // Collect the time entries into a list
-            for (unsigned int i = 0; i < time_entries.size(); i++) {
+            for (size_t i = 0; i < time_entries.size(); i++) {
                 TimeEntry *te = time_entries[i];
                 if (te->Duration() < 0) {
                     // Don't account running entries
@@ -1836,8 +1837,8 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask&) {  // NOLIN
     HTTPRequest req;
     req.host = urls::TimelineUpload();
     req.relative_url = "/api/v8/timeline_settings";
-    req.payload = json;
-    req.basic_auth_username = apitoken;
+    req.payload = std::move(json);
+    req.basic_auth_username = std::move(apitoken);
     req.basic_auth_password = "api_token";
 
     HTTPResponse resp = TogglClient::GetInstance().Post(req);
@@ -1941,8 +1942,8 @@ void Context::onSendFeedback(Poco::Util::TimerTask&) {  // NOLINT
     HTTPRequest req;
     req.host = urls::API();
     req.relative_url ="/api/v8/feedback/web";
-    req.basic_auth_username = api_token_value;
-    req.basic_auth_password = api_token_name;
+    req.basic_auth_username = std::move(api_token_value);
+    req.basic_auth_password = std::move(api_token_name);
     req.form = &form;
 
     HTTPResponse resp = TogglClient::GetInstance().Post(req);
@@ -2495,7 +2496,7 @@ void Context::SetNeedEnableSSO(const std::string &code) {
 
 void Context::ResetEnableSSO() {
     need_enable_SSO = false;
-    sso_confirmation_code = "";
+    sso_confirmation_code.clear();
 }
 
 void Context::LoginSSO(const std::string &api_token) {
@@ -3129,8 +3130,8 @@ void Context::OpenTimeEntryEditor(
     if (time_entry_editor_guid_ == te->GUID()) {
         render.open_time_entry_editor = false;
         render.display_time_entry_editor = false;
-        render.time_entry_editor_guid = "";
-        render.time_entry_editor_field = "";
+        render.time_entry_editor_guid.clear();
+        render.time_entry_editor_field.clear();
 
         render.open_time_entry_list = true;
         render.display_time_entries = true;
@@ -3588,7 +3589,7 @@ error Context::SetTimeEntryStart(
     if (dt.utcTime() > now.utcTime()) {
         Poco::LocalDateTime new_date =
             dt - Poco::Timespan(1 * Poco::Timespan::DAYS);
-        dt = new_date;
+        dt = std::move(new_date);
     }
 
     std::string s = Poco::DateTimeFormatter::format(
@@ -3900,7 +3901,7 @@ error Context::DiscardTimeAt(
         render.open_time_entry_editor = true;
         render.display_time_entry_editor = true;
         render.time_entry_editor_guid = split->GUID();
-        render.time_entry_editor_field = "";
+        render.time_entry_editor_field.clear();
         updateUI(render);
     }
 
@@ -4553,7 +4554,7 @@ error Context::OpenReportsInBrowser() {
     req.host = urls::API();
     req.relative_url = "/api/v8/desktop_login_tokens";
     req.payload = "{}";
-    req.basic_auth_username = apitoken;
+    req.basic_auth_username = std::move(apitoken);
     req.basic_auth_password = "api_token";
 
     HTTPResponse resp = TogglClient::GetInstance().Post(req);
@@ -5091,7 +5092,7 @@ void Context::uiUpdaterActivity() {
             updateUI(render);
         }
 
-        running_time = date_duration;
+        running_time = std::move(date_duration);
     }
 }
 
@@ -5305,7 +5306,7 @@ void Context::onLoadMore(Poco::Util::TimerTask&) {
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = ss.str();
-        req.basic_auth_username = api_token;
+        req.basic_auth_username = std::move(api_token);
         req.basic_auth_password = "api_token";
 
         HTTPResponse resp = TogglClient::GetInstance().Get(req);
@@ -5604,10 +5605,10 @@ error Context::pushBatchedChanges(
             lastRequestUUID_ = Poco::UUIDGenerator().createOne().toString();
 
             HTTPRequest req;
-            req.payload = payload;
+            req.payload = std::move(payload);
             req.host = urls::SyncAPI();
             req.relative_url = "/push/" + lastRequestUUID_;
-            req.basic_auth_username = api_token;
+            req.basic_auth_username = std::move(api_token);
             req.basic_auth_password = "api_token";
 
             auto response = TogglClient::GetInstance().Post(req);
@@ -5956,7 +5957,7 @@ error Context::pushEntries(
         HTTPResponse resp;
 
         if ((*it)->NeedsDELETE()) {
-            req.payload = "";
+            req.payload.clear();
             resp = TogglClient::GetInstance().Delete(req);
         } else if ((*it)->ID()) {
             resp = TogglClient::GetInstance().Put(req);
@@ -6180,7 +6181,7 @@ error Context::pullWorkspaces() {
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/me/workspaces";
-        req.basic_auth_username = api_token;
+        req.basic_auth_username = std::move(api_token);
         req.basic_auth_password = "api_token";
 
         HTTPResponse resp = TogglClient::GetInstance().Get(req);
@@ -6267,7 +6268,7 @@ error Context::pullWorkspacePreferences(
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = ss.str();
-        req.basic_auth_username = api_token;
+        req.basic_auth_username = std::move(api_token);
         req.basic_auth_password = "api_token";
 
         HTTPResponse resp = TogglClient::GetInstance().Get(req);
@@ -6302,7 +6303,7 @@ error Context::pullUserPreferences() {
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/me/preferences/desktop";
-        req.basic_auth_username = api_token;
+        req.basic_auth_username = std::move(api_token);
         req.basic_auth_password = "api_token";
 
         HTTPResponse resp = TogglClient::GetInstance().Get(req);
@@ -6737,7 +6738,7 @@ error Context::ToSAccept() {
         HTTPRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/me/accept_tos";
-        req.basic_auth_username = api_token;
+        req.basic_auth_username = std::move(api_token);
         req.basic_auth_password = "api_token";
 
         HTTPResponse resp = TogglClient::GetInstance().Post(req);
@@ -6759,7 +6760,7 @@ error Context::ToSAccept() {
     return noError;
 }
 
-error Context::ToggleEntriesGroup(std::string name) {
+error Context::ToggleEntriesGroup(const std::string& name) {
     entry_groups[name] = !entry_groups[name];
     OpenTimeEntryList();
     return noError;
@@ -6838,7 +6839,7 @@ void Context::collectPushableModels(
 
 void on_websocket_message(
     void *context,
-    std::string json) {
+    const std::string json) {
 
     poco_check_ptr(context);
 

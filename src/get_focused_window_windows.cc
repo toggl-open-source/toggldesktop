@@ -17,8 +17,8 @@ int getFocusedWindowInfo(
     std::string *title,
     std::string *filename,
     bool *idle) {
-    *title = "";
-    *filename = "";
+    title->clear();
+    filename->clear();
     *idle = false;
 
     // get window handle
@@ -76,7 +76,7 @@ int getFocusedWindowInfo(
         Poco::UnicodeConverter::toUTF8(buf, utf8);
 #endif
 
-        *title = utf8;
+        *title = std::move(utf8);
     }
 
     return 0;

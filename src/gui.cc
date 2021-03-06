@@ -411,7 +411,7 @@ void GUI::DisplayTimeEntryList(const bool open,
 
             // Get render list from last 9 days at the first launch
             time_t last9Days = time(nullptr) - 9 * 86400;
-            for (auto it = list.begin(); it != list.end(); it++) {
+            for (auto it = list.begin(); it != list.end(); ++it) {
                 auto timeEntry = *it;
                 if (timeEntry.Started >= last9Days) {
                     renderList.push_back(timeEntry);
@@ -461,13 +461,13 @@ void GUI::DisplayTimeline(const bool open,
         TimelineDateAt().year(),
         TimelineDateAt().month(),
         TimelineDateAt().day());
-    int tzd = datetime.tzd();
+    time_t tzd = datetime.tzd();
 
     // Get all entires in this day (no chunk, no overlap)
     TogglTimeEntryView *first_entry = nullptr;
     time_t start_day = datetime.timestamp().epochTime() - tzd;
     time_t end_day = start_day + 86400; // one day
-    for (unsigned int i = 0; i < entries_list.size(); i++) {
+    for (size_t i = 0; i < entries_list.size(); i++) {
         view::TimeEntry te = entries_list.at(i);
         TogglTimeEntryView *item = time_entry_view_item_init(te);
         time_t start_time_entry = Poco::Timestamp::fromEpochTime(item->Started).epochTime();

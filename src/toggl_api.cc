@@ -671,7 +671,7 @@ int64_t toggl_timestamp_from_time_string(const char_t *time) {
     if (dt.utcTime() > now.utcTime()) {
         Poco::LocalDateTime new_date =
             dt - Poco::Timespan(1 * Poco::Timespan::DAYS);
-        dt = new_date;
+        dt = std::move(new_date);
     }
 
     return dt.utc().timestamp().epochTime();
@@ -1780,7 +1780,7 @@ void toggl_on_display_login_sso(void *context,
 }
 
 TogglHsvColor toggl_get_adaptive_hsv_color(
-    TogglRgbColor rgbColor,
+    const TogglRgbColor &rgbColor,
     TogglAdaptiveColor type) {
     return toggl::ColorConverter::GetAdaptiveColor(rgbColor, type);
 }
