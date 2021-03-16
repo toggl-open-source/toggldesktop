@@ -1,6 +1,17 @@
 {
     "versions": [
         {
+            "version": "7.5.445",
+            "rows": [
+                "Fix the crash when trying to auto-update the app without proper permissions",
+                "Disable back the per-monitor DPI as it caused Edit View to not being displayed sometimes",
+                "Fix Autotracker list barely visible on low res or high scaling displays"
+            ],
+            "date": "March 16th 2021",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.5.442",
             "rows": [
                 "Timeline UI - Fix autoscrolling to the first time entry",
