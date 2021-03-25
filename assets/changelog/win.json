@@ -7,8 +7,7 @@
                 "Disable back the per-monitor DPI as it caused Edit View to not being displayed sometimes",
                 "Fix Autotracker list barely visible on low res or high scaling displays"
             ],
-            "date": "March 16th 2021",
-            "beta": "true",
+            "date": "March 25th 2021",
             "has64bit": "true"
         },
         {
