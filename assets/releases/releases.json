@@ -2132,6 +2132,20 @@
                         "name": "TogglDesktopInstaller-x64-7.5.442.exe"
                     }
                 ]
+            },
+            {
+                "version": "7.5.445",
+                "timestamp": "25-03-2021",
+                "filename": [
+                    {
+                        "type": "windows",
+                        "name": "TogglDesktopInstaller-7.5.445.exe"
+                    },
+                    {
+                        "type": "windows64",
+                        "name": "TogglDesktopInstaller-x64-7.5.445.exe"
+                    }
+                ]
             }
         ]
     },
