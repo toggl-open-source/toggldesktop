@@ -533,13 +533,6 @@ final class TimerViewModel: NSObject {
         // User has selected an autocomplete item.
         // It could be a time entry, a task or a project.
 
-        if let newDescription = autocompleteItem.description {
-            entryDescription = newDescription
-            if timeEntry.isRunning() {
-                saveCurrentDescription()
-            }
-        }
-
         fillEntryProject(from: autocompleteItem)
 
         selectedTags = autocompleteItem.tags ?? []
@@ -548,6 +541,13 @@ final class TimerViewModel: NSObject {
             billableState = autocompleteItem.billable ? .on : .off
         } else {
             billableState = .unavailable
+        }
+
+        if let newDescription = autocompleteItem.description {
+            entryDescription = newDescription
+            if timeEntry.isRunning() {
+                saveCurrentDescription()
+            }
         }
     }
 
