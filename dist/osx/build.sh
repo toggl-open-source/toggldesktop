@@ -85,7 +85,9 @@ function notarize() {
     
     # plutil -p ${UPLOAD_INFO_PLIST}
     REQUEST_UUID=`/usr/libexec/PlistBuddy -c "Print :notarization-upload:RequestUUID" ${UPLOAD_INFO_PLIST}`
-    echo REQUEST_UUID
+    echo ${REQUEST_UUID}
+
+    plutil -p ${UPLOAD_INFO_PLIST}
 
     while true; do
         /usr/bin/xcrun altool --notarization-info ${REQUEST_UUID} -u ${DEVELOPER_USERNAME} -p ${DEVELOPER_PASSWORD} --output-format xml > ${REQUEST_INFO_PLIST} || cat ${REQUEST_INFO_PLIST}
