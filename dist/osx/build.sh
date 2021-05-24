@@ -89,6 +89,8 @@ function notarize() {
     while true; do
         /usr/bin/xcrun altool --notarization-info ${REQUEST_UUID} -u ${DEVELOPER_USERNAME} -p ${DEVELOPER_PASSWORD} --output-format xml > ${REQUEST_INFO_PLIST} || cat ${REQUEST_INFO_PLIST}
 
+        plutil -p ${REQUEST_INFO_PLIST}
+
         if [[ `/usr/libexec/PlistBuddy -c "Print :notarization-info:Status" ${REQUEST_INFO_PLIST}` != "in progress" ]]; then
             break
         fi
