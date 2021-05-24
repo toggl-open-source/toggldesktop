@@ -84,9 +84,13 @@ function notarize() {
     echo "Notarization" "Waiting while notarized…"
     
     plutil -p ${UPLOAD_INFO_PLIST}
+    /usr/libexec/PlistBuddy -c "Print :notarization-upload:RequestUUID" ${UPLOAD_INFO_PLIST}
 
     while true; do
         /usr/bin/xcrun altool --notarization-info `/usr/libexec/PlistBuddy -c "Print :notarization-upload:RequestUUID" ${UPLOAD_INFO_PLIST}` -u ${DEVELOPER_USERNAME} -p ${DEVELOPER_PASSWORD} --output-format xml > ${REQUEST_INFO_PLIST} || cat ${REQUEST_INFO_PLIST}
+
+        plutil -p ${REQUEST_INFO_PLIST}
+
         if [[ `/usr/libexec/PlistBuddy -c "Print :notarization-info:Status" ${REQUEST_INFO_PLIST}` != "in progress" ]]; then
             break
         fi
