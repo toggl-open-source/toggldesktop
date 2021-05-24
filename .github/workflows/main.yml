@@ -9,11 +9,11 @@ on:
 
 jobs:
   macos:
-    runs-on: macos-11.0
+    runs-on: macos-11.3
     steps:
     - uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '12.2'
+        xcode-version: '12.4'
     - uses: actions/checkout@v2
       with:
         fetch-depth: 1
@@ -118,11 +118,11 @@ jobs:
         bash ./dist/osx/build.sh update_release
 
   macos-cmake:
-    runs-on: macos-11.0
+    runs-on: macos-11.3
     steps:
     - uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '12.2'
+        xcode-version: '12.4'
     - uses: actions/checkout@v2
       with:
         fetch-depth: 1
