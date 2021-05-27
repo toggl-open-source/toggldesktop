@@ -13,9 +13,9 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT Feedback {
  public:
     Feedback()
-        : subject_("")
-    , details_("")
-    , attachment_path_("") {}
+        : subject_()
+    , details_()
+    , attachment_path_() {}
     ~Feedback() {}
 
     toggl::error Validate() const;

@@ -88,7 +88,7 @@ error TimelineUploader::upload(TimelineBatch *batch) {
     HTTPRequest req;
     req.host = urls::TimelineUpload();
     req.relative_url = "/api/v8/timeline";
-    req.payload = json;
+    req.payload = std::move(json);
     req.basic_auth_username = batch->APIToken();
     req.basic_auth_password = "api_token";
 

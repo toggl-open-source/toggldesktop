@@ -1206,7 +1206,7 @@ error User::UserID(
 error User::LoginToken(
     const std::string &json_data_string,
     std::string *result) {
-    *result = "";
+    result->clear();
     Json::Value root;
     Json::Reader reader;
     bool ok = reader.parse(json_data_string, root);

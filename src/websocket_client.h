@@ -39,7 +39,7 @@ class TOGGL_INTERNAL_EXPORT WebSocketClient {
     on_websocket_message_(nullptr),
     ctx_(nullptr),
     last_connection_at_(0),
-    api_token_("") {}
+    api_token_() {}
     virtual ~WebSocketClient();
 
     virtual void Start(

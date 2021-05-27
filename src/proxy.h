@@ -14,10 +14,10 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT Proxy {
  public:
     Proxy() :
-    host_(""),
+    host_(),
     port_(0),
-    username_(""),
-    password_("") {}
+    username_(),
+    password_() {}
 
     bool IsConfigured() const;
     bool HasCredentials() const;

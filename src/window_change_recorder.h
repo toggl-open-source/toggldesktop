@@ -21,13 +21,14 @@ namespace toggl {
 class TOGGL_INTERNAL_EXPORT WindowChangeRecorder {
  public:
     explicit WindowChangeRecorder(TimelineDatasource *datasource)
-        : last_title_("")
-    , last_filename_("")
+        : last_title_()
+    , last_filename_()
     , last_event_started_at_(0)
+    , current_app_started_at_(0)
     , last_idle_(false)
     , timeline_datasource_(datasource)
     , recording_(this, &WindowChangeRecorder::recordLoop)
-    , last_autotracker_title_("")
+    , last_autotracker_title_()
     , shutdown_(false)
     , isLocked_(false)
     , isSleeping_(false)

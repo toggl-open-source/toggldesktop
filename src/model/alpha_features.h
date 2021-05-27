@@ -4,7 +4,7 @@ namespace toggl {
     {
          public:
             AlphaFeatures();
-            void ReadAlphaFeatures(Json::Value root);
+            void ReadAlphaFeatures(const Json::Value &root);
             bool IsSyncEnabled();
             bool IsTimelineUiEnabled();
          private:

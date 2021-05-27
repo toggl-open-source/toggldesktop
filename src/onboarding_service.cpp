@@ -216,7 +216,7 @@ bool OnboardingService::hasAtLeastOneTimelineTimeEntryOnCurrentDay() {
     }
 
     // Get current start/end day
-    int tzd = timeline_date_at_.tzd();
+    time_t tzd = timeline_date_at_.tzd();
     time_t start_day = timeline_date_at_.timestamp().epochTime() - tzd;
 
     // Since we don't store the TimeEntry for each particular day

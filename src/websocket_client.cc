@@ -197,7 +197,7 @@ error WebSocketClient::receiveWebSocketMessage(std::string *message) {
     } catch(const std::string & ex) {
         return error(ex);
     }
-    *message = json;
+    *message = std::move(json);
     return noError;
 }
 

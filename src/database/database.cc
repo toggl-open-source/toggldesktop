@@ -992,7 +992,7 @@ error Database::Trim(const std::string &text, std::string *result) {
         poco_check_ptr(session_);
         poco_check_ptr(result);
 
-        *result = "";
+        result->clear();
 
         *session_ <<
                   "select trim(:text) limit 1",
@@ -3501,7 +3501,7 @@ error Database::CurrentAPIToken(
         poco_check_ptr(session_);
         Poco::Mutex::ScopedLock lock(session_m_);
 
-        *token = "";
+        token->clear();
         *uid = 0;
 
         *session_ <<
@@ -3816,7 +3816,7 @@ error Database::String(
         *session_ << sql,
         into(value),
         now;
-        *result = value;
+        *result = std::move(value);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {

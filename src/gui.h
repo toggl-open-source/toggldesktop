@@ -28,38 +28,38 @@ class TOGGL_INTERNAL_EXPORT TimeEntry {
     TimeEntry()
         : ID(0)
     , DurationInSeconds(0)
-    , Description("")
-    , ProjectAndTaskLabel("")
-    , TaskLabel("")
-    , ProjectLabel("")
-    , ClientLabel("")
+    , Description()
+    , ProjectAndTaskLabel()
+    , TaskLabel()
+    , ProjectLabel()
+    , ClientLabel()
     , WID(0)
     , PID(0)
     , TID(0)
-    , Duration("")
-    , Color("")
-    , GUID("")
+    , Duration()
+    , Color()
+    , GUID()
     , Billable(false)
-    , Tags("")
+    , Tags()
     , Started(0)
     , Ended(0)
-    , StartTimeString("")
-    , EndTimeString("")
+    , StartTimeString()
+    , EndTimeString()
     , UpdatedAt(0)
     , DurOnly(false)
-    , DateHeader("")
-    , DateDuration("")
+    , DateHeader()
+    , DateDuration()
     , CanAddProjects(false)
     , CanSeeBillable(false)
     , DefaultWID(0)
-    , WorkspaceName("")
+    , WorkspaceName()
     , Unsynced(false)
     , Error(noError)
     , Locked(false)
     , Group(false)
     , GroupOpen(false)
-    , GroupName("")
-    , GroupDuration("")
+    , GroupName()
+    , GroupDuration()
     , GroupItemCount(0)
     , RoundedStart(0)
     , RoundedEnd(0) {}
@@ -118,22 +118,22 @@ class TOGGL_INTERNAL_EXPORT TimeEntry {
 class TOGGL_INTERNAL_EXPORT Autocomplete {
  public:
     Autocomplete()
-        : Text("")
-    , Description("")
-    , ProjectAndTaskLabel("")
-    , TaskLabel("")
-    , ProjectLabel("")
-    , ClientLabel("")
-    , ProjectColor("")
+        : Text()
+    , Description()
+    , ProjectAndTaskLabel()
+    , TaskLabel()
+    , ProjectLabel()
+    , ClientLabel()
+    , ProjectColor()
     , TaskID(0)
     , ProjectID(0)
     , WorkspaceID(0)
     , Type(0)
     , Billable(false)
-    , Tags("")
-    , WorkspaceName("")
+    , Tags()
+    , WorkspaceName()
     , ClientID(0)
-    , ProjectGUID("") {}
+    , ProjectGUID() {}
 
     bool IsTimeEntry() const {
         return kAutocompleteItemTE == Type;
@@ -198,9 +198,9 @@ class TOGGL_INTERNAL_EXPORT Generic {
     Generic()
         : ID(0)
     , WID(0)
-    , GUID("")
-    , Name("")
-    , WorkspaceName("")
+    , GUID()
+    , Name()
+    , WorkspaceName()
     , Premium(false) {}
 
     uint64_t ID;
@@ -231,8 +231,8 @@ class TOGGL_INTERNAL_EXPORT TimelineEvent {
  public:
     TimelineEvent()
         : ID(0)
-    , Title("")
-    , Filename("")
+    , Title()
+    , Filename()
     , StartTime(0)
     , EndTime(0)
     , Idle(false) {}
@@ -251,11 +251,11 @@ class TOGGL_INTERNAL_EXPORT Country {
  public:
     Country()
         : ID(0)
-    , Name("")
+    , Name()
     , VatApplicable(false)
-    , VatRegex("")
-    , VatPercentage("")
-    , Code("") {}
+    , VatRegex()
+    , VatPercentage()
+    , Code() {}
 
     uint64_t ID;
     std::string Name;
@@ -310,7 +310,9 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     , on_display_help_articles_(nullptr)
     , on_display_project_colors_(nullptr)
     , on_display_countries_(nullptr)
+    , on_display_onboarding_(nullptr)
     , on_continue_sign_in(nullptr)
+    , on_display_login_sso(nullptr)
     , on_display_timeline_ui(nullptr)
     , lastSyncState(-1)
     , lastUnsyncedItemsCount(-1)
@@ -319,7 +321,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     , lastOnlineState(-1)
     , lastErr(noError)
     , isFirstLaunch(true)
-    , time_entry_editor_guid_("")
+    , time_entry_editor_guid_()
     , timeline_date_at_(Poco::LocalDateTime()) {}
 
     ~GUI() {}
@@ -610,7 +612,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     }
 
     void resetTimeEntryGUID() {
-        time_entry_editor_guid_ = "";
+        time_entry_editor_guid_.clear();
     }
 
     void DisplayOnboarding(const OnboardingType onboarding_type);

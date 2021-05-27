@@ -144,11 +144,11 @@ bool CompareByStart(
     TimedEvent *a,
     TimedEvent *b);
 bool CompareAutocompleteItems(
-    view::Autocomplete a,
-    view::Autocomplete b);
+    const view::Autocomplete& a,
+    const view::Autocomplete& b);
 bool CompareStructuredAutocompleteItems(
-    view::Autocomplete a,
-    view::Autocomplete b);
+    const view::Autocomplete& a,
+    const view::Autocomplete& b);
 bool CompareWorkspaceByName(
     Workspace *a,
     Workspace *b);

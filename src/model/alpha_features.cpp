@@ -15,7 +15,7 @@ namespace toggl {
         isTimelineUiEnabled_ = false;
     }
 
-    void AlphaFeatures::ReadAlphaFeatures(Json::Value root) {
+    void AlphaFeatures::ReadAlphaFeatures(const Json::Value &root) {
         if (root.isMember("alpha_features")) {
             for (auto i : root["alpha_features"]) {
                 if (i.isMember("code")) {

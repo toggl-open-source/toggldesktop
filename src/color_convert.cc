@@ -33,7 +33,7 @@ TogglRgbColor ColorConverter::GetRgbAdaptiveColor(const std::string &hexColor, T
     return hsvToRgb(hsv);
 }
 
-TogglHsvColor ColorConverter::adjustColor(TogglHsvColor hsvColor, TogglAdaptiveColor type) {
+TogglHsvColor ColorConverter::adjustColor(const TogglHsvColor &hsvColor, TogglAdaptiveColor type) {
     switch (type) {
     case AdaptiveColorShapeOnLightBackground:
         return { hsvColor.h, hsvColor.s, hsvColor.v };
@@ -49,7 +49,7 @@ TogglHsvColor ColorConverter::adjustColor(TogglHsvColor hsvColor, TogglAdaptiveC
     return hsvColor;
 }
 
-TogglHsvColor ColorConverter::rgbToHsv(TogglRgbColor rgbColor)
+TogglHsvColor ColorConverter::rgbToHsv(const TogglRgbColor &rgbColor)
 {
     double r = rgbColor.r;
     double g = rgbColor.g;
@@ -104,7 +104,7 @@ TogglRgbColor ColorConverter::hexToRgb(std::string hex)
     return { r, g, b };
 }
 
-TogglRgbColor ColorConverter::hsvToRgb(TogglHsvColor hsvColor) {
+TogglRgbColor ColorConverter::hsvToRgb(const TogglHsvColor &hsvColor) {
     double h = hsvColor.h;
     double s = hsvColor.s;
     double v = hsvColor.v;
