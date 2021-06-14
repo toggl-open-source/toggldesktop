@@ -932,7 +932,7 @@ void Context::updateUI(const UIElements &what) {
     if (what.display_time_entry_autocomplete) {
         if (what.first_load) {
             if (user_) {
-                user_->related.TimeEntryAutocompleteItems(&time_entry_autocompletes);
+                user_->related.TimeEntryAutocompleteItems(&time_entry_autocompletes, user_->DefaultWID());
             }
             UI()->DisplayTimeEntryAutocomplete(&time_entry_autocompletes);
         } else {
@@ -945,7 +945,7 @@ void Context::updateUI(const UIElements &what) {
     if (what.display_mini_timer_autocomplete) {
         if (what.first_load) {
             if (user_) {
-                user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes);
+                user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes, user_->DefaultWID());
             }
             UI()->DisplayMinitimerAutocomplete(&minitimer_autocompletes);
         } else {
@@ -1000,7 +1000,7 @@ void Context::updateUI(const UIElements &what) {
     if (what.display_project_autocomplete) {
         if (what.first_load) {
             if (user_) {
-                user_->related.ProjectAutocompleteItems(&project_autocompletes);
+                user_->related.ProjectAutocompleteItems(&project_autocompletes, user_->DefaultWID());
             }
             UI()->DisplayProjectAutocomplete(&project_autocompletes);
         } else {
@@ -1119,7 +1119,7 @@ void Context::Sync() {
 void Context::onTimeEntryAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
     std::vector<view::Autocomplete> time_entry_autocompletes;
     if (user_) {
-        user_->related.TimeEntryAutocompleteItems(&time_entry_autocompletes);
+        user_->related.TimeEntryAutocompleteItems(&time_entry_autocompletes, user_->DefaultWID());
     }
     UI()->DisplayTimeEntryAutocomplete(&time_entry_autocompletes);
 }
@@ -1127,7 +1127,7 @@ void Context::onTimeEntryAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
 void Context::onMiniTimerAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
     std::vector<view::Autocomplete> minitimer_autocompletes;
     if (user_) {
-        user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes);
+        user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes, user_->DefaultWID());
     }
     UI()->DisplayMinitimerAutocomplete(&minitimer_autocompletes);
 }
@@ -1135,7 +1135,7 @@ void Context::onMiniTimerAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
 void Context::onProjectAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
     std::vector<view::Autocomplete> project_autocompletes;
     if (user_) {
-        user_->related.ProjectAutocompleteItems(&project_autocompletes);
+        user_->related.ProjectAutocompleteItems(&project_autocompletes, user_->DefaultWID());
     }
     UI()->DisplayProjectAutocomplete(&project_autocompletes);
 }

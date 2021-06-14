@@ -96,9 +96,9 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
         std::string end_time,
         const Poco::UInt8 days_of_week);
 
-    void TimeEntryAutocompleteItems(std::vector<view::Autocomplete> *) const;
-    void MinitimerAutocompleteItems(std::vector<view::Autocomplete> *) const;
-    void ProjectAutocompleteItems(std::vector<view::Autocomplete> *) const;
+    void TimeEntryAutocompleteItems(std::vector<view::Autocomplete> *, const Poco::UInt64 defaultWID) const;
+    void MinitimerAutocompleteItems(std::vector<view::Autocomplete> *, const Poco::UInt64 defaultWID) const;
+    void ProjectAutocompleteItems(std::vector<view::Autocomplete> *, const Poco::UInt64 defaultWID) const;
 
     void ProjectLabelAndColorCode(
         TimeEntry * const te,
@@ -131,7 +131,8 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
         std::map<Poco::UInt64, std::string> *ws_names,
         std::vector<view::Autocomplete> *list,
         std::map<std::string, std::vector<view::Autocomplete> > *items,
-        std::map<Poco::UInt64, std::vector<view::Autocomplete> > *task_items) const;
+        std::map<Poco::UInt64, std::vector<view::Autocomplete> > *task_items,
+        const Poco::UInt64 defaultWID) const;
 
     void workspaceAutocompleteItems(
         std::set<std::string> *unique_names,
@@ -140,7 +141,9 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
 
     void mergeGroupedAutocompleteItems(
         std::vector<view::Autocomplete> *result,
-        std::map<std::string, std::vector<view::Autocomplete> > *items) const;
+        std::map<std::string, std::vector<view::Autocomplete> > *items,
+        std::map<Poco::UInt64, std::string> *ws_names,
+        const Poco::UInt64 defaultWID) const;
 };
 
 template<> inline TimeEntry *RelatedData::ModelByID<TimeEntry>(Poco::UInt64 id) { return TimeEntryByID(id); }
