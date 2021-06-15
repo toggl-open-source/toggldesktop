@@ -478,8 +478,6 @@ void RelatedData::projectAutocompleteItems(
 
     poco_check_ptr(list);
 
-    auto default_workspace_items_inserted = 0;
-
     for (auto p : Projects) {
         if (p->WID() == defaultWID) {
             projectAutocompleteItem(unique_names, ws_names, list, items, task_items, p);
