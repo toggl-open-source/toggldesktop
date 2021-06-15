@@ -395,6 +395,77 @@ void RelatedData::taskAutocompleteItems(
     }
 }
 
+void RelatedData::projectAutocompleteItem(
+    std::set<std::string>* unique_names,
+    std::map<Poco::UInt64, std::string>* ws_names,
+    std::vector<view::Autocomplete>* list,
+    std::map<std::string, std::vector<view::Autocomplete> >* items,
+    std::map<Poco::UInt64, std::vector<view::Autocomplete> >* task_items,
+    Project *p) const
+{
+    if (!p->Active()) {
+        return;
+    }
+
+    Client* c = clientByProject(p);
+
+    std::string text = Formatter::JoinTaskName(nullptr, p);
+    if (text.empty()) {
+        return;
+    }
+
+    {
+        std::stringstream ss;
+        ss << p->WID() << "/" << text;
+        std::string uniq_name = ss.str();
+        if (unique_names->find(uniq_name) != unique_names->end()) {
+            return;
+        }
+        unique_names->insert(uniq_name);
+    }
+
+    view::Autocomplete autocomplete_item;
+    autocomplete_item.Text = text;
+    autocomplete_item.ProjectAndTaskLabel = text;
+    autocomplete_item.ProjectLabel = p->Name();
+    if (c) {
+        autocomplete_item.ClientLabel = c->Name();
+        autocomplete_item.ClientID = c->ID();
+    }
+    autocomplete_item.ProjectID = p->ID();
+    autocomplete_item.ProjectGUID = p->GUID();
+    autocomplete_item.ProjectColor = p->ColorCode();
+    if (ws_names) {
+        autocomplete_item.WorkspaceName = (*ws_names)[p->WID()];
+    }
+    autocomplete_item.WorkspaceID = p->WID();
+    autocomplete_item.Type = kAutocompleteItemProject;
+
+    if (items && !autocomplete_item.WorkspaceName.empty()) {
+        (*items)[autocomplete_item.WorkspaceName].push_back(autocomplete_item);
+        if (task_items) {
+            for (std::vector<view::Autocomplete>::const_iterator it =
+                (*task_items)[autocomplete_item.ProjectID].begin();
+                it != (*task_items)[autocomplete_item.ProjectID].end(); ++it) {
+                view::Autocomplete ac = *it;
+                (*items)[autocomplete_item.WorkspaceName].push_back(ac);
+            }
+        }
+    }
+    else {
+        list->push_back(autocomplete_item);
+
+        if (task_items) {
+            for (std::vector<view::Autocomplete>::const_iterator it =
+                (*task_items)[autocomplete_item.ProjectID].begin();
+                it != (*task_items)[autocomplete_item.ProjectID].end(); ++it) {
+                view::Autocomplete ac = *it;
+                list->push_back(ac);
+            }
+        }
+    }
+}
+
 // Add projects, in format:
 // Project. Client
 void RelatedData::projectAutocompleteItems(
@@ -409,83 +480,15 @@ void RelatedData::projectAutocompleteItems(
 
     auto default_workspace_items_inserted = 0;
 
-    for (std::vector<Project *>::const_iterator it =
-        Projects.begin();
-            it != Projects.end(); ++it) {
-        Project *p = *it;
-
-        if (!p->Active()) {
-            continue;
+    for (auto p : Projects) {
+        if (p->WID() == defaultWID) {
+            projectAutocompleteItem(unique_names, ws_names, list, items, task_items, p);
         }
+    }
 
-        Client *c = clientByProject(p);
-
-        std::string text = Formatter::JoinTaskName(nullptr, p);
-        if (text.empty()) {
-            continue;
-        }
-
-        {
-            std::stringstream ss;
-            ss << p->WID() << "/" << text;
-            std::string uniq_name = ss.str();
-            if (unique_names->find(uniq_name) != unique_names->end()) {
-                continue;
-            }
-            unique_names->insert(uniq_name);
-        }
-
-        view::Autocomplete autocomplete_item;
-        autocomplete_item.Text = text;
-        autocomplete_item.ProjectAndTaskLabel = text;
-        autocomplete_item.ProjectLabel = p->Name();
-        if (c) {
-            autocomplete_item.ClientLabel = c->Name();
-            autocomplete_item.ClientID = c->ID();
-        }
-        autocomplete_item.ProjectID = p->ID();
-        autocomplete_item.ProjectGUID = p->GUID();
-        autocomplete_item.ProjectColor = p->ColorCode();
-        if (ws_names) {
-            autocomplete_item.WorkspaceName = (*ws_names)[p->WID()];
-        }
-        autocomplete_item.WorkspaceID = p->WID();
-        autocomplete_item.Type = kAutocompleteItemProject;
-
-        if (items && !autocomplete_item.WorkspaceName.empty()) {
-            (*items)[autocomplete_item.WorkspaceName].push_back(autocomplete_item);
-            if (task_items) {
-                for (std::vector<view::Autocomplete>::const_iterator it =
-                    (*task_items)[autocomplete_item.ProjectID].begin();
-                        it != (*task_items)[autocomplete_item.ProjectID].end(); ++it) {
-                    view::Autocomplete ac = *it;
-                    (*items)[autocomplete_item.WorkspaceName].push_back(ac);
-                }
-            }
-        } else {
-            auto is_default_workspace = p->WID() == defaultWID;
-            if (is_default_workspace) {
-                list->insert(list->begin() + default_workspace_items_inserted, autocomplete_item);
-                ++default_workspace_items_inserted;
-            }
-            else {
-                list->push_back(autocomplete_item);
-            }
-            
-            if (task_items) {
-                for (std::vector<view::Autocomplete>::const_iterator it =
-                    (*task_items)[autocomplete_item.ProjectID].begin();
-                        it != (*task_items)[autocomplete_item.ProjectID].end(); ++it) {
-                    view::Autocomplete ac = *it;
-                    if (is_default_workspace) {
-                        list->insert(list->begin() + default_workspace_items_inserted, ac);
-                        ++default_workspace_items_inserted;
-                    }
-                    else {
-                        list->push_back(ac);
-                    }
-                }
-            }
+    for (auto p : Projects) {
+        if (p->WID() != defaultWID) {
+            projectAutocompleteItem(unique_names, ws_names, list, items, task_items, p);
         }
     }
 }
