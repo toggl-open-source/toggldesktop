@@ -1,3 +1,9 @@
+### ⚠️ Project Status: maintenance mode (bug fixes only).
+
+At the moment we will not implement nor accept pull requests implementing new features in this repository.
+
+We're currently reworking the internals of our native desktop apps and we're planning to release the refreshed apps later in 2021.
+
 <h1 align="center">
   <a href="https://toggl.com"><img src="https://raw.githubusercontent.com/toggl-open-source/toggldesktop/gh-pages/assets/toggl-track-wide.png" alt="Toggl Track"></a>
 </h1>
