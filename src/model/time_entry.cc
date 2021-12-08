@@ -144,7 +144,10 @@ void TimeEntry::DiscardAt(const Poco::Int64 at) {
 
     SetDurationInSeconds(duration, true);
     SetStopTime(at, true);
-    SetUIModified();
+    if (Dirty()) {
+        ClearValidationError();
+        SetUIModified();
+    }
 }
 
 void TimeEntry::StopTracking() {
