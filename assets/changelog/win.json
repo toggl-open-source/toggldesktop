@@ -10,15 +10,6 @@
             "has64bit": "true"
         },
         {
-            "version": "7.5.454",
-            "rows": [
-                "Fix application not syncing time entries when a running time entry with unmet field requirements exists"
-            ],
-            "date": "December 9th 2021",
-            "beta": "true",
-            "has64bit": "true"
-        },
-        {
             "version": "7.5.445",
             "rows": [
                 "Fix the crash when trying to auto-update the app without proper permissions",
