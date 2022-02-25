@@ -114,7 +114,9 @@ class TimerViewController: NSViewController {
 
     override func viewDidDisappear() {
         super.viewDidDisappear()
-
+        
+        viewModel.viewWillDisappear()
+        
         [projectAutocompleteDidResignObserver, tagsAutocompleteDidResignObserver]
             .compactMap { $0 }
             .forEach { NotificationCenter.default.removeObserver($0) }
