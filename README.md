@@ -2,7 +2,7 @@
 
 At the moment we will not implement nor accept pull requests implementing new features in this repository.
 
-We're currently reworking the internals of our native desktop apps and we're planning to release the refreshed apps later in 2021.
+We’re currently reworking the internals of our native desktop apps and we plan to release the refreshed apps during Q2 of 2022. If you’re interested in trying the app sooner than that, we plan to release the beta versions before that. Be on the lookout for more news. (Note that this concerns only the Windows and the MacOS apps.)
 
 <h1 align="center">
   <a href="https://toggl.com"><img src="https://raw.githubusercontent.com/toggl-open-source/toggldesktop/gh-pages/assets/toggl-track-wide.png" alt="Toggl Track"></a>
