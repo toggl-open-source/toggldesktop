@@ -84,10 +84,9 @@ error TimelineUploader::upload(TimelineBatch *batch) {
         batch->DesktopID());
     logger().trace(json);
 
-    // Not implemented in v9 as of 12.05.2017
     HTTPRequest req;
     req.host = urls::TimelineUpload();
-    req.relative_url = "/api/v8/timeline";
+    req.relative_url = "/api/v9/timeline";
     req.payload = json;
     req.basic_auth_username = batch->APIToken();
     req.basic_auth_password = "api_token";
