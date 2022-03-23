@@ -1832,10 +1832,9 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask&) {  // NOLIN
         apitoken = user_->APIToken();
     }
 
-    // Not implemented in v9 as of 12.05.2017
     HTTPRequest req;
     req.host = urls::TimelineUpload();
-    req.relative_url = "/api/v8/timeline_settings";
+    req.relative_url = "/api/v9/timeline_settings";
     req.payload = json;
     req.basic_auth_username = apitoken;
     req.basic_auth_password = "api_token";
