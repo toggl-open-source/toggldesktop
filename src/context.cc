@@ -4547,10 +4547,9 @@ error Context::OpenReportsInBrowser() {
         apitoken = user_->APIToken();
     }
 
-    // Not implemented in v9 as of 12.05.2017
     HTTPRequest req;
     req.host = urls::API();
-    req.relative_url = "/api/v8/desktop_login_tokens";
+    req.relative_url = "/api/v9/desktop_login_tokens";
     req.payload = "{}";
     req.basic_auth_username = apitoken;
     req.basic_auth_password = "api_token";
