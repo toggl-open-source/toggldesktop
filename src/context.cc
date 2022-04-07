@@ -5143,6 +5143,11 @@ void Context::syncerActivityWrapper() {
         switch (state) {
             case STARTUP: {
                 logger.log("Syncer bootup, will attempt to determine which protocol to use");
+
+                // Defaulting to Sync protocol (here Batched == Sync)
+                state = BATCHED;
+                break;
+
                 //Do it here to know the type of syncing before syncerActivityWrapper() pulls the preferences
                 auto error = pullUserPreferences();
                 if (error != noError) {
@@ -5457,11 +5462,16 @@ error Context::pullBatchedUserData() {
         }
         api_token = user_->APIToken();
         if (user_->HasValidSinceDate()) {
+            // TODO: right now `since` parameter is not persisted if we use v9/me endpoint (previously it was there)
+            // somehow we should get this `since` and use it here. Better to take a look how our iOS app does this
             since = user_->Since();
         }
         else {
-            // just pull the last 10 days on full sync
-            since = time(nullptr) - 10 * 24 * 60 * 60;
+            // TODO: do it like our new mac app does this. First do `pull` with `since(0)` to fetch all projects and other user-related data
+            // then do this 8 weeks pull to get more time entries (can be optional for now at least)
+
+            // just pull the last 8 weeks on full sync
+            since = time(nullptr) - 8 * 7 * 24 * 60 * 60;
             user_->HasLoadedMore.Set(false);
         }
     }
@@ -6058,7 +6068,8 @@ error Context::me(
 
         std::stringstream ss;
         ss << "/api/"
-           << kAPIV8
+//           << kAPIV8
+           << kAPIV9
            << "/me"
            << "?app_name=" << TogglClient::Config.AppName
            << "&with_related_data=true";
