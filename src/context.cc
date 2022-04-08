@@ -2906,7 +2906,7 @@ error Context::SetLoggedInUserFromJSON(
         return displayError(err);
     }
 
-    err = user->LoadUserAndRelatedDataFromJSONString(json, true, false);
+    err = user->LoadUserAndRelatedDataFromJSONString(json, true);
     if (err != noError) {
         delete user;
         return displayError(err);
@@ -3424,16 +3424,15 @@ error Context::updateTimeEntryProject(
             te->SetBillable(p->Billable(), true);
         }
         if (te->WID != p->WID) {
-            if (isUsingSyncServer()) {
-                // Sync server doesn't support changing the WID, create a copy and make it deleted
-                auto copy = new TimeEntry(*te);
-                auto oldID = te->ID();
-                te->SetID(0);
-                copy->EnsureGUID();
-                copy->SetID(oldID);
-                copy->Delete();
-                user_->related.pushBackTimeEntry(copy);
-            }
+            // Sync server doesn't support changing the WID, create a copy and make it deleted
+            auto copy = new TimeEntry(*te);
+            auto oldID = te->ID();
+            te->SetID(0);
+            copy->EnsureGUID();
+            copy->SetID(oldID);
+            copy->Delete();
+            user_->related.pushBackTimeEntry(copy);
+
             te->SetWID(p->WID());
         }
     }
@@ -5116,19 +5115,12 @@ void Context::reminderActivity() {
 void Context::syncerActivityWrapper() {
     enum {
         STARTUP,
-        LEGACY,
         BATCHED
     } state
 #if defined(TOGGL_SYNC_FORCE_BATCHED)
     { BATCHED };
-#elif defined(TOGGL_SYNC_FORCE_LEGACY)
-    {
-        LEGACY
-    };
 #else
-    {
-        STARTUP
-    };
+    { STARTUP };
 #endif
 
     while (true) {
@@ -5142,88 +5134,19 @@ void Context::syncerActivityWrapper() {
 
         switch (state) {
             case STARTUP: {
-                logger.log("Syncer bootup, will attempt to determine which protocol to use");
-
-                // Defaulting to Sync protocol (here Batched == Sync)
                 state = BATCHED;
-                break;
-
-                //Do it here to know the type of syncing before syncerActivityWrapper() pulls the preferences
+                
                 auto error = pullUserPreferences();
                 if (error != noError) {
                     displayError(error);
                     break;
                 }
-                if (user_->AlphaFeatureSettings->IsSyncEnabled()) {
-                    state = BATCHED;
-                }
-                else {
-                    state = LEGACY;
-                }
-                logger.log("Syncer - Syncing protocol was selected: ", (state == BATCHED ? "BATCHED" : "LEGACY"));
+
                 break;
             }
-            case LEGACY:
-                legacySyncerActivity();
-                break;
             case BATCHED:
                 batchedSyncerActivity();
                 break;
-        }
-    }
-}
-
-void Context::legacySyncerActivity() {
-    {
-        Poco::Mutex::ScopedLock lock(syncer_m_);
-
-        if (trigger_sync_) {
-
-            error err = pullAllUserData();
-            if (err != noError) {
-                displayError(err);
-            }
-
-            if (trigger_full_sync_) {
-                err = pullAllPreferencesData();
-                if (err != noError) {
-                    displayError(err);
-                }
-                trigger_full_sync_ = false;
-            }
-
-            setOnline("Data pulled");
-
-            err = pushChanges(&trigger_sync_);
-            trigger_push_ = false;
-            if (err != noError) {
-                user_->ConfirmLoadedMore();
-                displayError(err);
-                return;
-            } else {
-                setOnline("Data pushed");
-            }
-            trigger_sync_ = false;
-
-            displayError(save(false));
-        }
-
-    }
-
-    {
-        Poco::Mutex::ScopedLock lock(syncer_m_);
-
-        if (trigger_push_) {
-            error err = pushChanges(&trigger_sync_);
-            if (err != noError) {
-                user_->ConfirmLoadedMore();
-                displayError(err);
-            } else {
-                setOnline("Data pushed");
-            }
-            trigger_push_ = false;
-
-            displayError(save(false));
         }
     }
 }
@@ -5420,7 +5343,7 @@ error Context::pullAllUserData() {
             }
             TimeEntry *running_entry = user_->RunningTimeEntry();
 
-            err = user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since, false);
+            err = user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since);
 
             if (err != noError) {
                 return err;
@@ -5452,7 +5375,6 @@ error Context::pullAllUserData() {
 }
 
 error Context::pullBatchedUserData() {
-    std::string api_token("");
     Poco::Int64 since(0);
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -5460,21 +5382,28 @@ error Context::pullBatchedUserData() {
             logger.warning("cannot pull user data when logged out");
             return noError;
         }
-        api_token = user_->APIToken();
         if (user_->HasValidSinceDate()) {
-            // TODO: right now `since` parameter is not persisted if we use v9/me endpoint (previously it was there)
-            // somehow we should get this `since` and use it here. Better to take a look how our iOS app does this
             since = user_->Since();
+            return pullBatchedUserDataSince(since);
         }
         else {
-            // TODO: do it like our new mac app does this. First do `pull` with `since(0)` to fetch all projects and other user-related data
-            // then do this 8 weeks pull to get more time entries (can be optional for now at least)
-
-            // just pull the last 8 weeks on full sync
-            since = time(nullptr) - 8 * 7 * 24 * 60 * 60;
             user_->HasLoadedMore.Set(false);
+            auto ret = pullBatchedUserDataSince(0);
+            
+            if (ret != noError) { return ret; }
+            
+            since = time(nullptr) - 8 * 7 * 24 * 60 * 60;
+            return pullBatchedUserDataSince(since);
         }
     }
+    
+    return noError;
+}
+
+error Context::pullBatchedUserDataSince(const Poco::Int64 &since) {
+    std::string api_token("");
+
+    api_token = user_->APIToken();
 
     if (api_token.empty()) {
         return error("cannot pull user data without API token");
@@ -5511,7 +5440,7 @@ error Context::pullBatchedUserData() {
             }
             TimeEntry *running_entry = user_->RunningTimeEntry();
 
-            user_->LoadUserAndRelatedDataFromJSON(json, !since, true);
+            user_->LoadUserAndRelatedDataFromJSON(json, !since);
 
             if (err != noError) {
                 return err;
@@ -5827,7 +5756,7 @@ error Context::pushClients(
             continue;
         }
 
-        (*it)->LoadFromJSON(root, false);
+        (*it)->LoadFromJSON(root);
     }
 
     return err;
@@ -5883,7 +5812,7 @@ error Context::pushProjects(
             continue;
         }
 
-        (*it)->LoadFromJSON(root, false);
+        (*it)->LoadFromJSON(root);
     }
 
     return err;
@@ -6040,7 +5969,7 @@ error Context::pushEntries(
             return error("Backend has changed the ID of the entry");
         }
 
-        (*it)->LoadFromJSON(root, isUsingSyncServer());
+        (*it)->LoadFromJSON(root);
     }
 
     if (error_found) {
@@ -6068,7 +5997,6 @@ error Context::me(
 
         std::stringstream ss;
         ss << "/api/"
-//           << kAPIV8
            << kAPIV9
            << "/me"
            << "?app_name=" << TogglClient::Config.AppName
@@ -6525,7 +6453,7 @@ error Context::syncHandleResponse(Json::Value &array, const std::vector<T*> &sou
                     }
 
                     if (!root.isNull())
-                        model->LoadFromJSON(i["payload"]["result"], isUsingSyncServer());
+                        model->LoadFromJSON(i["payload"]["result"]);
                     model->ClearUnsynced();
                     error err = save(false);
                     if (err != noError) {
@@ -7015,10 +6943,6 @@ bool Context::checkIfSkipPomodoro(TimeEntry *te) {
         }
     }
     return false;
-}
-
-bool Context::isUsingSyncServer() const {
-    return user_->AlphaFeatureSettings->IsSyncEnabled();
 }
 
 void Context::TrackTimelineMenuContext(const TimelineMenuContextType type) {
