@@ -421,20 +421,20 @@ bool TimeEntry::IsToday() const {
            today.day() == datetime.day();
 }
 
-void TimeEntry::LoadFromJSON(const Json::Value &data, bool syncServer) {
+void TimeEntry::LoadFromJSON(const Json::Value &data) {
     // Helper function to convert a string value to a timestamp
     auto convertTimeString = [](const Json::Value &json) -> Poco::Int64 {
         return Formatter::Parse8601(json.asString());
     };
     // Function that checks the JSON for the field in question and updates the property according to both sync server and legacy specs
-    auto updateMergeablePropertyConvert = [this, &data, &syncServer](const std::string &field, auto &property, auto &convert) -> bool {
+    auto updateMergeablePropertyConvert = [this, &data](const std::string &field, auto &property, auto &convert) -> bool {
         // no member -> no update
         if (!data.isMember(field))
             return false;
         // extract the value using the helper in util/json or any other supplied conversion function
         auto serverValue = convert(data[field]);
         // if we're using the sync server and the previous value is the same as what server has, don't change anything
-        if (syncServer && serverValue == property.GetPrevious())
+        if (serverValue == property.GetPrevious())
             return true;
         // now if the current version is different from the server value, we need to update it
         if (serverValue != property.Get()) {

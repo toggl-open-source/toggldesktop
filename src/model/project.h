@@ -49,7 +49,7 @@ class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
     std::string String() const override;
     std::string ModelName() const override;
     std::string ModelURL() const override;
-    void LoadFromJSON(const Json::Value &value, bool);
+    void LoadFromJSON(const Json::Value &value);
     Json::Value SaveToJSON(int apiVersion = 8) const override;
     Json::Value SyncMetadata() const override;
     Json::Value SyncPayload() const override;

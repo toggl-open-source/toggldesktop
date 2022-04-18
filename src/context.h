@@ -610,7 +610,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     void checkReminders();
     void reminderActivity();
     void syncerActivityWrapper();
-    void legacySyncerActivity();
     void batchedSyncerActivity();
 
  private:
@@ -709,6 +708,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error pullAllUserData();
     error pullBatchedUserData();
+    error pullBatchedUserDataSince(const Poco::Int64 &since);
     error pullChanges();
     error pullUserPreferences();
     error pullAllPreferencesData();
@@ -890,14 +890,11 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     bool checkIfSkipPomodoro(TimeEntry *te);
 
-    bool isUsingSyncServer() const;
-
     bool need_enable_SSO;
     std::string sso_confirmation_code;
 
     enum SyncState {
         STARTUP,
-        LEGACY,
         BATCHED
     } sync_state_;
 };
