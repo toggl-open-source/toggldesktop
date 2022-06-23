@@ -1,8 +1,11 @@
 ### ⚠️ Project Status: maintenance mode (bug fixes only).
 
-At the moment we will not implement nor accept pull requests implementing new features in this repository.
+At the moment, we will not implement nor accept pull requests implementing new features in this repository.
 
-We’re currently reworking the internals of our native desktop apps and we plan to release the refreshed apps during Q2 of 2022. If you’re interested in trying the app sooner than that, we plan to release the beta versions before that. Be on the lookout for more news. (Note that this concerns only the Windows and the MacOS apps.)
+We’re currently reworking the internals of our macOS and Windows desktop apps, and we plan to release the refreshed apps soon. If you’re interested in trying the app now, take the beta version for a spin. For more information, please visit the [macOS](https://github.com/toggl/track-macos-feedback) or [Windows](https://github.com/toggl/track-windows-feedback) feedback repository.
+
+* [ ] 🍏 [MacOS Beta Feedback Repository](https://github.com/toggl/track-macos-feedback)
+* [ ] 🖥 [Windows Beta Feedback Repository](https://github.com/toggl/track-windows-feedback)
 
 <h1 align="center">
   <a href="https://toggl.com"><img src="https://raw.githubusercontent.com/toggl-open-source/toggldesktop/gh-pages/assets/toggl-track-wide.png" alt="Toggl Track"></a>
