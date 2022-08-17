@@ -1,11 +1,12 @@
 {
-    "id": 100,
+    "id": 1000,
     "from": 1660694400,
-    "to": 1665878400,
+    "to": 1664582400,
     "type": 2,
     "appversion": "7.0.0",
     "title": "A new and improved Windows app!",
-    "text": "For a better desktop experience, get our rewritten Windows app. We’ll be deprecating this version on [insert date or month].",
+    "text": "For a better desktop experience, get our rewritten Windows app. We'll be deprecating this version at the end of September 2022.",
     "button": "Get it now!",
     "url-win": "https://toggl.com/track/toggl-desktop/downloads/windows/stable/TogglTrack-windows64.exe"
 }
+    
