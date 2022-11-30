@@ -1,9 +1,9 @@
 {
     "id": 2000,
-    "from": 1669629600,
-    "to": 1670716800,
+    "from": 1669813200,
+    "to": 1669816800,
     "type": 1,
-    "appversion": "7.5.441",
+    "appversion": "8.0.0",
     "title": "Get the new Mac app! 🎉",
     "text": "For a better desktop experience, switch to our rewritten Mac app, now compatible with Apple Silicon. We’ll be deprecating this version by the end of January 2023.",
     "button": "Get it now",
