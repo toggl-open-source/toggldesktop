@@ -18,8 +18,8 @@
     },
     "mac": {
         "dev": {
-            "version": "7.5.469",
-            "macos": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.469/TogglDesktop-7_5_469.dmg"
+            "version": "7.5.470",
+            "macos": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.470/TogglDesktop-7_5_470.dmg"
         },
         "beta": {
             "version": "7.5.441",
