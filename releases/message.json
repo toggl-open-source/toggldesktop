@@ -1,11 +1,11 @@
 {
-    "id": 2000,
-    "from": 1671526800,
-    "to": 1671872400,
+    "id": 2001,
+    "from": 1673506800,
+    "to": 1674457200,
     "type": 1,
     "appversion": "8.0.0",
-    "title": "Get the new Mac app! 🎉",
-    "text": "For a better desktop experience, switch to our rewritten Mac app, now compatible with Apple Silicon. We’ll be deprecating this version by the end of January 2023.",
+    "title": "This version of the app will stop working by the end of this month",
+    "text": "Switch to our new and improved Mac app, compatible with Apple silicon. We’ll be deprecating this version by January 31.",
     "button": "Get it now",
     "url-mac": "https://apps.apple.com/us/app/toggl-track-hours-time-log/id1291898086"
 }
