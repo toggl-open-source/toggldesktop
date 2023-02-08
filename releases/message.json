@@ -1,10 +1,10 @@
 {
-    "id": 2001,
+    "id": 2002,
     "from": 1674108000,
-    "to": 1675123200,
+    "to": 1677542400,
     "type": 1,
     "appversion": "8.0.0",
-    "title": "This version of the app will stop working on February 13",
+    "title": "This version of the app will stop working in a few days",
     "text": "We’ll be deprecating this version to focus on continuous improvements to our new app. Switch today for a better experience.",
     "button": "Get it now",
     "url-mac": "https://apps.apple.com/us/app/toggl-track-hours-time-log/id1291898086",
