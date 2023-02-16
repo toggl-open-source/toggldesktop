@@ -1,5 +1,5 @@
 {
-    "id": 2002,
+    "id": 2003,
     "from": 1674108000,
     "to": 1677542400,
     "type": 1,
@@ -7,6 +7,5 @@
     "title": "This version of the app will stop working in a few days",
     "text": "We’ll be deprecating this version to focus on continuous improvements to our new app. Switch today for a better experience.",
     "button": "Get it now",
-    "url-mac": "https://apps.apple.com/us/app/toggl-track-hours-time-log/id1291898086",
     "url-win": "https://toggl.com/track/time-tracking-windows/"
 }
