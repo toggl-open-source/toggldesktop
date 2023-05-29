@@ -1,11 +1,13 @@
-### ⚠️ Project Status: maintenance mode (bug fixes only).
+### ⚠️ Project Status: Superseded by new rewritten apps.
 
-At the moment, we will not implement nor accept pull requests implementing new features in this repository.
+We have rewritten our MacOS and Windows apps and for that reason **we will no longer implement nor accept pull requests** implementing new features in this repository.
 
-We’re currently reworking the internals of our macOS and Windows desktop apps, and we plan to release the refreshed apps soon. If you’re interested in trying the app now, take the beta version for a spin. For more information, please visit the [macOS](https://github.com/toggl/track-macos-feedback) or [Windows](https://github.com/toggl/track-windows-feedback) feedback repository.
+If you'd like to try these rewritten native apps, visit:
 
-* [ ] 🍏 [MacOS Beta Feedback Repository](https://github.com/toggl/track-macos-feedback)
-* [ ] 🖥 [Windows Beta Feedback Repository](https://github.com/toggl/track-windows-feedback)
+* [ ] 🍏 [MacOS Toggl Track](https://toggl.com/track/time-tracking-mac)
+* [ ] 🖥 [Windows Toggl Track](https://toggl.com/track/time-tracking-windows/)
+
+<h1></h1>
 
 <h1 align="center">
   <a href="https://toggl.com"><img src="https://raw.githubusercontent.com/toggl-open-source/toggldesktop/gh-pages/assets/toggl-track-wide.png" alt="Toggl Track"></a>
