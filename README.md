@@ -1,10 +1,8 @@
-### ⚠️ Project Status: maintenance mode (bug fixes only).
+### ⚠️ Project Status: Superseded by new rewritten apps.
 
-At the moment, **we will not implement nor accept pull requests** implementing new features in this repository.
+We have rewritten our MacOS and Windows apps and for that reason **we will no longer implement nor accept pull requests** implementing new features in this repository.
 
-✨ We have since rewritten our apps in their respective native environments. 
-
-If you'd like to try them out, visit:
+If you'd like to try these rewritten native apps, visit:
 
 * [ ] 🍏 [MacOS Toggl Track](https://toggl.com/track/time-tracking-mac)
 * [ ] 🖥 [Windows Toggl Track](https://toggl.com/track/time-tracking-windows/)
