@@ -8,365 +8,365 @@ on:
     types: [ created ]
 
 jobs:
-  macos:
-    runs-on: macos-11.0
-    steps:
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '12.4'
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 1
-    - name: Prepare ENV
-      run: |
-        TAG_NAME=$(./dist/get-tag-name.sh)
-        version=${TAG_NAME/v/}
-        timestamp=$(date '+%Y-%m-%d-%H-%M-%S')
-        escaped_version=$(echo $version | sed 's/\./_/g')
-        installer=TogglDesktop-$escaped_version-$timestamp.dmg
-        installer_name=TogglDesktop-$escaped_version.dmg
+  # macos:
+  #   runs-on: macos-11.0
+  #   steps:
+  #   - uses: maxim-lobanov/setup-xcode@v1
+  #     with:
+  #       xcode-version: '12.4'
+  #   - uses: actions/checkout@v2
+  #     with:
+  #       fetch-depth: 1
+  #   - name: Prepare ENV
+  #     run: |
+  #       TAG_NAME=$(./dist/get-tag-name.sh)
+  #       version=${TAG_NAME/v/}
+  #       timestamp=$(date '+%Y-%m-%d-%H-%M-%S')
+  #       escaped_version=$(echo $version | sed 's/\./_/g')
+  #       installer=TogglDesktop-$escaped_version-$timestamp.dmg
+  #       installer_name=TogglDesktop-$escaped_version.dmg
 
-        echo $version
-        echo $installer
-        echo $installer_name
+  #       echo $version
+  #       echo $installer
+  #       echo $installer_name
 
-        # Export env to all future steps
-        echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
-        echo "version=$version" >> $GITHUB_ENV
-        echo "timestamp=$timestamp" >> $GITHUB_ENV
-        echo "escaped_version=$escaped_version" >> $GITHUB_ENV
-        echo "installer=$installer" >> $GITHUB_ENV
-        echo "installer_name=$installer_name" >> $GITHUB_ENV
-    - name: Setup Golang env
-      if: github.event_name == 'release'
-      uses: actions/setup-go@v1
-      with:
-        version: 1.13
-    - name: Import signing key
-      run: |
-        # Create a new keychian and make it default
-        security create-keychain -p password build.keychain
-        security default-keychain -s ~/Library/Keychains/build.keychain
+  #       # Export env to all future steps
+  #       echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+  #       echo "version=$version" >> $GITHUB_ENV
+  #       echo "timestamp=$timestamp" >> $GITHUB_ENV
+  #       echo "escaped_version=$escaped_version" >> $GITHUB_ENV
+  #       echo "installer=$installer" >> $GITHUB_ENV
+  #       echo "installer_name=$installer_name" >> $GITHUB_ENV
+  #   - name: Setup Golang env
+  #     if: github.event_name == 'release'
+  #     uses: actions/setup-go@v1
+  #     with:
+  #       version: 1.13
+  #   - name: Import signing key
+  #     run: |
+  #       # Create a new keychian and make it default
+  #       security create-keychain -p password build.keychain
+  #       security default-keychain -s ~/Library/Keychains/build.keychain
         
-        # Mac Developer Certificate
-        base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPER }}" > Bundle_cert_macos_developer.p12
-        security import ./Bundle_cert_macos_developer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPER_PASSWORD }} -T /usr/bin/codesign
+  #       # Mac Developer Certificate
+  #       base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPER }}" > Bundle_cert_macos_developer.p12
+  #       security import ./Bundle_cert_macos_developer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPER_PASSWORD }} -T /usr/bin/codesign
 
-        # Mac Development Certificate
-        base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPMENT }}" > Bundle_cert_macos_development.p12
-        security import ./Bundle_cert_macos_development.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPMENT_PASSWORD }} -T /usr/bin/codesign
+  #       # Mac Development Certificate
+  #       base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPMENT }}" > Bundle_cert_macos_development.p12
+  #       security import ./Bundle_cert_macos_development.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPMENT_PASSWORD }} -T /usr/bin/codesign
 
-        # Application Certificate
-        base64 -D <<< "${{ secrets.CERT_MACOS_APPLICATION }}" > Bundle_cert_macos_distribution.p12
-        security import ./Bundle_cert_macos_distribution.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_APPLICATION_PASSWORD }} -T /usr/bin/codesign
+  #       # Application Certificate
+  #       base64 -D <<< "${{ secrets.CERT_MACOS_APPLICATION }}" > Bundle_cert_macos_distribution.p12
+  #       security import ./Bundle_cert_macos_distribution.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_APPLICATION_PASSWORD }} -T /usr/bin/codesign
 
-        # Installer Certificate
-        base64 -D <<< "${{ secrets.CERT_MACOS_INSTALLER }}" > Bundle_cert_macos_installer.p12
-        security import ./Bundle_cert_macos_installer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_INSTALLER_PASSWORD }} -T /usr/bin/codesign
+  #       # Installer Certificate
+  #       base64 -D <<< "${{ secrets.CERT_MACOS_INSTALLER }}" > Bundle_cert_macos_installer.p12
+  #       security import ./Bundle_cert_macos_installer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_INSTALLER_PASSWORD }} -T /usr/bin/codesign
 
-        # Unlock
-        security unlock-keychain -p password ~/Library/Keychains/build.keychain
-        security set-keychain-settings -lu
-        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k password ~/Library/Keychains/build.keychain
+  #       # Unlock
+  #       security unlock-keychain -p password ~/Library/Keychains/build.keychain
+  #       security set-keychain-settings -lu
+  #       security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k password ~/Library/Keychains/build.keychain
     
-    - name: Cache cocoapods
-      uses: actions/cache@v2
-      with:
-        path: src/ui/osx/Pods
-        key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-pods-
-    - name: Get cocoapods
-      run: |
-        bash ./dist/osx/build.sh cocoapods
-    - name: Build the application
-      run: |
-        bash ./dist/osx/build.sh app
-    - name: Insert version string
-      run: |
-        bash ./dist/osx/build.sh plist
-    - name: Codesign
-      run: |
-        bash ./dist/osx/build.sh sign
-    - name: Notarize
-      if: github.event_name == 'release'
-      run: |
-        export "APPLE_APPID_USER=${{ secrets.MACOS_APPID_USER }}"
-        export "APPLE_APPID_PASSWORD=${{ secrets.MACOS_APPID_PASSWORD }}"
-        bash ./dist/osx/build.sh notarize
-    - name: Compose dmg
-      run: |
-        bash ./dist/osx/build.sh dmg
-    - name: Upload artifacts to GitHub
-      if: github.event_name != 'release'
-      uses: actions/upload-artifact@v2
-      with:
-        name: TogglDesktop.dmg
-        path: "${{ env.installer }}"
-    - name: Update Appcast
-      if: github.event_name == 'release'
-      run: |
-        base64 -D <<< "${{ secrets.APPCAST_PRIVATE_PEM }}" > dsa_priv.pem
-        bash ./dist/osx/build.sh appcast
-    - name: Upload
-      if: github.event_name == 'release'
-      run: |
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="$installer" renameto="$installer_name"
-    - name: Update Release
-      if: github.event_name == 'release'
-      run: |
-        bash ./dist/osx/build.sh update_release
+  #   - name: Cache cocoapods
+  #     uses: actions/cache@v2
+  #     with:
+  #       path: src/ui/osx/Pods
+  #       key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+  #       restore-keys: |
+  #         ${{ runner.os }}-pods-
+  #   - name: Get cocoapods
+  #     run: |
+  #       bash ./dist/osx/build.sh cocoapods
+  #   - name: Build the application
+  #     run: |
+  #       bash ./dist/osx/build.sh app
+  #   - name: Insert version string
+  #     run: |
+  #       bash ./dist/osx/build.sh plist
+  #   - name: Codesign
+  #     run: |
+  #       bash ./dist/osx/build.sh sign
+  #   - name: Notarize
+  #     if: github.event_name == 'release'
+  #     run: |
+  #       export "APPLE_APPID_USER=${{ secrets.MACOS_APPID_USER }}"
+  #       export "APPLE_APPID_PASSWORD=${{ secrets.MACOS_APPID_PASSWORD }}"
+  #       bash ./dist/osx/build.sh notarize
+  #   - name: Compose dmg
+  #     run: |
+  #       bash ./dist/osx/build.sh dmg
+  #   - name: Upload artifacts to GitHub
+  #     if: github.event_name != 'release'
+  #     uses: actions/upload-artifact@v2
+  #     with:
+  #       name: TogglDesktop.dmg
+  #       path: "${{ env.installer }}"
+  #   - name: Update Appcast
+  #     if: github.event_name == 'release'
+  #     run: |
+  #       base64 -D <<< "${{ secrets.APPCAST_PRIVATE_PEM }}" > dsa_priv.pem
+  #       bash ./dist/osx/build.sh appcast
+  #   - name: Upload
+  #     if: github.event_name == 'release'
+  #     run: |
+  #       ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="$installer" renameto="$installer_name"
+  #   - name: Update Release
+  #     if: github.event_name == 'release'
+  #     run: |
+  #       bash ./dist/osx/build.sh update_release
 
-  macos-cmake:
-    runs-on: macos-11.0
-    steps:
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '12.4'
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 1
-    - name: Prepare ENV
-      run: |
-        TAG_NAME=$(./dist/get-tag-name.sh)
-        version=${TAG_NAME/v/}
-        timestamp=$(date '+%Y-%m-%d-%H-%M-%S')
-        escaped_version=$(echo $version | sed 's/\./_/g')
-        installer=TogglDesktop-$escaped_version-$timestamp.dmg
-        installer_name=TogglDesktop-$escaped_version.dmg
-        echo $version
-        echo $installer
-        echo $installer_name
-        # Export env to all future steps
-        echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
-        echo "version=$version" >> $GITHUB_ENV
-        echo "timestamp=$timestamp" >> $GITHUB_ENV
-        echo "escaped_version=$escaped_version" >> $GITHUB_ENV
-        echo "installer=$installer" >> $GITHUB_ENV
-        echo "installer_name=$installer_name" >> $GITHUB_ENV
-    - name: Setup Golang env
-      if: github.event_name == 'release'
-      uses: actions/setup-go@v1
-      with:
-        version: 1.13
-    - name: Import signing key
-      run: |
-        # Create a new keychian and make it default
-        security create-keychain -p password build.keychain
-        security default-keychain -s ~/Library/Keychains/build.keychain
+  # macos-cmake:
+  #   runs-on: macos-11.0
+  #   steps:
+  #   - uses: maxim-lobanov/setup-xcode@v1
+  #     with:
+  #       xcode-version: '12.4'
+  #   - uses: actions/checkout@v2
+  #     with:
+  #       fetch-depth: 1
+  #   - name: Prepare ENV
+  #     run: |
+  #       TAG_NAME=$(./dist/get-tag-name.sh)
+  #       version=${TAG_NAME/v/}
+  #       timestamp=$(date '+%Y-%m-%d-%H-%M-%S')
+  #       escaped_version=$(echo $version | sed 's/\./_/g')
+  #       installer=TogglDesktop-$escaped_version-$timestamp.dmg
+  #       installer_name=TogglDesktop-$escaped_version.dmg
+  #       echo $version
+  #       echo $installer
+  #       echo $installer_name
+  #       # Export env to all future steps
+  #       echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+  #       echo "version=$version" >> $GITHUB_ENV
+  #       echo "timestamp=$timestamp" >> $GITHUB_ENV
+  #       echo "escaped_version=$escaped_version" >> $GITHUB_ENV
+  #       echo "installer=$installer" >> $GITHUB_ENV
+  #       echo "installer_name=$installer_name" >> $GITHUB_ENV
+  #   - name: Setup Golang env
+  #     if: github.event_name == 'release'
+  #     uses: actions/setup-go@v1
+  #     with:
+  #       version: 1.13
+  #   - name: Import signing key
+  #     run: |
+  #       # Create a new keychian and make it default
+  #       security create-keychain -p password build.keychain
+  #       security default-keychain -s ~/Library/Keychains/build.keychain
 
-        # Mac Developer Certificate
-        base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPER }}" > Bundle_cert_macos_developer.p12
-        security import ./Bundle_cert_macos_developer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPER_PASSWORD }} -T /usr/bin/codesign
-        # Mac Development Certificate
-        base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPMENT }}" > Bundle_cert_macos_development.p12
-        security import ./Bundle_cert_macos_development.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPMENT_PASSWORD }} -T /usr/bin/codesign
-        # Application Certificate
-        base64 -D <<< "${{ secrets.CERT_MACOS_APPLICATION }}" > Bundle_cert_macos_distribution.p12
-        security import ./Bundle_cert_macos_distribution.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_APPLICATION_PASSWORD }} -T /usr/bin/codesign
-        # Installer Certificate
-        base64 -D <<< "${{ secrets.CERT_MACOS_INSTALLER }}" > Bundle_cert_macos_installer.p12
-        security import ./Bundle_cert_macos_installer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_INSTALLER_PASSWORD }} -T /usr/bin/codesign
-        # Unlock
-        security unlock-keychain -p password ~/Library/Keychains/build.keychain
-        security set-keychain-settings -lu
-        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k password ~/Library/Keychains/build.keychain
+  #       # Mac Developer Certificate
+  #       base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPER }}" > Bundle_cert_macos_developer.p12
+  #       security import ./Bundle_cert_macos_developer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPER_PASSWORD }} -T /usr/bin/codesign
+  #       # Mac Development Certificate
+  #       base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPMENT }}" > Bundle_cert_macos_development.p12
+  #       security import ./Bundle_cert_macos_development.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPMENT_PASSWORD }} -T /usr/bin/codesign
+  #       # Application Certificate
+  #       base64 -D <<< "${{ secrets.CERT_MACOS_APPLICATION }}" > Bundle_cert_macos_distribution.p12
+  #       security import ./Bundle_cert_macos_distribution.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_APPLICATION_PASSWORD }} -T /usr/bin/codesign
+  #       # Installer Certificate
+  #       base64 -D <<< "${{ secrets.CERT_MACOS_INSTALLER }}" > Bundle_cert_macos_installer.p12
+  #       security import ./Bundle_cert_macos_installer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_INSTALLER_PASSWORD }} -T /usr/bin/codesign
+  #       # Unlock
+  #       security unlock-keychain -p password ~/Library/Keychains/build.keychain
+  #       security set-keychain-settings -lu
+  #       security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k password ~/Library/Keychains/build.keychain
 
-    - name: Install the dependencies
-      run: |
-        brew install qt
-        brew install openssl
-        brew install cmake
-    - name: Build the application
-      run: |
-        mkdir build
-        cd build
-        export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake
-        export OPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1/
-        cmake -DTOGGL_BUILD_TESTS=OFF -DOPENSSL_ROOT_DIR=$OPENSSL_ROOT_DIR ..
-        make -j2
+  #   - name: Install the dependencies
+  #     run: |
+  #       brew install qt
+  #       brew install openssl
+  #       brew install cmake
+  #   - name: Build the application
+  #     run: |
+  #       mkdir build
+  #       cd build
+  #       export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake
+  #       export OPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1/
+  #       cmake -DTOGGL_BUILD_TESTS=OFF -DOPENSSL_ROOT_DIR=$OPENSSL_ROOT_DIR ..
+  #       make -j2
 
-  linux-basic:
-    runs-on: ubuntu-20.04
-    if: github.event_name != 'release'
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-    - name: Install dependencies
-      run: |
-        sudo apt update
-        sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 qt5-default libqt5gui5 libqt5printsupport5 libqt5quickwidgets5 libqt5x11extras5 libqt5networkauth5 libxss1
-        sudo apt install patchelf binutils cmake pkg-config qtbase5-dev libqt5x11extras5-dev qtbase5-private-dev libqt5networkauth5-dev libssl-dev libxss-dev libxmu-dev
-    - name: Build the Linux binary
-      run: |
-        export BUILD_TESTS=ON
-        bash ./dist/linux/package.sh build
-    - name: Run App test
-      run: |
-        pushd build-tarball
-        ../dist/run-tests.sh test=./src/test/TogglAppTest name="App" slack_url=${{ secrets.SLACK_HOOK_URL }} slack_channel="#track-desktop-bots"
+  # linux-basic:
+  #   runs-on: ubuntu-20.04
+  #   if: github.event_name != 'release'
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #     with:
+  #       fetch-depth: 1
+  #   - name: Install dependencies
+  #     run: |
+  #       sudo apt update
+  #       sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 qt5-default libqt5gui5 libqt5printsupport5 libqt5quickwidgets5 libqt5x11extras5 libqt5networkauth5 libxss1
+  #       sudo apt install patchelf binutils cmake pkg-config qtbase5-dev libqt5x11extras5-dev qtbase5-private-dev libqt5networkauth5-dev libssl-dev libxss-dev libxmu-dev
+  #   - name: Build the Linux binary
+  #     run: |
+  #       export BUILD_TESTS=ON
+  #       bash ./dist/linux/package.sh build
+  #   - name: Run App test
+  #     run: |
+  #       pushd build-tarball
+  #       ../dist/run-tests.sh test=./src/test/TogglAppTest name="App" slack_url=${{ secrets.SLACK_HOOK_URL }} slack_channel="#track-desktop-bots"
 
-  linux-tarball:
-    runs-on: ubuntu-16.04
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-    - name: Install dependencies
-      run: |
-        sudo apt update
-        sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0
-        sudo apt install patchelf binutils cmake pkg-config libssl-dev libxss-dev libxmu-dev
-        sudo apt install dbus libfreetype6 fontconfig libx11-6 libx11-xcb1 libgl1-mesa-dev libnss3 libasound2 libxcomposite1 libxcursor1 libxi6 libxtst6 wget
-    - name: Upgrade GCC
-      run: |
-        sudo apt-get install -y software-properties-common
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt update
-        sudo apt install g++-7 -y
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
-        sudo update-alternatives --config gcc
-    - name: Cache Qt
-      id: cache-qt
-      uses: actions/cache@v1
-      with:
-        path: ../Qt
-        key: QtCache512-networkauth
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v2.10.0
-      with:
-        cached: ${{ steps.cache-qt.outputs.cache-hit }}
-        modules: qtnetworkauth
-    - name: Build the Linux binary
-      run: |
-        export TAG_NAME=$(./dist/get-tag-name.sh)
-        export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
-        bash ./dist/linux/package.sh build
-    - name: Collect the binaries
-      run: |
-        export TAG_NAME=$(./dist/get-tag-name.sh)
-        export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
-        bash ./dist/linux/package.sh compose
-    - name: Create tarball
-      run: |
-        export TAG_NAME=$(./dist/get-tag-name.sh)
-        export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
-        bash ./dist/linux/package.sh package
-    - name: Upload artifacts to GitHub
-      if: github.event_name != 'release'
-      uses: actions/upload-artifact@v2
-      with:
-        name: toggldesktop_x86_64.tar.gz
-        path: toggldesktop_x86_64.tar.gz
-    - name: Upload to GitHub
-      if: github.event_name == 'release'
-      run: |
-        TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz" renameto="toggldesktop_linux_${TAG_NAME/v/}_x86_64.tar.gz"
+  # linux-tarball:
+  #   runs-on: ubuntu-16.04
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #     with:
+  #       fetch-depth: 1
+  #   - name: Install dependencies
+  #     run: |
+  #       sudo apt update
+  #       sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0
+  #       sudo apt install patchelf binutils cmake pkg-config libssl-dev libxss-dev libxmu-dev
+  #       sudo apt install dbus libfreetype6 fontconfig libx11-6 libx11-xcb1 libgl1-mesa-dev libnss3 libasound2 libxcomposite1 libxcursor1 libxi6 libxtst6 wget
+  #   - name: Upgrade GCC
+  #     run: |
+  #       sudo apt-get install -y software-properties-common
+  #       sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+  #       sudo apt update
+  #       sudo apt install g++-7 -y
+  #       sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+  #       sudo update-alternatives --config gcc
+  #   - name: Cache Qt
+  #     id: cache-qt
+  #     uses: actions/cache@v1
+  #     with:
+  #       path: ../Qt
+  #       key: QtCache512-networkauth
+  #   - name: Install Qt
+  #     uses: jurplel/install-qt-action@v2.10.0
+  #     with:
+  #       cached: ${{ steps.cache-qt.outputs.cache-hit }}
+  #       modules: qtnetworkauth
+  #   - name: Build the Linux binary
+  #     run: |
+  #       export TAG_NAME=$(./dist/get-tag-name.sh)
+  #       export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
+  #       bash ./dist/linux/package.sh build
+  #   - name: Collect the binaries
+  #     run: |
+  #       export TAG_NAME=$(./dist/get-tag-name.sh)
+  #       export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
+  #       bash ./dist/linux/package.sh compose
+  #   - name: Create tarball
+  #     run: |
+  #       export TAG_NAME=$(./dist/get-tag-name.sh)
+  #       export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
+  #       bash ./dist/linux/package.sh package
+  #   - name: Upload artifacts to GitHub
+  #     if: github.event_name != 'release'
+  #     uses: actions/upload-artifact@v2
+  #     with:
+  #       name: toggldesktop_x86_64.tar.gz
+  #       path: toggldesktop_x86_64.tar.gz
+  #   - name: Upload to GitHub
+  #     if: github.event_name == 'release'
+  #     run: |
+  #       TAG_NAME=$(./dist/get-tag-name.sh)
+  #       ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz" renameto="toggldesktop_linux_${TAG_NAME/v/}_x86_64.tar.gz"
 
-  linux-ubuntu1604:
-    runs-on: ubuntu-16.04
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-    - name: Install signing key
-      run: |
-        gpg --import <<< "${{ secrets.CERT_LINUX_DEB64 }}"
-    - name: Install dependencies
-      run: |
-        sudo apt update
-        sudo apt install devscripts debhelper pkg-config libssl-dev libxss-dev libxmu-dev
-    - name: Get clang 8
-      run: |
-        sudo apt install clang-8 libc++-8-dev libc++abi-8-dev
-    - name: Upgrade CMake
-      run: |
-        sudo apt-key add dist/linux/kitware-archive-latest.asc
-        sudo apt install apt-transport-https
-        sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ xenial main'
-        sudo apt update
-        sudo apt -y install cmake
-    - name: Cache Qt
-      id: cache-qt
-      uses: actions/cache@v1
-      with:
-        path: ../Qt
-        key: QtCache512-networkauth
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v2.10.0
-      with:
-        cached: ${{ steps.cache-qt.outputs.cache-hit }}
-        modules: qtnetworkauth
-    - name: Build a Debian package
-      run: |
-        export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
-        export TAG_NAME=$(./dist/get-tag-name.sh)
-        export CC=/usr/bin/clang-8
-        export CXX=/usr/bin/clang++-8
-        cd dist/linux
-        ln -s ../../src .
-        ln -s ../../CMakeLists.txt .
-        ln -s ../../third_party .
-        ln -s ubuntu16 debian
-        dch -b -D unstable --package "toggldesktop" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
-        debuild --preserve-envvar=CMAKE_PREFIX_PATH --preserve-envvar=CC --preserve-envvar=CXX --preserve-envvar=TAG_NAME
-    - name: Upload artifacts to GitHub
-      if: github.event_name != 'release'
-      uses: actions/upload-artifact@v2
-      with:
-        name: toggldesktop_ubuntu1604_amd64.deb
-        path: dist/toggldesktop_7.0.0_amd64.deb
-    - name: Upload to GitHub
-      if: github.event_name == 'release'
-      run: |
-        TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" renameto="toggldesktop_${TAG_NAME/v/}_ubuntu1604_amd64.deb" filename="dist/toggldesktop_${TAG_NAME/v/}_amd64.deb"
+  # linux-ubuntu1604:
+  #   runs-on: ubuntu-16.04
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #     with:
+  #       fetch-depth: 1
+  #   - name: Install signing key
+  #     run: |
+  #       gpg --import <<< "${{ secrets.CERT_LINUX_DEB64 }}"
+  #   - name: Install dependencies
+  #     run: |
+  #       sudo apt update
+  #       sudo apt install devscripts debhelper pkg-config libssl-dev libxss-dev libxmu-dev
+  #   - name: Get clang 8
+  #     run: |
+  #       sudo apt install clang-8 libc++-8-dev libc++abi-8-dev
+  #   - name: Upgrade CMake
+  #     run: |
+  #       sudo apt-key add dist/linux/kitware-archive-latest.asc
+  #       sudo apt install apt-transport-https
+  #       sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ xenial main'
+  #       sudo apt update
+  #       sudo apt -y install cmake
+  #   - name: Cache Qt
+  #     id: cache-qt
+  #     uses: actions/cache@v1
+  #     with:
+  #       path: ../Qt
+  #       key: QtCache512-networkauth
+  #   - name: Install Qt
+  #     uses: jurplel/install-qt-action@v2.10.0
+  #     with:
+  #       cached: ${{ steps.cache-qt.outputs.cache-hit }}
+  #       modules: qtnetworkauth
+  #   - name: Build a Debian package
+  #     run: |
+  #       export CMAKE_PREFIX_PATH="$Qt5_Dir/lib/cmake/"
+  #       export TAG_NAME=$(./dist/get-tag-name.sh)
+  #       export CC=/usr/bin/clang-8
+  #       export CXX=/usr/bin/clang++-8
+  #       cd dist/linux
+  #       ln -s ../../src .
+  #       ln -s ../../CMakeLists.txt .
+  #       ln -s ../../third_party .
+  #       ln -s ubuntu16 debian
+  #       dch -b -D unstable --package "toggldesktop" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
+  #       debuild --preserve-envvar=CMAKE_PREFIX_PATH --preserve-envvar=CC --preserve-envvar=CXX --preserve-envvar=TAG_NAME
+  #   - name: Upload artifacts to GitHub
+  #     if: github.event_name != 'release'
+  #     uses: actions/upload-artifact@v2
+  #     with:
+  #       name: toggldesktop_ubuntu1604_amd64.deb
+  #       path: dist/toggldesktop_7.0.0_amd64.deb
+  #   - name: Upload to GitHub
+  #     if: github.event_name == 'release'
+  #     run: |
+  #       TAG_NAME=$(./dist/get-tag-name.sh)
+  #       ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" renameto="toggldesktop_${TAG_NAME/v/}_ubuntu1604_amd64.deb" filename="dist/toggldesktop_${TAG_NAME/v/}_amd64.deb"
 
-  linux-flatpak-kde:
-    runs-on: ubuntu-18.04
-    if: github.event_name == 'release'
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-    - name: Install Flatpak
-      run: |
-        sudo apt update
-        sudo apt install flatpak flatpak-builder
-    - name: Install Flatpak KDE SDK
-      run: |
-        sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-        sudo flatpak install --system -y flathub org.kde.Platform//5.15
-        sudo flatpak install --system -y flathub org.kde.Sdk//5.15
-    - name: Build Linux Flatpak package - KDE based
-      run: |
-        TAG_NAME=$(./dist/get-tag-name.sh)
-        pushd dist/linux/flatpak
-        sed -i "s/VERSION_PLACEHOLDER/${TAG_NAME/v/}/" com.toggl.TogglDesktop.json
-        sudo flatpak-builder --repo=flatpak-repo --force-clean flatpak-build com.toggl.TogglDesktop.json
-        flatpak build-bundle flatpak-repo com.toggl.TogglDesktop.flatpak com.toggl.TogglDesktop
-        mv com.toggl.TogglDesktop.flatpak ../../..
-        popd
-    - name: Upload to GitHub
-      run: |
-        TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="com.toggl.TogglDesktop.flatpak" renameto="com.toggl.TogglDesktop-${TAG_NAME/v/}.flatpak"
+  # linux-flatpak-kde:
+  #   runs-on: ubuntu-18.04
+  #   if: github.event_name == 'release'
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #     with:
+  #       fetch-depth: 1
+  #   - name: Install Flatpak
+  #     run: |
+  #       sudo apt update
+  #       sudo apt install flatpak flatpak-builder
+  #   - name: Install Flatpak KDE SDK
+  #     run: |
+  #       sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+  #       sudo flatpak install --system -y flathub org.kde.Platform//5.15
+  #       sudo flatpak install --system -y flathub org.kde.Sdk//5.15
+  #   - name: Build Linux Flatpak package - KDE based
+  #     run: |
+  #       TAG_NAME=$(./dist/get-tag-name.sh)
+  #       pushd dist/linux/flatpak
+  #       sed -i "s/VERSION_PLACEHOLDER/${TAG_NAME/v/}/" com.toggl.TogglDesktop.json
+  #       sudo flatpak-builder --repo=flatpak-repo --force-clean flatpak-build com.toggl.TogglDesktop.json
+  #       flatpak build-bundle flatpak-repo com.toggl.TogglDesktop.flatpak com.toggl.TogglDesktop
+  #       mv com.toggl.TogglDesktop.flatpak ../../..
+  #       popd
+  #   - name: Upload to GitHub
+  #     run: |
+  #       TAG_NAME=$(./dist/get-tag-name.sh)
+  #       ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="com.toggl.TogglDesktop.flatpak" renameto="com.toggl.TogglDesktop-${TAG_NAME/v/}.flatpak"
   
-  linux-dev-release: 
-    needs: [linux-tarball, linux-ubuntu1604] 
-    runs-on: ubuntu-latest
-    if: github.event_name == 'release' 
-    steps: 
-    - uses: actions/checkout@v2 
-      with: 
-        fetch-depth: 1 
-    - name: Add new dev channel release 
-      shell: bash 
-      run: | 
-        TAG_NAME=$(./dist/get-tag-name.sh) 
-        ./dist/update_releases.sh linux dev ${TAG_NAME/v/} 
+  # linux-dev-release: 
+  #   needs: [linux-tarball, linux-ubuntu1604] 
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'release' 
+  #   steps: 
+  #   - uses: actions/checkout@v2 
+  #     with: 
+  #       fetch-depth: 1 
+  #   - name: Add new dev channel release 
+  #     shell: bash 
+  #     run: | 
+  #       TAG_NAME=$(./dist/get-tag-name.sh) 
+  #       ./dist/update_releases.sh linux dev ${TAG_NAME/v/} 
 
 #  windows-cmake:
 #    runs-on: windows-2019
