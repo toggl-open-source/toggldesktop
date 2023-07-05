@@ -29,7 +29,7 @@ namespace TogglDesktop
         private ulong selectedClientId;
         private string selectedClientName;
         private bool isCreatingProject;
-        private bool dateSet = false;
+        private bool startDateSet = false;
         public EditView()
         {
             this.DataContext = this;
@@ -75,7 +75,7 @@ namespace TogglDesktop
 
             using (Performance.Measure("filling edit view from OnTimeEntryEditor"))
             {
-                this.dateSet = false;
+                this.startDateSet = false;
                 if (timeEntry.Locked)
                 {
                     open = true;
@@ -110,17 +110,27 @@ namespace TogglDesktop
 
                 this.endTimeTextBox.IsEnabled = !isCurrentlyRunning;
                 this.startDatePicker.IsEnabled = !isCurrentlyRunning;
+                this.endDatePicker.IsEnabled = !isCurrentlyRunning;
 
                 var startDateTime = Toggl.DateTimeFromUnix(timeEntry.Started);
                 var endDateTime = Toggl.DateTimeFromUnix(timeEntry.Ended);
 
                 setText(this.descriptionTextBox, timeEntry.Description, open);
-                setTime(this.durationTextBox, timeEntry.Duration, open);
+
+                // Start:
                 setTime(this.startTimeTextBox, timeEntry.StartTimeString, open);
                 this.startTimeTextBox.ToolTip = startDateTime.ToString("T", CultureInfo.CurrentCulture);
+                this.startDatePicker.SelectedDate = startDateTime;
+
+                // End:
                 setTime(this.endTimeTextBox, timeEntry.EndTimeString, open);
                 this.endTimeTextBox.ToolTip = endDateTime.ToString("T", CultureInfo.CurrentCulture);
-                this.startDatePicker.SelectedDate = startDateTime;
+                this.endDatePicker.SelectedDate = endDateTime;
+
+                // Duration:
+                setTime(this.durationTextBox, timeEntry.Duration, open);
+                
+
                 if (isDifferentTimeEntry)
                 {
                     this.clearUndoHistory();
@@ -128,6 +138,7 @@ namespace TogglDesktop
 
                 if (isCurrentlyRunning)
                 {
+                    this.endDatePicker.SelectedDate = DateTime.Now;
                     this.endTimeTextBox.Text = "";
                 }
 
@@ -165,7 +176,7 @@ namespace TogglDesktop
                             ? "Create a new project"
                             : string.Empty;
                 }
-                this.dateSet = true;
+                this.startDateSet = true;
             }
         }
 
@@ -187,6 +198,10 @@ namespace TogglDesktop
             }
         }
 
+        /// <summary>
+        /// When <paramref name="textBox"/> is not focused, or has an empty <see cref="FrameworkElement.Tag"/> property value, or when <paramref name="evenIfFocused"/> is <see langword="true"/>, this method stores <paramref name="time"/> into <paramref name="textBox"/>'s <see cref="FrameworkElement.Tag"/> property.<br/>
+        /// Otherwise, this method does nothing.
+        /// </summary>
         private static void setTime(ExtendedTextBox textBox, string time, bool evenIfFocused)
         {
             if (evenIfFocused
@@ -205,9 +220,9 @@ namespace TogglDesktop
 
         #region duration auto update
 
-        private void durationUpdateTimerTick(object sender, string s)
+        private void durationUpdateTimerTick(object sender, string durationText)
         {
-            if (this.TryBeginInvoke(durationUpdateTimerTick, sender, s))
+            if (this.TryBeginInvoke(durationUpdateTimerTick, sender, durationText))
                 return;
 
             if (!this.hasTimeEntry() || this.timeEntry.DurationInSeconds >= 0)
@@ -222,8 +237,8 @@ namespace TogglDesktop
 
             var caret = this.durationTextBox.CaretIndex;
 
-            this.durationTextBox.SetText(s);
-            this.durationTextBox.Tag = s;
+            this.durationTextBox.SetText(durationText);
+            this.durationTextBox.Tag = durationText;
 
             this.durationTextBox.CaretIndex = caret;
         }
@@ -351,13 +366,12 @@ namespace TogglDesktop
         }
         private void saveEndTimeIfChanged()
         {
-            this.setTimeEntryTimeIfChanged(this.endTimeTextBox, Toggl.SetTimeEntryEnd, "end time");
+            this.setTimeEntryEndTimestampIfChanged();
         }
         private void saveDurationIfChanged()
         {
             this.setTimeEntryTimeIfChanged(this.durationTextBox, Toggl.SetTimeEntryDuration, "duration");
         }
-
 
         private void setTimeEntryTimeIfChanged(TextBox textBox, Func<string, string, bool> apiCall, string timeType)
         {
@@ -367,8 +381,8 @@ namespace TogglDesktop
                 return;
             }
 
-            var before = textBox.Tag as string;
-            var now = textBox.Text;
+            var before = textBox.Tag as string; // e.g. "06:00" or "6:00 AM" etc
+            var now = textBox.Text; // e.g. "06:01" or "6:01 AM" etc
             if (before == now)
                 return;
 
@@ -377,38 +391,101 @@ namespace TogglDesktop
             apiCall(this.timeEntry.GUID, now);
         }
 
-        #region datepicker
-
-        private void saveDate()
+        private void setTimeEntryEndTimestampIfChanged()
         {
             if (!this.hasTimeEntry())
             {
-                Console.WriteLine("Cannot apply date change: No time entry.");
-                return;
-            }
-            if (!this.startDatePicker.SelectedDate.HasValue)
-            {
-                this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(this.timeEntry.Started);
+                Console.WriteLine("Cannot apply change: No time entry.");
                 return;
             }
 
-            DateTime currentDate = Toggl.DateTimeFromUnix(timeEntry.Started);
-
-            if (!currentDate.Equals(this.startDatePicker.SelectedDate.Value))
+            if (!this.endDatePicker.SelectedDate.HasValue)
             {
-                currentDate = this.startDatePicker.SelectedDate.Value;
-                Toggl.SetTimeEntryDate(this.timeEntry.GUID, currentDate);
+               Console.WriteLine("Cannot apply change: No end date value.");
+               return;
             }
+
+            DateTime nowEnd;
+            DateTime previousEnd;
+            {
+                DateTime nowEndDate      = this.endDatePicker.SelectedDate.Value.Date;
+                DateTime previousEndDate = ( this.endDatePicker.Tag as DateTime? ?? DateTime.MinValue ).Date;
+            
+                TimeSpan nowEndTimeOfDay;
+                TimeSpan previousEndTimeOfDay;
+                {
+                    if (!DateTime.TryParseExact(this.endTimeTextBox.Text, format: "t", CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault | DateTimeStyles.AssumeLocal, out DateTime nowEndTimeOfDayAsDate))
+                    {
+                        Console.WriteLine("Cannot apply change: Invalid end time textbox value.");
+                        return;
+                    }
+
+                    if (!DateTime.TryParseExact(this.endTimeTextBox.Tag as string, format: "t", CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault | DateTimeStyles.AssumeLocal, out DateTime previousEndTimeOfDayAsDate))
+                    {
+                        previousEndTimeOfDayAsDate = DateTime.MinValue;
+                    }
+
+                    nowEndTimeOfDay      = nowEndTimeOfDayAsDate.TimeOfDay;
+                    previousEndTimeOfDay = previousEndTimeOfDayAsDate.TimeOfDay;
+                }
+
+                nowEnd      = nowEndDate     .Add(nowEndTimeOfDay);
+                previousEnd = previousEndDate.Add(previousEndTimeOfDay);
+            }
+
+            long nowEndUnix      = Toggl.UnixFromDateTime(nowEnd);
+            long previousEndUnix = Toggl.UnixFromDateTime(previousEnd);
+            if( nowEndUnix == previousEndUnix )
+            {
+                Console.WriteLine("Cannot apply change: No change detected.");
+                return;
+            }
+
+            this.endTimeTextBox.Tag = null;
+
+            Toggl.SetTimeEntryEndTimeStamp(this.timeEntry.GUID, nowEndUnix);
         }
+
+        #region datepicker
+
+        private void saveDate() 
+        { 
+            if (!this.hasTimeEntry()) 
+            { 
+                Console.WriteLine("Cannot apply date change: No time entry."); 
+                return; 
+            } 
+            if (!this.startDatePicker.SelectedDate.HasValue) 
+            { 
+                this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(this.timeEntry.Started); 
+                return; 
+            } 
+ 
+            DateTime currentDate = Toggl.DateTimeFromUnix(timeEntry.Started); 
+ 
+            if (!currentDate.Equals(this.startDatePicker.SelectedDate.Value)) 
+            { 
+                currentDate = this.startDatePicker.SelectedDate.Value; 
+                Toggl.SetTimeEntryDate(this.timeEntry.GUID, currentDate); 
+            } 
+        } 
 
         private void startDatePicker_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             if (!startDatePicker.IsKeyboardFocusWithin)
             {
-                if (this.dateSet)
+                if (this.startDateSet)
                 {
                     this.saveDate();
                 }
+            }
+        }
+
+        private void endDatePicker_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (!endDatePicker.IsKeyboardFocusWithin)
+            {
+                this.setTimeEntryEndTimestampIfChanged();
             }
         }
 
@@ -831,7 +908,7 @@ namespace TogglDesktop
 
         public void SetTimer(Timer timer)
         {
-            timer.ViewModel.WhenValueChanged(x => x.DurationText).Subscribe(x => durationUpdateTimerTick(this, x));
+            timer.ViewModel.WhenValueChanged(x => x.DurationText).Subscribe(durationText => this.durationUpdateTimerTick(this, durationText));
         }
 
         public void FocusField(string focusedFieldName)
