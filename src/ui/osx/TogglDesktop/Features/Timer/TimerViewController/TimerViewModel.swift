@@ -114,7 +114,7 @@ final class TimerViewModel: NSObject {
     var tagsDataSource = TagDataSource(items: TagStorage.shared.tags,
                                        updateNotificationName: .TagStorageChangedNotification)
 
-    private var timer: Timer!
+    private var timer: Timer?
 
     private var actionsUsedBeforeStart: Set<TimerEditActionType> = Set()
 
@@ -138,10 +138,14 @@ final class TimerViewModel: NSObject {
 
     deinit {
         cancelNotificationObservers()
-        timer.invalidate()
     }
 
     // MARK: - Public
+    
+    func viewWillDisappear() {
+        timer?.invalidate()
+        timer = nil
+    }
 
     func startStopAction() {
         if timeEntry.isRunning() {
