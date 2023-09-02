@@ -493,9 +493,12 @@ void TimeEntry::LoadFromJSON(const Json::Value &data, bool syncServer) {
         if (!updateMergeableProperty("tid", TID))
             SetTID(0, false);
     updateMergeableProperty("billable", Billable);
-    updateMergeableProperty("duration", DurationInSeconds);
     updateMergeablePropertyConvert("start", StartTime, convertTimeString);
     updateMergeablePropertyConvert("stop", StopTime, convertTimeString);
+    if (StopTime() == 0)
+        SetDurationInSeconds(-StartTime(), false);
+    else
+        updateMergeableProperty("duration", DurationInSeconds);
 
     // These properties are not sync-server-mergeable
     SetDurOnly(data["duronly"].asBool());
